@@ -2,12 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:libpgport/libpgport.xcodeproj">
-   </FileRef>
-   <FileRef
       location = "group:postgres/postgres.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:libpgcommon_srv/libpgcommon_srv.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:libpgport/libpgport.xcodeproj">
    </FileRef>
 </Workspace>

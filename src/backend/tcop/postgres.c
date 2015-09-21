@@ -937,8 +937,8 @@ exec_simple_query(const char *query_string)
 	 */
 	parsetree_list = pg_parse_query(query_string);
 
-  fprintf (stderr, "%s:%d:%s parsetree_list %d\n", __FILE__, __LINE__, __func__, parsetree_list->type);
-  pprint (parsetree_list);
+  //fprintf (stderr, "%s:%d:%s parsetree_list %d\n", __FILE__, __LINE__, __func__, parsetree_list->type);
+  //pprint (parsetree_list);
 
 	/* Log immediately if dictated by log_statement */
 	if (check_log_statement(parsetree_list))
@@ -4022,7 +4022,7 @@ PostgresMain(int argc, char *argv[],
 					query_string = pq_getmsgstring(&input_message);
 					pq_getmsgend(&input_message);
 
-          fprintf (stderr, "%s:%d:%s Processing %s\n", __FILE__, __LINE__, __func__, query_string);
+          //fprintf (stderr, "%s:%d:%s Processing %s\n", __FILE__, __LINE__, __func__, query_string);
 
 					if (am_walsender)
 						exec_replication_command(query_string);

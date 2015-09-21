@@ -1,0 +1,312 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		C23CC1E91BB05E6100BBD897 /* chklocale.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1B61BB05E6100BBD897 /* chklocale.c */; settings = {ASSET_TAGS = (); }; };
+		C23CC1ED1BB05E6100BBD897 /* erand48.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1BA1BB05E6100BBD897 /* erand48.c */; settings = {ASSET_TAGS = (); }; };
+		C23CC1F71BB05E6100BBD897 /* inet_net_ntop.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1C41BB05E6100BBD897 /* inet_net_ntop.c */; settings = {ASSET_TAGS = (); }; };
+		C23CC1FC1BB05E6100BBD897 /* noblock.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1C91BB05E6100BBD897 /* noblock.c */; settings = {ASSET_TAGS = (); }; };
+		C23CC1FE1BB05E6100BBD897 /* path.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1CB1BB05E6100BBD897 /* path.c */; settings = {ASSET_TAGS = (); }; };
+		C23CC1FF1BB05E6100BBD897 /* pg_crc32c_choose.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1CC1BB05E6100BBD897 /* pg_crc32c_choose.c */; settings = {ASSET_TAGS = (); }; };
+		C23CC2001BB05E6100BBD897 /* pg_crc32c_sb8.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1CD1BB05E6100BBD897 /* pg_crc32c_sb8.c */; settings = {ASSET_TAGS = (); }; };
+		C23CC2011BB05E6100BBD897 /* pg_crc32c_sse42.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1CE1BB05E6100BBD897 /* pg_crc32c_sse42.c */; settings = {ASSET_TAGS = (); }; };
+		C23CC2021BB05E6100BBD897 /* pgcheckdir.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1CF1BB05E6100BBD897 /* pgcheckdir.c */; settings = {ASSET_TAGS = (); }; };
+		C23CC2031BB05E6100BBD897 /* pgmkdirp.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1D01BB05E6100BBD897 /* pgmkdirp.c */; settings = {ASSET_TAGS = (); }; };
+		C23CC2041BB05E6100BBD897 /* pgsleep.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1D11BB05E6100BBD897 /* pgsleep.c */; settings = {ASSET_TAGS = (); }; };
+		C23CC2051BB05E6100BBD897 /* pgstrcasecmp.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1D21BB05E6100BBD897 /* pgstrcasecmp.c */; settings = {ASSET_TAGS = (); }; };
+		C23CC2061BB05E6100BBD897 /* pqsignal.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1D31BB05E6100BBD897 /* pqsignal.c */; settings = {ASSET_TAGS = (); }; };
+		C23CC2081BB05E6100BBD897 /* qsort_arg.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1D51BB05E6100BBD897 /* qsort_arg.c */; settings = {ASSET_TAGS = (); }; };
+		C23CC2091BB05E6100BBD897 /* qsort.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1D61BB05E6100BBD897 /* qsort.c */; settings = {ASSET_TAGS = (); }; };
+		C23CC20A1BB05E6100BBD897 /* quotes.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1D71BB05E6100BBD897 /* quotes.c */; settings = {ASSET_TAGS = (); }; };
+		C23CC20E1BB05E6100BBD897 /* sprompt.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1DC1BB05E6100BBD897 /* sprompt.c */; settings = {ASSET_TAGS = (); }; };
+		C23CC2141BB05E6100BBD897 /* tar.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1E21BB05E6100BBD897 /* tar.c */; settings = {ASSET_TAGS = (); }; };
+		C23CC2151BB05E6100BBD897 /* thread.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1E31BB05E6100BBD897 /* thread.c */; settings = {ASSET_TAGS = (); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		C23CC1AF1BB05E2A00BBD897 /* liblibpgport.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblibpgport.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C23CC1B61BB05E6100BBD897 /* chklocale.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = chklocale.c; path = ../../src/port/chklocale.c; sourceTree = "<group>"; };
+		C23CC1BA1BB05E6100BBD897 /* erand48.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = erand48.c; path = ../../src/port/erand48.c; sourceTree = "<group>"; };
+		C23CC1C41BB05E6100BBD897 /* inet_net_ntop.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = inet_net_ntop.c; path = ../../src/port/inet_net_ntop.c; sourceTree = "<group>"; };
+		C23CC1C91BB05E6100BBD897 /* noblock.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = noblock.c; path = ../../src/port/noblock.c; sourceTree = "<group>"; };
+		C23CC1CB1BB05E6100BBD897 /* path.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = path.c; path = ../../src/port/path.c; sourceTree = "<group>"; };
+		C23CC1CC1BB05E6100BBD897 /* pg_crc32c_choose.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pg_crc32c_choose.c; path = ../../src/port/pg_crc32c_choose.c; sourceTree = "<group>"; };
+		C23CC1CD1BB05E6100BBD897 /* pg_crc32c_sb8.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pg_crc32c_sb8.c; path = ../../src/port/pg_crc32c_sb8.c; sourceTree = "<group>"; };
+		C23CC1CE1BB05E6100BBD897 /* pg_crc32c_sse42.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pg_crc32c_sse42.c; path = ../../src/port/pg_crc32c_sse42.c; sourceTree = "<group>"; };
+		C23CC1CF1BB05E6100BBD897 /* pgcheckdir.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pgcheckdir.c; path = ../../src/port/pgcheckdir.c; sourceTree = "<group>"; };
+		C23CC1D01BB05E6100BBD897 /* pgmkdirp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pgmkdirp.c; path = ../../src/port/pgmkdirp.c; sourceTree = "<group>"; };
+		C23CC1D11BB05E6100BBD897 /* pgsleep.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pgsleep.c; path = ../../src/port/pgsleep.c; sourceTree = "<group>"; };
+		C23CC1D21BB05E6100BBD897 /* pgstrcasecmp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pgstrcasecmp.c; path = ../../src/port/pgstrcasecmp.c; sourceTree = "<group>"; };
+		C23CC1D31BB05E6100BBD897 /* pqsignal.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pqsignal.c; path = ../../src/port/pqsignal.c; sourceTree = "<group>"; };
+		C23CC1D51BB05E6100BBD897 /* qsort_arg.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = qsort_arg.c; path = ../../src/port/qsort_arg.c; sourceTree = "<group>"; };
+		C23CC1D61BB05E6100BBD897 /* qsort.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = qsort.c; path = ../../src/port/qsort.c; sourceTree = "<group>"; };
+		C23CC1D71BB05E6100BBD897 /* quotes.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = quotes.c; path = ../../src/port/quotes.c; sourceTree = "<group>"; };
+		C23CC1D91BB05E6100BBD897 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = README; path = ../../src/port/README; sourceTree = "<group>"; };
+		C23CC1DC1BB05E6100BBD897 /* sprompt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sprompt.c; path = ../../src/port/sprompt.c; sourceTree = "<group>"; };
+		C23CC1E21BB05E6100BBD897 /* tar.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tar.c; path = ../../src/port/tar.c; sourceTree = "<group>"; };
+		C23CC1E31BB05E6100BBD897 /* thread.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = thread.c; path = ../../src/port/thread.c; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C23CC1AC1BB05E2A00BBD897 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		C23CC1A61BB05E2A00BBD897 = {
+			isa = PBXGroup;
+			children = (
+				C23CC1B61BB05E6100BBD897 /* chklocale.c */,
+				C23CC1BA1BB05E6100BBD897 /* erand48.c */,
+				C23CC1C41BB05E6100BBD897 /* inet_net_ntop.c */,
+				C23CC1C91BB05E6100BBD897 /* noblock.c */,
+				C23CC1CB1BB05E6100BBD897 /* path.c */,
+				C23CC1CC1BB05E6100BBD897 /* pg_crc32c_choose.c */,
+				C23CC1CD1BB05E6100BBD897 /* pg_crc32c_sb8.c */,
+				C23CC1CE1BB05E6100BBD897 /* pg_crc32c_sse42.c */,
+				C23CC1CF1BB05E6100BBD897 /* pgcheckdir.c */,
+				C23CC1D01BB05E6100BBD897 /* pgmkdirp.c */,
+				C23CC1D11BB05E6100BBD897 /* pgsleep.c */,
+				C23CC1D21BB05E6100BBD897 /* pgstrcasecmp.c */,
+				C23CC1D31BB05E6100BBD897 /* pqsignal.c */,
+				C23CC1D51BB05E6100BBD897 /* qsort_arg.c */,
+				C23CC1D61BB05E6100BBD897 /* qsort.c */,
+				C23CC1D71BB05E6100BBD897 /* quotes.c */,
+				C23CC1D91BB05E6100BBD897 /* README */,
+				C23CC1DC1BB05E6100BBD897 /* sprompt.c */,
+				C23CC1E21BB05E6100BBD897 /* tar.c */,
+				C23CC1E31BB05E6100BBD897 /* thread.c */,
+				C23CC1B01BB05E2A00BBD897 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		C23CC1B01BB05E2A00BBD897 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C23CC1AF1BB05E2A00BBD897 /* liblibpgport.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		C23CC1AD1BB05E2A00BBD897 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		C23CC1AE1BB05E2A00BBD897 /* libpgport */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C23CC1B31BB05E2A00BBD897 /* Build configuration list for PBXNativeTarget "libpgport" */;
+			buildPhases = (
+				C23CC1AB1BB05E2A00BBD897 /* Sources */,
+				C23CC1AC1BB05E2A00BBD897 /* Frameworks */,
+				C23CC1AD1BB05E2A00BBD897 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = libpgport;
+			productName = libpgport;
+			productReference = C23CC1AF1BB05E2A00BBD897 /* liblibpgport.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C23CC1A71BB05E2A00BBD897 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0700;
+				ORGANIZATIONNAME = "Venkat Murty";
+				TargetAttributes = {
+					C23CC1AE1BB05E2A00BBD897 = {
+						CreatedOnToolsVersion = 7.0;
+					};
+				};
+			};
+			buildConfigurationList = C23CC1AA1BB05E2A00BBD897 /* Build configuration list for PBXProject "libpgport" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = C23CC1A61BB05E2A00BBD897;
+			productRefGroup = C23CC1B01BB05E2A00BBD897 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C23CC1AE1BB05E2A00BBD897 /* libpgport */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C23CC1AB1BB05E2A00BBD897 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C23CC1FE1BB05E6100BBD897 /* path.c in Sources */,
+				C23CC2051BB05E6100BBD897 /* pgstrcasecmp.c in Sources */,
+				C23CC1F71BB05E6100BBD897 /* inet_net_ntop.c in Sources */,
+				C23CC1FF1BB05E6100BBD897 /* pg_crc32c_choose.c in Sources */,
+				C23CC1ED1BB05E6100BBD897 /* erand48.c in Sources */,
+				C23CC2141BB05E6100BBD897 /* tar.c in Sources */,
+				C23CC2031BB05E6100BBD897 /* pgmkdirp.c in Sources */,
+				C23CC2001BB05E6100BBD897 /* pg_crc32c_sb8.c in Sources */,
+				C23CC2151BB05E6100BBD897 /* thread.c in Sources */,
+				C23CC20A1BB05E6100BBD897 /* quotes.c in Sources */,
+				C23CC20E1BB05E6100BBD897 /* sprompt.c in Sources */,
+				C23CC2091BB05E6100BBD897 /* qsort.c in Sources */,
+				C23CC2021BB05E6100BBD897 /* pgcheckdir.c in Sources */,
+				C23CC2081BB05E6100BBD897 /* qsort_arg.c in Sources */,
+				C23CC2011BB05E6100BBD897 /* pg_crc32c_sse42.c in Sources */,
+				C23CC1FC1BB05E6100BBD897 /* noblock.c in Sources */,
+				C23CC2041BB05E6100BBD897 /* pgsleep.c in Sources */,
+				C23CC1E91BB05E6100BBD897 /* chklocale.c in Sources */,
+				C23CC2061BB05E6100BBD897 /* pqsignal.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		C23CC1B11BB05E2A00BBD897 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		C23CC1B21BB05E2A00BBD897 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		C23CC1B41BB05E2A00BBD897 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = lib;
+				HEADER_SEARCH_PATHS = ../../src/include;
+				OTHER_CFLAGS = "-msse4.2";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		C23CC1B51BB05E2A00BBD897 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = lib;
+				HEADER_SEARCH_PATHS = ../../src/include;
+				OTHER_CFLAGS = "-msse4.2";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C23CC1AA1BB05E2A00BBD897 /* Build configuration list for PBXProject "libpgport" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C23CC1B11BB05E2A00BBD897 /* Debug */,
+				C23CC1B21BB05E2A00BBD897 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C23CC1B31BB05E2A00BBD897 /* Build configuration list for PBXNativeTarget "libpgport" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C23CC1B41BB05E2A00BBD897 /* Debug */,
+				C23CC1B51BB05E2A00BBD897 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C23CC1A71BB05E2A00BBD897 /* Project object */;
+}

@@ -7,25 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C23CC1E91BB05E6100BBD897 /* chklocale.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1B61BB05E6100BBD897 /* chklocale.c */; settings = {ASSET_TAGS = (); }; };
-		C23CC1ED1BB05E6100BBD897 /* erand48.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1BA1BB05E6100BBD897 /* erand48.c */; settings = {ASSET_TAGS = (); }; };
-		C23CC1F71BB05E6100BBD897 /* inet_net_ntop.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1C41BB05E6100BBD897 /* inet_net_ntop.c */; settings = {ASSET_TAGS = (); }; };
-		C23CC1FC1BB05E6100BBD897 /* noblock.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1C91BB05E6100BBD897 /* noblock.c */; settings = {ASSET_TAGS = (); }; };
-		C23CC1FE1BB05E6100BBD897 /* path.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1CB1BB05E6100BBD897 /* path.c */; settings = {ASSET_TAGS = (); }; };
-		C23CC1FF1BB05E6100BBD897 /* pg_crc32c_choose.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1CC1BB05E6100BBD897 /* pg_crc32c_choose.c */; settings = {ASSET_TAGS = (); }; };
-		C23CC2001BB05E6100BBD897 /* pg_crc32c_sb8.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1CD1BB05E6100BBD897 /* pg_crc32c_sb8.c */; settings = {ASSET_TAGS = (); }; };
-		C23CC2011BB05E6100BBD897 /* pg_crc32c_sse42.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1CE1BB05E6100BBD897 /* pg_crc32c_sse42.c */; settings = {ASSET_TAGS = (); }; };
-		C23CC2021BB05E6100BBD897 /* pgcheckdir.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1CF1BB05E6100BBD897 /* pgcheckdir.c */; settings = {ASSET_TAGS = (); }; };
-		C23CC2031BB05E6100BBD897 /* pgmkdirp.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1D01BB05E6100BBD897 /* pgmkdirp.c */; settings = {ASSET_TAGS = (); }; };
-		C23CC2041BB05E6100BBD897 /* pgsleep.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1D11BB05E6100BBD897 /* pgsleep.c */; settings = {ASSET_TAGS = (); }; };
-		C23CC2051BB05E6100BBD897 /* pgstrcasecmp.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1D21BB05E6100BBD897 /* pgstrcasecmp.c */; settings = {ASSET_TAGS = (); }; };
-		C23CC2061BB05E6100BBD897 /* pqsignal.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1D31BB05E6100BBD897 /* pqsignal.c */; settings = {ASSET_TAGS = (); }; };
-		C23CC2081BB05E6100BBD897 /* qsort_arg.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1D51BB05E6100BBD897 /* qsort_arg.c */; settings = {ASSET_TAGS = (); }; };
-		C23CC2091BB05E6100BBD897 /* qsort.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1D61BB05E6100BBD897 /* qsort.c */; settings = {ASSET_TAGS = (); }; };
-		C23CC20A1BB05E6100BBD897 /* quotes.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1D71BB05E6100BBD897 /* quotes.c */; settings = {ASSET_TAGS = (); }; };
-		C23CC20E1BB05E6100BBD897 /* sprompt.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1DC1BB05E6100BBD897 /* sprompt.c */; settings = {ASSET_TAGS = (); }; };
-		C23CC2141BB05E6100BBD897 /* tar.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1E21BB05E6100BBD897 /* tar.c */; settings = {ASSET_TAGS = (); }; };
-		C23CC2151BB05E6100BBD897 /* thread.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1E31BB05E6100BBD897 /* thread.c */; settings = {ASSET_TAGS = (); }; };
+		C23CC1E91BB05E6100BBD897 /* chklocale.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1B61BB05E6100BBD897 /* chklocale.c */; };
+		C23CC1ED1BB05E6100BBD897 /* erand48.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1BA1BB05E6100BBD897 /* erand48.c */; };
+		C23CC1F71BB05E6100BBD897 /* inet_net_ntop.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1C41BB05E6100BBD897 /* inet_net_ntop.c */; };
+		C23CC1FC1BB05E6100BBD897 /* noblock.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1C91BB05E6100BBD897 /* noblock.c */; };
+		C23CC1FE1BB05E6100BBD897 /* path.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1CB1BB05E6100BBD897 /* path.c */; };
+		C23CC1FF1BB05E6100BBD897 /* pg_crc32c_choose.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1CC1BB05E6100BBD897 /* pg_crc32c_choose.c */; };
+		C23CC2001BB05E6100BBD897 /* pg_crc32c_sb8.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1CD1BB05E6100BBD897 /* pg_crc32c_sb8.c */; };
+		C23CC2011BB05E6100BBD897 /* pg_crc32c_sse42.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1CE1BB05E6100BBD897 /* pg_crc32c_sse42.c */; };
+		C23CC2021BB05E6100BBD897 /* pgcheckdir.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1CF1BB05E6100BBD897 /* pgcheckdir.c */; };
+		C23CC2031BB05E6100BBD897 /* pgmkdirp.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1D01BB05E6100BBD897 /* pgmkdirp.c */; };
+		C23CC2041BB05E6100BBD897 /* pgsleep.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1D11BB05E6100BBD897 /* pgsleep.c */; };
+		C23CC2051BB05E6100BBD897 /* pgstrcasecmp.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1D21BB05E6100BBD897 /* pgstrcasecmp.c */; };
+		C23CC2061BB05E6100BBD897 /* pqsignal.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1D31BB05E6100BBD897 /* pqsignal.c */; };
+		C23CC2081BB05E6100BBD897 /* qsort_arg.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1D51BB05E6100BBD897 /* qsort_arg.c */; };
+		C23CC2091BB05E6100BBD897 /* qsort.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1D61BB05E6100BBD897 /* qsort.c */; };
+		C23CC20A1BB05E6100BBD897 /* quotes.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1D71BB05E6100BBD897 /* quotes.c */; };
+		C23CC20E1BB05E6100BBD897 /* sprompt.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1DC1BB05E6100BBD897 /* sprompt.c */; };
+		C23CC2141BB05E6100BBD897 /* tar.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1E21BB05E6100BBD897 /* tar.c */; };
+		C23CC2151BB05E6100BBD897 /* thread.c in Sources */ = {isa = PBXBuildFile; fileRef = C23CC1E31BB05E6100BBD897 /* thread.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -270,6 +270,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				EXECUTABLE_PREFIX = lib;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				HEADER_SEARCH_PATHS = ../../src/include;
 				OTHER_CFLAGS = "-msse4.2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -280,6 +281,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				EXECUTABLE_PREFIX = lib;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				HEADER_SEARCH_PATHS = ../../src/include;
 				OTHER_CFLAGS = "-msse4.2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -305,6 +307,7 @@
 				C23CC1B51BB05E2A00BBD897 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -7,15 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C24670031BAF7061000A7EC6 /* exec.c in Sources */ = {isa = PBXBuildFile; fileRef = C24670011BAF7061000A7EC6 /* exec.c */; settings = {ASSET_TAGS = (); }; };
-		C246700E1BAF7076000A7EC6 /* pg_lzcompress.c in Sources */ = {isa = PBXBuildFile; fileRef = C24670051BAF7076000A7EC6 /* pg_lzcompress.c */; settings = {ASSET_TAGS = (); }; };
-		C246700F1BAF7076000A7EC6 /* pgfnames.c in Sources */ = {isa = PBXBuildFile; fileRef = C24670061BAF7076000A7EC6 /* pgfnames.c */; settings = {ASSET_TAGS = (); }; };
-		C24670101BAF7076000A7EC6 /* psprintf.c in Sources */ = {isa = PBXBuildFile; fileRef = C24670071BAF7076000A7EC6 /* psprintf.c */; settings = {ASSET_TAGS = (); }; };
-		C24670111BAF7076000A7EC6 /* relpath.c in Sources */ = {isa = PBXBuildFile; fileRef = C24670081BAF7076000A7EC6 /* relpath.c */; settings = {ASSET_TAGS = (); }; };
-		C24670131BAF7076000A7EC6 /* rmtree.c in Sources */ = {isa = PBXBuildFile; fileRef = C246700A1BAF7076000A7EC6 /* rmtree.c */; settings = {ASSET_TAGS = (); }; };
-		C24670141BAF7076000A7EC6 /* string.c in Sources */ = {isa = PBXBuildFile; fileRef = C246700B1BAF7076000A7EC6 /* string.c */; settings = {ASSET_TAGS = (); }; };
-		C24670151BAF7076000A7EC6 /* username.c in Sources */ = {isa = PBXBuildFile; fileRef = C246700C1BAF7076000A7EC6 /* username.c */; settings = {ASSET_TAGS = (); }; };
-		C24670161BAF7076000A7EC6 /* wait_error.c in Sources */ = {isa = PBXBuildFile; fileRef = C246700D1BAF7076000A7EC6 /* wait_error.c */; settings = {ASSET_TAGS = (); }; };
+		C24670031BAF7061000A7EC6 /* exec.c in Sources */ = {isa = PBXBuildFile; fileRef = C24670011BAF7061000A7EC6 /* exec.c */; };
+		C246700E1BAF7076000A7EC6 /* pg_lzcompress.c in Sources */ = {isa = PBXBuildFile; fileRef = C24670051BAF7076000A7EC6 /* pg_lzcompress.c */; };
+		C246700F1BAF7076000A7EC6 /* pgfnames.c in Sources */ = {isa = PBXBuildFile; fileRef = C24670061BAF7076000A7EC6 /* pgfnames.c */; };
+		C24670101BAF7076000A7EC6 /* psprintf.c in Sources */ = {isa = PBXBuildFile; fileRef = C24670071BAF7076000A7EC6 /* psprintf.c */; };
+		C24670111BAF7076000A7EC6 /* relpath.c in Sources */ = {isa = PBXBuildFile; fileRef = C24670081BAF7076000A7EC6 /* relpath.c */; };
+		C24670131BAF7076000A7EC6 /* rmtree.c in Sources */ = {isa = PBXBuildFile; fileRef = C246700A1BAF7076000A7EC6 /* rmtree.c */; };
+		C24670141BAF7076000A7EC6 /* string.c in Sources */ = {isa = PBXBuildFile; fileRef = C246700B1BAF7076000A7EC6 /* string.c */; };
+		C24670151BAF7076000A7EC6 /* username.c in Sources */ = {isa = PBXBuildFile; fileRef = C246700C1BAF7076000A7EC6 /* username.c */; };
+		C24670161BAF7076000A7EC6 /* wait_error.c in Sources */ = {isa = PBXBuildFile; fileRef = C246700D1BAF7076000A7EC6 /* wait_error.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -228,6 +228,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				EXECUTABLE_PREFIX = lib;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				HEADER_SEARCH_PATHS = ../../src/include;
 				OTHER_CFLAGS = (
 					"-Wall",
@@ -239,7 +240,6 @@
 					"-Wformat-security",
 					"-fno-strict-aliasing",
 					"-fwrapv",
-					"-Wno-unused-command-line",
 					"-argument",
 					"-g",
 					"-O2",
@@ -252,6 +252,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				EXECUTABLE_PREFIX = lib;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				HEADER_SEARCH_PATHS = ../../src/include;
 				OTHER_CFLAGS = (
 					"-Wall",
@@ -263,7 +264,6 @@
 					"-Wformat-security",
 					"-fno-strict-aliasing",
 					"-fwrapv",
-					"-Wno-unused-command-line",
 					"-argument",
 					"-g",
 					"-O2",
@@ -291,6 +291,7 @@
 				C24670001BAF6FE4000A7EC6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

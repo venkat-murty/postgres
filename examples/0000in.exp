@@ -1,3 +1,4 @@
+BEGIN
  category |          title           |          actor          
 ----------+--------------------------+-------------------------
         2 | ACADEMY ALABAMA          | JULIETTE WEAVER
@@ -4382,3 +4383,4 @@
        16 | ALADDIN YOUNG            | MEG DAMON
 (4380 rows)
 
+COMMIT

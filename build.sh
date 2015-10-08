@@ -31,17 +31,3 @@ exit_on_error $?
 ${BASE}/bin/initdb -D ${BASE}/data -A trust
 exit_on_error $?
 
-${BASE}/bin/pg_ctl -D ${BASE}/data -l logfile start
-exit_on_error $?
-
-sleep 15
-${BASE}/bin/createdb test
-exit_on_error $?
-
-sql=""
-sql="CREATE TABLE foobar(id integer, t text);"
-
-echo $sql | ${BASE}/bin/psql test
-
-${BASE}/bin/pg_ctl -D ${BASE}/data stop
-

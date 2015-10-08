@@ -1,6 +1,6 @@
 #!/bin/bash
 
-files="in.sql"
+files=$(find examples -name "*.sql" | egrep -v "^examples/data" | sed 's/examples\///' | sort -u)
 
 function exit_on_error
 {
@@ -16,16 +16,18 @@ function run_example
   local in=$1
   local ot=$(echo $in | sed 's/.sql/.out/')
   local ex=$(echo $in | sed 's/.sql/.exp/')
+  local df=$(echo $in | sed 's/.sql/.dif/')
 
   echo "Running $in";
 
   if [ -f examples/$ex ]; then
     cat examples/$in | ${BASE}/bin/psql test > examples/$ot;
-    if ! diff examples/$ex  examples/$ot 2>&1 > /dev/null
+    if ! diff examples/$ex  examples/$ot > examples/$df 2> /dev/null
     then
       echo "Failed $in"
     else
       rm  examples/$ot
+      rm  examples/$df
     fi
   else
     echo "Generating expected file";

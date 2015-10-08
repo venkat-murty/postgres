@@ -1,4 +1,6 @@
 
+begin transaction;
+
 select category, title, actor 
 from products 
 where category in (select category 
@@ -6,3 +8,4 @@ where category in (select category
                     where categoryname like '%a%')
 order by category, title, actor;
 
+commit;

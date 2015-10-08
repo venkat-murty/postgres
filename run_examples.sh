@@ -17,21 +17,31 @@ function run_example
   local ot=$(echo $in | sed 's/.sql/.out/')
   local ex=$(echo $in | sed 's/.sql/.exp/')
   local df=$(echo $in | sed 's/.sql/.dif/')
+  local er=$(echo $in | sed 's/.sql/.err/')
+  local st=$(date +"%s")
+  local tm=$(egrep "^### Time taken : " examples/$ex 2> /dev/null | sed 's/### Time taken : //')
 
   echo "Running $in";
 
+  ${BASE}/bin/psql test <  examples/$in > examples/$ot 2> examples/$er;
+
+  st=$(( $(date +"%s")-$st ));
+  echo "### Time taken : $st" >> examples/$ot;
+
   if [ -f examples/$ex ]; then
-    cat examples/$in | ${BASE}/bin/psql test > examples/$ot;
-    if ! diff examples/$ex  examples/$ot > examples/$df 2> /dev/null
+    if ! diff -I "^###" examples/$ex  examples/$ot > examples/$df 2> /dev/null
     then
-      echo "Failed $in"
+      echo "Failed  $in in $st seconds expected time $tm"
     else
+      echo "Passed  $in in $st seconds expected time $tm"
       rm  examples/$ot
       rm  examples/$df
+      rm  examples/$er
     fi
   else
-    echo "Generating expected file";
-    cat examples/$in | ${BASE}/bin/psql test > examples/$ex;
+    echo "Generating expected file $ex";
+    rm examples/$er
+    mv examples/$ot examples/$ex;
   fi
 }
 

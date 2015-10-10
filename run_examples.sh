@@ -14,10 +14,10 @@ function exit_on_error
 function run_example
 {
   local in=$1
-  local ot=$(echo $in | sed 's/.sql/.out/')
-  local ex=$(echo $in | sed 's/.sql/.exp/')
-  local df=$(echo $in | sed 's/.sql/.dif/')
-  local er=$(echo $in | sed 's/.sql/.err/')
+  local ot=$(echo $in | sed 's/\.sql$/.out/')
+  local ex=$(echo $in | sed 's/\.sql$/.exp/')
+  local df=$(echo $in | sed 's/\.sql$/.dif/')
+  local er=$(echo $in | sed 's/\.sql$/.err/')
   local st=$(date +"%s")
   local tm=$(egrep "^### Time taken : " examples/$ex 2> /dev/null | sed 's/### Time taken : //')
 
@@ -52,11 +52,7 @@ status=$(${BASE}/bin/pg_ctl -D ${BASE}/data status | egrep "^pg_ctl:")
 stop="false";
 
 if [ "$status" == "pg_ctl: no server running" ]; then
-  ${BASE}/bin/pg_ctl -D ${BASE}/data -l logfile start
-  exit_on_error $?
-
-  sleep 10
-
+  sh start.sh
   stop="true";
 fi
 

@@ -235,13 +235,13 @@ static Node *makeRecursiveViewSelect(char *relname, List *aliases, Node *query);
 		AlterObjectSchemaStmt AlterOwnerStmt AlterSeqStmt AlterSystemStmt AlterTableStmt
 		AlterTblSpcStmt AlterExtensionStmt AlterExtensionContentsStmt AlterForeignTableStmt
 		AlterCompositeTypeStmt AlterUserStmt AlterUserMappingStmt AlterUserSetStmt
-		AlterRoleStmt AlterRoleSetStmt AlterPolicyStmt
+		AlterRoleStmt AlterRoleSetStmt AlterPolicyStmt AlterTenantStmt
 		AlterDefaultPrivilegesStmt DefACLAction
 		AnalyzeStmt ClosePortalStmt ClusterStmt CommentStmt
 		ConstraintsSetStmt CopyStmt CreateAsStmt CreateCastStmt
 		CreateDomainStmt CreateExtensionStmt CreateGroupStmt CreateOpClassStmt
 		CreateOpFamilyStmt AlterOpFamilyStmt CreatePLangStmt
-		CreateSchemaStmt CreateSeqStmt CreateStmt CreateTableSpaceStmt
+		CreateSchemaStmt CreateSeqStmt CreateStmt CreateTableSpaceStmt CreateTenantStmt
 		CreateFdwStmt CreateForeignServerStmt CreateForeignTableStmt
 		CreateAssertStmt CreateTransformStmt CreateTrigStmt CreateEventTrigStmt
 		CreateUserStmt CreateUserMappingStmt CreateRoleStmt CreatePolicyStmt
@@ -249,7 +249,7 @@ static Node *makeRecursiveViewSelect(char *relname, List *aliases, Node *query);
 		DropGroupStmt DropOpClassStmt DropOpFamilyStmt DropPLangStmt DropStmt
 		DropAssertStmt DropTrigStmt DropRuleStmt DropCastStmt DropRoleStmt
 		DropPolicyStmt DropUserStmt DropdbStmt DropTableSpaceStmt DropFdwStmt
-		DropTransformStmt
+		DropTransformStmt DropTenantStmt
 		DropForeignServerStmt DropUserMappingStmt ExplainStmt FetchStmt
 		GrantStmt GrantRoleStmt ImportForeignSchemaStmt IndexStmt InsertStmt
 		ListenStmt LoadStmt LockStmt NotifyStmt ExplainableStmt PreparableStmt
@@ -515,6 +515,9 @@ static Node *makeRecursiveViewSelect(char *relname, List *aliases, Node *query);
 %type <node>	OptTableSpaceOwner
 %type <ival>	opt_check_option
 
+%type <ival>   OptPartition
+%type <str>    OptNode
+
 %type <str>		opt_provider security_label
 
 %type <target>	xml_attribute_el
@@ -573,7 +576,7 @@ static Node *makeRecursiveViewSelect(char *relname, List *aliases, Node *query);
 	COMMITTED CONCURRENTLY CONFIGURATION CONFLICT CONNECTION CONSTRAINT
 	CONSTRAINTS CONTENT_P CONTINUE_P CONVERSION_P COPY COST CREATE
 	CROSS CSV CUBE CURRENT_P
-	CURRENT_CATALOG CURRENT_DATE CURRENT_ROLE CURRENT_SCHEMA
+	CURRENT_CATALOG CURRENT_DATE CURRENT_ROLE CURRENT_SCHEMA CURRENT_TENANT
 	CURRENT_TIME CURRENT_TIMESTAMP CURRENT_USER CURSOR CYCLE
 
 	DATA_P DATABASE DAY_P DEALLOCATE DEC DECIMAL_P DECLARE DEFAULT DEFAULTS
@@ -606,7 +609,7 @@ static Node *makeRecursiveViewSelect(char *relname, List *aliases, Node *query);
 
 	MAPPING MATCH MATERIALIZED MAXVALUE MINUTE_P MINVALUE MODE MONTH_P MOVE
 
-	NAME_P NAMES NATIONAL NATURAL NCHAR NEXT NO NONE
+	NAME_P NAMES NATIONAL NATURAL NCHAR NEXT NO NODE NONE
 	NOT NOTHING NOTIFY NOTNULL NOWAIT NULL_P NULLIF
 	NULLS_P NUMERIC
 
@@ -630,7 +633,7 @@ static Node *makeRecursiveViewSelect(char *relname, List *aliases, Node *query);
 	STATEMENT STATISTICS STDIN STDOUT STORAGE STRICT_P STRIP_P SUBSTRING
 	SYMMETRIC SYSID SYSTEM_P
 
-	TABLE TABLES TABLESAMPLE TABLESPACE TEMP TEMPLATE TEMPORARY TEXT_P THEN
+	TABLE TABLES TABLESAMPLE TABLESPACE TEMP TEMPLATE TEMPORARY TENANT TEXT_P THEN
 	TIME TIMESTAMP TO TRAILING TRANSACTION TRANSFORM TREAT TRIGGER TRIM TRUE_P
 	TRUNCATE TRUSTED TYPE_P TYPES_P
 
@@ -876,6 +879,9 @@ stmt :
 			| VariableSetStmt
 			| VariableShowStmt
 			| ViewStmt
+      | CreateTenantStmt
+      | DropTenantStmt
+      | AlterTenantStmt
 			| /*EMPTY*/
 				{ $$ = NULL; }
 		;
@@ -1487,6 +1493,21 @@ set_rest_more:	/* Generic SET syntaxes: */
 					VariableSetStmt *n = makeNode(VariableSetStmt);
 					n->kind = VAR_SET_DEFAULT;
 					n->name = "session_authorization";
+					$$ = n;
+				}
+			| TENANT NonReservedWord_or_Sconst
+				{
+					VariableSetStmt *n = makeNode(VariableSetStmt);
+					n->kind = VAR_SET_VALUE;
+					n->name = "tenant";
+					n->args = list_make1(makeStringConst($2, @2));
+					$$ = n;
+				}
+			| TENANT DEFAULT
+				{
+					VariableSetStmt *n = makeNode(VariableSetStmt);
+					n->kind = VAR_SET_DEFAULT;
+					n->name = "tenant";
 					$$ = n;
 				}
 			| XML_P OPTION document_or_content
@@ -2768,6 +2789,59 @@ copy_generic_opt_arg_list_item:
 			opt_boolean_or_string	{ $$ = (Node *) makeString($1); }
 		;
 
+/*****************************************************************************
+ *
+ *		QUERY :
+ *				CREATE TENANT name
+ *
+ *****************************************************************************/
+
+CreateTenantStmt: CREATE TENANT NonReservedWord_or_Sconst OptPartition OptNode
+                 {
+                     CreateTenantStmt *n = makeNode(CreateTenantStmt);
+                     n->name = $3;
+                     n->partition = $4;
+                     n->node = $5;
+                     $$ = (Node *)n;
+                 }
+             ;
+
+
+/*****************************************************************************
+ *
+ *		QUERY :
+ *				DROP TENANT name
+ *
+ ****************************************************************************/
+
+DropTenantStmt: DROP TENANT NonReservedWord_or_Sconst
+                 {
+                     DropTenantStmt *n = makeNode(DropTenantStmt);
+                     n->name = $3;
+
+                     $$ = (Node *) n;
+                 }
+               ;
+
+AlterTenantStmt : ALTER TENANT NonReservedWord_or_Sconst SET PARTITION Iconst
+            {
+                AlterTenantStmt *n = makeNode(AlterTenantStmt);
+                n->name = $3;
+                n->partition = $6;
+                n->node = NULL;
+
+                $$ = (Node*) n;
+            }
+          | ALTER TENANT NonReservedWord_or_Sconst SET NODE NonReservedWord_or_Sconst
+            {
+                AlterTenantStmt *n = makeNode(AlterTenantStmt);
+                n->name = $3;
+                n->node = $6;
+                n->partition = -1;
+
+                $$ = (Node*) n;
+            }
+          ;
 
 /*****************************************************************************
  *
@@ -3407,6 +3481,12 @@ OptConsTableSpace:   USING INDEX TABLESPACE name	{ $$ = $4; }
 ExistingIndex:   USING INDEX index_name				{ $$ = $3; }
 		;
 
+OptPartition : PARTITION Iconst                      { $$ = $2; }
+               | /*EMPTY*/                           { $$ = -1; }
+            ;
+OptNode : NODE NonReservedWord_or_Sconst             { $$ = $2; }
+               | /*EMPTY*/                           { $$ = NULL; }
+            ;
 
 /*****************************************************************************
  *
@@ -12327,6 +12407,10 @@ func_expr_common_subexpr:
 				{
 					$$ = (Node *) makeFuncCall(SystemFuncName("current_schema"), NIL, @1);
 				}
+			| CURRENT_TENANT
+				{
+					$$ = (Node *) makeFuncCall(SystemFuncName("current_tenant"), NIL, @1);
+				}
 			| CAST '(' a_expr AS Typename ')'
 				{ $$ = makeTypeCast($3, $5, @1); }
 			| EXTRACT '(' extract_list ')'
@@ -13717,6 +13801,7 @@ unreserved_keyword:
 			| NAMES
 			| NEXT
 			| NO
+      | NODE
 			| NOTHING
 			| NOTIFY
 			| NOWAIT
@@ -13925,6 +14010,7 @@ type_func_name_keyword:
 			| CONCURRENTLY
 			| CROSS
 			| CURRENT_SCHEMA
+			| CURRENT_TENANT
 			| FREEZE
 			| FULL
 			| ILIKE
@@ -14015,6 +14101,7 @@ reserved_keyword:
 			| SOME
 			| SYMMETRIC
 			| TABLE
+			| TENANT
 			| THEN
 			| TO
 			| TRAILING

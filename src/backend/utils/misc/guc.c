@@ -3077,6 +3077,19 @@ static struct config_string ConfigureNamesString[] =
 		check_role, assign_role, show_role
 	},
 
+    /*
+	{
+		 Not for general use --- used by SET TENANT
+		{"tenant", PGC_USERSET, UNGROUPED,
+			gettext_noop("Sets the current tenant."),
+			NULL,
+			GUC_IS_NAME | GUC_NO_SHOW_ALL | GUC_NO_RESET_ALL | GUC_NOT_IN_SAMPLE | GUC_DISALLOW_IN_FILE | GUC_NOT_WHILE_SEC_REST
+		},
+		&tenant_string,
+		"none",
+		check_tenant, assign_tenant, show_tenant
+	},
+    */
 	{
 		/* Not for general use --- used by SET SESSION AUTHORIZATION */
 		{"session_authorization", PGC_USERSET, UNGROUPED,

@@ -3049,4 +3049,28 @@ typedef struct AlterTSConfigurationStmt
 	bool		missing_ok;		/* for DROP - skip error if missing? */
 } AlterTSConfigurationStmt;
 
+
+typedef struct CreateTenantStmt
+{
+  NodeTag  type;
+  char    *name;
+  int      partition; /* -1 means partition was not specified */
+  char    *node;
+} CreateTenantStmt;
+
+typedef struct AlterTenantStmt
+{
+  NodeTag  type;
+  char    *name;
+  int      partition; /* -1 means partition was not specified */
+  char    *node;
+} AlterTenantStmt;
+
+
+typedef struct DropTenantStmt
+{
+  NodeTag  type;
+  char    *name;
+} DropTenantStmt;
+
 #endif   /* PARSENODES_H */

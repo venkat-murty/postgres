@@ -795,6 +795,7 @@ InsertPgClassTuple(Relation pg_class_desc,
 	values[Anum_pg_class_relisshared - 1] = BoolGetDatum(rd_rel->relisshared);
 	values[Anum_pg_class_relpersistence - 1] = CharGetDatum(rd_rel->relpersistence);
 	values[Anum_pg_class_relkind - 1] = CharGetDatum(rd_rel->relkind);
+	values[Anum_pg_class_relistenant - 1] = BoolGetDatum(rd_rel->relistenant);
 	values[Anum_pg_class_relnatts - 1] = Int16GetDatum(rd_rel->relnatts);
 	values[Anum_pg_class_relchecks - 1] = Int16GetDatum(rd_rel->relchecks);
 	values[Anum_pg_class_relhasoids - 1] = BoolGetDatum(rd_rel->relhasoids);

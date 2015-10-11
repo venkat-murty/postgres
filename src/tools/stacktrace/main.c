@@ -44,7 +44,8 @@ static char*
 function ()
 {
   static char name[1024];
-  static int  n_idx = sizeof(name) - 1;
+
+  int  n_idx = sizeof(name) - 1;
   name[n_idx] = '\0';
 
   int idx = skip_spaces (b_idx - 1);
@@ -98,10 +99,10 @@ main ()
       hashdefine = !isnewline(ch);
       all_spaces = isnewline (ch) || (all_spaces && isspace(ch));
     }
-
+if (b_idx >= 1024) { fprintf (stderr, "hello %d\n", b_idx); }
     buffer[b_idx] = ch;
-    ++b_idx;
-    b_idx = b_idx >= sizeof (buffer) ? 0 : b_idx;
+    b_idx++;
+    b_idx = (b_idx >= sizeof(buffer)) ? 0 : b_idx;
   }
 }
 

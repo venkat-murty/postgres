@@ -105,7 +105,7 @@ void
 analyze_rel(Oid relid, RangeVar *relation, int options,
 			VacuumParams *params, List *va_cols, bool in_outer_xact,
 			BufferAccessStrategy bstrategy)
-{	StackTrace("analyze_rel");
+{
 	Relation	onerel;
 	int			elevel;
 	AcquireSampleRowsFunc acquirefunc = NULL;
@@ -293,7 +293,7 @@ do_analyze_rel(Relation onerel, int options, VacuumParams *params,
 			   List *va_cols, AcquireSampleRowsFunc acquirefunc,
 			   BlockNumber relpages, bool inh, bool in_outer_xact,
 			   int elevel)
-{	StackTrace("do_analyze_rel");
+{
 	int			attr_cnt,
 				tcnt,
 				i,
@@ -669,7 +669,7 @@ compute_index_stats(Relation onerel, double totalrows,
 					AnlIndexData *indexdata, int nindexes,
 					HeapTuple *rows, int numrows,
 					MemoryContext col_context)
-{	StackTrace("compute_index_stats");
+{
 	MemoryContext ind_context,
 				old_context;
 	Datum		values[INDEX_MAX_KEYS];
@@ -851,7 +851,7 @@ compute_index_stats(Relation onerel, double totalrows,
  */
 static VacAttrStats *
 examine_attribute(Relation onerel, int attnum, Node *index_expr)
-{	StackTrace("examine_attribute");
+{
 	Form_pg_attribute attr = onerel->rd_att->attrs[attnum - 1];
 	HeapTuple	typtuple;
 	VacAttrStats *stats;
@@ -973,7 +973,7 @@ static int
 acquire_sample_rows(Relation onerel, int elevel,
 					HeapTuple *rows, int targrows,
 					double *totalrows, double *totaldeadrows)
-{	StackTrace("acquire_sample_rows");
+{
 	int			numrows = 0;	/* # rows now in reservoir */
 	double		samplerows = 0; /* total # rows collected */
 	double		liverows = 0;	/* # live rows seen */
@@ -1214,7 +1214,7 @@ acquire_sample_rows(Relation onerel, int elevel,
  */
 static int
 compare_rows(const void *a, const void *b)
-{	StackTrace("compare_rows");
+{
 	HeapTuple	ha = *(const HeapTuple *) a;
 	HeapTuple	hb = *(const HeapTuple *) b;
 	BlockNumber ba = ItemPointerGetBlockNumber(&ha->t_self);
@@ -1246,7 +1246,7 @@ static int
 acquire_inherited_sample_rows(Relation onerel, int elevel,
 							  HeapTuple *rows, int targrows,
 							  double *totalrows, double *totaldeadrows)
-{	StackTrace("acquire_inherited_sample_rows");
+{
 	List	   *tableOIDs;
 	Relation   *rels;
 	AcquireSampleRowsFunc *acquirefuncs;
@@ -1473,7 +1473,7 @@ acquire_inherited_sample_rows(Relation onerel, int elevel,
  */
 static void
 update_attstats(Oid relid, bool inh, int natts, VacAttrStats **vacattrstats)
-{	StackTrace("update_attstats");
+{
 	Relation	sd;
 	int			attno;
 
@@ -1610,7 +1610,7 @@ update_attstats(Oid relid, bool inh, int natts, VacAttrStats **vacattrstats)
  */
 static Datum
 std_fetch_func(VacAttrStatsP stats, int rownum, bool *isNull)
-{	StackTrace("std_fetch_func");
+{
 	int			attnum = stats->tupattnum;
 	HeapTuple	tuple = stats->rows[rownum];
 	TupleDesc	tupDesc = stats->tupDesc;
@@ -1626,7 +1626,7 @@ std_fetch_func(VacAttrStatsP stats, int rownum, bool *isNull)
  */
 static Datum
 ind_fetch_func(VacAttrStatsP stats, int rownum, bool *isNull)
-{	StackTrace("ind_fetch_func");
+{
 	int			i;
 
 	/* exprvals and exprnulls are already offset for proper column */
@@ -1706,7 +1706,7 @@ static int	compare_mcvs(const void *a, const void *b);
  */
 bool
 std_typanalyze(VacAttrStats *stats)
-{	StackTrace("std_typanalyze");
+{
 	Form_pg_attribute attr = stats->attr;
 	Oid			ltopr;
 	Oid			eqopr;
@@ -1793,7 +1793,7 @@ compute_minimal_stats(VacAttrStatsP stats,
 					  AnalyzeAttrFetchFunc fetchfunc,
 					  int samplerows,
 					  double totalrows)
-{	StackTrace("compute_minimal_stats");
+{
 	int			i;
 	int			null_cnt = 0;
 	int			nonnull_cnt = 0;
@@ -2120,7 +2120,7 @@ compute_scalar_stats(VacAttrStatsP stats,
 					 AnalyzeAttrFetchFunc fetchfunc,
 					 int samplerows,
 					 double totalrows)
-{	StackTrace("compute_scalar_stats");
+{
 	int			i;
 	int			null_cnt = 0;
 	int			nonnull_cnt = 0;
@@ -2638,7 +2638,7 @@ compute_scalar_stats(VacAttrStatsP stats,
  */
 static int
 compare_scalars(const void *a, const void *b, void *arg)
-{	StackTrace("compare_scalars");
+{
 	Datum		da = ((const ScalarItem *) a)->value;
 	int			ta = ((const ScalarItem *) a)->tupno;
 	Datum		db = ((const ScalarItem *) b)->value;
@@ -2669,7 +2669,7 @@ compare_scalars(const void *a, const void *b, void *arg)
  */
 static int
 compare_mcvs(const void *a, const void *b)
-{	StackTrace("compare_mcvs");
+{
 	int			da = ((const ScalarMCVItem *) a)->first;
 	int			db = ((const ScalarMCVItem *) b)->first;
 

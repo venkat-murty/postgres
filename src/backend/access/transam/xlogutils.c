@@ -56,7 +56,7 @@ static HTAB *invalid_page_tab = NULL;
 static void
 report_invalid_page(int elevel, RelFileNode node, ForkNumber forkno,
 					BlockNumber blkno, bool present)
-{	StackTrace("report_invalid_page");
+{
 	char	   *path = relpathperm(node, forkno);
 
 	if (present)
@@ -72,7 +72,7 @@ report_invalid_page(int elevel, RelFileNode node, ForkNumber forkno,
 static void
 log_invalid_page(RelFileNode node, ForkNumber forkno, BlockNumber blkno,
 				 bool present)
-{	StackTrace("log_invalid_page");
+{
 	xl_invalid_page_key key;
 	xl_invalid_page *hentry;
 	bool		found;
@@ -135,7 +135,7 @@ log_invalid_page(RelFileNode node, ForkNumber forkno, BlockNumber blkno,
 /* Forget any invalid pages >= minblkno, because they've been dropped */
 static void
 forget_invalid_pages(RelFileNode node, ForkNumber forkno, BlockNumber minblkno)
-{	StackTrace("forget_invalid_pages");
+{
 	HASH_SEQ_STATUS status;
 	xl_invalid_page *hentry;
 
@@ -170,7 +170,7 @@ forget_invalid_pages(RelFileNode node, ForkNumber forkno, BlockNumber minblkno)
 /* Forget any invalid pages in a whole database */
 static void
 forget_invalid_pages_db(Oid dbid)
-{	StackTrace("forget_invalid_pages_db");
+{
 	HASH_SEQ_STATUS status;
 	xl_invalid_page *hentry;
 
@@ -203,7 +203,7 @@ forget_invalid_pages_db(Oid dbid)
 /* Are there any unresolved references to invalid pages? */
 bool
 XLogHaveInvalidPages(void)
-{	StackTrace("XLogHaveInvalidPages");
+{
 	if (invalid_page_tab != NULL &&
 		hash_get_num_entries(invalid_page_tab) > 0)
 		return true;
@@ -213,7 +213,7 @@ XLogHaveInvalidPages(void)
 /* Complain about any remaining invalid-page entries */
 void
 XLogCheckInvalidPages(void)
-{	StackTrace("XLogCheckInvalidPages");
+{
 	HASH_SEQ_STATUS status;
 	xl_invalid_page *hentry;
 	bool		foundone = false;
@@ -283,7 +283,7 @@ XLogCheckInvalidPages(void)
 XLogRedoAction
 XLogReadBufferForRedo(XLogReaderState *record, uint8 block_id,
 					  Buffer *buf)
-{	StackTrace("XLogReadBufferForRedo");
+{
 	return XLogReadBufferForRedoExtended(record, block_id, RBM_NORMAL,
 										 false, buf);
 }
@@ -294,7 +294,7 @@ XLogReadBufferForRedo(XLogReaderState *record, uint8 block_id,
  */
 Buffer
 XLogInitBufferForRedo(XLogReaderState *record, uint8 block_id)
-{	StackTrace("XLogInitBufferForRedo");
+{
 	Buffer		buf;
 
 	XLogReadBufferForRedoExtended(record, block_id, RBM_ZERO_AND_LOCK, false,
@@ -322,7 +322,7 @@ XLogReadBufferForRedoExtended(XLogReaderState *record,
 							  uint8 block_id,
 							  ReadBufferMode mode, bool get_cleanup_lock,
 							  Buffer *buf)
-{	StackTrace("XLogReadBufferForRedoExtended");
+{
 	XLogRecPtr	lsn = record->EndRecPtr;
 	RelFileNode rnode;
 	ForkNumber	forknum;
@@ -413,7 +413,7 @@ XLogReadBufferForRedoExtended(XLogReaderState *record,
 Buffer
 XLogReadBufferExtended(RelFileNode rnode, ForkNumber forknum,
 					   BlockNumber blkno, ReadBufferMode mode)
-{	StackTrace("XLogReadBufferExtended");
+{
 	BlockNumber lastblock;
 	Buffer		buffer;
 	SMgrRelation smgr;
@@ -525,7 +525,7 @@ typedef FakeRelCacheEntryData *FakeRelCacheEntry;
  */
 Relation
 CreateFakeRelcacheEntry(RelFileNode rnode)
-{	StackTrace("CreateFakeRelcacheEntry");
+{
 	FakeRelCacheEntry fakeentry;
 	Relation	rel;
 
@@ -566,7 +566,7 @@ CreateFakeRelcacheEntry(RelFileNode rnode)
  */
 void
 FreeFakeRelcacheEntry(Relation fakerel)
-{	StackTrace("FreeFakeRelcacheEntry");
+{
 	/* make sure the fakerel is not referenced by the SmgrRelation anymore */
 	if (fakerel->rd_smgr != NULL)
 		smgrclearowner(&fakerel->rd_smgr, fakerel->rd_smgr);
@@ -581,7 +581,7 @@ FreeFakeRelcacheEntry(Relation fakerel)
  */
 void
 XLogDropRelation(RelFileNode rnode, ForkNumber forknum)
-{	StackTrace("XLogDropRelation");
+{
 	forget_invalid_pages(rnode, forknum, 0);
 }
 
@@ -592,7 +592,7 @@ XLogDropRelation(RelFileNode rnode, ForkNumber forknum)
  */
 void
 XLogDropDatabase(Oid dbid)
-{	StackTrace("XLogDropDatabase");
+{
 	/*
 	 * This is unnecessarily heavy-handed, as it will close SMgrRelation
 	 * objects for other databases as well. DROP DATABASE occurs seldom enough
@@ -612,6 +612,6 @@ XLogDropDatabase(Oid dbid)
 void
 XLogTruncateRelation(RelFileNode rnode, ForkNumber forkNum,
 					 BlockNumber nblocks)
-{	StackTrace("XLogTruncateRelation");
+{
 	forget_invalid_pages(rnode, forkNum, nblocks);
 }

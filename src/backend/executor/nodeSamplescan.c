@@ -44,7 +44,7 @@ static TupleTableSlot *SampleNext(SampleScanState *node);
  */
 static TupleTableSlot *
 SampleNext(SampleScanState *node)
-{	StackTrace("SampleNext");
+{
 	TupleTableSlot *slot;
 	TableSampleDesc *tsdesc;
 	HeapTuple	tuple;
@@ -74,7 +74,7 @@ SampleNext(SampleScanState *node)
  */
 static bool
 SampleRecheck(SampleScanState *node, TupleTableSlot *slot)
-{	StackTrace("SampleRecheck");
+{
 	/* No need to recheck for SampleScan */
 	return true;
 }
@@ -90,7 +90,7 @@ SampleRecheck(SampleScanState *node, TupleTableSlot *slot)
  */
 TupleTableSlot *
 ExecSampleScan(SampleScanState *node)
-{	StackTrace("ExecSampleScan");
+{
 	return ExecScan((ScanState *) node,
 					(ExecScanAccessMtd) SampleNext,
 					(ExecScanRecheckMtd) SampleRecheck);
@@ -105,7 +105,7 @@ ExecSampleScan(SampleScanState *node)
 static void
 InitScanRelation(SampleScanState *node, EState *estate, int eflags,
 				 TableSampleClause *tablesample)
-{	StackTrace("InitScanRelation");
+{
 	Relation	currentRelation;
 
 	/*
@@ -138,7 +138,7 @@ InitScanRelation(SampleScanState *node, EState *estate, int eflags,
  */
 SampleScanState *
 ExecInitSampleScan(SampleScan *node, EState *estate, int eflags)
-{	StackTrace("ExecInitSampleScan");
+{
 	SampleScanState *scanstate;
 	RangeTblEntry *rte = rt_fetch(node->scanrelid,
 								  estate->es_range_table);
@@ -203,7 +203,7 @@ ExecInitSampleScan(SampleScan *node, EState *estate, int eflags)
  */
 void
 ExecEndSampleScan(SampleScanState *node)
-{	StackTrace("ExecEndSampleScan");
+{
 	/*
 	 * Tell sampling function that we finished the scan.
 	 */
@@ -245,7 +245,7 @@ ExecEndSampleScan(SampleScanState *node)
  */
 void
 ExecReScanSampleScan(SampleScanState *node)
-{	StackTrace("ExecReScanSampleScan");
+{
 	heap_rescan(node->ss.ss_currentScanDesc, NULL);
 
 	/*

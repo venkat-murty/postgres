@@ -544,7 +544,7 @@ HANDLE		PostmasterHandle;
  */
 void
 PostmasterMain(int argc, char *argv[])
-{	StackTrace("PostmasterMain");
+{
 	int			opt;
 	int			status;
 	char	   *userDoption = NULL;
@@ -1267,7 +1267,7 @@ PostmasterMain(int argc, char *argv[])
  */
 static void
 unlink_external_pid_file(int status, Datum arg)
-{	StackTrace("unlink_external_pid_file");
+{
 	if (external_pid_file)
 		unlink(external_pid_file);
 }
@@ -1279,7 +1279,7 @@ unlink_external_pid_file(int status, Datum arg)
  */
 static void
 getInstallationPaths(const char *argv0)
-{	StackTrace("getInstallationPaths");
+{
 	DIR		   *pdir;
 
 	/* Locate the postgres executable itself */
@@ -1330,7 +1330,7 @@ getInstallationPaths(const char *argv0)
  */
 static void
 checkDataDir(void)
-{	StackTrace("checkDataDir");
+{
 	char		path[MAXPGPATH];
 	FILE	   *fp;
 	struct stat stat_buf;
@@ -1426,7 +1426,7 @@ checkDataDir(void)
  */
 static void
 DetermineSleepTime(struct timeval * timeout)
-{	StackTrace("DetermineSleepTime");
+{
 	TimestampTz next_wakeup = 0;
 
 	/*
@@ -1524,7 +1524,7 @@ DetermineSleepTime(struct timeval * timeout)
  */
 static int
 ServerLoop(void)
-{	StackTrace("ServerLoop");
+{
 	fd_set		readmask;
 	int			nSockets;
 	time_t		now,
@@ -1728,7 +1728,7 @@ ServerLoop(void)
  */
 static int
 initMasks(fd_set *rmask)
-{	StackTrace("initMasks");
+{
 	int			maxsock = -1;
 	int			i;
 
@@ -1763,7 +1763,7 @@ initMasks(fd_set *rmask)
  */
 static int
 ProcessStartupPacket(Port *port, bool SSLdone)
-{	StackTrace("ProcessStartupPacket");
+{
 	int32		len;
 	void	   *buf;
 	ProtocolVersion proto;
@@ -2085,7 +2085,7 @@ retry1:
  */
 static void
 processCancelRequest(Port *port, void *pkt)
-{	StackTrace("processCancelRequest");
+{
 	CancelRequestPacket *canc = (CancelRequestPacket *) pkt;
 	int			backendPID;
 	long		cancelAuthCode;
@@ -2144,7 +2144,7 @@ processCancelRequest(Port *port, void *pkt)
  */
 static CAC_state
 canAcceptConnections(void)
-{	StackTrace("canAcceptConnections");
+{
 	CAC_state	result = CAC_OK;
 
 	/*
@@ -2200,7 +2200,7 @@ canAcceptConnections(void)
  */
 static Port *
 ConnCreate(int serverFd)
-{	StackTrace("ConnCreate");
+{
 	Port	   *port;
 
 	if (!(port = (Port *) calloc(1, sizeof(Port))))
@@ -2253,7 +2253,7 @@ ConnCreate(int serverFd)
  */
 static void
 ConnFree(Port *conn)
-{	StackTrace("ConnFree");
+{
 #ifdef USE_SSL
 	secure_close(conn);
 #endif
@@ -2275,7 +2275,7 @@ ConnFree(Port *conn)
  */
 void
 ClosePostmasterPorts(bool am_syslogger)
-{	StackTrace("ClosePostmasterPorts");
+{
 	int			i;
 
 #ifndef WIN32
@@ -2329,7 +2329,7 @@ ClosePostmasterPorts(bool am_syslogger)
  */
 static void
 reset_shared(int port)
-{	StackTrace("reset_shared");
+{
 	/*
 	 * Create or re-create shared memory and semaphores.
 	 *
@@ -2347,7 +2347,7 @@ reset_shared(int port)
  */
 static void
 SIGHUP_handler(SIGNAL_ARGS)
-{	StackTrace("SIGHUP_handler");
+{
 	int			save_errno = errno;
 
 	PG_SETMASK(&BlockSig);
@@ -2404,7 +2404,7 @@ SIGHUP_handler(SIGNAL_ARGS)
  */
 static void
 pmdie(SIGNAL_ARGS)
-{	StackTrace("pmdie");
+{
 	int			save_errno = errno;
 
 	PG_SETMASK(&BlockSig);
@@ -2565,7 +2565,7 @@ pmdie(SIGNAL_ARGS)
  */
 static void
 reaper(SIGNAL_ARGS)
-{	StackTrace("reaper");
+{
 	int			save_errno = errno;
 	int			pid;			/* process id of dead child process */
 	int			exitstatus;		/* its exit status */
@@ -3063,7 +3063,7 @@ CleanupBackend(int pid,
  */
 static void
 HandleChildCrash(int pid, int exitstatus, const char *procname)
-{	StackTrace("HandleChildCrash");
+{
 	dlist_mutable_iter iter;
 	slist_iter	siter;
 	Backend    *bp;
@@ -3318,7 +3318,7 @@ HandleChildCrash(int pid, int exitstatus, const char *procname)
  */
 static void
 LogChildExit(int lev, const char *procname, int pid, int exitstatus)
-{	StackTrace("LogChildExit");
+{
 	/*
 	 * size of activity_buffer is arbitrary, but set equal to default
 	 * track_activity_query_size
@@ -3391,7 +3391,7 @@ LogChildExit(int lev, const char *procname, int pid, int exitstatus)
  */
 static void
 PostmasterStateMachine(void)
-{	StackTrace("PostmasterStateMachine");
+{
 	if (pmState == PM_WAIT_BACKUP)
 	{
 		/*
@@ -3640,7 +3640,7 @@ PostmasterStateMachine(void)
  */
 static void
 signal_child(pid_t pid, int signal)
-{	StackTrace("signal_child");
+{
 	if (kill(pid, signal) < 0)
 		elog(DEBUG3, "kill(%ld,%d) failed: %m", (long) pid, signal);
 #ifdef HAVE_SETSID
@@ -3668,7 +3668,7 @@ signal_child(pid_t pid, int signal)
  */
 static bool
 SignalUnconnectedWorkers(int signal)
-{	StackTrace("SignalUnconnectedWorkers");
+{
 	slist_iter	iter;
 	bool		signaled = false;
 
@@ -3699,7 +3699,7 @@ SignalUnconnectedWorkers(int signal)
  */
 static bool
 SignalSomeChildren(int signal, int target)
-{	StackTrace("SignalSomeChildren");
+{
 	dlist_iter	iter;
 	bool		signaled = false;
 
@@ -3743,7 +3743,7 @@ SignalSomeChildren(int signal, int target)
  */
 static void
 TerminateChildren(int signal)
-{	StackTrace("TerminateChildren");
+{
 	SignalChildren(signal);
 	if (StartupPID != 0)
 		signal_child(StartupPID, signal);
@@ -3773,7 +3773,7 @@ TerminateChildren(int signal)
  */
 static int
 BackendStartup(Port *port)
-{	StackTrace("BackendStartup");
+{
 	Backend    *bn;				/* for backend cleanup */
 	pid_t		pid;
 
@@ -3882,7 +3882,7 @@ BackendStartup(Port *port)
  */
 static void
 report_fork_failure_to_client(Port *port, int errnum)
-{	StackTrace("report_fork_failure_to_client");
+{
 	char		buffer[1000];
 	int			rc;
 
@@ -3915,7 +3915,7 @@ report_fork_failure_to_client(Port *port, int errnum)
  */
 static void
 BackendInitialize(Port *port)
-{	StackTrace("BackendInitialize");
+{
 	int			status;
 	int			ret;
 	char		remote_host[NI_MAXHOST];
@@ -4093,7 +4093,7 @@ BackendInitialize(Port *port)
  */
 static void
 BackendRun(Port *port)
-{	StackTrace("BackendRun");
+{
 	char	  **av;
 	int			maxac;
 	int			ac;
@@ -4176,7 +4176,7 @@ BackendRun(Port *port)
  */
 pid_t
 postmaster_forkexec(int argc, char *argv[])
-{	StackTrace("postmaster_forkexec");
+{
 	Port		port;
 
 	/* This entry point passes dummy values for the Port variables */
@@ -4195,7 +4195,7 @@ postmaster_forkexec(int argc, char *argv[])
  */
 static pid_t
 backend_forkexec(Port *port)
-{	StackTrace("backend_forkexec");
+{
 	char	   *av[4];
 	int			ac = 0;
 
@@ -4219,7 +4219,7 @@ backend_forkexec(Port *port)
  */
 static pid_t
 internal_forkexec(int argc, char *argv[], Port *port)
-{	StackTrace("internal_forkexec");
+{
 	static unsigned long tmpBackendFileNum = 0;
 	pid_t		pid;
 	char		tmpfilename[MAXPGPATH];
@@ -4311,7 +4311,7 @@ internal_forkexec(int argc, char *argv[], Port *port)
  */
 static pid_t
 internal_forkexec(int argc, char *argv[], Port *port)
-{	StackTrace("internal_forkexec");
+{
 	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
 	int			i;
@@ -4511,7 +4511,7 @@ internal_forkexec(int argc, char *argv[], Port *port)
  */
 void
 SubPostmasterMain(int argc, char *argv[])
-{	StackTrace("SubPostmasterMain");
+{
 	Port		port;
 
 	/* In EXEC_BACKEND case we will not have inherited these settings */
@@ -4758,7 +4758,7 @@ SubPostmasterMain(int argc, char *argv[])
  */
 static void
 ExitPostmaster(int status)
-{	StackTrace("ExitPostmaster");
+{
 #ifdef HAVE_PTHREAD_IS_THREADED_NP
 
 	/*
@@ -4791,7 +4791,7 @@ ExitPostmaster(int status)
  */
 static void
 sigusr1_handler(SIGNAL_ARGS)
-{	StackTrace("sigusr1_handler");
+{
 	int			save_errno = errno;
 
 	PG_SETMASK(&BlockSig);
@@ -4935,7 +4935,7 @@ sigusr1_handler(SIGNAL_ARGS)
  */
 static void
 startup_die(SIGNAL_ARGS)
-{	StackTrace("startup_die");
+{
 	proc_exit(1);
 }
 
@@ -4950,7 +4950,7 @@ startup_die(SIGNAL_ARGS)
  */
 static void
 dummy_handler(SIGNAL_ARGS)
-{	StackTrace("dummy_handler");
+{
 }
 
 /*
@@ -4959,7 +4959,7 @@ dummy_handler(SIGNAL_ARGS)
  */
 static void
 StartupPacketTimeoutHandler(void)
-{	StackTrace("StartupPacketTimeoutHandler");
+{
 	proc_exit(1);
 }
 
@@ -4969,7 +4969,7 @@ StartupPacketTimeoutHandler(void)
  */
 static void
 RandomSalt(char *md5Salt)
-{	StackTrace("RandomSalt");
+{
 	long		rand;
 
 	/*
@@ -4992,7 +4992,7 @@ RandomSalt(char *md5Salt)
  */
 static long
 PostmasterRandom(void)
-{	StackTrace("PostmasterRandom");
+{
 	/*
 	 * Select a random seed at the time of first receiving a request.
 	 */
@@ -5028,7 +5028,7 @@ PostmasterRandom(void)
  */
 static int
 CountUnconnectedWorkers(void)
-{	StackTrace("CountUnconnectedWorkers");
+{
 	slist_iter	iter;
 	int			cnt = 0;
 
@@ -5055,7 +5055,7 @@ CountUnconnectedWorkers(void)
  */
 static int
 CountChildren(int target)
-{	StackTrace("CountChildren");
+{
 	dlist_iter	iter;
 	int			cnt = 0;
 
@@ -5101,7 +5101,7 @@ CountChildren(int target)
  */
 static pid_t
 StartChildProcess(AuxProcType type)
-{	StackTrace("StartChildProcess");
+{
 	pid_t		pid;
 	char	   *av[10];
 	int			ac = 0;
@@ -5205,7 +5205,7 @@ StartChildProcess(AuxProcType type)
  */
 static void
 StartAutovacuumWorker(void)
-{	StackTrace("StartAutovacuumWorker");
+{
 	Backend    *bn;
 
 	/*
@@ -5280,7 +5280,7 @@ StartAutovacuumWorker(void)
  */
 static bool
 CreateOptsFile(int argc, char *argv[], char *fullprogname)
-{	StackTrace("CreateOptsFile");
+{
 	FILE	   *fp;
 	int			i;
 
@@ -5320,7 +5320,7 @@ CreateOptsFile(int argc, char *argv[], char *fullprogname)
  */
 int
 MaxLivePostmasterChildren(void)
-{	StackTrace("MaxLivePostmasterChildren");
+{
 	return 2 * (MaxConnections + autovacuum_max_workers + 1 +
 				max_worker_processes);
 }
@@ -5330,7 +5330,7 @@ MaxLivePostmasterChildren(void)
  */
 void
 BackgroundWorkerInitializeConnection(char *dbname, char *username)
-{	StackTrace("BackgroundWorkerInitializeConnection");
+{
 	BackgroundWorker *worker = MyBgworkerEntry;
 
 	/* XXX is this the right errcode? */
@@ -5353,7 +5353,7 @@ BackgroundWorkerInitializeConnection(char *dbname, char *username)
  */
 void
 BackgroundWorkerInitializeConnectionByOid(Oid dboid, Oid useroid)
-{	StackTrace("BackgroundWorkerInitializeConnectionByOid");
+{
 	BackgroundWorker *worker = MyBgworkerEntry;
 
 	/* XXX is this the right errcode? */
@@ -5376,20 +5376,20 @@ BackgroundWorkerInitializeConnectionByOid(Oid dboid, Oid useroid)
  */
 void
 BackgroundWorkerBlockSignals(void)
-{	StackTrace("BackgroundWorkerBlockSignals");
+{
 	PG_SETMASK(&BlockSig);
 }
 
 void
 BackgroundWorkerUnblockSignals(void)
-{	StackTrace("BackgroundWorkerUnblockSignals");
+{
 	PG_SETMASK(&UnBlockSig);
 }
 
 #ifdef EXEC_BACKEND
 static pid_t
 bgworker_forkexec(int shmem_slot)
-{	StackTrace("bgworker_forkexec");
+{
 	char	   *av[10];
 	int			ac = 0;
 	char		forkav[MAXPGPATH];
@@ -5415,7 +5415,7 @@ bgworker_forkexec(int shmem_slot)
  */
 static void
 do_start_bgworker(RegisteredBgWorker *rw)
-{	StackTrace("do_start_bgworker");
+{
 	pid_t		worker_pid;
 
 	ereport(DEBUG1,
@@ -5461,7 +5461,7 @@ do_start_bgworker(RegisteredBgWorker *rw)
  */
 static bool
 bgworker_should_start_now(BgWorkerStartTime start_time)
-{	StackTrace("bgworker_should_start_now");
+{
 	switch (pmState)
 	{
 		case PM_NO_CHILDREN:
@@ -5503,7 +5503,7 @@ bgworker_should_start_now(BgWorkerStartTime start_time)
  */
 static bool
 assign_backendlist_entry(RegisteredBgWorker *rw)
-{	StackTrace("assign_backendlist_entry");
+{
 	Backend    *bn = malloc(sizeof(Backend));
 
 	if (bn == NULL)
@@ -5551,7 +5551,7 @@ assign_backendlist_entry(RegisteredBgWorker *rw)
  */
 static void
 maybe_start_bgworker(void)
-{	StackTrace("maybe_start_bgworker");
+{
 	slist_mutable_iter iter;
 	TimestampTz now = 0;
 
@@ -5659,7 +5659,7 @@ maybe_start_bgworker(void)
  */
 bool
 PostmasterMarkPIDForWorkerNotify(int pid)
-{	StackTrace("PostmasterMarkPIDForWorkerNotify");
+{
 	dlist_iter	iter;
 	Backend    *bp;
 
@@ -5780,7 +5780,7 @@ save_backend_variables(BackendParameters *param, Port *port,
  */
 static bool
 write_duplicated_handle(HANDLE *dest, HANDLE src, HANDLE childProcess)
-{	StackTrace("write_duplicated_handle");
+{
 	HANDLE		hChild = INVALID_HANDLE_VALUE;
 
 	if (!DuplicateHandle(GetCurrentProcess(),
@@ -5810,7 +5810,7 @@ write_duplicated_handle(HANDLE *dest, HANDLE src, HANDLE childProcess)
  */
 static bool
 write_inheritable_socket(InheritableSocket *dest, SOCKET src, pid_t childpid)
-{	StackTrace("write_inheritable_socket");
+{
 	dest->origsocket = src;
 	if (src != 0 && src != PGINVALID_SOCKET)
 	{
@@ -5831,7 +5831,7 @@ write_inheritable_socket(InheritableSocket *dest, SOCKET src, pid_t childpid)
  */
 static void
 read_inheritable_socket(SOCKET *dest, InheritableSocket *src)
-{	StackTrace("read_inheritable_socket");
+{
 	SOCKET		s;
 
 	if (src->origsocket == PGINVALID_SOCKET || src->origsocket == 0)
@@ -5868,7 +5868,7 @@ read_inheritable_socket(SOCKET *dest, InheritableSocket *src)
 
 static void
 read_backend_variables(char *id, Port *port)
-{	StackTrace("read_backend_variables");
+{
 	BackendParameters param;
 
 #ifndef WIN32
@@ -5940,7 +5940,7 @@ read_backend_variables(char *id, Port *port)
 /* Restore critical backend variables from the BackendParameters struct */
 static void
 restore_backend_variables(BackendParameters *param, Port *port)
-{	StackTrace("restore_backend_variables");
+{
 	memcpy(port, &param->port, sizeof(Port));
 	read_inheritable_socket(&port->sock, &param->portsocket);
 
@@ -6000,13 +6000,13 @@ restore_backend_variables(BackendParameters *param, Port *port)
 
 Size
 ShmemBackendArraySize(void)
-{	StackTrace("ShmemBackendArraySize");
+{
 	return mul_size(MaxLivePostmasterChildren(), sizeof(Backend));
 }
 
 void
 ShmemBackendArrayAllocation(void)
-{	StackTrace("ShmemBackendArrayAllocation");
+{
 	Size		size = ShmemBackendArraySize();
 
 	ShmemBackendArray = (Backend *) ShmemAlloc(size);
@@ -6016,7 +6016,7 @@ ShmemBackendArrayAllocation(void)
 
 static void
 ShmemBackendArrayAdd(Backend *bn)
-{	StackTrace("ShmemBackendArrayAdd");
+{
 	/* The array slot corresponding to my PMChildSlot should be free */
 	int			i = bn->child_slot - 1;
 
@@ -6026,7 +6026,7 @@ ShmemBackendArrayAdd(Backend *bn)
 
 static void
 ShmemBackendArrayRemove(Backend *bn)
-{	StackTrace("ShmemBackendArrayRemove");
+{
 	int			i = bn->child_slot - 1;
 
 	Assert(ShmemBackendArray[i].pid == bn->pid);
@@ -6044,7 +6044,7 @@ ShmemBackendArrayRemove(Backend *bn)
  */
 static pid_t
 waitpid(pid_t pid, int *exitstatus, int options)
-{	StackTrace("waitpid");
+{
 	DWORD		dwd;
 	ULONG_PTR	key;
 	OVERLAPPED *ovl;
@@ -6068,7 +6068,7 @@ waitpid(pid_t pid, int *exitstatus, int options)
  */
 static void WINAPI
 pgwin32_deadchild_callback(PVOID lpParameter, BOOLEAN TimerOrWaitFired)
-{	StackTrace("pgwin32_deadchild_callback");
+{
 	win32_deadchild_waitinfo *childinfo = (win32_deadchild_waitinfo *) lpParameter;
 	DWORD		exitcode;
 
@@ -6119,7 +6119,7 @@ pgwin32_deadchild_callback(PVOID lpParameter, BOOLEAN TimerOrWaitFired)
  */
 static void
 InitPostmasterDeathWatchHandle(void)
-{	StackTrace("InitPostmasterDeathWatchHandle");
+{
 #ifndef WIN32
 
 	/*

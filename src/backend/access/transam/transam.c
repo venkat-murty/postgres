@@ -50,7 +50,7 @@ static XidStatus TransactionLogFetch(TransactionId transactionId);
  */
 static XidStatus
 TransactionLogFetch(TransactionId transactionId)
-{	StackTrace("TransactionLogFetch");
+{
 	XidStatus	xidstatus;
 	XLogRecPtr	xidlsn;
 
@@ -123,7 +123,7 @@ TransactionLogFetch(TransactionId transactionId)
  */
 bool							/* true if given transaction committed */
 TransactionIdDidCommit(TransactionId transactionId)
-{	StackTrace("TransactionIdDidCommit");
+{
 	XidStatus	xidstatus;
 
 	xidstatus = TransactionLogFetch(transactionId);
@@ -179,7 +179,7 @@ TransactionIdDidCommit(TransactionId transactionId)
  */
 bool							/* true if given transaction aborted */
 TransactionIdDidAbort(TransactionId transactionId)
-{	StackTrace("TransactionIdDidAbort");
+{
 	XidStatus	xidstatus;
 
 	xidstatus = TransactionLogFetch(transactionId);
@@ -236,7 +236,7 @@ TransactionIdDidAbort(TransactionId transactionId)
  */
 bool
 TransactionIdIsKnownCompleted(TransactionId transactionId)
-{	StackTrace("TransactionIdIsKnownCompleted");
+{
 	if (TransactionIdEquals(transactionId, cachedFetchXid))
 	{
 		/* If it's in the cache at all, it must be completed. */
@@ -258,7 +258,7 @@ TransactionIdIsKnownCompleted(TransactionId transactionId)
  */
 void
 TransactionIdCommitTree(TransactionId xid, int nxids, TransactionId *xids)
-{	StackTrace("TransactionIdCommitTree");
+{
 	TransactionIdSetTreeStatus(xid, nxids, xids,
 							   TRANSACTION_STATUS_COMMITTED,
 							   InvalidXLogRecPtr);
@@ -271,7 +271,7 @@ TransactionIdCommitTree(TransactionId xid, int nxids, TransactionId *xids)
 void
 TransactionIdAsyncCommitTree(TransactionId xid, int nxids, TransactionId *xids,
 							 XLogRecPtr lsn)
-{	StackTrace("TransactionIdAsyncCommitTree");
+{
 	TransactionIdSetTreeStatus(xid, nxids, xids,
 							   TRANSACTION_STATUS_COMMITTED, lsn);
 }
@@ -288,7 +288,7 @@ TransactionIdAsyncCommitTree(TransactionId xid, int nxids, TransactionId *xids,
  */
 void
 TransactionIdAbortTree(TransactionId xid, int nxids, TransactionId *xids)
-{	StackTrace("TransactionIdAbortTree");
+{
 	TransactionIdSetTreeStatus(xid, nxids, xids,
 							   TRANSACTION_STATUS_ABORTED, InvalidXLogRecPtr);
 }
@@ -298,7 +298,7 @@ TransactionIdAbortTree(TransactionId xid, int nxids, TransactionId *xids)
  */
 bool
 TransactionIdPrecedes(TransactionId id1, TransactionId id2)
-{	StackTrace("TransactionIdPrecedes");
+{
 	/*
 	 * If either ID is a permanent XID then we can just do unsigned
 	 * comparison.  If both are normal, do a modulo-2^32 comparison.
@@ -317,7 +317,7 @@ TransactionIdPrecedes(TransactionId id1, TransactionId id2)
  */
 bool
 TransactionIdPrecedesOrEquals(TransactionId id1, TransactionId id2)
-{	StackTrace("TransactionIdPrecedesOrEquals");
+{
 	int32		diff;
 
 	if (!TransactionIdIsNormal(id1) || !TransactionIdIsNormal(id2))
@@ -332,7 +332,7 @@ TransactionIdPrecedesOrEquals(TransactionId id1, TransactionId id2)
  */
 bool
 TransactionIdFollows(TransactionId id1, TransactionId id2)
-{	StackTrace("TransactionIdFollows");
+{
 	int32		diff;
 
 	if (!TransactionIdIsNormal(id1) || !TransactionIdIsNormal(id2))
@@ -347,7 +347,7 @@ TransactionIdFollows(TransactionId id1, TransactionId id2)
  */
 bool
 TransactionIdFollowsOrEquals(TransactionId id1, TransactionId id2)
-{	StackTrace("TransactionIdFollowsOrEquals");
+{
 	int32		diff;
 
 	if (!TransactionIdIsNormal(id1) || !TransactionIdIsNormal(id2))
@@ -364,7 +364,7 @@ TransactionIdFollowsOrEquals(TransactionId id1, TransactionId id2)
 TransactionId
 TransactionIdLatest(TransactionId mainxid,
 					int nxids, const TransactionId *xids)
-{	StackTrace("TransactionIdLatest");
+{
 	TransactionId result;
 
 	/*
@@ -400,7 +400,7 @@ TransactionIdLatest(TransactionId mainxid,
  */
 XLogRecPtr
 TransactionIdGetCommitLSN(TransactionId xid)
-{	StackTrace("TransactionIdGetCommitLSN");
+{
 	XLogRecPtr	result;
 
 	/*

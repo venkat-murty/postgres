@@ -61,7 +61,7 @@ static int	inet_cidr_pton_ipv6(const char *src, u_char *dst, size_t size);
  */
 int
 inet_net_pton(int af, const char *src, void *dst, size_t size)
-{	StackTrace("inet_net_pton");
+{
 	switch (af)
 	{
 		case PGSQL_AF_INET:
@@ -96,7 +96,7 @@ inet_net_pton(int af, const char *src, void *dst, size_t size)
  */
 static int
 inet_cidr_pton_ipv4(const char *src, u_char *dst, size_t size)
-{	StackTrace("inet_cidr_pton_ipv4");
+{
 	static const char xdigits[] = "0123456789abcdef";
 	static const char digits[] = "0123456789";
 	int			n,
@@ -259,7 +259,7 @@ emsgsize:
  */
 static int
 inet_net_pton_ipv4(const char *src, u_char *dst)
-{	StackTrace("inet_net_pton_ipv4");
+{
 	static const char digits[] = "0123456789";
 	const u_char *odst = dst;
 	int			n,
@@ -348,7 +348,7 @@ emsgsize:
 
 static int
 getbits(const char *src, int *bitsp)
-{	StackTrace("getbits");
+{
 	static const char digits[] = "0123456789";
 	int			n;
 	int			val;
@@ -381,7 +381,7 @@ getbits(const char *src, int *bitsp)
 
 static int
 getv4(const char *src, u_char *dst, int *bitsp)
-{	StackTrace("getv4");
+{
 	static const char digits[] = "0123456789";
 	u_char	   *odst = dst;
 	int			n;
@@ -428,7 +428,7 @@ getv4(const char *src, u_char *dst, int *bitsp)
 
 static int
 inet_net_pton_ipv6(const char *src, u_char *dst)
-{	StackTrace("inet_net_pton_ipv6");
+{
 	return inet_cidr_pton_ipv6(src, dst, 16);
 }
 
@@ -438,7 +438,7 @@ inet_net_pton_ipv6(const char *src, u_char *dst)
 
 static int
 inet_cidr_pton_ipv6(const char *src, u_char *dst, size_t size)
-{	StackTrace("inet_cidr_pton_ipv6");
+{
 	static const char xdigits_l[] = "0123456789abcdef",
 				xdigits_u[] = "0123456789ABCDEF";
 	u_char		tmp[NS_IN6ADDRSZ],

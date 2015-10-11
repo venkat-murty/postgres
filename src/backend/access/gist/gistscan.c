@@ -27,7 +27,7 @@
  */
 static int
 pairingheap_GISTSearchItem_cmp(const pairingheap_node *a, const pairingheap_node *b, void *arg)
-{	StackTrace("pairingheap_GISTSearchItem_cmp");
+{
 	const GISTSearchItem *sa = (const GISTSearchItem *) a;
 	const GISTSearchItem *sb = (const GISTSearchItem *) b;
 	IndexScanDesc scan = (IndexScanDesc) arg;
@@ -56,7 +56,7 @@ pairingheap_GISTSearchItem_cmp(const pairingheap_node *a, const pairingheap_node
 
 Datum
 gistbeginscan(PG_FUNCTION_ARGS)
-{	StackTrace("gistbeginscan");
+{
 	Relation	r = (Relation) PG_GETARG_POINTER(0);
 	int			nkeys = PG_GETARG_INT32(1);
 	int			norderbys = PG_GETARG_INT32(2);
@@ -107,7 +107,7 @@ gistbeginscan(PG_FUNCTION_ARGS)
 
 Datum
 gistrescan(PG_FUNCTION_ARGS)
-{	StackTrace("gistrescan");
+{
 	IndexScanDesc scan = (IndexScanDesc) PG_GETARG_POINTER(0);
 	ScanKey		key = (ScanKey) PG_GETARG_POINTER(1);
 	ScanKey		orderbys = (ScanKey) PG_GETARG_POINTER(3);
@@ -315,21 +315,21 @@ gistrescan(PG_FUNCTION_ARGS)
 
 Datum
 gistmarkpos(PG_FUNCTION_ARGS)
-{	StackTrace("gistmarkpos");
+{
 	elog(ERROR, "GiST does not support mark/restore");
 	PG_RETURN_VOID();
 }
 
 Datum
 gistrestrpos(PG_FUNCTION_ARGS)
-{	StackTrace("gistrestrpos");
+{
 	elog(ERROR, "GiST does not support mark/restore");
 	PG_RETURN_VOID();
 }
 
 Datum
 gistendscan(PG_FUNCTION_ARGS)
-{	StackTrace("gistendscan");
+{
 	IndexScanDesc scan = (IndexScanDesc) PG_GETARG_POINTER(0);
 	GISTScanOpaque so = (GISTScanOpaque) scan->opaque;
 

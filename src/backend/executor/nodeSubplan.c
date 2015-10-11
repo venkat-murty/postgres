@@ -71,7 +71,7 @@ ExecSubPlan(SubPlanState *node,
 			ExprContext *econtext,
 			bool *isNull,
 			ExprDoneCond *isDone)
-{	StackTrace("ExecSubPlan");
+{
 	SubPlan    *subplan = (SubPlan *) node->xprstate.expr;
 
 	/* Set default values for result flags: non-null, not a set result */
@@ -99,7 +99,7 @@ static Datum
 ExecHashSubPlan(SubPlanState *node,
 				ExprContext *econtext,
 				bool *isNull)
-{	StackTrace("ExecHashSubPlan");
+{
 	SubPlan    *subplan = (SubPlan *) node->xprstate.expr;
 	PlanState  *planstate = node->planstate;
 	TupleTableSlot *slot;
@@ -221,7 +221,7 @@ static Datum
 ExecScanSubPlan(SubPlanState *node,
 				ExprContext *econtext,
 				bool *isNull)
-{	StackTrace("ExecScanSubPlan");
+{
 	SubPlan    *subplan = (SubPlan *) node->xprstate.expr;
 	PlanState  *planstate = node->planstate;
 	SubLinkType subLinkType = subplan->subLinkType;
@@ -467,7 +467,7 @@ ExecScanSubPlan(SubPlanState *node,
  */
 static void
 buildSubPlanHash(SubPlanState *node, ExprContext *econtext)
-{	StackTrace("buildSubPlanHash");
+{
 	SubPlan    *subplan = (SubPlan *) node->xprstate.expr;
 	PlanState  *planstate = node->planstate;
 	int			ncols = list_length(subplan->paramIds);
@@ -619,7 +619,7 @@ buildSubPlanHash(SubPlanState *node, ExprContext *econtext)
 static bool
 findPartialMatch(TupleHashTable hashtable, TupleTableSlot *slot,
 				 FmgrInfo *eqfunctions)
-{	StackTrace("findPartialMatch");
+{
 	int			numCols = hashtable->numCols;
 	AttrNumber *keyColIdx = hashtable->keyColIdx;
 	TupleHashIterator hashiter;
@@ -650,7 +650,7 @@ findPartialMatch(TupleHashTable hashtable, TupleTableSlot *slot,
  */
 static bool
 slotAllNulls(TupleTableSlot *slot)
-{	StackTrace("slotAllNulls");
+{
 	int			ncols = slot->tts_tupleDescriptor->natts;
 	int			i;
 
@@ -670,7 +670,7 @@ slotAllNulls(TupleTableSlot *slot)
  */
 static bool
 slotNoNulls(TupleTableSlot *slot)
-{	StackTrace("slotNoNulls");
+{
 	int			ncols = slot->tts_tupleDescriptor->natts;
 	int			i;
 
@@ -694,7 +694,7 @@ slotNoNulls(TupleTableSlot *slot)
  */
 SubPlanState *
 ExecInitSubPlan(SubPlan *subplan, PlanState *parent)
-{	StackTrace("ExecInitSubPlan");
+{
 	SubPlanState *sstate = makeNode(SubPlanState);
 	EState	   *estate = parent->state;
 
@@ -944,7 +944,7 @@ ExecInitSubPlan(SubPlan *subplan, PlanState *parent)
  */
 void
 ExecSetParamPlan(SubPlanState *node, ExprContext *econtext)
-{	StackTrace("ExecSetParamPlan");
+{
 	SubPlan    *subplan = (SubPlan *) node->xprstate.expr;
 	PlanState  *planstate = node->planstate;
 	SubLinkType subLinkType = subplan->subLinkType;
@@ -1121,7 +1121,7 @@ ExecSetParamPlan(SubPlanState *node, ExprContext *econtext)
  */
 void
 ExecReScanSetParamPlan(SubPlanState *node, PlanState *parent)
-{	StackTrace("ExecReScanSetParamPlan");
+{
 	PlanState  *planstate = node->planstate;
 	SubPlan    *subplan = (SubPlan *) node->xprstate.expr;
 	EState	   *estate = parent->state;
@@ -1167,7 +1167,7 @@ ExecReScanSetParamPlan(SubPlanState *node, PlanState *parent)
  */
 AlternativeSubPlanState *
 ExecInitAlternativeSubPlan(AlternativeSubPlan *asplan, PlanState *parent)
-{	StackTrace("ExecInitAlternativeSubPlan");
+{
 	AlternativeSubPlanState *asstate = makeNode(AlternativeSubPlanState);
 	double		num_calls;
 	SubPlan    *subplan1;
@@ -1226,7 +1226,7 @@ ExecAlternativeSubPlan(AlternativeSubPlanState *node,
 					   ExprContext *econtext,
 					   bool *isNull,
 					   ExprDoneCond *isDone)
-{	StackTrace("ExecAlternativeSubPlan");
+{
 	/* Just pass control to the active subplan */
 	SubPlanState *activesp = (SubPlanState *) list_nth(node->subplans,
 													   node->active);

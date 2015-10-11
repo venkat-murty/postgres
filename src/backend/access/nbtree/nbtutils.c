@@ -60,7 +60,7 @@ static bool _bt_check_rowcompare(ScanKey skey,
  */
 ScanKey
 _bt_mkscankey(Relation rel, IndexTuple itup)
-{	StackTrace("_bt_mkscankey");
+{
 	ScanKey		skey;
 	TupleDesc	itupdesc;
 	int			natts;
@@ -113,7 +113,7 @@ _bt_mkscankey(Relation rel, IndexTuple itup)
  */
 ScanKey
 _bt_mkscankey_nodata(Relation rel)
-{	StackTrace("_bt_mkscankey_nodata");
+{
 	ScanKey		skey;
 	int			natts;
 	int16	   *indoption;
@@ -153,7 +153,7 @@ _bt_mkscankey_nodata(Relation rel)
  */
 void
 _bt_freeskey(ScanKey skey)
-{	StackTrace("_bt_freeskey");
+{
 	pfree(skey);
 }
 
@@ -162,7 +162,7 @@ _bt_freeskey(ScanKey skey)
  */
 void
 _bt_freestack(BTStack stack)
-{	StackTrace("_bt_freestack");
+{
 	BTStack		ostack;
 
 	while (stack != NULL)
@@ -190,7 +190,7 @@ _bt_freestack(BTStack stack)
  */
 void
 _bt_preprocess_array_keys(IndexScanDesc scan)
-{	StackTrace("_bt_preprocess_array_keys");
+{
 	BTScanOpaque so = (BTScanOpaque) scan->opaque;
 	int			numberOfKeys = scan->numberOfKeys;
 	int16	   *indoption = scan->indexRelation->rd_indoption;
@@ -366,7 +366,7 @@ static Datum
 _bt_find_extreme_element(IndexScanDesc scan, ScanKey skey,
 						 StrategyNumber strat,
 						 Datum *elems, int nelems)
-{	StackTrace("_bt_find_extreme_element");
+{
 	Relation	rel = scan->indexRelation;
 	Oid			elemtype,
 				cmp_op;
@@ -433,7 +433,7 @@ static int
 _bt_sort_array_elements(IndexScanDesc scan, ScanKey skey,
 						bool reverse,
 						Datum *elems, int nelems)
-{	StackTrace("_bt_sort_array_elements");
+{
 	Relation	rel = scan->indexRelation;
 	Oid			elemtype;
 	RegProcedure cmp_proc;
@@ -499,7 +499,7 @@ _bt_sort_array_elements(IndexScanDesc scan, ScanKey skey,
  */
 static int
 _bt_compare_array_elements(const void *a, const void *b, void *arg)
-{	StackTrace("_bt_compare_array_elements");
+{
 	Datum		da = *((const Datum *) a);
 	Datum		db = *((const Datum *) b);
 	BTSortArrayContext *cxt = (BTSortArrayContext *) arg;
@@ -521,7 +521,7 @@ _bt_compare_array_elements(const void *a, const void *b, void *arg)
  */
 void
 _bt_start_array_keys(IndexScanDesc scan, ScanDirection dir)
-{	StackTrace("_bt_start_array_keys");
+{
 	BTScanOpaque so = (BTScanOpaque) scan->opaque;
 	int			i;
 
@@ -547,7 +547,7 @@ _bt_start_array_keys(IndexScanDesc scan, ScanDirection dir)
  */
 bool
 _bt_advance_array_keys(IndexScanDesc scan, ScanDirection dir)
-{	StackTrace("_bt_advance_array_keys");
+{
 	BTScanOpaque so = (BTScanOpaque) scan->opaque;
 	bool		found = false;
 	int			i;
@@ -602,7 +602,7 @@ _bt_advance_array_keys(IndexScanDesc scan, ScanDirection dir)
  */
 void
 _bt_mark_array_keys(IndexScanDesc scan)
-{	StackTrace("_bt_mark_array_keys");
+{
 	BTScanOpaque so = (BTScanOpaque) scan->opaque;
 	int			i;
 
@@ -621,7 +621,7 @@ _bt_mark_array_keys(IndexScanDesc scan)
  */
 void
 _bt_restore_array_keys(IndexScanDesc scan)
-{	StackTrace("_bt_restore_array_keys");
+{
 	BTScanOpaque so = (BTScanOpaque) scan->opaque;
 	bool		changed = false;
 	int			i;
@@ -741,7 +741,7 @@ _bt_restore_array_keys(IndexScanDesc scan)
  */
 void
 _bt_preprocess_keys(IndexScanDesc scan)
-{	StackTrace("_bt_preprocess_keys");
+{
 	BTScanOpaque so = (BTScanOpaque) scan->opaque;
 	int			numberOfKeys = scan->numberOfKeys;
 	int16	   *indoption = scan->indexRelation->rd_indoption;
@@ -1033,7 +1033,7 @@ static bool
 _bt_compare_scankey_args(IndexScanDesc scan, ScanKey op,
 						 ScanKey leftarg, ScanKey rightarg,
 						 bool *result)
-{	StackTrace("_bt_compare_scankey_args");
+{
 	Relation	rel = scan->indexRelation;
 	Oid			lefttype,
 				righttype,
@@ -1195,7 +1195,7 @@ _bt_compare_scankey_args(IndexScanDesc scan, ScanKey op,
  */
 static bool
 _bt_fix_scankey_strategy(ScanKey skey, int16 *indoption)
-{	StackTrace("_bt_fix_scankey_strategy");
+{
 	int			addflags;
 
 	addflags = indoption[skey->sk_attno - 1] << SK_BT_INDOPTION_SHIFT;
@@ -1300,7 +1300,7 @@ _bt_fix_scankey_strategy(ScanKey skey, int16 *indoption)
  */
 static void
 _bt_mark_scankey_required(ScanKey skey)
-{	StackTrace("_bt_mark_scankey_required");
+{
 	int			addflags;
 
 	switch (skey->sk_strategy)
@@ -1372,7 +1372,7 @@ IndexTuple
 _bt_checkkeys(IndexScanDesc scan,
 			  Page page, OffsetNumber offnum,
 			  ScanDirection dir, bool *continuescan)
-{	StackTrace("_bt_checkkeys");
+{
 	ItemId		iid = PageGetItemId(page, offnum);
 	bool		tuple_alive;
 	IndexTuple	tuple;
@@ -1572,7 +1572,7 @@ _bt_checkkeys(IndexScanDesc scan,
 static bool
 _bt_check_rowcompare(ScanKey skey, IndexTuple tuple, TupleDesc tupdesc,
 					 ScanDirection dir, bool *continuescan)
-{	StackTrace("_bt_check_rowcompare");
+{
 	ScanKey		subkey = (ScanKey) DatumGetPointer(skey->sk_argument);
 	int32		cmpresult = 0;
 	bool		result;
@@ -1750,7 +1750,7 @@ _bt_check_rowcompare(ScanKey skey, IndexTuple tuple, TupleDesc tupdesc,
  */
 void
 _bt_killitems(IndexScanDesc scan)
-{	StackTrace("_bt_killitems");
+{
 	BTScanOpaque so = (BTScanOpaque) scan->opaque;
 	Page		page;
 	BTPageOpaque opaque;
@@ -1891,7 +1891,7 @@ static BTVacInfo *btvacinfo;
  */
 BTCycleId
 _bt_vacuum_cycleid(Relation rel)
-{	StackTrace("_bt_vacuum_cycleid");
+{
 	BTCycleId	result = 0;
 	int			i;
 
@@ -1925,7 +1925,7 @@ _bt_vacuum_cycleid(Relation rel)
  */
 BTCycleId
 _bt_start_vacuum(Relation rel)
-{	StackTrace("_bt_start_vacuum");
+{
 	BTCycleId	result;
 	int			i;
 	BTOneVacInfo *vac;
@@ -1982,7 +1982,7 @@ _bt_start_vacuum(Relation rel)
  */
 void
 _bt_end_vacuum(Relation rel)
-{	StackTrace("_bt_end_vacuum");
+{
 	int			i;
 
 	LWLockAcquire(BtreeVacuumLock, LW_EXCLUSIVE);
@@ -2010,7 +2010,7 @@ _bt_end_vacuum(Relation rel)
  */
 void
 _bt_end_vacuum_callback(int code, Datum arg)
-{	StackTrace("_bt_end_vacuum_callback");
+{
 	_bt_end_vacuum((Relation) DatumGetPointer(arg));
 }
 
@@ -2019,7 +2019,7 @@ _bt_end_vacuum_callback(int code, Datum arg)
  */
 Size
 BTreeShmemSize(void)
-{	StackTrace("BTreeShmemSize");
+{
 	Size		size;
 
 	size = offsetof(BTVacInfo, vacuums);
@@ -2032,7 +2032,7 @@ BTreeShmemSize(void)
  */
 void
 BTreeShmemInit(void)
-{	StackTrace("BTreeShmemInit");
+{
 	bool		found;
 
 	btvacinfo = (BTVacInfo *) ShmemInitStruct("BTree Vacuum State",
@@ -2060,7 +2060,7 @@ BTreeShmemInit(void)
 
 Datum
 btoptions(PG_FUNCTION_ARGS)
-{	StackTrace("btoptions");
+{
 	Datum		reloptions = PG_GETARG_DATUM(0);
 	bool		validate = PG_GETARG_BOOL(1);
 	bytea	   *result;

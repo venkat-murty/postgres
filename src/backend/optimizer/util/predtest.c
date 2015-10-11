@@ -126,7 +126,7 @@ static void InvalidateOprProofCacheCallBack(Datum arg, int cacheid, uint32 hashv
  */
 bool
 predicate_implied_by(List *predicate_list, List *restrictinfo_list)
-{	StackTrace("predicate_implied_by");
+{
 	Node	   *p,
 			   *r;
 
@@ -184,7 +184,7 @@ predicate_implied_by(List *predicate_list, List *restrictinfo_list)
  */
 bool
 predicate_refuted_by(List *predicate_list, List *restrictinfo_list)
-{	StackTrace("predicate_refuted_by");
+{
 	Node	   *p,
 			   *r;
 
@@ -249,7 +249,7 @@ predicate_refuted_by(List *predicate_list, List *restrictinfo_list)
  */
 static bool
 predicate_implied_by_recurse(Node *clause, Node *predicate)
-{	StackTrace("predicate_implied_by_recurse");
+{
 	PredIterInfoData clause_info;
 	PredIterInfoData pred_info;
 	PredClass	pclass;
@@ -479,7 +479,7 @@ predicate_implied_by_recurse(Node *clause, Node *predicate)
  */
 static bool
 predicate_refuted_by_recurse(Node *clause, Node *predicate)
-{	StackTrace("predicate_refuted_by_recurse");
+{
 	PredIterInfoData clause_info;
 	PredIterInfoData pred_info;
 	PredClass	pclass;
@@ -747,7 +747,7 @@ predicate_refuted_by_recurse(Node *clause, Node *predicate)
  */
 static PredClass
 predicate_classify(Node *clause, PredIterInfo info)
-{	StackTrace("predicate_classify");
+{
 	/* Caller should not pass us NULL, nor a RestrictInfo clause */
 	Assert(clause != NULL);
 	Assert(!IsA(clause, RestrictInfo));
@@ -829,13 +829,13 @@ predicate_classify(Node *clause, PredIterInfo info)
  */
 static void
 list_startup_fn(Node *clause, PredIterInfo info)
-{	StackTrace("list_startup_fn");
+{
 	info->state = (void *) list_head((List *) clause);
 }
 
 static Node *
 list_next_fn(PredIterInfo info)
-{	StackTrace("list_next_fn");
+{
 	ListCell   *l = (ListCell *) info->state;
 	Node	   *n;
 
@@ -848,7 +848,7 @@ list_next_fn(PredIterInfo info)
 
 static void
 list_cleanup_fn(PredIterInfo info)
-{	StackTrace("list_cleanup_fn");
+{
 	/* Nothing to clean up */
 }
 
@@ -858,7 +858,7 @@ list_cleanup_fn(PredIterInfo info)
  */
 static void
 boolexpr_startup_fn(Node *clause, PredIterInfo info)
-{	StackTrace("boolexpr_startup_fn");
+{
 	info->state = (void *) list_head(((BoolExpr *) clause)->args);
 }
 
@@ -878,7 +878,7 @@ typedef struct
 
 static void
 arrayconst_startup_fn(Node *clause, PredIterInfo info)
-{	StackTrace("arrayconst_startup_fn");
+{
 	ScalarArrayOpExpr *saop = (ScalarArrayOpExpr *) clause;
 	ArrayConstIterState *state;
 	Const	   *arrayconst;
@@ -927,7 +927,7 @@ arrayconst_startup_fn(Node *clause, PredIterInfo info)
 
 static Node *
 arrayconst_next_fn(PredIterInfo info)
-{	StackTrace("arrayconst_next_fn");
+{
 	ArrayConstIterState *state = (ArrayConstIterState *) info->state;
 
 	if (state->next_elem >= state->num_elems)
@@ -940,7 +940,7 @@ arrayconst_next_fn(PredIterInfo info)
 
 static void
 arrayconst_cleanup_fn(PredIterInfo info)
-{	StackTrace("arrayconst_cleanup_fn");
+{
 	ArrayConstIterState *state = (ArrayConstIterState *) info->state;
 
 	pfree(state->elem_values);
@@ -961,7 +961,7 @@ typedef struct
 
 static void
 arrayexpr_startup_fn(Node *clause, PredIterInfo info)
-{	StackTrace("arrayexpr_startup_fn");
+{
 	ScalarArrayOpExpr *saop = (ScalarArrayOpExpr *) clause;
 	ArrayExprIterState *state;
 	ArrayExpr  *arrayexpr;
@@ -987,7 +987,7 @@ arrayexpr_startup_fn(Node *clause, PredIterInfo info)
 
 static Node *
 arrayexpr_next_fn(PredIterInfo info)
-{	StackTrace("arrayexpr_next_fn");
+{
 	ArrayExprIterState *state = (ArrayExprIterState *) info->state;
 
 	if (state->next == NULL)
@@ -999,7 +999,7 @@ arrayexpr_next_fn(PredIterInfo info)
 
 static void
 arrayexpr_cleanup_fn(PredIterInfo info)
-{	StackTrace("arrayexpr_cleanup_fn");
+{
 	ArrayExprIterState *state = (ArrayExprIterState *) info->state;
 
 	list_free(state->opexpr.args);
@@ -1036,7 +1036,7 @@ arrayexpr_cleanup_fn(PredIterInfo info)
  */
 static bool
 predicate_implied_by_simple_clause(Expr *predicate, Node *clause)
-{	StackTrace("predicate_implied_by_simple_clause");
+{
 	/* Allow interrupting long proof attempts */
 	CHECK_FOR_INTERRUPTS();
 
@@ -1095,7 +1095,7 @@ predicate_implied_by_simple_clause(Expr *predicate, Node *clause)
  */
 static bool
 predicate_refuted_by_simple_clause(Expr *predicate, Node *clause)
-{	StackTrace("predicate_refuted_by_simple_clause");
+{
 	/* Allow interrupting long proof attempts */
 	CHECK_FOR_INTERRUPTS();
 
@@ -1165,7 +1165,7 @@ predicate_refuted_by_simple_clause(Expr *predicate, Node *clause)
  */
 static Node *
 extract_not_arg(Node *clause)
-{	StackTrace("extract_not_arg");
+{
 	if (clause == NULL)
 		return NULL;
 	if (IsA(clause, BoolExpr))
@@ -1193,7 +1193,7 @@ extract_not_arg(Node *clause)
  */
 static Node *
 extract_strong_not_arg(Node *clause)
-{	StackTrace("extract_strong_not_arg");
+{
 	if (clause == NULL)
 		return NULL;
 	if (IsA(clause, BoolExpr))
@@ -1223,7 +1223,7 @@ extract_strong_not_arg(Node *clause)
  */
 static bool
 list_member_strip(List *list, Expr *datum)
-{	StackTrace("list_member_strip");
+{
 	ListCell   *cell;
 
 	if (datum && IsA(datum, RelabelType))
@@ -1401,7 +1401,7 @@ static const StrategyNumber BT_refute_table[6][6] = {
  */
 static bool
 operator_predicate_proof(Expr *predicate, Node *clause, bool refute_it)
-{	StackTrace("operator_predicate_proof");
+{
 	OpExpr	   *pred_opexpr,
 			   *clause_opexpr;
 	Oid			pred_collation,
@@ -1619,7 +1619,7 @@ operator_predicate_proof(Expr *predicate, Node *clause, bool refute_it)
  */
 static bool
 operator_same_subexprs_proof(Oid pred_op, Oid clause_op, bool refute_it)
-{	StackTrace("operator_same_subexprs_proof");
+{
 	/*
 	 * A simple and general rule is that the predicate is proven if clause_op
 	 * and pred_op are the same, or refuted if they are each other's negators.
@@ -1688,7 +1688,7 @@ static HTAB *OprProofCacheHash = NULL;
  */
 static OprProofCacheEntry *
 lookup_proof_cache(Oid pred_op, Oid clause_op, bool refute_it)
-{	StackTrace("lookup_proof_cache");
+{
 	OprProofCacheKey key;
 	OprProofCacheEntry *cache_entry;
 	bool		cfound;
@@ -1893,7 +1893,7 @@ lookup_proof_cache(Oid pred_op, Oid clause_op, bool refute_it)
  */
 static bool
 operator_same_subexprs_lookup(Oid pred_op, Oid clause_op, bool refute_it)
-{	StackTrace("operator_same_subexprs_lookup");
+{
 	OprProofCacheEntry *cache_entry;
 
 	cache_entry = lookup_proof_cache(pred_op, clause_op, refute_it);
@@ -1918,7 +1918,7 @@ operator_same_subexprs_lookup(Oid pred_op, Oid clause_op, bool refute_it)
  */
 static Oid
 get_btree_test_op(Oid pred_op, Oid clause_op, bool refute_it)
-{	StackTrace("get_btree_test_op");
+{
 	OprProofCacheEntry *cache_entry;
 
 	cache_entry = lookup_proof_cache(pred_op, clause_op, refute_it);
@@ -1934,7 +1934,7 @@ get_btree_test_op(Oid pred_op, Oid clause_op, bool refute_it)
  */
 static void
 InvalidateOprProofCacheCallBack(Datum arg, int cacheid, uint32 hashvalue)
-{	StackTrace("InvalidateOprProofCacheCallBack");
+{
 	HASH_SEQ_STATUS status;
 	OprProofCacheEntry *hentry;
 

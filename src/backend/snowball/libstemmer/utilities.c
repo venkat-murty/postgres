@@ -341,7 +341,7 @@ static symbol * increase_size(symbol * p, int n) {
    Also, frees z->p (and sets it to NULL) on error.
 */
 extern int replace_s(struct SN_env * z, int c_bra, int c_ket, int s_size, const symbol * s, int * adjptr)
-{	StackTrace("replace_s");
+{
     int adjustment;
     int len;
     if (z->p == NULL) {

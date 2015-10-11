@@ -58,7 +58,7 @@ typedef struct DecodingOutputState
 static void
 LogicalOutputPrepareWrite(LogicalDecodingContext *ctx, XLogRecPtr lsn, TransactionId xid,
 						  bool last_write)
-{	StackTrace("LogicalOutputPrepareWrite");
+{
 	resetStringInfo(ctx->out);
 }
 
@@ -68,7 +68,7 @@ LogicalOutputPrepareWrite(LogicalDecodingContext *ctx, XLogRecPtr lsn, Transacti
 static void
 LogicalOutputWrite(LogicalDecodingContext *ctx, XLogRecPtr lsn, TransactionId xid,
 				   bool last_write)
-{	StackTrace("LogicalOutputWrite");
+{
 	Datum		values[3];
 	bool		nulls[3];
 	DecodingOutputState *p;
@@ -106,7 +106,7 @@ LogicalOutputWrite(LogicalDecodingContext *ctx, XLogRecPtr lsn, TransactionId xi
  */
 static void
 XLogRead(char *buf, TimeLineID tli, XLogRecPtr startptr, Size count)
-{	StackTrace("XLogRead");
+{
 	char	   *p;
 	XLogRecPtr	recptr;
 	Size		nbytes;
@@ -204,7 +204,7 @@ XLogRead(char *buf, TimeLineID tli, XLogRecPtr startptr, Size count)
 
 static void
 check_permissions(void)
-{	StackTrace("check_permissions");
+{
 	if (!superuser() && !has_rolreplication(GetUserId()))
 		ereport(ERROR,
 				(errcode(ERRCODE_INSUFFICIENT_PRIVILEGE),
@@ -225,7 +225,7 @@ check_permissions(void)
 int
 logical_read_local_xlog_page(XLogReaderState *state, XLogRecPtr targetPagePtr,
 	int reqLen, XLogRecPtr targetRecPtr, char *cur_page, TimeLineID *pageTLI)
-{	StackTrace("logical_read_local_xlog_page");
+{
 	XLogRecPtr	flushptr,
 				loc;
 	int			count;
@@ -275,7 +275,7 @@ logical_read_local_xlog_page(XLogReaderState *state, XLogRecPtr targetPagePtr,
  */
 static Datum
 pg_logical_slot_get_changes_guts(FunctionCallInfo fcinfo, bool confirm, bool binary)
-{	StackTrace("pg_logical_slot_get_changes_guts");
+{
 	Name		name = PG_GETARG_NAME(0);
 	XLogRecPtr	upto_lsn;
 	int32		upto_nchanges;
@@ -479,7 +479,7 @@ pg_logical_slot_get_changes_guts(FunctionCallInfo fcinfo, bool confirm, bool bin
  */
 Datum
 pg_logical_slot_get_changes(PG_FUNCTION_ARGS)
-{	StackTrace("pg_logical_slot_get_changes");
+{
 	Datum		ret = pg_logical_slot_get_changes_guts(fcinfo, true, false);
 
 	return ret;
@@ -490,7 +490,7 @@ pg_logical_slot_get_changes(PG_FUNCTION_ARGS)
  */
 Datum
 pg_logical_slot_peek_changes(PG_FUNCTION_ARGS)
-{	StackTrace("pg_logical_slot_peek_changes");
+{
 	Datum		ret = pg_logical_slot_get_changes_guts(fcinfo, false, false);
 
 	return ret;
@@ -501,7 +501,7 @@ pg_logical_slot_peek_changes(PG_FUNCTION_ARGS)
  */
 Datum
 pg_logical_slot_get_binary_changes(PG_FUNCTION_ARGS)
-{	StackTrace("pg_logical_slot_get_binary_changes");
+{
 	Datum		ret = pg_logical_slot_get_changes_guts(fcinfo, true, true);
 
 	return ret;
@@ -512,7 +512,7 @@ pg_logical_slot_get_binary_changes(PG_FUNCTION_ARGS)
  */
 Datum
 pg_logical_slot_peek_binary_changes(PG_FUNCTION_ARGS)
-{	StackTrace("pg_logical_slot_peek_binary_changes");
+{
 	Datum		ret = pg_logical_slot_get_changes_guts(fcinfo, false, true);
 
 	return ret;

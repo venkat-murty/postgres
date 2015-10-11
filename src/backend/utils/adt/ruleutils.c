@@ -442,7 +442,7 @@ static char *flatten_reloptions(Oid relid);
  */
 Datum
 pg_get_ruledef(PG_FUNCTION_ARGS)
-{	StackTrace("pg_get_ruledef");
+{
 	Oid			ruleoid = PG_GETARG_OID(0);
 	int			prettyFlags;
 
@@ -453,7 +453,7 @@ pg_get_ruledef(PG_FUNCTION_ARGS)
 
 Datum
 pg_get_ruledef_ext(PG_FUNCTION_ARGS)
-{	StackTrace("pg_get_ruledef_ext");
+{
 	Oid			ruleoid = PG_GETARG_OID(0);
 	bool		pretty = PG_GETARG_BOOL(1);
 	int			prettyFlags;
@@ -465,7 +465,7 @@ pg_get_ruledef_ext(PG_FUNCTION_ARGS)
 
 static char *
 pg_get_ruledef_worker(Oid ruleoid, int prettyFlags)
-{	StackTrace("pg_get_ruledef_worker");
+{
 	Datum		args[1];
 	char		nulls[1];
 	int			spirc;
@@ -539,7 +539,7 @@ pg_get_ruledef_worker(Oid ruleoid, int prettyFlags)
  */
 Datum
 pg_get_viewdef(PG_FUNCTION_ARGS)
-{	StackTrace("pg_get_viewdef");
+{
 	/* By OID */
 	Oid			viewoid = PG_GETARG_OID(0);
 	int			prettyFlags;
@@ -551,7 +551,7 @@ pg_get_viewdef(PG_FUNCTION_ARGS)
 
 Datum
 pg_get_viewdef_ext(PG_FUNCTION_ARGS)
-{	StackTrace("pg_get_viewdef_ext");
+{
 	/* By OID */
 	Oid			viewoid = PG_GETARG_OID(0);
 	bool		pretty = PG_GETARG_BOOL(1);
@@ -563,7 +563,7 @@ pg_get_viewdef_ext(PG_FUNCTION_ARGS)
 
 Datum
 pg_get_viewdef_wrap(PG_FUNCTION_ARGS)
-{	StackTrace("pg_get_viewdef_wrap");
+{
 	/* By OID */
 	Oid			viewoid = PG_GETARG_OID(0);
 	int			wrap = PG_GETARG_INT32(1);
@@ -576,7 +576,7 @@ pg_get_viewdef_wrap(PG_FUNCTION_ARGS)
 
 Datum
 pg_get_viewdef_name(PG_FUNCTION_ARGS)
-{	StackTrace("pg_get_viewdef_name");
+{
 	/* By qualified name */
 	text	   *viewname = PG_GETARG_TEXT_P(0);
 	int			prettyFlags;
@@ -595,7 +595,7 @@ pg_get_viewdef_name(PG_FUNCTION_ARGS)
 
 Datum
 pg_get_viewdef_name_ext(PG_FUNCTION_ARGS)
-{	StackTrace("pg_get_viewdef_name_ext");
+{
 	/* By qualified name */
 	text	   *viewname = PG_GETARG_TEXT_P(0);
 	bool		pretty = PG_GETARG_BOOL(1);
@@ -617,7 +617,7 @@ pg_get_viewdef_name_ext(PG_FUNCTION_ARGS)
  */
 static char *
 pg_get_viewdef_worker(Oid viewoid, int prettyFlags, int wrapColumn)
-{	StackTrace("pg_get_viewdef_worker");
+{
 	Datum		args[2];
 	char		nulls[2];
 	int			spirc;
@@ -692,7 +692,7 @@ pg_get_viewdef_worker(Oid viewoid, int prettyFlags, int wrapColumn)
  */
 Datum
 pg_get_triggerdef(PG_FUNCTION_ARGS)
-{	StackTrace("pg_get_triggerdef");
+{
 	Oid			trigid = PG_GETARG_OID(0);
 
 	PG_RETURN_TEXT_P(string_to_text(pg_get_triggerdef_worker(trigid, false)));
@@ -700,7 +700,7 @@ pg_get_triggerdef(PG_FUNCTION_ARGS)
 
 Datum
 pg_get_triggerdef_ext(PG_FUNCTION_ARGS)
-{	StackTrace("pg_get_triggerdef_ext");
+{
 	Oid			trigid = PG_GETARG_OID(0);
 	bool		pretty = PG_GETARG_BOOL(1);
 
@@ -709,7 +709,7 @@ pg_get_triggerdef_ext(PG_FUNCTION_ARGS)
 
 static char *
 pg_get_triggerdef_worker(Oid trigid, bool pretty)
-{	StackTrace("pg_get_triggerdef_worker");
+{
 	HeapTuple	ht_trig;
 	Form_pg_trigger trigrec;
 	StringInfoData buf;
@@ -944,7 +944,7 @@ pg_get_triggerdef_worker(Oid trigid, bool pretty)
  */
 Datum
 pg_get_indexdef(PG_FUNCTION_ARGS)
-{	StackTrace("pg_get_indexdef");
+{
 	Oid			indexrelid = PG_GETARG_OID(0);
 	int			prettyFlags;
 
@@ -957,7 +957,7 @@ pg_get_indexdef(PG_FUNCTION_ARGS)
 
 Datum
 pg_get_indexdef_ext(PG_FUNCTION_ARGS)
-{	StackTrace("pg_get_indexdef_ext");
+{
 	Oid			indexrelid = PG_GETARG_OID(0);
 	int32		colno = PG_GETARG_INT32(1);
 	bool		pretty = PG_GETARG_BOOL(2);
@@ -974,14 +974,14 @@ pg_get_indexdef_ext(PG_FUNCTION_ARGS)
 /* Internal version that returns a palloc'd C string; no pretty-printing */
 char *
 pg_get_indexdef_string(Oid indexrelid)
-{	StackTrace("pg_get_indexdef_string");
+{
 	return pg_get_indexdef_worker(indexrelid, 0, NULL, false, true, 0);
 }
 
 /* Internal version that just reports the column definitions */
 char *
 pg_get_indexdef_columns(Oid indexrelid, bool pretty)
-{	StackTrace("pg_get_indexdef_columns");
+{
 	int			prettyFlags;
 
 	prettyFlags = pretty ? PRETTYFLAG_PAREN | PRETTYFLAG_INDENT : PRETTYFLAG_INDENT;
@@ -999,7 +999,7 @@ pg_get_indexdef_worker(Oid indexrelid, int colno,
 					   const Oid *excludeOps,
 					   bool attrsOnly, bool showTblSpc,
 					   int prettyFlags)
-{	StackTrace("pg_get_indexdef_worker");
+{
 	/* might want a separate isConstraint parameter later */
 	bool		isConstraint = (excludeOps != NULL);
 	HeapTuple	ht_idx;
@@ -1281,7 +1281,7 @@ pg_get_indexdef_worker(Oid indexrelid, int colno,
  */
 Datum
 pg_get_constraintdef(PG_FUNCTION_ARGS)
-{	StackTrace("pg_get_constraintdef");
+{
 	Oid			constraintId = PG_GETARG_OID(0);
 	int			prettyFlags;
 
@@ -1293,7 +1293,7 @@ pg_get_constraintdef(PG_FUNCTION_ARGS)
 
 Datum
 pg_get_constraintdef_ext(PG_FUNCTION_ARGS)
-{	StackTrace("pg_get_constraintdef_ext");
+{
 	Oid			constraintId = PG_GETARG_OID(0);
 	bool		pretty = PG_GETARG_BOOL(1);
 	int			prettyFlags;
@@ -1307,7 +1307,7 @@ pg_get_constraintdef_ext(PG_FUNCTION_ARGS)
 /* Internal version that returns a palloc'd C string; no pretty-printing */
 char *
 pg_get_constraintdef_string(Oid constraintId)
-{	StackTrace("pg_get_constraintdef_string");
+{
 	return pg_get_constraintdef_worker(constraintId, true, 0);
 }
 
@@ -1317,7 +1317,7 @@ pg_get_constraintdef_string(Oid constraintId)
 static char *
 pg_get_constraintdef_worker(Oid constraintId, bool fullCommand,
 							int prettyFlags)
-{	StackTrace("pg_get_constraintdef_worker");
+{
 	HeapTuple	tup;
 	Form_pg_constraint conForm;
 	StringInfoData buf;
@@ -1643,7 +1643,7 @@ pg_get_constraintdef_worker(Oid constraintId, bool fullCommand,
 static void
 decompile_column_index_array(Datum column_index_array, Oid relId,
 							 StringInfo buf)
-{	StackTrace("decompile_column_index_array");
+{
 	Datum	   *keys;
 	int			nKeys;
 	int			j;
@@ -1682,7 +1682,7 @@ decompile_column_index_array(Datum column_index_array, Oid relId,
  */
 Datum
 pg_get_expr(PG_FUNCTION_ARGS)
-{	StackTrace("pg_get_expr");
+{
 	text	   *expr = PG_GETARG_TEXT_P(0);
 	Oid			relid = PG_GETARG_OID(1);
 	int			prettyFlags;
@@ -1712,7 +1712,7 @@ pg_get_expr(PG_FUNCTION_ARGS)
 
 Datum
 pg_get_expr_ext(PG_FUNCTION_ARGS)
-{	StackTrace("pg_get_expr_ext");
+{
 	text	   *expr = PG_GETARG_TEXT_P(0);
 	Oid			relid = PG_GETARG_OID(1);
 	bool		pretty = PG_GETARG_BOOL(2);
@@ -1737,7 +1737,7 @@ pg_get_expr_ext(PG_FUNCTION_ARGS)
 
 static text *
 pg_get_expr_worker(text *expr, Oid relid, const char *relname, int prettyFlags)
-{	StackTrace("pg_get_expr_worker");
+{
 	Node	   *node;
 	List	   *context;
 	char	   *exprstr;
@@ -1772,7 +1772,7 @@ pg_get_expr_worker(text *expr, Oid relid, const char *relname, int prettyFlags)
  */
 Datum
 pg_get_userbyid(PG_FUNCTION_ARGS)
-{	StackTrace("pg_get_userbyid");
+{
 	Oid			roleid = PG_GETARG_OID(0);
 	Name		result;
 	HeapTuple	roletup;
@@ -1810,7 +1810,7 @@ pg_get_userbyid(PG_FUNCTION_ARGS)
  */
 Datum
 pg_get_serial_sequence(PG_FUNCTION_ARGS)
-{	StackTrace("pg_get_serial_sequence");
+{
 	text	   *tablename = PG_GETARG_TEXT_P(0);
 	text	   *columnname = PG_GETARG_TEXT_PP(1);
 	RangeVar   *tablerv;
@@ -1922,7 +1922,7 @@ pg_get_serial_sequence(PG_FUNCTION_ARGS)
  */
 Datum
 pg_get_functiondef(PG_FUNCTION_ARGS)
-{	StackTrace("pg_get_functiondef");
+{
 	Oid			funcid = PG_GETARG_OID(0);
 	StringInfoData buf;
 	StringInfoData dq;
@@ -2099,7 +2099,7 @@ pg_get_functiondef(PG_FUNCTION_ARGS)
  */
 Datum
 pg_get_function_arguments(PG_FUNCTION_ARGS)
-{	StackTrace("pg_get_function_arguments");
+{
 	Oid			funcid = PG_GETARG_OID(0);
 	StringInfoData buf;
 	HeapTuple	proctup;
@@ -2125,7 +2125,7 @@ pg_get_function_arguments(PG_FUNCTION_ARGS)
  */
 Datum
 pg_get_function_identity_arguments(PG_FUNCTION_ARGS)
-{	StackTrace("pg_get_function_identity_arguments");
+{
 	Oid			funcid = PG_GETARG_OID(0);
 	StringInfoData buf;
 	HeapTuple	proctup;
@@ -2150,7 +2150,7 @@ pg_get_function_identity_arguments(PG_FUNCTION_ARGS)
  */
 Datum
 pg_get_function_result(PG_FUNCTION_ARGS)
-{	StackTrace("pg_get_function_result");
+{
 	Oid			funcid = PG_GETARG_OID(0);
 	StringInfoData buf;
 	HeapTuple	proctup;
@@ -2174,7 +2174,7 @@ pg_get_function_result(PG_FUNCTION_ARGS)
  */
 static void
 print_function_rettype(StringInfo buf, HeapTuple proctup)
-{	StackTrace("print_function_rettype");
+{
 	Form_pg_proc proc = (Form_pg_proc) GETSTRUCT(proctup);
 	int			ntabargs = 0;
 	StringInfoData rbuf;
@@ -2213,7 +2213,7 @@ print_function_rettype(StringInfo buf, HeapTuple proctup)
 static int
 print_function_arguments(StringInfo buf, HeapTuple proctup,
 						 bool print_table_args, bool print_defaults)
-{	StackTrace("print_function_arguments");
+{
 	Form_pg_proc proc = (Form_pg_proc) GETSTRUCT(proctup);
 	int			numargs;
 	Oid		   *argtypes;
@@ -2354,7 +2354,7 @@ print_function_arguments(StringInfo buf, HeapTuple proctup,
 
 static bool
 is_input_argument(int nth, const char *argmodes)
-{	StackTrace("is_input_argument");
+{
 	return (!argmodes
 			|| argmodes[nth] == PROARGMODE_IN
 			|| argmodes[nth] == PROARGMODE_INOUT
@@ -2366,7 +2366,7 @@ is_input_argument(int nth, const char *argmodes)
  */
 static void
 print_function_trftypes(StringInfo buf, HeapTuple proctup)
-{	StackTrace("print_function_trftypes");
+{
 	Oid		   *trftypes;
 	int			ntypes;
 
@@ -2393,7 +2393,7 @@ print_function_trftypes(StringInfo buf, HeapTuple proctup)
  */
 Datum
 pg_get_function_arg_default(PG_FUNCTION_ARGS)
-{	StackTrace("pg_get_function_arg_default");
+{
 	Oid			funcid = PG_GETARG_OID(0);
 	int32		nth_arg = PG_GETARG_INT32(1);
 	HeapTuple	proctup;
@@ -2471,7 +2471,7 @@ pg_get_function_arg_default(PG_FUNCTION_ARGS)
 char *
 deparse_expression(Node *expr, List *dpcontext,
 				   bool forceprefix, bool showimplicit)
-{	StackTrace("deparse_expression");
+{
 	return deparse_expression_pretty(expr, dpcontext, forceprefix,
 									 showimplicit, 0, 0);
 }
@@ -2499,7 +2499,7 @@ static char *
 deparse_expression_pretty(Node *expr, List *dpcontext,
 						  bool forceprefix, bool showimplicit,
 						  int prettyFlags, int startIndent)
-{	StackTrace("deparse_expression_pretty");
+{
 	StringInfoData buf;
 	deparse_context context;
 
@@ -2529,7 +2529,7 @@ deparse_expression_pretty(Node *expr, List *dpcontext,
  */
 List *
 deparse_context_for(const char *aliasname, Oid relid)
-{	StackTrace("deparse_context_for");
+{
 	deparse_namespace *dpns;
 	RangeTblEntry *rte;
 
@@ -2571,7 +2571,7 @@ deparse_context_for(const char *aliasname, Oid relid)
  */
 List *
 deparse_context_for_plan_rtable(List *rtable, List *rtable_names)
-{	StackTrace("deparse_context_for_plan_rtable");
+{
 	deparse_namespace *dpns;
 
 	dpns = (deparse_namespace *) palloc0(sizeof(deparse_namespace));
@@ -2623,7 +2623,7 @@ deparse_context_for_plan_rtable(List *rtable, List *rtable_names)
 List *
 set_deparse_context_planstate(List *dpcontext,
 							  Node *planstate, List *ancestors)
-{	StackTrace("set_deparse_context_planstate");
+{
 	deparse_namespace *dpns;
 
 	/* Should always have one-entry namespace list for Plan deparsing */
@@ -2646,7 +2646,7 @@ set_deparse_context_planstate(List *dpcontext,
  */
 List *
 select_rtable_names_for_explain(List *rtable, Bitmapset *rels_used)
-{	StackTrace("select_rtable_names_for_explain");
+{
 	deparse_namespace dpns;
 
 	memset(&dpns, 0, sizeof(dpns));
@@ -2674,7 +2674,7 @@ select_rtable_names_for_explain(List *rtable, Bitmapset *rels_used)
 static void
 set_rtable_names(deparse_namespace *dpns, List *parent_namespaces,
 				 Bitmapset *rels_used)
-{	StackTrace("set_rtable_names");
+{
 	ListCell   *lc;
 	int			rtindex = 1;
 
@@ -2737,7 +2737,7 @@ set_rtable_names(deparse_namespace *dpns, List *parent_namespaces,
 static bool
 refname_is_unique(char *refname, deparse_namespace *dpns,
 				  List *parent_namespaces)
-{	StackTrace("refname_is_unique");
+{
 	ListCell   *lc;
 
 	foreach(lc, dpns->rtable_names)
@@ -2772,7 +2772,7 @@ refname_is_unique(char *refname, deparse_namespace *dpns,
 static void
 set_deparse_for_query(deparse_namespace *dpns, Query *query,
 					  List *parent_namespaces)
-{	StackTrace("set_deparse_for_query");
+{
 	ListCell   *lc;
 	ListCell   *lc2;
 
@@ -2834,7 +2834,7 @@ set_deparse_for_query(deparse_namespace *dpns, Query *query,
  */
 static void
 set_simple_column_names(deparse_namespace *dpns)
-{	StackTrace("set_simple_column_names");
+{
 	ListCell   *lc;
 	ListCell   *lc2;
 
@@ -2875,7 +2875,7 @@ set_simple_column_names(deparse_namespace *dpns)
  */
 static bool
 has_dangerous_join_using(deparse_namespace *dpns, Node *jtnode)
-{	StackTrace("has_dangerous_join_using");
+{
 	if (IsA(jtnode, RangeTblRef))
 	{
 		/* nothing to do here */
@@ -2941,7 +2941,7 @@ has_dangerous_join_using(deparse_namespace *dpns, Node *jtnode)
  */
 static void
 set_using_names(deparse_namespace *dpns, Node *jtnode, List *parentUsing)
-{	StackTrace("set_using_names");
+{
 	if (IsA(jtnode, RangeTblRef))
 	{
 		/* nothing to do now */
@@ -3107,7 +3107,7 @@ set_using_names(deparse_namespace *dpns, Node *jtnode, List *parentUsing)
 static void
 set_relation_column_names(deparse_namespace *dpns, RangeTblEntry *rte,
 						  deparse_columns *colinfo)
-{	StackTrace("set_relation_column_names");
+{
 	int			ncolumns;
 	char	  **real_colnames;
 	bool		changed_any;
@@ -3274,7 +3274,7 @@ set_relation_column_names(deparse_namespace *dpns, RangeTblEntry *rte,
 static void
 set_join_column_names(deparse_namespace *dpns, RangeTblEntry *rte,
 					  deparse_columns *colinfo)
-{	StackTrace("set_join_column_names");
+{
 	deparse_columns *leftcolinfo;
 	deparse_columns *rightcolinfo;
 	bool		changed_any;
@@ -3532,7 +3532,7 @@ set_join_column_names(deparse_namespace *dpns, RangeTblEntry *rte,
 static bool
 colname_is_unique(char *colname, deparse_namespace *dpns,
 				  deparse_columns *colinfo)
-{	StackTrace("colname_is_unique");
+{
 	int			i;
 	ListCell   *lc;
 
@@ -3586,7 +3586,7 @@ colname_is_unique(char *colname, deparse_namespace *dpns,
 static char *
 make_colname_unique(char *colname, deparse_namespace *dpns,
 					deparse_columns *colinfo)
-{	StackTrace("make_colname_unique");
+{
 	/*
 	 * If the selected name isn't unique, append digits to make it so
 	 */
@@ -3611,7 +3611,7 @@ make_colname_unique(char *colname, deparse_namespace *dpns,
  */
 static void
 expand_colnames_array_to(deparse_columns *colinfo, int n)
-{	StackTrace("expand_colnames_array_to");
+{
 	if (n > colinfo->num_cols)
 	{
 		if (colinfo->colnames == NULL)
@@ -3636,7 +3636,7 @@ expand_colnames_array_to(deparse_columns *colinfo, int n)
 static void
 identify_join_columns(JoinExpr *j, RangeTblEntry *jrte,
 					  deparse_columns *colinfo)
-{	StackTrace("identify_join_columns");
+{
 	int			numjoincols;
 	int			i;
 	ListCell   *lc;
@@ -3762,7 +3762,7 @@ identify_join_columns(JoinExpr *j, RangeTblEntry *jrte,
  */
 static void
 flatten_join_using_qual(Node *qual, List **leftvars, List **rightvars)
-{	StackTrace("flatten_join_using_qual");
+{
 	if (IsA(qual, BoolExpr))
 	{
 		/* Handle AND nodes by recursion */
@@ -3816,7 +3816,7 @@ flatten_join_using_qual(Node *qual, List **leftvars, List **rightvars)
  */
 static char *
 get_rtable_name(int rtindex, deparse_context *context)
-{	StackTrace("get_rtable_name");
+{
 	deparse_namespace *dpns = (deparse_namespace *) linitial(context->namespaces);
 
 	Assert(rtindex > 0 && rtindex <= list_length(dpns->rtable_names));
@@ -3835,7 +3835,7 @@ get_rtable_name(int rtindex, deparse_context *context)
  */
 static void
 set_deparse_planstate(deparse_namespace *dpns, PlanState *ps)
-{	StackTrace("set_deparse_planstate");
+{
 	dpns->planstate = ps;
 
 	/*
@@ -3911,7 +3911,7 @@ set_deparse_planstate(deparse_namespace *dpns, PlanState *ps)
 static void
 push_child_plan(deparse_namespace *dpns, PlanState *ps,
 				deparse_namespace *save_dpns)
-{	StackTrace("push_child_plan");
+{
 	/* Save state for restoration later */
 	*save_dpns = *dpns;
 
@@ -3927,7 +3927,7 @@ push_child_plan(deparse_namespace *dpns, PlanState *ps,
  */
 static void
 pop_child_plan(deparse_namespace *dpns, deparse_namespace *save_dpns)
-{	StackTrace("pop_child_plan");
+{
 	List	   *ancestors;
 
 	/* Get rid of ancestors list cell added by push_child_plan */
@@ -3958,7 +3958,7 @@ pop_child_plan(deparse_namespace *dpns, deparse_namespace *save_dpns)
 static void
 push_ancestor_plan(deparse_namespace *dpns, ListCell *ancestor_cell,
 				   deparse_namespace *save_dpns)
-{	StackTrace("push_ancestor_plan");
+{
 	PlanState  *ps = (PlanState *) lfirst(ancestor_cell);
 	List	   *ancestors;
 
@@ -3980,7 +3980,7 @@ push_ancestor_plan(deparse_namespace *dpns, ListCell *ancestor_cell,
  */
 static void
 pop_ancestor_plan(deparse_namespace *dpns, deparse_namespace *save_dpns)
-{	StackTrace("pop_ancestor_plan");
+{
 	/* Free the ancestor list made in push_ancestor_plan */
 	list_free(dpns->ancestors);
 
@@ -3997,7 +3997,7 @@ pop_ancestor_plan(deparse_namespace *dpns, deparse_namespace *save_dpns)
 static void
 make_ruledef(StringInfo buf, HeapTuple ruletup, TupleDesc rulettc,
 			 int prettyFlags)
-{	StackTrace("make_ruledef");
+{
 	char	   *rulename;
 	char		ev_type;
 	Oid			ev_class;
@@ -4179,7 +4179,7 @@ make_ruledef(StringInfo buf, HeapTuple ruletup, TupleDesc rulettc,
 static void
 make_viewdef(StringInfo buf, HeapTuple ruletup, TupleDesc rulettc,
 			 int prettyFlags, int wrapColumn)
-{	StackTrace("make_viewdef");
+{
 	Query	   *query;
 	char		ev_type;
 	Oid			ev_class;
@@ -4241,7 +4241,7 @@ make_viewdef(StringInfo buf, HeapTuple ruletup, TupleDesc rulettc,
  */
 static void
 get_tablesample_def(TableSampleClause *tablesample, deparse_context *context)
-{	StackTrace("get_tablesample_def");
+{
 	StringInfo	buf = context->buf;
 	HeapTuple	tuple;
 	Form_pg_tablesample_method tsm;
@@ -4291,7 +4291,7 @@ static void
 get_query_def(Query *query, StringInfo buf, List *parentnamespace,
 			  TupleDesc resultDesc,
 			  int prettyFlags, int wrapColumn, int startIndent)
-{	StackTrace("get_query_def");
+{
 	deparse_context context;
 	deparse_namespace dpns;
 
@@ -4362,7 +4362,7 @@ get_query_def(Query *query, StringInfo buf, List *parentnamespace,
  */
 static void
 get_values_def(List *values_lists, deparse_context *context)
-{	StackTrace("get_values_def");
+{
 	StringInfo	buf = context->buf;
 	bool		first_list = true;
 	ListCell   *vtl;
@@ -4407,7 +4407,7 @@ get_values_def(List *values_lists, deparse_context *context)
  */
 static void
 get_with_clause(Query *query, deparse_context *context)
-{	StackTrace("get_with_clause");
+{
 	StringInfo	buf = context->buf;
 	const char *sep;
 	ListCell   *l;
@@ -4476,7 +4476,7 @@ get_with_clause(Query *query, deparse_context *context)
 static void
 get_select_query_def(Query *query, deparse_context *context,
 					 TupleDesc resultDesc)
-{	StackTrace("get_select_query_def");
+{
 	StringInfo	buf = context->buf;
 	List	   *save_windowclause;
 	List	   *save_windowtlist;
@@ -4592,7 +4592,7 @@ get_select_query_def(Query *query, deparse_context *context,
  */
 static RangeTblEntry *
 get_simple_values_rte(Query *query)
-{	StackTrace("get_simple_values_rte");
+{
 	RangeTblEntry *result = NULL;
 	ListCell   *lc;
 
@@ -4649,7 +4649,7 @@ get_simple_values_rte(Query *query)
 static void
 get_basic_select_query(Query *query, deparse_context *context,
 					   TupleDesc resultDesc)
-{	StackTrace("get_basic_select_query");
+{
 	StringInfo	buf = context->buf;
 	RangeTblEntry *values_rte;
 	char	   *sep;
@@ -4776,7 +4776,7 @@ get_basic_select_query(Query *query, deparse_context *context,
 static void
 get_target_list(List *targetList, deparse_context *context,
 				TupleDesc resultDesc)
-{	StackTrace("get_target_list");
+{
 	StringInfo	buf = context->buf;
 	StringInfoData targetbuf;
 	bool		last_was_multiline = false;
@@ -4906,7 +4906,7 @@ get_target_list(List *targetList, deparse_context *context,
 static void
 get_setop_query(Node *setOp, Query *query, deparse_context *context,
 				TupleDesc resultDesc)
-{	StackTrace("get_setop_query");
+{
 	StringInfo	buf = context->buf;
 	bool		need_paren;
 
@@ -5039,7 +5039,7 @@ get_setop_query(Node *setOp, Query *query, deparse_context *context,
 static Node *
 get_rule_sortgroupclause(Index ref, List *tlist, bool force_colno,
 						 deparse_context *context)
-{	StackTrace("get_rule_sortgroupclause");
+{
 	StringInfo	buf = context->buf;
 	TargetEntry *tle;
 	Node	   *expr;
@@ -5095,7 +5095,7 @@ get_rule_sortgroupclause(Index ref, List *tlist, bool force_colno,
 static void
 get_rule_groupingset(GroupingSet *gset, List *targetlist,
 					 bool omit_parens, deparse_context *context)
-{	StackTrace("get_rule_groupingset");
+{
 	ListCell   *l;
 	StringInfo	buf = context->buf;
 	bool		omit_child_parens = true;
@@ -5155,7 +5155,7 @@ get_rule_groupingset(GroupingSet *gset, List *targetlist,
 static void
 get_rule_orderby(List *orderList, List *targetList,
 				 bool force_colno, deparse_context *context)
-{	StackTrace("get_rule_orderby");
+{
 	StringInfo	buf = context->buf;
 	const char *sep;
 	ListCell   *l;
@@ -5212,7 +5212,7 @@ get_rule_orderby(List *orderList, List *targetList,
  */
 static void
 get_rule_windowclause(Query *query, deparse_context *context)
-{	StackTrace("get_rule_windowclause");
+{
 	StringInfo	buf = context->buf;
 	const char *sep;
 	ListCell   *l;
@@ -5245,7 +5245,7 @@ get_rule_windowclause(Query *query, deparse_context *context)
 static void
 get_rule_windowspec(WindowClause *wc, List *targetList,
 					deparse_context *context)
-{	StackTrace("get_rule_windowspec");
+{
 	StringInfo	buf = context->buf;
 	bool		needspace = false;
 	const char *sep;
@@ -5345,7 +5345,7 @@ get_rule_windowspec(WindowClause *wc, List *targetList,
  */
 static void
 get_insert_query_def(Query *query, deparse_context *context)
-{	StackTrace("get_insert_query_def");
+{
 	StringInfo	buf = context->buf;
 	RangeTblEntry *select_rte = NULL;
 	RangeTblEntry *values_rte = NULL;
@@ -5549,7 +5549,7 @@ get_insert_query_def(Query *query, deparse_context *context)
  */
 static void
 get_update_query_def(Query *query, deparse_context *context)
-{	StackTrace("get_update_query_def");
+{
 	StringInfo	buf = context->buf;
 	RangeTblEntry *rte;
 
@@ -5605,7 +5605,7 @@ get_update_query_def(Query *query, deparse_context *context)
 static void
 get_update_query_targetlist_def(Query *query, List *targetList,
 								deparse_context *context, RangeTblEntry *rte)
-{	StackTrace("get_update_query_targetlist_def");
+{
 	StringInfo	buf = context->buf;
 	ListCell   *l;
 	ListCell   *next_ma_cell;
@@ -5744,7 +5744,7 @@ get_update_query_targetlist_def(Query *query, List *targetList,
  */
 static void
 get_delete_query_def(Query *query, deparse_context *context)
-{	StackTrace("get_delete_query_def");
+{
 	StringInfo	buf = context->buf;
 	RangeTblEntry *rte;
 
@@ -5795,7 +5795,7 @@ get_delete_query_def(Query *query, deparse_context *context)
  */
 static void
 get_utility_query_def(Query *query, deparse_context *context)
-{	StackTrace("get_utility_query_def");
+{
 	StringInfo	buf = context->buf;
 
 	if (query->utilityStmt && IsA(query->utilityStmt, NotifyStmt))
@@ -5841,7 +5841,7 @@ get_utility_query_def(Query *query, deparse_context *context)
  */
 static char *
 get_variable(Var *var, int levelsup, bool istoplevel, deparse_context *context)
-{	StackTrace("get_variable");
+{
 	StringInfo	buf = context->buf;
 	RangeTblEntry *rte;
 	AttrNumber	attnum;
@@ -6081,7 +6081,7 @@ get_variable(Var *var, int levelsup, bool istoplevel, deparse_context *context)
 static const char *
 get_name_for_var_field(Var *var, int fieldno,
 					   int levelsup, deparse_context *context)
-{	StackTrace("get_name_for_var_field");
+{
 	RangeTblEntry *rte;
 	AttrNumber	attnum;
 	int			netlevelsup;
@@ -6461,7 +6461,7 @@ get_name_for_var_field(Var *var, int fieldno,
 static Node *
 find_param_referent(Param *param, deparse_context *context,
 					deparse_namespace **dpns_p, ListCell **ancestor_cell_p)
-{	StackTrace("find_param_referent");
+{
 	/* Initialize output parameters to prevent compiler warnings */
 	*dpns_p = NULL;
 	*ancestor_cell_p = NULL;
@@ -6580,7 +6580,7 @@ find_param_referent(Param *param, deparse_context *context,
  */
 static void
 get_parameter(Param *param, deparse_context *context)
-{	StackTrace("get_parameter");
+{
 	Node	   *expr;
 	deparse_namespace *dpns;
 	ListCell   *ancestor_cell;
@@ -6646,7 +6646,7 @@ get_parameter(Param *param, deparse_context *context)
  */
 static const char *
 get_simple_binary_op_name(OpExpr *expr)
-{	StackTrace("get_simple_binary_op_name");
+{
 	List	   *args = expr->args;
 
 	if (list_length(args) == 2)
@@ -6672,7 +6672,7 @@ get_simple_binary_op_name(OpExpr *expr)
  */
 static bool
 isSimpleNode(Node *node, Node *parentNode, int prettyFlags)
-{	StackTrace("isSimpleNode");
+{
 	if (!node)
 		return false;
 
@@ -6885,7 +6885,7 @@ isSimpleNode(Node *node, Node *parentNode, int prettyFlags)
 static void
 appendContextKeyword(deparse_context *context, const char *str,
 					 int indentBefore, int indentAfter, int indentPlus)
-{	StackTrace("appendContextKeyword");
+{
 	StringInfo	buf = context->buf;
 
 	if (PRETTY_INDENT(context))
@@ -6938,7 +6938,7 @@ appendContextKeyword(deparse_context *context, const char *str,
  */
 static void
 removeStringInfoSpaces(StringInfo str)
-{	StackTrace("removeStringInfoSpaces");
+{
 	while (str->len > 0 && str->data[str->len - 1] == ' ')
 		str->data[--(str->len)] = '\0';
 }
@@ -6958,7 +6958,7 @@ removeStringInfoSpaces(StringInfo str)
 static void
 get_rule_expr_paren(Node *node, deparse_context *context,
 					bool showimplicit, Node *parentNode)
-{	StackTrace("get_rule_expr_paren");
+{
 	bool		need_paren;
 
 	need_paren = PRETTY_PAREN(context) &&
@@ -6990,7 +6990,7 @@ get_rule_expr_paren(Node *node, deparse_context *context,
 static void
 get_rule_expr(Node *node, deparse_context *context,
 			  bool showimplicit)
-{	StackTrace("get_rule_expr");
+{
 	StringInfo	buf = context->buf;
 
 	if (node == NULL)
@@ -7992,7 +7992,7 @@ get_rule_expr(Node *node, deparse_context *context,
  */
 static void
 get_oper_expr(OpExpr *expr, deparse_context *context)
-{	StackTrace("get_oper_expr");
+{
 	StringInfo	buf = context->buf;
 	Oid			opno = expr->opno;
 	List	   *args = expr->args;
@@ -8054,7 +8054,7 @@ get_oper_expr(OpExpr *expr, deparse_context *context)
 static void
 get_func_expr(FuncExpr *expr, deparse_context *context,
 			  bool showimplicit)
-{	StackTrace("get_func_expr");
+{
 	StringInfo	buf = context->buf;
 	Oid			funcoid = expr->funcid;
 	Oid			argtypes[FUNC_MAX_ARGS];
@@ -8138,7 +8138,7 @@ get_func_expr(FuncExpr *expr, deparse_context *context,
  */
 static void
 get_agg_expr(Aggref *aggref, deparse_context *context)
-{	StackTrace("get_agg_expr");
+{
 	StringInfo	buf = context->buf;
 	Oid			argtypes[FUNC_MAX_ARGS];
 	int			nargs;
@@ -8217,7 +8217,7 @@ get_agg_expr(Aggref *aggref, deparse_context *context)
  */
 static void
 get_windowfunc_expr(WindowFunc *wfunc, deparse_context *context)
-{	StackTrace("get_windowfunc_expr");
+{
 	StringInfo	buf = context->buf;
 	Oid			argtypes[FUNC_MAX_ARGS];
 	int			nargs;
@@ -8296,7 +8296,7 @@ static void
 get_coercion_expr(Node *arg, deparse_context *context,
 				  Oid resulttype, int32 resulttypmod,
 				  Node *parentNode)
-{	StackTrace("get_coercion_expr");
+{
 	StringInfo	buf = context->buf;
 
 	/*
@@ -8350,7 +8350,7 @@ get_coercion_expr(Node *arg, deparse_context *context,
  */
 static void
 get_const_expr(Const *constval, deparse_context *context, int showtype)
-{	StackTrace("get_const_expr");
+{
 	StringInfo	buf = context->buf;
 	Oid			typoutput;
 	bool		typIsVarlena;
@@ -8485,7 +8485,7 @@ get_const_expr(Const *constval, deparse_context *context, int showtype)
  */
 static void
 get_const_collation(Const *constval, deparse_context *context)
-{	StackTrace("get_const_collation");
+{
 	StringInfo	buf = context->buf;
 
 	if (OidIsValid(constval->constcollid))
@@ -8505,7 +8505,7 @@ get_const_collation(Const *constval, deparse_context *context)
  */
 static void
 simple_quote_literal(StringInfo buf, const char *val)
-{	StackTrace("simple_quote_literal");
+{
 	const char *valptr;
 
 	/*
@@ -8532,7 +8532,7 @@ simple_quote_literal(StringInfo buf, const char *val)
  */
 static void
 get_sublink_expr(SubLink *sublink, deparse_context *context)
-{	StackTrace("get_sublink_expr");
+{
 	StringInfo	buf = context->buf;
 	Query	   *query = (Query *) (sublink->subselect);
 	char	   *opname = NULL;
@@ -8662,7 +8662,7 @@ get_sublink_expr(SubLink *sublink, deparse_context *context)
  */
 static void
 get_from_clause(Query *query, const char *prefix, deparse_context *context)
-{	StackTrace("get_from_clause");
+{
 	StringInfo	buf = context->buf;
 	bool		first = true;
 	ListCell   *l;
@@ -8756,7 +8756,7 @@ get_from_clause(Query *query, const char *prefix, deparse_context *context)
 
 static void
 get_from_clause_item(Node *jtnode, Query *query, deparse_context *context)
-{	StackTrace("get_from_clause_item");
+{
 	StringInfo	buf = context->buf;
 	deparse_namespace *dpns = (deparse_namespace *) linitial(context->namespaces);
 
@@ -9074,7 +9074,7 @@ get_from_clause_item(Node *jtnode, Query *query, deparse_context *context)
  */
 static void
 get_column_alias_list(deparse_columns *colinfo, deparse_context *context)
-{	StackTrace("get_column_alias_list");
+{
 	StringInfo	buf = context->buf;
 	int			i;
 	bool		first = true;
@@ -9116,7 +9116,7 @@ static void
 get_from_clause_coldeflist(RangeTblFunction *rtfunc,
 						   deparse_columns *colinfo,
 						   deparse_context *context)
-{	StackTrace("get_from_clause_coldeflist");
+{
 	StringInfo	buf = context->buf;
 	ListCell   *l1;
 	ListCell   *l2;
@@ -9174,7 +9174,7 @@ get_from_clause_coldeflist(RangeTblFunction *rtfunc,
 static void
 get_opclass_name(Oid opclass, Oid actual_datatype,
 				 StringInfo buf)
-{	StackTrace("get_opclass_name");
+{
 	HeapTuple	ht_opc;
 	Form_pg_opclass opcrec;
 	char	   *opcname;
@@ -9213,7 +9213,7 @@ get_opclass_name(Oid opclass, Oid actual_datatype,
  */
 static Node *
 processIndirection(Node *node, deparse_context *context, bool printit)
-{	StackTrace("processIndirection");
+{
 	StringInfo	buf = context->buf;
 
 	for (;;)
@@ -9273,7 +9273,7 @@ processIndirection(Node *node, deparse_context *context, bool printit)
 
 static void
 printSubscripts(ArrayRef *aref, deparse_context *context)
-{	StackTrace("printSubscripts");
+{
 	StringInfo	buf = context->buf;
 	ListCell   *lowlist_item;
 	ListCell   *uplist_item;
@@ -9301,7 +9301,7 @@ printSubscripts(ArrayRef *aref, deparse_context *context)
  */
 const char *
 quote_identifier(const char *ident)
-{	StackTrace("quote_identifier");
+{
 	/*
 	 * Can avoid quoting if ident starts with a lowercase letter or underscore
 	 * and contains only lowercase letters, digits, and underscores, *and* is
@@ -9388,7 +9388,7 @@ quote_identifier(const char *ident)
 char *
 quote_qualified_identifier(const char *qualifier,
 						   const char *ident)
-{	StackTrace("quote_qualified_identifier");
+{
 	StringInfoData buf;
 
 	initStringInfo(&buf);
@@ -9407,7 +9407,7 @@ quote_qualified_identifier(const char *qualifier,
  */
 static char *
 get_relation_name(Oid relid)
-{	StackTrace("get_relation_name");
+{
 	char	   *relname = get_rel_name(relid);
 
 	if (!relname)
@@ -9427,7 +9427,7 @@ get_relation_name(Oid relid)
  */
 static char *
 generate_relation_name(Oid relid, List *namespaces)
-{	StackTrace("generate_relation_name");
+{
 	HeapTuple	tp;
 	Form_pg_class reltup;
 	bool		need_qual;
@@ -9498,7 +9498,7 @@ static char *
 generate_function_name(Oid funcid, int nargs, List *argnames, Oid *argtypes,
 					   bool has_variadic, bool *use_variadic_p,
 					   ParseExprKind special_exprkind)
-{	StackTrace("generate_function_name");
+{
 	char	   *result;
 	HeapTuple	proctup;
 	Form_pg_proc procform;
@@ -9606,7 +9606,7 @@ generate_function_name(Oid funcid, int nargs, List *argnames, Oid *argtypes,
  */
 static char *
 generate_operator_name(Oid operid, Oid arg1, Oid arg2)
-{	StackTrace("generate_operator_name");
+{
 	StringInfoData buf;
 	HeapTuple	opertup;
 	Form_pg_operator operform;
@@ -9676,7 +9676,7 @@ generate_operator_name(Oid operid, Oid arg1, Oid arg2)
  */
 char *
 generate_collation_name(Oid collid)
-{	StackTrace("generate_collation_name");
+{
 	HeapTuple	tp;
 	Form_pg_collation colltup;
 	char	   *collname;
@@ -9708,7 +9708,7 @@ generate_collation_name(Oid collid)
  */
 static text *
 string_to_text(char *str)
-{	StackTrace("string_to_text");
+{
 	text	   *result;
 
 	result = cstring_to_text(str);
@@ -9721,7 +9721,7 @@ string_to_text(char *str)
  */
 static char *
 flatten_reloptions(Oid relid)
-{	StackTrace("flatten_reloptions");
+{
 	char	   *result = NULL;
 	HeapTuple	tuple;
 	Datum		reloptions;

@@ -261,7 +261,7 @@ ExecEvalArrayRef(ArrayRefExprState *astate,
 				 ExprContext *econtext,
 				 bool *isNull,
 				 ExprDoneCond *isDone)
-{	StackTrace("ExecEvalArrayRef");
+{
 	ArrayRef   *arrayRef = (ArrayRef *) astate->xprstate.expr;
 	Datum		array_source;
 	bool		isAssignment = (arrayRef->refassgnexpr != NULL);
@@ -490,7 +490,7 @@ ExecEvalArrayRef(ArrayRefExprState *astate,
  */
 static bool
 isAssignmentIndirectionExpr(ExprState *exprstate)
-{	StackTrace("isAssignmentIndirectionExpr");
+{
 	if (exprstate == NULL)
 		return false;			/* just paranoia */
 	if (IsA(exprstate, FieldStoreState))
@@ -520,7 +520,7 @@ isAssignmentIndirectionExpr(ExprState *exprstate)
 static Datum
 ExecEvalAggref(AggrefExprState *aggref, ExprContext *econtext,
 			   bool *isNull, ExprDoneCond *isDone)
-{	StackTrace("ExecEvalAggref");
+{
 	if (isDone)
 		*isDone = ExprSingleResult;
 
@@ -541,7 +541,7 @@ ExecEvalAggref(AggrefExprState *aggref, ExprContext *econtext,
 static Datum
 ExecEvalWindowFunc(WindowFuncExprState *wfunc, ExprContext *econtext,
 				   bool *isNull, ExprDoneCond *isDone)
-{	StackTrace("ExecEvalWindowFunc");
+{
 	if (isDone)
 		*isDone = ExprSingleResult;
 
@@ -566,7 +566,7 @@ ExecEvalWindowFunc(WindowFuncExprState *wfunc, ExprContext *econtext,
 static Datum
 ExecEvalScalarVar(ExprState *exprstate, ExprContext *econtext,
 				  bool *isNull, ExprDoneCond *isDone)
-{	StackTrace("ExecEvalScalarVar");
+{
 	Var		   *variable = (Var *) exprstate->expr;
 	TupleTableSlot *slot;
 	AttrNumber	attnum;
@@ -654,7 +654,7 @@ ExecEvalScalarVar(ExprState *exprstate, ExprContext *econtext,
 static Datum
 ExecEvalScalarVarFast(ExprState *exprstate, ExprContext *econtext,
 					  bool *isNull, ExprDoneCond *isDone)
-{	StackTrace("ExecEvalScalarVarFast");
+{
 	Var		   *variable = (Var *) exprstate->expr;
 	TupleTableSlot *slot;
 	AttrNumber	attnum;
@@ -702,7 +702,7 @@ ExecEvalScalarVarFast(ExprState *exprstate, ExprContext *econtext,
 static Datum
 ExecEvalWholeRowVar(WholeRowVarExprState *wrvstate, ExprContext *econtext,
 					bool *isNull, ExprDoneCond *isDone)
-{	StackTrace("ExecEvalWholeRowVar");
+{
 	Var		   *variable = (Var *) wrvstate->xprstate.expr;
 	TupleTableSlot *slot;
 	TupleDesc	output_tupdesc;
@@ -929,7 +929,7 @@ ExecEvalWholeRowVar(WholeRowVarExprState *wrvstate, ExprContext *econtext,
 static Datum
 ExecEvalWholeRowFast(WholeRowVarExprState *wrvstate, ExprContext *econtext,
 					 bool *isNull, ExprDoneCond *isDone)
-{	StackTrace("ExecEvalWholeRowFast");
+{
 	Var		   *variable = (Var *) wrvstate->xprstate.expr;
 	TupleTableSlot *slot;
 	HeapTupleHeader dtuple;
@@ -985,7 +985,7 @@ ExecEvalWholeRowFast(WholeRowVarExprState *wrvstate, ExprContext *econtext,
 static Datum
 ExecEvalWholeRowSlow(WholeRowVarExprState *wrvstate, ExprContext *econtext,
 					 bool *isNull, ExprDoneCond *isDone)
-{	StackTrace("ExecEvalWholeRowSlow");
+{
 	Var		   *variable = (Var *) wrvstate->xprstate.expr;
 	TupleTableSlot *slot;
 	HeapTuple	tuple;
@@ -1074,7 +1074,7 @@ ExecEvalWholeRowSlow(WholeRowVarExprState *wrvstate, ExprContext *econtext,
 static Datum
 ExecEvalConst(ExprState *exprstate, ExprContext *econtext,
 			  bool *isNull, ExprDoneCond *isDone)
-{	StackTrace("ExecEvalConst");
+{
 	Const	   *con = (Const *) exprstate->expr;
 
 	if (isDone)
@@ -1093,7 +1093,7 @@ ExecEvalConst(ExprState *exprstate, ExprContext *econtext,
 static Datum
 ExecEvalParamExec(ExprState *exprstate, ExprContext *econtext,
 				  bool *isNull, ExprDoneCond *isDone)
-{	StackTrace("ExecEvalParamExec");
+{
 	Param	   *expression = (Param *) exprstate->expr;
 	int			thisParamId = expression->paramid;
 	ParamExecData *prm;
@@ -1126,7 +1126,7 @@ ExecEvalParamExec(ExprState *exprstate, ExprContext *econtext,
 static Datum
 ExecEvalParamExtern(ExprState *exprstate, ExprContext *econtext,
 					bool *isNull, ExprDoneCond *isDone)
-{	StackTrace("ExecEvalParamExtern");
+{
 	Param	   *expression = (Param *) exprstate->expr;
 	int			thisParamId = expression->paramid;
 	ParamListInfo paramInfo = econtext->ecxt_param_list_info;
@@ -1189,7 +1189,7 @@ Datum
 GetAttributeByNum(HeapTupleHeader tuple,
 				  AttrNumber attrno,
 				  bool *isNull)
-{	StackTrace("GetAttributeByNum");
+{
 	Datum		result;
 	Oid			tupType;
 	int32		tupTypmod;
@@ -1235,7 +1235,7 @@ GetAttributeByNum(HeapTupleHeader tuple,
 
 Datum
 GetAttributeByName(HeapTupleHeader tuple, const char *attname, bool *isNull)
-{	StackTrace("GetAttributeByName");
+{
 	AttrNumber	attrno;
 	Datum		result;
 	Oid			tupType;
@@ -1300,7 +1300,7 @@ GetAttributeByName(HeapTupleHeader tuple, const char *attname, bool *isNull)
 static void
 init_fcache(Oid foid, Oid input_collation, FuncExprState *fcache,
 			MemoryContext fcacheCxt, bool needDescForSets)
-{	StackTrace("init_fcache");
+{
 	AclResult	aclresult;
 
 	/* Check permission to call function */
@@ -1398,7 +1398,7 @@ init_fcache(Oid foid, Oid input_collation, FuncExprState *fcache,
  */
 static void
 ShutdownFuncExpr(Datum arg)
-{	StackTrace("ShutdownFuncExpr");
+{
 	FuncExprState *fcache = (FuncExprState *) DatumGetPointer(arg);
 
 	/* If we have a slot, make sure it's let go of any tuplestore pointer */
@@ -1432,7 +1432,7 @@ ShutdownFuncExpr(Datum arg)
 static TupleDesc
 get_cached_rowtype(Oid type_id, int32 typmod,
 				   TupleDesc *cache_field, ExprContext *econtext)
-{	StackTrace("get_cached_rowtype");
+{
 	TupleDesc	tupDesc = *cache_field;
 
 	/* Do lookup if no cached value or if requested type changed */
@@ -1464,7 +1464,7 @@ get_cached_rowtype(Oid type_id, int32 typmod,
  */
 static void
 ShutdownTupleDescRef(Datum arg)
-{	StackTrace("ShutdownTupleDescRef");
+{
 	TupleDesc  *cache_field = (TupleDesc *) DatumGetPointer(arg);
 
 	if (*cache_field)
@@ -1479,7 +1479,7 @@ static ExprDoneCond
 ExecEvalFuncArgs(FunctionCallInfo fcinfo,
 				 List *argList,
 				 ExprContext *econtext)
-{	StackTrace("ExecEvalFuncArgs");
+{
 	ExprDoneCond argIsDone;
 	int			i;
 	ListCell   *arg;
@@ -1531,7 +1531,7 @@ ExecPrepareTuplestoreResult(FuncExprState *fcache,
 							ExprContext *econtext,
 							Tuplestorestate *resultStore,
 							TupleDesc resultDesc)
-{	StackTrace("ExecPrepareTuplestoreResult");
+{
 	fcache->funcResultStore = resultStore;
 
 	if (fcache->funcResultSlot == NULL)
@@ -1606,7 +1606,7 @@ ExecPrepareTuplestoreResult(FuncExprState *fcache,
  */
 static void
 tupledesc_match(TupleDesc dst_tupdesc, TupleDesc src_tupdesc)
-{	StackTrace("tupledesc_match");
+{
 	int			i;
 
 	if (dst_tupdesc->natts != src_tupdesc->natts)
@@ -1658,7 +1658,7 @@ ExecMakeFunctionResult(FuncExprState *fcache,
 					   ExprContext *econtext,
 					   bool *isNull,
 					   ExprDoneCond *isDone)
-{	StackTrace("ExecMakeFunctionResult");
+{
 	List	   *arguments;
 	Datum		result;
 	FunctionCallInfo fcinfo;
@@ -1969,7 +1969,7 @@ ExecMakeFunctionResultNoSets(FuncExprState *fcache,
 							 ExprContext *econtext,
 							 bool *isNull,
 							 ExprDoneCond *isDone)
-{	StackTrace("ExecMakeFunctionResultNoSets");
+{
 	ListCell   *arg;
 	Datum		result;
 	FunctionCallInfo fcinfo;
@@ -2036,7 +2036,7 @@ ExecMakeTableFunctionResult(ExprState *funcexpr,
 							MemoryContext argContext,
 							TupleDesc expectedDesc,
 							bool randomAccess)
-{	StackTrace("ExecMakeTableFunctionResult");
+{
 	Tuplestorestate *tupstore = NULL;
 	TupleDesc	tupdesc = NULL;
 	Oid			funcrettype;
@@ -2384,7 +2384,7 @@ ExecEvalFunc(FuncExprState *fcache,
 			 ExprContext *econtext,
 			 bool *isNull,
 			 ExprDoneCond *isDone)
-{	StackTrace("ExecEvalFunc");
+{
 	/* This is called only the first time through */
 	FuncExpr   *func = (FuncExpr *) fcache->xprstate.expr;
 
@@ -2419,7 +2419,7 @@ ExecEvalOper(FuncExprState *fcache,
 			 ExprContext *econtext,
 			 bool *isNull,
 			 ExprDoneCond *isDone)
-{	StackTrace("ExecEvalOper");
+{
 	/* This is called only the first time through */
 	OpExpr	   *op = (OpExpr *) fcache->xprstate.expr;
 
@@ -2461,7 +2461,7 @@ ExecEvalDistinct(FuncExprState *fcache,
 				 ExprContext *econtext,
 				 bool *isNull,
 				 ExprDoneCond *isDone)
-{	StackTrace("ExecEvalDistinct");
+{
 	Datum		result;
 	FunctionCallInfo fcinfo;
 	ExprDoneCond argDone;
@@ -2528,7 +2528,7 @@ static Datum
 ExecEvalScalarArrayOp(ScalarArrayOpExprState *sstate,
 					  ExprContext *econtext,
 					  bool *isNull, ExprDoneCond *isDone)
-{	StackTrace("ExecEvalScalarArrayOp");
+{
 	ScalarArrayOpExpr *opexpr = (ScalarArrayOpExpr *) sstate->fxprstate.xprstate.expr;
 	bool		useOr = opexpr->useOr;
 	ArrayType  *arr;
@@ -2715,7 +2715,7 @@ ExecEvalScalarArrayOp(ScalarArrayOpExprState *sstate,
 static Datum
 ExecEvalNot(BoolExprState *notclause, ExprContext *econtext,
 			bool *isNull, ExprDoneCond *isDone)
-{	StackTrace("ExecEvalNot");
+{
 	ExprState  *clause = linitial(notclause->args);
 	Datum		expr_value;
 
@@ -2745,7 +2745,7 @@ ExecEvalNot(BoolExprState *notclause, ExprContext *econtext,
 static Datum
 ExecEvalOr(BoolExprState *orExpr, ExprContext *econtext,
 		   bool *isNull, ExprDoneCond *isDone)
-{	StackTrace("ExecEvalOr");
+{
 	List	   *clauses = orExpr->args;
 	ListCell   *clause;
 	bool		AnyNull;
@@ -2796,7 +2796,7 @@ ExecEvalOr(BoolExprState *orExpr, ExprContext *econtext,
 static Datum
 ExecEvalAnd(BoolExprState *andExpr, ExprContext *econtext,
 			bool *isNull, ExprDoneCond *isDone)
-{	StackTrace("ExecEvalAnd");
+{
 	List	   *clauses = andExpr->args;
 	ListCell   *clause;
 	bool		AnyNull;
@@ -2847,7 +2847,7 @@ static Datum
 ExecEvalConvertRowtype(ConvertRowtypeExprState *cstate,
 					   ExprContext *econtext,
 					   bool *isNull, ExprDoneCond *isDone)
-{	StackTrace("ExecEvalConvertRowtype");
+{
 	ConvertRowtypeExpr *convert = (ConvertRowtypeExpr *) cstate->xprstate.expr;
 	HeapTuple	result;
 	Datum		tupDatum;
@@ -2931,7 +2931,7 @@ ExecEvalConvertRowtype(ConvertRowtypeExprState *cstate,
 static Datum
 ExecEvalCase(CaseExprState *caseExpr, ExprContext *econtext,
 			 bool *isNull, ExprDoneCond *isDone)
-{	StackTrace("ExecEvalCase");
+{
 	List	   *clauses = caseExpr->args;
 	ListCell   *clause;
 	Datum		save_datum;
@@ -3012,7 +3012,7 @@ static Datum
 ExecEvalCaseTestExpr(ExprState *exprstate,
 					 ExprContext *econtext,
 					 bool *isNull, ExprDoneCond *isDone)
-{	StackTrace("ExecEvalCaseTestExpr");
+{
 	if (isDone)
 		*isDone = ExprSingleResult;
 	*isNull = econtext->caseValue_isNull;
@@ -3033,7 +3033,7 @@ ExecEvalGroupingFuncExpr(GroupingFuncExprState *gstate,
 						 ExprContext *econtext,
 						 bool *isNull,
 						 ExprDoneCond *isDone)
-{	StackTrace("ExecEvalGroupingFuncExpr");
+{
 	int			result = 0;
 	int			attnum = 0;
 	Bitmapset  *grouped_cols = gstate->aggstate->grouped_cols;
@@ -3064,7 +3064,7 @@ ExecEvalGroupingFuncExpr(GroupingFuncExprState *gstate,
 static Datum
 ExecEvalArray(ArrayExprState *astate, ExprContext *econtext,
 			  bool *isNull, ExprDoneCond *isDone)
-{	StackTrace("ExecEvalArray");
+{
 	ArrayExpr  *arrayExpr = (ArrayExpr *) astate->xprstate.expr;
 	ArrayType  *result;
 	ListCell   *element;
@@ -3291,7 +3291,7 @@ static Datum
 ExecEvalRow(RowExprState *rstate,
 			ExprContext *econtext,
 			bool *isNull, ExprDoneCond *isDone)
-{	StackTrace("ExecEvalRow");
+{
 	HeapTuple	tuple;
 	Datum	   *values;
 	bool	   *isnull;
@@ -3338,7 +3338,7 @@ static Datum
 ExecEvalRowCompare(RowCompareExprState *rstate,
 				   ExprContext *econtext,
 				   bool *isNull, ExprDoneCond *isDone)
-{	StackTrace("ExecEvalRowCompare");
+{
 	bool		result;
 	RowCompareType rctype = ((RowCompareExpr *) rstate->xprstate.expr)->rctype;
 	int32		cmpresult = 0;
@@ -3408,7 +3408,7 @@ ExecEvalRowCompare(RowCompareExprState *rstate,
 static Datum
 ExecEvalCoalesce(CoalesceExprState *coalesceExpr, ExprContext *econtext,
 				 bool *isNull, ExprDoneCond *isDone)
-{	StackTrace("ExecEvalCoalesce");
+{
 	ListCell   *arg;
 
 	if (isDone)
@@ -3437,7 +3437,7 @@ ExecEvalCoalesce(CoalesceExprState *coalesceExpr, ExprContext *econtext,
 static Datum
 ExecEvalMinMax(MinMaxExprState *minmaxExpr, ExprContext *econtext,
 			   bool *isNull, ExprDoneCond *isDone)
-{	StackTrace("ExecEvalMinMax");
+{
 	Datum		result = (Datum) 0;
 	MinMaxExpr *minmax = (MinMaxExpr *) minmaxExpr->xprstate.expr;
 	Oid			collation = minmax->inputcollid;
@@ -3497,7 +3497,7 @@ ExecEvalMinMax(MinMaxExprState *minmaxExpr, ExprContext *econtext,
 static Datum
 ExecEvalXml(XmlExprState *xmlExpr, ExprContext *econtext,
 			bool *isNull, ExprDoneCond *isDone)
-{	StackTrace("ExecEvalXml");
+{
 	XmlExpr    *xexpr = (XmlExpr *) xmlExpr->xprstate.expr;
 	Datum		value;
 	bool		isnull;
@@ -3721,7 +3721,7 @@ static Datum
 ExecEvalNullIf(FuncExprState *nullIfExpr,
 			   ExprContext *econtext,
 			   bool *isNull, ExprDoneCond *isDone)
-{	StackTrace("ExecEvalNullIf");
+{
 	Datum		result;
 	FunctionCallInfo fcinfo;
 	ExprDoneCond argDone;
@@ -3781,7 +3781,7 @@ ExecEvalNullTest(NullTestState *nstate,
 				 ExprContext *econtext,
 				 bool *isNull,
 				 ExprDoneCond *isDone)
-{	StackTrace("ExecEvalNullTest");
+{
 	NullTest   *ntest = (NullTest *) nstate->xprstate.expr;
 	Datum		result;
 
@@ -3875,7 +3875,7 @@ ExecEvalBooleanTest(GenericExprState *bstate,
 					ExprContext *econtext,
 					bool *isNull,
 					ExprDoneCond *isDone)
-{	StackTrace("ExecEvalBooleanTest");
+{
 	BooleanTest *btest = (BooleanTest *) bstate->xprstate.expr;
 	Datum		result;
 
@@ -3959,7 +3959,7 @@ ExecEvalBooleanTest(GenericExprState *bstate,
 static Datum
 ExecEvalCoerceToDomain(CoerceToDomainState *cstate, ExprContext *econtext,
 					   bool *isNull, ExprDoneCond *isDone)
-{	StackTrace("ExecEvalCoerceToDomain");
+{
 	CoerceToDomain *ctest = (CoerceToDomain *) cstate->xprstate.expr;
 	Datum		result;
 	ListCell   *l;
@@ -4042,7 +4042,7 @@ static Datum
 ExecEvalCoerceToDomainValue(ExprState *exprstate,
 							ExprContext *econtext,
 							bool *isNull, ExprDoneCond *isDone)
-{	StackTrace("ExecEvalCoerceToDomainValue");
+{
 	if (isDone)
 		*isDone = ExprSingleResult;
 	*isNull = econtext->domainValue_isNull;
@@ -4060,7 +4060,7 @@ ExecEvalFieldSelect(FieldSelectState *fstate,
 					ExprContext *econtext,
 					bool *isNull,
 					ExprDoneCond *isDone)
-{	StackTrace("ExecEvalFieldSelect");
+{
 	FieldSelect *fselect = (FieldSelect *) fstate->xprstate.expr;
 	AttrNumber	fieldnum = fselect->fieldnum;
 	Datum		result;
@@ -4138,7 +4138,7 @@ ExecEvalFieldStore(FieldStoreState *fstate,
 				   ExprContext *econtext,
 				   bool *isNull,
 				   ExprDoneCond *isDone)
-{	StackTrace("ExecEvalFieldStore");
+{
 	FieldStore *fstore = (FieldStore *) fstate->xprstate.expr;
 	HeapTuple	tuple;
 	Datum		tupDatum;
@@ -4238,7 +4238,7 @@ static Datum
 ExecEvalRelabelType(GenericExprState *exprstate,
 					ExprContext *econtext,
 					bool *isNull, ExprDoneCond *isDone)
-{	StackTrace("ExecEvalRelabelType");
+{
 	return ExecEvalExpr(exprstate->arg, econtext, isNull, isDone);
 }
 
@@ -4252,7 +4252,7 @@ static Datum
 ExecEvalCoerceViaIO(CoerceViaIOState *iostate,
 					ExprContext *econtext,
 					bool *isNull, ExprDoneCond *isDone)
-{	StackTrace("ExecEvalCoerceViaIO");
+{
 	Datum		result;
 	Datum		inputval;
 	char	   *string;
@@ -4286,7 +4286,7 @@ static Datum
 ExecEvalArrayCoerceExpr(ArrayCoerceExprState *astate,
 						ExprContext *econtext,
 						bool *isNull, ExprDoneCond *isDone)
-{	StackTrace("ExecEvalArrayCoerceExpr");
+{
 	ArrayCoerceExpr *acoerce = (ArrayCoerceExpr *) astate->xprstate.expr;
 	Datum		result;
 	FunctionCallInfoData locfcinfo;
@@ -4363,7 +4363,7 @@ ExecEvalArrayCoerceExpr(ArrayCoerceExprState *astate,
 static Datum
 ExecEvalCurrentOfExpr(ExprState *exprstate, ExprContext *econtext,
 					  bool *isNull, ExprDoneCond *isDone)
-{	StackTrace("ExecEvalCurrentOfExpr");
+{
 	ereport(ERROR,
 			(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
 		   errmsg("WHERE CURRENT OF is not supported for this table type")));
@@ -4381,7 +4381,7 @@ ExecEvalExprSwitchContext(ExprState *expression,
 						  ExprContext *econtext,
 						  bool *isNull,
 						  ExprDoneCond *isDone)
-{	StackTrace("ExecEvalExprSwitchContext");
+{
 	Datum		retDatum;
 	MemoryContext oldContext;
 
@@ -4426,7 +4426,7 @@ ExecEvalExprSwitchContext(ExprState *expression,
  */
 ExprState *
 ExecInitExpr(Expr *node, PlanState *parent)
-{	StackTrace("ExecInitExpr");
+{
 	ExprState  *state;
 
 	if (node == NULL)
@@ -5174,7 +5174,7 @@ ExecInitExpr(Expr *node, PlanState *parent)
  */
 ExprState *
 ExecPrepareExpr(Expr *node, EState *estate)
-{	StackTrace("ExecPrepareExpr");
+{
 	ExprState  *result;
 	MemoryContext oldcontext;
 
@@ -5225,7 +5225,7 @@ ExecPrepareExpr(Expr *node, EState *estate)
  */
 bool
 ExecQual(List *qual, ExprContext *econtext, bool resultForNull)
-{	StackTrace("ExecQual");
+{
 	bool		result;
 	MemoryContext oldContext;
 	ListCell   *l;
@@ -5292,7 +5292,7 @@ ExecQual(List *qual, ExprContext *econtext, bool resultForNull)
  */
 int
 ExecTargetListLength(List *targetlist)
-{	StackTrace("ExecTargetListLength");
+{
 	/* This used to be more complex, but fjoins are dead */
 	return list_length(targetlist);
 }
@@ -5302,7 +5302,7 @@ ExecTargetListLength(List *targetlist)
  */
 int
 ExecCleanTargetListLength(List *targetlist)
-{	StackTrace("ExecCleanTargetListLength");
+{
 	int			len = 0;
 	ListCell   *tl;
 
@@ -5339,7 +5339,7 @@ ExecTargetList(List *targetlist,
 			   bool *isnull,
 			   ExprDoneCond *itemIsDone,
 			   ExprDoneCond *isDone)
-{	StackTrace("ExecTargetList");
+{
 	MemoryContext oldContext;
 	ListCell   *tl;
 	bool		haveDoneSets;
@@ -5481,7 +5481,7 @@ ExecTargetList(List *targetlist,
  */
 TupleTableSlot *
 ExecProject(ProjectionInfo *projInfo, ExprDoneCond *isDone)
-{	StackTrace("ExecProject");
+{
 	TupleTableSlot *slot;
 	ExprContext *econtext;
 	int			numSimpleVars;

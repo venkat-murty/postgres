@@ -29,7 +29,7 @@ static void DiscardAll(bool isTopLevel);
  */
 void
 DiscardCommand(DiscardStmt *stmt, bool isTopLevel)
-{	StackTrace("DiscardCommand");
+{
 	switch (stmt->target)
 	{
 		case DISCARD_ALL:
@@ -55,7 +55,7 @@ DiscardCommand(DiscardStmt *stmt, bool isTopLevel)
 
 static void
 DiscardAll(bool isTopLevel)
-{	StackTrace("DiscardAll");
+{
 	/*
 	 * Disallow DISCARD ALL in a transaction block. This is arguably
 	 * inconsistent (we don't make a similar check in the command sequence

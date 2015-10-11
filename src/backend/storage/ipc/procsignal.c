@@ -79,7 +79,7 @@ static void CleanupProcSignalState(int status, Datum arg);
  */
 Size
 ProcSignalShmemSize(void)
-{	StackTrace("ProcSignalShmemSize");
+{
 	return NumProcSignalSlots * sizeof(ProcSignalSlot);
 }
 
@@ -89,7 +89,7 @@ ProcSignalShmemSize(void)
  */
 void
 ProcSignalShmemInit(void)
-{	StackTrace("ProcSignalShmemInit");
+{
 	Size		size = ProcSignalShmemSize();
 	bool		found;
 
@@ -110,7 +110,7 @@ ProcSignalShmemInit(void)
  */
 void
 ProcSignalInit(int pss_idx)
-{	StackTrace("ProcSignalInit");
+{
 	volatile ProcSignalSlot *slot;
 
 	Assert(pss_idx >= 1 && pss_idx <= NumProcSignalSlots);
@@ -143,7 +143,7 @@ ProcSignalInit(int pss_idx)
  */
 static void
 CleanupProcSignalState(int status, Datum arg)
-{	StackTrace("CleanupProcSignalState");
+{
 	int			pss_idx = DatumGetInt32(arg);
 	volatile ProcSignalSlot *slot;
 
@@ -185,7 +185,7 @@ CleanupProcSignalState(int status, Datum arg)
  */
 int
 SendProcSignal(pid_t pid, ProcSignalReason reason, BackendId backendId)
-{	StackTrace("SendProcSignal");
+{
 	volatile ProcSignalSlot *slot;
 
 	if (backendId != InvalidBackendId)
@@ -245,7 +245,7 @@ SendProcSignal(pid_t pid, ProcSignalReason reason, BackendId backendId)
  */
 static bool
 CheckProcSignal(ProcSignalReason reason)
-{	StackTrace("CheckProcSignal");
+{
 	volatile ProcSignalSlot *slot = MyProcSignalSlot;
 
 	if (slot != NULL)
@@ -266,7 +266,7 @@ CheckProcSignal(ProcSignalReason reason)
  */
 void
 procsignal_sigusr1_handler(SIGNAL_ARGS)
-{	StackTrace("procsignal_sigusr1_handler");
+{
 	int			save_errno = errno;
 
 	if (CheckProcSignal(PROCSIG_CATCHUP_INTERRUPT))

@@ -35,7 +35,7 @@ static Datum array_position_common(FunctionCallInfo fcinfo);
  */
 static ExpandedArrayHeader *
 fetch_array_arg_replace_nulls(FunctionCallInfo fcinfo, int argno)
-{	StackTrace("fetch_array_arg_replace_nulls");
+{
 	ExpandedArrayHeader *eah;
 	Oid			element_type;
 	ArrayMetaState *my_extra;
@@ -86,7 +86,7 @@ fetch_array_arg_replace_nulls(FunctionCallInfo fcinfo, int argno)
  */
 Datum
 array_append(PG_FUNCTION_ARGS)
-{	StackTrace("array_append");
+{
 	ExpandedArrayHeader *eah;
 	Datum		newelem;
 	bool		isNull;
@@ -143,7 +143,7 @@ array_append(PG_FUNCTION_ARGS)
  */
 Datum
 array_prepend(PG_FUNCTION_ARGS)
-{	StackTrace("array_prepend");
+{
 	ExpandedArrayHeader *eah;
 	Datum		newelem;
 	bool		isNull;
@@ -209,7 +209,7 @@ array_prepend(PG_FUNCTION_ARGS)
  */
 Datum
 array_cat(PG_FUNCTION_ARGS)
-{	StackTrace("array_cat");
+{
 	ArrayType  *v1,
 			   *v2;
 	ArrayType  *result;
@@ -451,7 +451,7 @@ create_singleton_array(FunctionCallInfo fcinfo,
 					   Datum element,
 					   bool isNull,
 					   int ndims)
-{	StackTrace("create_singleton_array");
+{
 	Datum		dvalues[1];
 	bool		nulls[1];
 	int16		typlen;
@@ -517,7 +517,7 @@ create_singleton_array(FunctionCallInfo fcinfo,
  */
 Datum
 array_agg_transfn(PG_FUNCTION_ARGS)
-{	StackTrace("array_agg_transfn");
+{
 	Oid			arg1_typeid = get_fn_expr_argtype(fcinfo->flinfo, 1);
 	MemoryContext aggcontext;
 	ArrayBuildState *state;
@@ -563,7 +563,7 @@ array_agg_transfn(PG_FUNCTION_ARGS)
 
 Datum
 array_agg_finalfn(PG_FUNCTION_ARGS)
-{	StackTrace("array_agg_finalfn");
+{
 	Datum		result;
 	ArrayBuildState *state;
 	int			dims[1];
@@ -598,7 +598,7 @@ array_agg_finalfn(PG_FUNCTION_ARGS)
  */
 Datum
 array_agg_array_transfn(PG_FUNCTION_ARGS)
-{	StackTrace("array_agg_array_transfn");
+{
 	Oid			arg1_typeid = get_fn_expr_argtype(fcinfo->flinfo, 1);
 	MemoryContext aggcontext;
 	ArrayBuildStateArr *state;
@@ -642,7 +642,7 @@ array_agg_array_transfn(PG_FUNCTION_ARGS)
 
 Datum
 array_agg_array_finalfn(PG_FUNCTION_ARGS)
-{	StackTrace("array_agg_array_finalfn");
+{
 	Datum		result;
 	ArrayBuildStateArr *state;
 
@@ -675,13 +675,13 @@ array_agg_array_finalfn(PG_FUNCTION_ARGS)
  */
 Datum
 array_position(PG_FUNCTION_ARGS)
-{	StackTrace("array_position");
+{
 	return array_position_common(fcinfo);
 }
 
 Datum
 array_position_start(PG_FUNCTION_ARGS)
-{	StackTrace("array_position_start");
+{
 	return array_position_common(fcinfo);
 }
 
@@ -694,7 +694,7 @@ array_position_start(PG_FUNCTION_ARGS)
  */
 static Datum
 array_position_common(FunctionCallInfo fcinfo)
-{	StackTrace("array_position_common");
+{
 	ArrayType  *array;
 	Oid			collation = PG_GET_COLLATION();
 	Oid			element_type;
@@ -844,7 +844,7 @@ array_position_common(FunctionCallInfo fcinfo)
  */
 Datum
 array_positions(PG_FUNCTION_ARGS)
-{	StackTrace("array_positions");
+{
 	ArrayType  *array;
 	Oid			collation = PG_GET_COLLATION();
 	Oid			element_type;

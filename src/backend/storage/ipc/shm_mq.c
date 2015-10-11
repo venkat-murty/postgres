@@ -162,7 +162,7 @@ MAXALIGN(offsetof(shm_mq, mq_ring)) + MAXIMUM_ALIGNOF;
  */
 shm_mq *
 shm_mq_create(void *address, Size size)
-{	StackTrace("shm_mq_create");
+{
 	shm_mq	   *mq = address;
 	Size		data_offset = MAXALIGN(offsetof(shm_mq, mq_ring));
 
@@ -191,7 +191,7 @@ shm_mq_create(void *address, Size size)
  */
 void
 shm_mq_set_receiver(shm_mq *mq, PGPROC *proc)
-{	StackTrace("shm_mq_set_receiver");
+{
 	volatile shm_mq *vmq = mq;
 	PGPROC	   *sender;
 
@@ -210,7 +210,7 @@ shm_mq_set_receiver(shm_mq *mq, PGPROC *proc)
  */
 void
 shm_mq_set_sender(shm_mq *mq, PGPROC *proc)
-{	StackTrace("shm_mq_set_sender");
+{
 	volatile shm_mq *vmq = mq;
 	PGPROC	   *receiver;
 
@@ -229,7 +229,7 @@ shm_mq_set_sender(shm_mq *mq, PGPROC *proc)
  */
 PGPROC *
 shm_mq_get_receiver(shm_mq *mq)
-{	StackTrace("shm_mq_get_receiver");
+{
 	volatile shm_mq *vmq = mq;
 	PGPROC	   *receiver;
 
@@ -245,7 +245,7 @@ shm_mq_get_receiver(shm_mq *mq)
  */
 PGPROC *
 shm_mq_get_sender(shm_mq *mq)
-{	StackTrace("shm_mq_get_sender");
+{
 	volatile shm_mq *vmq = mq;
 	PGPROC	   *sender;
 
@@ -279,7 +279,7 @@ shm_mq_get_sender(shm_mq *mq)
  */
 shm_mq_handle *
 shm_mq_attach(shm_mq *mq, dsm_segment *seg, BackgroundWorkerHandle *handle)
-{	StackTrace("shm_mq_attach");
+{
 	shm_mq_handle *mqh = palloc(sizeof(shm_mq_handle));
 
 	Assert(mq->mq_receiver == MyProc || mq->mq_sender == MyProc);
@@ -306,7 +306,7 @@ shm_mq_attach(shm_mq *mq, dsm_segment *seg, BackgroundWorkerHandle *handle)
  */
 void
 shm_mq_set_handle(shm_mq_handle *mqh, BackgroundWorkerHandle *handle)
-{	StackTrace("shm_mq_set_handle");
+{
 	Assert(mqh->mqh_handle == NULL);
 	mqh->mqh_handle = handle;
 }
@@ -316,7 +316,7 @@ shm_mq_set_handle(shm_mq_handle *mqh, BackgroundWorkerHandle *handle)
  */
 shm_mq_result
 shm_mq_send(shm_mq_handle *mqh, Size nbytes, const void *data, bool nowait)
-{	StackTrace("shm_mq_send");
+{
 	shm_mq_iovec iov;
 
 	iov.data = data;
@@ -342,7 +342,7 @@ shm_mq_send(shm_mq_handle *mqh, Size nbytes, const void *data, bool nowait)
  */
 shm_mq_result
 shm_mq_sendv(shm_mq_handle *mqh, shm_mq_iovec *iov, int iovcnt, bool nowait)
-{	StackTrace("shm_mq_sendv");
+{
 	shm_mq_result res;
 	shm_mq	   *mq = mqh->mqh_queue;
 	Size		nbytes = 0;
@@ -485,7 +485,7 @@ shm_mq_sendv(shm_mq_handle *mqh, shm_mq_iovec *iov, int iovcnt, bool nowait)
  */
 shm_mq_result
 shm_mq_receive(shm_mq_handle *mqh, Size *nbytesp, void **datap, bool nowait)
-{	StackTrace("shm_mq_receive");
+{
 	shm_mq	   *mq = mqh->mqh_queue;
 	shm_mq_result res;
 	Size		rb = 0;
@@ -696,7 +696,7 @@ shm_mq_receive(shm_mq_handle *mqh, Size *nbytesp, void **datap, bool nowait)
  */
 shm_mq_result
 shm_mq_wait_for_attach(shm_mq_handle *mqh)
-{	StackTrace("shm_mq_wait_for_attach");
+{
 	shm_mq	   *mq = mqh->mqh_queue;
 	PGPROC	  **victim;
 
@@ -726,7 +726,7 @@ shm_mq_wait_for_attach(shm_mq_handle *mqh)
  */
 void
 shm_mq_detach(shm_mq *mq)
-{	StackTrace("shm_mq_detach");
+{
 	volatile shm_mq *vmq = mq;
 	PGPROC	   *victim;
 
@@ -751,7 +751,7 @@ shm_mq_detach(shm_mq *mq)
 static shm_mq_result
 shm_mq_send_bytes(shm_mq_handle *mqh, Size nbytes, const void *data,
 				  bool nowait, Size *bytes_written)
-{	StackTrace("shm_mq_send_bytes");
+{
 	shm_mq	   *mq = mqh->mqh_queue;
 	Size		sent = 0;
 	uint64		used;
@@ -878,7 +878,7 @@ shm_mq_send_bytes(shm_mq_handle *mqh, Size nbytes, const void *data,
 static shm_mq_result
 shm_mq_receive_bytes(shm_mq *mq, Size bytes_needed, bool nowait,
 					 Size *nbytesp, void **datap)
-{	StackTrace("shm_mq_receive_bytes");
+{
 	Size		ringsize = mq->mq_ring_size;
 	uint64		used;
 	uint64		written;
@@ -948,7 +948,7 @@ shm_mq_receive_bytes(shm_mq *mq, Size bytes_needed, bool nowait,
 static bool
 shm_mq_wait_internal(volatile shm_mq *mq, PGPROC *volatile * ptr,
 					 BackgroundWorkerHandle *handle)
-{	StackTrace("shm_mq_wait_internal");
+{
 	bool		save_set_latch_on_sigusr1;
 	bool		result = false;
 
@@ -1016,7 +1016,7 @@ shm_mq_wait_internal(volatile shm_mq *mq, PGPROC *volatile * ptr,
  */
 static uint64
 shm_mq_get_bytes_read(volatile shm_mq *mq, bool *detached)
-{	StackTrace("shm_mq_get_bytes_read");
+{
 	uint64		v;
 
 	SpinLockAcquire(&mq->mq_mutex);
@@ -1032,7 +1032,7 @@ shm_mq_get_bytes_read(volatile shm_mq *mq, bool *detached)
  */
 static void
 shm_mq_inc_bytes_read(volatile shm_mq *mq, Size n)
-{	StackTrace("shm_mq_inc_bytes_read");
+{
 	PGPROC	   *sender;
 
 	SpinLockAcquire(&mq->mq_mutex);
@@ -1051,7 +1051,7 @@ shm_mq_inc_bytes_read(volatile shm_mq *mq, Size n)
  */
 static uint64
 shm_mq_get_bytes_written(volatile shm_mq *mq, bool *detached)
-{	StackTrace("shm_mq_get_bytes_written");
+{
 	uint64		v;
 
 	SpinLockAcquire(&mq->mq_mutex);
@@ -1067,7 +1067,7 @@ shm_mq_get_bytes_written(volatile shm_mq *mq, bool *detached)
  */
 static void
 shm_mq_inc_bytes_written(volatile shm_mq *mq, Size n)
-{	StackTrace("shm_mq_inc_bytes_written");
+{
 	SpinLockAcquire(&mq->mq_mutex);
 	mq->mq_bytes_written += n;
 	SpinLockRelease(&mq->mq_mutex);
@@ -1078,7 +1078,7 @@ shm_mq_inc_bytes_written(volatile shm_mq *mq, Size n)
  */
 static shm_mq_result
 shm_mq_notify_receiver(volatile shm_mq *mq)
-{	StackTrace("shm_mq_notify_receiver");
+{
 	PGPROC	   *receiver;
 	bool		detached;
 
@@ -1097,7 +1097,7 @@ shm_mq_notify_receiver(volatile shm_mq *mq)
 /* Shim for on_dsm_callback. */
 static void
 shm_mq_detach_callback(dsm_segment *seg, Datum arg)
-{	StackTrace("shm_mq_detach_callback");
+{
 	shm_mq	   *mq = (shm_mq *) DatumGetPointer(arg);
 
 	shm_mq_detach(mq);

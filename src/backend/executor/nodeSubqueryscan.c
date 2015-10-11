@@ -44,7 +44,7 @@ static TupleTableSlot *SubqueryNext(SubqueryScanState *node);
  */
 static TupleTableSlot *
 SubqueryNext(SubqueryScanState *node)
-{	StackTrace("SubqueryNext");
+{
 	TupleTableSlot *slot;
 
 	/*
@@ -73,7 +73,7 @@ SubqueryNext(SubqueryScanState *node)
  */
 static bool
 SubqueryRecheck(SubqueryScanState *node, TupleTableSlot *slot)
-{	StackTrace("SubqueryRecheck");
+{
 	/* nothing to check */
 	return true;
 }
@@ -89,7 +89,7 @@ SubqueryRecheck(SubqueryScanState *node, TupleTableSlot *slot)
  */
 TupleTableSlot *
 ExecSubqueryScan(SubqueryScanState *node)
-{	StackTrace("ExecSubqueryScan");
+{
 	return ExecScan(&node->ss,
 					(ExecScanAccessMtd) SubqueryNext,
 					(ExecScanRecheckMtd) SubqueryRecheck);
@@ -101,7 +101,7 @@ ExecSubqueryScan(SubqueryScanState *node)
  */
 SubqueryScanState *
 ExecInitSubqueryScan(SubqueryScan *node, EState *estate, int eflags)
-{	StackTrace("ExecInitSubqueryScan");
+{
 	SubqueryScanState *subquerystate;
 
 	/* check for unsupported flags */
@@ -171,7 +171,7 @@ ExecInitSubqueryScan(SubqueryScan *node, EState *estate, int eflags)
  */
 void
 ExecEndSubqueryScan(SubqueryScanState *node)
-{	StackTrace("ExecEndSubqueryScan");
+{
 	/*
 	 * Free the exprcontext
 	 */
@@ -197,7 +197,7 @@ ExecEndSubqueryScan(SubqueryScanState *node)
  */
 void
 ExecReScanSubqueryScan(SubqueryScanState *node)
-{	StackTrace("ExecReScanSubqueryScan");
+{
 	ExecScanReScan(&node->ss);
 
 	/*

@@ -82,7 +82,7 @@
 static void
 compute_return_type(TypeName *returnType, Oid languageOid,
 					Oid *prorettype_p, bool *returnsSet_p)
-{	StackTrace("compute_return_type");
+{
 	Oid			rettype;
 	Type		typtup;
 	AclResult	aclresult;
@@ -188,7 +188,7 @@ interpret_function_parameter_list(List *parameters,
 								  List **parameterDefaults,
 								  Oid *variadicArgType,
 								  Oid *requiredResultType)
-{	StackTrace("interpret_function_parameter_list");
+{
 	int			parameterCount = list_length(parameters);
 	Oid		   *inTypes;
 	int			inCount = 0;
@@ -466,7 +466,7 @@ compute_common_attribute(DefElem *defel,
 						 List **set_items,
 						 DefElem **cost_item,
 						 DefElem **rows_item)
-{	StackTrace("compute_common_attribute");
+{
 	if (strcmp(defel->defname, "volatility") == 0)
 	{
 		if (*volatility_item)
@@ -528,7 +528,7 @@ duplicate_error:
 
 static char
 interpret_func_volatility(DefElem *defel)
-{	StackTrace("interpret_func_volatility");
+{
 	char	   *str = strVal(defel->arg);
 
 	if (strcmp(str, "immutable") == 0)
@@ -551,7 +551,7 @@ interpret_func_volatility(DefElem *defel)
  */
 static ArrayType *
 update_proconfig_value(ArrayType *a, List *set_items)
-{	StackTrace("update_proconfig_value");
+{
 	ListCell   *l;
 
 	foreach(l, set_items)
@@ -593,7 +593,7 @@ compute_attributes_sql_style(List *options,
 							 ArrayType **proconfig,
 							 float4 *procost,
 							 float4 *prorows)
-{	StackTrace("compute_attributes_sql_style");
+{
 	ListCell   *option;
 	DefElem    *as_item = NULL;
 	DefElem    *language_item = NULL;
@@ -731,7 +731,7 @@ compute_attributes_sql_style(List *options,
  */
 static void
 compute_attributes_with_style(List *parameters, bool *isStrict_p, char *volatility_p)
-{	StackTrace("compute_attributes_with_style");
+{
 	ListCell   *pl;
 
 	foreach(pl, parameters)
@@ -768,7 +768,7 @@ static void
 interpret_AS_clause(Oid languageOid, const char *languageName,
 					char *funcname, List *as,
 					char **prosrc_str_p, char **probin_str_p)
-{	StackTrace("interpret_AS_clause");
+{
 	Assert(as != NIL);
 
 	if (languageOid == ClanguageId)
@@ -826,7 +826,7 @@ interpret_AS_clause(Oid languageOid, const char *languageName,
  */
 ObjectAddress
 CreateFunction(CreateFunctionStmt *stmt, const char *queryString)
-{	StackTrace("CreateFunction");
+{
 	char	   *probin_str;
 	char	   *prosrc_str;
 	Oid			prorettype;
@@ -1080,7 +1080,7 @@ CreateFunction(CreateFunctionStmt *stmt, const char *queryString)
  */
 void
 RemoveFunctionById(Oid funcOid)
-{	StackTrace("RemoveFunctionById");
+{
 	Relation	relation;
 	HeapTuple	tup;
 	bool		isagg;
@@ -1128,7 +1128,7 @@ RemoveFunctionById(Oid funcOid)
  */
 ObjectAddress
 AlterFunction(AlterFunctionStmt *stmt)
-{	StackTrace("AlterFunction");
+{
 	HeapTuple	tup;
 	Oid			funcOid;
 	Form_pg_proc procForm;
@@ -1274,7 +1274,7 @@ AlterFunction(AlterFunctionStmt *stmt)
  */
 void
 SetFunctionReturnType(Oid funcOid, Oid newRetType)
-{	StackTrace("SetFunctionReturnType");
+{
 	Relation	pg_proc_rel;
 	HeapTuple	tup;
 	Form_pg_proc procForm;
@@ -1308,7 +1308,7 @@ SetFunctionReturnType(Oid funcOid, Oid newRetType)
  */
 void
 SetFunctionArgType(Oid funcOid, int argIndex, Oid newArgType)
-{	StackTrace("SetFunctionArgType");
+{
 	Relation	pg_proc_rel;
 	HeapTuple	tup;
 	Form_pg_proc procForm;
@@ -1342,7 +1342,7 @@ SetFunctionArgType(Oid funcOid, int argIndex, Oid newArgType)
  */
 ObjectAddress
 CreateCast(CreateCastStmt *stmt)
-{	StackTrace("CreateCast");
+{
 	Oid			sourcetypeid;
 	Oid			targettypeid;
 	char		sourcetyptype;
@@ -1665,7 +1665,7 @@ CreateCast(CreateCastStmt *stmt)
  */
 Oid
 get_cast_oid(Oid sourcetypeid, Oid targettypeid, bool missing_ok)
-{	StackTrace("get_cast_oid");
+{
 	Oid			oid;
 
 	oid = GetSysCacheOid2(CASTSOURCETARGET,
@@ -1682,7 +1682,7 @@ get_cast_oid(Oid sourcetypeid, Oid targettypeid, bool missing_ok)
 
 void
 DropCastById(Oid castOid)
-{	StackTrace("DropCastById");
+{
 	Relation	relation;
 	ScanKeyData scankey;
 	SysScanDesc scan;
@@ -1709,7 +1709,7 @@ DropCastById(Oid castOid)
 
 static void
 check_transform_function(Form_pg_proc procstruct)
-{	StackTrace("check_transform_function");
+{
 	if (procstruct->provolatile == PROVOLATILE_VOLATILE)
 		ereport(ERROR,
 				(errcode(ERRCODE_INVALID_OBJECT_DEFINITION),
@@ -1742,7 +1742,7 @@ check_transform_function(Form_pg_proc procstruct)
  */
 ObjectAddress
 CreateTransform(CreateTransformStmt *stmt)
-{	StackTrace("CreateTransform");
+{
 	Oid			typeid;
 	char		typtype;
 	Oid			langid;
@@ -1950,7 +1950,7 @@ CreateTransform(CreateTransformStmt *stmt)
  */
 Oid
 get_transform_oid(Oid type_id, Oid lang_id, bool missing_ok)
-{	StackTrace("get_transform_oid");
+{
 	Oid			oid;
 
 	oid = GetSysCacheOid2(TRFTYPELANG,
@@ -1968,7 +1968,7 @@ get_transform_oid(Oid type_id, Oid lang_id, bool missing_ok)
 
 void
 DropTransformById(Oid transformOid)
-{	StackTrace("DropTransformById");
+{
 	Relation	relation;
 	ScanKeyData scankey;
 	SysScanDesc scan;
@@ -2002,7 +2002,7 @@ DropTransformById(Oid transformOid)
 void
 IsThereFunctionInNamespace(const char *proname, int pronargs,
 						   oidvector *proargtypes, Oid nspOid)
-{	StackTrace("IsThereFunctionInNamespace");
+{
 	/* check for duplicate name (more friendly than unique-index failure) */
 	if (SearchSysCacheExists3(PROCNAMEARGSNSP,
 							  CStringGetDatum(proname),
@@ -2022,7 +2022,7 @@ IsThereFunctionInNamespace(const char *proname, int pronargs,
  */
 void
 ExecuteDoStmt(DoStmt *stmt)
-{	StackTrace("ExecuteDoStmt");
+{
 	InlineCodeBlock *codeblock = makeNode(InlineCodeBlock);
 	ListCell   *arg;
 	DefElem    *as_item = NULL;

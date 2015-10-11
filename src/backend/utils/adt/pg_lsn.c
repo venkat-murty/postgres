@@ -28,7 +28,7 @@
 
 Datum
 pg_lsn_in(PG_FUNCTION_ARGS)
-{	StackTrace("pg_lsn_in");
+{
 	char	   *str = PG_GETARG_CSTRING(0);
 	int			len1,
 				len2;
@@ -58,7 +58,7 @@ pg_lsn_in(PG_FUNCTION_ARGS)
 
 Datum
 pg_lsn_out(PG_FUNCTION_ARGS)
-{	StackTrace("pg_lsn_out");
+{
 	XLogRecPtr	lsn = PG_GETARG_LSN(0);
 	char		buf[MAXPG_LSNLEN + 1];
 	char	   *result;
@@ -76,7 +76,7 @@ pg_lsn_out(PG_FUNCTION_ARGS)
 
 Datum
 pg_lsn_recv(PG_FUNCTION_ARGS)
-{	StackTrace("pg_lsn_recv");
+{
 	StringInfo	buf = (StringInfo) PG_GETARG_POINTER(0);
 	XLogRecPtr	result;
 
@@ -86,7 +86,7 @@ pg_lsn_recv(PG_FUNCTION_ARGS)
 
 Datum
 pg_lsn_send(PG_FUNCTION_ARGS)
-{	StackTrace("pg_lsn_send");
+{
 	XLogRecPtr	lsn = PG_GETARG_LSN(0);
 	StringInfoData buf;
 
@@ -102,7 +102,7 @@ pg_lsn_send(PG_FUNCTION_ARGS)
 
 Datum
 pg_lsn_eq(PG_FUNCTION_ARGS)
-{	StackTrace("pg_lsn_eq");
+{
 	XLogRecPtr	lsn1 = PG_GETARG_LSN(0);
 	XLogRecPtr	lsn2 = PG_GETARG_LSN(1);
 
@@ -111,7 +111,7 @@ pg_lsn_eq(PG_FUNCTION_ARGS)
 
 Datum
 pg_lsn_ne(PG_FUNCTION_ARGS)
-{	StackTrace("pg_lsn_ne");
+{
 	XLogRecPtr	lsn1 = PG_GETARG_LSN(0);
 	XLogRecPtr	lsn2 = PG_GETARG_LSN(1);
 
@@ -120,7 +120,7 @@ pg_lsn_ne(PG_FUNCTION_ARGS)
 
 Datum
 pg_lsn_lt(PG_FUNCTION_ARGS)
-{	StackTrace("pg_lsn_lt");
+{
 	XLogRecPtr	lsn1 = PG_GETARG_LSN(0);
 	XLogRecPtr	lsn2 = PG_GETARG_LSN(1);
 
@@ -129,7 +129,7 @@ pg_lsn_lt(PG_FUNCTION_ARGS)
 
 Datum
 pg_lsn_gt(PG_FUNCTION_ARGS)
-{	StackTrace("pg_lsn_gt");
+{
 	XLogRecPtr	lsn1 = PG_GETARG_LSN(0);
 	XLogRecPtr	lsn2 = PG_GETARG_LSN(1);
 
@@ -138,7 +138,7 @@ pg_lsn_gt(PG_FUNCTION_ARGS)
 
 Datum
 pg_lsn_le(PG_FUNCTION_ARGS)
-{	StackTrace("pg_lsn_le");
+{
 	XLogRecPtr	lsn1 = PG_GETARG_LSN(0);
 	XLogRecPtr	lsn2 = PG_GETARG_LSN(1);
 
@@ -147,7 +147,7 @@ pg_lsn_le(PG_FUNCTION_ARGS)
 
 Datum
 pg_lsn_ge(PG_FUNCTION_ARGS)
-{	StackTrace("pg_lsn_ge");
+{
 	XLogRecPtr	lsn1 = PG_GETARG_LSN(0);
 	XLogRecPtr	lsn2 = PG_GETARG_LSN(1);
 
@@ -157,7 +157,7 @@ pg_lsn_ge(PG_FUNCTION_ARGS)
 /* btree index opclass support */
 Datum
 pg_lsn_cmp(PG_FUNCTION_ARGS)
-{	StackTrace("pg_lsn_cmp");
+{
 	XLogRecPtr	a = PG_GETARG_LSN(0);
 	XLogRecPtr	b = PG_GETARG_LSN(1);
 
@@ -172,7 +172,7 @@ pg_lsn_cmp(PG_FUNCTION_ARGS)
 /* hash index opclass support */
 Datum
 pg_lsn_hash(PG_FUNCTION_ARGS)
-{	StackTrace("pg_lsn_hash");
+{
 	/* We can use hashint8 directly */
 	return hashint8(fcinfo);
 }
@@ -184,7 +184,7 @@ pg_lsn_hash(PG_FUNCTION_ARGS)
 
 Datum
 pg_lsn_mi(PG_FUNCTION_ARGS)
-{	StackTrace("pg_lsn_mi");
+{
 	XLogRecPtr	lsn1 = PG_GETARG_LSN(0);
 	XLogRecPtr	lsn2 = PG_GETARG_LSN(1);
 	char		buf[256];

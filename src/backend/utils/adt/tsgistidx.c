@@ -108,7 +108,7 @@ static int	outbuf_maxlen = 0;
 
 Datum
 gtsvectorout(PG_FUNCTION_ARGS)
-{	StackTrace("gtsvectorout");
+{
 	SignTSVector *key = (SignTSVector *) DatumGetPointer(PG_DETOAST_DATUM(PG_GETARG_POINTER(0)));
 	char	   *outbuf;
 
@@ -131,7 +131,7 @@ gtsvectorout(PG_FUNCTION_ARGS)
 
 static int
 compareint(const void *va, const void *vb)
-{	StackTrace("compareint");
+{
 	int32		a = *((const int32 *) va);
 	int32		b = *((const int32 *) vb);
 
@@ -146,7 +146,7 @@ compareint(const void *va, const void *vb)
  */
 static int
 uniqueint(int32 *a, int32 l)
-{	StackTrace("uniqueint");
+{
 	int32	   *ptr,
 			   *res;
 
@@ -167,7 +167,7 @@ uniqueint(int32 *a, int32 l)
 
 static void
 makesign(BITVECP sign, SignTSVector *a)
-{	StackTrace("makesign");
+{
 	int32		k,
 				len = ARRNELEM(a);
 	int32	   *ptr = GETARR(a);
@@ -179,7 +179,7 @@ makesign(BITVECP sign, SignTSVector *a)
 
 Datum
 gtsvector_compress(PG_FUNCTION_ARGS)
-{	StackTrace("gtsvector_compress");
+{
 	GISTENTRY  *entry = (GISTENTRY *) PG_GETARG_POINTER(0);
 	GISTENTRY  *retval = entry;
 
@@ -270,7 +270,7 @@ gtsvector_compress(PG_FUNCTION_ARGS)
 
 Datum
 gtsvector_decompress(PG_FUNCTION_ARGS)
-{	StackTrace("gtsvector_decompress");
+{
 	GISTENTRY  *entry = (GISTENTRY *) PG_GETARG_POINTER(0);
 	SignTSVector *key = (SignTSVector *) DatumGetPointer(PG_DETOAST_DATUM(entry->key));
 
@@ -299,7 +299,7 @@ typedef struct
  */
 static bool
 checkcondition_arr(void *checkval, QueryOperand *val)
-{	StackTrace("checkcondition_arr");
+{
 	int32	   *StopLow = ((CHKVAL *) checkval)->arrb;
 	int32	   *StopHigh = ((CHKVAL *) checkval)->arre;
 	int32	   *StopMiddle;
@@ -328,7 +328,7 @@ checkcondition_arr(void *checkval, QueryOperand *val)
 
 static bool
 checkcondition_bit(void *checkval, QueryOperand *val)
-{	StackTrace("checkcondition_bit");
+{
 	/*
 	 * we are not able to find a prefix in signature tree
 	 */
@@ -339,7 +339,7 @@ checkcondition_bit(void *checkval, QueryOperand *val)
 
 Datum
 gtsvector_consistent(PG_FUNCTION_ARGS)
-{	StackTrace("gtsvector_consistent");
+{
 	GISTENTRY  *entry = (GISTENTRY *) PG_GETARG_POINTER(0);
 	TSQuery		query = PG_GETARG_TSQUERY(1);
 
@@ -381,7 +381,7 @@ gtsvector_consistent(PG_FUNCTION_ARGS)
 
 static int32
 unionkey(BITVECP sbase, SignTSVector *add)
-{	StackTrace("unionkey");
+{
 	int32		i;
 
 	if (ISSIGNKEY(add))
@@ -407,7 +407,7 @@ unionkey(BITVECP sbase, SignTSVector *add)
 
 Datum
 gtsvector_union(PG_FUNCTION_ARGS)
-{	StackTrace("gtsvector_union");
+{
 	GistEntryVector *entryvec = (GistEntryVector *) PG_GETARG_POINTER(0);
 	int		   *size = (int *) PG_GETARG_POINTER(1);
 	BITVEC		base;
@@ -440,7 +440,7 @@ gtsvector_union(PG_FUNCTION_ARGS)
 
 Datum
 gtsvector_same(PG_FUNCTION_ARGS)
-{	StackTrace("gtsvector_same");
+{
 	SignTSVector *a = (SignTSVector *) PG_GETARG_POINTER(0);
 	SignTSVector *b = (SignTSVector *) PG_GETARG_POINTER(1);
 	bool	   *result = (bool *) PG_GETARG_POINTER(2);
@@ -498,7 +498,7 @@ gtsvector_same(PG_FUNCTION_ARGS)
 
 static int32
 sizebitvec(BITVECP sign)
-{	StackTrace("sizebitvec");
+{
 	int32		size = 0,
 				i;
 
@@ -509,7 +509,7 @@ sizebitvec(BITVECP sign)
 
 static int
 hemdistsign(BITVECP a, BITVECP b)
-{	StackTrace("hemdistsign");
+{
 	int			i,
 				diff,
 				dist = 0;
@@ -524,7 +524,7 @@ hemdistsign(BITVECP a, BITVECP b)
 
 static int
 hemdist(SignTSVector *a, SignTSVector *b)
-{	StackTrace("hemdist");
+{
 	if (ISALLTRUE(a))
 	{
 		if (ISALLTRUE(b))
@@ -540,7 +540,7 @@ hemdist(SignTSVector *a, SignTSVector *b)
 
 Datum
 gtsvector_penalty(PG_FUNCTION_ARGS)
-{	StackTrace("gtsvector_penalty");
+{
 	GISTENTRY  *origentry = (GISTENTRY *) PG_GETARG_POINTER(0); /* always ISSIGNKEY */
 	GISTENTRY  *newentry = (GISTENTRY *) PG_GETARG_POINTER(1);
 	float	   *penalty = (float *) PG_GETARG_POINTER(2);
@@ -574,7 +574,7 @@ typedef struct
 
 static void
 fillcache(CACHESIGN *item, SignTSVector *key)
-{	StackTrace("fillcache");
+{
 	item->allistrue = false;
 	if (ISARRKEY(key))
 		makesign(item->sign, key);
@@ -593,7 +593,7 @@ typedef struct
 
 static int
 comparecost(const void *va, const void *vb)
-{	StackTrace("comparecost");
+{
 	const SPLITCOST *a = (const SPLITCOST *) va;
 	const SPLITCOST *b = (const SPLITCOST *) vb;
 
@@ -606,7 +606,7 @@ comparecost(const void *va, const void *vb)
 
 static int
 hemdistcache(CACHESIGN *a, CACHESIGN *b)
-{	StackTrace("hemdistcache");
+{
 	if (a->allistrue)
 	{
 		if (b->allistrue)
@@ -622,7 +622,7 @@ hemdistcache(CACHESIGN *a, CACHESIGN *b)
 
 Datum
 gtsvector_picksplit(PG_FUNCTION_ARGS)
-{	StackTrace("gtsvector_picksplit");
+{
 	GistEntryVector *entryvec = (GistEntryVector *) PG_GETARG_POINTER(0);
 	GIST_SPLITVEC *v = (GIST_SPLITVEC *) PG_GETARG_POINTER(1);
 	OffsetNumber k,

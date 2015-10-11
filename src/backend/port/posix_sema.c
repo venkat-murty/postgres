@@ -59,7 +59,7 @@ static void ReleaseSemaphores(int status, Datum arg);
  */
 static sem_t *
 PosixSemaphoreCreate(void)
-{	StackTrace("PosixSemaphoreCreate");
+{
 	int			semKey;
 	char		semname[64];
 	sem_t	   *mySem;
@@ -108,7 +108,7 @@ PosixSemaphoreCreate(void)
  */
 static void
 PosixSemaphoreCreate(sem_t * sem)
-{	StackTrace("PosixSemaphoreCreate");
+{
 	if (sem_init(sem, 1, 1) < 0)
 		elog(FATAL, "sem_init failed: %m");
 }
@@ -120,7 +120,7 @@ PosixSemaphoreCreate(sem_t * sem)
  */
 static void
 PosixSemaphoreKill(sem_t * sem)
-{	StackTrace("PosixSemaphoreKill");
+{
 #ifdef USE_NAMED_POSIX_SEMAPHORES
 	/* Got to use sem_close for named semaphores */
 	if (sem_close(sem) < 0)
@@ -152,7 +152,7 @@ PosixSemaphoreKill(sem_t * sem)
  */
 void
 PGReserveSemaphores(int maxSemas, int port)
-{	StackTrace("PGReserveSemaphores");
+{
 	mySemPointers = (sem_t **) malloc(maxSemas * sizeof(sem_t *));
 	if (mySemPointers == NULL)
 		elog(PANIC, "out of memory");
@@ -170,7 +170,7 @@ PGReserveSemaphores(int maxSemas, int port)
  */
 static void
 ReleaseSemaphores(int status, Datum arg)
-{	StackTrace("ReleaseSemaphores");
+{
 	int			i;
 
 	for (i = 0; i < numSems; i++)
@@ -185,7 +185,7 @@ ReleaseSemaphores(int status, Datum arg)
  */
 void
 PGSemaphoreCreate(PGSemaphore sema)
-{	StackTrace("PGSemaphoreCreate");
+{
 	sem_t	   *newsem;
 
 	/* Can't do this in a backend, because static state is postmaster's */
@@ -212,7 +212,7 @@ PGSemaphoreCreate(PGSemaphore sema)
  */
 void
 PGSemaphoreReset(PGSemaphore sema)
-{	StackTrace("PGSemaphoreReset");
+{
 	/*
 	 * There's no direct API for this in POSIX, so we have to ratchet the
 	 * semaphore down to 0 with repeated trywait's.
@@ -237,7 +237,7 @@ PGSemaphoreReset(PGSemaphore sema)
  */
 void
 PGSemaphoreLock(PGSemaphore sema)
-{	StackTrace("PGSemaphoreLock");
+{
 	int			errStatus;
 
 	/* See notes in sysv_sema.c's implementation of PGSemaphoreLock. */
@@ -257,7 +257,7 @@ PGSemaphoreLock(PGSemaphore sema)
  */
 void
 PGSemaphoreUnlock(PGSemaphore sema)
-{	StackTrace("PGSemaphoreUnlock");
+{
 	int			errStatus;
 
 	/*
@@ -282,7 +282,7 @@ PGSemaphoreUnlock(PGSemaphore sema)
  */
 bool
 PGSemaphoreTryLock(PGSemaphore sema)
-{	StackTrace("PGSemaphoreTryLock");
+{
 	int			errStatus;
 
 	/*

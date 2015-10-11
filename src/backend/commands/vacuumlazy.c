@@ -171,7 +171,7 @@ static bool heap_page_is_all_visible(Relation rel, Buffer buf,
 void
 lazy_vacuum_rel(Relation onerel, int options, VacuumParams *params,
 				BufferAccessStrategy bstrategy)
-{	StackTrace("lazy_vacuum_rel");
+{
 	LVRelStats *vacrelstats;
 	Relation   *Irel;
 	int			nindexes;
@@ -403,7 +403,7 @@ lazy_vacuum_rel(Relation onerel, int options, VacuumParams *params,
  */
 static void
 vacuum_log_cleanup_info(Relation rel, LVRelStats *vacrelstats)
-{	StackTrace("vacuum_log_cleanup_info");
+{
 	/*
 	 * Skip this for relations for which no WAL is to be written, or if we're
 	 * not trying to support archive recovery.
@@ -437,7 +437,7 @@ vacuum_log_cleanup_info(Relation rel, LVRelStats *vacrelstats)
 static void
 lazy_scan_heap(Relation onerel, LVRelStats *vacrelstats,
 			   Relation *Irel, int nindexes, bool scan_all)
-{	StackTrace("lazy_scan_heap");
+{
 	BlockNumber nblocks,
 				blkno;
 	HeapTupleData tuple;
@@ -1154,7 +1154,7 @@ lazy_scan_heap(Relation onerel, LVRelStats *vacrelstats,
  */
 static void
 lazy_vacuum_heap(Relation onerel, LVRelStats *vacrelstats)
-{	StackTrace("lazy_vacuum_heap");
+{
 	int			tupindex;
 	int			npages;
 	PGRUsage	ru0;
@@ -1221,7 +1221,7 @@ lazy_vacuum_heap(Relation onerel, LVRelStats *vacrelstats)
 static int
 lazy_vacuum_page(Relation onerel, BlockNumber blkno, Buffer buffer,
 				 int tupindex, LVRelStats *vacrelstats, Buffer *vmbuffer)
-{	StackTrace("lazy_vacuum_page");
+{
 	Page		page = BufferGetPage(buffer);
 	OffsetNumber unused[MaxOffsetNumber];
 	int			uncnt = 0;
@@ -1303,7 +1303,7 @@ lazy_vacuum_page(Relation onerel, BlockNumber blkno, Buffer buffer,
  */
 static bool
 lazy_check_needs_freeze(Buffer buf)
-{	StackTrace("lazy_check_needs_freeze");
+{
 	Page		page;
 	OffsetNumber offnum,
 				maxoff;
@@ -1350,7 +1350,7 @@ static void
 lazy_vacuum_index(Relation indrel,
 				  IndexBulkDeleteResult **stats,
 				  LVRelStats *vacrelstats)
-{	StackTrace("lazy_vacuum_index");
+{
 	IndexVacuumInfo ivinfo;
 	PGRUsage	ru0;
 
@@ -1381,7 +1381,7 @@ static void
 lazy_cleanup_index(Relation indrel,
 				   IndexBulkDeleteResult *stats,
 				   LVRelStats *vacrelstats)
-{	StackTrace("lazy_cleanup_index");
+{
 	IndexVacuumInfo ivinfo;
 	PGRUsage	ru0;
 
@@ -1433,7 +1433,7 @@ lazy_cleanup_index(Relation indrel,
  */
 static void
 lazy_truncate_heap(Relation onerel, LVRelStats *vacrelstats)
-{	StackTrace("lazy_truncate_heap");
+{
 	BlockNumber old_rel_pages = vacrelstats->rel_pages;
 	BlockNumber new_rel_pages;
 	PGRUsage	ru0;
@@ -1557,7 +1557,7 @@ lazy_truncate_heap(Relation onerel, LVRelStats *vacrelstats)
  */
 static BlockNumber
 count_nondeletable_pages(Relation onerel, LVRelStats *vacrelstats)
-{	StackTrace("count_nondeletable_pages");
+{
 	BlockNumber blkno;
 	instr_time	starttime;
 
@@ -1675,7 +1675,7 @@ count_nondeletable_pages(Relation onerel, LVRelStats *vacrelstats)
  */
 static void
 lazy_space_alloc(LVRelStats *vacrelstats, BlockNumber relblocks)
-{	StackTrace("lazy_space_alloc");
+{
 	long		maxtuples;
 	int			vac_work_mem = IsAutoVacuumWorkerProcess() &&
 	autovacuum_work_mem != -1 ?
@@ -1711,7 +1711,7 @@ lazy_space_alloc(LVRelStats *vacrelstats, BlockNumber relblocks)
 static void
 lazy_record_dead_tuple(LVRelStats *vacrelstats,
 					   ItemPointer itemptr)
-{	StackTrace("lazy_record_dead_tuple");
+{
 	/*
 	 * The array shouldn't overflow under normal behavior, but perhaps it
 	 * could if we are given a really small maintenance_work_mem. In that
@@ -1733,7 +1733,7 @@ lazy_record_dead_tuple(LVRelStats *vacrelstats,
  */
 static bool
 lazy_tid_reaped(ItemPointer itemptr, void *state)
-{	StackTrace("lazy_tid_reaped");
+{
 	LVRelStats *vacrelstats = (LVRelStats *) state;
 	ItemPointer res;
 
@@ -1751,7 +1751,7 @@ lazy_tid_reaped(ItemPointer itemptr, void *state)
  */
 static int
 vac_cmp_itemptr(const void *left, const void *right)
-{	StackTrace("vac_cmp_itemptr");
+{
 	BlockNumber lblk,
 				rblk;
 	OffsetNumber loff,
@@ -1783,7 +1783,7 @@ vac_cmp_itemptr(const void *left, const void *right)
  */
 static bool
 heap_page_is_all_visible(Relation rel, Buffer buf, TransactionId *visibility_cutoff_xid)
-{	StackTrace("heap_page_is_all_visible");
+{
 	Page		page = BufferGetPage(buf);
 	BlockNumber blockno = BufferGetBlockNumber(buf);
 	OffsetNumber offnum,

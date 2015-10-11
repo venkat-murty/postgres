@@ -20,19 +20,19 @@
 
 static void
 out_gistxlogPageUpdate(StringInfo buf, gistxlogPageUpdate *xlrec)
-{	StackTrace("out_gistxlogPageUpdate");
+{
 }
 
 static void
 out_gistxlogPageSplit(StringInfo buf, gistxlogPageSplit *xlrec)
-{	StackTrace("out_gistxlogPageSplit");
+{
 	appendStringInfo(buf, "page_split: splits to %d pages",
 					 xlrec->npage);
 }
 
 void
 gist_desc(StringInfo buf, XLogReaderState *record)
-{	StackTrace("gist_desc");
+{
 	char	   *rec = XLogRecGetData(record);
 	uint8		info = XLogRecGetInfo(record) & ~XLR_INFO_MASK;
 
@@ -51,7 +51,7 @@ gist_desc(StringInfo buf, XLogReaderState *record)
 
 const char *
 gist_identify(uint8 info)
-{	StackTrace("gist_identify");
+{
 	const char *id = NULL;
 
 	switch (info & ~XLR_INFO_MASK)

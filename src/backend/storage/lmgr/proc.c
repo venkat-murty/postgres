@@ -96,7 +96,7 @@ static void CheckDeadLock(void);
  */
 Size
 ProcGlobalShmemSize(void)
-{	StackTrace("ProcGlobalShmemSize");
+{
 	Size		size = 0;
 
 	/* ProcGlobal */
@@ -122,7 +122,7 @@ ProcGlobalShmemSize(void)
  */
 int
 ProcGlobalSemas(void)
-{	StackTrace("ProcGlobalSemas");
+{
 	/*
 	 * We need a sema per backend (including autovacuum), plus one for each
 	 * auxiliary process.
@@ -156,7 +156,7 @@ ProcGlobalSemas(void)
  */
 void
 InitProcGlobal(void)
-{	StackTrace("InitProcGlobal");
+{
 	PGPROC	   *procs;
 	PGXACT	   *pgxacts;
 	int			i,
@@ -278,7 +278,7 @@ InitProcGlobal(void)
  */
 void
 InitProcess(void)
-{	StackTrace("InitProcess");
+{
 	/* use volatile pointer to prevent code rearrangement */
 	volatile PROC_HDR *procglobal = ProcGlobal;
 
@@ -422,7 +422,7 @@ InitProcess(void)
  */
 void
 InitProcessPhase2(void)
-{	StackTrace("InitProcessPhase2");
+{
 	Assert(MyProc != NULL);
 
 	/*
@@ -457,7 +457,7 @@ InitProcessPhase2(void)
  */
 void
 InitAuxiliaryProcess(void)
-{	StackTrace("InitAuxiliaryProcess");
+{
 	PGPROC	   *auxproc;
 	int			proctype;
 
@@ -563,7 +563,7 @@ InitAuxiliaryProcess(void)
  */
 void
 PublishStartupProcessInformation(void)
-{	StackTrace("PublishStartupProcessInformation");
+{
 	/* use volatile pointer to prevent code rearrangement */
 	volatile PROC_HDR *procglobal = ProcGlobal;
 
@@ -584,7 +584,7 @@ PublishStartupProcessInformation(void)
  */
 void
 SetStartupBufferPinWaitBufId(int bufid)
-{	StackTrace("SetStartupBufferPinWaitBufId");
+{
 	/* use volatile pointer to prevent code rearrangement */
 	volatile PROC_HDR *procglobal = ProcGlobal;
 
@@ -596,7 +596,7 @@ SetStartupBufferPinWaitBufId(int bufid)
  */
 int
 GetStartupBufferPinWaitBufId(void)
-{	StackTrace("GetStartupBufferPinWaitBufId");
+{
 	/* use volatile pointer to prevent code rearrangement */
 	volatile PROC_HDR *procglobal = ProcGlobal;
 
@@ -610,7 +610,7 @@ GetStartupBufferPinWaitBufId(void)
  */
 bool
 HaveNFreeProcs(int n)
-{	StackTrace("HaveNFreeProcs");
+{
 	PGPROC	   *proc;
 
 	/* use volatile pointer to prevent code rearrangement */
@@ -636,7 +636,7 @@ HaveNFreeProcs(int n)
  */
 bool
 IsWaitingForLock(void)
-{	StackTrace("IsWaitingForLock");
+{
 	if (lockAwaited == NULL)
 		return false;
 
@@ -653,7 +653,7 @@ IsWaitingForLock(void)
  */
 void
 LockErrorCleanup(void)
-{	StackTrace("LockErrorCleanup");
+{
 	LWLock	   *partitionLock;
 	DisableTimeoutParams timeouts[2];
 
@@ -729,7 +729,7 @@ LockErrorCleanup(void)
  */
 void
 ProcReleaseLocks(bool isCommit)
-{	StackTrace("ProcReleaseLocks");
+{
 	if (!MyProc)
 		return;
 	/* If waiting, get off wait queue (should only be needed after error) */
@@ -746,7 +746,7 @@ ProcReleaseLocks(bool isCommit)
  */
 static void
 RemoveProcFromArray(int code, Datum arg)
-{	StackTrace("RemoveProcFromArray");
+{
 	Assert(MyProc != NULL);
 	ProcArrayRemove(MyProc, InvalidTransactionId);
 }
@@ -757,7 +757,7 @@ RemoveProcFromArray(int code, Datum arg)
  */
 static void
 ProcKill(int code, Datum arg)
-{	StackTrace("ProcKill");
+{
 	/* use volatile pointer to prevent code rearrangement */
 	volatile PROC_HDR *procglobal = ProcGlobal;
 	PGPROC	   *proc;
@@ -843,7 +843,7 @@ ProcKill(int code, Datum arg)
  */
 static void
 AuxiliaryProcKill(int code, Datum arg)
-{	StackTrace("AuxiliaryProcKill");
+{
 	int			proctype = DatumGetInt32(arg);
 	PGPROC	   *auxproc PG_USED_FOR_ASSERTS_ONLY;
 	PGPROC	   *proc;
@@ -894,7 +894,7 @@ AuxiliaryProcKill(int code, Datum arg)
 #ifdef NOT_USED
 PROC_QUEUE *
 ProcQueueAlloc(const char *name)
-{	StackTrace("ProcQueueAlloc");
+{
 	PROC_QUEUE *queue;
 	bool		found;
 
@@ -913,7 +913,7 @@ ProcQueueAlloc(const char *name)
  */
 void
 ProcQueueInit(PROC_QUEUE *queue)
-{	StackTrace("ProcQueueInit");
+{
 	SHMQueueInit(&(queue->links));
 	queue->size = 0;
 }
@@ -937,7 +937,7 @@ ProcQueueInit(PROC_QUEUE *queue)
  */
 int
 ProcSleep(LOCALLOCK *locallock, LockMethod lockMethodTable)
-{	StackTrace("ProcSleep");
+{
 	LOCKMODE	lockmode = locallock->tag.mode;
 	LOCK	   *lock = locallock->lock;
 	PROCLOCK   *proclock = locallock->proclock;
@@ -1408,7 +1408,7 @@ ProcSleep(LOCALLOCK *locallock, LockMethod lockMethodTable)
  */
 PGPROC *
 ProcWakeup(PGPROC *proc, int waitStatus)
-{	StackTrace("ProcWakeup");
+{
 	PGPROC	   *retProc;
 
 	/* Proc should be sleeping ... */
@@ -1444,7 +1444,7 @@ ProcWakeup(PGPROC *proc, int waitStatus)
  */
 void
 ProcLockWakeup(LockMethod lockMethodTable, LOCK *lock)
-{	StackTrace("ProcLockWakeup");
+{
 	PROC_QUEUE *waitQueue = &(lock->waitProcs);
 	int			queue_size = waitQueue->size;
 	PGPROC	   *proc;
@@ -1505,7 +1505,7 @@ ProcLockWakeup(LockMethod lockMethodTable, LOCK *lock)
  */
 static void
 CheckDeadLock(void)
-{	StackTrace("CheckDeadLock");
+{
 	int			i;
 
 	/*
@@ -1592,7 +1592,7 @@ check_done:
  */
 void
 CheckDeadLockAlert(void)
-{	StackTrace("CheckDeadLockAlert");
+{
 	int			save_errno = errno;
 
 	got_deadlock_timeout = true;
@@ -1615,7 +1615,7 @@ CheckDeadLockAlert(void)
  */
 void
 ProcWaitForSignal(void)
-{	StackTrace("ProcWaitForSignal");
+{
 	WaitLatch(MyLatch, WL_LATCH_SET, 0);
 	ResetLatch(MyLatch);
 	CHECK_FOR_INTERRUPTS();
@@ -1626,7 +1626,7 @@ ProcWaitForSignal(void)
  */
 void
 ProcSendSignal(int pid)
-{	StackTrace("ProcSendSignal");
+{
 	PGPROC	   *proc = NULL;
 
 	if (RecoveryInProgress())

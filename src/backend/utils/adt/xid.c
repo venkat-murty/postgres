@@ -31,7 +31,7 @@
 
 Datum
 xidin(PG_FUNCTION_ARGS)
-{	StackTrace("xidin");
+{
 	char	   *str = PG_GETARG_CSTRING(0);
 
 	PG_RETURN_TRANSACTIONID((TransactionId) strtoul(str, NULL, 0));
@@ -39,7 +39,7 @@ xidin(PG_FUNCTION_ARGS)
 
 Datum
 xidout(PG_FUNCTION_ARGS)
-{	StackTrace("xidout");
+{
 	TransactionId transactionId = PG_GETARG_TRANSACTIONID(0);
 
 	/* maximum 32 bit unsigned integer representation takes 10 chars */
@@ -55,7 +55,7 @@ xidout(PG_FUNCTION_ARGS)
  */
 Datum
 xidrecv(PG_FUNCTION_ARGS)
-{	StackTrace("xidrecv");
+{
 	StringInfo	buf = (StringInfo) PG_GETARG_POINTER(0);
 
 	PG_RETURN_TRANSACTIONID((TransactionId) pq_getmsgint(buf, sizeof(TransactionId)));
@@ -66,7 +66,7 @@ xidrecv(PG_FUNCTION_ARGS)
  */
 Datum
 xidsend(PG_FUNCTION_ARGS)
-{	StackTrace("xidsend");
+{
 	TransactionId arg1 = PG_GETARG_TRANSACTIONID(0);
 	StringInfoData buf;
 
@@ -80,7 +80,7 @@ xidsend(PG_FUNCTION_ARGS)
  */
 Datum
 xideq(PG_FUNCTION_ARGS)
-{	StackTrace("xideq");
+{
 	TransactionId xid1 = PG_GETARG_TRANSACTIONID(0);
 	TransactionId xid2 = PG_GETARG_TRANSACTIONID(1);
 
@@ -92,7 +92,7 @@ xideq(PG_FUNCTION_ARGS)
  */
 Datum
 xid_age(PG_FUNCTION_ARGS)
-{	StackTrace("xid_age");
+{
 	TransactionId xid = PG_GETARG_TRANSACTIONID(0);
 	TransactionId now = GetStableLatestTransactionId();
 
@@ -108,7 +108,7 @@ xid_age(PG_FUNCTION_ARGS)
  */
 Datum
 mxid_age(PG_FUNCTION_ARGS)
-{	StackTrace("mxid_age");
+{
 	TransactionId xid = PG_GETARG_TRANSACTIONID(0);
 	MultiXactId now = ReadNextMultiXactId();
 
@@ -127,7 +127,7 @@ mxid_age(PG_FUNCTION_ARGS)
  */
 int
 xidComparator(const void *arg1, const void *arg2)
-{	StackTrace("xidComparator");
+{
 	TransactionId xid1 = *(const TransactionId *) arg1;
 	TransactionId xid2 = *(const TransactionId *) arg2;
 
@@ -147,7 +147,7 @@ xidComparator(const void *arg1, const void *arg2)
  */
 Datum
 cidin(PG_FUNCTION_ARGS)
-{	StackTrace("cidin");
+{
 	char	   *s = PG_GETARG_CSTRING(0);
 	CommandId	c;
 
@@ -161,7 +161,7 @@ cidin(PG_FUNCTION_ARGS)
  */
 Datum
 cidout(PG_FUNCTION_ARGS)
-{	StackTrace("cidout");
+{
 	CommandId	c = PG_GETARG_COMMANDID(0);
 	char	   *result = (char *) palloc(16);
 
@@ -174,7 +174,7 @@ cidout(PG_FUNCTION_ARGS)
  */
 Datum
 cidrecv(PG_FUNCTION_ARGS)
-{	StackTrace("cidrecv");
+{
 	StringInfo	buf = (StringInfo) PG_GETARG_POINTER(0);
 
 	PG_RETURN_COMMANDID((CommandId) pq_getmsgint(buf, sizeof(CommandId)));
@@ -185,7 +185,7 @@ cidrecv(PG_FUNCTION_ARGS)
  */
 Datum
 cidsend(PG_FUNCTION_ARGS)
-{	StackTrace("cidsend");
+{
 	CommandId	arg1 = PG_GETARG_COMMANDID(0);
 	StringInfoData buf;
 
@@ -196,7 +196,7 @@ cidsend(PG_FUNCTION_ARGS)
 
 Datum
 cideq(PG_FUNCTION_ARGS)
-{	StackTrace("cideq");
+{
 	CommandId	arg1 = PG_GETARG_COMMANDID(0);
 	CommandId	arg2 = PG_GETARG_COMMANDID(1);
 

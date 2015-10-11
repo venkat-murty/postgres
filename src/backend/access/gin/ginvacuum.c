@@ -45,7 +45,7 @@ struct GinVacuumState
 ItemPointer
 ginVacuumItemPointers(GinVacuumState *gvs, ItemPointerData *items,
 					  int nitem, int *nremaining)
-{	StackTrace("ginVacuumItemPointers");
+{
 	int			i,
 				remaining = 0;
 	ItemPointer tmpitems = NULL;
@@ -86,7 +86,7 @@ ginVacuumItemPointers(GinVacuumState *gvs, ItemPointerData *items,
  */
 static void
 xlogVacuumPage(Relation index, Buffer buffer)
-{	StackTrace("xlogVacuumPage");
+{
 	Page		page = BufferGetPage(buffer);
 	XLogRecPtr	recptr;
 
@@ -110,7 +110,7 @@ xlogVacuumPage(Relation index, Buffer buffer)
 
 static bool
 ginVacuumPostingTreeLeaves(GinVacuumState *gvs, BlockNumber blkno, bool isRoot, Buffer *rootBuffer)
-{	StackTrace("ginVacuumPostingTreeLeaves");
+{
 	Buffer		buffer;
 	Page		page;
 	bool		hasVoidPage = FALSE;
@@ -184,7 +184,7 @@ ginVacuumPostingTreeLeaves(GinVacuumState *gvs, BlockNumber blkno, bool isRoot, 
 static void
 ginDeletePage(GinVacuumState *gvs, BlockNumber deleteBlkno, BlockNumber leftBlkno,
 			  BlockNumber parentBlkno, OffsetNumber myoff, bool isParentRoot)
-{	StackTrace("ginDeletePage");
+{
 	Buffer		dBuffer;
 	Buffer		lBuffer;
 	Buffer		pBuffer;
@@ -298,7 +298,7 @@ typedef struct DataPageDeleteStack
 static bool
 ginScanToDelete(GinVacuumState *gvs, BlockNumber blkno, bool isRoot,
 				DataPageDeleteStack *parent, OffsetNumber myoff)
-{	StackTrace("ginScanToDelete");
+{
 	DataPageDeleteStack *me;
 	Buffer		buffer;
 	Page		page;
@@ -368,7 +368,7 @@ ginScanToDelete(GinVacuumState *gvs, BlockNumber blkno, bool isRoot,
 
 static void
 ginVacuumPostingTree(GinVacuumState *gvs, BlockNumber rootBlkno)
-{	StackTrace("ginVacuumPostingTree");
+{
 	Buffer		rootBuffer = InvalidBuffer;
 	DataPageDeleteStack root,
 			   *ptr,
@@ -406,7 +406,7 @@ ginVacuumPostingTree(GinVacuumState *gvs, BlockNumber rootBlkno)
  */
 static Page
 ginVacuumEntryPage(GinVacuumState *gvs, Buffer buffer, BlockNumber *roots, uint32 *nroot)
-{	StackTrace("ginVacuumEntryPage");
+{
 	Page		origpage = BufferGetPage(buffer),
 				tmppage;
 	OffsetNumber i,
@@ -515,7 +515,7 @@ ginVacuumEntryPage(GinVacuumState *gvs, Buffer buffer, BlockNumber *roots, uint3
 
 Datum
 ginbulkdelete(PG_FUNCTION_ARGS)
-{	StackTrace("ginbulkdelete");
+{
 	IndexVacuumInfo *info = (IndexVacuumInfo *) PG_GETARG_POINTER(0);
 	IndexBulkDeleteResult *stats = (IndexBulkDeleteResult *) PG_GETARG_POINTER(1);
 	IndexBulkDeleteCallback callback = (IndexBulkDeleteCallback) PG_GETARG_POINTER(2);
@@ -639,7 +639,7 @@ ginbulkdelete(PG_FUNCTION_ARGS)
 
 Datum
 ginvacuumcleanup(PG_FUNCTION_ARGS)
-{	StackTrace("ginvacuumcleanup");
+{
 	IndexVacuumInfo *info = (IndexVacuumInfo *) PG_GETARG_POINTER(0);
 	IndexBulkDeleteResult *stats = (IndexBulkDeleteResult *) PG_GETARG_POINTER(1);
 	Relation	index = info->index;

@@ -22,7 +22,7 @@
  */
 Datum
 quote_ident(PG_FUNCTION_ARGS)
-{	StackTrace("quote_ident");
+{
 	text	   *t = PG_GETARG_TEXT_PP(0);
 	const char *qstr;
 	char	   *str;
@@ -44,7 +44,7 @@ quote_ident(PG_FUNCTION_ARGS)
  */
 static size_t
 quote_literal_internal(char *dst, const char *src, size_t len)
-{	StackTrace("quote_literal_internal");
+{
 	const char *s;
 	char	   *savedst = dst;
 
@@ -75,7 +75,7 @@ quote_literal_internal(char *dst, const char *src, size_t len)
  */
 Datum
 quote_literal(PG_FUNCTION_ARGS)
-{	StackTrace("quote_literal");
+{
 	text	   *t = PG_GETARG_TEXT_P(0);
 	text	   *result;
 	char	   *cp1;
@@ -100,7 +100,7 @@ quote_literal(PG_FUNCTION_ARGS)
  */
 char *
 quote_literal_cstr(const char *rawstr)
-{	StackTrace("quote_literal_cstr");
+{
 	char	   *result;
 	int			len;
 	int			newlen;
@@ -122,7 +122,7 @@ quote_literal_cstr(const char *rawstr)
  */
 Datum
 quote_nullable(PG_FUNCTION_ARGS)
-{	StackTrace("quote_nullable");
+{
 	if (PG_ARGISNULL(0))
 		PG_RETURN_TEXT_P(cstring_to_text("NULL"));
 	else

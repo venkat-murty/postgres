@@ -77,7 +77,7 @@ static int16 parse_fcall_arguments_20(StringInfo msgBuf, struct fp_info * fip,
  */
 int
 GetOldFunctionMessage(StringInfo buf)
-{	StackTrace("GetOldFunctionMessage");
+{
 	int32		ibuf;
 	int			nargs;
 
@@ -136,7 +136,7 @@ GetOldFunctionMessage(StringInfo buf)
  */
 static void
 SendFunctionResult(Datum retval, bool isnull, Oid rettype, int16 format)
-{	StackTrace("SendFunctionResult");
+{
 	bool		newstyle = (PG_PROTOCOL_MAJOR(FrontendProtocol) >= 3);
 	StringInfoData buf;
 
@@ -196,7 +196,7 @@ SendFunctionResult(Datum retval, bool isnull, Oid rettype, int16 format)
  */
 static void
 fetch_fp_info(Oid func_id, struct fp_info * fip)
-{	StackTrace("fetch_fp_info");
+{
 	HeapTuple	func_htp;
 	Form_pg_proc pp;
 
@@ -268,7 +268,7 @@ fetch_fp_info(Oid func_id, struct fp_info * fip)
  */
 int
 HandleFunctionRequest(StringInfo msgBuf)
-{	StackTrace("HandleFunctionRequest");
+{
 	Oid			fid;
 	AclResult	aclresult;
 	FunctionCallInfoData fcinfo;
@@ -419,7 +419,7 @@ HandleFunctionRequest(StringInfo msgBuf)
 static int16
 parse_fcall_arguments(StringInfo msgBuf, struct fp_info * fip,
 					  FunctionCallInfo fcinfo)
-{	StackTrace("parse_fcall_arguments");
+{
 	int			nargs;
 	int			i;
 	int			numAFormats;
@@ -557,7 +557,7 @@ parse_fcall_arguments(StringInfo msgBuf, struct fp_info * fip,
 static int16
 parse_fcall_arguments_20(StringInfo msgBuf, struct fp_info * fip,
 						 FunctionCallInfo fcinfo)
-{	StackTrace("parse_fcall_arguments_20");
+{
 	int			nargs;
 	int			i;
 	StringInfoData abuf;

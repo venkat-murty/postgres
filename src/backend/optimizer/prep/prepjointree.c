@@ -147,7 +147,7 @@ static Node *find_jointree_node_for_rel(Node *jtnode, int relid);
  */
 void
 pull_up_sublinks(PlannerInfo *root)
-{	StackTrace("pull_up_sublinks");
+{
 	Node	   *jtnode;
 	Relids		relids;
 
@@ -175,7 +175,7 @@ pull_up_sublinks(PlannerInfo *root)
 static Node *
 pull_up_sublinks_jointree_recurse(PlannerInfo *root, Node *jtnode,
 								  Relids *relids)
-{	StackTrace("pull_up_sublinks_jointree_recurse");
+{
 	if (jtnode == NULL)
 	{
 		*relids = NULL;
@@ -330,7 +330,7 @@ static Node *
 pull_up_sublinks_qual_recurse(PlannerInfo *root, Node *node,
 							  Node **jtlink1, Relids available_rels1,
 							  Node **jtlink2, Relids available_rels2)
-{	StackTrace("pull_up_sublinks_qual_recurse");
+{
 	if (node == NULL)
 		return NULL;
 	if (IsA(node, SubLink))
@@ -570,7 +570,7 @@ pull_up_sublinks_qual_recurse(PlannerInfo *root, Node *node,
  */
 void
 inline_set_returning_functions(PlannerInfo *root)
-{	StackTrace("inline_set_returning_functions");
+{
 	ListCell   *rt;
 
 	foreach(rt, root->parse->rtable)
@@ -604,7 +604,7 @@ inline_set_returning_functions(PlannerInfo *root)
  */
 void
 pull_up_subqueries(PlannerInfo *root)
-{	StackTrace("pull_up_subqueries");
+{
 	/* Top level of jointree must always be a FromExpr */
 	Assert(IsA(root->parse->jointree, FromExpr));
 	/* Reset flag saying we need a deletion cleanup pass */
@@ -674,7 +674,7 @@ pull_up_subqueries_recurse(PlannerInfo *root, Node *jtnode,
 						   JoinExpr *lowest_nulling_outer_join,
 						   AppendRelInfo *containing_appendrel,
 						   bool deletion_ok)
-{	StackTrace("pull_up_subqueries_recurse");
+{
 	Assert(jtnode != NULL);
 	if (IsA(jtnode, RangeTblRef))
 	{
@@ -869,7 +869,7 @@ pull_up_simple_subquery(PlannerInfo *root, Node *jtnode, RangeTblEntry *rte,
 						JoinExpr *lowest_nulling_outer_join,
 						AppendRelInfo *containing_appendrel,
 						bool deletion_ok)
-{	StackTrace("pull_up_simple_subquery");
+{
 	Query	   *parse = root->parse;
 	int			varno = ((RangeTblRef *) jtnode)->rtindex;
 	Query	   *subquery;
@@ -1201,7 +1201,7 @@ pull_up_simple_subquery(PlannerInfo *root, Node *jtnode, RangeTblEntry *rte,
  */
 static Node *
 pull_up_simple_union_all(PlannerInfo *root, Node *jtnode, RangeTblEntry *rte)
-{	StackTrace("pull_up_simple_union_all");
+{
 	int			varno = ((RangeTblRef *) jtnode)->rtindex;
 	Query	   *subquery = rte->subquery;
 	int			rtoffset = list_length(root->parse->rtable);
@@ -1283,7 +1283,7 @@ pull_up_simple_union_all(PlannerInfo *root, Node *jtnode, RangeTblEntry *rte)
 static void
 pull_up_union_leaf_queries(Node *setOp, PlannerInfo *root, int parentRTindex,
 						   Query *setOpQuery, int childRToffset)
-{	StackTrace("pull_up_union_leaf_queries");
+{
 	if (IsA(setOp, RangeTblRef))
 	{
 		RangeTblRef *rtr = (RangeTblRef *) setOp;
@@ -1350,7 +1350,7 @@ pull_up_union_leaf_queries(Node *setOp, PlannerInfo *root, int parentRTindex,
 static void
 make_setop_translation_list(Query *query, Index newvarno,
 							List **translated_vars)
-{	StackTrace("make_setop_translation_list");
+{
 	List	   *vars = NIL;
 	ListCell   *l;
 
@@ -1382,7 +1382,7 @@ static bool
 is_simple_subquery(Query *subquery, RangeTblEntry *rte,
 				   JoinExpr *lowest_outer_join,
 				   bool deletion_ok)
-{	StackTrace("is_simple_subquery");
+{
 	/*
 	 * Let's just make sure it's a valid subselect ...
 	 */
@@ -1546,7 +1546,7 @@ is_simple_subquery(Query *subquery, RangeTblEntry *rte,
  */
 static Node *
 pull_up_simple_values(PlannerInfo *root, Node *jtnode, RangeTblEntry *rte)
-{	StackTrace("pull_up_simple_values");
+{
 	Query	   *parse = root->parse;
 	int			varno = ((RangeTblRef *) jtnode)->rtindex;
 	List	   *values_list;
@@ -1644,7 +1644,7 @@ pull_up_simple_values(PlannerInfo *root, Node *jtnode, RangeTblEntry *rte)
  */
 static bool
 is_simple_values(PlannerInfo *root, RangeTblEntry *rte, bool deletion_ok)
-{	StackTrace("is_simple_values");
+{
 	Assert(rte->rtekind == RTE_VALUES);
 
 	/*
@@ -1699,7 +1699,7 @@ is_simple_values(PlannerInfo *root, RangeTblEntry *rte, bool deletion_ok)
  */
 static bool
 is_simple_union_all(Query *subquery)
-{	StackTrace("is_simple_union_all");
+{
 	SetOperationStmt *topop;
 
 	/* Let's just make sure it's a valid subselect ... */
@@ -1729,7 +1729,7 @@ is_simple_union_all(Query *subquery)
 
 static bool
 is_simple_union_all_recurse(Node *setOp, Query *setOpQuery, List *colTypes)
-{	StackTrace("is_simple_union_all_recurse");
+{
 	if (IsA(setOp, RangeTblRef))
 	{
 		RangeTblRef *rtr = (RangeTblRef *) setOp;
@@ -1769,7 +1769,7 @@ is_simple_union_all_recurse(Node *setOp, Query *setOpQuery, List *colTypes)
  */
 static bool
 is_safe_append_member(Query *subquery)
-{	StackTrace("is_safe_append_member");
+{
 	FromExpr   *jtnode;
 
 	/*
@@ -1811,7 +1811,7 @@ is_safe_append_member(Query *subquery)
 static bool
 jointree_contains_lateral_outer_refs(Node *jtnode, bool restricted,
 									 Relids safe_upper_varnos)
-{	StackTrace("jointree_contains_lateral_outer_refs");
+{
 	if (jtnode == NULL)
 		return false;
 	if (IsA(jtnode, RangeTblRef))
@@ -1884,7 +1884,7 @@ static void
 replace_vars_in_jointree(Node *jtnode,
 						 pullup_replace_vars_context *context,
 						 JoinExpr *lowest_nulling_outer_join)
-{	StackTrace("replace_vars_in_jointree");
+{
 	if (jtnode == NULL)
 		return;
 	if (IsA(jtnode, RangeTblRef))
@@ -1978,7 +1978,7 @@ replace_vars_in_jointree(Node *jtnode,
  */
 static Node *
 pullup_replace_vars(Node *expr, pullup_replace_vars_context *context)
-{	StackTrace("pullup_replace_vars");
+{
 	return replace_rte_variables(expr,
 								 context->varno, 0,
 								 pullup_replace_vars_callback,
@@ -1989,7 +1989,7 @@ pullup_replace_vars(Node *expr, pullup_replace_vars_context *context)
 static Node *
 pullup_replace_vars_callback(Var *var,
 							 replace_rte_variables_context *context)
-{	StackTrace("pullup_replace_vars_callback");
+{
 	pullup_replace_vars_context *rcon = (pullup_replace_vars_context *) context->callback_arg;
 	int			varattno = var->varattno;
 	Node	   *newnode;
@@ -2182,7 +2182,7 @@ pullup_replace_vars_callback(Var *var,
 static Query *
 pullup_replace_vars_subquery(Query *query,
 							 pullup_replace_vars_context *context)
-{	StackTrace("pullup_replace_vars_subquery");
+{
 	Assert(IsA(query, Query));
 	return (Query *) replace_rte_variables((Node *) query,
 										   context->varno, 1,
@@ -2201,7 +2201,7 @@ pullup_replace_vars_subquery(Query *query,
  */
 static Node *
 pull_up_subqueries_cleanup(Node *jtnode)
-{	StackTrace("pull_up_subqueries_cleanup");
+{
 	Assert(jtnode != NULL);
 	if (IsA(jtnode, RangeTblRef))
 	{
@@ -2267,7 +2267,7 @@ pull_up_subqueries_cleanup(Node *jtnode)
  */
 void
 flatten_simple_union_all(PlannerInfo *root)
-{	StackTrace("flatten_simple_union_all");
+{
 	Query	   *parse = root->parse;
 	SetOperationStmt *topop;
 	Node	   *leftmostjtnode;
@@ -2385,7 +2385,7 @@ flatten_simple_union_all(PlannerInfo *root)
  */
 void
 reduce_outer_joins(PlannerInfo *root)
-{	StackTrace("reduce_outer_joins");
+{
 	reduce_outer_joins_state *state;
 
 	/*
@@ -2414,7 +2414,7 @@ reduce_outer_joins(PlannerInfo *root)
  */
 static reduce_outer_joins_state *
 reduce_outer_joins_pass1(Node *jtnode)
-{	StackTrace("reduce_outer_joins_pass1");
+{
 	reduce_outer_joins_state *result;
 
 	result = (reduce_outer_joins_state *)
@@ -2491,7 +2491,7 @@ reduce_outer_joins_pass2(Node *jtnode,
 						 Relids nonnullable_rels,
 						 List *nonnullable_vars,
 						 List *forced_null_vars)
-{	StackTrace("reduce_outer_joins_pass2");
+{
 	/*
 	 * pass 2 should never descend as far as an empty subnode or base rel,
 	 * because it's only called on subtrees marked as contains_outer.
@@ -2782,7 +2782,7 @@ typedef struct
 static bool
 substitute_multiple_relids_walker(Node *node,
 								  substitute_multiple_relids_context *context)
-{	StackTrace("substitute_multiple_relids_walker");
+{
 	if (node == NULL)
 		return false;
 	if (IsA(node, PlaceHolderVar))
@@ -2824,7 +2824,7 @@ substitute_multiple_relids_walker(Node *node,
 
 static void
 substitute_multiple_relids(Node *node, int varno, Relids subrelids)
-{	StackTrace("substitute_multiple_relids");
+{
 	substitute_multiple_relids_context context;
 
 	context.varno = varno;
@@ -2852,7 +2852,7 @@ substitute_multiple_relids(Node *node, int varno, Relids subrelids)
  */
 static void
 fix_append_rel_relids(List *append_rel_list, int varno, Relids subrelids)
-{	StackTrace("fix_append_rel_relids");
+{
 	ListCell   *l;
 	int			subvarno = -1;
 
@@ -2890,7 +2890,7 @@ fix_append_rel_relids(List *append_rel_list, int varno, Relids subrelids)
  */
 Relids
 get_relids_in_jointree(Node *jtnode, bool include_joins)
-{	StackTrace("get_relids_in_jointree");
+{
 	Relids		result = NULL;
 
 	if (jtnode == NULL)
@@ -2934,7 +2934,7 @@ get_relids_in_jointree(Node *jtnode, bool include_joins)
  */
 Relids
 get_relids_for_join(PlannerInfo *root, int joinrelid)
-{	StackTrace("get_relids_for_join");
+{
 	Node	   *jtnode;
 
 	jtnode = find_jointree_node_for_rel((Node *) root->parse->jointree,
@@ -2951,7 +2951,7 @@ get_relids_for_join(PlannerInfo *root, int joinrelid)
  */
 static Node *
 find_jointree_node_for_rel(Node *jtnode, int relid)
-{	StackTrace("find_jointree_node_for_rel");
+{
 	if (jtnode == NULL)
 		return NULL;
 	if (IsA(jtnode, RangeTblRef))

@@ -188,7 +188,7 @@ static IndexList *ILHead = NULL;
  */
 void
 AuxiliaryProcessMain(int argc, char *argv[])
-{	StackTrace("AuxiliaryProcessMain");
+{
 	char	   *progname = argv[0];
 	int			flag;
 	char	   *userDoption = NULL;
@@ -453,7 +453,7 @@ AuxiliaryProcessMain(int argc, char *argv[])
  */
 static void
 CheckerModeMain(void)
-{	StackTrace("CheckerModeMain");
+{
 	proc_exit(0);
 }
 
@@ -466,7 +466,7 @@ CheckerModeMain(void)
  */
 static void
 BootstrapModeMain(void)
-{	StackTrace("BootstrapModeMain");
+{
 	int			i;
 
 	Assert(!IsUnderPostmaster);
@@ -513,7 +513,7 @@ BootstrapModeMain(void)
  */
 static void
 bootstrap_signals(void)
-{	StackTrace("bootstrap_signals");
+{
 	Assert(!IsUnderPostmaster);
 
 	/* Set up appropriately for interactive use */
@@ -532,7 +532,7 @@ bootstrap_signals(void)
  */
 static void
 ShutdownAuxiliaryProcess(int code, Datum arg)
-{	StackTrace("ShutdownAuxiliaryProcess");
+{
 	LWLockReleaseAll();
 }
 
@@ -547,7 +547,7 @@ ShutdownAuxiliaryProcess(int code, Datum arg)
  */
 void
 boot_openrel(char *relname)
-{	StackTrace("boot_openrel");
+{
 	int			i;
 	struct typmap **app;
 	Relation	rel;
@@ -616,7 +616,7 @@ boot_openrel(char *relname)
  */
 void
 closerel(char *name)
-{	StackTrace("closerel");
+{
 	if (name)
 	{
 		if (boot_reldesc)
@@ -653,7 +653,7 @@ closerel(char *name)
  */
 void
 DefineAttr(char *name, char *type, int attnum, int nullness)
-{	StackTrace("DefineAttr");
+{
 	Oid			typeoid;
 
 	if (boot_reldesc != NULL)
@@ -758,7 +758,7 @@ DefineAttr(char *name, char *type, int attnum, int nullness)
  */
 void
 InsertOneTuple(Oid objectid)
-{	StackTrace("InsertOneTuple");
+{
 	HeapTuple	tuple;
 	TupleDesc	tupDesc;
 	int			i;
@@ -790,7 +790,7 @@ InsertOneTuple(Oid objectid)
  */
 void
 InsertOneValue(char *value, int i)
-{	StackTrace("InsertOneValue");
+{
 	Oid			typoid;
 	int16		typlen;
 	bool		typbyval;
@@ -828,7 +828,7 @@ InsertOneValue(char *value, int i)
  */
 void
 InsertOneNull(int i)
-{	StackTrace("InsertOneNull");
+{
 	elog(DEBUG4, "inserting column %d NULL", i);
 	Assert(i >= 0 && i < MAXATTR);
 	values[i] = PointerGetDatum(NULL);
@@ -841,7 +841,7 @@ InsertOneNull(int i)
  */
 static void
 cleanup(void)
-{	StackTrace("cleanup");
+{
 	if (boot_reldesc != NULL)
 		closerel(NULL);
 }
@@ -859,7 +859,7 @@ cleanup(void)
  */
 static Oid
 gettype(char *type)
-{	StackTrace("gettype");
+{
 	int			i;
 	Relation	rel;
 	HeapScanDesc scan;
@@ -932,7 +932,7 @@ boot_get_type_io_data(Oid typid,
 					  Oid *typioparam,
 					  Oid *typinput,
 					  Oid *typoutput)
-{	StackTrace("boot_get_type_io_data");
+{
 	if (Typ != NULL)
 	{
 		/* We have the boot-time contents of pg_type, so use it */
@@ -999,7 +999,7 @@ boot_get_type_io_data(Oid typid,
  */
 static Form_pg_attribute
 AllocateAttribute(void)
-{	StackTrace("AllocateAttribute");
+{
 	Form_pg_attribute attribute = (Form_pg_attribute) malloc(ATTRIBUTE_FIXED_PART_SIZE);
 
 	if (!PointerIsValid(attribute))
@@ -1023,7 +1023,7 @@ AllocateAttribute(void)
  */
 char *
 MapArrayTypeName(const char *s)
-{	StackTrace("MapArrayTypeName");
+{
 	int			i,
 				j;
 	char		newStr[NAMEDATALEN];
@@ -1054,7 +1054,7 @@ void
 index_register(Oid heap,
 			   Oid ind,
 			   IndexInfo *indexInfo)
-{	StackTrace("index_register");
+{
 	IndexList  *newind;
 	MemoryContext oldcxt;
 
@@ -1104,7 +1104,7 @@ index_register(Oid heap,
  */
 void
 build_indices(void)
-{	StackTrace("build_indices");
+{
 	for (; ILHead != NULL; ILHead = ILHead->il_next)
 	{
 		Relation	heap;

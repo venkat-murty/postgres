@@ -28,7 +28,7 @@
 
 Datum
 macaddr_in(PG_FUNCTION_ARGS)
-{	StackTrace("macaddr_in");
+{
 	char	   *str = PG_GETARG_CSTRING(0);
 	macaddr    *result;
 	int			a,
@@ -92,7 +92,7 @@ macaddr_in(PG_FUNCTION_ARGS)
 
 Datum
 macaddr_out(PG_FUNCTION_ARGS)
-{	StackTrace("macaddr_out");
+{
 	macaddr    *addr = PG_GETARG_MACADDR_P(0);
 	char	   *result;
 
@@ -111,7 +111,7 @@ macaddr_out(PG_FUNCTION_ARGS)
  */
 Datum
 macaddr_recv(PG_FUNCTION_ARGS)
-{	StackTrace("macaddr_recv");
+{
 	StringInfo	buf = (StringInfo) PG_GETARG_POINTER(0);
 	macaddr    *addr;
 
@@ -132,7 +132,7 @@ macaddr_recv(PG_FUNCTION_ARGS)
  */
 Datum
 macaddr_send(PG_FUNCTION_ARGS)
-{	StackTrace("macaddr_send");
+{
 	macaddr    *addr = PG_GETARG_MACADDR_P(0);
 	StringInfoData buf;
 
@@ -153,7 +153,7 @@ macaddr_send(PG_FUNCTION_ARGS)
 
 static int32
 macaddr_cmp_internal(macaddr *a1, macaddr *a2)
-{	StackTrace("macaddr_cmp_internal");
+{
 	if (hibits(a1) < hibits(a2))
 		return -1;
 	else if (hibits(a1) > hibits(a2))
@@ -168,7 +168,7 @@ macaddr_cmp_internal(macaddr *a1, macaddr *a2)
 
 Datum
 macaddr_cmp(PG_FUNCTION_ARGS)
-{	StackTrace("macaddr_cmp");
+{
 	macaddr    *a1 = PG_GETARG_MACADDR_P(0);
 	macaddr    *a2 = PG_GETARG_MACADDR_P(1);
 
@@ -181,7 +181,7 @@ macaddr_cmp(PG_FUNCTION_ARGS)
 
 Datum
 macaddr_lt(PG_FUNCTION_ARGS)
-{	StackTrace("macaddr_lt");
+{
 	macaddr    *a1 = PG_GETARG_MACADDR_P(0);
 	macaddr    *a2 = PG_GETARG_MACADDR_P(1);
 
@@ -190,7 +190,7 @@ macaddr_lt(PG_FUNCTION_ARGS)
 
 Datum
 macaddr_le(PG_FUNCTION_ARGS)
-{	StackTrace("macaddr_le");
+{
 	macaddr    *a1 = PG_GETARG_MACADDR_P(0);
 	macaddr    *a2 = PG_GETARG_MACADDR_P(1);
 
@@ -199,7 +199,7 @@ macaddr_le(PG_FUNCTION_ARGS)
 
 Datum
 macaddr_eq(PG_FUNCTION_ARGS)
-{	StackTrace("macaddr_eq");
+{
 	macaddr    *a1 = PG_GETARG_MACADDR_P(0);
 	macaddr    *a2 = PG_GETARG_MACADDR_P(1);
 
@@ -208,7 +208,7 @@ macaddr_eq(PG_FUNCTION_ARGS)
 
 Datum
 macaddr_ge(PG_FUNCTION_ARGS)
-{	StackTrace("macaddr_ge");
+{
 	macaddr    *a1 = PG_GETARG_MACADDR_P(0);
 	macaddr    *a2 = PG_GETARG_MACADDR_P(1);
 
@@ -217,7 +217,7 @@ macaddr_ge(PG_FUNCTION_ARGS)
 
 Datum
 macaddr_gt(PG_FUNCTION_ARGS)
-{	StackTrace("macaddr_gt");
+{
 	macaddr    *a1 = PG_GETARG_MACADDR_P(0);
 	macaddr    *a2 = PG_GETARG_MACADDR_P(1);
 
@@ -226,7 +226,7 @@ macaddr_gt(PG_FUNCTION_ARGS)
 
 Datum
 macaddr_ne(PG_FUNCTION_ARGS)
-{	StackTrace("macaddr_ne");
+{
 	macaddr    *a1 = PG_GETARG_MACADDR_P(0);
 	macaddr    *a2 = PG_GETARG_MACADDR_P(1);
 
@@ -238,7 +238,7 @@ macaddr_ne(PG_FUNCTION_ARGS)
  */
 Datum
 hashmacaddr(PG_FUNCTION_ARGS)
-{	StackTrace("hashmacaddr");
+{
 	macaddr    *key = PG_GETARG_MACADDR_P(0);
 
 	return hash_any((unsigned char *) key, sizeof(macaddr));
@@ -249,7 +249,7 @@ hashmacaddr(PG_FUNCTION_ARGS)
  */
 Datum
 macaddr_not(PG_FUNCTION_ARGS)
-{	StackTrace("macaddr_not");
+{
 	macaddr    *addr = PG_GETARG_MACADDR_P(0);
 	macaddr    *result;
 
@@ -265,7 +265,7 @@ macaddr_not(PG_FUNCTION_ARGS)
 
 Datum
 macaddr_and(PG_FUNCTION_ARGS)
-{	StackTrace("macaddr_and");
+{
 	macaddr    *addr1 = PG_GETARG_MACADDR_P(0);
 	macaddr    *addr2 = PG_GETARG_MACADDR_P(1);
 	macaddr    *result;
@@ -282,7 +282,7 @@ macaddr_and(PG_FUNCTION_ARGS)
 
 Datum
 macaddr_or(PG_FUNCTION_ARGS)
-{	StackTrace("macaddr_or");
+{
 	macaddr    *addr1 = PG_GETARG_MACADDR_P(0);
 	macaddr    *addr2 = PG_GETARG_MACADDR_P(1);
 	macaddr    *result;
@@ -303,7 +303,7 @@ macaddr_or(PG_FUNCTION_ARGS)
  */
 Datum
 macaddr_trunc(PG_FUNCTION_ARGS)
-{	StackTrace("macaddr_trunc");
+{
 	macaddr    *addr = PG_GETARG_MACADDR_P(0);
 	macaddr    *result;
 

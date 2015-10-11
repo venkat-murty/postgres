@@ -69,7 +69,7 @@ static bool IndexSupportsBackwardScan(Oid indexid);
  */
 void
 ExecReScan(PlanState *node)
-{	StackTrace("ExecReScan");
+{
 	/* If collecting timing stats, update them */
 	if (node->instrument)
 		InstrEndLoop(node->instrument);
@@ -287,7 +287,7 @@ ExecReScan(PlanState *node)
  */
 void
 ExecMarkPos(PlanState *node)
-{	StackTrace("ExecMarkPos");
+{
 	switch (nodeTag(node))
 	{
 		case T_IndexScanState:
@@ -336,7 +336,7 @@ ExecMarkPos(PlanState *node)
  */
 void
 ExecRestrPos(PlanState *node)
-{	StackTrace("ExecRestrPos");
+{
 	switch (nodeTag(node))
 	{
 		case T_IndexScanState:
@@ -378,7 +378,7 @@ ExecRestrPos(PlanState *node)
  */
 bool
 ExecSupportsMarkRestore(Path *pathnode)
-{	StackTrace("ExecSupportsMarkRestore");
+{
 	/*
 	 * For consistency with the routines above, we do not examine the nodeTag
 	 * but rather the pathtype, which is the Plan node type the Path would
@@ -430,7 +430,7 @@ ExecSupportsMarkRestore(Path *pathnode)
  */
 bool
 ExecSupportsBackwardScan(Plan *node)
-{	StackTrace("ExecSupportsBackwardScan");
+{
 	if (node == NULL)
 		return false;
 
@@ -509,7 +509,7 @@ ExecSupportsBackwardScan(Plan *node)
  */
 static bool
 TargetListSupportsBackwardScan(List *targetlist)
-{	StackTrace("TargetListSupportsBackwardScan");
+{
 	if (expression_returns_set((Node *) targetlist))
 		return false;
 	return true;
@@ -521,7 +521,7 @@ TargetListSupportsBackwardScan(List *targetlist)
  */
 static bool
 IndexSupportsBackwardScan(Oid indexid)
-{	StackTrace("IndexSupportsBackwardScan");
+{
 	bool		result;
 	HeapTuple	ht_idxrel;
 	HeapTuple	ht_am;
@@ -559,7 +559,7 @@ IndexSupportsBackwardScan(Oid indexid)
  */
 bool
 ExecMaterializesOutput(NodeTag plantype)
-{	StackTrace("ExecMaterializesOutput");
+{
 	switch (plantype)
 	{
 		case T_Material:

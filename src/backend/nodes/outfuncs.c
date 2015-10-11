@@ -108,7 +108,7 @@ static void _outNode(StringInfo str, const void *obj);
  */
 static void
 _outToken(StringInfo str, const char *s)
-{	StackTrace("_outToken");
+{
 	if (s == NULL || *s == '\0')
 	{
 		appendStringInfoString(str, "<>");
@@ -140,7 +140,7 @@ _outToken(StringInfo str, const char *s)
 
 static void
 _outList(StringInfo str, const List *node)
-{	StackTrace("_outList");
+{
 	const ListCell *lc;
 
 	appendStringInfoChar(str, '(');
@@ -183,7 +183,7 @@ _outList(StringInfo str, const List *node)
  */
 static void
 _outBitmapset(StringInfo str, const Bitmapset *bms)
-{	StackTrace("_outBitmapset");
+{
 	int			x;
 
 	appendStringInfoChar(str, '(');
@@ -199,7 +199,7 @@ _outBitmapset(StringInfo str, const Bitmapset *bms)
  */
 static void
 _outDatum(StringInfo str, Datum value, int typlen, bool typbyval)
-{	StackTrace("_outDatum");
+{
 	Size		length,
 				i;
 	char	   *s;
@@ -236,7 +236,7 @@ _outDatum(StringInfo str, Datum value, int typlen, bool typbyval)
 
 static void
 _outPlannedStmt(StringInfo str, const PlannedStmt *node)
-{	StackTrace("_outPlannedStmt");
+{
 	WRITE_NODE_TYPE("PLANNEDSTMT");
 
 	WRITE_ENUM_FIELD(commandType, CmdType);
@@ -263,7 +263,7 @@ _outPlannedStmt(StringInfo str, const PlannedStmt *node)
  */
 static void
 _outPlanInfo(StringInfo str, const Plan *node)
-{	StackTrace("_outPlanInfo");
+{
 	WRITE_FLOAT_FIELD(startup_cost, "%.2f");
 	WRITE_FLOAT_FIELD(total_cost, "%.2f");
 	WRITE_FLOAT_FIELD(plan_rows, "%.0f");
@@ -282,7 +282,7 @@ _outPlanInfo(StringInfo str, const Plan *node)
  */
 static void
 _outScanInfo(StringInfo str, const Scan *node)
-{	StackTrace("_outScanInfo");
+{
 	_outPlanInfo(str, (const Plan *) node);
 
 	WRITE_UINT_FIELD(scanrelid);
@@ -293,7 +293,7 @@ _outScanInfo(StringInfo str, const Scan *node)
  */
 static void
 _outJoinPlanInfo(StringInfo str, const Join *node)
-{	StackTrace("_outJoinPlanInfo");
+{
 	_outPlanInfo(str, (const Plan *) node);
 
 	WRITE_ENUM_FIELD(jointype, JoinType);
@@ -303,7 +303,7 @@ _outJoinPlanInfo(StringInfo str, const Join *node)
 
 static void
 _outPlan(StringInfo str, const Plan *node)
-{	StackTrace("_outPlan");
+{
 	WRITE_NODE_TYPE("PLAN");
 
 	_outPlanInfo(str, (const Plan *) node);
@@ -311,7 +311,7 @@ _outPlan(StringInfo str, const Plan *node)
 
 static void
 _outResult(StringInfo str, const Result *node)
-{	StackTrace("_outResult");
+{
 	WRITE_NODE_TYPE("RESULT");
 
 	_outPlanInfo(str, (const Plan *) node);
@@ -321,7 +321,7 @@ _outResult(StringInfo str, const Result *node)
 
 static void
 _outModifyTable(StringInfo str, const ModifyTable *node)
-{	StackTrace("_outModifyTable");
+{
 	WRITE_NODE_TYPE("MODIFYTABLE");
 
 	_outPlanInfo(str, (const Plan *) node);
@@ -347,7 +347,7 @@ _outModifyTable(StringInfo str, const ModifyTable *node)
 
 static void
 _outAppend(StringInfo str, const Append *node)
-{	StackTrace("_outAppend");
+{
 	WRITE_NODE_TYPE("APPEND");
 
 	_outPlanInfo(str, (const Plan *) node);
@@ -357,7 +357,7 @@ _outAppend(StringInfo str, const Append *node)
 
 static void
 _outMergeAppend(StringInfo str, const MergeAppend *node)
-{	StackTrace("_outMergeAppend");
+{
 	int			i;
 
 	WRITE_NODE_TYPE("MERGEAPPEND");
@@ -387,7 +387,7 @@ _outMergeAppend(StringInfo str, const MergeAppend *node)
 
 static void
 _outRecursiveUnion(StringInfo str, const RecursiveUnion *node)
-{	StackTrace("_outRecursiveUnion");
+{
 	int			i;
 
 	WRITE_NODE_TYPE("RECURSIVEUNION");
@@ -410,7 +410,7 @@ _outRecursiveUnion(StringInfo str, const RecursiveUnion *node)
 
 static void
 _outBitmapAnd(StringInfo str, const BitmapAnd *node)
-{	StackTrace("_outBitmapAnd");
+{
 	WRITE_NODE_TYPE("BITMAPAND");
 
 	_outPlanInfo(str, (const Plan *) node);
@@ -420,7 +420,7 @@ _outBitmapAnd(StringInfo str, const BitmapAnd *node)
 
 static void
 _outBitmapOr(StringInfo str, const BitmapOr *node)
-{	StackTrace("_outBitmapOr");
+{
 	WRITE_NODE_TYPE("BITMAPOR");
 
 	_outPlanInfo(str, (const Plan *) node);
@@ -430,7 +430,7 @@ _outBitmapOr(StringInfo str, const BitmapOr *node)
 
 static void
 _outScan(StringInfo str, const Scan *node)
-{	StackTrace("_outScan");
+{
 	WRITE_NODE_TYPE("SCAN");
 
 	_outScanInfo(str, node);
@@ -438,7 +438,7 @@ _outScan(StringInfo str, const Scan *node)
 
 static void
 _outSeqScan(StringInfo str, const SeqScan *node)
-{	StackTrace("_outSeqScan");
+{
 	WRITE_NODE_TYPE("SEQSCAN");
 
 	_outScanInfo(str, (const Scan *) node);
@@ -446,7 +446,7 @@ _outSeqScan(StringInfo str, const SeqScan *node)
 
 static void
 _outIndexScan(StringInfo str, const IndexScan *node)
-{	StackTrace("_outIndexScan");
+{
 	WRITE_NODE_TYPE("INDEXSCAN");
 
 	_outScanInfo(str, (const Scan *) node);
@@ -462,7 +462,7 @@ _outIndexScan(StringInfo str, const IndexScan *node)
 
 static void
 _outIndexOnlyScan(StringInfo str, const IndexOnlyScan *node)
-{	StackTrace("_outIndexOnlyScan");
+{
 	WRITE_NODE_TYPE("INDEXONLYSCAN");
 
 	_outScanInfo(str, (const Scan *) node);
@@ -476,7 +476,7 @@ _outIndexOnlyScan(StringInfo str, const IndexOnlyScan *node)
 
 static void
 _outBitmapIndexScan(StringInfo str, const BitmapIndexScan *node)
-{	StackTrace("_outBitmapIndexScan");
+{
 	WRITE_NODE_TYPE("BITMAPINDEXSCAN");
 
 	_outScanInfo(str, (const Scan *) node);
@@ -488,7 +488,7 @@ _outBitmapIndexScan(StringInfo str, const BitmapIndexScan *node)
 
 static void
 _outBitmapHeapScan(StringInfo str, const BitmapHeapScan *node)
-{	StackTrace("_outBitmapHeapScan");
+{
 	WRITE_NODE_TYPE("BITMAPHEAPSCAN");
 
 	_outScanInfo(str, (const Scan *) node);
@@ -498,7 +498,7 @@ _outBitmapHeapScan(StringInfo str, const BitmapHeapScan *node)
 
 static void
 _outTidScan(StringInfo str, const TidScan *node)
-{	StackTrace("_outTidScan");
+{
 	WRITE_NODE_TYPE("TIDSCAN");
 
 	_outScanInfo(str, (const Scan *) node);
@@ -508,7 +508,7 @@ _outTidScan(StringInfo str, const TidScan *node)
 
 static void
 _outSubqueryScan(StringInfo str, const SubqueryScan *node)
-{	StackTrace("_outSubqueryScan");
+{
 	WRITE_NODE_TYPE("SUBQUERYSCAN");
 
 	_outScanInfo(str, (const Scan *) node);
@@ -518,7 +518,7 @@ _outSubqueryScan(StringInfo str, const SubqueryScan *node)
 
 static void
 _outFunctionScan(StringInfo str, const FunctionScan *node)
-{	StackTrace("_outFunctionScan");
+{
 	WRITE_NODE_TYPE("FUNCTIONSCAN");
 
 	_outScanInfo(str, (const Scan *) node);
@@ -529,7 +529,7 @@ _outFunctionScan(StringInfo str, const FunctionScan *node)
 
 static void
 _outValuesScan(StringInfo str, const ValuesScan *node)
-{	StackTrace("_outValuesScan");
+{
 	WRITE_NODE_TYPE("VALUESSCAN");
 
 	_outScanInfo(str, (const Scan *) node);
@@ -539,7 +539,7 @@ _outValuesScan(StringInfo str, const ValuesScan *node)
 
 static void
 _outCteScan(StringInfo str, const CteScan *node)
-{	StackTrace("_outCteScan");
+{
 	WRITE_NODE_TYPE("CTESCAN");
 
 	_outScanInfo(str, (const Scan *) node);
@@ -550,7 +550,7 @@ _outCteScan(StringInfo str, const CteScan *node)
 
 static void
 _outWorkTableScan(StringInfo str, const WorkTableScan *node)
-{	StackTrace("_outWorkTableScan");
+{
 	WRITE_NODE_TYPE("WORKTABLESCAN");
 
 	_outScanInfo(str, (const Scan *) node);
@@ -560,7 +560,7 @@ _outWorkTableScan(StringInfo str, const WorkTableScan *node)
 
 static void
 _outForeignScan(StringInfo str, const ForeignScan *node)
-{	StackTrace("_outForeignScan");
+{
 	WRITE_NODE_TYPE("FOREIGNSCAN");
 
 	_outScanInfo(str, (const Scan *) node);
@@ -575,7 +575,7 @@ _outForeignScan(StringInfo str, const ForeignScan *node)
 
 static void
 _outCustomScan(StringInfo str, const CustomScan *node)
-{	StackTrace("_outCustomScan");
+{
 	WRITE_NODE_TYPE("CUSTOMSCAN");
 
 	_outScanInfo(str, (const Scan *) node);
@@ -593,7 +593,7 @@ _outCustomScan(StringInfo str, const CustomScan *node)
 
 static void
 _outSampleScan(StringInfo str, const SampleScan *node)
-{	StackTrace("_outSampleScan");
+{
 	WRITE_NODE_TYPE("SAMPLESCAN");
 
 	_outScanInfo(str, (const Scan *) node);
@@ -601,7 +601,7 @@ _outSampleScan(StringInfo str, const SampleScan *node)
 
 static void
 _outJoin(StringInfo str, const Join *node)
-{	StackTrace("_outJoin");
+{
 	WRITE_NODE_TYPE("JOIN");
 
 	_outJoinPlanInfo(str, (const Join *) node);
@@ -609,7 +609,7 @@ _outJoin(StringInfo str, const Join *node)
 
 static void
 _outNestLoop(StringInfo str, const NestLoop *node)
-{	StackTrace("_outNestLoop");
+{
 	WRITE_NODE_TYPE("NESTLOOP");
 
 	_outJoinPlanInfo(str, (const Join *) node);
@@ -619,7 +619,7 @@ _outNestLoop(StringInfo str, const NestLoop *node)
 
 static void
 _outMergeJoin(StringInfo str, const MergeJoin *node)
-{	StackTrace("_outMergeJoin");
+{
 	int			numCols;
 	int			i;
 
@@ -650,7 +650,7 @@ _outMergeJoin(StringInfo str, const MergeJoin *node)
 
 static void
 _outHashJoin(StringInfo str, const HashJoin *node)
-{	StackTrace("_outHashJoin");
+{
 	WRITE_NODE_TYPE("HASHJOIN");
 
 	_outJoinPlanInfo(str, (const Join *) node);
@@ -660,7 +660,7 @@ _outHashJoin(StringInfo str, const HashJoin *node)
 
 static void
 _outAgg(StringInfo str, const Agg *node)
-{	StackTrace("_outAgg");
+{
 	int			i;
 
 	WRITE_NODE_TYPE("AGG");
@@ -686,7 +686,7 @@ _outAgg(StringInfo str, const Agg *node)
 
 static void
 _outWindowAgg(StringInfo str, const WindowAgg *node)
-{	StackTrace("_outWindowAgg");
+{
 	int			i;
 
 	WRITE_NODE_TYPE("WINDOWAGG");
@@ -721,7 +721,7 @@ _outWindowAgg(StringInfo str, const WindowAgg *node)
 
 static void
 _outGroup(StringInfo str, const Group *node)
-{	StackTrace("_outGroup");
+{
 	int			i;
 
 	WRITE_NODE_TYPE("GROUP");
@@ -741,7 +741,7 @@ _outGroup(StringInfo str, const Group *node)
 
 static void
 _outMaterial(StringInfo str, const Material *node)
-{	StackTrace("_outMaterial");
+{
 	WRITE_NODE_TYPE("MATERIAL");
 
 	_outPlanInfo(str, (const Plan *) node);
@@ -749,7 +749,7 @@ _outMaterial(StringInfo str, const Material *node)
 
 static void
 _outSort(StringInfo str, const Sort *node)
-{	StackTrace("_outSort");
+{
 	int			i;
 
 	WRITE_NODE_TYPE("SORT");
@@ -777,7 +777,7 @@ _outSort(StringInfo str, const Sort *node)
 
 static void
 _outUnique(StringInfo str, const Unique *node)
-{	StackTrace("_outUnique");
+{
 	int			i;
 
 	WRITE_NODE_TYPE("UNIQUE");
@@ -797,7 +797,7 @@ _outUnique(StringInfo str, const Unique *node)
 
 static void
 _outHash(StringInfo str, const Hash *node)
-{	StackTrace("_outHash");
+{
 	WRITE_NODE_TYPE("HASH");
 
 	_outPlanInfo(str, (const Plan *) node);
@@ -811,7 +811,7 @@ _outHash(StringInfo str, const Hash *node)
 
 static void
 _outSetOp(StringInfo str, const SetOp *node)
-{	StackTrace("_outSetOp");
+{
 	int			i;
 
 	WRITE_NODE_TYPE("SETOP");
@@ -837,7 +837,7 @@ _outSetOp(StringInfo str, const SetOp *node)
 
 static void
 _outLockRows(StringInfo str, const LockRows *node)
-{	StackTrace("_outLockRows");
+{
 	WRITE_NODE_TYPE("LOCKROWS");
 
 	_outPlanInfo(str, (const Plan *) node);
@@ -848,7 +848,7 @@ _outLockRows(StringInfo str, const LockRows *node)
 
 static void
 _outLimit(StringInfo str, const Limit *node)
-{	StackTrace("_outLimit");
+{
 	WRITE_NODE_TYPE("LIMIT");
 
 	_outPlanInfo(str, (const Plan *) node);
@@ -859,7 +859,7 @@ _outLimit(StringInfo str, const Limit *node)
 
 static void
 _outNestLoopParam(StringInfo str, const NestLoopParam *node)
-{	StackTrace("_outNestLoopParam");
+{
 	WRITE_NODE_TYPE("NESTLOOPPARAM");
 
 	WRITE_INT_FIELD(paramno);
@@ -868,7 +868,7 @@ _outNestLoopParam(StringInfo str, const NestLoopParam *node)
 
 static void
 _outPlanRowMark(StringInfo str, const PlanRowMark *node)
-{	StackTrace("_outPlanRowMark");
+{
 	WRITE_NODE_TYPE("PLANROWMARK");
 
 	WRITE_UINT_FIELD(rti);
@@ -883,7 +883,7 @@ _outPlanRowMark(StringInfo str, const PlanRowMark *node)
 
 static void
 _outPlanInvalItem(StringInfo str, const PlanInvalItem *node)
-{	StackTrace("_outPlanInvalItem");
+{
 	WRITE_NODE_TYPE("PLANINVALITEM");
 
 	WRITE_INT_FIELD(cacheId);
@@ -898,7 +898,7 @@ _outPlanInvalItem(StringInfo str, const PlanInvalItem *node)
 
 static void
 _outAlias(StringInfo str, const Alias *node)
-{	StackTrace("_outAlias");
+{
 	WRITE_NODE_TYPE("ALIAS");
 
 	WRITE_STRING_FIELD(aliasname);
@@ -907,7 +907,7 @@ _outAlias(StringInfo str, const Alias *node)
 
 static void
 _outRangeVar(StringInfo str, const RangeVar *node)
-{	StackTrace("_outRangeVar");
+{
 	WRITE_NODE_TYPE("RANGEVAR");
 
 	/*
@@ -924,7 +924,7 @@ _outRangeVar(StringInfo str, const RangeVar *node)
 
 static void
 _outIntoClause(StringInfo str, const IntoClause *node)
-{	StackTrace("_outIntoClause");
+{
 	WRITE_NODE_TYPE("INTOCLAUSE");
 
 	WRITE_NODE_FIELD(rel);
@@ -938,7 +938,7 @@ _outIntoClause(StringInfo str, const IntoClause *node)
 
 static void
 _outVar(StringInfo str, const Var *node)
-{	StackTrace("_outVar");
+{
 	WRITE_NODE_TYPE("VAR");
 
 	WRITE_UINT_FIELD(varno);
@@ -954,7 +954,7 @@ _outVar(StringInfo str, const Var *node)
 
 static void
 _outConst(StringInfo str, const Const *node)
-{	StackTrace("_outConst");
+{
 	WRITE_NODE_TYPE("CONST");
 
 	WRITE_OID_FIELD(consttype);
@@ -974,7 +974,7 @@ _outConst(StringInfo str, const Const *node)
 
 static void
 _outParam(StringInfo str, const Param *node)
-{	StackTrace("_outParam");
+{
 	WRITE_NODE_TYPE("PARAM");
 
 	WRITE_ENUM_FIELD(paramkind, ParamKind);
@@ -987,7 +987,7 @@ _outParam(StringInfo str, const Param *node)
 
 static void
 _outAggref(StringInfo str, const Aggref *node)
-{	StackTrace("_outAggref");
+{
 	WRITE_NODE_TYPE("AGGREF");
 
 	WRITE_OID_FIELD(aggfnoid);
@@ -1008,7 +1008,7 @@ _outAggref(StringInfo str, const Aggref *node)
 
 static void
 _outGroupingFunc(StringInfo str, const GroupingFunc *node)
-{	StackTrace("_outGroupingFunc");
+{
 	WRITE_NODE_TYPE("GROUPINGFUNC");
 
 	WRITE_NODE_FIELD(args);
@@ -1020,7 +1020,7 @@ _outGroupingFunc(StringInfo str, const GroupingFunc *node)
 
 static void
 _outWindowFunc(StringInfo str, const WindowFunc *node)
-{	StackTrace("_outWindowFunc");
+{
 	WRITE_NODE_TYPE("WINDOWFUNC");
 
 	WRITE_OID_FIELD(winfnoid);
@@ -1037,7 +1037,7 @@ _outWindowFunc(StringInfo str, const WindowFunc *node)
 
 static void
 _outArrayRef(StringInfo str, const ArrayRef *node)
-{	StackTrace("_outArrayRef");
+{
 	WRITE_NODE_TYPE("ARRAYREF");
 
 	WRITE_OID_FIELD(refarraytype);
@@ -1052,7 +1052,7 @@ _outArrayRef(StringInfo str, const ArrayRef *node)
 
 static void
 _outFuncExpr(StringInfo str, const FuncExpr *node)
-{	StackTrace("_outFuncExpr");
+{
 	WRITE_NODE_TYPE("FUNCEXPR");
 
 	WRITE_OID_FIELD(funcid);
@@ -1068,7 +1068,7 @@ _outFuncExpr(StringInfo str, const FuncExpr *node)
 
 static void
 _outNamedArgExpr(StringInfo str, const NamedArgExpr *node)
-{	StackTrace("_outNamedArgExpr");
+{
 	WRITE_NODE_TYPE("NAMEDARGEXPR");
 
 	WRITE_NODE_FIELD(arg);
@@ -1079,7 +1079,7 @@ _outNamedArgExpr(StringInfo str, const NamedArgExpr *node)
 
 static void
 _outOpExpr(StringInfo str, const OpExpr *node)
-{	StackTrace("_outOpExpr");
+{
 	WRITE_NODE_TYPE("OPEXPR");
 
 	WRITE_OID_FIELD(opno);
@@ -1094,7 +1094,7 @@ _outOpExpr(StringInfo str, const OpExpr *node)
 
 static void
 _outDistinctExpr(StringInfo str, const DistinctExpr *node)
-{	StackTrace("_outDistinctExpr");
+{
 	WRITE_NODE_TYPE("DISTINCTEXPR");
 
 	WRITE_OID_FIELD(opno);
@@ -1109,7 +1109,7 @@ _outDistinctExpr(StringInfo str, const DistinctExpr *node)
 
 static void
 _outNullIfExpr(StringInfo str, const NullIfExpr *node)
-{	StackTrace("_outNullIfExpr");
+{
 	WRITE_NODE_TYPE("NULLIFEXPR");
 
 	WRITE_OID_FIELD(opno);
@@ -1124,7 +1124,7 @@ _outNullIfExpr(StringInfo str, const NullIfExpr *node)
 
 static void
 _outScalarArrayOpExpr(StringInfo str, const ScalarArrayOpExpr *node)
-{	StackTrace("_outScalarArrayOpExpr");
+{
 	WRITE_NODE_TYPE("SCALARARRAYOPEXPR");
 
 	WRITE_OID_FIELD(opno);
@@ -1137,7 +1137,7 @@ _outScalarArrayOpExpr(StringInfo str, const ScalarArrayOpExpr *node)
 
 static void
 _outBoolExpr(StringInfo str, const BoolExpr *node)
-{	StackTrace("_outBoolExpr");
+{
 	char	   *opstr = NULL;
 
 	WRITE_NODE_TYPE("BOOLEXPR");
@@ -1164,7 +1164,7 @@ _outBoolExpr(StringInfo str, const BoolExpr *node)
 
 static void
 _outSubLink(StringInfo str, const SubLink *node)
-{	StackTrace("_outSubLink");
+{
 	WRITE_NODE_TYPE("SUBLINK");
 
 	WRITE_ENUM_FIELD(subLinkType, SubLinkType);
@@ -1177,7 +1177,7 @@ _outSubLink(StringInfo str, const SubLink *node)
 
 static void
 _outSubPlan(StringInfo str, const SubPlan *node)
-{	StackTrace("_outSubPlan");
+{
 	WRITE_NODE_TYPE("SUBPLAN");
 
 	WRITE_ENUM_FIELD(subLinkType, SubLinkType);
@@ -1199,7 +1199,7 @@ _outSubPlan(StringInfo str, const SubPlan *node)
 
 static void
 _outAlternativeSubPlan(StringInfo str, const AlternativeSubPlan *node)
-{	StackTrace("_outAlternativeSubPlan");
+{
 	WRITE_NODE_TYPE("ALTERNATIVESUBPLAN");
 
 	WRITE_NODE_FIELD(subplans);
@@ -1207,7 +1207,7 @@ _outAlternativeSubPlan(StringInfo str, const AlternativeSubPlan *node)
 
 static void
 _outFieldSelect(StringInfo str, const FieldSelect *node)
-{	StackTrace("_outFieldSelect");
+{
 	WRITE_NODE_TYPE("FIELDSELECT");
 
 	WRITE_NODE_FIELD(arg);
@@ -1219,7 +1219,7 @@ _outFieldSelect(StringInfo str, const FieldSelect *node)
 
 static void
 _outFieldStore(StringInfo str, const FieldStore *node)
-{	StackTrace("_outFieldStore");
+{
 	WRITE_NODE_TYPE("FIELDSTORE");
 
 	WRITE_NODE_FIELD(arg);
@@ -1230,7 +1230,7 @@ _outFieldStore(StringInfo str, const FieldStore *node)
 
 static void
 _outRelabelType(StringInfo str, const RelabelType *node)
-{	StackTrace("_outRelabelType");
+{
 	WRITE_NODE_TYPE("RELABELTYPE");
 
 	WRITE_NODE_FIELD(arg);
@@ -1243,7 +1243,7 @@ _outRelabelType(StringInfo str, const RelabelType *node)
 
 static void
 _outCoerceViaIO(StringInfo str, const CoerceViaIO *node)
-{	StackTrace("_outCoerceViaIO");
+{
 	WRITE_NODE_TYPE("COERCEVIAIO");
 
 	WRITE_NODE_FIELD(arg);
@@ -1255,7 +1255,7 @@ _outCoerceViaIO(StringInfo str, const CoerceViaIO *node)
 
 static void
 _outArrayCoerceExpr(StringInfo str, const ArrayCoerceExpr *node)
-{	StackTrace("_outArrayCoerceExpr");
+{
 	WRITE_NODE_TYPE("ARRAYCOERCEEXPR");
 
 	WRITE_NODE_FIELD(arg);
@@ -1270,7 +1270,7 @@ _outArrayCoerceExpr(StringInfo str, const ArrayCoerceExpr *node)
 
 static void
 _outConvertRowtypeExpr(StringInfo str, const ConvertRowtypeExpr *node)
-{	StackTrace("_outConvertRowtypeExpr");
+{
 	WRITE_NODE_TYPE("CONVERTROWTYPEEXPR");
 
 	WRITE_NODE_FIELD(arg);
@@ -1281,7 +1281,7 @@ _outConvertRowtypeExpr(StringInfo str, const ConvertRowtypeExpr *node)
 
 static void
 _outCollateExpr(StringInfo str, const CollateExpr *node)
-{	StackTrace("_outCollateExpr");
+{
 	WRITE_NODE_TYPE("COLLATE");
 
 	WRITE_NODE_FIELD(arg);
@@ -1291,7 +1291,7 @@ _outCollateExpr(StringInfo str, const CollateExpr *node)
 
 static void
 _outCaseExpr(StringInfo str, const CaseExpr *node)
-{	StackTrace("_outCaseExpr");
+{
 	WRITE_NODE_TYPE("CASE");
 
 	WRITE_OID_FIELD(casetype);
@@ -1304,7 +1304,7 @@ _outCaseExpr(StringInfo str, const CaseExpr *node)
 
 static void
 _outCaseWhen(StringInfo str, const CaseWhen *node)
-{	StackTrace("_outCaseWhen");
+{
 	WRITE_NODE_TYPE("WHEN");
 
 	WRITE_NODE_FIELD(expr);
@@ -1314,7 +1314,7 @@ _outCaseWhen(StringInfo str, const CaseWhen *node)
 
 static void
 _outCaseTestExpr(StringInfo str, const CaseTestExpr *node)
-{	StackTrace("_outCaseTestExpr");
+{
 	WRITE_NODE_TYPE("CASETESTEXPR");
 
 	WRITE_OID_FIELD(typeId);
@@ -1324,7 +1324,7 @@ _outCaseTestExpr(StringInfo str, const CaseTestExpr *node)
 
 static void
 _outArrayExpr(StringInfo str, const ArrayExpr *node)
-{	StackTrace("_outArrayExpr");
+{
 	WRITE_NODE_TYPE("ARRAY");
 
 	WRITE_OID_FIELD(array_typeid);
@@ -1337,7 +1337,7 @@ _outArrayExpr(StringInfo str, const ArrayExpr *node)
 
 static void
 _outRowExpr(StringInfo str, const RowExpr *node)
-{	StackTrace("_outRowExpr");
+{
 	WRITE_NODE_TYPE("ROW");
 
 	WRITE_NODE_FIELD(args);
@@ -1349,7 +1349,7 @@ _outRowExpr(StringInfo str, const RowExpr *node)
 
 static void
 _outRowCompareExpr(StringInfo str, const RowCompareExpr *node)
-{	StackTrace("_outRowCompareExpr");
+{
 	WRITE_NODE_TYPE("ROWCOMPARE");
 
 	WRITE_ENUM_FIELD(rctype, RowCompareType);
@@ -1362,7 +1362,7 @@ _outRowCompareExpr(StringInfo str, const RowCompareExpr *node)
 
 static void
 _outCoalesceExpr(StringInfo str, const CoalesceExpr *node)
-{	StackTrace("_outCoalesceExpr");
+{
 	WRITE_NODE_TYPE("COALESCE");
 
 	WRITE_OID_FIELD(coalescetype);
@@ -1373,7 +1373,7 @@ _outCoalesceExpr(StringInfo str, const CoalesceExpr *node)
 
 static void
 _outMinMaxExpr(StringInfo str, const MinMaxExpr *node)
-{	StackTrace("_outMinMaxExpr");
+{
 	WRITE_NODE_TYPE("MINMAX");
 
 	WRITE_OID_FIELD(minmaxtype);
@@ -1386,7 +1386,7 @@ _outMinMaxExpr(StringInfo str, const MinMaxExpr *node)
 
 static void
 _outXmlExpr(StringInfo str, const XmlExpr *node)
-{	StackTrace("_outXmlExpr");
+{
 	WRITE_NODE_TYPE("XMLEXPR");
 
 	WRITE_ENUM_FIELD(op, XmlExprOp);
@@ -1402,7 +1402,7 @@ _outXmlExpr(StringInfo str, const XmlExpr *node)
 
 static void
 _outNullTest(StringInfo str, const NullTest *node)
-{	StackTrace("_outNullTest");
+{
 	WRITE_NODE_TYPE("NULLTEST");
 
 	WRITE_NODE_FIELD(arg);
@@ -1413,7 +1413,7 @@ _outNullTest(StringInfo str, const NullTest *node)
 
 static void
 _outBooleanTest(StringInfo str, const BooleanTest *node)
-{	StackTrace("_outBooleanTest");
+{
 	WRITE_NODE_TYPE("BOOLEANTEST");
 
 	WRITE_NODE_FIELD(arg);
@@ -1423,7 +1423,7 @@ _outBooleanTest(StringInfo str, const BooleanTest *node)
 
 static void
 _outCoerceToDomain(StringInfo str, const CoerceToDomain *node)
-{	StackTrace("_outCoerceToDomain");
+{
 	WRITE_NODE_TYPE("COERCETODOMAIN");
 
 	WRITE_NODE_FIELD(arg);
@@ -1436,7 +1436,7 @@ _outCoerceToDomain(StringInfo str, const CoerceToDomain *node)
 
 static void
 _outCoerceToDomainValue(StringInfo str, const CoerceToDomainValue *node)
-{	StackTrace("_outCoerceToDomainValue");
+{
 	WRITE_NODE_TYPE("COERCETODOMAINVALUE");
 
 	WRITE_OID_FIELD(typeId);
@@ -1447,7 +1447,7 @@ _outCoerceToDomainValue(StringInfo str, const CoerceToDomainValue *node)
 
 static void
 _outSetToDefault(StringInfo str, const SetToDefault *node)
-{	StackTrace("_outSetToDefault");
+{
 	WRITE_NODE_TYPE("SETTODEFAULT");
 
 	WRITE_OID_FIELD(typeId);
@@ -1458,7 +1458,7 @@ _outSetToDefault(StringInfo str, const SetToDefault *node)
 
 static void
 _outCurrentOfExpr(StringInfo str, const CurrentOfExpr *node)
-{	StackTrace("_outCurrentOfExpr");
+{
 	WRITE_NODE_TYPE("CURRENTOFEXPR");
 
 	WRITE_UINT_FIELD(cvarno);
@@ -1468,7 +1468,7 @@ _outCurrentOfExpr(StringInfo str, const CurrentOfExpr *node)
 
 static void
 _outInferenceElem(StringInfo str, const InferenceElem *node)
-{	StackTrace("_outInferenceElem");
+{
 	WRITE_NODE_TYPE("INFERENCEELEM");
 
 	WRITE_NODE_FIELD(expr);
@@ -1478,7 +1478,7 @@ _outInferenceElem(StringInfo str, const InferenceElem *node)
 
 static void
 _outTargetEntry(StringInfo str, const TargetEntry *node)
-{	StackTrace("_outTargetEntry");
+{
 	WRITE_NODE_TYPE("TARGETENTRY");
 
 	WRITE_NODE_FIELD(expr);
@@ -1492,7 +1492,7 @@ _outTargetEntry(StringInfo str, const TargetEntry *node)
 
 static void
 _outRangeTblRef(StringInfo str, const RangeTblRef *node)
-{	StackTrace("_outRangeTblRef");
+{
 	WRITE_NODE_TYPE("RANGETBLREF");
 
 	WRITE_INT_FIELD(rtindex);
@@ -1500,7 +1500,7 @@ _outRangeTblRef(StringInfo str, const RangeTblRef *node)
 
 static void
 _outJoinExpr(StringInfo str, const JoinExpr *node)
-{	StackTrace("_outJoinExpr");
+{
 	WRITE_NODE_TYPE("JOINEXPR");
 
 	WRITE_ENUM_FIELD(jointype, JoinType);
@@ -1515,7 +1515,7 @@ _outJoinExpr(StringInfo str, const JoinExpr *node)
 
 static void
 _outFromExpr(StringInfo str, const FromExpr *node)
-{	StackTrace("_outFromExpr");
+{
 	WRITE_NODE_TYPE("FROMEXPR");
 
 	WRITE_NODE_FIELD(fromlist);
@@ -1524,7 +1524,7 @@ _outFromExpr(StringInfo str, const FromExpr *node)
 
 static void
 _outOnConflictExpr(StringInfo str, const OnConflictExpr *node)
-{	StackTrace("_outOnConflictExpr");
+{
 	WRITE_NODE_TYPE("ONCONFLICTEXPR");
 
 	WRITE_ENUM_FIELD(action, OnConflictAction);
@@ -1554,7 +1554,7 @@ _outOnConflictExpr(StringInfo str, const OnConflictExpr *node)
  */
 static void
 _outPathInfo(StringInfo str, const Path *node)
-{	StackTrace("_outPathInfo");
+{
 	WRITE_ENUM_FIELD(pathtype, NodeTag);
 	appendStringInfoString(str, " :parent_relids ");
 	if (node->parent)
@@ -1577,7 +1577,7 @@ _outPathInfo(StringInfo str, const Path *node)
  */
 static void
 _outJoinPathInfo(StringInfo str, const JoinPath *node)
-{	StackTrace("_outJoinPathInfo");
+{
 	_outPathInfo(str, (const Path *) node);
 
 	WRITE_ENUM_FIELD(jointype, JoinType);
@@ -1588,7 +1588,7 @@ _outJoinPathInfo(StringInfo str, const JoinPath *node)
 
 static void
 _outPath(StringInfo str, const Path *node)
-{	StackTrace("_outPath");
+{
 	WRITE_NODE_TYPE("PATH");
 
 	_outPathInfo(str, (const Path *) node);
@@ -1596,7 +1596,7 @@ _outPath(StringInfo str, const Path *node)
 
 static void
 _outIndexPath(StringInfo str, const IndexPath *node)
-{	StackTrace("_outIndexPath");
+{
 	WRITE_NODE_TYPE("INDEXPATH");
 
 	_outPathInfo(str, (const Path *) node);
@@ -1614,7 +1614,7 @@ _outIndexPath(StringInfo str, const IndexPath *node)
 
 static void
 _outBitmapHeapPath(StringInfo str, const BitmapHeapPath *node)
-{	StackTrace("_outBitmapHeapPath");
+{
 	WRITE_NODE_TYPE("BITMAPHEAPPATH");
 
 	_outPathInfo(str, (const Path *) node);
@@ -1624,7 +1624,7 @@ _outBitmapHeapPath(StringInfo str, const BitmapHeapPath *node)
 
 static void
 _outBitmapAndPath(StringInfo str, const BitmapAndPath *node)
-{	StackTrace("_outBitmapAndPath");
+{
 	WRITE_NODE_TYPE("BITMAPANDPATH");
 
 	_outPathInfo(str, (const Path *) node);
@@ -1635,7 +1635,7 @@ _outBitmapAndPath(StringInfo str, const BitmapAndPath *node)
 
 static void
 _outBitmapOrPath(StringInfo str, const BitmapOrPath *node)
-{	StackTrace("_outBitmapOrPath");
+{
 	WRITE_NODE_TYPE("BITMAPORPATH");
 
 	_outPathInfo(str, (const Path *) node);
@@ -1646,7 +1646,7 @@ _outBitmapOrPath(StringInfo str, const BitmapOrPath *node)
 
 static void
 _outTidPath(StringInfo str, const TidPath *node)
-{	StackTrace("_outTidPath");
+{
 	WRITE_NODE_TYPE("TIDPATH");
 
 	_outPathInfo(str, (const Path *) node);
@@ -1656,7 +1656,7 @@ _outTidPath(StringInfo str, const TidPath *node)
 
 static void
 _outForeignPath(StringInfo str, const ForeignPath *node)
-{	StackTrace("_outForeignPath");
+{
 	WRITE_NODE_TYPE("FOREIGNPATH");
 
 	_outPathInfo(str, (const Path *) node);
@@ -1666,7 +1666,7 @@ _outForeignPath(StringInfo str, const ForeignPath *node)
 
 static void
 _outCustomPath(StringInfo str, const CustomPath *node)
-{	StackTrace("_outCustomPath");
+{
 	WRITE_NODE_TYPE("CUSTOMPATH");
 
 	_outPathInfo(str, (const Path *) node);
@@ -1681,7 +1681,7 @@ _outCustomPath(StringInfo str, const CustomPath *node)
 
 static void
 _outAppendPath(StringInfo str, const AppendPath *node)
-{	StackTrace("_outAppendPath");
+{
 	WRITE_NODE_TYPE("APPENDPATH");
 
 	_outPathInfo(str, (const Path *) node);
@@ -1691,7 +1691,7 @@ _outAppendPath(StringInfo str, const AppendPath *node)
 
 static void
 _outMergeAppendPath(StringInfo str, const MergeAppendPath *node)
-{	StackTrace("_outMergeAppendPath");
+{
 	WRITE_NODE_TYPE("MERGEAPPENDPATH");
 
 	_outPathInfo(str, (const Path *) node);
@@ -1702,7 +1702,7 @@ _outMergeAppendPath(StringInfo str, const MergeAppendPath *node)
 
 static void
 _outResultPath(StringInfo str, const ResultPath *node)
-{	StackTrace("_outResultPath");
+{
 	WRITE_NODE_TYPE("RESULTPATH");
 
 	_outPathInfo(str, (const Path *) node);
@@ -1712,7 +1712,7 @@ _outResultPath(StringInfo str, const ResultPath *node)
 
 static void
 _outMaterialPath(StringInfo str, const MaterialPath *node)
-{	StackTrace("_outMaterialPath");
+{
 	WRITE_NODE_TYPE("MATERIALPATH");
 
 	_outPathInfo(str, (const Path *) node);
@@ -1722,7 +1722,7 @@ _outMaterialPath(StringInfo str, const MaterialPath *node)
 
 static void
 _outUniquePath(StringInfo str, const UniquePath *node)
-{	StackTrace("_outUniquePath");
+{
 	WRITE_NODE_TYPE("UNIQUEPATH");
 
 	_outPathInfo(str, (const Path *) node);
@@ -1735,7 +1735,7 @@ _outUniquePath(StringInfo str, const UniquePath *node)
 
 static void
 _outNestPath(StringInfo str, const NestPath *node)
-{	StackTrace("_outNestPath");
+{
 	WRITE_NODE_TYPE("NESTPATH");
 
 	_outJoinPathInfo(str, (const JoinPath *) node);
@@ -1743,7 +1743,7 @@ _outNestPath(StringInfo str, const NestPath *node)
 
 static void
 _outMergePath(StringInfo str, const MergePath *node)
-{	StackTrace("_outMergePath");
+{
 	WRITE_NODE_TYPE("MERGEPATH");
 
 	_outJoinPathInfo(str, (const JoinPath *) node);
@@ -1756,7 +1756,7 @@ _outMergePath(StringInfo str, const MergePath *node)
 
 static void
 _outHashPath(StringInfo str, const HashPath *node)
-{	StackTrace("_outHashPath");
+{
 	WRITE_NODE_TYPE("HASHPATH");
 
 	_outJoinPathInfo(str, (const JoinPath *) node);
@@ -1767,7 +1767,7 @@ _outHashPath(StringInfo str, const HashPath *node)
 
 static void
 _outPlannerGlobal(StringInfo str, const PlannerGlobal *node)
-{	StackTrace("_outPlannerGlobal");
+{
 	WRITE_NODE_TYPE("PLANNERGLOBAL");
 
 	/* NB: this isn't a complete set of fields */
@@ -1787,7 +1787,7 @@ _outPlannerGlobal(StringInfo str, const PlannerGlobal *node)
 
 static void
 _outPlannerInfo(StringInfo str, const PlannerInfo *node)
-{	StackTrace("_outPlannerInfo");
+{
 	WRITE_NODE_TYPE("PLANNERINFO");
 
 	/* NB: this isn't a complete set of fields */
@@ -1835,7 +1835,7 @@ _outPlannerInfo(StringInfo str, const PlannerInfo *node)
 
 static void
 _outRelOptInfo(StringInfo str, const RelOptInfo *node)
-{	StackTrace("_outRelOptInfo");
+{
 	WRITE_NODE_TYPE("RELOPTINFO");
 
 	/* NB: this isn't a complete set of fields */
@@ -1876,7 +1876,7 @@ _outRelOptInfo(StringInfo str, const RelOptInfo *node)
 
 static void
 _outIndexOptInfo(StringInfo str, const IndexOptInfo *node)
-{	StackTrace("_outIndexOptInfo");
+{
 	WRITE_NODE_TYPE("INDEXOPTINFO");
 
 	/* NB: this isn't a complete set of fields */
@@ -1900,7 +1900,7 @@ _outIndexOptInfo(StringInfo str, const IndexOptInfo *node)
 
 static void
 _outEquivalenceClass(StringInfo str, const EquivalenceClass *node)
-{	StackTrace("_outEquivalenceClass");
+{
 	/*
 	 * To simplify reading, we just chase up to the topmost merged EC and
 	 * print that, without bothering to show the merge-ees separately.
@@ -1925,7 +1925,7 @@ _outEquivalenceClass(StringInfo str, const EquivalenceClass *node)
 
 static void
 _outEquivalenceMember(StringInfo str, const EquivalenceMember *node)
-{	StackTrace("_outEquivalenceMember");
+{
 	WRITE_NODE_TYPE("EQUIVALENCEMEMBER");
 
 	WRITE_NODE_FIELD(em_expr);
@@ -1938,7 +1938,7 @@ _outEquivalenceMember(StringInfo str, const EquivalenceMember *node)
 
 static void
 _outPathKey(StringInfo str, const PathKey *node)
-{	StackTrace("_outPathKey");
+{
 	WRITE_NODE_TYPE("PATHKEY");
 
 	WRITE_NODE_FIELD(pk_eclass);
@@ -1949,7 +1949,7 @@ _outPathKey(StringInfo str, const PathKey *node)
 
 static void
 _outParamPathInfo(StringInfo str, const ParamPathInfo *node)
-{	StackTrace("_outParamPathInfo");
+{
 	WRITE_NODE_TYPE("PARAMPATHINFO");
 
 	WRITE_BITMAPSET_FIELD(ppi_req_outer);
@@ -1959,7 +1959,7 @@ _outParamPathInfo(StringInfo str, const ParamPathInfo *node)
 
 static void
 _outRestrictInfo(StringInfo str, const RestrictInfo *node)
-{	StackTrace("_outRestrictInfo");
+{
 	WRITE_NODE_TYPE("RESTRICTINFO");
 
 	/* NB: this isn't a complete set of fields */
@@ -1989,7 +1989,7 @@ _outRestrictInfo(StringInfo str, const RestrictInfo *node)
 
 static void
 _outPlaceHolderVar(StringInfo str, const PlaceHolderVar *node)
-{	StackTrace("_outPlaceHolderVar");
+{
 	WRITE_NODE_TYPE("PLACEHOLDERVAR");
 
 	WRITE_NODE_FIELD(phexpr);
@@ -2000,7 +2000,7 @@ _outPlaceHolderVar(StringInfo str, const PlaceHolderVar *node)
 
 static void
 _outSpecialJoinInfo(StringInfo str, const SpecialJoinInfo *node)
-{	StackTrace("_outSpecialJoinInfo");
+{
 	WRITE_NODE_TYPE("SPECIALJOININFO");
 
 	WRITE_BITMAPSET_FIELD(min_lefthand);
@@ -2018,7 +2018,7 @@ _outSpecialJoinInfo(StringInfo str, const SpecialJoinInfo *node)
 
 static void
 _outLateralJoinInfo(StringInfo str, const LateralJoinInfo *node)
-{	StackTrace("_outLateralJoinInfo");
+{
 	WRITE_NODE_TYPE("LATERALJOININFO");
 
 	WRITE_BITMAPSET_FIELD(lateral_lhs);
@@ -2027,7 +2027,7 @@ _outLateralJoinInfo(StringInfo str, const LateralJoinInfo *node)
 
 static void
 _outAppendRelInfo(StringInfo str, const AppendRelInfo *node)
-{	StackTrace("_outAppendRelInfo");
+{
 	WRITE_NODE_TYPE("APPENDRELINFO");
 
 	WRITE_UINT_FIELD(parent_relid);
@@ -2040,7 +2040,7 @@ _outAppendRelInfo(StringInfo str, const AppendRelInfo *node)
 
 static void
 _outPlaceHolderInfo(StringInfo str, const PlaceHolderInfo *node)
-{	StackTrace("_outPlaceHolderInfo");
+{
 	WRITE_NODE_TYPE("PLACEHOLDERINFO");
 
 	WRITE_UINT_FIELD(phid);
@@ -2053,7 +2053,7 @@ _outPlaceHolderInfo(StringInfo str, const PlaceHolderInfo *node)
 
 static void
 _outMinMaxAggInfo(StringInfo str, const MinMaxAggInfo *node)
-{	StackTrace("_outMinMaxAggInfo");
+{
 	WRITE_NODE_TYPE("MINMAXAGGINFO");
 
 	WRITE_OID_FIELD(aggfnoid);
@@ -2067,7 +2067,7 @@ _outMinMaxAggInfo(StringInfo str, const MinMaxAggInfo *node)
 
 static void
 _outPlannerParamItem(StringInfo str, const PlannerParamItem *node)
-{	StackTrace("_outPlannerParamItem");
+{
 	WRITE_NODE_TYPE("PLANNERPARAMITEM");
 
 	WRITE_NODE_FIELD(item);
@@ -2085,7 +2085,7 @@ _outPlannerParamItem(StringInfo str, const PlannerParamItem *node)
  */
 static void
 _outCreateStmtInfo(StringInfo str, const CreateStmt *node)
-{	StackTrace("_outCreateStmtInfo");
+{
 	WRITE_NODE_FIELD(relation);
 	WRITE_NODE_FIELD(tableElts);
 	WRITE_NODE_FIELD(inhRelations);
@@ -2099,7 +2099,7 @@ _outCreateStmtInfo(StringInfo str, const CreateStmt *node)
 
 static void
 _outCreateStmt(StringInfo str, const CreateStmt *node)
-{	StackTrace("_outCreateStmt");
+{
 	WRITE_NODE_TYPE("CREATESTMT");
 
 	_outCreateStmtInfo(str, (const CreateStmt *) node);
@@ -2107,7 +2107,7 @@ _outCreateStmt(StringInfo str, const CreateStmt *node)
 
 static void
 _outCreateForeignTableStmt(StringInfo str, const CreateForeignTableStmt *node)
-{	StackTrace("_outCreateForeignTableStmt");
+{
 	WRITE_NODE_TYPE("CREATEFOREIGNTABLESTMT");
 
 	_outCreateStmtInfo(str, (const CreateStmt *) node);
@@ -2118,7 +2118,7 @@ _outCreateForeignTableStmt(StringInfo str, const CreateForeignTableStmt *node)
 
 static void
 _outImportForeignSchemaStmt(StringInfo str, const ImportForeignSchemaStmt *node)
-{	StackTrace("_outImportForeignSchemaStmt");
+{
 	WRITE_NODE_TYPE("IMPORTFOREIGNSCHEMASTMT");
 
 	WRITE_STRING_FIELD(server_name);
@@ -2131,7 +2131,7 @@ _outImportForeignSchemaStmt(StringInfo str, const ImportForeignSchemaStmt *node)
 
 static void
 _outIndexStmt(StringInfo str, const IndexStmt *node)
-{	StackTrace("_outIndexStmt");
+{
 	WRITE_NODE_TYPE("INDEXSTMT");
 
 	WRITE_STRING_FIELD(idxname);
@@ -2157,7 +2157,7 @@ _outIndexStmt(StringInfo str, const IndexStmt *node)
 
 static void
 _outNotifyStmt(StringInfo str, const NotifyStmt *node)
-{	StackTrace("_outNotifyStmt");
+{
 	WRITE_NODE_TYPE("NOTIFY");
 
 	WRITE_STRING_FIELD(conditionname);
@@ -2166,7 +2166,7 @@ _outNotifyStmt(StringInfo str, const NotifyStmt *node)
 
 static void
 _outDeclareCursorStmt(StringInfo str, const DeclareCursorStmt *node)
-{	StackTrace("_outDeclareCursorStmt");
+{
 	WRITE_NODE_TYPE("DECLARECURSOR");
 
 	WRITE_STRING_FIELD(portalname);
@@ -2176,7 +2176,7 @@ _outDeclareCursorStmt(StringInfo str, const DeclareCursorStmt *node)
 
 static void
 _outSelectStmt(StringInfo str, const SelectStmt *node)
-{	StackTrace("_outSelectStmt");
+{
 	WRITE_NODE_TYPE("SELECT");
 
 	WRITE_NODE_FIELD(distinctClause);
@@ -2201,7 +2201,7 @@ _outSelectStmt(StringInfo str, const SelectStmt *node)
 
 static void
 _outFuncCall(StringInfo str, const FuncCall *node)
-{	StackTrace("_outFuncCall");
+{
 	WRITE_NODE_TYPE("FUNCCALL");
 
 	WRITE_NODE_FIELD(funcname);
@@ -2218,7 +2218,7 @@ _outFuncCall(StringInfo str, const FuncCall *node)
 
 static void
 _outDefElem(StringInfo str, const DefElem *node)
-{	StackTrace("_outDefElem");
+{
 	WRITE_NODE_TYPE("DEFELEM");
 
 	WRITE_STRING_FIELD(defnamespace);
@@ -2229,7 +2229,7 @@ _outDefElem(StringInfo str, const DefElem *node)
 
 static void
 _outTableLikeClause(StringInfo str, const TableLikeClause *node)
-{	StackTrace("_outTableLikeClause");
+{
 	WRITE_NODE_TYPE("TABLELIKECLAUSE");
 
 	WRITE_NODE_FIELD(relation);
@@ -2238,7 +2238,7 @@ _outTableLikeClause(StringInfo str, const TableLikeClause *node)
 
 static void
 _outLockingClause(StringInfo str, const LockingClause *node)
-{	StackTrace("_outLockingClause");
+{
 	WRITE_NODE_TYPE("LOCKINGCLAUSE");
 
 	WRITE_NODE_FIELD(lockedRels);
@@ -2248,7 +2248,7 @@ _outLockingClause(StringInfo str, const LockingClause *node)
 
 static void
 _outXmlSerialize(StringInfo str, const XmlSerialize *node)
-{	StackTrace("_outXmlSerialize");
+{
 	WRITE_NODE_TYPE("XMLSERIALIZE");
 
 	WRITE_ENUM_FIELD(xmloption, XmlOptionType);
@@ -2259,7 +2259,7 @@ _outXmlSerialize(StringInfo str, const XmlSerialize *node)
 
 static void
 _outColumnDef(StringInfo str, const ColumnDef *node)
-{	StackTrace("_outColumnDef");
+{
 	WRITE_NODE_TYPE("COLUMNDEF");
 
 	WRITE_STRING_FIELD(colname);
@@ -2280,7 +2280,7 @@ _outColumnDef(StringInfo str, const ColumnDef *node)
 
 static void
 _outTypeName(StringInfo str, const TypeName *node)
-{	StackTrace("_outTypeName");
+{
 	WRITE_NODE_TYPE("TYPENAME");
 
 	WRITE_NODE_FIELD(names);
@@ -2295,7 +2295,7 @@ _outTypeName(StringInfo str, const TypeName *node)
 
 static void
 _outTypeCast(StringInfo str, const TypeCast *node)
-{	StackTrace("_outTypeCast");
+{
 	WRITE_NODE_TYPE("TYPECAST");
 
 	WRITE_NODE_FIELD(arg);
@@ -2305,7 +2305,7 @@ _outTypeCast(StringInfo str, const TypeCast *node)
 
 static void
 _outCollateClause(StringInfo str, const CollateClause *node)
-{	StackTrace("_outCollateClause");
+{
 	WRITE_NODE_TYPE("COLLATECLAUSE");
 
 	WRITE_NODE_FIELD(arg);
@@ -2315,7 +2315,7 @@ _outCollateClause(StringInfo str, const CollateClause *node)
 
 static void
 _outIndexElem(StringInfo str, const IndexElem *node)
-{	StackTrace("_outIndexElem");
+{
 	WRITE_NODE_TYPE("INDEXELEM");
 
 	WRITE_STRING_FIELD(name);
@@ -2329,7 +2329,7 @@ _outIndexElem(StringInfo str, const IndexElem *node)
 
 static void
 _outQuery(StringInfo str, const Query *node)
-{	StackTrace("_outQuery");
+{
 	WRITE_NODE_TYPE("QUERY");
 
 	WRITE_ENUM_FIELD(commandType, CmdType);
@@ -2393,7 +2393,7 @@ _outQuery(StringInfo str, const Query *node)
 
 static void
 _outWithCheckOption(StringInfo str, const WithCheckOption *node)
-{	StackTrace("_outWithCheckOption");
+{
 	WRITE_NODE_TYPE("WITHCHECKOPTION");
 
 	WRITE_ENUM_FIELD(kind, WCOKind);
@@ -2404,7 +2404,7 @@ _outWithCheckOption(StringInfo str, const WithCheckOption *node)
 
 static void
 _outSortGroupClause(StringInfo str, const SortGroupClause *node)
-{	StackTrace("_outSortGroupClause");
+{
 	WRITE_NODE_TYPE("SORTGROUPCLAUSE");
 
 	WRITE_UINT_FIELD(tleSortGroupRef);
@@ -2416,7 +2416,7 @@ _outSortGroupClause(StringInfo str, const SortGroupClause *node)
 
 static void
 _outGroupingSet(StringInfo str, const GroupingSet *node)
-{	StackTrace("_outGroupingSet");
+{
 	WRITE_NODE_TYPE("GROUPINGSET");
 
 	WRITE_ENUM_FIELD(kind, GroupingSetKind);
@@ -2426,7 +2426,7 @@ _outGroupingSet(StringInfo str, const GroupingSet *node)
 
 static void
 _outWindowClause(StringInfo str, const WindowClause *node)
-{	StackTrace("_outWindowClause");
+{
 	WRITE_NODE_TYPE("WINDOWCLAUSE");
 
 	WRITE_STRING_FIELD(name);
@@ -2442,7 +2442,7 @@ _outWindowClause(StringInfo str, const WindowClause *node)
 
 static void
 _outRowMarkClause(StringInfo str, const RowMarkClause *node)
-{	StackTrace("_outRowMarkClause");
+{
 	WRITE_NODE_TYPE("ROWMARKCLAUSE");
 
 	WRITE_UINT_FIELD(rti);
@@ -2453,7 +2453,7 @@ _outRowMarkClause(StringInfo str, const RowMarkClause *node)
 
 static void
 _outWithClause(StringInfo str, const WithClause *node)
-{	StackTrace("_outWithClause");
+{
 	WRITE_NODE_TYPE("WITHCLAUSE");
 
 	WRITE_NODE_FIELD(ctes);
@@ -2463,7 +2463,7 @@ _outWithClause(StringInfo str, const WithClause *node)
 
 static void
 _outCommonTableExpr(StringInfo str, const CommonTableExpr *node)
-{	StackTrace("_outCommonTableExpr");
+{
 	WRITE_NODE_TYPE("COMMONTABLEEXPR");
 
 	WRITE_STRING_FIELD(ctename);
@@ -2480,7 +2480,7 @@ _outCommonTableExpr(StringInfo str, const CommonTableExpr *node)
 
 static void
 _outRangeTableSample(StringInfo str, const RangeTableSample *node)
-{	StackTrace("_outRangeTableSample");
+{
 	WRITE_NODE_TYPE("RANGETABLESAMPLE");
 
 	WRITE_NODE_FIELD(relation);
@@ -2491,7 +2491,7 @@ _outRangeTableSample(StringInfo str, const RangeTableSample *node)
 
 static void
 _outTableSampleClause(StringInfo str, const TableSampleClause *node)
-{	StackTrace("_outTableSampleClause");
+{
 	WRITE_NODE_TYPE("TABLESAMPLECLAUSE");
 
 	WRITE_OID_FIELD(tsmid);
@@ -2510,7 +2510,7 @@ _outTableSampleClause(StringInfo str, const TableSampleClause *node)
 
 static void
 _outSetOperationStmt(StringInfo str, const SetOperationStmt *node)
-{	StackTrace("_outSetOperationStmt");
+{
 	WRITE_NODE_TYPE("SETOPERATIONSTMT");
 
 	WRITE_ENUM_FIELD(op, SetOperation);
@@ -2525,7 +2525,7 @@ _outSetOperationStmt(StringInfo str, const SetOperationStmt *node)
 
 static void
 _outRangeTblEntry(StringInfo str, const RangeTblEntry *node)
-{	StackTrace("_outRangeTblEntry");
+{
 	WRITE_NODE_TYPE("RTE");
 
 	/* put alias + eref first to make dump more legible */
@@ -2582,7 +2582,7 @@ _outRangeTblEntry(StringInfo str, const RangeTblEntry *node)
 
 static void
 _outRangeTblFunction(StringInfo str, const RangeTblFunction *node)
-{	StackTrace("_outRangeTblFunction");
+{
 	WRITE_NODE_TYPE("RANGETBLFUNCTION");
 
 	WRITE_NODE_FIELD(funcexpr);
@@ -2596,7 +2596,7 @@ _outRangeTblFunction(StringInfo str, const RangeTblFunction *node)
 
 static void
 _outAExpr(StringInfo str, const A_Expr *node)
-{	StackTrace("_outAExpr");
+{
 	WRITE_NODE_TYPE("AEXPR");
 
 	switch (node->kind)
@@ -2674,7 +2674,7 @@ _outAExpr(StringInfo str, const A_Expr *node)
 
 static void
 _outValue(StringInfo str, const Value *value)
-{	StackTrace("_outValue");
+{
 	switch (value->type)
 	{
 		case T_Integer:
@@ -2715,7 +2715,7 @@ _outValue(StringInfo str, const Value *value)
 
 static void
 _outColumnRef(StringInfo str, const ColumnRef *node)
-{	StackTrace("_outColumnRef");
+{
 	WRITE_NODE_TYPE("COLUMNREF");
 
 	WRITE_NODE_FIELD(fields);
@@ -2724,7 +2724,7 @@ _outColumnRef(StringInfo str, const ColumnRef *node)
 
 static void
 _outParamRef(StringInfo str, const ParamRef *node)
-{	StackTrace("_outParamRef");
+{
 	WRITE_NODE_TYPE("PARAMREF");
 
 	WRITE_INT_FIELD(number);
@@ -2733,7 +2733,7 @@ _outParamRef(StringInfo str, const ParamRef *node)
 
 static void
 _outAConst(StringInfo str, const A_Const *node)
-{	StackTrace("_outAConst");
+{
 	WRITE_NODE_TYPE("A_CONST");
 
 	appendStringInfoString(str, " :val ");
@@ -2743,13 +2743,13 @@ _outAConst(StringInfo str, const A_Const *node)
 
 static void
 _outA_Star(StringInfo str, const A_Star *node)
-{	StackTrace("_outA_Star");
+{
 	WRITE_NODE_TYPE("A_STAR");
 }
 
 static void
 _outA_Indices(StringInfo str, const A_Indices *node)
-{	StackTrace("_outA_Indices");
+{
 	WRITE_NODE_TYPE("A_INDICES");
 
 	WRITE_NODE_FIELD(lidx);
@@ -2758,7 +2758,7 @@ _outA_Indices(StringInfo str, const A_Indices *node)
 
 static void
 _outA_Indirection(StringInfo str, const A_Indirection *node)
-{	StackTrace("_outA_Indirection");
+{
 	WRITE_NODE_TYPE("A_INDIRECTION");
 
 	WRITE_NODE_FIELD(arg);
@@ -2767,7 +2767,7 @@ _outA_Indirection(StringInfo str, const A_Indirection *node)
 
 static void
 _outA_ArrayExpr(StringInfo str, const A_ArrayExpr *node)
-{	StackTrace("_outA_ArrayExpr");
+{
 	WRITE_NODE_TYPE("A_ARRAYEXPR");
 
 	WRITE_NODE_FIELD(elements);
@@ -2776,7 +2776,7 @@ _outA_ArrayExpr(StringInfo str, const A_ArrayExpr *node)
 
 static void
 _outResTarget(StringInfo str, const ResTarget *node)
-{	StackTrace("_outResTarget");
+{
 	WRITE_NODE_TYPE("RESTARGET");
 
 	WRITE_STRING_FIELD(name);
@@ -2787,7 +2787,7 @@ _outResTarget(StringInfo str, const ResTarget *node)
 
 static void
 _outMultiAssignRef(StringInfo str, const MultiAssignRef *node)
-{	StackTrace("_outMultiAssignRef");
+{
 	WRITE_NODE_TYPE("MULTIASSIGNREF");
 
 	WRITE_NODE_FIELD(source);
@@ -2797,7 +2797,7 @@ _outMultiAssignRef(StringInfo str, const MultiAssignRef *node)
 
 static void
 _outSortBy(StringInfo str, const SortBy *node)
-{	StackTrace("_outSortBy");
+{
 	WRITE_NODE_TYPE("SORTBY");
 
 	WRITE_NODE_FIELD(node);
@@ -2809,7 +2809,7 @@ _outSortBy(StringInfo str, const SortBy *node)
 
 static void
 _outWindowDef(StringInfo str, const WindowDef *node)
-{	StackTrace("_outWindowDef");
+{
 	WRITE_NODE_TYPE("WINDOWDEF");
 
 	WRITE_STRING_FIELD(name);
@@ -2824,7 +2824,7 @@ _outWindowDef(StringInfo str, const WindowDef *node)
 
 static void
 _outRangeSubselect(StringInfo str, const RangeSubselect *node)
-{	StackTrace("_outRangeSubselect");
+{
 	WRITE_NODE_TYPE("RANGESUBSELECT");
 
 	WRITE_BOOL_FIELD(lateral);
@@ -2834,7 +2834,7 @@ _outRangeSubselect(StringInfo str, const RangeSubselect *node)
 
 static void
 _outRangeFunction(StringInfo str, const RangeFunction *node)
-{	StackTrace("_outRangeFunction");
+{
 	WRITE_NODE_TYPE("RANGEFUNCTION");
 
 	WRITE_BOOL_FIELD(lateral);
@@ -2847,7 +2847,7 @@ _outRangeFunction(StringInfo str, const RangeFunction *node)
 
 static void
 _outConstraint(StringInfo str, const Constraint *node)
-{	StackTrace("_outConstraint");
+{
 	WRITE_NODE_TYPE("CONSTRAINT");
 
 	WRITE_STRING_FIELD(conname);
@@ -2951,7 +2951,7 @@ _outConstraint(StringInfo str, const Constraint *node)
  */
 static void
 _outNode(StringInfo str, const void *obj)
-{	StackTrace("_outNode");
+{
 	if (obj == NULL)
 		appendStringInfoString(str, "<>");
 	else if (IsA(obj, List) ||IsA(obj, IntList) || IsA(obj, OidList))
@@ -3489,7 +3489,7 @@ _outNode(StringInfo str, const void *obj)
  */
 char *
 nodeToString(const void *obj)
-{	StackTrace("nodeToString");
+{
 	StringInfoData str;
 
 	/* see stringinfo.h for an explanation of this maneuver */

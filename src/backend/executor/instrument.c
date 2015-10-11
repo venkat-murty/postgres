@@ -26,7 +26,7 @@ static void BufferUsageAccumDiff(BufferUsage *dst,
 /* Allocate new instrumentation structure(s) */
 Instrumentation *
 InstrAlloc(int n, int instrument_options)
-{	StackTrace("InstrAlloc");
+{
 	Instrumentation *instr;
 
 	/* initialize all fields to zeroes, then modify as needed */
@@ -50,7 +50,7 @@ InstrAlloc(int n, int instrument_options)
 /* Entry to a plan node */
 void
 InstrStartNode(Instrumentation *instr)
-{	StackTrace("InstrStartNode");
+{
 	if (instr->need_timer)
 	{
 		if (INSTR_TIME_IS_ZERO(instr->starttime))
@@ -67,7 +67,7 @@ InstrStartNode(Instrumentation *instr)
 /* Exit from a plan node */
 void
 InstrStopNode(Instrumentation *instr, double nTuples)
-{	StackTrace("InstrStopNode");
+{
 	instr_time	endtime;
 
 	/* count the returned tuples */
@@ -101,7 +101,7 @@ InstrStopNode(Instrumentation *instr, double nTuples)
 /* Finish a run cycle for a plan node */
 void
 InstrEndLoop(Instrumentation *instr)
-{	StackTrace("InstrEndLoop");
+{
 	double		totaltime;
 
 	/* Skip if nothing has happened, or already shut down */
@@ -132,7 +132,7 @@ static void
 BufferUsageAccumDiff(BufferUsage *dst,
 					 const BufferUsage *add,
 					 const BufferUsage *sub)
-{	StackTrace("BufferUsageAccumDiff");
+{
 	dst->shared_blks_hit += add->shared_blks_hit - sub->shared_blks_hit;
 	dst->shared_blks_read += add->shared_blks_read - sub->shared_blks_read;
 	dst->shared_blks_dirtied += add->shared_blks_dirtied - sub->shared_blks_dirtied;

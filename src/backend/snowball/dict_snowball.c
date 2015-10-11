@@ -139,7 +139,7 @@ typedef struct DictSnowball
 
 static void
 locate_stem_module(DictSnowball *d, char *lang)
-{	StackTrace("locate_stem_module");
+{
 	const stemmer_module *m;
 
 	/*
@@ -180,7 +180,7 @@ locate_stem_module(DictSnowball *d, char *lang)
 
 Datum
 dsnowball_init(PG_FUNCTION_ARGS)
-{	StackTrace("dsnowball_init");
+{
 	List	   *dictoptions = (List *) PG_GETARG_POINTER(0);
 	DictSnowball *d;
 	bool		stoploaded = false;
@@ -230,7 +230,7 @@ dsnowball_init(PG_FUNCTION_ARGS)
 
 Datum
 dsnowball_lexize(PG_FUNCTION_ARGS)
-{	StackTrace("dsnowball_lexize");
+{
 	DictSnowball *d = (DictSnowball *) PG_GETARG_POINTER(0);
 	char	   *in = (char *) PG_GETARG_POINTER(1);
 	int32		len = PG_GETARG_INT32(2);

@@ -102,7 +102,7 @@ static Datum fmgr_security_definer(PG_FUNCTION_ARGS);
 
 static const FmgrBuiltin *
 fmgr_isbuiltin(Oid id)
-{	StackTrace("fmgr_isbuiltin");
+{
 	int			low = 0;
 	int			high = fmgr_nbuiltins - 1;
 
@@ -132,7 +132,7 @@ fmgr_isbuiltin(Oid id)
  */
 static const FmgrBuiltin *
 fmgr_lookupByName(const char *name)
-{	StackTrace("fmgr_lookupByName");
+{
 	int			i;
 
 	for (i = 0; i < fmgr_nbuiltins; i++)
@@ -158,7 +158,7 @@ fmgr_lookupByName(const char *name)
  */
 void
 fmgr_info(Oid functionId, FmgrInfo *finfo)
-{	StackTrace("fmgr_info");
+{
 	fmgr_info_cxt_security(functionId, finfo, CurrentMemoryContext, false);
 }
 
@@ -168,7 +168,7 @@ fmgr_info(Oid functionId, FmgrInfo *finfo)
  */
 void
 fmgr_info_cxt(Oid functionId, FmgrInfo *finfo, MemoryContext mcxt)
-{	StackTrace("fmgr_info_cxt");
+{
 	fmgr_info_cxt_security(functionId, finfo, mcxt, false);
 }
 
@@ -179,7 +179,7 @@ fmgr_info_cxt(Oid functionId, FmgrInfo *finfo, MemoryContext mcxt)
 static void
 fmgr_info_cxt_security(Oid functionId, FmgrInfo *finfo, MemoryContext mcxt,
 					   bool ignore_security)
-{	StackTrace("fmgr_info_cxt_security");
+{
 	const FmgrBuiltin *fbp;
 	HeapTuple	procedureTuple;
 	Form_pg_proc procedureStruct;
@@ -304,7 +304,7 @@ fmgr_info_cxt_security(Oid functionId, FmgrInfo *finfo, MemoryContext mcxt,
  */
 static void
 fmgr_info_C_lang(Oid functionId, FmgrInfo *finfo, HeapTuple procedureTuple)
-{	StackTrace("fmgr_info_C_lang");
+{
 	Form_pg_proc procedureStruct = (Form_pg_proc) GETSTRUCT(procedureTuple);
 	CFuncHashTabEntry *hashentry;
 	PGFunction	user_fn;
@@ -395,7 +395,7 @@ fmgr_info_C_lang(Oid functionId, FmgrInfo *finfo, HeapTuple procedureTuple)
  */
 static void
 fmgr_info_other_lang(Oid functionId, FmgrInfo *finfo, HeapTuple procedureTuple)
-{	StackTrace("fmgr_info_other_lang");
+{
 	Form_pg_proc procedureStruct = (Form_pg_proc) GETSTRUCT(procedureTuple);
 	Oid			language = procedureStruct->prolang;
 	HeapTuple	languageTuple;
@@ -443,7 +443,7 @@ fmgr_info_other_lang(Oid functionId, FmgrInfo *finfo, HeapTuple procedureTuple)
  */
 const Pg_finfo_record *
 fetch_finfo_record(void *filehandle, char *funcname)
-{	StackTrace("fetch_finfo_record");
+{
 	char	   *infofuncname;
 	PGFInfoFunction infofunc;
 	const Pg_finfo_record *inforec;
@@ -502,7 +502,7 @@ fetch_finfo_record(void *filehandle, char *funcname)
  */
 static CFuncHashTabEntry *
 lookup_C_func(HeapTuple procedureTuple)
-{	StackTrace("lookup_C_func");
+{
 	Oid			fn_oid = HeapTupleGetOid(procedureTuple);
 	CFuncHashTabEntry *entry;
 
@@ -527,7 +527,7 @@ lookup_C_func(HeapTuple procedureTuple)
 static void
 record_C_func(HeapTuple procedureTuple,
 			  PGFunction user_fn, const Pg_finfo_record *inforec)
-{	StackTrace("record_C_func");
+{
 	Oid			fn_oid = HeapTupleGetOid(procedureTuple);
 	CFuncHashTabEntry *entry;
 	bool		found;
@@ -566,7 +566,7 @@ record_C_func(HeapTuple procedureTuple,
  */
 void
 clear_external_function_hash(void *filehandle)
-{	StackTrace("clear_external_function_hash");
+{
 	if (CFuncHash)
 		hash_destroy(CFuncHash);
 	CFuncHash = NULL;
@@ -583,7 +583,7 @@ clear_external_function_hash(void *filehandle)
 void
 fmgr_info_copy(FmgrInfo *dstinfo, FmgrInfo *srcinfo,
 			   MemoryContext destcxt)
-{	StackTrace("fmgr_info_copy");
+{
 	memcpy(dstinfo, srcinfo, sizeof(FmgrInfo));
 	dstinfo->fn_mcxt = destcxt;
 	if (dstinfo->fn_addr == fmgr_oldstyle)
@@ -608,7 +608,7 @@ fmgr_info_copy(FmgrInfo *dstinfo, FmgrInfo *srcinfo,
  */
 Oid
 fmgr_internal_function(const char *proname)
-{	StackTrace("fmgr_internal_function");
+{
 	const FmgrBuiltin *fbp = fmgr_lookupByName(proname);
 
 	if (fbp == NULL)
@@ -622,7 +622,7 @@ fmgr_internal_function(const char *proname)
  */
 static Datum
 fmgr_oldstyle(PG_FUNCTION_ARGS)
-{	StackTrace("fmgr_oldstyle");
+{
 	Oldstyle_fnextra *fnextra;
 	int			n_arguments = fcinfo->nargs;
 	int			i;
@@ -882,7 +882,7 @@ struct fmgr_security_definer_cache
  */
 static Datum
 fmgr_security_definer(PG_FUNCTION_ARGS)
-{	StackTrace("fmgr_security_definer");
+{
 	Datum		result;
 	struct fmgr_security_definer_cache *volatile fcache;
 	FmgrInfo   *save_flinfo;
@@ -1015,7 +1015,7 @@ fmgr_security_definer(PG_FUNCTION_ARGS)
  */
 Datum
 DirectFunctionCall1Coll(PGFunction func, Oid collation, Datum arg1)
-{	StackTrace("DirectFunctionCall1Coll");
+{
 	FunctionCallInfoData fcinfo;
 	Datum		result;
 
@@ -1035,7 +1035,7 @@ DirectFunctionCall1Coll(PGFunction func, Oid collation, Datum arg1)
 
 Datum
 DirectFunctionCall2Coll(PGFunction func, Oid collation, Datum arg1, Datum arg2)
-{	StackTrace("DirectFunctionCall2Coll");
+{
 	FunctionCallInfoData fcinfo;
 	Datum		result;
 
@@ -1058,7 +1058,7 @@ DirectFunctionCall2Coll(PGFunction func, Oid collation, Datum arg1, Datum arg2)
 Datum
 DirectFunctionCall3Coll(PGFunction func, Oid collation, Datum arg1, Datum arg2,
 						Datum arg3)
-{	StackTrace("DirectFunctionCall3Coll");
+{
 	FunctionCallInfoData fcinfo;
 	Datum		result;
 
@@ -1083,7 +1083,7 @@ DirectFunctionCall3Coll(PGFunction func, Oid collation, Datum arg1, Datum arg2,
 Datum
 DirectFunctionCall4Coll(PGFunction func, Oid collation, Datum arg1, Datum arg2,
 						Datum arg3, Datum arg4)
-{	StackTrace("DirectFunctionCall4Coll");
+{
 	FunctionCallInfoData fcinfo;
 	Datum		result;
 
@@ -1110,7 +1110,7 @@ DirectFunctionCall4Coll(PGFunction func, Oid collation, Datum arg1, Datum arg2,
 Datum
 DirectFunctionCall5Coll(PGFunction func, Oid collation, Datum arg1, Datum arg2,
 						Datum arg3, Datum arg4, Datum arg5)
-{	StackTrace("DirectFunctionCall5Coll");
+{
 	FunctionCallInfoData fcinfo;
 	Datum		result;
 
@@ -1140,7 +1140,7 @@ Datum
 DirectFunctionCall6Coll(PGFunction func, Oid collation, Datum arg1, Datum arg2,
 						Datum arg3, Datum arg4, Datum arg5,
 						Datum arg6)
-{	StackTrace("DirectFunctionCall6Coll");
+{
 	FunctionCallInfoData fcinfo;
 	Datum		result;
 
@@ -1172,7 +1172,7 @@ Datum
 DirectFunctionCall7Coll(PGFunction func, Oid collation, Datum arg1, Datum arg2,
 						Datum arg3, Datum arg4, Datum arg5,
 						Datum arg6, Datum arg7)
-{	StackTrace("DirectFunctionCall7Coll");
+{
 	FunctionCallInfoData fcinfo;
 	Datum		result;
 
@@ -1206,7 +1206,7 @@ Datum
 DirectFunctionCall8Coll(PGFunction func, Oid collation, Datum arg1, Datum arg2,
 						Datum arg3, Datum arg4, Datum arg5,
 						Datum arg6, Datum arg7, Datum arg8)
-{	StackTrace("DirectFunctionCall8Coll");
+{
 	FunctionCallInfoData fcinfo;
 	Datum		result;
 
@@ -1243,7 +1243,7 @@ DirectFunctionCall9Coll(PGFunction func, Oid collation, Datum arg1, Datum arg2,
 						Datum arg3, Datum arg4, Datum arg5,
 						Datum arg6, Datum arg7, Datum arg8,
 						Datum arg9)
-{	StackTrace("DirectFunctionCall9Coll");
+{
 	FunctionCallInfoData fcinfo;
 	Datum		result;
 
@@ -1285,7 +1285,7 @@ DirectFunctionCall9Coll(PGFunction func, Oid collation, Datum arg1, Datum arg2,
  */
 Datum
 FunctionCall1Coll(FmgrInfo *flinfo, Oid collation, Datum arg1)
-{	StackTrace("FunctionCall1Coll");
+{
 	FunctionCallInfoData fcinfo;
 	Datum		result;
 
@@ -1305,7 +1305,7 @@ FunctionCall1Coll(FmgrInfo *flinfo, Oid collation, Datum arg1)
 
 Datum
 FunctionCall2Coll(FmgrInfo *flinfo, Oid collation, Datum arg1, Datum arg2)
-{	StackTrace("FunctionCall2Coll");
+{
 	/*
 	 * XXX if you change this routine, see also the inlined version in
 	 * utils/sort/tuplesort.c!
@@ -1332,7 +1332,7 @@ FunctionCall2Coll(FmgrInfo *flinfo, Oid collation, Datum arg1, Datum arg2)
 Datum
 FunctionCall3Coll(FmgrInfo *flinfo, Oid collation, Datum arg1, Datum arg2,
 				  Datum arg3)
-{	StackTrace("FunctionCall3Coll");
+{
 	FunctionCallInfoData fcinfo;
 	Datum		result;
 
@@ -1357,7 +1357,7 @@ FunctionCall3Coll(FmgrInfo *flinfo, Oid collation, Datum arg1, Datum arg2,
 Datum
 FunctionCall4Coll(FmgrInfo *flinfo, Oid collation, Datum arg1, Datum arg2,
 				  Datum arg3, Datum arg4)
-{	StackTrace("FunctionCall4Coll");
+{
 	FunctionCallInfoData fcinfo;
 	Datum		result;
 
@@ -1384,7 +1384,7 @@ FunctionCall4Coll(FmgrInfo *flinfo, Oid collation, Datum arg1, Datum arg2,
 Datum
 FunctionCall5Coll(FmgrInfo *flinfo, Oid collation, Datum arg1, Datum arg2,
 				  Datum arg3, Datum arg4, Datum arg5)
-{	StackTrace("FunctionCall5Coll");
+{
 	FunctionCallInfoData fcinfo;
 	Datum		result;
 
@@ -1414,7 +1414,7 @@ Datum
 FunctionCall6Coll(FmgrInfo *flinfo, Oid collation, Datum arg1, Datum arg2,
 				  Datum arg3, Datum arg4, Datum arg5,
 				  Datum arg6)
-{	StackTrace("FunctionCall6Coll");
+{
 	FunctionCallInfoData fcinfo;
 	Datum		result;
 
@@ -1446,7 +1446,7 @@ Datum
 FunctionCall7Coll(FmgrInfo *flinfo, Oid collation, Datum arg1, Datum arg2,
 				  Datum arg3, Datum arg4, Datum arg5,
 				  Datum arg6, Datum arg7)
-{	StackTrace("FunctionCall7Coll");
+{
 	FunctionCallInfoData fcinfo;
 	Datum		result;
 
@@ -1480,7 +1480,7 @@ Datum
 FunctionCall8Coll(FmgrInfo *flinfo, Oid collation, Datum arg1, Datum arg2,
 				  Datum arg3, Datum arg4, Datum arg5,
 				  Datum arg6, Datum arg7, Datum arg8)
-{	StackTrace("FunctionCall8Coll");
+{
 	FunctionCallInfoData fcinfo;
 	Datum		result;
 
@@ -1517,7 +1517,7 @@ FunctionCall9Coll(FmgrInfo *flinfo, Oid collation, Datum arg1, Datum arg2,
 				  Datum arg3, Datum arg4, Datum arg5,
 				  Datum arg6, Datum arg7, Datum arg8,
 				  Datum arg9)
-{	StackTrace("FunctionCall9Coll");
+{
 	FunctionCallInfoData fcinfo;
 	Datum		result;
 
@@ -1561,7 +1561,7 @@ FunctionCall9Coll(FmgrInfo *flinfo, Oid collation, Datum arg1, Datum arg2,
  */
 Datum
 OidFunctionCall0Coll(Oid functionId, Oid collation)
-{	StackTrace("OidFunctionCall0Coll");
+{
 	FmgrInfo	flinfo;
 	FunctionCallInfoData fcinfo;
 	Datum		result;
@@ -1581,7 +1581,7 @@ OidFunctionCall0Coll(Oid functionId, Oid collation)
 
 Datum
 OidFunctionCall1Coll(Oid functionId, Oid collation, Datum arg1)
-{	StackTrace("OidFunctionCall1Coll");
+{
 	FmgrInfo	flinfo;
 	FunctionCallInfoData fcinfo;
 	Datum		result;
@@ -1604,7 +1604,7 @@ OidFunctionCall1Coll(Oid functionId, Oid collation, Datum arg1)
 
 Datum
 OidFunctionCall2Coll(Oid functionId, Oid collation, Datum arg1, Datum arg2)
-{	StackTrace("OidFunctionCall2Coll");
+{
 	FmgrInfo	flinfo;
 	FunctionCallInfoData fcinfo;
 	Datum		result;
@@ -1630,7 +1630,7 @@ OidFunctionCall2Coll(Oid functionId, Oid collation, Datum arg1, Datum arg2)
 Datum
 OidFunctionCall3Coll(Oid functionId, Oid collation, Datum arg1, Datum arg2,
 					 Datum arg3)
-{	StackTrace("OidFunctionCall3Coll");
+{
 	FmgrInfo	flinfo;
 	FunctionCallInfoData fcinfo;
 	Datum		result;
@@ -1658,7 +1658,7 @@ OidFunctionCall3Coll(Oid functionId, Oid collation, Datum arg1, Datum arg2,
 Datum
 OidFunctionCall4Coll(Oid functionId, Oid collation, Datum arg1, Datum arg2,
 					 Datum arg3, Datum arg4)
-{	StackTrace("OidFunctionCall4Coll");
+{
 	FmgrInfo	flinfo;
 	FunctionCallInfoData fcinfo;
 	Datum		result;
@@ -1688,7 +1688,7 @@ OidFunctionCall4Coll(Oid functionId, Oid collation, Datum arg1, Datum arg2,
 Datum
 OidFunctionCall5Coll(Oid functionId, Oid collation, Datum arg1, Datum arg2,
 					 Datum arg3, Datum arg4, Datum arg5)
-{	StackTrace("OidFunctionCall5Coll");
+{
 	FmgrInfo	flinfo;
 	FunctionCallInfoData fcinfo;
 	Datum		result;
@@ -1721,7 +1721,7 @@ Datum
 OidFunctionCall6Coll(Oid functionId, Oid collation, Datum arg1, Datum arg2,
 					 Datum arg3, Datum arg4, Datum arg5,
 					 Datum arg6)
-{	StackTrace("OidFunctionCall6Coll");
+{
 	FmgrInfo	flinfo;
 	FunctionCallInfoData fcinfo;
 	Datum		result;
@@ -1756,7 +1756,7 @@ Datum
 OidFunctionCall7Coll(Oid functionId, Oid collation, Datum arg1, Datum arg2,
 					 Datum arg3, Datum arg4, Datum arg5,
 					 Datum arg6, Datum arg7)
-{	StackTrace("OidFunctionCall7Coll");
+{
 	FmgrInfo	flinfo;
 	FunctionCallInfoData fcinfo;
 	Datum		result;
@@ -1793,7 +1793,7 @@ Datum
 OidFunctionCall8Coll(Oid functionId, Oid collation, Datum arg1, Datum arg2,
 					 Datum arg3, Datum arg4, Datum arg5,
 					 Datum arg6, Datum arg7, Datum arg8)
-{	StackTrace("OidFunctionCall8Coll");
+{
 	FmgrInfo	flinfo;
 	FunctionCallInfoData fcinfo;
 	Datum		result;
@@ -1833,7 +1833,7 @@ OidFunctionCall9Coll(Oid functionId, Oid collation, Datum arg1, Datum arg2,
 					 Datum arg3, Datum arg4, Datum arg5,
 					 Datum arg6, Datum arg7, Datum arg8,
 					 Datum arg9)
-{	StackTrace("OidFunctionCall9Coll");
+{
 	FmgrInfo	flinfo;
 	FunctionCallInfoData fcinfo;
 	Datum		result;
@@ -1891,7 +1891,7 @@ OidFunctionCall9Coll(Oid functionId, Oid collation, Datum arg1, Datum arg2,
  */
 Datum
 InputFunctionCall(FmgrInfo *flinfo, char *str, Oid typioparam, int32 typmod)
-{	StackTrace("InputFunctionCall");
+{
 	FunctionCallInfoData fcinfo;
 	Datum		result;
 	bool		pushed;
@@ -1941,7 +1941,7 @@ InputFunctionCall(FmgrInfo *flinfo, char *str, Oid typioparam, int32 typmod)
  */
 char *
 OutputFunctionCall(FmgrInfo *flinfo, Datum val)
-{	StackTrace("OutputFunctionCall");
+{
 	char	   *result;
 	bool		pushed;
 
@@ -1966,7 +1966,7 @@ OutputFunctionCall(FmgrInfo *flinfo, Datum val)
 Datum
 ReceiveFunctionCall(FmgrInfo *flinfo, StringInfo buf,
 					Oid typioparam, int32 typmod)
-{	StackTrace("ReceiveFunctionCall");
+{
 	FunctionCallInfoData fcinfo;
 	Datum		result;
 	bool		pushed;
@@ -2018,7 +2018,7 @@ ReceiveFunctionCall(FmgrInfo *flinfo, StringInfo buf,
  */
 bytea *
 SendFunctionCall(FmgrInfo *flinfo, Datum val)
-{	StackTrace("SendFunctionCall");
+{
 	bytea	   *result;
 	bool		pushed;
 
@@ -2037,7 +2037,7 @@ SendFunctionCall(FmgrInfo *flinfo, Datum val)
  */
 Datum
 OidInputFunctionCall(Oid functionId, char *str, Oid typioparam, int32 typmod)
-{	StackTrace("OidInputFunctionCall");
+{
 	FmgrInfo	flinfo;
 
 	fmgr_info(functionId, &flinfo);
@@ -2046,7 +2046,7 @@ OidInputFunctionCall(Oid functionId, char *str, Oid typioparam, int32 typmod)
 
 char *
 OidOutputFunctionCall(Oid functionId, Datum val)
-{	StackTrace("OidOutputFunctionCall");
+{
 	FmgrInfo	flinfo;
 
 	fmgr_info(functionId, &flinfo);
@@ -2056,7 +2056,7 @@ OidOutputFunctionCall(Oid functionId, Datum val)
 Datum
 OidReceiveFunctionCall(Oid functionId, StringInfo buf,
 					   Oid typioparam, int32 typmod)
-{	StackTrace("OidReceiveFunctionCall");
+{
 	FmgrInfo	flinfo;
 
 	fmgr_info(functionId, &flinfo);
@@ -2065,7 +2065,7 @@ OidReceiveFunctionCall(Oid functionId, StringInfo buf,
 
 bytea *
 OidSendFunctionCall(Oid functionId, Datum val)
-{	StackTrace("OidSendFunctionCall");
+{
 	FmgrInfo	flinfo;
 
 	fmgr_info(functionId, &flinfo);
@@ -2086,7 +2086,7 @@ OidSendFunctionCall(Oid functionId, Datum val)
  */
 char *
 fmgr(Oid procedureId,...)
-{	StackTrace("fmgr");
+{
 	FmgrInfo	flinfo;
 	FunctionCallInfoData fcinfo;
 	int			n_arguments;
@@ -2145,7 +2145,7 @@ fmgr(Oid procedureId,...)
 
 Datum
 Int64GetDatum(int64 X)
-{	StackTrace("Int64GetDatum");
+{
 	int64	   *retval = (int64 *) palloc(sizeof(int64));
 
 	*retval = X;
@@ -2155,7 +2155,7 @@ Int64GetDatum(int64 X)
 
 Datum
 Float4GetDatum(float4 X)
-{	StackTrace("Float4GetDatum");
+{
 #ifdef USE_FLOAT4_BYVAL
 	union
 	{
@@ -2177,7 +2177,7 @@ Float4GetDatum(float4 X)
 
 float4
 DatumGetFloat4(Datum X)
-{	StackTrace("DatumGetFloat4");
+{
 	union
 	{
 		int32		value;
@@ -2191,7 +2191,7 @@ DatumGetFloat4(Datum X)
 
 Datum
 Float8GetDatum(float8 X)
-{	StackTrace("Float8GetDatum");
+{
 #ifdef USE_FLOAT8_BYVAL
 	union
 	{
@@ -2213,7 +2213,7 @@ Float8GetDatum(float8 X)
 
 float8
 DatumGetFloat8(Datum X)
-{	StackTrace("DatumGetFloat8");
+{
 	union
 	{
 		int64		value;
@@ -2233,7 +2233,7 @@ DatumGetFloat8(Datum X)
 
 struct varlena *
 pg_detoast_datum(struct varlena * datum)
-{	StackTrace("pg_detoast_datum");
+{
 	if (VARATT_IS_EXTENDED(datum))
 		return heap_tuple_untoast_attr(datum);
 	else
@@ -2242,7 +2242,7 @@ pg_detoast_datum(struct varlena * datum)
 
 struct varlena *
 pg_detoast_datum_copy(struct varlena * datum)
-{	StackTrace("pg_detoast_datum_copy");
+{
 	if (VARATT_IS_EXTENDED(datum))
 		return heap_tuple_untoast_attr(datum);
 	else
@@ -2258,14 +2258,14 @@ pg_detoast_datum_copy(struct varlena * datum)
 
 struct varlena *
 pg_detoast_datum_slice(struct varlena * datum, int32 first, int32 count)
-{	StackTrace("pg_detoast_datum_slice");
+{
 	/* Only get the specified portion from the toast rel */
 	return heap_tuple_untoast_attr_slice(datum, first, count);
 }
 
 struct varlena *
 pg_detoast_datum_packed(struct varlena * datum)
-{	StackTrace("pg_detoast_datum_packed");
+{
 	if (VARATT_IS_COMPRESSED(datum) || VARATT_IS_EXTERNAL(datum))
 		return heap_tuple_untoast_attr(datum);
 	else
@@ -2289,7 +2289,7 @@ pg_detoast_datum_packed(struct varlena * datum)
  */
 Oid
 get_fn_expr_rettype(FmgrInfo *flinfo)
-{	StackTrace("get_fn_expr_rettype");
+{
 	Node	   *expr;
 
 	/*
@@ -2311,7 +2311,7 @@ get_fn_expr_rettype(FmgrInfo *flinfo)
  */
 Oid
 get_fn_expr_argtype(FmgrInfo *flinfo, int argnum)
-{	StackTrace("get_fn_expr_argtype");
+{
 	/*
 	 * can't return anything useful if we have no FmgrInfo or if its fn_expr
 	 * node has not been initialized
@@ -2330,7 +2330,7 @@ get_fn_expr_argtype(FmgrInfo *flinfo, int argnum)
  */
 Oid
 get_call_expr_argtype(Node *expr, int argnum)
-{	StackTrace("get_call_expr_argtype");
+{
 	List	   *args;
 	Oid			argtype;
 
@@ -2382,7 +2382,7 @@ get_call_expr_argtype(Node *expr, int argnum)
  */
 bool
 get_fn_expr_arg_stable(FmgrInfo *flinfo, int argnum)
-{	StackTrace("get_fn_expr_arg_stable");
+{
 	/*
 	 * can't return anything useful if we have no FmgrInfo or if its fn_expr
 	 * node has not been initialized
@@ -2401,7 +2401,7 @@ get_fn_expr_arg_stable(FmgrInfo *flinfo, int argnum)
  */
 bool
 get_call_expr_arg_stable(Node *expr, int argnum)
-{	StackTrace("get_call_expr_arg_stable");
+{
 	List	   *args;
 	Node	   *arg;
 
@@ -2453,7 +2453,7 @@ get_call_expr_arg_stable(Node *expr, int argnum)
  */
 bool
 get_fn_expr_variadic(FmgrInfo *flinfo)
-{	StackTrace("get_fn_expr_variadic");
+{
 	Node	   *expr;
 
 	/*
@@ -2503,7 +2503,7 @@ get_fn_expr_variadic(FmgrInfo *flinfo)
  */
 bool
 CheckFunctionValidatorAccess(Oid validatorOid, Oid functionOid)
-{	StackTrace("CheckFunctionValidatorAccess");
+{
 	HeapTuple	procTup;
 	HeapTuple	langTup;
 	Form_pg_proc procStruct;

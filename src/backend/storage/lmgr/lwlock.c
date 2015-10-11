@@ -179,7 +179,7 @@ bool		Trace_lwlocks = false;
 
 inline static void
 PRINT_LWDEBUG(const char *where, LWLock *lock, LWLockMode mode)
-{	StackTrace("PRINT_LWDEBUG");
+{
 	/* hide statement & context here, otherwise the log is just too verbose */
 	if (Trace_lwlocks)
 	{
@@ -201,7 +201,7 @@ PRINT_LWDEBUG(const char *where, LWLock *lock, LWLockMode mode)
 
 inline static void
 LOG_LWDEBUG(const char *where, LWLock *lock, const char *msg)
-{	StackTrace("LOG_LWDEBUG");
+{
 	/* hide statement & context here, otherwise the log is just too verbose */
 	if (Trace_lwlocks)
 	{
@@ -226,7 +226,7 @@ static lwlock_stats *get_lwlock_stats_entry(LWLock *lockid);
 
 static void
 init_lwlock_stats(void)
-{	StackTrace("init_lwlock_stats");
+{
 	HASHCTL		ctl;
 	static MemoryContext lwlock_stats_cxt = NULL;
 	static bool exit_registered = false;
@@ -264,7 +264,7 @@ init_lwlock_stats(void)
 
 static void
 print_lwlock_stats(int code, Datum arg)
-{	StackTrace("print_lwlock_stats");
+{
 	HASH_SEQ_STATUS scan;
 	lwlock_stats *lwstats;
 
@@ -288,7 +288,7 @@ print_lwlock_stats(int code, Datum arg)
 
 static lwlock_stats *
 get_lwlock_stats_entry(LWLock *lock)
-{	StackTrace("get_lwlock_stats_entry");
+{
 	lwlock_stats_key key;
 	lwlock_stats *lwstats;
 	bool		found;
@@ -323,7 +323,7 @@ get_lwlock_stats_entry(LWLock *lock)
  */
 static int
 NumLWLocks(void)
-{	StackTrace("NumLWLocks");
+{
 	int			numLocks;
 
 	/*
@@ -388,7 +388,7 @@ NumLWLocks(void)
  */
 void
 RequestAddinLWLocks(int n)
-{	StackTrace("RequestAddinLWLocks");
+{
 	if (IsUnderPostmaster || !lock_addin_request_allowed)
 		return;					/* too late */
 	lock_addin_request += n;
@@ -400,7 +400,7 @@ RequestAddinLWLocks(int n)
  */
 Size
 LWLockShmemSize(void)
-{	StackTrace("LWLockShmemSize");
+{
 	Size		size;
 	int			numLocks = NumLWLocks();
 
@@ -420,7 +420,7 @@ LWLockShmemSize(void)
  */
 void
 CreateLWLocks(void)
-{	StackTrace("CreateLWLocks");
+{
 	StaticAssertExpr(LW_VAL_EXCLUSIVE > (uint32) MAX_BACKENDS,
 					 "MAX_BACKENDS too big for lwlock.c");
 
@@ -480,7 +480,7 @@ CreateLWLocks(void)
  */
 void
 InitLWLockAccess(void)
-{	StackTrace("InitLWLockAccess");
+{
 #ifdef LWLOCK_STATS
 	init_lwlock_stats();
 #endif
@@ -496,7 +496,7 @@ InitLWLockAccess(void)
  */
 LWLock *
 LWLockAssign(void)
-{	StackTrace("LWLockAssign");
+{
 	LWLock	   *result;
 	int		   *LWLockCounter;
 
@@ -517,7 +517,7 @@ LWLockAssign(void)
  */
 int
 LWLockNewTrancheId(void)
-{	StackTrace("LWLockNewTrancheId");
+{
 	int			result;
 	int		   *LWLockCounter;
 
@@ -537,7 +537,7 @@ LWLockNewTrancheId(void)
  */
 void
 LWLockRegisterTranche(int tranche_id, LWLockTranche *tranche)
-{	StackTrace("LWLockRegisterTranche");
+{
 	Assert(LWLockTrancheArray != NULL);
 
 	if (tranche_id >= LWLockTranchesAllocated)
@@ -561,7 +561,7 @@ LWLockRegisterTranche(int tranche_id, LWLockTranche *tranche)
  */
 void
 LWLockInitialize(LWLock *lock, int tranche_id)
-{	StackTrace("LWLockInitialize");
+{
 	SpinLockInit(&lock->mutex);
 	pg_atomic_init_u32(&lock->state, LW_FLAG_RELEASE_OK);
 #ifdef LOCK_DEBUG
@@ -582,7 +582,7 @@ LWLockInitialize(LWLock *lock, int tranche_id)
  */
 static bool
 LWLockAttemptLock(LWLock *lock, LWLockMode mode)
-{	StackTrace("LWLockAttemptLock");
+{
 	AssertArg(mode == LW_EXCLUSIVE || mode == LW_SHARED);
 
 	/* loop until we've determined whether we could acquire the lock or not */
@@ -644,7 +644,7 @@ LWLockAttemptLock(LWLock *lock, LWLockMode mode)
  */
 static void
 LWLockWakeup(LWLock *lock)
-{	StackTrace("LWLockWakeup");
+{
 	bool		new_release_ok;
 	bool		wokeup_somebody = false;
 	dlist_head	wakeup;
@@ -746,7 +746,7 @@ LWLockWakeup(LWLock *lock)
  */
 static void
 LWLockQueueSelf(LWLock *lock, LWLockMode mode)
-{	StackTrace("LWLockQueueSelf");
+{
 #ifdef LWLOCK_STATS
 	lwlock_stats *lwstats;
 
@@ -801,7 +801,7 @@ LWLockQueueSelf(LWLock *lock, LWLockMode mode)
  */
 static void
 LWLockDequeueSelf(LWLock *lock)
-{	StackTrace("LWLockDequeueSelf");
+{
 	bool		found = false;
 	dlist_mutable_iter iter;
 
@@ -901,7 +901,7 @@ LWLockDequeueSelf(LWLock *lock)
  */
 bool
 LWLockAcquire(LWLock *l, LWLockMode mode)
-{	StackTrace("LWLockAcquire");
+{
 	return LWLockAcquireCommon(l, mode, NULL, 0);
 }
 
@@ -912,14 +912,14 @@ LWLockAcquire(LWLock *l, LWLockMode mode)
  */
 bool
 LWLockAcquireWithVar(LWLock *l, uint64 *valptr, uint64 val)
-{	StackTrace("LWLockAcquireWithVar");
+{
 	return LWLockAcquireCommon(l, LW_EXCLUSIVE, valptr, val);
 }
 
 /* internal function to implement LWLockAcquire and LWLockAcquireWithVar */
 static inline bool
 LWLockAcquireCommon(LWLock *lock, LWLockMode mode, uint64 *valptr, uint64 val)
-{	StackTrace("LWLockAcquireCommon");
+{
 	PGPROC	   *proc = MyProc;
 	bool		result = true;
 	int			extraWaits = 0;
@@ -1093,7 +1093,7 @@ LWLockAcquireCommon(LWLock *lock, LWLockMode mode, uint64 *valptr, uint64 val)
  */
 bool
 LWLockConditionalAcquire(LWLock *lock, LWLockMode mode)
-{	StackTrace("LWLockConditionalAcquire");
+{
 	bool		mustwait;
 
 	AssertArg(mode == LW_SHARED || mode == LW_EXCLUSIVE);
@@ -1148,7 +1148,7 @@ LWLockConditionalAcquire(LWLock *lock, LWLockMode mode)
  */
 bool
 LWLockAcquireOrWait(LWLock *lock, LWLockMode mode)
-{	StackTrace("LWLockAcquireOrWait");
+{
 	PGPROC	   *proc = MyProc;
 	bool		mustwait;
 	int			extraWaits = 0;
@@ -1279,7 +1279,7 @@ LWLockAcquireOrWait(LWLock *lock, LWLockMode mode)
  */
 bool
 LWLockWaitForVar(LWLock *lock, uint64 *valptr, uint64 oldval, uint64 *newval)
-{	StackTrace("LWLockWaitForVar");
+{
 	PGPROC	   *proc = MyProc;
 	int			extraWaits = 0;
 	bool		result = false;
@@ -1455,7 +1455,7 @@ LWLockWaitForVar(LWLock *lock, uint64 *valptr, uint64 oldval, uint64 *newval)
  */
 void
 LWLockUpdateVar(LWLock *lock, uint64 *valptr, uint64 val)
-{	StackTrace("LWLockUpdateVar");
+{
 	dlist_head	wakeup;
 	dlist_mutable_iter iter;
 #ifdef LWLOCK_STATS
@@ -1519,7 +1519,7 @@ LWLockUpdateVar(LWLock *lock, uint64 *valptr, uint64 val)
  */
 void
 LWLockRelease(LWLock *lock)
-{	StackTrace("LWLockRelease");
+{
 	LWLockMode	mode;
 	uint32		oldstate;
 	bool		check_waiters;
@@ -1600,7 +1600,7 @@ LWLockRelease(LWLock *lock)
  */
 void
 LWLockReleaseAll(void)
-{	StackTrace("LWLockReleaseAll");
+{
 	while (num_held_lwlocks > 0)
 	{
 		HOLD_INTERRUPTS();		/* match the upcoming RESUME_INTERRUPTS */
@@ -1618,7 +1618,7 @@ LWLockReleaseAll(void)
  */
 bool
 LWLockHeldByMe(LWLock *l)
-{	StackTrace("LWLockHeldByMe");
+{
 	int			i;
 
 	for (i = 0; i < num_held_lwlocks; i++)

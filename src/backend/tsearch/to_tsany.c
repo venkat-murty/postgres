@@ -20,7 +20,7 @@
 
 Datum
 get_current_ts_config(PG_FUNCTION_ARGS)
-{	StackTrace("get_current_ts_config");
+{
 	PG_RETURN_OID(getTSCurrentConfig(true));
 }
 
@@ -29,7 +29,7 @@ get_current_ts_config(PG_FUNCTION_ARGS)
  */
 static int
 compareWORD(const void *a, const void *b)
-{	StackTrace("compareWORD");
+{
 	int			res;
 
 	res = tsCompareString(
@@ -50,7 +50,7 @@ compareWORD(const void *a, const void *b)
 
 static int
 uniqueWORD(ParsedWord *a, int32 l)
-{	StackTrace("uniqueWORD");
+{
 	ParsedWord *ptr,
 			   *res;
 	int			tmppos;
@@ -136,7 +136,7 @@ uniqueWORD(ParsedWord *a, int32 l)
  */
 TSVector
 make_tsvector(ParsedText *prs)
-{	StackTrace("make_tsvector");
+{
 	int			i,
 				j,
 				lenstr = 0,
@@ -207,7 +207,7 @@ make_tsvector(ParsedText *prs)
 
 Datum
 to_tsvector_byid(PG_FUNCTION_ARGS)
-{	StackTrace("to_tsvector_byid");
+{
 	Oid			cfgId = PG_GETARG_OID(0);
 	text	   *in = PG_GETARG_TEXT_P(1);
 	ParsedText	prs;
@@ -239,7 +239,7 @@ to_tsvector_byid(PG_FUNCTION_ARGS)
 
 Datum
 to_tsvector(PG_FUNCTION_ARGS)
-{	StackTrace("to_tsvector");
+{
 	text	   *in = PG_GETARG_TEXT_P(0);
 	Oid			cfgId;
 
@@ -266,7 +266,7 @@ to_tsvector(PG_FUNCTION_ARGS)
  */
 static void
 pushval_morph(Datum opaque, TSQueryParserState state, char *strval, int lenval, int16 weight, bool prefix)
-{	StackTrace("pushval_morph");
+{
 	int32		count = 0;
 	ParsedText	prs;
 	uint32		variant,
@@ -328,7 +328,7 @@ pushval_morph(Datum opaque, TSQueryParserState state, char *strval, int lenval, 
 
 Datum
 to_tsquery_byid(PG_FUNCTION_ARGS)
-{	StackTrace("to_tsquery_byid");
+{
 	Oid			cfgid = PG_GETARG_OID(0);
 	text	   *in = PG_GETARG_TEXT_P(1);
 	TSQuery		query;
@@ -372,7 +372,7 @@ to_tsquery_byid(PG_FUNCTION_ARGS)
 
 Datum
 to_tsquery(PG_FUNCTION_ARGS)
-{	StackTrace("to_tsquery");
+{
 	text	   *in = PG_GETARG_TEXT_P(0);
 	Oid			cfgId;
 
@@ -384,7 +384,7 @@ to_tsquery(PG_FUNCTION_ARGS)
 
 Datum
 plainto_tsquery_byid(PG_FUNCTION_ARGS)
-{	StackTrace("plainto_tsquery_byid");
+{
 	Oid			cfgid = PG_GETARG_OID(0);
 	text	   *in = PG_GETARG_TEXT_P(1);
 	TSQuery		query;
@@ -428,7 +428,7 @@ plainto_tsquery_byid(PG_FUNCTION_ARGS)
 
 Datum
 plainto_tsquery(PG_FUNCTION_ARGS)
-{	StackTrace("plainto_tsquery");
+{
 	text	   *in = PG_GETARG_TEXT_P(0);
 	Oid			cfgId;
 

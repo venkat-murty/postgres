@@ -65,7 +65,7 @@ static Relids adjust_relid_set(Relids relids, int oldrelid, int newrelid);
  */
 bool
 contain_aggs_of_level(Node *node, int levelsup)
-{	StackTrace("contain_aggs_of_level");
+{
 	contain_aggs_of_level_context context;
 
 	context.sublevels_up = levelsup;
@@ -83,7 +83,7 @@ contain_aggs_of_level(Node *node, int levelsup)
 static bool
 contain_aggs_of_level_walker(Node *node,
 							 contain_aggs_of_level_context *context)
-{	StackTrace("contain_aggs_of_level_walker");
+{
 	if (node == NULL)
 		return false;
 	if (IsA(node, Aggref))
@@ -129,7 +129,7 @@ contain_aggs_of_level_walker(Node *node,
  */
 int
 locate_agg_of_level(Node *node, int levelsup)
-{	StackTrace("locate_agg_of_level");
+{
 	locate_agg_of_level_context context;
 
 	context.agg_location = -1;	/* in case we find nothing */
@@ -150,7 +150,7 @@ locate_agg_of_level(Node *node, int levelsup)
 static bool
 locate_agg_of_level_walker(Node *node,
 						   locate_agg_of_level_context *context)
-{	StackTrace("locate_agg_of_level_walker");
+{
 	if (node == NULL)
 		return false;
 	if (IsA(node, Aggref))
@@ -195,7 +195,7 @@ locate_agg_of_level_walker(Node *node,
  */
 bool
 contain_windowfuncs(Node *node)
-{	StackTrace("contain_windowfuncs");
+{
 	/*
 	 * Must be prepared to start with a Query or a bare expression tree; if
 	 * it's a Query, we don't want to increment sublevels_up.
@@ -208,7 +208,7 @@ contain_windowfuncs(Node *node)
 
 static bool
 contain_windowfuncs_walker(Node *node, void *context)
-{	StackTrace("contain_windowfuncs_walker");
+{
 	if (node == NULL)
 		return false;
 	if (IsA(node, WindowFunc))
@@ -233,7 +233,7 @@ contain_windowfuncs_walker(Node *node, void *context)
  */
 int
 locate_windowfunc(Node *node)
-{	StackTrace("locate_windowfunc");
+{
 	locate_windowfunc_context context;
 
 	context.win_location = -1;	/* in case we find nothing */
@@ -252,7 +252,7 @@ locate_windowfunc(Node *node)
 
 static bool
 locate_windowfunc_walker(Node *node, locate_windowfunc_context *context)
-{	StackTrace("locate_windowfunc_walker");
+{
 	if (node == NULL)
 		return false;
 	if (IsA(node, WindowFunc))
@@ -275,7 +275,7 @@ locate_windowfunc_walker(Node *node, locate_windowfunc_context *context)
  */
 bool
 checkExprHasSubLink(Node *node)
-{	StackTrace("checkExprHasSubLink");
+{
 	/*
 	 * If a Query is passed, examine it --- but we should not recurse into
 	 * sub-Queries that are in its rangetable or CTE list.
@@ -288,7 +288,7 @@ checkExprHasSubLink(Node *node)
 
 static bool
 checkExprHasSubLink_walker(Node *node, void *context)
-{	StackTrace("checkExprHasSubLink_walker");
+{
 	if (node == NULL)
 		return false;
 	if (IsA(node, SubLink))
@@ -304,7 +304,7 @@ checkExprHasSubLink_walker(Node *node, void *context)
  */
 static bool
 contains_multiexpr_param(Node *node, void *context)
-{	StackTrace("contains_multiexpr_param");
+{
 	if (node == NULL)
 		return false;
 	if (IsA(node, Param))
@@ -338,7 +338,7 @@ typedef struct
 
 static bool
 OffsetVarNodes_walker(Node *node, OffsetVarNodes_context *context)
-{	StackTrace("OffsetVarNodes_walker");
+{
 	if (node == NULL)
 		return false;
 	if (IsA(node, Var))
@@ -423,7 +423,7 @@ OffsetVarNodes_walker(Node *node, OffsetVarNodes_context *context)
 
 void
 OffsetVarNodes(Node *node, int offset, int sublevels_up)
-{	StackTrace("OffsetVarNodes");
+{
 	OffsetVarNodes_context context;
 
 	context.offset = offset;
@@ -471,7 +471,7 @@ OffsetVarNodes(Node *node, int offset, int sublevels_up)
 
 static Relids
 offset_relid_set(Relids relids, int offset)
-{	StackTrace("offset_relid_set");
+{
 	Relids		result = NULL;
 	int			rtindex;
 
@@ -503,7 +503,7 @@ typedef struct
 
 static bool
 ChangeVarNodes_walker(Node *node, ChangeVarNodes_context *context)
-{	StackTrace("ChangeVarNodes_walker");
+{
 	if (node == NULL)
 		return false;
 	if (IsA(node, Var))
@@ -607,7 +607,7 @@ ChangeVarNodes_walker(Node *node, ChangeVarNodes_context *context)
 
 void
 ChangeVarNodes(Node *node, int rt_index, int new_index, int sublevels_up)
-{	StackTrace("ChangeVarNodes");
+{
 	ChangeVarNodes_context context;
 
 	context.rt_index = rt_index;
@@ -661,7 +661,7 @@ ChangeVarNodes(Node *node, int rt_index, int new_index, int sublevels_up)
  */
 static Relids
 adjust_relid_set(Relids relids, int oldrelid, int newrelid)
-{	StackTrace("adjust_relid_set");
+{
 	if (bms_is_member(oldrelid, relids))
 	{
 		/* Ensure we have a modifiable copy */
@@ -701,7 +701,7 @@ typedef struct
 static bool
 IncrementVarSublevelsUp_walker(Node *node,
 							   IncrementVarSublevelsUp_context *context)
-{	StackTrace("IncrementVarSublevelsUp_walker");
+{
 	if (node == NULL)
 		return false;
 	if (IsA(node, Var))
@@ -774,7 +774,7 @@ IncrementVarSublevelsUp_walker(Node *node,
 void
 IncrementVarSublevelsUp(Node *node, int delta_sublevels_up,
 						int min_sublevels_up)
-{	StackTrace("IncrementVarSublevelsUp");
+{
 	IncrementVarSublevelsUp_context context;
 
 	context.delta_sublevels_up = delta_sublevels_up;
@@ -797,7 +797,7 @@ IncrementVarSublevelsUp(Node *node, int delta_sublevels_up,
 void
 IncrementVarSublevelsUp_rtable(List *rtable, int delta_sublevels_up,
 							   int min_sublevels_up)
-{	StackTrace("IncrementVarSublevelsUp_rtable");
+{
 	IncrementVarSublevelsUp_context context;
 
 	context.delta_sublevels_up = delta_sublevels_up;
@@ -824,7 +824,7 @@ typedef struct
 static bool
 rangeTableEntry_used_walker(Node *node,
 							rangeTableEntry_used_context *context)
-{	StackTrace("rangeTableEntry_used_walker");
+{
 	if (node == NULL)
 		return false;
 	if (IsA(node, Var))
@@ -890,7 +890,7 @@ rangeTableEntry_used_walker(Node *node,
 
 bool
 rangeTableEntry_used(Node *node, int rt_index, int sublevels_up)
-{	StackTrace("rangeTableEntry_used");
+{
 	rangeTableEntry_used_context context;
 
 	context.rt_index = rt_index;
@@ -922,7 +922,7 @@ rangeTableEntry_used(Node *node, int rt_index, int sublevels_up)
  */
 Query *
 getInsertSelectQuery(Query *parsetree, Query ***subquery_ptr)
-{	StackTrace("getInsertSelectQuery");
+{
 	Query	   *selectquery;
 	RangeTblEntry *selectrte;
 	RangeTblRef *rtr;
@@ -977,7 +977,7 @@ getInsertSelectQuery(Query *parsetree, Query ***subquery_ptr)
  */
 void
 AddQual(Query *parsetree, Node *qual)
-{	StackTrace("AddQual");
+{
 	Node	   *copy;
 
 	if (qual == NULL)
@@ -1045,7 +1045,7 @@ AddQual(Query *parsetree, Node *qual)
  */
 void
 AddInvertedQual(Query *parsetree, Node *qual)
-{	StackTrace("AddInvertedQual");
+{
 	BooleanTest *invqual;
 
 	if (qual == NULL)
@@ -1088,7 +1088,7 @@ replace_rte_variables(Node *node, int target_varno, int sublevels_up,
 					  replace_rte_variables_callback callback,
 					  void *callback_arg,
 					  bool *outer_hasSubLinks)
-{	StackTrace("replace_rte_variables");
+{
 	Node	   *result;
 	replace_rte_variables_context context;
 
@@ -1133,7 +1133,7 @@ replace_rte_variables(Node *node, int target_varno, int sublevels_up,
 Node *
 replace_rte_variables_mutator(Node *node,
 							  replace_rte_variables_context *context)
-{	StackTrace("replace_rte_variables_mutator");
+{
 	if (node == NULL)
 		return NULL;
 	if (IsA(node, Var))
@@ -1232,7 +1232,7 @@ typedef struct
 static Node *
 map_variable_attnos_mutator(Node *node,
 							map_variable_attnos_context *context)
-{	StackTrace("map_variable_attnos_mutator");
+{
 	if (node == NULL)
 		return NULL;
 	if (IsA(node, Var))
@@ -1287,7 +1287,7 @@ map_variable_attnos(Node *node,
 					int target_varno, int sublevels_up,
 					const AttrNumber *attno_map, int map_length,
 					bool *found_whole_row)
-{	StackTrace("map_variable_attnos");
+{
 	map_variable_attnos_context context;
 
 	context.target_varno = target_varno;
@@ -1339,7 +1339,7 @@ typedef struct
 static Node *
 ReplaceVarsFromTargetList_callback(Var *var,
 								   replace_rte_variables_context *context)
-{	StackTrace("ReplaceVarsFromTargetList_callback");
+{
 	ReplaceVarsFromTargetList_context *rcon = (ReplaceVarsFromTargetList_context *) context->callback_arg;
 	TargetEntry *tle;
 
@@ -1448,7 +1448,7 @@ ReplaceVarsFromTargetList(Node *node,
 						  ReplaceVarsNoMatchOption nomatch_option,
 						  int nomatch_varno,
 						  bool *outer_hasSubLinks)
-{	StackTrace("ReplaceVarsFromTargetList");
+{
 	ReplaceVarsFromTargetList_context context;
 
 	context.target_rte = target_rte;

@@ -61,7 +61,7 @@ get_attavgwidth_hook_type get_attavgwidth_hook = NULL;
  */
 bool
 op_in_opfamily(Oid opno, Oid opfamily)
-{	StackTrace("op_in_opfamily");
+{
 	return SearchSysCacheExists3(AMOPOPID,
 								 ObjectIdGetDatum(opno),
 								 CharGetDatum(AMOP_SEARCH),
@@ -78,7 +78,7 @@ op_in_opfamily(Oid opno, Oid opfamily)
  */
 int
 get_op_opfamily_strategy(Oid opno, Oid opfamily)
-{	StackTrace("get_op_opfamily_strategy");
+{
 	HeapTuple	tp;
 	Form_pg_amop amop_tup;
 	int			result;
@@ -103,7 +103,7 @@ get_op_opfamily_strategy(Oid opno, Oid opfamily)
  */
 Oid
 get_op_opfamily_sortfamily(Oid opno, Oid opfamily)
-{	StackTrace("get_op_opfamily_sortfamily");
+{
 	HeapTuple	tp;
 	Form_pg_amop amop_tup;
 	Oid			result;
@@ -134,7 +134,7 @@ get_op_opfamily_properties(Oid opno, Oid opfamily, bool ordering_op,
 						   int *strategy,
 						   Oid *lefttype,
 						   Oid *righttype)
-{	StackTrace("get_op_opfamily_properties");
+{
 	HeapTuple	tp;
 	Form_pg_amop amop_tup;
 
@@ -162,7 +162,7 @@ get_op_opfamily_properties(Oid opno, Oid opfamily, bool ordering_op,
 Oid
 get_opfamily_member(Oid opfamily, Oid lefttype, Oid righttype,
 					int16 strategy)
-{	StackTrace("get_opfamily_member");
+{
 	HeapTuple	tp;
 	Form_pg_amop amop_tup;
 	Oid			result;
@@ -203,7 +203,7 @@ get_opfamily_member(Oid opfamily, Oid lefttype, Oid righttype,
 bool
 get_ordering_op_properties(Oid opno,
 						   Oid *opfamily, Oid *opcintype, int16 *strategy)
-{	StackTrace("get_ordering_op_properties");
+{
 	bool		result = false;
 	CatCList   *catlist;
 	int			i;
@@ -262,7 +262,7 @@ get_ordering_op_properties(Oid opno,
  */
 Oid
 get_equality_op_for_ordering_op(Oid opno, bool *reverse)
-{	StackTrace("get_equality_op_for_ordering_op");
+{
 	Oid			result = InvalidOid;
 	Oid			opfamily;
 	Oid			opcintype;
@@ -300,7 +300,7 @@ get_equality_op_for_ordering_op(Oid opno, bool *reverse)
  */
 Oid
 get_ordering_op_for_equality_op(Oid opno, bool use_lhs_type)
-{	StackTrace("get_ordering_op_for_equality_op");
+{
 	Oid			result = InvalidOid;
 	CatCList   *catlist;
 	int			i;
@@ -361,7 +361,7 @@ get_ordering_op_for_equality_op(Oid opno, bool use_lhs_type)
  */
 List *
 get_mergejoin_opfamilies(Oid opno)
-{	StackTrace("get_mergejoin_opfamilies");
+{
 	List	   *result = NIL;
 	CatCList   *catlist;
 	int			i;
@@ -406,7 +406,7 @@ get_mergejoin_opfamilies(Oid opno)
 bool
 get_compatible_hash_operators(Oid opno,
 							  Oid *lhs_opno, Oid *rhs_opno)
-{	StackTrace("get_compatible_hash_operators");
+{
 	bool		result = false;
 	CatCList   *catlist;
 	int			i;
@@ -506,7 +506,7 @@ get_compatible_hash_operators(Oid opno,
 bool
 get_op_hash_functions(Oid opno,
 					  RegProcedure *lhs_procno, RegProcedure *rhs_procno)
-{	StackTrace("get_op_hash_functions");
+{
 	bool		result = false;
 	CatCList   *catlist;
 	int			i;
@@ -596,7 +596,7 @@ get_op_hash_functions(Oid opno,
  */
 List *
 get_op_btree_interpretation(Oid opno)
-{	StackTrace("get_op_btree_interpretation");
+{
 	List	   *result = NIL;
 	OpBtreeInterpretation *thisresult;
 	CatCList   *catlist;
@@ -693,7 +693,7 @@ get_op_btree_interpretation(Oid opno)
  */
 bool
 equality_ops_are_compatible(Oid opno1, Oid opno2)
-{	StackTrace("equality_ops_are_compatible");
+{
 	bool		result;
 	CatCList   *catlist;
 	int			i;
@@ -742,7 +742,7 @@ equality_ops_are_compatible(Oid opno1, Oid opno2)
  */
 Oid
 get_opfamily_proc(Oid opfamily, Oid lefttype, Oid righttype, int16 procnum)
-{	StackTrace("get_opfamily_proc");
+{
 	HeapTuple	tp;
 	Form_pg_amproc amproc_tup;
 	RegProcedure result;
@@ -772,7 +772,7 @@ get_opfamily_proc(Oid opfamily, Oid lefttype, Oid righttype, int16 procnum)
  */
 char *
 get_attname(Oid relid, AttrNumber attnum)
-{	StackTrace("get_attname");
+{
 	HeapTuple	tp;
 
 	tp = SearchSysCache2(ATTNUM,
@@ -799,7 +799,7 @@ get_attname(Oid relid, AttrNumber attnum)
  */
 char *
 get_relid_attribute_name(Oid relid, AttrNumber attnum)
-{	StackTrace("get_relid_attribute_name");
+{
 	char	   *attname;
 
 	attname = get_attname(relid, attnum);
@@ -819,7 +819,7 @@ get_relid_attribute_name(Oid relid, AttrNumber attnum)
  */
 AttrNumber
 get_attnum(Oid relid, const char *attname)
-{	StackTrace("get_attnum");
+{
 	HeapTuple	tp;
 
 	tp = SearchSysCacheAttName(relid, attname);
@@ -844,7 +844,7 @@ get_attnum(Oid relid, const char *attname)
  */
 Oid
 get_atttype(Oid relid, AttrNumber attnum)
-{	StackTrace("get_atttype");
+{
 	HeapTuple	tp;
 
 	tp = SearchSysCache2(ATTNUM,
@@ -871,7 +871,7 @@ get_atttype(Oid relid, AttrNumber attnum)
  */
 int32
 get_atttypmod(Oid relid, AttrNumber attnum)
-{	StackTrace("get_atttypmod");
+{
 	HeapTuple	tp;
 
 	tp = SearchSysCache2(ATTNUM,
@@ -902,7 +902,7 @@ get_atttypmod(Oid relid, AttrNumber attnum)
 void
 get_atttypetypmodcoll(Oid relid, AttrNumber attnum,
 					  Oid *typid, int32 *typmod, Oid *collid)
-{	StackTrace("get_atttypetypmodcoll");
+{
 	HeapTuple	tp;
 	Form_pg_attribute att_tup;
 
@@ -933,7 +933,7 @@ get_atttypetypmodcoll(Oid relid, AttrNumber attnum,
  */
 char *
 get_collation_name(Oid colloid)
-{	StackTrace("get_collation_name");
+{
 	HeapTuple	tp;
 
 	tp = SearchSysCache1(COLLOID, ObjectIdGetDatum(colloid));
@@ -963,7 +963,7 @@ get_collation_name(Oid colloid)
  */
 char *
 get_constraint_name(Oid conoid)
-{	StackTrace("get_constraint_name");
+{
 	HeapTuple	tp;
 
 	tp = SearchSysCache1(CONSTROID, ObjectIdGetDatum(conoid));
@@ -984,7 +984,7 @@ get_constraint_name(Oid conoid)
 
 char *
 get_language_name(Oid langoid, bool missing_ok)
-{	StackTrace("get_language_name");
+{
 	HeapTuple	tp;
 
 	tp = SearchSysCache1(LANGOID, ObjectIdGetDatum(langoid));
@@ -1013,7 +1013,7 @@ get_language_name(Oid langoid, bool missing_ok)
  */
 Oid
 get_opclass_family(Oid opclass)
-{	StackTrace("get_opclass_family");
+{
 	HeapTuple	tp;
 	Form_pg_opclass cla_tup;
 	Oid			result;
@@ -1035,7 +1035,7 @@ get_opclass_family(Oid opclass)
  */
 Oid
 get_opclass_input_type(Oid opclass)
-{	StackTrace("get_opclass_input_type");
+{
 	HeapTuple	tp;
 	Form_pg_opclass cla_tup;
 	Oid			result;
@@ -1060,7 +1060,7 @@ get_opclass_input_type(Oid opclass)
  */
 RegProcedure
 get_opcode(Oid opno)
-{	StackTrace("get_opcode");
+{
 	HeapTuple	tp;
 
 	tp = SearchSysCache1(OPEROID, ObjectIdGetDatum(opno));
@@ -1085,7 +1085,7 @@ get_opcode(Oid opno)
  */
 char *
 get_opname(Oid opno)
-{	StackTrace("get_opname");
+{
 	HeapTuple	tp;
 
 	tp = SearchSysCache1(OPEROID, ObjectIdGetDatum(opno));
@@ -1110,7 +1110,7 @@ get_opname(Oid opno)
  */
 void
 op_input_types(Oid opno, Oid *lefttype, Oid *righttype)
-{	StackTrace("op_input_types");
+{
 	HeapTuple	tp;
 	Form_pg_operator optup;
 
@@ -1138,7 +1138,7 @@ op_input_types(Oid opno, Oid *lefttype, Oid *righttype)
  */
 bool
 op_mergejoinable(Oid opno, Oid inputtype)
-{	StackTrace("op_mergejoinable");
+{
 	bool		result = false;
 	HeapTuple	tp;
 	TypeCacheEntry *typentry;
@@ -1189,7 +1189,7 @@ op_mergejoinable(Oid opno, Oid inputtype)
  */
 bool
 op_hashjoinable(Oid opno, Oid inputtype)
-{	StackTrace("op_hashjoinable");
+{
 	bool		result = false;
 	HeapTuple	tp;
 	TypeCacheEntry *typentry;
@@ -1224,7 +1224,7 @@ op_hashjoinable(Oid opno, Oid inputtype)
  */
 bool
 op_strict(Oid opno)
-{	StackTrace("op_strict");
+{
 	RegProcedure funcid = get_opcode(opno);
 
 	if (funcid == (RegProcedure) InvalidOid)
@@ -1240,7 +1240,7 @@ op_strict(Oid opno)
  */
 char
 op_volatile(Oid opno)
-{	StackTrace("op_volatile");
+{
 	RegProcedure funcid = get_opcode(opno);
 
 	if (funcid == (RegProcedure) InvalidOid)
@@ -1256,7 +1256,7 @@ op_volatile(Oid opno)
  */
 Oid
 get_commutator(Oid opno)
-{	StackTrace("get_commutator");
+{
 	HeapTuple	tp;
 
 	tp = SearchSysCache1(OPEROID, ObjectIdGetDatum(opno));
@@ -1280,7 +1280,7 @@ get_commutator(Oid opno)
  */
 Oid
 get_negator(Oid opno)
-{	StackTrace("get_negator");
+{
 	HeapTuple	tp;
 
 	tp = SearchSysCache1(OPEROID, ObjectIdGetDatum(opno));
@@ -1304,7 +1304,7 @@ get_negator(Oid opno)
  */
 RegProcedure
 get_oprrest(Oid opno)
-{	StackTrace("get_oprrest");
+{
 	HeapTuple	tp;
 
 	tp = SearchSysCache1(OPEROID, ObjectIdGetDatum(opno));
@@ -1328,7 +1328,7 @@ get_oprrest(Oid opno)
  */
 RegProcedure
 get_oprjoin(Oid opno)
-{	StackTrace("get_oprjoin");
+{
 	HeapTuple	tp;
 
 	tp = SearchSysCache1(OPEROID, ObjectIdGetDatum(opno));
@@ -1355,7 +1355,7 @@ get_oprjoin(Oid opno)
  */
 char *
 get_func_name(Oid funcid)
-{	StackTrace("get_func_name");
+{
 	HeapTuple	tp;
 
 	tp = SearchSysCache1(PROCOID, ObjectIdGetDatum(funcid));
@@ -1379,7 +1379,7 @@ get_func_name(Oid funcid)
  */
 Oid
 get_func_namespace(Oid funcid)
-{	StackTrace("get_func_namespace");
+{
 	HeapTuple	tp;
 
 	tp = SearchSysCache1(PROCOID, ObjectIdGetDatum(funcid));
@@ -1402,7 +1402,7 @@ get_func_namespace(Oid funcid)
  */
 Oid
 get_func_rettype(Oid funcid)
-{	StackTrace("get_func_rettype");
+{
 	HeapTuple	tp;
 	Oid			result;
 
@@ -1421,7 +1421,7 @@ get_func_rettype(Oid funcid)
  */
 int
 get_func_nargs(Oid funcid)
-{	StackTrace("get_func_nargs");
+{
 	HeapTuple	tp;
 	int			result;
 
@@ -1443,7 +1443,7 @@ get_func_nargs(Oid funcid)
  */
 Oid
 get_func_signature(Oid funcid, Oid **argtypes, int *nargs)
-{	StackTrace("get_func_signature");
+{
 	HeapTuple	tp;
 	Form_pg_proc procstruct;
 	Oid			result;
@@ -1470,7 +1470,7 @@ get_func_signature(Oid funcid, Oid **argtypes, int *nargs)
  */
 Oid
 get_func_variadictype(Oid funcid)
-{	StackTrace("get_func_variadictype");
+{
 	HeapTuple	tp;
 	Oid			result;
 
@@ -1489,7 +1489,7 @@ get_func_variadictype(Oid funcid)
  */
 bool
 get_func_retset(Oid funcid)
-{	StackTrace("get_func_retset");
+{
 	HeapTuple	tp;
 	bool		result;
 
@@ -1508,7 +1508,7 @@ get_func_retset(Oid funcid)
  */
 bool
 func_strict(Oid funcid)
-{	StackTrace("func_strict");
+{
 	HeapTuple	tp;
 	bool		result;
 
@@ -1527,7 +1527,7 @@ func_strict(Oid funcid)
  */
 char
 func_volatile(Oid funcid)
-{	StackTrace("func_volatile");
+{
 	HeapTuple	tp;
 	char		result;
 
@@ -1546,7 +1546,7 @@ func_volatile(Oid funcid)
  */
 bool
 get_func_leakproof(Oid funcid)
-{	StackTrace("get_func_leakproof");
+{
 	HeapTuple	tp;
 	bool		result;
 
@@ -1565,7 +1565,7 @@ get_func_leakproof(Oid funcid)
  */
 float4
 get_func_cost(Oid funcid)
-{	StackTrace("get_func_cost");
+{
 	HeapTuple	tp;
 	float4		result;
 
@@ -1584,7 +1584,7 @@ get_func_cost(Oid funcid)
  */
 float4
 get_func_rows(Oid funcid)
-{	StackTrace("get_func_rows");
+{
 	HeapTuple	tp;
 	float4		result;
 
@@ -1607,7 +1607,7 @@ get_func_rows(Oid funcid)
  */
 Oid
 get_relname_relid(const char *relname, Oid relnamespace)
-{	StackTrace("get_relname_relid");
+{
 	return GetSysCacheOid2(RELNAMENSP,
 						   PointerGetDatum(relname),
 						   ObjectIdGetDatum(relnamespace));
@@ -1621,7 +1621,7 @@ get_relname_relid(const char *relname, Oid relnamespace)
  */
 int
 get_relnatts(Oid relid)
-{	StackTrace("get_relnatts");
+{
 	HeapTuple	tp;
 
 	tp = SearchSysCache1(RELOID, ObjectIdGetDatum(relid));
@@ -1650,7 +1650,7 @@ get_relnatts(Oid relid)
  */
 char *
 get_rel_name(Oid relid)
-{	StackTrace("get_rel_name");
+{
 	HeapTuple	tp;
 
 	tp = SearchSysCache1(RELOID, ObjectIdGetDatum(relid));
@@ -1674,7 +1674,7 @@ get_rel_name(Oid relid)
  */
 Oid
 get_rel_namespace(Oid relid)
-{	StackTrace("get_rel_namespace");
+{
 	HeapTuple	tp;
 
 	tp = SearchSysCache1(RELOID, ObjectIdGetDatum(relid));
@@ -1701,7 +1701,7 @@ get_rel_namespace(Oid relid)
  */
 Oid
 get_rel_type_id(Oid relid)
-{	StackTrace("get_rel_type_id");
+{
 	HeapTuple	tp;
 
 	tp = SearchSysCache1(RELOID, ObjectIdGetDatum(relid));
@@ -1725,7 +1725,7 @@ get_rel_type_id(Oid relid)
  */
 char
 get_rel_relkind(Oid relid)
-{	StackTrace("get_rel_relkind");
+{
 	HeapTuple	tp;
 
 	tp = SearchSysCache1(RELOID, ObjectIdGetDatum(relid));
@@ -1752,7 +1752,7 @@ get_rel_relkind(Oid relid)
  */
 Oid
 get_rel_tablespace(Oid relid)
-{	StackTrace("get_rel_tablespace");
+{
 	HeapTuple	tp;
 
 	tp = SearchSysCache1(RELOID, ObjectIdGetDatum(relid));
@@ -1774,7 +1774,7 @@ get_rel_tablespace(Oid relid)
 
 Oid
 get_transform_fromsql(Oid typid, Oid langid, List *trftypes)
-{	StackTrace("get_transform_fromsql");
+{
 	HeapTuple	tup;
 
 	if (!list_member_oid(trftypes, typid))
@@ -1795,7 +1795,7 @@ get_transform_fromsql(Oid typid, Oid langid, List *trftypes)
 
 Oid
 get_transform_tosql(Oid typid, Oid langid, List *trftypes)
-{	StackTrace("get_transform_tosql");
+{
 	HeapTuple	tup;
 
 	if (!list_member_oid(trftypes, typid))
@@ -1825,7 +1825,7 @@ get_transform_tosql(Oid typid, Oid langid, List *trftypes)
  */
 bool
 get_typisdefined(Oid typid)
-{	StackTrace("get_typisdefined");
+{
 	HeapTuple	tp;
 
 	tp = SearchSysCache1(TYPEOID, ObjectIdGetDatum(typid));
@@ -1849,7 +1849,7 @@ get_typisdefined(Oid typid)
  */
 int16
 get_typlen(Oid typid)
-{	StackTrace("get_typlen");
+{
 	HeapTuple	tp;
 
 	tp = SearchSysCache1(TYPEOID, ObjectIdGetDatum(typid));
@@ -1903,7 +1903,7 @@ get_typbyval(Oid typid)
  */
 void
 get_typlenbyval(Oid typid, int16 *typlen, bool *typbyval)
-{	StackTrace("get_typlenbyval");
+{
 	HeapTuple	tp;
 	Form_pg_type typtup;
 
@@ -1924,7 +1924,7 @@ get_typlenbyval(Oid typid, int16 *typlen, bool *typbyval)
 void
 get_typlenbyvalalign(Oid typid, int16 *typlen, bool *typbyval,
 					 char *typalign)
-{	StackTrace("get_typlenbyvalalign");
+{
 	HeapTuple	tp;
 	Form_pg_type typtup;
 
@@ -1955,7 +1955,7 @@ get_typlenbyvalalign(Oid typid, int16 *typlen, bool *typbyval,
  */
 Oid
 getTypeIOParam(HeapTuple typeTuple)
-{	StackTrace("getTypeIOParam");
+{
 	Form_pg_type typeStruct = (Form_pg_type) GETSTRUCT(typeTuple);
 
 	/*
@@ -1984,7 +1984,7 @@ get_type_io_data(Oid typid,
 				 char *typdelim,
 				 Oid *typioparam,
 				 Oid *func)
-{	StackTrace("get_type_io_data");
+{
 	HeapTuple	typeTuple;
 	Form_pg_type typeStruct;
 
@@ -2051,7 +2051,7 @@ get_type_io_data(Oid typid,
 #ifdef NOT_USED
 char
 get_typalign(Oid typid)
-{	StackTrace("get_typalign");
+{
 	HeapTuple	tp;
 
 	tp = SearchSysCache1(TYPEOID, ObjectIdGetDatum(typid));
@@ -2071,7 +2071,7 @@ get_typalign(Oid typid)
 
 char
 get_typstorage(Oid typid)
-{	StackTrace("get_typstorage");
+{
 	HeapTuple	tp;
 
 	tp = SearchSysCache1(TYPEOID, ObjectIdGetDatum(typid));
@@ -2100,7 +2100,7 @@ get_typstorage(Oid typid)
  */
 Node *
 get_typdefault(Oid typid)
-{	StackTrace("get_typdefault");
+{
 	HeapTuple	typeTuple;
 	Form_pg_type type;
 	Datum		datum;
@@ -2173,7 +2173,7 @@ get_typdefault(Oid typid)
  */
 Oid
 getBaseType(Oid typid)
-{	StackTrace("getBaseType");
+{
 	int32		typmod = -1;
 
 	return getBaseTypeAndTypmod(typid, &typmod);
@@ -2190,7 +2190,7 @@ getBaseType(Oid typid)
  */
 Oid
 getBaseTypeAndTypmod(Oid typid, int32 *typmod)
-{	StackTrace("getBaseTypeAndTypmod");
+{
 	/*
 	 * We loop to find the bottom base type in a stack of domains.
 	 */
@@ -2230,7 +2230,7 @@ getBaseTypeAndTypmod(Oid typid, int32 *typmod)
  */
 int32
 get_typavgwidth(Oid typid, int32 typmod)
-{	StackTrace("get_typavgwidth");
+{
 	int			typlen = get_typlen(typid);
 	int32		maxwidth;
 
@@ -2281,7 +2281,7 @@ get_typavgwidth(Oid typid, int32 typmod)
  */
 char
 get_typtype(Oid typid)
-{	StackTrace("get_typtype");
+{
 	HeapTuple	tp;
 
 	tp = SearchSysCache1(TYPEOID, ObjectIdGetDatum(typid));
@@ -2306,7 +2306,7 @@ get_typtype(Oid typid)
  */
 bool
 type_is_rowtype(Oid typid)
-{	StackTrace("type_is_rowtype");
+{
 	return (typid == RECORDOID || get_typtype(typid) == TYPTYPE_COMPOSITE);
 }
 
@@ -2316,7 +2316,7 @@ type_is_rowtype(Oid typid)
  */
 bool
 type_is_enum(Oid typid)
-{	StackTrace("type_is_enum");
+{
 	return (get_typtype(typid) == TYPTYPE_ENUM);
 }
 
@@ -2326,7 +2326,7 @@ type_is_enum(Oid typid)
  */
 bool
 type_is_range(Oid typid)
-{	StackTrace("type_is_range");
+{
 	return (get_typtype(typid) == TYPTYPE_RANGE);
 }
 
@@ -2338,7 +2338,7 @@ type_is_range(Oid typid)
  */
 void
 get_type_category_preferred(Oid typid, char *typcategory, bool *typispreferred)
-{	StackTrace("get_type_category_preferred");
+{
 	HeapTuple	tp;
 	Form_pg_type typtup;
 
@@ -2359,7 +2359,7 @@ get_type_category_preferred(Oid typid, char *typcategory, bool *typispreferred)
  */
 Oid
 get_typ_typrelid(Oid typid)
-{	StackTrace("get_typ_typrelid");
+{
 	HeapTuple	tp;
 
 	tp = SearchSysCache1(TYPEOID, ObjectIdGetDatum(typid));
@@ -2386,7 +2386,7 @@ get_typ_typrelid(Oid typid)
  */
 Oid
 get_element_type(Oid typid)
-{	StackTrace("get_element_type");
+{
 	HeapTuple	tp;
 
 	tp = SearchSysCache1(TYPEOID, ObjectIdGetDatum(typid));
@@ -2414,7 +2414,7 @@ get_element_type(Oid typid)
  */
 Oid
 get_array_type(Oid typid)
-{	StackTrace("get_array_type");
+{
 	HeapTuple	tp;
 	Oid			result = InvalidOid;
 
@@ -2438,7 +2438,7 @@ get_array_type(Oid typid)
  */
 Oid
 get_promoted_array_type(Oid typid)
-{	StackTrace("get_promoted_array_type");
+{
 	Oid			array_type = get_array_type(typid);
 
 	if (OidIsValid(array_type))
@@ -2459,7 +2459,7 @@ get_promoted_array_type(Oid typid)
  */
 Oid
 get_base_element_type(Oid typid)
-{	StackTrace("get_base_element_type");
+{
 	/*
 	 * We loop to find the bottom base type in a stack of domains.
 	 */
@@ -2501,7 +2501,7 @@ get_base_element_type(Oid typid)
  */
 void
 getTypeInputInfo(Oid type, Oid *typInput, Oid *typIOParam)
-{	StackTrace("getTypeInputInfo");
+{
 	HeapTuple	typeTuple;
 	Form_pg_type pt;
 
@@ -2534,7 +2534,7 @@ getTypeInputInfo(Oid type, Oid *typInput, Oid *typIOParam)
  */
 void
 getTypeOutputInfo(Oid type, Oid *typOutput, bool *typIsVarlena)
-{	StackTrace("getTypeOutputInfo");
+{
 	HeapTuple	typeTuple;
 	Form_pg_type pt;
 
@@ -2567,7 +2567,7 @@ getTypeOutputInfo(Oid type, Oid *typOutput, bool *typIsVarlena)
  */
 void
 getTypeBinaryInputInfo(Oid type, Oid *typReceive, Oid *typIOParam)
-{	StackTrace("getTypeBinaryInputInfo");
+{
 	HeapTuple	typeTuple;
 	Form_pg_type pt;
 
@@ -2600,7 +2600,7 @@ getTypeBinaryInputInfo(Oid type, Oid *typReceive, Oid *typIOParam)
  */
 void
 getTypeBinaryOutputInfo(Oid type, Oid *typSend, bool *typIsVarlena)
-{	StackTrace("getTypeBinaryOutputInfo");
+{
 	HeapTuple	typeTuple;
 	Form_pg_type pt;
 
@@ -2633,7 +2633,7 @@ getTypeBinaryOutputInfo(Oid type, Oid *typSend, bool *typIsVarlena)
  */
 Oid
 get_typmodin(Oid typid)
-{	StackTrace("get_typmodin");
+{
 	HeapTuple	tp;
 
 	tp = SearchSysCache1(TYPEOID, ObjectIdGetDatum(typid));
@@ -2658,7 +2658,7 @@ get_typmodin(Oid typid)
  */
 Oid
 get_typmodout(Oid typid)
-{	StackTrace("get_typmodout");
+{
 	HeapTuple	tp;
 
 	tp = SearchSysCache1(TYPEOID, ObjectIdGetDatum(typid));
@@ -2683,7 +2683,7 @@ get_typmodout(Oid typid)
  */
 Oid
 get_typcollation(Oid typid)
-{	StackTrace("get_typcollation");
+{
 	HeapTuple	tp;
 
 	tp = SearchSysCache1(TYPEOID, ObjectIdGetDatum(typid));
@@ -2708,7 +2708,7 @@ get_typcollation(Oid typid)
  */
 bool
 type_is_collatable(Oid typid)
-{	StackTrace("type_is_collatable");
+{
 	return OidIsValid(get_typcollation(typid));
 }
 
@@ -2730,7 +2730,7 @@ type_is_collatable(Oid typid)
  */
 int32
 get_attavgwidth(Oid relid, AttrNumber attnum)
-{	StackTrace("get_attavgwidth");
+{
 	HeapTuple	tp;
 	int32		stawidth;
 
@@ -2793,7 +2793,7 @@ get_attstatsslot(HeapTuple statstuple,
 				 Oid *actualop,
 				 Datum **values, int *nvalues,
 				 float4 **numbers, int *nnumbers)
-{	StackTrace("get_attstatsslot");
+{
 	Form_pg_statistic stats = (Form_pg_statistic) GETSTRUCT(statstuple);
 	int			i,
 				j;
@@ -2914,7 +2914,7 @@ void
 free_attstatsslot(Oid atttype,
 				  Datum *values, int nvalues,
 				  float4 *numbers, int nnumbers)
-{	StackTrace("free_attstatsslot");
+{
 	if (values)
 	{
 		if (!get_typbyval(atttype))
@@ -2940,7 +2940,7 @@ free_attstatsslot(Oid atttype,
  */
 char *
 get_namespace_name(Oid nspid)
-{	StackTrace("get_namespace_name");
+{
 	HeapTuple	tp;
 
 	tp = SearchSysCache1(NAMESPACEOID, ObjectIdGetDatum(nspid));
@@ -2964,7 +2964,7 @@ get_namespace_name(Oid nspid)
  */
 char *
 get_namespace_name_or_temp(Oid nspid)
-{	StackTrace("get_namespace_name_or_temp");
+{
 	if (isTempNamespace(nspid))
 		return "pg_temp";
 	else
@@ -2981,7 +2981,7 @@ get_namespace_name_or_temp(Oid nspid)
  */
 Oid
 get_range_subtype(Oid rangeOid)
-{	StackTrace("get_range_subtype");
+{
 	HeapTuple	tp;
 
 	tp = SearchSysCache1(RANGETYPE, ObjectIdGetDatum(rangeOid));
@@ -3006,7 +3006,7 @@ get_range_subtype(Oid rangeOid)
  */
 char *
 get_tablesample_method_name(Oid tsmid)
-{	StackTrace("get_tablesample_method_name");
+{
 	HeapTuple	tuple;
 
 	tuple = SearchSysCache1(TABLESAMPLEMETHODOID, ObjectIdGetDatum(tsmid));

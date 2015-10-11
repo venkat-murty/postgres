@@ -36,7 +36,7 @@
  */
 BlockNumber
 GetFreeIndexPage(Relation rel)
-{	StackTrace("GetFreeIndexPage");
+{
 	BlockNumber blkno = GetPageWithFreeSpace(rel, BLCKSZ / 2);
 
 	if (blkno != InvalidBlockNumber)
@@ -50,7 +50,7 @@ GetFreeIndexPage(Relation rel)
  */
 void
 RecordFreeIndexPage(Relation rel, BlockNumber freeBlock)
-{	StackTrace("RecordFreeIndexPage");
+{
 	RecordPageWithFreeSpace(rel, freeBlock, BLCKSZ - 1);
 }
 
@@ -60,7 +60,7 @@ RecordFreeIndexPage(Relation rel, BlockNumber freeBlock)
  */
 void
 RecordUsedIndexPage(Relation rel, BlockNumber usedBlock)
-{	StackTrace("RecordUsedIndexPage");
+{
 	RecordPageWithFreeSpace(rel, usedBlock, 0);
 }
 
@@ -69,6 +69,6 @@ RecordUsedIndexPage(Relation rel, BlockNumber usedBlock)
  */
 void
 IndexFreeSpaceMapVacuum(Relation rel)
-{	StackTrace("IndexFreeSpaceMapVacuum");
+{
 	FreeSpaceMapVacuum(rel);
 }

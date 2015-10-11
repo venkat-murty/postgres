@@ -38,7 +38,7 @@ static void pass_down_bound(LimitState *node, PlanState *child_node);
  */
 TupleTableSlot *				/* return: a tuple or NULL */
 ExecLimit(LimitState *node)
-{	StackTrace("ExecLimit");
+{
 	ScanDirection direction;
 	TupleTableSlot *slot;
 	PlanState  *outerPlan;
@@ -230,7 +230,7 @@ ExecLimit(LimitState *node)
  */
 static void
 recompute_limits(LimitState *node)
-{	StackTrace("recompute_limits");
+{
 	ExprContext *econtext = node->ps.ps_ExprContext;
 	Datum		val;
 	bool		isNull;
@@ -317,7 +317,7 @@ recompute_limits(LimitState *node)
  */
 static void
 pass_down_bound(LimitState *node, PlanState *child_node)
-{	StackTrace("pass_down_bound");
+{
 	if (IsA(child_node, SortState))
 	{
 		SortState  *sortState = (SortState *) child_node;
@@ -371,7 +371,7 @@ pass_down_bound(LimitState *node, PlanState *child_node)
  */
 LimitState *
 ExecInitLimit(Limit *node, EState *estate, int eflags)
-{	StackTrace("ExecInitLimit");
+{
 	LimitState *limitstate;
 	Plan	   *outerPlan;
 
@@ -433,7 +433,7 @@ ExecInitLimit(Limit *node, EState *estate, int eflags)
  */
 void
 ExecEndLimit(LimitState *node)
-{	StackTrace("ExecEndLimit");
+{
 	ExecFreeExprContext(&node->ps);
 	ExecEndNode(outerPlanState(node));
 }
@@ -441,7 +441,7 @@ ExecEndLimit(LimitState *node)
 
 void
 ExecReScanLimit(LimitState *node)
-{	StackTrace("ExecReScanLimit");
+{
 	/*
 	 * Recompute limit/offset in case parameters changed, and reset the state
 	 * machine.  We must do this before rescanning our child node, in case

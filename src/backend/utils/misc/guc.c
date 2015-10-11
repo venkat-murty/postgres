@@ -3732,7 +3732,7 @@ static void replace_auto_config_value(ConfigVariable **head_p, ConfigVariable **
  */
 static void *
 guc_malloc(int elevel, size_t size)
-{	StackTrace("guc_malloc");
+{
 	void	   *data;
 
 	/* Avoid unportable behavior of malloc(0) */
@@ -3748,7 +3748,7 @@ guc_malloc(int elevel, size_t size)
 
 static void *
 guc_realloc(int elevel, void *old, size_t size)
-{	StackTrace("guc_realloc");
+{
 	void	   *data;
 
 	/* Avoid unportable behavior of realloc(NULL, 0) */
@@ -3764,7 +3764,7 @@ guc_realloc(int elevel, void *old, size_t size)
 
 static char *
 guc_strdup(int elevel, const char *src)
-{	StackTrace("guc_strdup");
+{
 	char	   *data;
 
 	data = strdup(src);
@@ -3781,7 +3781,7 @@ guc_strdup(int elevel, const char *src)
  */
 static bool
 string_field_used(struct config_string * conf, char *strval)
-{	StackTrace("string_field_used");
+{
 	GucStack   *stack;
 
 	if (strval == *(conf->variable) ||
@@ -3804,7 +3804,7 @@ string_field_used(struct config_string * conf, char *strval)
  */
 static void
 set_string_field(struct config_string * conf, char **field, char *newval)
-{	StackTrace("set_string_field");
+{
 	char	   *oldval = *field;
 
 	/* Do the assignment */
@@ -3820,7 +3820,7 @@ set_string_field(struct config_string * conf, char **field, char *newval)
  */
 static bool
 extra_field_used(struct config_generic * gconf, void *extra)
-{	StackTrace("extra_field_used");
+{
 	GucStack   *stack;
 
 	if (extra == gconf->extra)
@@ -3865,7 +3865,7 @@ extra_field_used(struct config_generic * gconf, void *extra)
  */
 static void
 set_extra_field(struct config_generic * gconf, void **field, void *newval)
-{	StackTrace("set_extra_field");
+{
 	void	   *oldval = *field;
 
 	/* Do the assignment */
@@ -3885,7 +3885,7 @@ set_extra_field(struct config_generic * gconf, void **field, void *newval)
  */
 static void
 set_stack_value(struct config_generic * gconf, config_var_value *val)
-{	StackTrace("set_stack_value");
+{
 	switch (gconf->vartype)
 	{
 		case PGC_BOOL:
@@ -3919,7 +3919,7 @@ set_stack_value(struct config_generic * gconf, config_var_value *val)
  */
 static void
 discard_stack_value(struct config_generic * gconf, config_var_value *val)
-{	StackTrace("discard_stack_value");
+{
 	switch (gconf->vartype)
 	{
 		case PGC_BOOL:
@@ -3943,7 +3943,7 @@ discard_stack_value(struct config_generic * gconf, config_var_value *val)
  */
 struct config_generic **
 get_guc_variables(void)
-{	StackTrace("get_guc_variables");
+{
 	return guc_variables;
 }
 
@@ -3955,7 +3955,7 @@ get_guc_variables(void)
  */
 void
 build_guc_variables(void)
-{	StackTrace("build_guc_variables");
+{
 	int			size_vars;
 	int			num_vars = 0;
 	struct config_generic **guc_vars;
@@ -4042,7 +4042,7 @@ build_guc_variables(void)
  */
 static bool
 add_guc_variable(struct config_generic * var, int elevel)
-{	StackTrace("add_guc_variable");
+{
 	if (num_guc_variables + 1 >= size_guc_variables)
 	{
 		/*
@@ -4080,7 +4080,7 @@ add_guc_variable(struct config_generic * var, int elevel)
  */
 static struct config_generic *
 add_placeholder_variable(const char *name, int elevel)
-{	StackTrace("add_placeholder_variable");
+{
 	size_t		sz = sizeof(struct config_string) + sizeof(char *);
 	struct config_string *var;
 	struct config_generic *gen;
@@ -4128,7 +4128,7 @@ add_placeholder_variable(const char *name, int elevel)
  */
 static struct config_generic *
 find_option(const char *name, bool create_placeholders, int elevel)
-{	StackTrace("find_option");
+{
 	const char **key = &name;
 	struct config_generic **res;
 	int			i;
@@ -4177,7 +4177,7 @@ find_option(const char *name, bool create_placeholders, int elevel)
  */
 static int
 guc_var_compare(const void *a, const void *b)
-{	StackTrace("guc_var_compare");
+{
 	const struct config_generic *confa = *(struct config_generic * const *) a;
 	const struct config_generic *confb = *(struct config_generic * const *) b;
 
@@ -4189,7 +4189,7 @@ guc_var_compare(const void *a, const void *b)
  */
 static int
 guc_name_compare(const char *namea, const char *nameb)
-{	StackTrace("guc_name_compare");
+{
 	/*
 	 * The temptation to use strcasecmp() here must be resisted, because the
 	 * array ordering has to remain stable across setlocale() calls. So, build
@@ -4223,7 +4223,7 @@ guc_name_compare(const char *namea, const char *nameb)
  */
 void
 InitializeGUCOptions(void)
-{	StackTrace("InitializeGUCOptions");
+{
 	int			i;
 
 	/*
@@ -4279,7 +4279,7 @@ InitializeGUCOptions(void)
  */
 static void
 InitializeGUCOptionsFromEnvironment(void)
-{	StackTrace("InitializeGUCOptionsFromEnvironment");
+{
 	char	   *env;
 	long		stack_rlimit;
 
@@ -4325,7 +4325,7 @@ InitializeGUCOptionsFromEnvironment(void)
  */
 static void
 InitializeOneGUCOption(struct config_generic * gconf)
-{	StackTrace("InitializeOneGUCOption");
+{
 	gconf->status = 0;
 	gconf->source = PGC_S_DEFAULT;
 	gconf->reset_source = PGC_S_DEFAULT;
@@ -4445,7 +4445,7 @@ InitializeOneGUCOption(struct config_generic * gconf)
  */
 bool
 SelectConfigFiles(const char *userDoption, const char *progname)
-{	StackTrace("SelectConfigFiles");
+{
 	char	   *configdir;
 	char	   *fname;
 	struct stat stat_buf;
@@ -4609,7 +4609,7 @@ SelectConfigFiles(const char *userDoption, const char *progname)
  */
 void
 ResetAllOptions(void)
-{	StackTrace("ResetAllOptions");
+{
 	int			i;
 
 	for (i = 0; i < num_guc_variables; i++)
@@ -4709,7 +4709,7 @@ ResetAllOptions(void)
  */
 static void
 push_old_value(struct config_generic * gconf, GucAction action)
-{	StackTrace("push_old_value");
+{
 	GucStack   *stack;
 
 	/* If we're not inside a nest level, do nothing */
@@ -4790,7 +4790,7 @@ push_old_value(struct config_generic * gconf, GucAction action)
  */
 void
 AtStart_GUC(void)
-{	StackTrace("AtStart_GUC");
+{
 	/*
 	 * The nest level should be 0 between transactions; if it isn't, somebody
 	 * didn't call AtEOXact_GUC, or called it with the wrong nestLevel.  We
@@ -4810,7 +4810,7 @@ AtStart_GUC(void)
  */
 int
 NewGUCNestLevel(void)
-{	StackTrace("NewGUCNestLevel");
+{
 	return ++GUCNestLevel;
 }
 
@@ -4824,7 +4824,7 @@ NewGUCNestLevel(void)
  */
 void
 AtEOXact_GUC(bool isCommit, int nestLevel)
-{	StackTrace("AtEOXact_GUC");
+{
 	bool		still_dirty;
 	int			i;
 
@@ -5105,7 +5105,7 @@ AtEOXact_GUC(bool isCommit, int nestLevel)
  */
 void
 BeginReportingGUCOptions(void)
-{	StackTrace("BeginReportingGUCOptions");
+{
 	int			i;
 
 	/*
@@ -5133,7 +5133,7 @@ BeginReportingGUCOptions(void)
  */
 static void
 ReportGUCOption(struct config_generic * record)
-{	StackTrace("ReportGUCOption");
+{
 	if (reporting_enabled && (record->flags & GUC_REPORT))
 	{
 		char	   *val = _ShowOption(record, false);
@@ -5158,7 +5158,7 @@ ReportGUCOption(struct config_generic * record)
 static bool
 convert_to_base_unit(int64 value, const char *unit,
 					 int base_unit, int64 *base_value)
-{	StackTrace("convert_to_base_unit");
+{
 	const unit_conversion *table;
 	int			i;
 
@@ -5191,7 +5191,7 @@ convert_to_base_unit(int64 value, const char *unit,
 static void
 convert_from_base_unit(int64 base_value, int base_unit,
 					   int64 *value, const char **unit)
-{	StackTrace("convert_from_base_unit");
+{
 	const unit_conversion *table;
 	int			i;
 
@@ -5242,7 +5242,7 @@ convert_from_base_unit(int64 base_value, int base_unit,
  */
 bool
 parse_int(const char *value, int *result, int flags, const char **hintmsg)
-{	StackTrace("parse_int");
+{
 	int64		val;
 	char	   *endptr;
 
@@ -5328,7 +5328,7 @@ parse_int(const char *value, int *result, int flags, const char **hintmsg)
  */
 bool
 parse_real(const char *value, double *result)
-{	StackTrace("parse_real");
+{
 	double		val;
 	char	   *endptr;
 
@@ -5362,7 +5362,7 @@ parse_real(const char *value, double *result)
  */
 const char *
 config_enum_lookup_by_value(struct config_enum * record, int val)
-{	StackTrace("config_enum_lookup_by_value");
+{
 	const struct config_enum_entry *entry;
 
 	for (entry = record->options; entry && entry->name; entry++)
@@ -5386,7 +5386,7 @@ config_enum_lookup_by_value(struct config_enum * record, int val)
 bool
 config_enum_lookup_by_name(struct config_enum * record, const char *value,
 						   int *retval)
-{	StackTrace("config_enum_lookup_by_name");
+{
 	const struct config_enum_entry *entry;
 
 	for (entry = record->options; entry && entry->name; entry++)
@@ -5412,7 +5412,7 @@ config_enum_lookup_by_name(struct config_enum * record, const char *value,
 static char *
 config_enum_get_options(struct config_enum * record, const char *prefix,
 						const char *suffix, const char *separator)
-{	StackTrace("config_enum_get_options");
+{
 	const struct config_enum_entry *entry;
 	StringInfoData retstr;
 	int			seplen;
@@ -5472,7 +5472,7 @@ parse_and_validate_value(struct config_generic * record,
 						 const char *name, const char *value,
 						 GucSource source, int elevel,
 						 union config_var_val * newval, void **newextra)
-{	StackTrace("parse_and_validate_value");
+{
 	switch (record->vartype)
 	{
 		case PGC_BOOL:
@@ -5656,7 +5656,7 @@ set_config_option(const char *name, const char *value,
 				  GucContext context, GucSource source,
 				  GucAction action, bool changeVal, int elevel,
 				  bool is_reload)
-{	StackTrace("set_config_option");
+{
 	struct config_generic *record;
 	union config_var_val newval_union;
 	void	   *newextra = NULL;
@@ -6382,7 +6382,7 @@ set_config_option(const char *name, const char *value,
  */
 static void
 set_config_sourcefile(const char *name, char *sourcefile, int sourceline)
-{	StackTrace("set_config_sourcefile");
+{
 	struct config_generic *record;
 	int			elevel;
 
@@ -6417,7 +6417,7 @@ set_config_sourcefile(const char *name, char *sourcefile, int sourceline)
 void
 SetConfigOption(const char *name, const char *value,
 				GucContext context, GucSource source)
-{	StackTrace("SetConfigOption");
+{
 	(void) set_config_option(name, value, context, source,
 							 GUC_ACTION_SET, true, 0, false);
 }
@@ -6440,7 +6440,7 @@ SetConfigOption(const char *name, const char *value,
  */
 const char *
 GetConfigOption(const char *name, bool missing_ok, bool restrict_superuser)
-{	StackTrace("GetConfigOption");
+{
 	struct config_generic *record;
 	static char buffer[256];
 
@@ -6495,7 +6495,7 @@ GetConfigOption(const char *name, bool missing_ok, bool restrict_superuser)
  */
 const char *
 GetConfigOptionResetString(const char *name)
-{	StackTrace("GetConfigOptionResetString");
+{
 	struct config_generic *record;
 	static char buffer[256];
 
@@ -6548,7 +6548,7 @@ GetConfigOptionResetString(const char *name)
  */
 static char *
 flatten_set_variable_args(const char *name, List *args)
-{	StackTrace("flatten_set_variable_args");
+{
 	struct config_generic *record;
 	int			flags;
 	StringInfoData buf;
@@ -6670,7 +6670,7 @@ flatten_set_variable_args(const char *name, List *args)
  */
 static void
 write_auto_conf_file(int fd, const char *filename, ConfigVariable *head)
-{	StackTrace("write_auto_conf_file");
+{
 	StringInfoData buf;
 	ConfigVariable *item;
 
@@ -6739,7 +6739,7 @@ write_auto_conf_file(int fd, const char *filename, ConfigVariable *head)
 static void
 replace_auto_config_value(ConfigVariable **head_p, ConfigVariable **tail_p,
 						  const char *name, const char *value)
-{	StackTrace("replace_auto_config_value");
+{
 	ConfigVariable *item,
 			   *prev = NULL;
 
@@ -6811,7 +6811,7 @@ replace_auto_config_value(ConfigVariable **head_p, ConfigVariable **tail_p,
  */
 void
 AlterSystemSetConfigFile(AlterSystemStmt *altersysstmt)
-{	StackTrace("AlterSystemSetConfigFile");
+{
 	char	   *name;
 	char	   *value;
 	bool		resetall = false;
@@ -7013,7 +7013,7 @@ AlterSystemSetConfigFile(AlterSystemStmt *altersysstmt)
  */
 void
 ExecSetVariableStmt(VariableSetStmt *stmt, bool isTopLevel)
-{	StackTrace("ExecSetVariableStmt");
+{
 	GucAction	action = stmt->is_local ? GUC_ACTION_LOCAL : GUC_ACTION_SET;
 
 	/*
@@ -7138,7 +7138,7 @@ ExecSetVariableStmt(VariableSetStmt *stmt, bool isTopLevel)
  */
 char *
 ExtractSetVariableArgs(VariableSetStmt *stmt)
-{	StackTrace("ExtractSetVariableArgs");
+{
 	switch (stmt->kind)
 	{
 		case VAR_SET_VALUE:
@@ -7158,7 +7158,7 @@ ExtractSetVariableArgs(VariableSetStmt *stmt)
  */
 void
 SetPGVariable(const char *name, List *args, bool is_local)
-{	StackTrace("SetPGVariable");
+{
 	char	   *argstring = flatten_set_variable_args(name, args);
 
 	/* Note SET DEFAULT (argstring == NULL) is equivalent to RESET */
@@ -7175,7 +7175,7 @@ SetPGVariable(const char *name, List *args, bool is_local)
  */
 Datum
 set_config_by_name(PG_FUNCTION_ARGS)
-{	StackTrace("set_config_by_name");
+{
 	char	   *name;
 	char	   *value;
 	char	   *new_value;
@@ -7232,7 +7232,7 @@ init_custom_variable(const char *name,
 					 int flags,
 					 enum config_type type,
 					 size_t sz)
-{	StackTrace("init_custom_variable");
+{
 	struct config_generic *gen;
 
 	/*
@@ -7266,7 +7266,7 @@ init_custom_variable(const char *name,
  */
 static void
 define_custom_variable(struct config_generic * variable)
-{	StackTrace("define_custom_variable");
+{
 	const char *name = variable->name;
 	const char **nameAddr = &name;
 	struct config_string *pHolder;
@@ -7370,7 +7370,7 @@ reapply_stacked_values(struct config_generic * variable,
 					   GucStack *stack,
 					   const char *curvalue,
 					   GucContext curscontext, GucSource cursource)
-{	StackTrace("reapply_stacked_values");
+{
 	const char *name = variable->name;
 	GucStack   *oldvarstack = variable->stack;
 
@@ -7456,7 +7456,7 @@ DefineCustomBoolVariable(const char *name,
 						 GucBoolCheckHook check_hook,
 						 GucBoolAssignHook assign_hook,
 						 GucShowHook show_hook)
-{	StackTrace("DefineCustomBoolVariable");
+{
 	struct config_bool *var;
 
 	var = (struct config_bool *)
@@ -7484,7 +7484,7 @@ DefineCustomIntVariable(const char *name,
 						GucIntCheckHook check_hook,
 						GucIntAssignHook assign_hook,
 						GucShowHook show_hook)
-{	StackTrace("DefineCustomIntVariable");
+{
 	struct config_int *var;
 
 	var = (struct config_int *)
@@ -7514,7 +7514,7 @@ DefineCustomRealVariable(const char *name,
 						 GucRealCheckHook check_hook,
 						 GucRealAssignHook assign_hook,
 						 GucShowHook show_hook)
-{	StackTrace("DefineCustomRealVariable");
+{
 	struct config_real *var;
 
 	var = (struct config_real *)
@@ -7542,7 +7542,7 @@ DefineCustomStringVariable(const char *name,
 						   GucStringCheckHook check_hook,
 						   GucStringAssignHook assign_hook,
 						   GucShowHook show_hook)
-{	StackTrace("DefineCustomStringVariable");
+{
 	struct config_string *var;
 
 	var = (struct config_string *)
@@ -7568,7 +7568,7 @@ DefineCustomEnumVariable(const char *name,
 						 GucEnumCheckHook check_hook,
 						 GucEnumAssignHook assign_hook,
 						 GucShowHook show_hook)
-{	StackTrace("DefineCustomEnumVariable");
+{
 	struct config_enum *var;
 
 	var = (struct config_enum *)
@@ -7586,7 +7586,7 @@ DefineCustomEnumVariable(const char *name,
 
 void
 EmitWarningsOnPlaceholders(const char *className)
-{	StackTrace("EmitWarningsOnPlaceholders");
+{
 	int			classLen = strlen(className);
 	int			i;
 
@@ -7612,7 +7612,7 @@ EmitWarningsOnPlaceholders(const char *className)
  */
 void
 GetPGVariable(const char *name, DestReceiver *dest)
-{	StackTrace("GetPGVariable");
+{
 	if (guc_name_compare(name, "all") == 0)
 		ShowAllGUCConfig(dest);
 	else
@@ -7621,7 +7621,7 @@ GetPGVariable(const char *name, DestReceiver *dest)
 
 TupleDesc
 GetPGVariableResultDesc(const char *name)
-{	StackTrace("GetPGVariableResultDesc");
+{
 	TupleDesc	tupdesc;
 
 	if (guc_name_compare(name, "all") == 0)
@@ -7656,7 +7656,7 @@ GetPGVariableResultDesc(const char *name)
  */
 static void
 ShowGUCConfigOption(const char *name, DestReceiver *dest)
-{	StackTrace("ShowGUCConfigOption");
+{
 	TupOutputState *tstate;
 	TupleDesc	tupdesc;
 	const char *varname;
@@ -7684,7 +7684,7 @@ ShowGUCConfigOption(const char *name, DestReceiver *dest)
  */
 static void
 ShowAllGUCConfig(DestReceiver *dest)
-{	StackTrace("ShowAllGUCConfig");
+{
 	bool		am_superuser = superuser();
 	int			i;
 	TupOutputState *tstate;
@@ -7752,7 +7752,7 @@ ShowAllGUCConfig(DestReceiver *dest)
  */
 char *
 GetConfigOptionByName(const char *name, const char **varname)
-{	StackTrace("GetConfigOptionByName");
+{
 	struct config_generic *record;
 
 	record = find_option(name, false, ERROR);
@@ -7777,7 +7777,7 @@ GetConfigOptionByName(const char *name, const char **varname)
  */
 void
 GetConfigOptionByNum(int varnum, const char **values, bool *noshow)
-{	StackTrace("GetConfigOptionByNum");
+{
 	char		buffer[256];
 	struct config_generic *conf;
 
@@ -8035,7 +8035,7 @@ GetConfigOptionByNum(int varnum, const char **values, bool *noshow)
  */
 int
 GetNumConfigOptions(void)
-{	StackTrace("GetNumConfigOptions");
+{
 	return num_guc_variables;
 }
 
@@ -8045,7 +8045,7 @@ GetNumConfigOptions(void)
  */
 Datum
 show_config_by_name(PG_FUNCTION_ARGS)
-{	StackTrace("show_config_by_name");
+{
 	char	   *varname;
 	char	   *varval;
 
@@ -8067,7 +8067,7 @@ show_config_by_name(PG_FUNCTION_ARGS)
 
 Datum
 show_all_settings(PG_FUNCTION_ARGS)
-{	StackTrace("show_all_settings");
+{
 	FuncCallContext *funcctx;
 	TupleDesc	tupdesc;
 	int			call_cntr;
@@ -8201,7 +8201,7 @@ show_all_settings(PG_FUNCTION_ARGS)
  */
 Datum
 show_all_file_settings(PG_FUNCTION_ARGS)
-{	StackTrace("show_all_file_settings");
+{
 #define NUM_PG_FILE_SETTINGS_ATTS 7
 	ReturnSetInfo *rsinfo = (ReturnSetInfo *) fcinfo->resultinfo;
 	TupleDesc	tupdesc;
@@ -8311,7 +8311,7 @@ show_all_file_settings(PG_FUNCTION_ARGS)
 
 static char *
 _ShowOption(struct config_generic * record, bool use_units)
-{	StackTrace("_ShowOption");
+{
 	char		buffer[256];
 	const char *val;
 
@@ -8422,7 +8422,7 @@ _ShowOption(struct config_generic * record, bool use_units)
  */
 static void
 write_one_nondefault_variable(FILE *fp, struct config_generic * gconf)
-{	StackTrace("write_one_nondefault_variable");
+{
 	if (gconf->source == PGC_S_DEFAULT)
 		return;
 
@@ -8489,7 +8489,7 @@ write_one_nondefault_variable(FILE *fp, struct config_generic * gconf)
 
 void
 write_nondefault_variables(GucContext context)
-{	StackTrace("write_nondefault_variables");
+{
 	int			elevel;
 	FILE	   *fp;
 	int			i;
@@ -8540,7 +8540,7 @@ write_nondefault_variables(GucContext context)
  */
 static char *
 read_string_with_null(FILE *fp)
-{	StackTrace("read_string_with_null");
+{
 	int			i = 0,
 				ch,
 				maxlen = 256;
@@ -8572,7 +8572,7 @@ read_string_with_null(FILE *fp)
  */
 void
 read_nondefault_variables(void)
-{	StackTrace("read_nondefault_variables");
+{
 	FILE	   *fp;
 	char	   *varname,
 			   *varvalue,
@@ -8658,7 +8658,7 @@ read_nondefault_variables(void)
  */
 static bool
 can_skip_gucvar(struct config_generic * gconf)
-{	StackTrace("can_skip_gucvar");
+{
 	return gconf->context == PGC_POSTMASTER ||
 		gconf->context == PGC_INTERNAL || gconf->source == PGC_S_DEFAULT;
 }
@@ -8669,7 +8669,7 @@ can_skip_gucvar(struct config_generic * gconf)
  */
 static Size
 estimate_variable_size(struct config_generic * gconf)
-{	StackTrace("estimate_variable_size");
+{
 	Size		size;
 	Size		valsize = 0;
 
@@ -8759,7 +8759,7 @@ estimate_variable_size(struct config_generic * gconf)
  */
 Size
 EstimateGUCStateSpace(void)
-{	StackTrace("EstimateGUCStateSpace");
+{
 	Size		size;
 	int			i;
 
@@ -8782,7 +8782,7 @@ EstimateGUCStateSpace(void)
  */
 static void
 do_serialize(char **destptr, Size *maxbytes, const char *fmt,...)
-{	StackTrace("do_serialize");
+{
 	va_list		vargs;
 	int			n;
 
@@ -8817,7 +8817,7 @@ do_serialize(char **destptr, Size *maxbytes, const char *fmt,...)
 /* Binary copy version of do_serialize() */
 static void
 do_serialize_binary(char **destptr, Size *maxbytes, void *val, Size valsize)
-{	StackTrace("do_serialize_binary");
+{
 	if (valsize > *maxbytes)
 		elog(ERROR, "not enough space to serialize GUC state");
 
@@ -8833,7 +8833,7 @@ do_serialize_binary(char **destptr, Size *maxbytes, void *val, Size valsize)
 static void
 serialize_variable(char **destptr, Size *maxbytes,
 				   struct config_generic * gconf)
-{	StackTrace("serialize_variable");
+{
 	if (can_skip_gucvar(gconf))
 		return;
 
@@ -8904,7 +8904,7 @@ serialize_variable(char **destptr, Size *maxbytes,
  */
 void
 SerializeGUCState(Size maxsize, char *start_address)
-{	StackTrace("SerializeGUCState");
+{
 	char	   *curptr;
 	Size		actual_size;
 	Size		bytes_left;
@@ -8944,7 +8944,7 @@ SerializeGUCState(Size maxsize, char *start_address)
  */
 static char *
 read_gucstate(char **srcptr, char *srcend)
-{	StackTrace("read_gucstate");
+{
 	char	   *retptr = *srcptr;
 	char	   *ptr;
 
@@ -8967,7 +8967,7 @@ read_gucstate(char **srcptr, char *srcend)
 /* Binary read version of read_gucstate(). Copies into dest */
 static void
 read_gucstate_binary(char **srcptr, char *srcend, void *dest, Size size)
-{	StackTrace("read_gucstate_binary");
+{
 	if (*srcptr + size > srcend)
 		elog(ERROR, "incomplete GUC state");
 
@@ -8982,7 +8982,7 @@ read_gucstate_binary(char **srcptr, char *srcend, void *dest, Size size)
  */
 void
 RestoreGUCState(void *gucstate)
-{	StackTrace("RestoreGUCState");
+{
 	char	   *varname,
 			   *varvalue,
 			   *varsourcefile;
@@ -9042,7 +9042,7 @@ RestoreGUCState(void *gucstate)
  */
 void
 ParseLongOption(const char *string, char **name, char **value)
-{	StackTrace("ParseLongOption");
+{
 	size_t		equal_pos;
 	char	   *cp;
 
@@ -9081,7 +9081,7 @@ ParseLongOption(const char *string, char **name, char **value)
 void
 ProcessGUCArray(ArrayType *array,
 				GucContext context, GucSource source, GucAction action)
-{	StackTrace("ProcessGUCArray");
+{
 	int			i;
 
 	Assert(array != NULL);
@@ -9138,7 +9138,7 @@ ProcessGUCArray(ArrayType *array,
  */
 ArrayType *
 GUCArrayAdd(ArrayType *array, const char *name, const char *value)
-{	StackTrace("GUCArrayAdd");
+{
 	struct config_generic *record;
 	Datum		datum;
 	char	   *newval;
@@ -9218,7 +9218,7 @@ GUCArrayAdd(ArrayType *array, const char *name, const char *value)
  */
 ArrayType *
 GUCArrayDelete(ArrayType *array, const char *name)
-{	StackTrace("GUCArrayDelete");
+{
 	struct config_generic *record;
 	ArrayType  *newarray;
 	int			i;
@@ -9290,7 +9290,7 @@ GUCArrayDelete(ArrayType *array, const char *name)
  */
 ArrayType *
 GUCArrayReset(ArrayType *array)
-{	StackTrace("GUCArrayReset");
+{
 	ArrayType  *newarray;
 	int			i;
 	int			index;
@@ -9366,7 +9366,7 @@ static bool
 validate_option_array_item(const char *name, const char *value,
 						   bool skipIfNoPermissions)
 
-{	StackTrace("validate_option_array_item");
+{
 	struct config_generic *gconf;
 
 	/*
@@ -9441,7 +9441,7 @@ validate_option_array_item(const char *name, const char *value,
  */
 void
 GUC_check_errcode(int sqlerrcode)
-{	StackTrace("GUC_check_errcode");
+{
 	GUC_check_errcode_value = sqlerrcode;
 }
 
@@ -9455,7 +9455,7 @@ GUC_check_errcode(int sqlerrcode)
 static bool
 call_bool_check_hook(struct config_bool * conf, bool *newval, void **extra,
 					 GucSource source, int elevel)
-{	StackTrace("call_bool_check_hook");
+{
 	/* Quick success if no hook */
 	if (!conf->check_hook)
 		return true;
@@ -9489,7 +9489,7 @@ call_bool_check_hook(struct config_bool * conf, bool *newval, void **extra,
 static bool
 call_int_check_hook(struct config_int * conf, int *newval, void **extra,
 					GucSource source, int elevel)
-{	StackTrace("call_int_check_hook");
+{
 	/* Quick success if no hook */
 	if (!conf->check_hook)
 		return true;
@@ -9523,7 +9523,7 @@ call_int_check_hook(struct config_int * conf, int *newval, void **extra,
 static bool
 call_real_check_hook(struct config_real * conf, double *newval, void **extra,
 					 GucSource source, int elevel)
-{	StackTrace("call_real_check_hook");
+{
 	/* Quick success if no hook */
 	if (!conf->check_hook)
 		return true;
@@ -9557,7 +9557,7 @@ call_real_check_hook(struct config_real * conf, double *newval, void **extra,
 static bool
 call_string_check_hook(struct config_string * conf, char **newval, void **extra,
 					   GucSource source, int elevel)
-{	StackTrace("call_string_check_hook");
+{
 	/* Quick success if no hook */
 	if (!conf->check_hook)
 		return true;
@@ -9591,7 +9591,7 @@ call_string_check_hook(struct config_string * conf, char **newval, void **extra,
 static bool
 call_enum_check_hook(struct config_enum * conf, int *newval, void **extra,
 					 GucSource source, int elevel)
-{	StackTrace("call_enum_check_hook");
+{
 	/* Quick success if no hook */
 	if (!conf->check_hook)
 		return true;
@@ -9630,7 +9630,7 @@ call_enum_check_hook(struct config_enum * conf, int *newval, void **extra,
 
 static bool
 check_log_destination(char **newval, void **extra, GucSource source)
-{	StackTrace("check_log_destination");
+{
 	char	   *rawstring;
 	List	   *elemlist;
 	ListCell   *l;
@@ -9687,13 +9687,13 @@ check_log_destination(char **newval, void **extra, GucSource source)
 
 static void
 assign_log_destination(const char *newval, void *extra)
-{	StackTrace("assign_log_destination");
+{
 	Log_destination = *((int *) extra);
 }
 
 static void
 assign_syslog_facility(int newval, void *extra)
-{	StackTrace("assign_syslog_facility");
+{
 #ifdef HAVE_SYSLOG
 	set_syslog_parameters(syslog_ident_str ? syslog_ident_str : "postgres",
 						  newval);
@@ -9703,7 +9703,7 @@ assign_syslog_facility(int newval, void *extra)
 
 static void
 assign_syslog_ident(const char *newval, void *extra)
-{	StackTrace("assign_syslog_ident");
+{
 #ifdef HAVE_SYSLOG
 	set_syslog_parameters(newval, syslog_facility);
 #endif
@@ -9713,7 +9713,7 @@ assign_syslog_ident(const char *newval, void *extra)
 
 static void
 assign_session_replication_role(int newval, void *extra)
-{	StackTrace("assign_session_replication_role");
+{
 	/*
 	 * Must flush the plan cache when changing replication role; but don't
 	 * flush unnecessarily.
@@ -9724,7 +9724,7 @@ assign_session_replication_role(int newval, void *extra)
 
 static bool
 check_temp_buffers(int *newval, void **extra, GucSource source)
-{	StackTrace("check_temp_buffers");
+{
 	/*
 	 * Once local buffers have been initialized, it's too late to change this.
 	 */
@@ -9738,7 +9738,7 @@ check_temp_buffers(int *newval, void **extra, GucSource source)
 
 static bool
 check_bonjour(bool *newval, void **extra, GucSource source)
-{	StackTrace("check_bonjour");
+{
 #ifndef USE_BONJOUR
 	if (*newval)
 	{
@@ -9751,7 +9751,7 @@ check_bonjour(bool *newval, void **extra, GucSource source)
 
 static bool
 check_ssl(bool *newval, void **extra, GucSource source)
-{	StackTrace("check_ssl");
+{
 #ifndef USE_SSL
 	if (*newval)
 	{
@@ -9764,7 +9764,7 @@ check_ssl(bool *newval, void **extra, GucSource source)
 
 static bool
 check_stage_log_stats(bool *newval, void **extra, GucSource source)
-{	StackTrace("check_stage_log_stats");
+{
 	if (*newval && log_statement_stats)
 	{
 		GUC_check_errdetail("Cannot enable parameter when \"log_statement_stats\" is true.");
@@ -9775,7 +9775,7 @@ check_stage_log_stats(bool *newval, void **extra, GucSource source)
 
 static bool
 check_log_stats(bool *newval, void **extra, GucSource source)
-{	StackTrace("check_log_stats");
+{
 	if (*newval &&
 		(log_parser_stats || log_planner_stats || log_executor_stats))
 	{
@@ -9789,7 +9789,7 @@ check_log_stats(bool *newval, void **extra, GucSource source)
 
 static bool
 check_canonical_path(char **newval, void **extra, GucSource source)
-{	StackTrace("check_canonical_path");
+{
 	/*
 	 * Since canonicalize_path never enlarges the string, we can just modify
 	 * newval in-place.  But watch out for NULL, which is the default value
@@ -9802,7 +9802,7 @@ check_canonical_path(char **newval, void **extra, GucSource source)
 
 static bool
 check_timezone_abbreviations(char **newval, void **extra, GucSource source)
-{	StackTrace("check_timezone_abbreviations");
+{
 	/*
 	 * The boot_val given above for timezone_abbreviations is NULL. When we
 	 * see this we just do nothing.  If this value isn't overridden from the
@@ -9832,7 +9832,7 @@ check_timezone_abbreviations(char **newval, void **extra, GucSource source)
 
 static void
 assign_timezone_abbreviations(const char *newval, void *extra)
-{	StackTrace("assign_timezone_abbreviations");
+{
 	/* Do nothing for the boot_val default of NULL */
 	if (!extra)
 		return;
@@ -9852,14 +9852,14 @@ assign_timezone_abbreviations(const char *newval, void *extra)
  */
 static void
 pg_timezone_abbrev_initialize(void)
-{	StackTrace("pg_timezone_abbrev_initialize");
+{
 	SetConfigOption("timezone_abbreviations", "Default",
 					PGC_POSTMASTER, PGC_S_DYNAMIC_DEFAULT);
 }
 
 static const char *
 show_archive_command(void)
-{	StackTrace("show_archive_command");
+{
 	if (XLogArchivingActive())
 		return XLogArchiveCommand;
 	else
@@ -9868,7 +9868,7 @@ show_archive_command(void)
 
 static void
 assign_tcp_keepalives_idle(int newval, void *extra)
-{	StackTrace("assign_tcp_keepalives_idle");
+{
 	/*
 	 * The kernel API provides no way to test a value without setting it; and
 	 * once we set it we might fail to unset it.  So there seems little point
@@ -9885,7 +9885,7 @@ assign_tcp_keepalives_idle(int newval, void *extra)
 
 static const char *
 show_tcp_keepalives_idle(void)
-{	StackTrace("show_tcp_keepalives_idle");
+{
 	/* See comments in assign_tcp_keepalives_idle */
 	static char nbuf[16];
 
@@ -9895,14 +9895,14 @@ show_tcp_keepalives_idle(void)
 
 static void
 assign_tcp_keepalives_interval(int newval, void *extra)
-{	StackTrace("assign_tcp_keepalives_interval");
+{
 	/* See comments in assign_tcp_keepalives_idle */
 	(void) pq_setkeepalivesinterval(newval, MyProcPort);
 }
 
 static const char *
 show_tcp_keepalives_interval(void)
-{	StackTrace("show_tcp_keepalives_interval");
+{
 	/* See comments in assign_tcp_keepalives_idle */
 	static char nbuf[16];
 
@@ -9912,14 +9912,14 @@ show_tcp_keepalives_interval(void)
 
 static void
 assign_tcp_keepalives_count(int newval, void *extra)
-{	StackTrace("assign_tcp_keepalives_count");
+{
 	/* See comments in assign_tcp_keepalives_idle */
 	(void) pq_setkeepalivescount(newval, MyProcPort);
 }
 
 static const char *
 show_tcp_keepalives_count(void)
-{	StackTrace("show_tcp_keepalives_count");
+{
 	/* See comments in assign_tcp_keepalives_idle */
 	static char nbuf[16];
 
@@ -9929,7 +9929,7 @@ show_tcp_keepalives_count(void)
 
 static bool
 check_maxconnections(int *newval, void **extra, GucSource source)
-{	StackTrace("check_maxconnections");
+{
 	if (*newval + autovacuum_max_workers + 1 +
 		max_worker_processes > MAX_BACKENDS)
 		return false;
@@ -9938,7 +9938,7 @@ check_maxconnections(int *newval, void **extra, GucSource source)
 
 static bool
 check_autovacuum_max_workers(int *newval, void **extra, GucSource source)
-{	StackTrace("check_autovacuum_max_workers");
+{
 	if (MaxConnections + *newval + 1 + max_worker_processes > MAX_BACKENDS)
 		return false;
 	return true;
@@ -9946,7 +9946,7 @@ check_autovacuum_max_workers(int *newval, void **extra, GucSource source)
 
 static bool
 check_autovacuum_work_mem(int *newval, void **extra, GucSource source)
-{	StackTrace("check_autovacuum_work_mem");
+{
 	/*
 	 * -1 indicates fallback.
 	 *
@@ -9969,7 +9969,7 @@ check_autovacuum_work_mem(int *newval, void **extra, GucSource source)
 
 static bool
 check_max_worker_processes(int *newval, void **extra, GucSource source)
-{	StackTrace("check_max_worker_processes");
+{
 	if (MaxConnections + autovacuum_max_workers + 1 + *newval > MAX_BACKENDS)
 		return false;
 	return true;
@@ -9977,7 +9977,7 @@ check_max_worker_processes(int *newval, void **extra, GucSource source)
 
 static bool
 check_effective_io_concurrency(int *newval, void **extra, GucSource source)
-{	StackTrace("check_effective_io_concurrency");
+{
 #ifdef USE_PREFETCH
 	double		new_prefetch_pages = 0.0;
 	int			i;
@@ -10037,7 +10037,7 @@ check_effective_io_concurrency(int *newval, void **extra, GucSource source)
 
 static void
 assign_effective_io_concurrency(int newval, void *extra)
-{	StackTrace("assign_effective_io_concurrency");
+{
 #ifdef USE_PREFETCH
 	target_prefetch_pages = *((int *) extra);
 #endif   /* USE_PREFETCH */
@@ -10045,7 +10045,7 @@ assign_effective_io_concurrency(int newval, void *extra)
 
 static void
 assign_pgstat_temp_directory(const char *newval, void *extra)
-{	StackTrace("assign_pgstat_temp_directory");
+{
 	/* check_canonical_path already canonicalized newval for us */
 	char	   *dname;
 	char	   *tname;
@@ -10074,7 +10074,7 @@ assign_pgstat_temp_directory(const char *newval, void *extra)
 
 static bool
 check_application_name(char **newval, void **extra, GucSource source)
-{	StackTrace("check_application_name");
+{
 	/* Only allow clean ASCII chars in the application name */
 	char	   *p;
 
@@ -10089,14 +10089,14 @@ check_application_name(char **newval, void **extra, GucSource source)
 
 static void
 assign_application_name(const char *newval, void *extra)
-{	StackTrace("assign_application_name");
+{
 	/* Update the pg_stat_activity view */
 	pgstat_report_appname(newval);
 }
 
 static bool
 check_cluster_name(char **newval, void **extra, GucSource source)
-{	StackTrace("check_cluster_name");
+{
 	/* Only allow clean ASCII chars in the cluster name */
 	char	   *p;
 
@@ -10111,7 +10111,7 @@ check_cluster_name(char **newval, void **extra, GucSource source)
 
 static const char *
 show_unix_socket_permissions(void)
-{	StackTrace("show_unix_socket_permissions");
+{
 	static char buf[8];
 
 	snprintf(buf, sizeof(buf), "%04o", Unix_socket_permissions);
@@ -10120,7 +10120,7 @@ show_unix_socket_permissions(void)
 
 static const char *
 show_log_file_mode(void)
-{	StackTrace("show_log_file_mode");
+{
 	static char buf[8];
 
 	snprintf(buf, sizeof(buf), "%04o", Log_file_mode);

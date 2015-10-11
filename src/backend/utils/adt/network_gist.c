@@ -111,7 +111,7 @@ typedef struct GistInetKey
  */
 Datum
 inet_gist_consistent(PG_FUNCTION_ARGS)
-{	StackTrace("inet_gist_consistent");
+{
 	GISTENTRY  *ent = (GISTENTRY *) PG_GETARG_POINTER(0);
 	inet	   *query = PG_GETARG_INET_PP(1);
 	StrategyNumber strategy = (StrategyNumber) PG_GETARG_UINT16(2);
@@ -346,7 +346,7 @@ calc_inet_union_params(GISTENTRY *ent,
 					   int *maxfamily_p,
 					   int *minbits_p,
 					   int *commonbits_p)
-{	StackTrace("calc_inet_union_params");
+{
 	int			minfamily,
 				maxfamily,
 				minbits,
@@ -408,7 +408,7 @@ calc_inet_union_params_indexed(GISTENTRY *ent,
 							   int *maxfamily_p,
 							   int *minbits_p,
 							   int *commonbits_p)
-{	StackTrace("calc_inet_union_params_indexed");
+{
 	int			minfamily,
 				maxfamily,
 				minbits,
@@ -469,7 +469,7 @@ calc_inet_union_params_indexed(GISTENTRY *ent,
 static GistInetKey *
 build_inet_union_key(int family, int minbits, int commonbits,
 					 unsigned char *addr)
-{	StackTrace("build_inet_union_key");
+{
 	GistInetKey *result;
 
 	/* Make sure any unused bits are zeroed. */
@@ -501,7 +501,7 @@ build_inet_union_key(int family, int minbits, int commonbits,
  */
 Datum
 inet_gist_union(PG_FUNCTION_ARGS)
-{	StackTrace("inet_gist_union");
+{
 	GistEntryVector *entryvec = (GistEntryVector *) PG_GETARG_POINTER(0);
 	GISTENTRY  *ent = entryvec->vector;
 	int			minfamily,
@@ -538,7 +538,7 @@ inet_gist_union(PG_FUNCTION_ARGS)
  */
 Datum
 inet_gist_compress(PG_FUNCTION_ARGS)
-{	StackTrace("inet_gist_compress");
+{
 	GISTENTRY  *entry = (GISTENTRY *) PG_GETARG_POINTER(0);
 	GISTENTRY  *retval;
 
@@ -581,7 +581,7 @@ inet_gist_compress(PG_FUNCTION_ARGS)
  */
 Datum
 inet_gist_decompress(PG_FUNCTION_ARGS)
-{	StackTrace("inet_gist_decompress");
+{
 	GISTENTRY  *entry = (GISTENTRY *) PG_GETARG_POINTER(0);
 
 	PG_RETURN_POINTER(entry);
@@ -594,7 +594,7 @@ inet_gist_decompress(PG_FUNCTION_ARGS)
  */
 Datum
 inet_gist_fetch(PG_FUNCTION_ARGS)
-{	StackTrace("inet_gist_fetch");
+{
 	GISTENTRY  *entry = (GISTENTRY *) PG_GETARG_POINTER(0);
 	GistInetKey *key = DatumGetInetKeyP(entry->key);
 	GISTENTRY  *retval;
@@ -624,7 +624,7 @@ inet_gist_fetch(PG_FUNCTION_ARGS)
  */
 Datum
 inet_gist_penalty(PG_FUNCTION_ARGS)
-{	StackTrace("inet_gist_penalty");
+{
 	GISTENTRY  *origent = (GISTENTRY *) PG_GETARG_POINTER(0);
 	GISTENTRY  *newent = (GISTENTRY *) PG_GETARG_POINTER(1);
 	float	   *penalty = (float *) PG_GETARG_POINTER(2);
@@ -667,7 +667,7 @@ inet_gist_penalty(PG_FUNCTION_ARGS)
  */
 Datum
 inet_gist_picksplit(PG_FUNCTION_ARGS)
-{	StackTrace("inet_gist_picksplit");
+{
 	GistEntryVector *entryvec = (GistEntryVector *) PG_GETARG_POINTER(0);
 	GIST_SPLITVEC *splitvec = (GIST_SPLITVEC *) PG_GETARG_POINTER(1);
 	GISTENTRY  *ent = entryvec->vector;
@@ -801,7 +801,7 @@ inet_gist_picksplit(PG_FUNCTION_ARGS)
  */
 Datum
 inet_gist_same(PG_FUNCTION_ARGS)
-{	StackTrace("inet_gist_same");
+{
 	GistInetKey *left = DatumGetInetKeyP(PG_GETARG_DATUM(0));
 	GistInetKey *right = DatumGetInetKeyP(PG_GETARG_DATUM(1));
 	bool	   *result = (bool *) PG_GETARG_POINTER(2);

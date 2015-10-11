@@ -37,7 +37,7 @@
  */
 TupleTableSlot *
 ExecSort(SortState *node)
-{	StackTrace("ExecSort");
+{
 	EState	   *estate;
 	ScanDirection dir;
 	Tuplesortstate *tuplesortstate;
@@ -150,7 +150,7 @@ ExecSort(SortState *node)
  */
 SortState *
 ExecInitSort(Sort *node, EState *estate, int eflags)
-{	StackTrace("ExecInitSort");
+{
 	SortState  *sortstate;
 
 	SO1_printf("ExecInitSort: %s\n",
@@ -221,7 +221,7 @@ ExecInitSort(Sort *node, EState *estate, int eflags)
  */
 void
 ExecEndSort(SortState *node)
-{	StackTrace("ExecEndSort");
+{
 	SO1_printf("ExecEndSort: %s\n",
 			   "shutting down sort node");
 
@@ -256,7 +256,7 @@ ExecEndSort(SortState *node)
  */
 void
 ExecSortMarkPos(SortState *node)
-{	StackTrace("ExecSortMarkPos");
+{
 	/*
 	 * if we haven't sorted yet, just return
 	 */
@@ -274,7 +274,7 @@ ExecSortMarkPos(SortState *node)
  */
 void
 ExecSortRestrPos(SortState *node)
-{	StackTrace("ExecSortRestrPos");
+{
 	/*
 	 * if we haven't sorted yet, just return.
 	 */
@@ -289,7 +289,7 @@ ExecSortRestrPos(SortState *node)
 
 void
 ExecReScanSort(SortState *node)
-{	StackTrace("ExecReScanSort");
+{
 	PlanState  *outerPlan = outerPlanState(node);
 
 	/*

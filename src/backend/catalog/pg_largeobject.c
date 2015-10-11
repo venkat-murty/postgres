@@ -38,7 +38,7 @@
  */
 Oid
 LargeObjectCreate(Oid loid)
-{	StackTrace("LargeObjectCreate");
+{
 	Relation	pg_lo_meta;
 	HeapTuple	ntup;
 	Oid			loid_new;
@@ -81,7 +81,7 @@ LargeObjectCreate(Oid loid)
  */
 void
 LargeObjectDrop(Oid loid)
-{	StackTrace("LargeObjectDrop");
+{
 	Relation	pg_lo_meta;
 	Relation	pg_largeobject;
 	ScanKeyData skey[1];
@@ -153,7 +153,7 @@ LargeObjectDrop(Oid loid)
  */
 bool
 LargeObjectExists(Oid loid)
-{	StackTrace("LargeObjectExists");
+{
 	Relation	pg_lo_meta;
 	ScanKeyData skey[1];
 	SysScanDesc sd;

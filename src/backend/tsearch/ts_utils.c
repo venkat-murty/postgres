@@ -32,7 +32,7 @@
 char *
 get_tsearch_config_filename(const char *basename,
 							const char *extension)
-{	StackTrace("get_tsearch_config_filename");
+{
 	char		sharepath[MAXPGPATH];
 	char	   *result;
 
@@ -66,7 +66,7 @@ get_tsearch_config_filename(const char *basename,
  */
 void
 readstoplist(const char *fname, StopList *s, char *(*wordop) (const char *))
-{	StackTrace("*(*wordop)");
+{
 	char	  **stop = NULL;
 
 	s->len = 0;
@@ -139,7 +139,7 @@ readstoplist(const char *fname, StopList *s, char *(*wordop) (const char *))
 
 bool
 searchstoplist(StopList *s, char *key)
-{	StackTrace("searchstoplist");
+{
 	return (s->stop && s->len > 0 &&
 			bsearch(&key, s->stop, s->len,
 					sizeof(char *), pg_qsort_strcmp)) ? true : false;

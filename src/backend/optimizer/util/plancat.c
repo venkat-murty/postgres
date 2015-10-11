@@ -88,7 +88,7 @@ static List *build_index_tlist(PlannerInfo *root, IndexOptInfo *index,
 void
 get_relation_info(PlannerInfo *root, Oid relationObjectId, bool inhparent,
 				  RelOptInfo *rel)
-{	StackTrace("get_relation_info");
+{
 	Index		varno = rel->relid;
 	Relation	relation;
 	bool		hasindex;
@@ -426,7 +426,7 @@ get_relation_info(PlannerInfo *root, Oid relationObjectId, bool inhparent,
  */
 List *
 infer_arbiter_indexes(PlannerInfo *root)
-{	StackTrace("infer_arbiter_indexes");
+{
 	OnConflictExpr *onconflict = root->parse->onConflict;
 
 	/* Iteration state */
@@ -709,7 +709,7 @@ next:
 static bool
 infer_collation_opclass_match(InferenceElem *elem, Relation idxRel,
 							  Bitmapset *inferAttrs, List *idxExprs)
-{	StackTrace("infer_collation_opclass_match");
+{
 	AttrNumber	natt;
 	Oid			inferopfamily = InvalidOid;		/* OID of att opfamily */
 	Oid			inferopcinputtype = InvalidOid; /* OID of att opfamily */
@@ -775,7 +775,7 @@ infer_collation_opclass_match(InferenceElem *elem, Relation idxRel,
 void
 estimate_rel_size(Relation rel, int32 *attr_widths,
 				  BlockNumber *pages, double *tuples, double *allvisfrac)
-{	StackTrace("estimate_rel_size");
+{
 	BlockNumber curpages;
 	BlockNumber relpages;
 	double		reltuples;
@@ -934,7 +934,7 @@ estimate_rel_size(Relation rel, int32 *attr_widths,
  */
 static int32
 get_rel_data_width(Relation rel, int32 *attr_widths)
-{	StackTrace("get_rel_data_width");
+{
 	int32		tuple_width = 0;
 	int			i;
 
@@ -976,7 +976,7 @@ get_rel_data_width(Relation rel, int32 *attr_widths)
  */
 int32
 get_relation_data_width(Oid relid, int32 *attr_widths)
-{	StackTrace("get_relation_data_width");
+{
 	int32		result;
 	Relation	relation;
 
@@ -1012,7 +1012,7 @@ static List *
 get_relation_constraints(PlannerInfo *root,
 						 Oid relationObjectId, RelOptInfo *rel,
 						 bool include_notnull)
-{	StackTrace("get_relation_constraints");
+{
 	List	   *result = NIL;
 	Index		varno = rel->relid;
 	Relation	relation;
@@ -1116,7 +1116,7 @@ get_relation_constraints(PlannerInfo *root,
 bool
 relation_excluded_by_constraints(PlannerInfo *root,
 								 RelOptInfo *rel, RangeTblEntry *rte)
-{	StackTrace("relation_excluded_by_constraints");
+{
 	List	   *safe_restrictions;
 	List	   *constraint_pred;
 	List	   *safe_constraints;
@@ -1216,7 +1216,7 @@ relation_excluded_by_constraints(PlannerInfo *root,
  */
 List *
 build_physical_tlist(PlannerInfo *root, RelOptInfo *rel)
-{	StackTrace("build_physical_tlist");
+{
 	List	   *tlist = NIL;
 	Index		varno = rel->relid;
 	RangeTblEntry *rte = planner_rt_fetch(varno, root);
@@ -1334,7 +1334,7 @@ build_physical_tlist(PlannerInfo *root, RelOptInfo *rel)
 static List *
 build_index_tlist(PlannerInfo *root, IndexOptInfo *index,
 				  Relation heapRelation)
-{	StackTrace("build_index_tlist");
+{
 	List	   *tlist = NIL;
 	Index		varno = index->rel->relid;
 	ListCell   *indexpr_item;
@@ -1400,7 +1400,7 @@ restriction_selectivity(PlannerInfo *root,
 						List *args,
 						Oid inputcollid,
 						int varRelid)
-{	StackTrace("restriction_selectivity");
+{
 	RegProcedure oprrest = get_oprrest(operatorid);
 	float8		result;
 
@@ -1438,7 +1438,7 @@ join_selectivity(PlannerInfo *root,
 				 Oid inputcollid,
 				 JoinType jointype,
 				 SpecialJoinInfo *sjinfo)
-{	StackTrace("join_selectivity");
+{
 	RegProcedure oprjoin = get_oprjoin(operatorid);
 	float8		result;
 
@@ -1477,7 +1477,7 @@ join_selectivity(PlannerInfo *root,
  */
 bool
 has_unique_index(RelOptInfo *rel, AttrNumber attno)
-{	StackTrace("has_unique_index");
+{
 	ListCell   *ilist;
 
 	foreach(ilist, rel->indexlist)

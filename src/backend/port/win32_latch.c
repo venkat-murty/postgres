@@ -35,13 +35,13 @@
 
 void
 InitializeLatchSupport(void)
-{	StackTrace("InitializeLatchSupport");
+{
 	/* currently, nothing to do here for Windows */
 }
 
 void
 InitLatch(volatile Latch *latch)
-{	StackTrace("InitLatch");
+{
 	latch->is_set = false;
 	latch->owner_pid = MyProcPid;
 	latch->is_shared = false;
@@ -53,7 +53,7 @@ InitLatch(volatile Latch *latch)
 
 void
 InitSharedLatch(volatile Latch *latch)
-{	StackTrace("InitSharedLatch");
+{
 	SECURITY_ATTRIBUTES sa;
 
 	latch->is_set = false;
@@ -74,7 +74,7 @@ InitSharedLatch(volatile Latch *latch)
 
 void
 OwnLatch(volatile Latch *latch)
-{	StackTrace("OwnLatch");
+{
 	/* Sanity checks */
 	Assert(latch->is_shared);
 	if (latch->owner_pid != 0)
@@ -85,7 +85,7 @@ OwnLatch(volatile Latch *latch)
 
 void
 DisownLatch(volatile Latch *latch)
-{	StackTrace("DisownLatch");
+{
 	Assert(latch->is_shared);
 	Assert(latch->owner_pid == MyProcPid);
 
@@ -94,14 +94,14 @@ DisownLatch(volatile Latch *latch)
 
 int
 WaitLatch(volatile Latch *latch, int wakeEvents, long timeout)
-{	StackTrace("WaitLatch");
+{
 	return WaitLatchOrSocket(latch, wakeEvents, PGINVALID_SOCKET, timeout);
 }
 
 int
 WaitLatchOrSocket(volatile Latch *latch, int wakeEvents, pgsocket sock,
 				  long timeout)
-{	StackTrace("WaitLatchOrSocket");
+{
 	DWORD		rc;
 	instr_time	start_time,
 				cur_time;
@@ -291,7 +291,7 @@ WaitLatchOrSocket(volatile Latch *latch, int wakeEvents, pgsocket sock,
  */
 void
 SetLatch(volatile Latch *latch)
-{	StackTrace("SetLatch");
+{
 	HANDLE		handle;
 
 	/*
@@ -328,7 +328,7 @@ SetLatch(volatile Latch *latch)
 
 void
 ResetLatch(volatile Latch *latch)
-{	StackTrace("ResetLatch");
+{
 	/* Only the owner should reset the latch */
 	Assert(latch->owner_pid == MyProcPid);
 

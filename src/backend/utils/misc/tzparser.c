@@ -49,7 +49,7 @@ static int ParseTzFile(const char *filename, int depth,
  */
 static bool
 validateTzEntry(tzEntry *tzentry)
-{	StackTrace("validateTzEntry");
+{
 	unsigned char *p;
 
 	/*
@@ -96,7 +96,7 @@ validateTzEntry(tzEntry *tzentry)
  */
 static bool
 splitTzLine(const char *filename, int lineno, char *line, tzEntry *tzentry)
-{	StackTrace("splitTzLine");
+{
 	char	   *abbrev;
 	char	   *offset;
 	char	   *offset_endptr;
@@ -187,7 +187,7 @@ splitTzLine(const char *filename, int lineno, char *line, tzEntry *tzentry)
 static int
 addToArray(tzEntry **base, int *arraysize, int n,
 		   tzEntry *entry, bool override)
-{	StackTrace("addToArray");
+{
 	tzEntry    *arrayptr;
 	int			low;
 	int			high;
@@ -275,7 +275,7 @@ addToArray(tzEntry **base, int *arraysize, int n,
 static int
 ParseTzFile(const char *filename, int depth,
 			tzEntry **base, int *arraysize, int n)
-{	StackTrace("ParseTzFile");
+{
 	char		share_path[MAXPGPATH];
 	char		file_path[MAXPGPATH];
 	FILE	   *tzFile;
@@ -436,7 +436,7 @@ ParseTzFile(const char *filename, int depth,
  */
 TimeZoneAbbrevTable *
 load_tzoffsets(const char *filename)
-{	StackTrace("load_tzoffsets");
+{
 	TimeZoneAbbrevTable *result = NULL;
 	MemoryContext tmpContext;
 	MemoryContext oldContext;

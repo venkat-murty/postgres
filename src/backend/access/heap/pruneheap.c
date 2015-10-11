@@ -73,7 +73,7 @@ static void heap_prune_record_unused(PruneState *prstate, OffsetNumber offnum);
  */
 void
 heap_page_prune_opt(Relation relation, Buffer buffer)
-{	StackTrace("heap_page_prune_opt");
+{
 	Page		page = BufferGetPage(buffer);
 	Size		minfree;
 	TransactionId OldestXmin;
@@ -172,7 +172,7 @@ heap_page_prune_opt(Relation relation, Buffer buffer)
 int
 heap_page_prune(Relation relation, Buffer buffer, TransactionId OldestXmin,
 				bool report_stats, TransactionId *latestRemovedXid)
-{	StackTrace("heap_page_prune");
+{
 	int			ndeleted = 0;
 	Page		page = BufferGetPage(buffer);
 	OffsetNumber offnum,
@@ -345,7 +345,7 @@ static int
 heap_prune_chain(Relation relation, Buffer buffer, OffsetNumber rootoffnum,
 				 TransactionId OldestXmin,
 				 PruneState *prstate)
-{	StackTrace("heap_prune_chain");
+{
 	int			ndeleted = 0;
 	Page		dp = (Page) BufferGetPage(buffer);
 	TransactionId priorXmax = InvalidTransactionId;
@@ -609,7 +609,7 @@ heap_prune_chain(Relation relation, Buffer buffer, OffsetNumber rootoffnum,
 /* Record lowest soon-prunable XID */
 static void
 heap_prune_record_prunable(PruneState *prstate, TransactionId xid)
-{	StackTrace("heap_prune_record_prunable");
+{
 	/*
 	 * This should exactly match the PageSetPrunable macro.  We can't store
 	 * directly into the page header yet, so we update working state.
@@ -624,7 +624,7 @@ heap_prune_record_prunable(PruneState *prstate, TransactionId xid)
 static void
 heap_prune_record_redirect(PruneState *prstate,
 						   OffsetNumber offnum, OffsetNumber rdoffnum)
-{	StackTrace("heap_prune_record_redirect");
+{
 	Assert(prstate->nredirected < MaxHeapTuplesPerPage);
 	prstate->redirected[prstate->nredirected * 2] = offnum;
 	prstate->redirected[prstate->nredirected * 2 + 1] = rdoffnum;
@@ -638,7 +638,7 @@ heap_prune_record_redirect(PruneState *prstate,
 /* Record item pointer to be marked dead */
 static void
 heap_prune_record_dead(PruneState *prstate, OffsetNumber offnum)
-{	StackTrace("heap_prune_record_dead");
+{
 	Assert(prstate->ndead < MaxHeapTuplesPerPage);
 	prstate->nowdead[prstate->ndead] = offnum;
 	prstate->ndead++;
@@ -649,7 +649,7 @@ heap_prune_record_dead(PruneState *prstate, OffsetNumber offnum)
 /* Record item pointer to be marked unused */
 static void
 heap_prune_record_unused(PruneState *prstate, OffsetNumber offnum)
-{	StackTrace("heap_prune_record_unused");
+{
 	Assert(prstate->nunused < MaxHeapTuplesPerPage);
 	prstate->nowunused[prstate->nunused] = offnum;
 	prstate->nunused++;
@@ -672,7 +672,7 @@ heap_page_prune_execute(Buffer buffer,
 						OffsetNumber *redirected, int nredirected,
 						OffsetNumber *nowdead, int ndead,
 						OffsetNumber *nowunused, int nunused)
-{	StackTrace("heap_page_prune_execute");
+{
 	Page		page = (Page) BufferGetPage(buffer);
 	OffsetNumber *offnum;
 	int			i;
@@ -733,7 +733,7 @@ heap_page_prune_execute(Buffer buffer,
  */
 void
 heap_get_root_tuples(Page page, OffsetNumber *root_offsets)
-{	StackTrace("heap_get_root_tuples");
+{
 	OffsetNumber offnum,
 				maxoff;
 

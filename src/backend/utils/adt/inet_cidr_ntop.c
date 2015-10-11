@@ -55,7 +55,7 @@ static char *inet_cidr_ntop_ipv6(const u_char *src, int bits,
  */
 char *
 inet_cidr_ntop(int af, const void *src, int bits, char *dst, size_t size)
-{	StackTrace("inet_cidr_ntop");
+{
 	switch (af)
 	{
 		case PGSQL_AF_INET:
@@ -84,7 +84,7 @@ inet_cidr_ntop(int af, const void *src, int bits, char *dst, size_t size)
  */
 static char *
 inet_cidr_ntop_ipv4(const u_char *src, int bits, char *dst, size_t size)
-{	StackTrace("inet_cidr_ntop_ipv4");
+{
 	char	   *odst = dst;
 	char	   *t;
 	u_int		m;
@@ -164,7 +164,7 @@ emsgsize:
 
 static char *
 inet_cidr_ntop_ipv6(const u_char *src, int bits, char *dst, size_t size)
-{	StackTrace("inet_cidr_ntop_ipv6");
+{
 	u_int		m;
 	int			b;
 	int			p;

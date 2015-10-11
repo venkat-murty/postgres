@@ -63,7 +63,7 @@ static void DropConfigurationMapping(AlterTSConfigurationStmt *stmt,
  */
 static Datum
 get_ts_parser_func(DefElem *defel, int attnum)
-{	StackTrace("get_ts_parser_func");
+{
 	List	   *funcName = defGetQualifiedName(defel);
 	Oid			typeId[3];
 	Oid			retTypeId;
@@ -126,7 +126,7 @@ get_ts_parser_func(DefElem *defel, int attnum)
  */
 static ObjectAddress
 makeParserDependencies(HeapTuple tuple)
-{	StackTrace("makeParserDependencies");
+{
 	Form_pg_ts_parser prs = (Form_pg_ts_parser) GETSTRUCT(tuple);
 	ObjectAddress myself,
 				referenced;
@@ -174,7 +174,7 @@ makeParserDependencies(HeapTuple tuple)
  */
 ObjectAddress
 DefineTSParser(List *names, List *parameters)
-{	StackTrace("DefineTSParser");
+{
 	char	   *prsname;
 	ListCell   *pl;
 	Relation	prsRel;
@@ -292,7 +292,7 @@ DefineTSParser(List *names, List *parameters)
  */
 void
 RemoveTSParserById(Oid prsId)
-{	StackTrace("RemoveTSParserById");
+{
 	Relation	relation;
 	HeapTuple	tup;
 
@@ -319,7 +319,7 @@ RemoveTSParserById(Oid prsId)
  */
 static ObjectAddress
 makeDictionaryDependencies(HeapTuple tuple)
-{	StackTrace("makeDictionaryDependencies");
+{
 	Form_pg_ts_dict dict = (Form_pg_ts_dict) GETSTRUCT(tuple);
 	ObjectAddress myself,
 				referenced;
@@ -354,7 +354,7 @@ makeDictionaryDependencies(HeapTuple tuple)
  */
 static void
 verify_dictoptions(Oid tmplId, List *dictoptions)
-{	StackTrace("verify_dictoptions");
+{
 	HeapTuple	tup;
 	Form_pg_ts_template tform;
 	Oid			initmethod;
@@ -409,7 +409,7 @@ verify_dictoptions(Oid tmplId, List *dictoptions)
  */
 ObjectAddress
 DefineTSDictionary(List *names, List *parameters)
-{	StackTrace("DefineTSDictionary");
+{
 	ListCell   *pl;
 	Relation	dictRel;
 	HeapTuple	tup;
@@ -503,7 +503,7 @@ DefineTSDictionary(List *names, List *parameters)
  */
 void
 RemoveTSDictionaryById(Oid dictId)
-{	StackTrace("RemoveTSDictionaryById");
+{
 	Relation	relation;
 	HeapTuple	tup;
 
@@ -527,7 +527,7 @@ RemoveTSDictionaryById(Oid dictId)
  */
 ObjectAddress
 AlterTSDictionary(AlterTSDictionaryStmt *stmt)
-{	StackTrace("AlterTSDictionary");
+{
 	HeapTuple	tup,
 				newtup;
 	Relation	rel;
@@ -651,7 +651,7 @@ AlterTSDictionary(AlterTSDictionaryStmt *stmt)
  */
 static Datum
 get_ts_template_func(DefElem *defel, int attnum)
-{	StackTrace("get_ts_template_func");
+{
 	List	   *funcName = defGetQualifiedName(defel);
 	Oid			typeId[4];
 	Oid			retTypeId;
@@ -694,7 +694,7 @@ get_ts_template_func(DefElem *defel, int attnum)
  */
 static ObjectAddress
 makeTSTemplateDependencies(HeapTuple tuple)
-{	StackTrace("makeTSTemplateDependencies");
+{
 	Form_pg_ts_template tmpl = (Form_pg_ts_template) GETSTRUCT(tuple);
 	ObjectAddress myself,
 				referenced;
@@ -733,7 +733,7 @@ makeTSTemplateDependencies(HeapTuple tuple)
  */
 ObjectAddress
 DefineTSTemplate(List *names, List *parameters)
-{	StackTrace("DefineTSTemplate");
+{
 	ListCell   *pl;
 	Relation	tmplRel;
 	HeapTuple	tup;
@@ -827,7 +827,7 @@ DefineTSTemplate(List *names, List *parameters)
  */
 void
 RemoveTSTemplateById(Oid tmplId)
-{	StackTrace("RemoveTSTemplateById");
+{
 	Relation	relation;
 	HeapTuple	tup;
 
@@ -854,7 +854,7 @@ RemoveTSTemplateById(Oid tmplId)
  */
 static HeapTuple
 GetTSConfigTuple(List *names)
-{	StackTrace("GetTSConfigTuple");
+{
 	HeapTuple	tup;
 	Oid			cfgId;
 
@@ -880,7 +880,7 @@ GetTSConfigTuple(List *names)
 static ObjectAddress
 makeConfigurationDependencies(HeapTuple tuple, bool removeOld,
 							  Relation mapRel)
-{	StackTrace("makeConfigurationDependencies");
+{
 	Form_pg_ts_config cfg = (Form_pg_ts_config) GETSTRUCT(tuple);
 	ObjectAddresses *addrs;
 	ObjectAddress myself,
@@ -966,7 +966,7 @@ makeConfigurationDependencies(HeapTuple tuple, bool removeOld,
  */
 ObjectAddress
 DefineTSConfiguration(List *names, List *parameters, ObjectAddress *copied)
-{	StackTrace("DefineTSConfiguration");
+{
 	Relation	cfgRel;
 	Relation	mapRel = NULL;
 	HeapTuple	tup;
@@ -1135,7 +1135,7 @@ DefineTSConfiguration(List *names, List *parameters, ObjectAddress *copied)
  */
 void
 RemoveTSConfigurationById(Oid cfgId)
-{	StackTrace("RemoveTSConfigurationById");
+{
 	Relation	relCfg,
 				relMap;
 	HeapTuple	tup;
@@ -1183,7 +1183,7 @@ RemoveTSConfigurationById(Oid cfgId)
  */
 ObjectAddress
 AlterTSConfiguration(AlterTSConfigurationStmt *stmt)
-{	StackTrace("AlterTSConfiguration");
+{
 	HeapTuple	tup;
 	Oid			cfgId;
 	Relation	relMap;
@@ -1232,7 +1232,7 @@ AlterTSConfiguration(AlterTSConfigurationStmt *stmt)
  */
 static int *
 getTokenTypes(Oid prsId, List *tokennames)
-{	StackTrace("getTokenTypes");
+{
 	TSParserCacheEntry *prs = lookup_ts_parser_cache(prsId);
 	LexDescr   *list;
 	int		   *res,
@@ -1289,7 +1289,7 @@ getTokenTypes(Oid prsId, List *tokennames)
 static void
 MakeConfigurationMapping(AlterTSConfigurationStmt *stmt,
 						 HeapTuple tup, Relation relMap)
-{	StackTrace("MakeConfigurationMapping");
+{
 	Oid			cfgId = HeapTupleGetOid(tup);
 	ScanKeyData skey[2];
 	SysScanDesc scan;
@@ -1453,7 +1453,7 @@ MakeConfigurationMapping(AlterTSConfigurationStmt *stmt,
 static void
 DropConfigurationMapping(AlterTSConfigurationStmt *stmt,
 						 HeapTuple tup, Relation relMap)
-{	StackTrace("DropConfigurationMapping");
+{
 	Oid			cfgId = HeapTupleGetOid(tup);
 	ScanKeyData skey[2];
 	SysScanDesc scan;
@@ -1530,7 +1530,7 @@ DropConfigurationMapping(AlterTSConfigurationStmt *stmt,
  */
 text *
 serialize_deflist(List *deflist)
-{	StackTrace("serialize_deflist");
+{
 	text	   *result;
 	StringInfoData buf;
 	ListCell   *l;
@@ -1575,7 +1575,7 @@ serialize_deflist(List *deflist)
  */
 List *
 deserialize_deflist(Datum txt)
-{	StackTrace("deserialize_deflist");
+{
 	text	   *in = DatumGetTextP(txt);		/* in case it's toasted */
 	List	   *result = NIL;
 	int			len = VARSIZE(in) - VARHDRSZ;

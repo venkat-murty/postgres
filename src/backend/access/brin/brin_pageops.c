@@ -47,7 +47,7 @@ brin_doupdate(Relation idxrel, BlockNumber pagesPerRange,
 			  const BrinTuple *origtup, Size origsz,
 			  const BrinTuple *newtup, Size newsz,
 			  bool samepage)
-{	StackTrace("brin_doupdate");
+{
 	Page		oldpage;
 	ItemId		oldlp;
 	BrinTuple  *oldtup;
@@ -244,7 +244,7 @@ brin_doupdate(Relation idxrel, BlockNumber pagesPerRange,
  */
 bool
 brin_can_do_samepage_update(Buffer buffer, Size origsz, Size newsz)
-{	StackTrace("brin_can_do_samepage_update");
+{
 	return
 		((newsz <= origsz) ||
 		 PageGetExactFreeSpace(BufferGetPage(buffer)) >= (newsz - origsz));
@@ -265,7 +265,7 @@ OffsetNumber
 brin_doinsert(Relation idxrel, BlockNumber pagesPerRange,
 			  BrinRevmap *revmap, Buffer *buffer, BlockNumber heapBlk,
 			  BrinTuple *tup, Size itemsz)
-{	StackTrace("brin_doinsert");
+{
 	Page		page;
 	BlockNumber blk;
 	OffsetNumber off;
@@ -370,7 +370,7 @@ brin_doinsert(Relation idxrel, BlockNumber pagesPerRange,
  */
 void
 brin_page_init(Page page, uint16 type)
-{	StackTrace("brin_page_init");
+{
 	PageInit(page, BLCKSZ, sizeof(BrinSpecialSpace));
 
 	BrinPageType(page) = type;
@@ -381,7 +381,7 @@ brin_page_init(Page page, uint16 type)
  */
 void
 brin_metapage_init(Page page, BlockNumber pagesPerRange, uint16 version)
-{	StackTrace("brin_metapage_init");
+{
 	BrinMetaPageData *metadata;
 
 	brin_page_init(page, BRIN_PAGETYPE_META);
@@ -411,7 +411,7 @@ brin_metapage_init(Page page, BlockNumber pagesPerRange, uint16 version)
  */
 bool
 brin_start_evacuating_page(Relation idxRel, Buffer buf)
-{	StackTrace("brin_start_evacuating_page");
+{
 	OffsetNumber off;
 	OffsetNumber maxoff;
 	Page		page;
@@ -447,7 +447,7 @@ brin_start_evacuating_page(Relation idxRel, Buffer buf)
 void
 brin_evacuate_page(Relation idxRel, BlockNumber pagesPerRange,
 				   BrinRevmap *revmap, Buffer buf)
-{	StackTrace("brin_evacuate_page");
+{
 	OffsetNumber off;
 	OffsetNumber maxoff;
 	Page		page;
@@ -504,7 +504,7 @@ brin_evacuate_page(Relation idxRel, BlockNumber pagesPerRange,
 static Buffer
 brin_getinsertbuffer(Relation irel, Buffer oldbuf, Size itemsz,
 					 bool *was_extended)
-{	StackTrace("brin_getinsertbuffer");
+{
 	BlockNumber oldblk;
 	BlockNumber newblk;
 	Page		page;
@@ -666,7 +666,7 @@ brin_getinsertbuffer(Relation irel, Buffer oldbuf, Size itemsz,
  */
 static Size
 br_page_get_freespace(Page page)
-{	StackTrace("br_page_get_freespace");
+{
 	if (!BRIN_IS_REGULAR_PAGE(page) ||
 		(BrinPageFlags(page) & BRIN_EVACUATE_PAGE) != 0)
 		return 0;

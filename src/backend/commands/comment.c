@@ -38,7 +38,7 @@
  */
 ObjectAddress
 CommentObject(CommentStmt *stmt)
-{	StackTrace("CommentObject");
+{
 	Relation	relation;
 	ObjectAddress address = InvalidObjectAddress;
 
@@ -140,7 +140,7 @@ CommentObject(CommentStmt *stmt)
  */
 void
 CreateComments(Oid oid, Oid classoid, int32 subid, char *comment)
-{	StackTrace("CreateComments");
+{
 	Relation	description;
 	ScanKeyData skey[3];
 	SysScanDesc sd;
@@ -239,7 +239,7 @@ CreateComments(Oid oid, Oid classoid, int32 subid, char *comment)
  */
 void
 CreateSharedComments(Oid oid, Oid classoid, char *comment)
-{	StackTrace("CreateSharedComments");
+{
 	Relation	shdescription;
 	ScanKeyData skey[2];
 	SysScanDesc sd;
@@ -331,7 +331,7 @@ CreateSharedComments(Oid oid, Oid classoid, char *comment)
  */
 void
 DeleteComments(Oid oid, Oid classoid, int32 subid)
-{	StackTrace("DeleteComments");
+{
 	Relation	description;
 	ScanKeyData skey[3];
 	int			nkeys;
@@ -379,7 +379,7 @@ DeleteComments(Oid oid, Oid classoid, int32 subid)
  */
 void
 DeleteSharedComments(Oid oid, Oid classoid)
-{	StackTrace("DeleteSharedComments");
+{
 	Relation	shdescription;
 	ScanKeyData skey[2];
 	SysScanDesc sd;
@@ -415,7 +415,7 @@ DeleteSharedComments(Oid oid, Oid classoid)
  */
 char *
 GetComment(Oid oid, Oid classoid, int32 subid)
-{	StackTrace("GetComment");
+{
 	Relation	description;
 	ScanKeyData skey[3];
 	SysScanDesc sd;

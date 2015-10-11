@@ -62,7 +62,7 @@ static PLTemplate *find_language_template(const char *languageName);
  */
 ObjectAddress
 CreateProceduralLanguage(CreatePLangStmt *stmt)
-{	StackTrace("CreateProceduralLanguage");
+{
 	PLTemplate *pltemplate;
 	ObjectAddress tmpAddr;
 	Oid			handlerOid,
@@ -320,7 +320,7 @@ static ObjectAddress
 create_proc_lang(const char *languageName, bool replace,
 				 Oid languageOwner, Oid handlerOid, Oid inlineOid,
 				 Oid valOid, bool trusted)
-{	StackTrace("create_proc_lang");
+{
 	Relation	rel;
 	TupleDesc	tupDesc;
 	Datum		values[Natts_pg_language];
@@ -448,7 +448,7 @@ create_proc_lang(const char *languageName, bool replace,
  */
 static PLTemplate *
 find_language_template(const char *languageName)
-{	StackTrace("find_language_template");
+{
 	PLTemplate *result;
 	Relation	rel;
 	SysScanDesc scan;
@@ -516,7 +516,7 @@ find_language_template(const char *languageName)
  */
 bool
 PLTemplateExists(const char *languageName)
-{	StackTrace("PLTemplateExists");
+{
 	return (find_language_template(languageName) != NULL);
 }
 
@@ -525,7 +525,7 @@ PLTemplateExists(const char *languageName)
  */
 void
 DropProceduralLanguageById(Oid langOid)
-{	StackTrace("DropProceduralLanguageById");
+{
 	Relation	rel;
 	HeapTuple	langTup;
 
@@ -550,7 +550,7 @@ DropProceduralLanguageById(Oid langOid)
  */
 Oid
 get_language_oid(const char *langname, bool missing_ok)
-{	StackTrace("get_language_oid");
+{
 	Oid			oid;
 
 	oid = GetSysCacheOid1(LANGNAME, CStringGetDatum(langname));

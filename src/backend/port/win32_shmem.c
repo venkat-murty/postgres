@@ -38,7 +38,7 @@ static void pgwin32_SharedMemoryDelete(int status, Datum shmId);
  */
 static char *
 GetSharedMemName(void)
-{	StackTrace("GetSharedMemName");
+{
 	char	   *retptr;
 	DWORD		bufsize;
 	DWORD		r;
@@ -87,7 +87,7 @@ GetSharedMemName(void)
  */
 bool
 PGSharedMemoryIsInUse(unsigned long id1, unsigned long id2)
-{	StackTrace("PGSharedMemoryIsInUse");
+{
 	char	   *szShareMem;
 	HANDLE		hmap;
 
@@ -120,7 +120,7 @@ PGSharedMemoryIsInUse(unsigned long id1, unsigned long id2)
 PGShmemHeader *
 PGSharedMemoryCreate(Size size, bool makePrivate, int port,
 					 PGShmemHeader **shim)
-{	StackTrace("PGSharedMemoryCreate");
+{
 	void	   *memAddress;
 	PGShmemHeader *hdr;
 	HANDLE		hmap,
@@ -270,7 +270,7 @@ PGSharedMemoryCreate(Size size, bool makePrivate, int port,
  */
 void
 PGSharedMemoryReAttach(void)
-{	StackTrace("PGSharedMemoryReAttach");
+{
 	PGShmemHeader *hdr;
 	void	   *origUsedShmemSegAddr = UsedShmemSegAddr;
 
@@ -308,7 +308,7 @@ PGSharedMemoryReAttach(void)
  */
 void
 PGSharedMemoryDetach(void)
-{	StackTrace("PGSharedMemoryDetach");
+{
 	if (UsedShmemSegAddr != NULL)
 	{
 		if (!UnmapViewOfFile(UsedShmemSegAddr))
@@ -325,7 +325,7 @@ PGSharedMemoryDetach(void)
  */
 static void
 pgwin32_SharedMemoryDelete(int status, Datum shmId)
-{	StackTrace("pgwin32_SharedMemoryDelete");
+{
 	PGSharedMemoryDetach();
 	if (!CloseHandle(DatumGetPointer(shmId)))
 		elog(LOG, "could not close handle to shared memory: error code %lu", GetLastError());
@@ -350,7 +350,7 @@ pgwin32_SharedMemoryDelete(int status, Datum shmId)
  */
 int
 pgwin32_ReserveSharedMemoryRegion(HANDLE hChild)
-{	StackTrace("pgwin32_ReserveSharedMemoryRegion");
+{
 	void	   *address;
 
 	Assert(UsedShmemSegAddr != NULL);

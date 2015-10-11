@@ -107,7 +107,7 @@ static void bgwriter_sigusr1_handler(SIGNAL_ARGS);
  */
 void
 BackgroundWriterMain(void)
-{	StackTrace("BackgroundWriterMain");
+{
 	sigjmp_buf	local_sigjmp_buf;
 	MemoryContext bgwriter_context;
 	bool		prev_hibernate;
@@ -395,7 +395,7 @@ BackgroundWriterMain(void)
  */
 static void
 bg_quickdie(SIGNAL_ARGS)
-{	StackTrace("bg_quickdie");
+{
 	PG_SETMASK(&BlockSig);
 
 	/*
@@ -422,7 +422,7 @@ bg_quickdie(SIGNAL_ARGS)
 /* SIGHUP: set flag to re-read config file at next convenient time */
 static void
 BgSigHupHandler(SIGNAL_ARGS)
-{	StackTrace("BgSigHupHandler");
+{
 	int			save_errno = errno;
 
 	got_SIGHUP = true;
@@ -434,7 +434,7 @@ BgSigHupHandler(SIGNAL_ARGS)
 /* SIGTERM: set flag to shutdown and exit */
 static void
 ReqShutdownHandler(SIGNAL_ARGS)
-{	StackTrace("ReqShutdownHandler");
+{
 	int			save_errno = errno;
 
 	shutdown_requested = true;
@@ -446,7 +446,7 @@ ReqShutdownHandler(SIGNAL_ARGS)
 /* SIGUSR1: used for latch wakeups */
 static void
 bgwriter_sigusr1_handler(SIGNAL_ARGS)
-{	StackTrace("bgwriter_sigusr1_handler");
+{
 	int			save_errno = errno;
 
 	latch_sigusr1_handler();

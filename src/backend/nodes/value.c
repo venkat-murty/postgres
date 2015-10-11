@@ -21,7 +21,7 @@
  */
 Value *
 makeInteger(long i)
-{	StackTrace("makeInteger");
+{
 	Value	   *v = makeNode(Value);
 
 	v->type = T_Integer;
@@ -36,7 +36,7 @@ makeInteger(long i)
  */
 Value *
 makeFloat(char *numericStr)
-{	StackTrace("makeFloat");
+{
 	Value	   *v = makeNode(Value);
 
 	v->type = T_Float;
@@ -51,7 +51,7 @@ makeFloat(char *numericStr)
  */
 Value *
 makeString(char *str)
-{	StackTrace("makeString");
+{
 	Value	   *v = makeNode(Value);
 
 	v->type = T_String;
@@ -66,7 +66,7 @@ makeString(char *str)
  */
 Value *
 makeBitString(char *str)
-{	StackTrace("makeBitString");
+{
 	Value	   *v = makeNode(Value);
 
 	v->type = T_BitString;

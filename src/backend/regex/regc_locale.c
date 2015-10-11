@@ -455,7 +455,7 @@ range(struct vars * v,			/* context */
  */
 static int						/* predicate */
 before(celt x, celt y)
-{	StackTrace("before");
+{
 	if (x < y)
 		return 1;
 	return 0;

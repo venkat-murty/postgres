@@ -45,7 +45,7 @@ GinFormTuple(GinState *ginstate,
 			 OffsetNumber attnum, Datum key, GinNullCategory category,
 			 Pointer data, Size dataSize, int nipd,
 			 bool errorTooBig)
-{	StackTrace("GinFormTuple");
+{
 	Datum		datums[2];
 	bool		isnull[2];
 	IndexTuple	itup;
@@ -161,7 +161,7 @@ GinFormTuple(GinState *ginstate,
 ItemPointer
 ginReadTuple(GinState *ginstate, OffsetNumber attnum, IndexTuple itup,
 			 int *nitems)
-{	StackTrace("ginReadTuple");
+{
 	Pointer		ptr = GinGetPosting(itup);
 	int			nipd = GinGetNPosting(itup);
 	ItemPointer ipd;
@@ -199,7 +199,7 @@ ginReadTuple(GinState *ginstate, OffsetNumber attnum, IndexTuple itup,
  */
 static IndexTuple
 GinFormInteriorTuple(IndexTuple itup, Page page, BlockNumber childblk)
-{	StackTrace("GinFormInteriorTuple");
+{
 	IndexTuple	nitup;
 
 	if (GinPageIsLeaf(page) && !GinIsPostingTree(itup))
@@ -233,7 +233,7 @@ GinFormInteriorTuple(IndexTuple itup, Page page, BlockNumber childblk)
  */
 static IndexTuple
 getRightMostTuple(Page page)
-{	StackTrace("getRightMostTuple");
+{
 	OffsetNumber maxoff = PageGetMaxOffsetNumber(page);
 
 	return (IndexTuple) PageGetItem(page, PageGetItemId(page, maxoff));
@@ -241,7 +241,7 @@ getRightMostTuple(Page page)
 
 static bool
 entryIsMoveRight(GinBtree btree, Page page)
-{	StackTrace("entryIsMoveRight");
+{
 	IndexTuple	itup;
 	OffsetNumber attnum;
 	Datum		key;
@@ -268,7 +268,7 @@ entryIsMoveRight(GinBtree btree, Page page)
  */
 static BlockNumber
 entryLocateEntry(GinBtree btree, GinBtreeStack *stack)
-{	StackTrace("entryLocateEntry");
+{
 	OffsetNumber low,
 				high,
 				maxoff;
@@ -344,7 +344,7 @@ entryLocateEntry(GinBtree btree, GinBtreeStack *stack)
  */
 static bool
 entryLocateLeafEntry(GinBtree btree, GinBtreeStack *stack)
-{	StackTrace("entryLocateLeafEntry");
+{
 	Page		page = BufferGetPage(stack->buffer);
 	OffsetNumber low,
 				high;
@@ -403,7 +403,7 @@ entryLocateLeafEntry(GinBtree btree, GinBtreeStack *stack)
 
 static OffsetNumber
 entryFindChildPtr(GinBtree btree, Page page, BlockNumber blkno, OffsetNumber storedOff)
-{	StackTrace("entryFindChildPtr");
+{
 	OffsetNumber i,
 				maxoff = PageGetMaxOffsetNumber(page);
 	IndexTuple	itup;
@@ -444,7 +444,7 @@ entryFindChildPtr(GinBtree btree, Page page, BlockNumber blkno, OffsetNumber sto
 
 static BlockNumber
 entryGetLeftMostPage(GinBtree btree, Page page)
-{	StackTrace("entryGetLeftMostPage");
+{
 	IndexTuple	itup;
 
 	Assert(!GinPageIsLeaf(page));
@@ -458,7 +458,7 @@ entryGetLeftMostPage(GinBtree btree, Page page)
 static bool
 entryIsEnoughSpace(GinBtree btree, Buffer buf, OffsetNumber off,
 				   GinBtreeEntryInsertData *insertData)
-{	StackTrace("entryIsEnoughSpace");
+{
 	Size		releasedsz = 0;
 	Size		addedsz;
 	Page		page = BufferGetPage(buf);
@@ -489,7 +489,7 @@ entryIsEnoughSpace(GinBtree btree, Buffer buf, OffsetNumber off,
 static void
 entryPreparePage(GinBtree btree, Page page, OffsetNumber off,
 				 GinBtreeEntryInsertData *insertData, BlockNumber updateblkno)
-{	StackTrace("entryPreparePage");
+{
 	Assert(insertData->entry);
 	Assert(!GinPageIsData(page));
 
@@ -523,7 +523,7 @@ static GinPlaceToPageRC
 entryPlaceToPage(GinBtree btree, Buffer buf, GinBtreeStack *stack,
 				 void *insertPayload, BlockNumber updateblkno,
 				 Page *newlpage, Page *newrpage)
-{	StackTrace("entryPlaceToPage");
+{
 	GinBtreeEntryInsertData *insertData = insertPayload;
 	Page		page = BufferGetPage(buf);
 	OffsetNumber off = stack->off;
@@ -580,7 +580,7 @@ entrySplitPage(GinBtree btree, Buffer origbuf,
 			   void *insertPayload,
 			   BlockNumber updateblkno,
 			   Page *newlpage, Page *newrpage)
-{	StackTrace("entrySplitPage");
+{
 	GinBtreeEntryInsertData *insertData = insertPayload;
 	OffsetNumber off = stack->off;
 	OffsetNumber i,
@@ -672,7 +672,7 @@ entrySplitPage(GinBtree btree, Buffer origbuf,
  */
 static void *
 entryPrepareDownlink(GinBtree btree, Buffer lbuf)
-{	StackTrace("entryPrepareDownlink");
+{
 	GinBtreeEntryInsertData *insertData;
 	Page		lpage = BufferGetPage(lbuf);
 	BlockNumber lblkno = BufferGetBlockNumber(lbuf);
@@ -695,7 +695,7 @@ void
 ginEntryFillRoot(GinBtree btree, Page root,
 				 BlockNumber lblkno, Page lpage,
 				 BlockNumber rblkno, Page rpage)
-{	StackTrace("ginEntryFillRoot");
+{
 	IndexTuple	itup;
 
 	itup = GinFormInteriorTuple(getRightMostTuple(lpage), lpage, lblkno);
@@ -719,7 +719,7 @@ void
 ginPrepareEntryScan(GinBtree btree, OffsetNumber attnum,
 					Datum key, GinNullCategory category,
 					GinState *ginstate)
-{	StackTrace("ginPrepareEntryScan");
+{
 	memset(btree, 0, sizeof(GinBtreeData));
 
 	btree->index = ginstate->index;

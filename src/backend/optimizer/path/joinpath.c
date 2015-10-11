@@ -77,7 +77,7 @@ add_paths_to_joinrel(PlannerInfo *root,
 					 JoinType jointype,
 					 SpecialJoinInfo *sjinfo,
 					 List *restrictlist)
-{	StackTrace("add_paths_to_joinrel");
+{
 	JoinPathExtraData extra;
 	bool		mergejoin_allowed = true;
 	ListCell   *lc;
@@ -283,7 +283,7 @@ try_nestloop_path(PlannerInfo *root,
 				  List *pathkeys,
 				  JoinType jointype,
 				  JoinPathExtraData *extra)
-{	StackTrace("try_nestloop_path");
+{
 	Relids		required_outer;
 	JoinCostWorkspace workspace;
 
@@ -380,7 +380,7 @@ try_mergejoin_path(PlannerInfo *root,
 				   List *innersortkeys,
 				   JoinType jointype,
 				   JoinPathExtraData *extra)
-{	StackTrace("try_mergejoin_path");
+{
 	Relids		required_outer;
 	JoinCostWorkspace workspace;
 
@@ -462,7 +462,7 @@ try_hashjoin_path(PlannerInfo *root,
 				  List *hashclauses,
 				  JoinType jointype,
 				  JoinPathExtraData *extra)
-{	StackTrace("try_hashjoin_path");
+{
 	Relids		required_outer;
 	JoinCostWorkspace workspace;
 
@@ -531,7 +531,7 @@ try_hashjoin_path(PlannerInfo *root,
 static inline bool
 clause_sides_match_join(RestrictInfo *rinfo, RelOptInfo *outerrel,
 						RelOptInfo *innerrel)
-{	StackTrace("clause_sides_match_join");
+{
 	if (bms_is_subset(rinfo->left_relids, outerrel->relids) &&
 		bms_is_subset(rinfo->right_relids, innerrel->relids))
 	{
@@ -567,7 +567,7 @@ sort_inner_and_outer(PlannerInfo *root,
 					 RelOptInfo *innerrel,
 					 JoinType jointype,
 					 JoinPathExtraData *extra)
-{	StackTrace("sort_inner_and_outer");
+{
 	Path	   *outer_path;
 	Path	   *inner_path;
 	List	   *all_pathkeys;
@@ -741,7 +741,7 @@ match_unsorted_outer(PlannerInfo *root,
 					 RelOptInfo *innerrel,
 					 JoinType jointype,
 					 JoinPathExtraData *extra)
-{	StackTrace("match_unsorted_outer");
+{
 	JoinType	save_jointype = jointype;
 	bool		nestjoinOK;
 	bool		useallclauses;
@@ -1130,7 +1130,7 @@ hash_inner_and_outer(PlannerInfo *root,
 					 RelOptInfo *innerrel,
 					 JoinType jointype,
 					 JoinPathExtraData *extra)
-{	StackTrace("hash_inner_and_outer");
+{
 	bool		isouterjoin = IS_OUTER_JOIN(jointype);
 	List	   *hashclauses;
 	ListCell   *l;
@@ -1320,7 +1320,7 @@ select_mergejoin_clauses(PlannerInfo *root,
 						 List *restrictlist,
 						 JoinType jointype,
 						 bool *mergejoin_allowed)
-{	StackTrace("select_mergejoin_clauses");
+{
 	List	   *result_list = NIL;
 	bool		isouterjoin = IS_OUTER_JOIN(jointype);
 	bool		have_nonmergeable_joinclause = false;

@@ -44,7 +44,7 @@ static void checkViewTupleDesc(TupleDesc newdesc, TupleDesc olddesc);
  */
 void
 validateWithCheckOption(char *value)
-{	StackTrace("validateWithCheckOption");
+{
 	if (value == NULL ||
 		(pg_strcasecmp(value, "local") != 0 &&
 		 pg_strcasecmp(value, "cascaded") != 0))
@@ -68,7 +68,7 @@ validateWithCheckOption(char *value)
 static ObjectAddress
 DefineVirtualRelation(RangeVar *relation, List *tlist, bool replace,
 					  List *options)
-{	StackTrace("DefineVirtualRelation");
+{
 	Oid			viewOid;
 	LOCKMODE	lockmode;
 	CreateStmt *createStmt = makeNode(CreateStmt);
@@ -254,7 +254,7 @@ DefineVirtualRelation(RangeVar *relation, List *tlist, bool replace,
  */
 static void
 checkViewTupleDesc(TupleDesc newdesc, TupleDesc olddesc)
-{	StackTrace("checkViewTupleDesc");
+{
 	int			i;
 
 	if (newdesc->natts < olddesc->natts)
@@ -303,7 +303,7 @@ checkViewTupleDesc(TupleDesc newdesc, TupleDesc olddesc)
 
 static void
 DefineViewRules(Oid viewOid, Query *viewParse, bool replace)
-{	StackTrace("DefineViewRules");
+{
 	/*
 	 * Set up the ON SELECT rule.  Since the query has already been through
 	 * parse analysis, we use DefineQueryRewrite() directly.
@@ -340,7 +340,7 @@ DefineViewRules(Oid viewOid, Query *viewParse, bool replace)
  */
 static Query *
 UpdateRangeTableOfViewParse(Oid viewOid, Query *viewParse)
-{	StackTrace("UpdateRangeTableOfViewParse");
+{
 	Relation	viewRel;
 	List	   *new_rt;
 	RangeTblEntry *rt_entry1,
@@ -397,7 +397,7 @@ UpdateRangeTableOfViewParse(Oid viewOid, Query *viewParse)
  */
 ObjectAddress
 DefineView(ViewStmt *stmt, const char *queryString)
-{	StackTrace("DefineView");
+{
 	Query	   *viewParse;
 	RangeVar   *view;
 	ListCell   *cell;
@@ -560,7 +560,7 @@ DefineView(ViewStmt *stmt, const char *queryString)
  */
 void
 StoreViewQuery(Oid viewOid, Query *viewParse, bool replace)
-{	StackTrace("StoreViewQuery");
+{
 	/*
 	 * The range table of 'viewParse' does not contain entries for the "OLD"
 	 * and "NEW" relations. So... add them!

@@ -46,7 +46,7 @@ VariableCache ShmemVariableCache = NULL;
  */
 TransactionId
 GetNewTransactionId(bool isSubXact)
-{	StackTrace("GetNewTransactionId");
+{
 	TransactionId xid;
 
 	/*
@@ -248,7 +248,7 @@ GetNewTransactionId(bool isSubXact)
  */
 TransactionId
 ReadNewTransactionId(void)
-{	StackTrace("ReadNewTransactionId");
+{
 	TransactionId xid;
 
 	LWLockAcquire(XidGenLock, LW_SHARED);
@@ -265,7 +265,7 @@ ReadNewTransactionId(void)
  */
 void
 SetTransactionIdLimit(TransactionId oldest_datfrozenxid, Oid oldest_datoid)
-{	StackTrace("SetTransactionIdLimit");
+{
 	TransactionId xidVacLimit;
 	TransactionId xidWarnLimit;
 	TransactionId xidStopLimit;
@@ -406,7 +406,7 @@ SetTransactionIdLimit(TransactionId oldest_datfrozenxid, Oid oldest_datoid)
  */
 bool
 ForceTransactionIdLimitUpdate(void)
-{	StackTrace("ForceTransactionIdLimitUpdate");
+{
 	TransactionId nextXid;
 	TransactionId xidVacLimit;
 	TransactionId oldestXid;
@@ -444,7 +444,7 @@ ForceTransactionIdLimitUpdate(void)
  */
 Oid
 GetNewObjectId(void)
-{	StackTrace("GetNewObjectId");
+{
 	Oid			result;
 
 	/* safety check, we should never get this far in a HS slave */

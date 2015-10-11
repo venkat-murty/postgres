@@ -80,7 +80,7 @@ static volatile sig_atomic_t alarm_enabled = false;
  */
 static int
 find_active_timeout(TimeoutId id)
-{	StackTrace("find_active_timeout");
+{
 	int			i;
 
 	for (i = 0; i < num_active_timeouts; i++)
@@ -98,7 +98,7 @@ find_active_timeout(TimeoutId id)
  */
 static void
 insert_timeout(TimeoutId id, int index)
-{	StackTrace("insert_timeout");
+{
 	int			i;
 
 	if (index < 0 || index > num_active_timeouts)
@@ -118,7 +118,7 @@ insert_timeout(TimeoutId id, int index)
  */
 static void
 remove_timeout_index(int index)
-{	StackTrace("remove_timeout_index");
+{
 	int			i;
 
 	if (index < 0 || index >= num_active_timeouts)
@@ -136,7 +136,7 @@ remove_timeout_index(int index)
  */
 static void
 enable_timeout(TimeoutId id, TimestampTz now, TimestampTz fin_time)
-{	StackTrace("enable_timeout");
+{
 	int			i;
 
 	/* Assert request is sane */
@@ -183,7 +183,7 @@ enable_timeout(TimeoutId id, TimestampTz now, TimestampTz fin_time)
  */
 static void
 schedule_alarm(TimestampTz now)
-{	StackTrace("schedule_alarm");
+{
 	if (num_active_timeouts > 0)
 	{
 		struct itimerval timeval;
@@ -257,7 +257,7 @@ schedule_alarm(TimestampTz now)
  */
 static void
 handle_sig_alarm(SIGNAL_ARGS)
-{	StackTrace("handle_sig_alarm");
+{
 	int			save_errno = errno;
 
 	/*
@@ -338,7 +338,7 @@ handle_sig_alarm(SIGNAL_ARGS)
  */
 void
 InitializeTimeouts(void)
-{	StackTrace("InitializeTimeouts");
+{
 	int			i;
 
 	/* Initialize, or re-initialize, all local state */
@@ -371,7 +371,7 @@ InitializeTimeouts(void)
  */
 TimeoutId
 RegisterTimeout(TimeoutId id, timeout_handler_proc handler)
-{	StackTrace("RegisterTimeout");
+{
 	Assert(all_timeouts_initialized);
 
 	/* There's no need to disable the signal handler here. */
@@ -406,7 +406,7 @@ RegisterTimeout(TimeoutId id, timeout_handler_proc handler)
  */
 void
 reschedule_timeouts(void)
-{	StackTrace("reschedule_timeouts");
+{
 	/* For flexibility, allow this to be called before we're initialized. */
 	if (!all_timeouts_initialized)
 		return;
@@ -426,7 +426,7 @@ reschedule_timeouts(void)
  */
 void
 enable_timeout_after(TimeoutId id, int delay_ms)
-{	StackTrace("enable_timeout_after");
+{
 	TimestampTz now;
 	TimestampTz fin_time;
 
@@ -451,7 +451,7 @@ enable_timeout_after(TimeoutId id, int delay_ms)
  */
 void
 enable_timeout_at(TimeoutId id, TimestampTz fin_time)
-{	StackTrace("enable_timeout_at");
+{
 	TimestampTz now;
 
 	/* Disable timeout interrupts for safety. */
@@ -474,7 +474,7 @@ enable_timeout_at(TimeoutId id, TimestampTz fin_time)
  */
 void
 enable_timeouts(const EnableTimeoutParams *timeouts, int count)
-{	StackTrace("enable_timeouts");
+{
 	TimestampTz now;
 	int			i;
 
@@ -523,7 +523,7 @@ enable_timeouts(const EnableTimeoutParams *timeouts, int count)
  */
 void
 disable_timeout(TimeoutId id, bool keep_indicator)
-{	StackTrace("disable_timeout");
+{
 	int			i;
 
 	/* Assert request is sane */
@@ -559,7 +559,7 @@ disable_timeout(TimeoutId id, bool keep_indicator)
  */
 void
 disable_timeouts(const DisableTimeoutParams *timeouts, int count)
-{	StackTrace("disable_timeouts");
+{
 	int			i;
 
 	Assert(all_timeouts_initialized);
@@ -594,7 +594,7 @@ disable_timeouts(const DisableTimeoutParams *timeouts, int count)
  */
 void
 disable_all_timeouts(bool keep_indicators)
-{	StackTrace("disable_all_timeouts");
+{
 	disable_alarm();
 
 	/*
@@ -631,7 +631,7 @@ disable_all_timeouts(bool keep_indicators)
  */
 bool
 get_timeout_indicator(TimeoutId id, bool reset_indicator)
-{	StackTrace("get_timeout_indicator");
+{
 	if (all_timeouts[id].indicator)
 	{
 		if (reset_indicator)
@@ -651,6 +651,6 @@ get_timeout_indicator(TimeoutId id, bool reset_indicator)
  */
 TimestampTz
 get_timeout_start_time(TimeoutId id)
-{	StackTrace("get_timeout_start_time");
+{
 	return all_timeouts[id].start_time;
 }

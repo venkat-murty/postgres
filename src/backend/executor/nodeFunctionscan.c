@@ -58,7 +58,7 @@ static TupleTableSlot *FunctionNext(FunctionScanState *node);
  */
 static TupleTableSlot *
 FunctionNext(FunctionScanState *node)
-{	StackTrace("FunctionNext");
+{
 	EState	   *estate;
 	ScanDirection direction;
 	TupleTableSlot *scanslot;
@@ -248,7 +248,7 @@ FunctionNext(FunctionScanState *node)
  */
 static bool
 FunctionRecheck(FunctionScanState *node, TupleTableSlot *slot)
-{	StackTrace("FunctionRecheck");
+{
 	/* nothing to check */
 	return true;
 }
@@ -264,7 +264,7 @@ FunctionRecheck(FunctionScanState *node, TupleTableSlot *slot)
  */
 TupleTableSlot *
 ExecFunctionScan(FunctionScanState *node)
-{	StackTrace("ExecFunctionScan");
+{
 	return ExecScan(&node->ss,
 					(ExecScanAccessMtd) FunctionNext,
 					(ExecScanRecheckMtd) FunctionRecheck);
@@ -276,7 +276,7 @@ ExecFunctionScan(FunctionScanState *node)
  */
 FunctionScanState *
 ExecInitFunctionScan(FunctionScan *node, EState *estate, int eflags)
-{	StackTrace("ExecInitFunctionScan");
+{
 	FunctionScanState *scanstate;
 	int			nfuncs = list_length(node->functions);
 	TupleDesc	scan_tupdesc;
@@ -523,7 +523,7 @@ ExecInitFunctionScan(FunctionScan *node, EState *estate, int eflags)
  */
 void
 ExecEndFunctionScan(FunctionScanState *node)
-{	StackTrace("ExecEndFunctionScan");
+{
 	int			i;
 
 	/*
@@ -563,7 +563,7 @@ ExecEndFunctionScan(FunctionScanState *node)
  */
 void
 ExecReScanFunctionScan(FunctionScanState *node)
-{	StackTrace("ExecReScanFunctionScan");
+{
 	FunctionScan *scan = (FunctionScan *) node->ss.ps.plan;
 	int			i;
 	Bitmapset  *chgparam = node->ss.ps.chgParam;

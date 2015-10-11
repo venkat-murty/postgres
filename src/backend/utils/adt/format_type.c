@@ -62,7 +62,7 @@ static char *printTypmod(const char *typname, int32 typmod, Oid typmodout);
  */
 Datum
 format_type(PG_FUNCTION_ARGS)
-{	StackTrace("format_type");
+{
 	Oid			type_oid;
 	int32		typemod;
 	char	   *result;
@@ -92,7 +92,7 @@ format_type(PG_FUNCTION_ARGS)
  */
 char *
 format_type_be(Oid type_oid)
-{	StackTrace("format_type_be");
+{
 	return format_type_internal(type_oid, -1, false, false, false);
 }
 
@@ -101,7 +101,7 @@ format_type_be(Oid type_oid)
  */
 char *
 format_type_be_qualified(Oid type_oid)
-{	StackTrace("format_type_be_qualified");
+{
 	return format_type_internal(type_oid, -1, false, false, true);
 }
 
@@ -110,7 +110,7 @@ format_type_be_qualified(Oid type_oid)
  */
 char *
 format_type_with_typemod(Oid type_oid, int32 typemod)
-{	StackTrace("format_type_with_typemod");
+{
 	return format_type_internal(type_oid, typemod, true, false, false);
 }
 
@@ -118,7 +118,7 @@ static char *
 format_type_internal(Oid type_oid, int32 typemod,
 					 bool typemod_given, bool allow_invalid,
 					 bool force_qualify)
-{	StackTrace("format_type_internal");
+{
 	bool		with_typemod = typemod_given && (typemod >= 0);
 	HeapTuple	tuple;
 	Form_pg_type typeform;
@@ -332,7 +332,7 @@ format_type_internal(Oid type_oid, int32 typemod,
  */
 static char *
 printTypmod(const char *typname, int32 typmod, Oid typmodout)
-{	StackTrace("printTypmod");
+{
 	char	   *res;
 
 	/* Shouldn't be called if typmod is -1 */
@@ -373,7 +373,7 @@ printTypmod(const char *typname, int32 typmod, Oid typmodout)
  */
 int32
 type_maximum_size(Oid type_oid, int32 typemod)
-{	StackTrace("type_maximum_size");
+{
 	if (typemod < 0)
 		return -1;
 
@@ -408,7 +408,7 @@ type_maximum_size(Oid type_oid, int32 typemod)
  */
 Datum
 oidvectortypes(PG_FUNCTION_ARGS)
-{	StackTrace("oidvectortypes");
+{
 	oidvector  *oidArray = (oidvector *) PG_GETARG_POINTER(0);
 	char	   *result;
 	int			numargs = oidArray->dim1;

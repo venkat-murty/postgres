@@ -128,7 +128,7 @@ static void remove_unused_subquery_outputs(Query *subquery, RelOptInfo *rel);
  */
 RelOptInfo *
 make_one_rel(PlannerInfo *root, List *joinlist)
-{	StackTrace("make_one_rel");
+{
 	RelOptInfo *rel;
 	Index		rti;
 
@@ -187,7 +187,7 @@ make_one_rel(PlannerInfo *root, List *joinlist)
  */
 static void
 set_base_rel_consider_startup(PlannerInfo *root)
-{	StackTrace("set_base_rel_consider_startup");
+{
 	/*
 	 * Since parameterized paths can only be used on the inside of a nestloop
 	 * join plan, there is usually little value in considering fast-start
@@ -227,7 +227,7 @@ set_base_rel_consider_startup(PlannerInfo *root)
  */
 static void
 set_base_rel_sizes(PlannerInfo *root)
-{	StackTrace("set_base_rel_sizes");
+{
 	Index		rti;
 
 	for (rti = 1; rti < root->simple_rel_array_size; rti++)
@@ -256,7 +256,7 @@ set_base_rel_sizes(PlannerInfo *root)
  */
 static void
 set_base_rel_pathlists(PlannerInfo *root)
-{	StackTrace("set_base_rel_pathlists");
+{
 	Index		rti;
 
 	for (rti = 1; rti < root->simple_rel_array_size; rti++)
@@ -284,7 +284,7 @@ set_base_rel_pathlists(PlannerInfo *root)
 static void
 set_rel_size(PlannerInfo *root, RelOptInfo *rel,
 			 Index rti, RangeTblEntry *rte)
-{	StackTrace("set_rel_size");
+{
 	if (rel->reloptkind == RELOPT_BASEREL &&
 		relation_excluded_by_constraints(root, rel, rte))
 	{
@@ -368,7 +368,7 @@ set_rel_size(PlannerInfo *root, RelOptInfo *rel,
 static void
 set_rel_pathlist(PlannerInfo *root, RelOptInfo *rel,
 				 Index rti, RangeTblEntry *rte)
-{	StackTrace("set_rel_pathlist");
+{
 	if (IS_DUMMY_REL(rel))
 	{
 		/* We already proved the relation empty, so nothing more to do */
@@ -441,7 +441,7 @@ set_rel_pathlist(PlannerInfo *root, RelOptInfo *rel,
  */
 static void
 set_plain_rel_size(PlannerInfo *root, RelOptInfo *rel, RangeTblEntry *rte)
-{	StackTrace("set_plain_rel_size");
+{
 	/*
 	 * Test any partial indexes of rel for applicability.  We must do this
 	 * first since partial unique indexes can affect size estimates.
@@ -458,7 +458,7 @@ set_plain_rel_size(PlannerInfo *root, RelOptInfo *rel, RangeTblEntry *rte)
  */
 static void
 set_plain_rel_pathlist(PlannerInfo *root, RelOptInfo *rel, RangeTblEntry *rte)
-{	StackTrace("set_plain_rel_pathlist");
+{
 	Relids		required_outer;
 
 	/*
@@ -484,7 +484,7 @@ set_plain_rel_pathlist(PlannerInfo *root, RelOptInfo *rel, RangeTblEntry *rte)
  */
 static void
 set_tablesample_rel_size(PlannerInfo *root, RelOptInfo *rel, RangeTblEntry *rte)
-{	StackTrace("set_tablesample_rel_size");
+{
 	/* Mark rel with estimated output rows, width, etc */
 	set_baserel_size_estimates(root, rel);
 }
@@ -497,7 +497,7 @@ set_tablesample_rel_size(PlannerInfo *root, RelOptInfo *rel, RangeTblEntry *rte)
  */
 static void
 set_tablesample_rel_pathlist(PlannerInfo *root, RelOptInfo *rel, RangeTblEntry *rte)
-{	StackTrace("set_tablesample_rel_pathlist");
+{
 	Relids		required_outer;
 	Path	   *path;
 
@@ -519,7 +519,7 @@ set_tablesample_rel_pathlist(PlannerInfo *root, RelOptInfo *rel, RangeTblEntry *
  */
 static void
 set_foreign_size(PlannerInfo *root, RelOptInfo *rel, RangeTblEntry *rte)
-{	StackTrace("set_foreign_size");
+{
 	/* Mark rel with estimated output rows, width, etc */
 	set_foreign_size_estimates(root, rel);
 
@@ -533,7 +533,7 @@ set_foreign_size(PlannerInfo *root, RelOptInfo *rel, RangeTblEntry *rte)
  */
 static void
 set_foreign_pathlist(PlannerInfo *root, RelOptInfo *rel, RangeTblEntry *rte)
-{	StackTrace("set_foreign_pathlist");
+{
 	/* Call the FDW's GetForeignPaths function to generate path(s) */
 	rel->fdwroutine->GetForeignPaths(root, rel, rte->relid);
 }
@@ -552,7 +552,7 @@ set_foreign_pathlist(PlannerInfo *root, RelOptInfo *rel, RangeTblEntry *rte)
 static void
 set_append_rel_size(PlannerInfo *root, RelOptInfo *rel,
 					Index rti, RangeTblEntry *rte)
-{	StackTrace("set_append_rel_size");
+{
 	int			parentRTindex = rti;
 	double		parent_rows;
 	double		parent_size;
@@ -776,7 +776,7 @@ set_append_rel_size(PlannerInfo *root, RelOptInfo *rel,
 static void
 set_append_rel_pathlist(PlannerInfo *root, RelOptInfo *rel,
 						Index rti, RangeTblEntry *rte)
-{	StackTrace("set_append_rel_pathlist");
+{
 	int			parentRTindex = rti;
 	List	   *live_childrels = NIL;
 	List	   *subpaths = NIL;
@@ -987,7 +987,7 @@ static void
 generate_mergeappend_paths(PlannerInfo *root, RelOptInfo *rel,
 						   List *live_childrels,
 						   List *all_child_pathkeys)
-{	StackTrace("generate_mergeappend_paths");
+{
 	ListCell   *lcp;
 
 	foreach(lcp, all_child_pathkeys)
@@ -1068,7 +1068,7 @@ generate_mergeappend_paths(PlannerInfo *root, RelOptInfo *rel,
 static Path *
 get_cheapest_parameterized_child_path(PlannerInfo *root, RelOptInfo *rel,
 									  Relids required_outer)
-{	StackTrace("get_cheapest_parameterized_child_path");
+{
 	Path	   *cheapest;
 	ListCell   *lc;
 
@@ -1147,7 +1147,7 @@ get_cheapest_parameterized_child_path(PlannerInfo *root, RelOptInfo *rel,
  */
 static List *
 accumulate_append_subpath(List *subpaths, Path *path)
-{	StackTrace("accumulate_append_subpath");
+{
 	if (IsA(path, AppendPath))
 	{
 		AppendPath *apath = (AppendPath *) path;
@@ -1175,7 +1175,7 @@ accumulate_append_subpath(List *subpaths, Path *path)
  */
 static void
 set_dummy_rel_pathlist(RelOptInfo *rel)
-{	StackTrace("set_dummy_rel_pathlist");
+{
 	/* Set dummy size estimates --- we leave attr_widths[] as zeroes */
 	rel->rows = 0;
 	rel->width = 0;
@@ -1197,7 +1197,7 @@ set_dummy_rel_pathlist(RelOptInfo *rel)
 /* quick-and-dirty test to see if any joining is needed */
 static bool
 has_multiple_baserels(PlannerInfo *root)
-{	StackTrace("has_multiple_baserels");
+{
 	int			num_base_rels = 0;
 	Index		rti;
 
@@ -1231,7 +1231,7 @@ has_multiple_baserels(PlannerInfo *root)
 static void
 set_subquery_pathlist(PlannerInfo *root, RelOptInfo *rel,
 					  Index rti, RangeTblEntry *rte)
-{	StackTrace("set_subquery_pathlist");
+{
 	Query	   *parse = root->parse;
 	Query	   *subquery = rte->subquery;
 	Relids		required_outer;
@@ -1387,7 +1387,7 @@ set_subquery_pathlist(PlannerInfo *root, RelOptInfo *rel,
  */
 static void
 set_function_pathlist(PlannerInfo *root, RelOptInfo *rel, RangeTblEntry *rte)
-{	StackTrace("set_function_pathlist");
+{
 	Relids		required_outer;
 	List	   *pathkeys = NIL;
 
@@ -1455,7 +1455,7 @@ set_function_pathlist(PlannerInfo *root, RelOptInfo *rel, RangeTblEntry *rte)
  */
 static void
 set_values_pathlist(PlannerInfo *root, RelOptInfo *rel, RangeTblEntry *rte)
-{	StackTrace("set_values_pathlist");
+{
 	Relids		required_outer;
 
 	/*
@@ -1478,7 +1478,7 @@ set_values_pathlist(PlannerInfo *root, RelOptInfo *rel, RangeTblEntry *rte)
  */
 static void
 set_cte_pathlist(PlannerInfo *root, RelOptInfo *rel, RangeTblEntry *rte)
-{	StackTrace("set_cte_pathlist");
+{
 	Plan	   *cteplan;
 	PlannerInfo *cteroot;
 	Index		levelsup;
@@ -1544,7 +1544,7 @@ set_cte_pathlist(PlannerInfo *root, RelOptInfo *rel, RangeTblEntry *rte)
  */
 static void
 set_worktable_pathlist(PlannerInfo *root, RelOptInfo *rel, RangeTblEntry *rte)
-{	StackTrace("set_worktable_pathlist");
+{
 	Plan	   *cteplan;
 	PlannerInfo *cteroot;
 	Index		levelsup;
@@ -1594,7 +1594,7 @@ set_worktable_pathlist(PlannerInfo *root, RelOptInfo *rel, RangeTblEntry *rte)
  */
 static RelOptInfo *
 make_rel_from_joinlist(PlannerInfo *root, List *joinlist)
-{	StackTrace("make_rel_from_joinlist");
+{
 	int			levels_needed;
 	List	   *initial_rels;
 	ListCell   *jl;
@@ -1699,7 +1699,7 @@ make_rel_from_joinlist(PlannerInfo *root, List *joinlist)
  */
 RelOptInfo *
 standard_join_search(PlannerInfo *root, int levels_needed, List *initial_rels)
-{	StackTrace("standard_join_search");
+{
 	int			lev;
 	RelOptInfo *rel;
 
@@ -1835,7 +1835,7 @@ standard_join_search(PlannerInfo *root, int levels_needed, List *initial_rels)
 static bool
 subquery_is_pushdown_safe(Query *subquery, Query *topquery,
 						  pushdown_safety_info *safetyInfo)
-{	StackTrace("subquery_is_pushdown_safe");
+{
 	SetOperationStmt *topop;
 
 	/* Check point 1 */
@@ -1885,7 +1885,7 @@ subquery_is_pushdown_safe(Query *subquery, Query *topquery,
 static bool
 recurse_pushdown_safe(Node *setOp, Query *topquery,
 					  pushdown_safety_info *safetyInfo)
-{	StackTrace("recurse_pushdown_safe");
+{
 	if (IsA(setOp, RangeTblRef))
 	{
 		RangeTblRef *rtr = (RangeTblRef *) setOp;
@@ -1951,7 +1951,7 @@ recurse_pushdown_safe(Node *setOp, Query *topquery,
  */
 static void
 check_output_expressions(Query *subquery, pushdown_safety_info *safetyInfo)
-{	StackTrace("check_output_expressions");
+{
 	ListCell   *lc;
 
 	foreach(lc, subquery->targetList)
@@ -2019,7 +2019,7 @@ check_output_expressions(Query *subquery, pushdown_safety_info *safetyInfo)
 static void
 compare_tlist_datatypes(List *tlist, List *colTypes,
 						pushdown_safety_info *safetyInfo)
-{	StackTrace("compare_tlist_datatypes");
+{
 	ListCell   *l;
 	ListCell   *colType = list_head(colTypes);
 
@@ -2051,7 +2051,7 @@ compare_tlist_datatypes(List *tlist, List *colTypes,
  */
 static bool
 targetIsInAllPartitionLists(TargetEntry *tle, Query *query)
-{	StackTrace("targetIsInAllPartitionLists");
+{
 	ListCell   *lc;
 
 	foreach(lc, query->windowClause)
@@ -2092,7 +2092,7 @@ targetIsInAllPartitionLists(TargetEntry *tle, Query *query)
 static bool
 qual_is_pushdown_safe(Query *subquery, Index rti, Node *qual,
 					  pushdown_safety_info *safetyInfo)
-{	StackTrace("qual_is_pushdown_safe");
+{
 	bool		safe = true;
 	List	   *vars;
 	ListCell   *vl;
@@ -2170,7 +2170,7 @@ qual_is_pushdown_safe(Query *subquery, Index rti, Node *qual,
  */
 static void
 subquery_push_qual(Query *subquery, RangeTblEntry *rte, Index rti, Node *qual)
-{	StackTrace("subquery_push_qual");
+{
 	if (subquery->setOperations != NULL)
 	{
 		/* Recurse to push it separately to each component query */
@@ -2218,7 +2218,7 @@ subquery_push_qual(Query *subquery, RangeTblEntry *rte, Index rti, Node *qual)
 static void
 recurse_push_qual(Node *setOp, Query *topquery,
 				  RangeTblEntry *rte, Index rti, Node *qual)
-{	StackTrace("recurse_push_qual");
+{
 	if (IsA(setOp, RangeTblRef))
 	{
 		RangeTblRef *rtr = (RangeTblRef *) setOp;
@@ -2264,7 +2264,7 @@ recurse_push_qual(Node *setOp, Query *topquery,
  */
 static void
 remove_unused_subquery_outputs(Query *subquery, RelOptInfo *rel)
-{	StackTrace("remove_unused_subquery_outputs");
+{
 	Bitmapset  *attrs_used = NULL;
 	ListCell   *lc;
 
@@ -2370,7 +2370,7 @@ remove_unused_subquery_outputs(Query *subquery, RelOptInfo *rel)
 
 static void
 print_relids(Relids relids)
-{	StackTrace("print_relids");
+{
 	int			x;
 	bool		first = true;
 
@@ -2386,7 +2386,7 @@ print_relids(Relids relids)
 
 static void
 print_restrictclauses(PlannerInfo *root, List *clauses)
-{	StackTrace("print_restrictclauses");
+{
 	ListCell   *l;
 
 	foreach(l, clauses)
@@ -2401,7 +2401,7 @@ print_restrictclauses(PlannerInfo *root, List *clauses)
 
 static void
 print_path(PlannerInfo *root, Path *path, int indent)
-{	StackTrace("print_path");
+{
 	const char *ptype;
 	bool		join = false;
 	Path	   *subpath = NULL;
@@ -2516,7 +2516,7 @@ print_path(PlannerInfo *root, Path *path, int indent)
 
 void
 debug_print_rel(PlannerInfo *root, RelOptInfo *rel)
-{	StackTrace("debug_print_rel");
+{
 	ListCell   *l;
 
 	printf("RELOPTINFO (");

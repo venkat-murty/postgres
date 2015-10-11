@@ -48,7 +48,7 @@ typedef struct SPPageDesc
 void
 spgUpdateNodeLink(SpGistInnerTuple tup, int nodeN,
 				  BlockNumber blkno, OffsetNumber offset)
-{	StackTrace("spgUpdateNodeLink");
+{
 	int			i;
 	SpGistNodeTuple node;
 
@@ -75,7 +75,7 @@ spgUpdateNodeLink(SpGistInnerTuple tup, int nodeN,
  */
 static SpGistInnerTuple
 addNode(SpGistState *state, SpGistInnerTuple tuple, Datum label, int offset)
-{	StackTrace("addNode");
+{
 	SpGistNodeTuple node,
 			   *nodes;
 	int			i;
@@ -107,7 +107,7 @@ addNode(SpGistState *state, SpGistInnerTuple tuple, Datum label, int offset)
 /* qsort comparator for sorting OffsetNumbers */
 static int
 cmpOffsetNumbers(const void *a, const void *b)
-{	StackTrace("cmpOffsetNumbers");
+{
 	if (*(const OffsetNumber *) a == *(const OffsetNumber *) b)
 		return 0;
 	return (*(const OffsetNumber *) a > *(const OffsetNumber *) b) ? 1 : -1;
@@ -131,7 +131,7 @@ spgPageIndexMultiDelete(SpGistState *state, Page page,
 						OffsetNumber *itemnos, int nitems,
 						int firststate, int reststate,
 						BlockNumber blkno, OffsetNumber offnum)
-{	StackTrace("spgPageIndexMultiDelete");
+{
 	OffsetNumber firstItem;
 	OffsetNumber sortednos[MaxIndexTuplesPerPage];
 	SpGistDeadTuple tuple = NULL;
@@ -184,7 +184,7 @@ spgPageIndexMultiDelete(SpGistState *state, Page page,
 static void
 saveNodeLink(Relation index, SPPageDesc *parent,
 			 BlockNumber blkno, OffsetNumber offnum)
-{	StackTrace("saveNodeLink");
+{
 	SpGistInnerTuple innerTuple;
 
 	innerTuple = (SpGistInnerTuple) PageGetItem(parent->page,
@@ -201,7 +201,7 @@ saveNodeLink(Relation index, SPPageDesc *parent,
 static void
 addLeafTuple(Relation index, SpGistState *state, SpGistLeafTuple leafTuple,
 		   SPPageDesc *current, SPPageDesc *parent, bool isNulls, bool isNew)
-{	StackTrace("addLeafTuple");
+{
 	spgxlogAddLeaf xlrec;
 
 	xlrec.newPage = isNew;
@@ -327,7 +327,7 @@ addLeafTuple(Relation index, SpGistState *state, SpGistLeafTuple leafTuple,
 static int
 checkSplitConditions(Relation index, SpGistState *state,
 					 SPPageDesc *current, int *nToSplit)
-{	StackTrace("checkSplitConditions");
+{
 	int			i,
 				n = 0,
 				totalSize = 0;
@@ -382,7 +382,7 @@ static void
 moveLeafs(Relation index, SpGistState *state,
 		  SPPageDesc *current, SPPageDesc *parent,
 		  SpGistLeafTuple newLeafTuple, bool isNulls)
-{	StackTrace("moveLeafs");
+{
 	int			i,
 				nDelete,
 				nInsert,
@@ -561,7 +561,7 @@ moveLeafs(Relation index, SpGistState *state,
 static void
 setRedirectionTuple(SPPageDesc *current, OffsetNumber position,
 					BlockNumber blkno, OffsetNumber offnum)
-{	StackTrace("setRedirectionTuple");
+{
 	SpGistDeadTuple dt;
 
 	dt = (SpGistDeadTuple) PageGetItem(current->page,
@@ -592,7 +592,7 @@ setRedirectionTuple(SPPageDesc *current, OffsetNumber position,
 static bool
 checkAllTheSame(spgPickSplitIn *in, spgPickSplitOut *out, bool tooBig,
 				bool *includeNew)
-{	StackTrace("checkAllTheSame");
+{
 	int			theNode;
 	int			limit;
 	int			i;
@@ -671,7 +671,7 @@ doPickSplit(Relation index, SpGistState *state,
 			SPPageDesc *current, SPPageDesc *parent,
 			SpGistLeafTuple newLeafTuple,
 			int level, bool isNulls, bool isNew)
-{	StackTrace("doPickSplit");
+{
 	bool		insertedNew = false;
 	spgPickSplitIn in;
 	spgPickSplitOut out;
@@ -1420,7 +1420,7 @@ static void
 spgMatchNodeAction(Relation index, SpGistState *state,
 				   SpGistInnerTuple innerTuple,
 				   SPPageDesc *current, SPPageDesc *parent, int nodeN)
-{	StackTrace("spgMatchNodeAction");
+{
 	int			i;
 	SpGistNodeTuple node;
 
@@ -1475,7 +1475,7 @@ spgAddNodeAction(Relation index, SpGistState *state,
 				 SpGistInnerTuple innerTuple,
 				 SPPageDesc *current, SPPageDesc *parent,
 				 int nodeN, Datum nodeLabel)
-{	StackTrace("spgAddNodeAction");
+{
 	SpGistInnerTuple newInnerTuple;
 	spgxlogAddNode xlrec;
 
@@ -1672,7 +1672,7 @@ static void
 spgSplitNodeAction(Relation index, SpGistState *state,
 				   SpGistInnerTuple innerTuple,
 				   SPPageDesc *current, spgChooseOut *out)
-{	StackTrace("spgSplitNodeAction");
+{
 	SpGistInnerTuple prefixTuple,
 				postfixTuple;
 	SpGistNodeTuple node,
@@ -1845,7 +1845,7 @@ spgSplitNodeAction(Relation index, SpGistState *state,
 bool
 spgdoinsert(Relation index, SpGistState *state,
 			ItemPointer heapPtr, Datum datum, bool isnull)
-{	StackTrace("spgdoinsert");
+{
 	int			level = 0;
 	Datum		leafDatum;
 	int			leafSize;

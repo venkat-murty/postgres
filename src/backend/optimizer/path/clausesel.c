@@ -95,7 +95,7 @@ clauselist_selectivity(PlannerInfo *root,
 					   int varRelid,
 					   JoinType jointype,
 					   SpecialJoinInfo *sjinfo)
-{	StackTrace("clauselist_selectivity");
+{
 	Selectivity s1 = 1.0;
 	RangeQueryClause *rqlist = NULL;
 	ListCell   *l;
@@ -286,7 +286,7 @@ clauselist_selectivity(PlannerInfo *root,
 static void
 addRangeClause(RangeQueryClause **rqlist, Node *clause,
 			   bool varonleft, bool isLTsel, Selectivity s2)
-{	StackTrace("addRangeClause");
+{
 	RangeQueryClause *rqelem;
 	Node	   *var;
 	bool		is_lobound;
@@ -383,7 +383,7 @@ addRangeClause(RangeQueryClause **rqlist, Node *clause,
  */
 static bool
 bms_is_subset_singleton(const Bitmapset *s, int x)
-{	StackTrace("bms_is_subset_singleton");
+{
 	switch (bms_membership(s))
 	{
 		case BMS_EMPTY_SET:
@@ -405,7 +405,7 @@ bms_is_subset_singleton(const Bitmapset *s, int x)
 static inline bool
 treat_as_join_clause(Node *clause, RestrictInfo *rinfo,
 					 int varRelid, SpecialJoinInfo *sjinfo)
-{	StackTrace("treat_as_join_clause");
+{
 	if (varRelid != 0)
 	{
 		/*
@@ -486,7 +486,7 @@ clause_selectivity(PlannerInfo *root,
 				   int varRelid,
 				   JoinType jointype,
 				   SpecialJoinInfo *sjinfo)
-{	StackTrace("clause_selectivity");
+{
 	Selectivity s1 = 0.5;		/* default for any unhandled clause type */
 	RestrictInfo *rinfo = NULL;
 	bool		cacheable = false;

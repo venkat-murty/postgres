@@ -150,7 +150,7 @@ static Datum readDatum(bool typbyval);
  */
 static Bitmapset *
 _readBitmapset(void)
-{	StackTrace("_readBitmapset");
+{
 	Bitmapset  *result = NULL;
 
 	READ_TEMP_LOCALS();
@@ -192,7 +192,7 @@ _readBitmapset(void)
  */
 static Query *
 _readQuery(void)
-{	StackTrace("_readQuery");
+{
 	READ_LOCALS(Query);
 
 	READ_ENUM_FIELD(commandType, CmdType);
@@ -236,7 +236,7 @@ _readQuery(void)
  */
 static NotifyStmt *
 _readNotifyStmt(void)
-{	StackTrace("_readNotifyStmt");
+{
 	READ_LOCALS(NotifyStmt);
 
 	READ_STRING_FIELD(conditionname);
@@ -250,7 +250,7 @@ _readNotifyStmt(void)
  */
 static DeclareCursorStmt *
 _readDeclareCursorStmt(void)
-{	StackTrace("_readDeclareCursorStmt");
+{
 	READ_LOCALS(DeclareCursorStmt);
 
 	READ_STRING_FIELD(portalname);
@@ -265,7 +265,7 @@ _readDeclareCursorStmt(void)
  */
 static WithCheckOption *
 _readWithCheckOption(void)
-{	StackTrace("_readWithCheckOption");
+{
 	READ_LOCALS(WithCheckOption);
 
 	READ_ENUM_FIELD(kind, WCOKind);
@@ -281,7 +281,7 @@ _readWithCheckOption(void)
  */
 static SortGroupClause *
 _readSortGroupClause(void)
-{	StackTrace("_readSortGroupClause");
+{
 	READ_LOCALS(SortGroupClause);
 
 	READ_UINT_FIELD(tleSortGroupRef);
@@ -298,7 +298,7 @@ _readSortGroupClause(void)
  */
 static GroupingSet *
 _readGroupingSet(void)
-{	StackTrace("_readGroupingSet");
+{
 	READ_LOCALS(GroupingSet);
 
 	READ_ENUM_FIELD(kind, GroupingSetKind);
@@ -313,7 +313,7 @@ _readGroupingSet(void)
  */
 static WindowClause *
 _readWindowClause(void)
-{	StackTrace("_readWindowClause");
+{
 	READ_LOCALS(WindowClause);
 
 	READ_STRING_FIELD(name);
@@ -334,7 +334,7 @@ _readWindowClause(void)
  */
 static RowMarkClause *
 _readRowMarkClause(void)
-{	StackTrace("_readRowMarkClause");
+{
 	READ_LOCALS(RowMarkClause);
 
 	READ_UINT_FIELD(rti);
@@ -350,7 +350,7 @@ _readRowMarkClause(void)
  */
 static CommonTableExpr *
 _readCommonTableExpr(void)
-{	StackTrace("_readCommonTableExpr");
+{
 	READ_LOCALS(CommonTableExpr);
 
 	READ_STRING_FIELD(ctename);
@@ -372,7 +372,7 @@ _readCommonTableExpr(void)
  */
 static RangeTableSample *
 _readRangeTableSample(void)
-{	StackTrace("_readRangeTableSample");
+{
 	READ_LOCALS(RangeTableSample);
 
 	READ_NODE_FIELD(relation);
@@ -388,7 +388,7 @@ _readRangeTableSample(void)
  */
 static TableSampleClause *
 _readTableSampleClause(void)
-{	StackTrace("_readTableSampleClause");
+{
 	READ_LOCALS(TableSampleClause);
 
 	READ_OID_FIELD(tsmid);
@@ -412,7 +412,7 @@ _readTableSampleClause(void)
  */
 static SetOperationStmt *
 _readSetOperationStmt(void)
-{	StackTrace("_readSetOperationStmt");
+{
 	READ_LOCALS(SetOperationStmt);
 
 	READ_ENUM_FIELD(op, SetOperation);
@@ -434,7 +434,7 @@ _readSetOperationStmt(void)
 
 static Alias *
 _readAlias(void)
-{	StackTrace("_readAlias");
+{
 	READ_LOCALS(Alias);
 
 	READ_STRING_FIELD(aliasname);
@@ -445,7 +445,7 @@ _readAlias(void)
 
 static RangeVar *
 _readRangeVar(void)
-{	StackTrace("_readRangeVar");
+{
 	READ_LOCALS(RangeVar);
 
 	local_node->catalogname = NULL;		/* not currently saved in output
@@ -463,7 +463,7 @@ _readRangeVar(void)
 
 static IntoClause *
 _readIntoClause(void)
-{	StackTrace("_readIntoClause");
+{
 	READ_LOCALS(IntoClause);
 
 	READ_NODE_FIELD(rel);
@@ -482,7 +482,7 @@ _readIntoClause(void)
  */
 static Var *
 _readVar(void)
-{	StackTrace("_readVar");
+{
 	READ_LOCALS(Var);
 
 	READ_UINT_FIELD(varno);
@@ -503,7 +503,7 @@ _readVar(void)
  */
 static Const *
 _readConst(void)
-{	StackTrace("_readConst");
+{
 	READ_LOCALS(Const);
 
 	READ_OID_FIELD(consttype);
@@ -528,7 +528,7 @@ _readConst(void)
  */
 static Param *
 _readParam(void)
-{	StackTrace("_readParam");
+{
 	READ_LOCALS(Param);
 
 	READ_ENUM_FIELD(paramkind, ParamKind);
@@ -546,7 +546,7 @@ _readParam(void)
  */
 static Aggref *
 _readAggref(void)
-{	StackTrace("_readAggref");
+{
 	READ_LOCALS(Aggref);
 
 	READ_OID_FIELD(aggfnoid);
@@ -572,7 +572,7 @@ _readAggref(void)
  */
 static GroupingFunc *
 _readGroupingFunc(void)
-{	StackTrace("_readGroupingFunc");
+{
 	READ_LOCALS(GroupingFunc);
 
 	READ_NODE_FIELD(args);
@@ -589,7 +589,7 @@ _readGroupingFunc(void)
  */
 static WindowFunc *
 _readWindowFunc(void)
-{	StackTrace("_readWindowFunc");
+{
 	READ_LOCALS(WindowFunc);
 
 	READ_OID_FIELD(winfnoid);
@@ -611,7 +611,7 @@ _readWindowFunc(void)
  */
 static ArrayRef *
 _readArrayRef(void)
-{	StackTrace("_readArrayRef");
+{
 	READ_LOCALS(ArrayRef);
 
 	READ_OID_FIELD(refarraytype);
@@ -631,7 +631,7 @@ _readArrayRef(void)
  */
 static FuncExpr *
 _readFuncExpr(void)
-{	StackTrace("_readFuncExpr");
+{
 	READ_LOCALS(FuncExpr);
 
 	READ_OID_FIELD(funcid);
@@ -652,7 +652,7 @@ _readFuncExpr(void)
  */
 static NamedArgExpr *
 _readNamedArgExpr(void)
-{	StackTrace("_readNamedArgExpr");
+{
 	READ_LOCALS(NamedArgExpr);
 
 	READ_NODE_FIELD(arg);
@@ -668,7 +668,7 @@ _readNamedArgExpr(void)
  */
 static OpExpr *
 _readOpExpr(void)
-{	StackTrace("_readOpExpr");
+{
 	READ_LOCALS(OpExpr);
 
 	READ_OID_FIELD(opno);
@@ -699,7 +699,7 @@ _readOpExpr(void)
  */
 static DistinctExpr *
 _readDistinctExpr(void)
-{	StackTrace("_readDistinctExpr");
+{
 	READ_LOCALS(DistinctExpr);
 
 	READ_OID_FIELD(opno);
@@ -730,7 +730,7 @@ _readDistinctExpr(void)
  */
 static NullIfExpr *
 _readNullIfExpr(void)
-{	StackTrace("_readNullIfExpr");
+{
 	READ_LOCALS(NullIfExpr);
 
 	READ_OID_FIELD(opno);
@@ -761,7 +761,7 @@ _readNullIfExpr(void)
  */
 static ScalarArrayOpExpr *
 _readScalarArrayOpExpr(void)
-{	StackTrace("_readScalarArrayOpExpr");
+{
 	READ_LOCALS(ScalarArrayOpExpr);
 
 	READ_OID_FIELD(opno);
@@ -790,7 +790,7 @@ _readScalarArrayOpExpr(void)
  */
 static BoolExpr *
 _readBoolExpr(void)
-{	StackTrace("_readBoolExpr");
+{
 	READ_LOCALS(BoolExpr);
 
 	/* do-it-yourself enum representation */
@@ -816,7 +816,7 @@ _readBoolExpr(void)
  */
 static SubLink *
 _readSubLink(void)
-{	StackTrace("_readSubLink");
+{
 	READ_LOCALS(SubLink);
 
 	READ_ENUM_FIELD(subLinkType, SubLinkType);
@@ -838,7 +838,7 @@ _readSubLink(void)
  */
 static FieldSelect *
 _readFieldSelect(void)
-{	StackTrace("_readFieldSelect");
+{
 	READ_LOCALS(FieldSelect);
 
 	READ_NODE_FIELD(arg);
@@ -855,7 +855,7 @@ _readFieldSelect(void)
  */
 static FieldStore *
 _readFieldStore(void)
-{	StackTrace("_readFieldStore");
+{
 	READ_LOCALS(FieldStore);
 
 	READ_NODE_FIELD(arg);
@@ -871,7 +871,7 @@ _readFieldStore(void)
  */
 static RelabelType *
 _readRelabelType(void)
-{	StackTrace("_readRelabelType");
+{
 	READ_LOCALS(RelabelType);
 
 	READ_NODE_FIELD(arg);
@@ -889,7 +889,7 @@ _readRelabelType(void)
  */
 static CoerceViaIO *
 _readCoerceViaIO(void)
-{	StackTrace("_readCoerceViaIO");
+{
 	READ_LOCALS(CoerceViaIO);
 
 	READ_NODE_FIELD(arg);
@@ -906,7 +906,7 @@ _readCoerceViaIO(void)
  */
 static ArrayCoerceExpr *
 _readArrayCoerceExpr(void)
-{	StackTrace("_readArrayCoerceExpr");
+{
 	READ_LOCALS(ArrayCoerceExpr);
 
 	READ_NODE_FIELD(arg);
@@ -926,7 +926,7 @@ _readArrayCoerceExpr(void)
  */
 static ConvertRowtypeExpr *
 _readConvertRowtypeExpr(void)
-{	StackTrace("_readConvertRowtypeExpr");
+{
 	READ_LOCALS(ConvertRowtypeExpr);
 
 	READ_NODE_FIELD(arg);
@@ -942,7 +942,7 @@ _readConvertRowtypeExpr(void)
  */
 static CollateExpr *
 _readCollateExpr(void)
-{	StackTrace("_readCollateExpr");
+{
 	READ_LOCALS(CollateExpr);
 
 	READ_NODE_FIELD(arg);
@@ -957,7 +957,7 @@ _readCollateExpr(void)
  */
 static CaseExpr *
 _readCaseExpr(void)
-{	StackTrace("_readCaseExpr");
+{
 	READ_LOCALS(CaseExpr);
 
 	READ_OID_FIELD(casetype);
@@ -975,7 +975,7 @@ _readCaseExpr(void)
  */
 static CaseWhen *
 _readCaseWhen(void)
-{	StackTrace("_readCaseWhen");
+{
 	READ_LOCALS(CaseWhen);
 
 	READ_NODE_FIELD(expr);
@@ -990,7 +990,7 @@ _readCaseWhen(void)
  */
 static CaseTestExpr *
 _readCaseTestExpr(void)
-{	StackTrace("_readCaseTestExpr");
+{
 	READ_LOCALS(CaseTestExpr);
 
 	READ_OID_FIELD(typeId);
@@ -1005,7 +1005,7 @@ _readCaseTestExpr(void)
  */
 static ArrayExpr *
 _readArrayExpr(void)
-{	StackTrace("_readArrayExpr");
+{
 	READ_LOCALS(ArrayExpr);
 
 	READ_OID_FIELD(array_typeid);
@@ -1023,7 +1023,7 @@ _readArrayExpr(void)
  */
 static RowExpr *
 _readRowExpr(void)
-{	StackTrace("_readRowExpr");
+{
 	READ_LOCALS(RowExpr);
 
 	READ_NODE_FIELD(args);
@@ -1040,7 +1040,7 @@ _readRowExpr(void)
  */
 static RowCompareExpr *
 _readRowCompareExpr(void)
-{	StackTrace("_readRowCompareExpr");
+{
 	READ_LOCALS(RowCompareExpr);
 
 	READ_ENUM_FIELD(rctype, RowCompareType);
@@ -1058,7 +1058,7 @@ _readRowCompareExpr(void)
  */
 static CoalesceExpr *
 _readCoalesceExpr(void)
-{	StackTrace("_readCoalesceExpr");
+{
 	READ_LOCALS(CoalesceExpr);
 
 	READ_OID_FIELD(coalescetype);
@@ -1074,7 +1074,7 @@ _readCoalesceExpr(void)
  */
 static MinMaxExpr *
 _readMinMaxExpr(void)
-{	StackTrace("_readMinMaxExpr");
+{
 	READ_LOCALS(MinMaxExpr);
 
 	READ_OID_FIELD(minmaxtype);
@@ -1092,7 +1092,7 @@ _readMinMaxExpr(void)
  */
 static XmlExpr *
 _readXmlExpr(void)
-{	StackTrace("_readXmlExpr");
+{
 	READ_LOCALS(XmlExpr);
 
 	READ_ENUM_FIELD(op, XmlExprOp);
@@ -1113,7 +1113,7 @@ _readXmlExpr(void)
  */
 static NullTest *
 _readNullTest(void)
-{	StackTrace("_readNullTest");
+{
 	READ_LOCALS(NullTest);
 
 	READ_NODE_FIELD(arg);
@@ -1129,7 +1129,7 @@ _readNullTest(void)
  */
 static BooleanTest *
 _readBooleanTest(void)
-{	StackTrace("_readBooleanTest");
+{
 	READ_LOCALS(BooleanTest);
 
 	READ_NODE_FIELD(arg);
@@ -1144,7 +1144,7 @@ _readBooleanTest(void)
  */
 static CoerceToDomain *
 _readCoerceToDomain(void)
-{	StackTrace("_readCoerceToDomain");
+{
 	READ_LOCALS(CoerceToDomain);
 
 	READ_NODE_FIELD(arg);
@@ -1162,7 +1162,7 @@ _readCoerceToDomain(void)
  */
 static CoerceToDomainValue *
 _readCoerceToDomainValue(void)
-{	StackTrace("_readCoerceToDomainValue");
+{
 	READ_LOCALS(CoerceToDomainValue);
 
 	READ_OID_FIELD(typeId);
@@ -1178,7 +1178,7 @@ _readCoerceToDomainValue(void)
  */
 static SetToDefault *
 _readSetToDefault(void)
-{	StackTrace("_readSetToDefault");
+{
 	READ_LOCALS(SetToDefault);
 
 	READ_OID_FIELD(typeId);
@@ -1194,7 +1194,7 @@ _readSetToDefault(void)
  */
 static CurrentOfExpr *
 _readCurrentOfExpr(void)
-{	StackTrace("_readCurrentOfExpr");
+{
 	READ_LOCALS(CurrentOfExpr);
 
 	READ_UINT_FIELD(cvarno);
@@ -1209,7 +1209,7 @@ _readCurrentOfExpr(void)
  */
 static InferenceElem *
 _readInferenceElem(void)
-{	StackTrace("_readInferenceElem");
+{
 	READ_LOCALS(InferenceElem);
 
 	READ_NODE_FIELD(expr);
@@ -1224,7 +1224,7 @@ _readInferenceElem(void)
  */
 static TargetEntry *
 _readTargetEntry(void)
-{	StackTrace("_readTargetEntry");
+{
 	READ_LOCALS(TargetEntry);
 
 	READ_NODE_FIELD(expr);
@@ -1243,7 +1243,7 @@ _readTargetEntry(void)
  */
 static RangeTblRef *
 _readRangeTblRef(void)
-{	StackTrace("_readRangeTblRef");
+{
 	READ_LOCALS(RangeTblRef);
 
 	READ_INT_FIELD(rtindex);
@@ -1256,7 +1256,7 @@ _readRangeTblRef(void)
  */
 static JoinExpr *
 _readJoinExpr(void)
-{	StackTrace("_readJoinExpr");
+{
 	READ_LOCALS(JoinExpr);
 
 	READ_ENUM_FIELD(jointype, JoinType);
@@ -1276,7 +1276,7 @@ _readJoinExpr(void)
  */
 static FromExpr *
 _readFromExpr(void)
-{	StackTrace("_readFromExpr");
+{
 	READ_LOCALS(FromExpr);
 
 	READ_NODE_FIELD(fromlist);
@@ -1290,7 +1290,7 @@ _readFromExpr(void)
  */
 static OnConflictExpr *
 _readOnConflictExpr(void)
-{	StackTrace("_readOnConflictExpr");
+{
 	READ_LOCALS(OnConflictExpr);
 
 	READ_ENUM_FIELD(action, OnConflictAction);
@@ -1314,7 +1314,7 @@ _readOnConflictExpr(void)
  */
 static RangeTblEntry *
 _readRangeTblEntry(void)
-{	StackTrace("_readRangeTblEntry");
+{
 	READ_LOCALS(RangeTblEntry);
 
 	/* put alias + eref first to make dump more legible */
@@ -1377,7 +1377,7 @@ _readRangeTblEntry(void)
  */
 static RangeTblFunction *
 _readRangeTblFunction(void)
-{	StackTrace("_readRangeTblFunction");
+{
 	READ_LOCALS(RangeTblFunction);
 
 	READ_NODE_FIELD(funcexpr);
@@ -1402,7 +1402,7 @@ _readRangeTblFunction(void)
  */
 Node *
 parseNodeString(void)
-{	StackTrace("parseNodeString");
+{
 	void	   *return_value;
 
 	READ_TEMP_LOCALS();
@@ -1551,7 +1551,7 @@ parseNodeString(void)
  */
 static Datum
 readDatum(bool typbyval)
-{	StackTrace("readDatum");
+{
 	Size		length,
 				i;
 	int			tokenLength;

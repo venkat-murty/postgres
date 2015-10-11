@@ -32,7 +32,7 @@
  */
 static void
 _bt_restore_page(Page page, char *from, int len)
-{	StackTrace("_bt_restore_page");
+{
 	IndexTupleData itupdata;
 	Size		itemsz;
 	char	   *end = from + len;
@@ -73,7 +73,7 @@ _bt_restore_page(Page page, char *from, int len)
 
 static void
 _bt_restore_meta(XLogReaderState *record, uint8 block_id)
-{	StackTrace("_bt_restore_meta");
+{
 	XLogRecPtr	lsn = record->EndRecPtr;
 	Buffer		metabuf;
 	Page		metapg;
@@ -124,7 +124,7 @@ _bt_restore_meta(XLogReaderState *record, uint8 block_id)
  */
 static void
 _bt_clear_incomplete_split(XLogReaderState *record, uint8 block_id)
-{	StackTrace("_bt_clear_incomplete_split");
+{
 	XLogRecPtr	lsn = record->EndRecPtr;
 	Buffer		buf;
 
@@ -145,7 +145,7 @@ _bt_clear_incomplete_split(XLogReaderState *record, uint8 block_id)
 
 static void
 btree_xlog_insert(bool isleaf, bool ismeta, XLogReaderState *record)
-{	StackTrace("btree_xlog_insert");
+{
 	XLogRecPtr	lsn = record->EndRecPtr;
 	xl_btree_insert *xlrec = (xl_btree_insert *) XLogRecGetData(record);
 	Buffer		buffer;
@@ -192,7 +192,7 @@ btree_xlog_insert(bool isleaf, bool ismeta, XLogReaderState *record)
 
 static void
 btree_xlog_split(bool onleft, bool isroot, XLogReaderState *record)
-{	StackTrace("btree_xlog_split");
+{
 	XLogRecPtr	lsn = record->EndRecPtr;
 	xl_btree_split *xlrec = (xl_btree_split *) XLogRecGetData(record);
 	bool		isleaf = (xlrec->level == 0);
@@ -383,7 +383,7 @@ btree_xlog_split(bool onleft, bool isroot, XLogReaderState *record)
 
 static void
 btree_xlog_vacuum(XLogReaderState *record)
-{	StackTrace("btree_xlog_vacuum");
+{
 	XLogRecPtr	lsn = record->EndRecPtr;
 	xl_btree_vacuum *xlrec = (xl_btree_vacuum *) XLogRecGetData(record);
 	Buffer		buffer;
@@ -498,7 +498,7 @@ btree_xlog_vacuum(XLogReaderState *record)
  */
 static TransactionId
 btree_xlog_delete_get_latestRemovedXid(XLogReaderState *record)
-{	StackTrace("btree_xlog_delete_get_latestRemovedXid");
+{
 	xl_btree_delete *xlrec = (xl_btree_delete *) XLogRecGetData(record);
 	OffsetNumber *unused;
 	Buffer		ibuffer,
@@ -640,7 +640,7 @@ btree_xlog_delete_get_latestRemovedXid(XLogReaderState *record)
 
 static void
 btree_xlog_delete(XLogReaderState *record)
-{	StackTrace("btree_xlog_delete");
+{
 	XLogRecPtr	lsn = record->EndRecPtr;
 	xl_btree_delete *xlrec = (xl_btree_delete *) XLogRecGetData(record);
 	Buffer		buffer;
@@ -701,7 +701,7 @@ btree_xlog_delete(XLogReaderState *record)
 
 static void
 btree_xlog_mark_page_halfdead(uint8 info, XLogReaderState *record)
-{	StackTrace("btree_xlog_mark_page_halfdead");
+{
 	XLogRecPtr	lsn = record->EndRecPtr;
 	xl_btree_mark_page_halfdead *xlrec = (xl_btree_mark_page_halfdead *) XLogRecGetData(record);
 	Buffer		buffer;
@@ -783,7 +783,7 @@ btree_xlog_mark_page_halfdead(uint8 info, XLogReaderState *record)
 
 static void
 btree_xlog_unlink_page(uint8 info, XLogReaderState *record)
-{	StackTrace("btree_xlog_unlink_page");
+{
 	XLogRecPtr	lsn = record->EndRecPtr;
 	xl_btree_unlink_page *xlrec = (xl_btree_unlink_page *) XLogRecGetData(record);
 	BlockNumber leftsib;
@@ -897,7 +897,7 @@ btree_xlog_unlink_page(uint8 info, XLogReaderState *record)
 
 static void
 btree_xlog_newroot(XLogReaderState *record)
-{	StackTrace("btree_xlog_newroot");
+{
 	XLogRecPtr	lsn = record->EndRecPtr;
 	xl_btree_newroot *xlrec = (xl_btree_newroot *) XLogRecGetData(record);
 	Buffer		buffer;
@@ -937,7 +937,7 @@ btree_xlog_newroot(XLogReaderState *record)
 
 static void
 btree_xlog_reuse_page(XLogReaderState *record)
-{	StackTrace("btree_xlog_reuse_page");
+{
 	xl_btree_reuse_page *xlrec = (xl_btree_reuse_page *) XLogRecGetData(record);
 
 	/*
@@ -960,7 +960,7 @@ btree_xlog_reuse_page(XLogReaderState *record)
 
 void
 btree_redo(XLogReaderState *record)
-{	StackTrace("btree_redo");
+{
 	uint8		info = XLogRecGetInfo(record) & ~XLR_INFO_MASK;
 
 	switch (info)

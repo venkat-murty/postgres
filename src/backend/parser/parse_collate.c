@@ -99,7 +99,7 @@ static void assign_hypothetical_collations(Aggref *aggref,
  */
 void
 assign_query_collations(ParseState *pstate, Query *query)
-{	StackTrace("assign_query_collations");
+{
 	/*
 	 * We just use query_tree_walker() to visit all the contained expressions.
 	 * We can skip the rangetable and CTE subqueries, though, since RTEs and
@@ -124,7 +124,7 @@ assign_query_collations(ParseState *pstate, Query *query)
  */
 static bool
 assign_query_collations_walker(Node *node, ParseState *pstate)
-{	StackTrace("assign_query_collations_walker");
+{
 	/* Need do nothing for empty subexpressions */
 	if (node == NULL)
 		return false;
@@ -153,7 +153,7 @@ assign_query_collations_walker(Node *node, ParseState *pstate)
  */
 void
 assign_list_collations(ParseState *pstate, List *exprs)
-{	StackTrace("assign_list_collations");
+{
 	ListCell   *lc;
 
 	foreach(lc, exprs)
@@ -175,7 +175,7 @@ assign_list_collations(ParseState *pstate, List *exprs)
  */
 void
 assign_expr_collations(ParseState *pstate, Node *expr)
-{	StackTrace("assign_expr_collations");
+{
 	assign_collations_context context;
 
 	/* initialize context for tree walk */
@@ -206,7 +206,7 @@ assign_expr_collations(ParseState *pstate, Node *expr)
  */
 Oid
 select_common_collation(ParseState *pstate, List *exprs, bool none_ok)
-{	StackTrace("select_common_collation");
+{
 	assign_collations_context context;
 
 	/* initialize context for tree walk */
@@ -253,7 +253,7 @@ select_common_collation(ParseState *pstate, List *exprs, bool none_ok)
  */
 static bool
 assign_collations_walker(Node *node, assign_collations_context *context)
-{	StackTrace("assign_collations_walker");
+{
 	assign_collations_context loccontext;
 	Oid			collation;
 	CollateStrength strength;
@@ -762,7 +762,7 @@ merge_collation_state(Oid collation,
 					  Oid collation2,
 					  int location2,
 					  assign_collations_context *context)
-{	StackTrace("merge_collation_state");
+{
 	/*
 	 * If the collation strength for this node is different from what's
 	 * already in *context, then this node either dominates or is dominated by
@@ -859,7 +859,7 @@ merge_collation_state(Oid collation,
 static void
 assign_aggregate_collations(Aggref *aggref,
 							assign_collations_context *loccontext)
-{	StackTrace("assign_aggregate_collations");
+{
 	ListCell   *lc;
 
 	/* Plain aggregates have no direct args */
@@ -898,7 +898,7 @@ assign_aggregate_collations(Aggref *aggref,
 static void
 assign_ordered_set_collations(Aggref *aggref,
 							  assign_collations_context *loccontext)
-{	StackTrace("assign_ordered_set_collations");
+{
 	bool		merge_sort_collations;
 	ListCell   *lc;
 
@@ -935,7 +935,7 @@ assign_ordered_set_collations(Aggref *aggref,
 static void
 assign_hypothetical_collations(Aggref *aggref,
 							   assign_collations_context *loccontext)
-{	StackTrace("assign_hypothetical_collations");
+{
 	ListCell   *h_cell = list_head(aggref->aggdirectargs);
 	ListCell   *s_cell = list_head(aggref->args);
 	bool		merge_sort_collations;

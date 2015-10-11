@@ -47,7 +47,7 @@ static int	oid_cmp(const void *p1, const void *p2);
  */
 List *
 find_inheritance_children(Oid parentrelId, LOCKMODE lockmode)
-{	StackTrace("find_inheritance_children");
+{
 	List	   *list = NIL;
 	Relation	relation;
 	SysScanDesc scan;
@@ -157,7 +157,7 @@ find_inheritance_children(Oid parentrelId, LOCKMODE lockmode)
  */
 List *
 find_all_inheritors(Oid parentrelId, LOCKMODE lockmode, List **numparents)
-{	StackTrace("find_all_inheritors");
+{
 	List	   *rels_list,
 			   *rel_numparents;
 	ListCell   *l;
@@ -241,7 +241,7 @@ find_all_inheritors(Oid parentrelId, LOCKMODE lockmode, List **numparents)
  */
 bool
 has_subclass(Oid relationId)
-{	StackTrace("has_subclass");
+{
 	HeapTuple	tuple;
 	bool		result;
 
@@ -261,7 +261,7 @@ has_subclass(Oid relationId)
  */
 bool
 typeInheritsFrom(Oid subclassTypeId, Oid superclassTypeId)
-{	StackTrace("typeInheritsFrom");
+{
 	bool		result = false;
 	Oid			subclassRelid;
 	Oid			superclassRelid;
@@ -362,7 +362,7 @@ typeInheritsFrom(Oid subclassTypeId, Oid superclassTypeId)
 /* qsort comparison function */
 static int
 oid_cmp(const void *p1, const void *p2)
-{	StackTrace("oid_cmp");
+{
 	Oid			v1 = *((const Oid *) p1);
 	Oid			v2 = *((const Oid *) p2);
 

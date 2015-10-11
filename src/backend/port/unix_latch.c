@@ -76,7 +76,7 @@ static void drainSelfPipe(void);
  */
 void
 InitializeLatchSupport(void)
-{	StackTrace("InitializeLatchSupport");
+{
 	int			pipefd[2];
 
 	Assert(selfpipe_readfd == -1);
@@ -104,7 +104,7 @@ InitializeLatchSupport(void)
  */
 void
 InitLatch(volatile Latch *latch)
-{	StackTrace("InitLatch");
+{
 	/* Assert InitializeLatchSupport has been called in this process */
 	Assert(selfpipe_readfd >= 0);
 
@@ -126,7 +126,7 @@ InitLatch(volatile Latch *latch)
  */
 void
 InitSharedLatch(volatile Latch *latch)
-{	StackTrace("InitSharedLatch");
+{
 	latch->is_set = false;
 	latch->owner_pid = 0;
 	latch->is_shared = true;
@@ -147,7 +147,7 @@ InitSharedLatch(volatile Latch *latch)
  */
 void
 OwnLatch(volatile Latch *latch)
-{	StackTrace("OwnLatch");
+{
 	/* Assert InitializeLatchSupport has been called in this process */
 	Assert(selfpipe_readfd >= 0);
 
@@ -165,7 +165,7 @@ OwnLatch(volatile Latch *latch)
  */
 void
 DisownLatch(volatile Latch *latch)
-{	StackTrace("DisownLatch");
+{
 	Assert(latch->is_shared);
 	Assert(latch->owner_pid == MyProcPid);
 
@@ -193,7 +193,7 @@ DisownLatch(volatile Latch *latch)
  */
 int
 WaitLatch(volatile Latch *latch, int wakeEvents, long timeout)
-{	StackTrace("WaitLatch");
+{
 	return WaitLatchOrSocket(latch, wakeEvents, PGINVALID_SOCKET, timeout);
 }
 
@@ -208,7 +208,7 @@ WaitLatch(volatile Latch *latch, int wakeEvents, long timeout)
 int
 WaitLatchOrSocket(volatile Latch *latch, int wakeEvents, pgsocket sock,
 				  long timeout)
-{	StackTrace("WaitLatchOrSocket");
+{
 	int			result = 0;
 	int			rc;
 	instr_time	start_time,
@@ -512,7 +512,7 @@ WaitLatchOrSocket(volatile Latch *latch, int wakeEvents, pgsocket sock,
  */
 void
 SetLatch(volatile Latch *latch)
-{	StackTrace("SetLatch");
+{
 	pid_t		owner_pid;
 
 	/*
@@ -567,7 +567,7 @@ SetLatch(volatile Latch *latch)
  */
 void
 ResetLatch(volatile Latch *latch)
-{	StackTrace("ResetLatch");
+{
 	/* Only the owner should reset the latch */
 	Assert(latch->owner_pid == MyProcPid);
 
@@ -594,7 +594,7 @@ ResetLatch(volatile Latch *latch)
  */
 void
 latch_sigusr1_handler(void)
-{	StackTrace("latch_sigusr1_handler");
+{
 	if (waiting)
 		sendSelfPipeByte();
 }
@@ -602,7 +602,7 @@ latch_sigusr1_handler(void)
 /* Send one byte to the self-pipe, to wake up WaitLatch */
 static void
 sendSelfPipeByte(void)
-{	StackTrace("sendSelfPipeByte");
+{
 	int			rc;
 	char		dummy = 0;
 
@@ -639,7 +639,7 @@ retry:
  */
 static void
 drainSelfPipe(void)
-{	StackTrace("drainSelfPipe");
+{
 	/*
 	 * There shouldn't normally be more than one byte in the pipe, or maybe a
 	 * few bytes if multiple processes run SetLatch at the same instant.

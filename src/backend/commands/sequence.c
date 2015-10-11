@@ -106,7 +106,7 @@ static void process_owned_by(Relation seqrel, List *owned_by);
  */
 ObjectAddress
 DefineSequence(CreateSeqStmt *seq)
-{	StackTrace("DefineSequence");
+{
 	FormData_pg_sequence new;
 	List	   *owned_by;
 	CreateStmt *stmt = makeNode(CreateStmt);
@@ -268,7 +268,7 @@ DefineSequence(CreateSeqStmt *seq)
  */
 void
 ResetSequence(Oid seq_relid)
-{	StackTrace("ResetSequence");
+{
 	Relation	seq_rel;
 	SeqTable	elm;
 	Form_pg_sequence seq;
@@ -326,7 +326,7 @@ ResetSequence(Oid seq_relid)
  */
 static void
 fill_seq_with_data(Relation rel, HeapTuple tuple)
-{	StackTrace("fill_seq_with_data");
+{
 	Buffer		buf;
 	Page		page;
 	sequence_magic *sm;
@@ -405,7 +405,7 @@ fill_seq_with_data(Relation rel, HeapTuple tuple)
  */
 ObjectAddress
 AlterSequence(AlterSeqStmt *stmt)
-{	StackTrace("AlterSequence");
+{
 	Oid			relid;
 	SeqTable	elm;
 	Relation	seqrel;
@@ -502,7 +502,7 @@ AlterSequence(AlterSeqStmt *stmt)
  */
 Datum
 nextval(PG_FUNCTION_ARGS)
-{	StackTrace("nextval");
+{
 	text	   *seqin = PG_GETARG_TEXT_P(0);
 	RangeVar   *sequence;
 	Oid			relid;
@@ -524,7 +524,7 @@ nextval(PG_FUNCTION_ARGS)
 
 Datum
 nextval_oid(PG_FUNCTION_ARGS)
-{	StackTrace("nextval_oid");
+{
 	Oid			relid = PG_GETARG_OID(0);
 
 	PG_RETURN_INT64(nextval_internal(relid));
@@ -532,7 +532,7 @@ nextval_oid(PG_FUNCTION_ARGS)
 
 static int64
 nextval_internal(Oid relid)
-{	StackTrace("nextval_internal");
+{
 	SeqTable	elm;
 	Relation	seqrel;
 	Buffer		buf;
@@ -770,7 +770,7 @@ nextval_internal(Oid relid)
 
 Datum
 currval_oid(PG_FUNCTION_ARGS)
-{	StackTrace("currval_oid");
+{
 	Oid			relid = PG_GETARG_OID(0);
 	int64		result;
 	SeqTable	elm;
@@ -801,7 +801,7 @@ currval_oid(PG_FUNCTION_ARGS)
 
 Datum
 lastval(PG_FUNCTION_ARGS)
-{	StackTrace("lastval");
+{
 	Relation	seqrel;
 	int64		result;
 
@@ -849,7 +849,7 @@ lastval(PG_FUNCTION_ARGS)
  */
 static void
 do_setval(Oid relid, int64 next, bool iscalled)
-{	StackTrace("do_setval");
+{
 	SeqTable	elm;
 	Relation	seqrel;
 	Buffer		buf;
@@ -950,7 +950,7 @@ do_setval(Oid relid, int64 next, bool iscalled)
  */
 Datum
 setval_oid(PG_FUNCTION_ARGS)
-{	StackTrace("setval_oid");
+{
 	Oid			relid = PG_GETARG_OID(0);
 	int64		next = PG_GETARG_INT64(1);
 
@@ -965,7 +965,7 @@ setval_oid(PG_FUNCTION_ARGS)
  */
 Datum
 setval3_oid(PG_FUNCTION_ARGS)
-{	StackTrace("setval3_oid");
+{
 	Oid			relid = PG_GETARG_OID(0);
 	int64		next = PG_GETARG_INT64(1);
 	bool		iscalled = PG_GETARG_BOOL(2);
@@ -986,7 +986,7 @@ setval3_oid(PG_FUNCTION_ARGS)
  */
 static Relation
 open_share_lock(SeqTable seq)
-{	StackTrace("open_share_lock");
+{
 	LocalTransactionId thislxid = MyProc->lxid;
 
 	/* Get the lock if not already held in this xact */
@@ -1022,7 +1022,7 @@ open_share_lock(SeqTable seq)
  */
 static void
 create_seq_hashtable(void)
-{	StackTrace("create_seq_hashtable");
+{
 	HASHCTL		ctl;
 
 	memset(&ctl, 0, sizeof(ctl));
@@ -1039,7 +1039,7 @@ create_seq_hashtable(void)
  */
 static void
 init_sequence(Oid relid, SeqTable *p_elm, Relation *p_rel)
-{	StackTrace("init_sequence");
+{
 	SeqTable	elm;
 	Relation	seqrel;
 	bool		found;
@@ -1106,7 +1106,7 @@ init_sequence(Oid relid, SeqTable *p_elm, Relation *p_rel)
  */
 static Form_pg_sequence
 read_seq_tuple(SeqTable elm, Relation rel, Buffer *buf, HeapTuple seqtuple)
-{	StackTrace("read_seq_tuple");
+{
 	Page		page;
 	ItemId		lp;
 	sequence_magic *sm;
@@ -1165,7 +1165,7 @@ read_seq_tuple(SeqTable elm, Relation rel, Buffer *buf, HeapTuple seqtuple)
 static void
 init_params(List *options, bool isInit,
 			Form_pg_sequence new, List **owned_by)
-{	StackTrace("init_params");
+{
 	DefElem    *start_value = NULL;
 	DefElem    *restart_value = NULL;
 	DefElem    *increment_by = NULL;
@@ -1433,7 +1433,7 @@ init_params(List *options, bool isInit,
  */
 static void
 process_owned_by(Relation seqrel, List *owned_by)
-{	StackTrace("process_owned_by");
+{
 	int			nnames;
 	Relation	tablerel;
 	AttrNumber	attnum;
@@ -1523,7 +1523,7 @@ process_owned_by(Relation seqrel, List *owned_by)
  */
 Datum
 pg_sequence_parameters(PG_FUNCTION_ARGS)
-{	StackTrace("pg_sequence_parameters");
+{
 	Oid			relid = PG_GETARG_OID(0);
 	TupleDesc	tupdesc;
 	Datum		values[5];
@@ -1576,7 +1576,7 @@ pg_sequence_parameters(PG_FUNCTION_ARGS)
 
 void
 seq_redo(XLogReaderState *record)
-{	StackTrace("seq_redo");
+{
 	XLogRecPtr	lsn = record->EndRecPtr;
 	uint8		info = XLogRecGetInfo(record) & ~XLR_INFO_MASK;
 	Buffer		buffer;
@@ -1629,7 +1629,7 @@ seq_redo(XLogReaderState *record)
  */
 void
 ResetSequenceCaches(void)
-{	StackTrace("ResetSequenceCaches");
+{
 	if (seqhashtab)
 	{
 		hash_destroy(seqhashtab);

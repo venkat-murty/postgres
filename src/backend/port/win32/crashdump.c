@@ -77,7 +77,7 @@ typedef BOOL (WINAPI * MINIDUMPWRITEDUMP) (HANDLE hProcess, DWORD dwPid, HANDLE 
  */
 static LONG WINAPI
 crashDumpHandler(struct _EXCEPTION_POINTERS * pExceptionInfo)
-{	StackTrace("crashDumpHandler");
+{
 	/*
 	 * We only write crash dumps if the "crashdumps" directory within the
 	 * postgres data directory exists.
@@ -165,6 +165,6 @@ crashDumpHandler(struct _EXCEPTION_POINTERS * pExceptionInfo)
 
 void
 pgwin32_install_crashdump_handler(void)
-{	StackTrace("pgwin32_install_crashdump_handler");
+{
 	SetUnhandledExceptionFilter(crashDumpHandler);
 }

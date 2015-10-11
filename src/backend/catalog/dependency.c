@@ -201,7 +201,7 @@ static bool stack_address_present_add_flags(const ObjectAddress *object,
 static void
 deleteObjectsInList(ObjectAddresses *targetObjects, Relation *depRel,
 					int flags)
-{	StackTrace("deleteObjectsInList");
+{
 	int			i;
 
 	/*
@@ -263,7 +263,7 @@ deleteObjectsInList(ObjectAddresses *targetObjects, Relation *depRel,
 void
 performDeletion(const ObjectAddress *object,
 				DropBehavior behavior, int flags)
-{	StackTrace("performDeletion");
+{
 	Relation	depRel;
 	ObjectAddresses *targetObjects;
 
@@ -321,7 +321,7 @@ performDeletion(const ObjectAddress *object,
 void
 performMultipleDeletions(const ObjectAddresses *objects,
 						 DropBehavior behavior, int flags)
-{	StackTrace("performMultipleDeletions");
+{
 	Relation	depRel;
 	ObjectAddresses *targetObjects;
 	int			i;
@@ -400,7 +400,7 @@ performMultipleDeletions(const ObjectAddresses *objects,
 void
 deleteWhatDependsOn(const ObjectAddress *object,
 					bool showNotices)
-{	StackTrace("deleteWhatDependsOn");
+{
 	Relation	depRel;
 	ObjectAddresses *targetObjects;
 	int			i;
@@ -501,7 +501,7 @@ findDependentObjects(const ObjectAddress *object,
 					 ObjectAddresses *targetObjects,
 					 const ObjectAddresses *pendingObjects,
 					 Relation *depRel)
-{	StackTrace("findDependentObjects");
+{
 	ScanKeyData key[3];
 	int			nkeys;
 	SysScanDesc scan;
@@ -852,7 +852,7 @@ reportDependentObjects(const ObjectAddresses *targetObjects,
 					   DropBehavior behavior,
 					   int msglevel,
 					   const ObjectAddress *origObject)
-{	StackTrace("reportDependentObjects");
+{
 	bool		ok = true;
 	StringInfoData clientdetail;
 	StringInfoData logdetail;
@@ -1020,7 +1020,7 @@ reportDependentObjects(const ObjectAddresses *targetObjects,
  */
 static void
 deleteOneObject(const ObjectAddress *object, Relation *depRel, int flags)
-{	StackTrace("deleteOneObject");
+{
 	ScanKeyData key[3];
 	int			nkeys;
 	SysScanDesc scan;
@@ -1123,7 +1123,7 @@ deleteOneObject(const ObjectAddress *object, Relation *depRel, int flags)
  */
 static void
 doDeletion(const ObjectAddress *object, int flags)
-{	StackTrace("doDeletion");
+{
 	switch (getObjectClass(object))
 	{
 		case OCLASS_CLASS:
@@ -1285,7 +1285,7 @@ doDeletion(const ObjectAddress *object, int flags)
  */
 static void
 AcquireDeletionLock(const ObjectAddress *object, int flags)
-{	StackTrace("AcquireDeletionLock");
+{
 	if (object->classId == RelationRelationId)
 	{
 		/*
@@ -1312,7 +1312,7 @@ AcquireDeletionLock(const ObjectAddress *object, int flags)
  */
 static void
 ReleaseDeletionLock(const ObjectAddress *object)
-{	StackTrace("ReleaseDeletionLock");
+{
 	if (object->classId == RelationRelationId)
 		UnlockRelationOid(object->objectId, AccessExclusiveLock);
 	else
@@ -1339,7 +1339,7 @@ void
 recordDependencyOnExpr(const ObjectAddress *depender,
 					   Node *expr, List *rtable,
 					   DependencyType behavior)
-{	StackTrace("recordDependencyOnExpr");
+{
 	find_expr_references_context context;
 
 	context.addrs = new_object_addresses();
@@ -1381,7 +1381,7 @@ recordDependencyOnSingleRelExpr(const ObjectAddress *depender,
 								Node *expr, Oid relId,
 								DependencyType behavior,
 								DependencyType self_behavior)
-{	StackTrace("recordDependencyOnSingleRelExpr");
+{
 	find_expr_references_context context;
 	RangeTblEntry rte;
 
@@ -1472,7 +1472,7 @@ recordDependencyOnSingleRelExpr(const ObjectAddress *depender,
 static bool
 find_expr_references_walker(Node *node,
 							find_expr_references_context *context)
-{	StackTrace("find_expr_references_walker");
+{
 	if (node == NULL)
 		return false;
 	if (IsA(node, Var))
@@ -1920,7 +1920,7 @@ find_expr_references_walker(Node *node,
  */
 static void
 eliminate_duplicate_dependencies(ObjectAddresses *addrs)
-{	StackTrace("eliminate_duplicate_dependencies");
+{
 	ObjectAddress *priorobj;
 	int			oldref,
 				newrefs;
@@ -1980,7 +1980,7 @@ eliminate_duplicate_dependencies(ObjectAddresses *addrs)
  */
 static int
 object_address_comparator(const void *a, const void *b)
-{	StackTrace("object_address_comparator");
+{
 	const ObjectAddress *obja = (const ObjectAddress *) a;
 	const ObjectAddress *objb = (const ObjectAddress *) b;
 
@@ -2011,7 +2011,7 @@ object_address_comparator(const void *a, const void *b)
  */
 ObjectAddresses *
 new_object_addresses(void)
-{	StackTrace("new_object_addresses");
+{
 	ObjectAddresses *addrs;
 
 	addrs = palloc(sizeof(ObjectAddresses));
@@ -2034,7 +2034,7 @@ new_object_addresses(void)
 static void
 add_object_address(ObjectClass oclass, Oid objectId, int32 subId,
 				   ObjectAddresses *addrs)
-{	StackTrace("add_object_address");
+{
 	ObjectAddress *item;
 
 	/* enlarge array if needed */
@@ -2061,7 +2061,7 @@ add_object_address(ObjectClass oclass, Oid objectId, int32 subId,
 void
 add_exact_object_address(const ObjectAddress *object,
 						 ObjectAddresses *addrs)
-{	StackTrace("add_exact_object_address");
+{
 	ObjectAddress *item;
 
 	/* enlarge array if needed */
@@ -2087,7 +2087,7 @@ static void
 add_exact_object_address_extra(const ObjectAddress *object,
 							   const ObjectAddressExtra *extra,
 							   ObjectAddresses *addrs)
-{	StackTrace("add_exact_object_address_extra");
+{
 	ObjectAddress *item;
 	ObjectAddressExtra *itemextra;
 
@@ -2121,7 +2121,7 @@ add_exact_object_address_extra(const ObjectAddress *object,
 bool
 object_address_present(const ObjectAddress *object,
 					   const ObjectAddresses *addrs)
-{	StackTrace("object_address_present");
+{
 	int			i;
 
 	for (i = addrs->numrefs - 1; i >= 0; i--)
@@ -2148,7 +2148,7 @@ static bool
 object_address_present_add_flags(const ObjectAddress *object,
 								 int flags,
 								 ObjectAddresses *addrs)
-{	StackTrace("object_address_present_add_flags");
+{
 	bool		result = false;
 	int			i;
 
@@ -2215,7 +2215,7 @@ static bool
 stack_address_present_add_flags(const ObjectAddress *object,
 								int flags,
 								ObjectAddressStack *stack)
-{	StackTrace("stack_address_present_add_flags");
+{
 	bool		result = false;
 	ObjectAddressStack *stackptr;
 
@@ -2264,7 +2264,7 @@ void
 record_object_address_dependencies(const ObjectAddress *depender,
 								   ObjectAddresses *referenced,
 								   DependencyType behavior)
-{	StackTrace("record_object_address_dependencies");
+{
 	eliminate_duplicate_dependencies(referenced);
 	recordMultipleDependencies(depender,
 							   referenced->refs, referenced->numrefs,
@@ -2276,7 +2276,7 @@ record_object_address_dependencies(const ObjectAddress *depender,
  */
 void
 free_object_addresses(ObjectAddresses *addrs)
-{	StackTrace("free_object_addresses");
+{
 	pfree(addrs->refs);
 	if (addrs->extras)
 		pfree(addrs->extras);
@@ -2291,7 +2291,7 @@ free_object_addresses(ObjectAddresses *addrs)
  */
 ObjectClass
 getObjectClass(const ObjectAddress *object)
-{	StackTrace("getObjectClass");
+{
 	/* only pg_class entries can have nonzero objectSubId */
 	if (object->classId != RelationRelationId &&
 		object->objectSubId != 0)

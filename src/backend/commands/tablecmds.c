@@ -448,7 +448,7 @@ static void RangeVarCallbackForAlterRelation(const RangeVar *rv, Oid relid,
 ObjectAddress
 DefineRelation(CreateStmt *stmt, char relkind, Oid ownerId,
 			   ObjectAddress *typaddress)
-{	StackTrace("DefineRelation");
+{
 	char		relname[NAMEDATALEN];
 	Oid			namespaceId;
 	List	   *schema = stmt->tableElts;
@@ -719,7 +719,7 @@ DefineRelation(CreateStmt *stmt, char relkind, Oid ownerId,
  */
 static void
 DropErrorMsgNonExistent(RangeVar *rel, char rightkind, bool missing_ok)
-{	StackTrace("DropErrorMsgNonExistent");
+{
 	const struct dropmsgstrings *rentry;
 
 	if (rel->schemaname != NULL &&
@@ -767,7 +767,7 @@ DropErrorMsgNonExistent(RangeVar *rel, char rightkind, bool missing_ok)
  */
 static void
 DropErrorMsgWrongType(const char *relname, char wrongkind, char rightkind)
-{	StackTrace("DropErrorMsgWrongType");
+{
 	const struct dropmsgstrings *rentry;
 	const struct dropmsgstrings *wentry;
 
@@ -794,7 +794,7 @@ DropErrorMsgWrongType(const char *relname, char wrongkind, char rightkind)
  */
 void
 RemoveRelations(DropStmt *drop)
-{	StackTrace("RemoveRelations");
+{
 	ObjectAddresses *objects;
 	char		relkind;
 	ListCell   *cell;
@@ -915,7 +915,7 @@ RemoveRelations(DropStmt *drop)
 static void
 RangeVarCallbackForDropRelation(const RangeVar *rel, Oid relOid, Oid oldRelOid,
 								void *arg)
-{	StackTrace("RangeVarCallbackForDropRelation");
+{
 	HeapTuple	tuple;
 	struct DropRelationCallbackState *state;
 	char		relkind;
@@ -993,7 +993,7 @@ RangeVarCallbackForDropRelation(const RangeVar *rel, Oid relOid, Oid oldRelOid,
  */
 void
 ExecuteTruncate(TruncateStmt *stmt)
-{	StackTrace("ExecuteTruncate");
+{
 	List	   *rels = NIL;
 	List	   *relids = NIL;
 	List	   *seq_relids = NIL;
@@ -1281,7 +1281,7 @@ ExecuteTruncate(TruncateStmt *stmt)
  */
 static void
 truncate_check_rel(Relation rel)
-{	StackTrace("truncate_check_rel");
+{
 	AclResult	aclresult;
 
 	/* Only allow truncate on regular tables */
@@ -1326,7 +1326,7 @@ truncate_check_rel(Relation rel)
  */
 static const char *
 storage_name(char c)
-{	StackTrace("storage_name");
+{
 	switch (c)
 	{
 		case 'p':
@@ -1403,7 +1403,7 @@ storage_name(char c)
 static List *
 MergeAttributes(List *schema, List *supers, char relpersistence,
 				List **supOids, List **supconstr, int *supOidCount)
-{	StackTrace("MergeAttributes");
+{
 	ListCell   *entry;
 	List	   *inhSchema = NIL;
 	List	   *parentOids = NIL;
@@ -1924,7 +1924,7 @@ MergeAttributes(List *schema, List *supers, char relpersistence,
  */
 static bool
 MergeCheckConstraint(List *constraints, char *name, Node *expr)
-{	StackTrace("MergeCheckConstraint");
+{
 	ListCell   *lc;
 
 	foreach(lc, constraints)
@@ -1962,7 +1962,7 @@ MergeCheckConstraint(List *constraints, char *name, Node *expr)
  */
 static void
 StoreCatalogInheritance(Oid relationId, List *supers)
-{	StackTrace("StoreCatalogInheritance");
+{
 	Relation	relation;
 	int16		seqNumber;
 	ListCell   *entry;
@@ -2005,7 +2005,7 @@ StoreCatalogInheritance(Oid relationId, List *supers)
 static void
 StoreCatalogInheritance1(Oid relationId, Oid parentOid,
 						 int16 seqNumber, Relation inhRelation)
-{	StackTrace("StoreCatalogInheritance1");
+{
 	TupleDesc	desc = RelationGetDescr(inhRelation);
 	Datum		values[Natts_pg_inherits];
 	bool		nulls[Natts_pg_inherits];
@@ -2065,7 +2065,7 @@ StoreCatalogInheritance1(Oid relationId, Oid parentOid,
  */
 static int
 findAttrByName(const char *attributeName, List *schema)
-{	StackTrace("findAttrByName");
+{
 	ListCell   *s;
 	int			i = 1;
 
@@ -2097,7 +2097,7 @@ findAttrByName(const char *attributeName, List *schema)
  */
 void
 SetRelationHasSubclass(Oid relationId, bool relhassubclass)
-{	StackTrace("SetRelationHasSubclass");
+{
 	Relation	relationRelation;
 	HeapTuple	tuple;
 	Form_pg_class classtuple;
@@ -2134,7 +2134,7 @@ SetRelationHasSubclass(Oid relationId, bool relhassubclass)
  */
 static void
 renameatt_check(Oid myrelid, Form_pg_class classform, bool recursing)
-{	StackTrace("renameatt_check");
+{
 	char		relkind = classform->relkind;
 
 	if (classform->reloftype && !recursing)
@@ -2186,7 +2186,7 @@ renameatt_internal(Oid myrelid,
 				   bool recursing,
 				   int expected_parents,
 				   DropBehavior behavior)
-{	StackTrace("renameatt_internal");
+{
 	Relation	targetrelation;
 	Relation	attrelation;
 	HeapTuple	atttup;
@@ -2329,7 +2329,7 @@ renameatt_internal(Oid myrelid,
 static void
 RangeVarCallbackForRenameAttribute(const RangeVar *rv, Oid relid, Oid oldrelid,
 								   void *arg)
-{	StackTrace("RangeVarCallbackForRenameAttribute");
+{
 	HeapTuple	tuple;
 	Form_pg_class form;
 
@@ -2348,7 +2348,7 @@ RangeVarCallbackForRenameAttribute(const RangeVar *rv, Oid relid, Oid oldrelid,
  */
 ObjectAddress
 renameatt(RenameStmt *stmt)
-{	StackTrace("renameatt");
+{
 	Oid			relid;
 	AttrNumber	attnum;
 	ObjectAddress address;
@@ -2392,7 +2392,7 @@ rename_constraint_internal(Oid myrelid,
 						   bool recurse,
 						   bool recursing,
 						   int expected_parents)
-{	StackTrace("rename_constraint_internal");
+{
 	Relation	targetrelation = NULL;
 	Oid			constraintOid;
 	HeapTuple	tuple;
@@ -2485,7 +2485,7 @@ rename_constraint_internal(Oid myrelid,
 
 ObjectAddress
 RenameConstraint(RenameStmt *stmt)
-{	StackTrace("RenameConstraint");
+{
 	Oid			relid = InvalidOid;
 	Oid			typid = InvalidOid;
 
@@ -2535,7 +2535,7 @@ RenameConstraint(RenameStmt *stmt)
  */
 ObjectAddress
 RenameRelation(RenameStmt *stmt)
-{	StackTrace("RenameRelation");
+{
 	Oid			relid;
 	ObjectAddress address;
 
@@ -2579,7 +2579,7 @@ RenameRelation(RenameStmt *stmt)
  */
 void
 RenameRelationInternal(Oid myrelid, const char *newrelname, bool is_internal)
-{	StackTrace("RenameRelationInternal");
+{
 	Relation	targetrelation;
 	Relation	relrelation;	/* for RELATION relation */
 	HeapTuple	reltup;
@@ -2678,7 +2678,7 @@ RenameRelationInternal(Oid myrelid, const char *newrelname, bool is_internal)
  */
 void
 CheckTableNotInUse(Relation rel, const char *stmt)
-{	StackTrace("CheckTableNotInUse");
+{
 	int			expected_refcnt;
 
 	expected_refcnt = rel->rd_isnailed ? 2 : 1;
@@ -2707,7 +2707,7 @@ CheckTableNotInUse(Relation rel, const char *stmt)
  */
 Oid
 AlterTableLookupRelation(AlterTableStmt *stmt, LOCKMODE lockmode)
-{	StackTrace("AlterTableLookupRelation");
+{
 	return RangeVarGetRelidExtended(stmt->relation, lockmode, stmt->missing_ok, false,
 									RangeVarCallbackForAlterRelation,
 									(void *) stmt);
@@ -2757,7 +2757,7 @@ AlterTableLookupRelation(AlterTableStmt *stmt, LOCKMODE lockmode)
  */
 void
 AlterTable(Oid relid, LOCKMODE lockmode, AlterTableStmt *stmt)
-{	StackTrace("AlterTable");
+{
 	Relation	rel;
 
 	/* Caller is required to provide an adequate lock. */
@@ -2783,7 +2783,7 @@ AlterTable(Oid relid, LOCKMODE lockmode, AlterTableStmt *stmt)
  */
 void
 AlterTableInternal(Oid relid, List *cmds, bool recurse)
-{	StackTrace("AlterTableInternal");
+{
 	Relation	rel;
 	LOCKMODE	lockmode = AlterTableGetLockLevel(cmds);
 
@@ -2828,7 +2828,7 @@ AlterTableInternal(Oid relid, List *cmds, bool recurse)
  */
 LOCKMODE
 AlterTableGetLockLevel(List *cmds)
-{	StackTrace("AlterTableGetLockLevel");
+{
 	/*
 	 * This only works if we read catalog tables using MVCC snapshots.
 	 */
@@ -3072,7 +3072,7 @@ AlterTableGetLockLevel(List *cmds)
 static void
 ATController(AlterTableStmt *parsetree,
 			 Relation rel, List *cmds, bool recurse, LOCKMODE lockmode)
-{	StackTrace("ATController");
+{
 	List	   *wqueue = NIL;
 	ListCell   *lcmd;
 
@@ -3106,7 +3106,7 @@ ATController(AlterTableStmt *parsetree,
 static void
 ATPrepCmd(List **wqueue, Relation rel, AlterTableCmd *cmd,
 		  bool recurse, bool recursing, LOCKMODE lockmode)
-{	StackTrace("ATPrepCmd");
+{
 	AlteredTableInfo *tab;
 	int			pass = AT_PASS_UNSET;
 
@@ -3383,7 +3383,7 @@ ATPrepCmd(List **wqueue, Relation rel, AlterTableCmd *cmd,
  */
 static void
 ATRewriteCatalogs(List **wqueue, LOCKMODE lockmode)
-{	StackTrace("ATRewriteCatalogs");
+{
 	int			pass;
 	ListCell   *ltab;
 
@@ -3444,7 +3444,7 @@ ATRewriteCatalogs(List **wqueue, LOCKMODE lockmode)
 static void
 ATExecCmd(List **wqueue, AlteredTableInfo *tab, Relation rel,
 		  AlterTableCmd *cmd, LOCKMODE lockmode)
-{	StackTrace("ATExecCmd");
+{
 	ObjectAddress address = InvalidObjectAddress;
 
 	switch (cmd->subtype)
@@ -3691,7 +3691,7 @@ ATExecCmd(List **wqueue, AlteredTableInfo *tab, Relation rel,
  */
 static void
 ATRewriteTables(AlterTableStmt *parsetree, List **wqueue, LOCKMODE lockmode)
-{	StackTrace("ATRewriteTables");
+{
 	ListCell   *ltab;
 
 	/* Go through each table that needs to be checked or rewritten */
@@ -3920,7 +3920,7 @@ ATRewriteTables(AlterTableStmt *parsetree, List **wqueue, LOCKMODE lockmode)
  */
 static void
 ATRewriteTable(AlteredTableInfo *tab, Oid OIDNewHeap, LOCKMODE lockmode)
-{	StackTrace("ATRewriteTable");
+{
 	Relation	oldrel;
 	Relation	newrel;
 	TupleDesc	oldTupDesc;
@@ -4223,7 +4223,7 @@ ATRewriteTable(AlteredTableInfo *tab, Oid OIDNewHeap, LOCKMODE lockmode)
  */
 static AlteredTableInfo *
 ATGetQueueEntry(List **wqueue, Relation rel)
-{	StackTrace("ATGetQueueEntry");
+{
 	Oid			relid = RelationGetRelid(rel);
 	AlteredTableInfo *tab;
 	ListCell   *ltab;
@@ -4260,7 +4260,7 @@ ATGetQueueEntry(List **wqueue, Relation rel)
  */
 static void
 ATSimplePermissions(Relation rel, int allowed_targets)
-{	StackTrace("ATSimplePermissions");
+{
 	int			actual_target;
 
 	switch (rel->rd_rel->relkind)
@@ -4312,7 +4312,7 @@ ATSimplePermissions(Relation rel, int allowed_targets)
  */
 static void
 ATWrongRelkindError(Relation rel, int allowed_targets)
-{	StackTrace("ATWrongRelkindError");
+{
 	char	   *msg;
 
 	switch (allowed_targets)
@@ -4369,7 +4369,7 @@ ATWrongRelkindError(Relation rel, int allowed_targets)
 static void
 ATSimpleRecursion(List **wqueue, Relation rel,
 				  AlterTableCmd *cmd, bool recurse, LOCKMODE lockmode)
-{	StackTrace("ATSimpleRecursion");
+{
 	/*
 	 * Propagate to children if desired.  Only plain tables and foreign tables
 	 * have children, so no need to search for other relkinds.
@@ -4415,7 +4415,7 @@ ATSimpleRecursion(List **wqueue, Relation rel,
 static void
 ATTypedTableRecursion(List **wqueue, Relation rel, AlterTableCmd *cmd,
 					  LOCKMODE lockmode)
-{	StackTrace("ATTypedTableRecursion");
+{
 	ListCell   *child;
 	List	   *children;
 
@@ -4455,7 +4455,7 @@ ATTypedTableRecursion(List **wqueue, Relation rel, AlterTableCmd *cmd,
 void
 find_composite_type_dependencies(Oid typeOid, Relation origRelation,
 								 const char *origTypeName)
-{	StackTrace("find_composite_type_dependencies");
+{
 	Relation	depRel;
 	ScanKeyData key[2];
 	SysScanDesc depScan;
@@ -4563,7 +4563,7 @@ find_composite_type_dependencies(Oid typeOid, Relation origRelation,
  */
 static List *
 find_typed_table_dependencies(Oid typeOid, const char *typeName, DropBehavior behavior)
-{	StackTrace("find_typed_table_dependencies");
+{
 	Relation	classRel;
 	ScanKeyData key[1];
 	HeapScanDesc scan;
@@ -4608,7 +4608,7 @@ find_typed_table_dependencies(Oid typeOid, const char *typeName, DropBehavior be
  */
 void
 check_of_type(HeapTuple typetuple)
-{	StackTrace("check_of_type");
+{
 	Form_pg_type typ = (Form_pg_type) GETSTRUCT(typetuple);
 	bool		typeOk = false;
 
@@ -4652,7 +4652,7 @@ check_of_type(HeapTuple typetuple)
 static void
 ATPrepAddColumn(List **wqueue, Relation rel, bool recurse, bool recursing,
 				bool is_view, AlterTableCmd *cmd, LOCKMODE lockmode)
-{	StackTrace("ATPrepAddColumn");
+{
 	if (rel->rd_rel->reloftype && !recursing)
 		ereport(ERROR,
 				(errcode(ERRCODE_WRONG_OBJECT_TYPE),
@@ -4673,7 +4673,7 @@ static ObjectAddress
 ATExecAddColumn(List **wqueue, AlteredTableInfo *tab, Relation rel,
 				ColumnDef *colDef, bool isOid,
 				bool recurse, bool recursing, LOCKMODE lockmode)
-{	StackTrace("ATExecAddColumn");
+{
 	Oid			myrelid = RelationGetRelid(rel);
 	Relation	pgclass,
 				attrdesc;
@@ -5012,7 +5012,7 @@ ATExecAddColumn(List **wqueue, AlteredTableInfo *tab, Relation rel,
  */
 static void
 check_for_column_name_collision(Relation rel, const char *colname)
-{	StackTrace("check_for_column_name_collision");
+{
 	HeapTuple	attTuple;
 	int			attnum;
 
@@ -5051,7 +5051,7 @@ check_for_column_name_collision(Relation rel, const char *colname)
  */
 static void
 add_column_datatype_dependency(Oid relid, int32 attnum, Oid typid)
-{	StackTrace("add_column_datatype_dependency");
+{
 	ObjectAddress myself,
 				referenced;
 
@@ -5069,7 +5069,7 @@ add_column_datatype_dependency(Oid relid, int32 attnum, Oid typid)
  */
 static void
 add_column_collation_dependency(Oid relid, int32 attnum, Oid collid)
-{	StackTrace("add_column_collation_dependency");
+{
 	ObjectAddress myself,
 				referenced;
 
@@ -5094,7 +5094,7 @@ add_column_collation_dependency(Oid relid, int32 attnum, Oid collid)
  */
 static void
 ATPrepAddOids(List **wqueue, Relation rel, bool recurse, AlterTableCmd *cmd, LOCKMODE lockmode)
-{	StackTrace("ATPrepAddOids");
+{
 	/* If we're recursing to a child table, the ColumnDef is already set up */
 	if (cmd->def == NULL)
 	{
@@ -5123,7 +5123,7 @@ ATPrepAddOids(List **wqueue, Relation rel, bool recurse, AlterTableCmd *cmd, LOC
  */
 static ObjectAddress
 ATExecDropNotNull(Relation rel, const char *colName, LOCKMODE lockmode)
-{	StackTrace("ATExecDropNotNull");
+{
 	HeapTuple	tuple;
 	AttrNumber	attnum;
 	Relation	attr_rel;
@@ -5231,7 +5231,7 @@ ATExecDropNotNull(Relation rel, const char *colName, LOCKMODE lockmode)
 static ObjectAddress
 ATExecSetNotNull(AlteredTableInfo *tab, Relation rel,
 				 const char *colName, LOCKMODE lockmode)
-{	StackTrace("ATExecSetNotNull");
+{
 	HeapTuple	tuple;
 	AttrNumber	attnum;
 	Relation	attr_rel;
@@ -5296,7 +5296,7 @@ ATExecSetNotNull(AlteredTableInfo *tab, Relation rel,
 static ObjectAddress
 ATExecColumnDefault(Relation rel, const char *colName,
 					Node *newDefault, LOCKMODE lockmode)
-{	StackTrace("ATExecColumnDefault");
+{
 	AttrNumber	attnum;
 	ObjectAddress address;
 
@@ -5356,7 +5356,7 @@ ATExecColumnDefault(Relation rel, const char *colName,
  */
 static void
 ATPrepSetStatistics(Relation rel, const char *colName, Node *newValue, LOCKMODE lockmode)
-{	StackTrace("ATPrepSetStatistics");
+{
 	/*
 	 * We do our own permission checking because (a) we want to allow SET
 	 * STATISTICS on indexes (for expressional index columns), and (b) we want
@@ -5383,7 +5383,7 @@ ATPrepSetStatistics(Relation rel, const char *colName, Node *newValue, LOCKMODE 
  */
 static ObjectAddress
 ATExecSetStatistics(Relation rel, const char *colName, Node *newValue, LOCKMODE lockmode)
-{	StackTrace("ATExecSetStatistics");
+{
 	int			newtarget;
 	Relation	attrelation;
 	HeapTuple	tuple;
@@ -5456,7 +5456,7 @@ ATExecSetStatistics(Relation rel, const char *colName, Node *newValue, LOCKMODE 
 static ObjectAddress
 ATExecSetOptions(Relation rel, const char *colName, Node *options,
 				 bool isReset, LOCKMODE lockmode)
-{	StackTrace("ATExecSetOptions");
+{
 	Relation	attrelation;
 	HeapTuple	tuple,
 				newtuple;
@@ -5535,7 +5535,7 @@ ATExecSetOptions(Relation rel, const char *colName, Node *options,
  */
 static ObjectAddress
 ATExecSetStorage(Relation rel, const char *colName, Node *newValue, LOCKMODE lockmode)
-{	StackTrace("ATExecSetStorage");
+{
 	char	   *storagemode;
 	char		newstorage;
 	Relation	attrelation;
@@ -5625,7 +5625,7 @@ ATExecSetStorage(Relation rel, const char *colName, Node *newValue, LOCKMODE loc
 static void
 ATPrepDropColumn(List **wqueue, Relation rel, bool recurse, bool recursing,
 				 AlterTableCmd *cmd, LOCKMODE lockmode)
-{	StackTrace("ATPrepDropColumn");
+{
 	if (rel->rd_rel->reloftype && !recursing)
 		ereport(ERROR,
 				(errcode(ERRCODE_WRONG_OBJECT_TYPE),
@@ -5646,7 +5646,7 @@ ATExecDropColumn(List **wqueue, Relation rel, const char *colName,
 				 DropBehavior behavior,
 				 bool recurse, bool recursing,
 				 bool missing_ok, LOCKMODE lockmode)
-{	StackTrace("ATExecDropColumn");
+{
 	HeapTuple	tuple;
 	Form_pg_attribute targetatt;
 	AttrNumber	attnum;
@@ -5845,7 +5845,7 @@ ATExecDropColumn(List **wqueue, Relation rel, const char *colName,
 static ObjectAddress
 ATExecAddIndex(AlteredTableInfo *tab, Relation rel,
 			   IndexStmt *stmt, bool is_rebuild, LOCKMODE lockmode)
-{	StackTrace("ATExecAddIndex");
+{
 	bool		check_rights;
 	bool		skip_build;
 	bool		quiet;
@@ -5897,7 +5897,7 @@ ATExecAddIndex(AlteredTableInfo *tab, Relation rel,
 static ObjectAddress
 ATExecAddIndexConstraint(AlteredTableInfo *tab, Relation rel,
 						 IndexStmt *stmt, LOCKMODE lockmode)
-{	StackTrace("ATExecAddIndexConstraint");
+{
 	Oid			index_oid = stmt->indexOid;
 	Relation	indexRel;
 	char	   *indexName;
@@ -5977,7 +5977,7 @@ static ObjectAddress
 ATExecAddConstraint(List **wqueue, AlteredTableInfo *tab, Relation rel,
 					Constraint *newConstraint, bool recurse, bool is_readd,
 					LOCKMODE lockmode)
-{	StackTrace("ATExecAddConstraint");
+{
 	ObjectAddress address = InvalidObjectAddress;
 
 	Assert(IsA(newConstraint, Constraint));
@@ -6062,7 +6062,7 @@ static ObjectAddress
 ATAddCheckConstraint(List **wqueue, AlteredTableInfo *tab, Relation rel,
 					 Constraint *constr, bool recurse, bool recursing,
 					 bool is_readd, LOCKMODE lockmode)
-{	StackTrace("ATAddCheckConstraint");
+{
 	List	   *newcons;
 	ListCell   *lcon;
 	List	   *children;
@@ -6191,7 +6191,7 @@ ATAddCheckConstraint(List **wqueue, AlteredTableInfo *tab, Relation rel,
 static ObjectAddress
 ATAddForeignKeyConstraint(AlteredTableInfo *tab, Relation rel,
 						  Constraint *fkconstraint, LOCKMODE lockmode)
-{	StackTrace("ATAddForeignKeyConstraint");
+{
 	Relation	pkrel;
 	int16		pkattnum[INDEX_MAX_KEYS];
 	int16		fkattnum[INDEX_MAX_KEYS];
@@ -6606,7 +6606,7 @@ ATAddForeignKeyConstraint(AlteredTableInfo *tab, Relation rel,
 static ObjectAddress
 ATExecAlterConstraint(Relation rel, AlterTableCmd *cmd,
 					  bool recurse, bool recursing, LOCKMODE lockmode)
-{	StackTrace("ATExecAlterConstraint");
+{
 	Constraint *cmdcon;
 	Relation	conrel;
 	SysScanDesc scan;
@@ -6760,7 +6760,7 @@ ATExecAlterConstraint(Relation rel, AlterTableCmd *cmd,
 static ObjectAddress
 ATExecValidateConstraint(Relation rel, char *constrName, bool recurse,
 						 bool recursing, LOCKMODE lockmode)
-{	StackTrace("ATExecValidateConstraint");
+{
 	Relation	conrel;
 	SysScanDesc scan;
 	ScanKeyData key;
@@ -6924,7 +6924,7 @@ ATExecValidateConstraint(Relation rel, char *constrName, bool recurse,
 static int
 transformColumnNameList(Oid relId, List *colList,
 						int16 *attnums, Oid *atttypids)
-{	StackTrace("transformColumnNameList");
+{
 	ListCell   *l;
 	int			attnum;
 
@@ -6971,7 +6971,7 @@ transformFkeyGetPrimaryKey(Relation pkrel, Oid *indexOid,
 						   List **attnamelist,
 						   int16 *attnums, Oid *atttypids,
 						   Oid *opclasses)
-{	StackTrace("transformFkeyGetPrimaryKey");
+{
 	List	   *indexoidlist;
 	ListCell   *indexoidscan;
 	HeapTuple	indexTuple = NULL;
@@ -7206,7 +7206,7 @@ transformFkeyCheckAttrs(Relation pkrel,
 */
 static CoercionPathType
 findFkeyCast(Oid targetTypeId, Oid sourceTypeId, Oid *funcid)
-{	StackTrace("findFkeyCast");
+{
 	CoercionPathType ret;
 
 	if (targetTypeId == sourceTypeId)
@@ -7230,7 +7230,7 @@ findFkeyCast(Oid targetTypeId, Oid sourceTypeId, Oid *funcid)
 /* Permissions checks for ADD FOREIGN KEY */
 static void
 checkFkeyPermissions(Relation rel, int16 *attnums, int natts)
-{	StackTrace("checkFkeyPermissions");
+{
 	Oid			roleid = GetUserId();
 	AclResult	aclresult;
 	int			i;
@@ -7259,7 +7259,7 @@ checkFkeyPermissions(Relation rel, int16 *attnums, int natts)
  */
 static void
 validateCheckConstraint(Relation rel, HeapTuple constrtup)
-{	StackTrace("validateCheckConstraint");
+{
 	EState	   *estate;
 	Datum		val;
 	char	   *conbin;
@@ -7345,7 +7345,7 @@ validateForeignKeyConstraint(char *conname,
 							 Relation pkrel,
 							 Oid pkindOid,
 							 Oid constraintOid)
-{	StackTrace("validateForeignKeyConstraint");
+{
 	HeapScanDesc scan;
 	HeapTuple	tuple;
 	Trigger		trig;
@@ -7420,7 +7420,7 @@ validateForeignKeyConstraint(char *conname,
 static void
 CreateFKCheckTrigger(Oid myRelOid, Oid refRelOid, Constraint *fkconstraint,
 					 Oid constraintOid, Oid indexOid, bool on_insert)
-{	StackTrace("CreateFKCheckTrigger");
+{
 	CreateTrigStmt *fk_trigger;
 
 	/*
@@ -7471,7 +7471,7 @@ CreateFKCheckTrigger(Oid myRelOid, Oid refRelOid, Constraint *fkconstraint,
 static void
 createForeignKeyTriggers(Relation rel, Oid refRelOid, Constraint *fkconstraint,
 						 Oid constraintOid, Oid indexOid)
-{	StackTrace("createForeignKeyTriggers");
+{
 	Oid			myRelOid;
 	CreateTrigStmt *fk_trigger;
 
@@ -7608,7 +7608,7 @@ ATExecDropConstraint(Relation rel, const char *constrName,
 					 DropBehavior behavior,
 					 bool recurse, bool recursing,
 					 bool missing_ok, LOCKMODE lockmode)
-{	StackTrace("ATExecDropConstraint");
+{
 	List	   *children;
 	ListCell   *child;
 	Relation	conrel;
@@ -7803,7 +7803,7 @@ ATPrepAlterColumnType(List **wqueue,
 					  AlteredTableInfo *tab, Relation rel,
 					  bool recurse, bool recursing,
 					  AlterTableCmd *cmd, LOCKMODE lockmode)
-{	StackTrace("ATPrepAlterColumnType");
+{
 	char	   *colName = cmd->name;
 	ColumnDef  *def = (ColumnDef *) cmd->def;
 	TypeName   *typeName = def->typeName;
@@ -7975,7 +7975,7 @@ ATPrepAlterColumnType(List **wqueue,
  */
 static bool
 ATColumnChangeRequiresRewrite(Node *expr, AttrNumber varattno)
-{	StackTrace("ATColumnChangeRequiresRewrite");
+{
 	Assert(expr != NULL);
 
 	for (;;)
@@ -8006,7 +8006,7 @@ ATColumnChangeRequiresRewrite(Node *expr, AttrNumber varattno)
 static ObjectAddress
 ATExecAlterColumnType(AlteredTableInfo *tab, Relation rel,
 					  AlterTableCmd *cmd, LOCKMODE lockmode)
-{	StackTrace("ATExecAlterColumnType");
+{
 	char	   *colName = cmd->name;
 	ColumnDef  *def = (ColumnDef *) cmd->def;
 	TypeName   *typeName = def->typeName;
@@ -8413,7 +8413,7 @@ ATExecAlterColumnGenericOptions(Relation rel,
 								const char *colName,
 								List *options,
 								LOCKMODE lockmode)
-{	StackTrace("ATExecAlterColumnGenericOptions");
+{
 	Relation	ftrel;
 	Relation	attrel;
 	ForeignServer *server;
@@ -8521,7 +8521,7 @@ ATExecAlterColumnGenericOptions(Relation rel,
  */
 static void
 ATPostAlterTypeCleanup(List **wqueue, AlteredTableInfo *tab, LOCKMODE lockmode)
-{	StackTrace("ATPostAlterTypeCleanup");
+{
 	ObjectAddress obj;
 	ListCell   *def_item;
 	ListCell   *oid_item;
@@ -8597,7 +8597,7 @@ ATPostAlterTypeCleanup(List **wqueue, AlteredTableInfo *tab, LOCKMODE lockmode)
 static void
 ATPostAlterTypeParse(Oid oldId, Oid oldRelId, Oid refRelId, char *cmd,
 					 List **wqueue, LOCKMODE lockmode, bool rewrite)
-{	StackTrace("ATPostAlterTypeParse");
+{
 	List	   *raw_parsetree_list;
 	List	   *querytree_list;
 	ListCell   *list_item;
@@ -8719,7 +8719,7 @@ ATPostAlterTypeParse(Oid oldId, Oid oldRelId, Oid refRelId, char *cmd,
  */
 static void
 TryReuseIndex(Oid oldId, IndexStmt *stmt)
-{	StackTrace("TryReuseIndex");
+{
 	if (CheckIndexCompatible(oldId,
 							 stmt->accessMethod,
 							 stmt->indexParams,
@@ -8741,7 +8741,7 @@ TryReuseIndex(Oid oldId, IndexStmt *stmt)
  */
 static void
 TryReuseForeignKey(Oid oldId, Constraint *con)
-{	StackTrace("TryReuseForeignKey");
+{
 	HeapTuple	tup;
 	Datum		adatum;
 	bool		isNull;
@@ -8791,7 +8791,7 @@ TryReuseForeignKey(Oid oldId, Constraint *con)
  */
 void
 ATExecChangeOwner(Oid relationOid, Oid newOwnerId, bool recursing, LOCKMODE lockmode)
-{	StackTrace("ATExecChangeOwner");
+{
 	Relation	target_rel;
 	Relation	class_rel;
 	HeapTuple	tuple;
@@ -9022,7 +9022,7 @@ ATExecChangeOwner(Oid relationOid, Oid newOwnerId, bool recursing, LOCKMODE lock
  */
 static void
 change_owner_fix_column_acls(Oid relationOid, Oid oldOwnerId, Oid newOwnerId)
-{	StackTrace("change_owner_fix_column_acls");
+{
 	Relation	attRelation;
 	SysScanDesc scan;
 	ScanKeyData key[1];
@@ -9088,7 +9088,7 @@ change_owner_fix_column_acls(Oid relationOid, Oid oldOwnerId, Oid newOwnerId)
  */
 static void
 change_owner_recurse_to_sequences(Oid relationOid, Oid newOwnerId, LOCKMODE lockmode)
-{	StackTrace("change_owner_recurse_to_sequences");
+{
 	Relation	depRel;
 	SysScanDesc scan;
 	ScanKeyData key[2];
@@ -9157,7 +9157,7 @@ change_owner_recurse_to_sequences(Oid relationOid, Oid newOwnerId, LOCKMODE lock
  */
 static ObjectAddress
 ATExecClusterOn(Relation rel, const char *indexName, LOCKMODE lockmode)
-{	StackTrace("ATExecClusterOn");
+{
 	Oid			indexOid;
 	ObjectAddress address;
 
@@ -9189,7 +9189,7 @@ ATExecClusterOn(Relation rel, const char *indexName, LOCKMODE lockmode)
  */
 static void
 ATExecDropCluster(Relation rel, LOCKMODE lockmode)
-{	StackTrace("ATExecDropCluster");
+{
 	mark_index_clustered(rel, InvalidOid, false);
 }
 
@@ -9198,7 +9198,7 @@ ATExecDropCluster(Relation rel, LOCKMODE lockmode)
  */
 static void
 ATPrepSetTableSpace(AlteredTableInfo *tab, Relation rel, char *tablespacename, LOCKMODE lockmode)
-{	StackTrace("ATPrepSetTableSpace");
+{
 	Oid			tablespaceId;
 
 	/* Check that the tablespace exists */
@@ -9229,7 +9229,7 @@ ATPrepSetTableSpace(AlteredTableInfo *tab, Relation rel, char *tablespacename, L
 static void
 ATExecSetRelOptions(Relation rel, List *defList, AlterTableType operation,
 					LOCKMODE lockmode)
-{	StackTrace("ATExecSetRelOptions");
+{
 	Oid			relid;
 	Relation	pgclass;
 	HeapTuple	tuple;
@@ -9430,7 +9430,7 @@ ATExecSetRelOptions(Relation rel, List *defList, AlterTableType operation,
  */
 static void
 ATExecSetTableSpace(Oid tableOid, Oid newTableSpace, LOCKMODE lockmode)
-{	StackTrace("ATExecSetTableSpace");
+{
 	Relation	rel;
 	Oid			oldTableSpace;
 	Oid			reltoastrelid;
@@ -9598,7 +9598,7 @@ ATExecSetTableSpace(Oid tableOid, Oid newTableSpace, LOCKMODE lockmode)
  */
 Oid
 AlterTableMoveAll(AlterTableMoveAllStmt *stmt)
-{	StackTrace("AlterTableMoveAll");
+{
 	List	   *relations = NIL;
 	ListCell   *l;
 	ScanKeyData key[1];
@@ -9763,7 +9763,7 @@ AlterTableMoveAll(AlterTableMoveAllStmt *stmt)
 static void
 copy_relation_data(SMgrRelation src, SMgrRelation dst,
 				   ForkNumber forkNum, char relpersistence)
-{	StackTrace("copy_relation_data");
+{
 	char	   *buf;
 	Page		page;
 	bool		use_wal;
@@ -9850,7 +9850,7 @@ copy_relation_data(SMgrRelation src, SMgrRelation dst,
 static void
 ATExecEnableDisableTrigger(Relation rel, char *trigname,
 						char fires_when, bool skip_system, LOCKMODE lockmode)
-{	StackTrace("ATExecEnableDisableTrigger");
+{
 	EnableDisableTrigger(rel, trigname, fires_when, skip_system);
 }
 
@@ -9862,7 +9862,7 @@ ATExecEnableDisableTrigger(Relation rel, char *trigname,
 static void
 ATExecEnableDisableRule(Relation rel, char *trigname,
 						char fires_when, LOCKMODE lockmode)
-{	StackTrace("ATExecEnableDisableRule");
+{
 	EnableDisableRule(rel, trigname, fires_when);
 }
 
@@ -9875,7 +9875,7 @@ ATExecEnableDisableRule(Relation rel, char *trigname,
  */
 static void
 ATPrepAddInherit(Relation child_rel)
-{	StackTrace("ATPrepAddInherit");
+{
 	if (child_rel->rd_rel->reloftype)
 		ereport(ERROR,
 				(errcode(ERRCODE_WRONG_OBJECT_TYPE),
@@ -9887,7 +9887,7 @@ ATPrepAddInherit(Relation child_rel)
  */
 static ObjectAddress
 ATExecAddInherit(Relation child_rel, RangeVar *parent, LOCKMODE lockmode)
-{	StackTrace("ATExecAddInherit");
+{
 	Relation	parent_rel,
 				catalogRelation;
 	SysScanDesc scan;
@@ -10028,7 +10028,7 @@ ATExecAddInherit(Relation child_rel, RangeVar *parent, LOCKMODE lockmode)
  */
 static char *
 decompile_conbin(HeapTuple contup, TupleDesc tupdesc)
-{	StackTrace("decompile_conbin");
+{
 	Form_pg_constraint con;
 	bool		isnull;
 	Datum		attr;
@@ -10053,7 +10053,7 @@ decompile_conbin(HeapTuple contup, TupleDesc tupdesc)
  */
 static bool
 constraints_equivalent(HeapTuple a, HeapTuple b, TupleDesc tupleDesc)
-{	StackTrace("constraints_equivalent");
+{
 	Form_pg_constraint acon = (Form_pg_constraint) GETSTRUCT(a);
 	Form_pg_constraint bcon = (Form_pg_constraint) GETSTRUCT(b);
 
@@ -10082,7 +10082,7 @@ constraints_equivalent(HeapTuple a, HeapTuple b, TupleDesc tupleDesc)
  */
 static void
 MergeAttributesIntoExisting(Relation child_rel, Relation parent_rel)
-{	StackTrace("MergeAttributesIntoExisting");
+{
 	Relation	attrrel;
 	AttrNumber	parent_attno;
 	int			parent_natts;
@@ -10176,7 +10176,7 @@ MergeAttributesIntoExisting(Relation child_rel, Relation parent_rel)
  */
 static void
 MergeConstraintsIntoExisting(Relation child_rel, Relation parent_rel)
-{	StackTrace("MergeConstraintsIntoExisting");
+{
 	Relation	catalog_relation;
 	TupleDesc	tuple_desc;
 	SysScanDesc parent_scan;
@@ -10292,7 +10292,7 @@ MergeConstraintsIntoExisting(Relation child_rel, Relation parent_rel)
  */
 static ObjectAddress
 ATExecDropInherit(Relation rel, RangeVar *parent, LOCKMODE lockmode)
-{	StackTrace("ATExecDropInherit");
+{
 	Relation	parent_rel;
 	Oid			parent_oid;
 	Relation	catalogRelation;
@@ -10499,7 +10499,7 @@ ATExecDropInherit(Relation rel, RangeVar *parent, LOCKMODE lockmode)
  */
 static void
 drop_parent_dependency(Oid relid, Oid refclassid, Oid refobjid)
-{	StackTrace("drop_parent_dependency");
+{
 	Relation	catalogRelation;
 	SysScanDesc scan;
 	ScanKeyData key[3];
@@ -10550,7 +10550,7 @@ drop_parent_dependency(Oid relid, Oid refclassid, Oid refobjid)
  */
 static ObjectAddress
 ATExecAddOf(Relation rel, const TypeName *ofTypename, LOCKMODE lockmode)
-{	StackTrace("ATExecAddOf");
+{
 	Oid			relid = RelationGetRelid(rel);
 	Type		typetuple;
 	Oid			typeid;
@@ -10689,7 +10689,7 @@ ATExecAddOf(Relation rel, const TypeName *ofTypename, LOCKMODE lockmode)
  */
 static void
 ATExecDropOf(Relation rel, LOCKMODE lockmode)
-{	StackTrace("ATExecDropOf");
+{
 	Oid			relid = RelationGetRelid(rel);
 	Relation	relationRelation;
 	HeapTuple	tuple;
@@ -10731,7 +10731,7 @@ ATExecDropOf(Relation rel, LOCKMODE lockmode)
 static void
 relation_mark_replica_identity(Relation rel, char ri_type, Oid indexOid,
 							   bool is_internal)
-{	StackTrace("relation_mark_replica_identity");
+{
 	Relation	pg_index;
 	Relation	pg_class;
 	HeapTuple	pg_class_tuple;
@@ -10830,7 +10830,7 @@ relation_mark_replica_identity(Relation rel, char ri_type, Oid indexOid,
  */
 static void
 ATExecReplicaIdentity(Relation rel, ReplicaIdentityStmt *stmt, LOCKMODE lockmode)
-{	StackTrace("ATExecReplicaIdentity");
+{
 	Oid			indexOid;
 	Relation	indexRel;
 	int			key;
@@ -10938,7 +10938,7 @@ ATExecReplicaIdentity(Relation rel, ReplicaIdentityStmt *stmt, LOCKMODE lockmode
  */
 static void
 ATExecEnableRowSecurity(Relation rel)
-{	StackTrace("ATExecEnableRowSecurity");
+{
 	Relation	pg_class;
 	Oid			relid;
 	HeapTuple	tuple;
@@ -10964,7 +10964,7 @@ ATExecEnableRowSecurity(Relation rel)
 
 static void
 ATExecDisableRowSecurity(Relation rel)
-{	StackTrace("ATExecDisableRowSecurity");
+{
 	Relation	pg_class;
 	Oid			relid;
 	HeapTuple	tuple;
@@ -10994,7 +10994,7 @@ ATExecDisableRowSecurity(Relation rel)
  */
 static void
 ATExecGenericOptions(Relation rel, List *options)
-{	StackTrace("ATExecGenericOptions");
+{
 	Relation	ftrel;
 	ForeignServer *server;
 	ForeignDataWrapper *fdw;
@@ -11074,7 +11074,7 @@ ATExecGenericOptions(Relation rel, List *options)
  */
 static bool
 ATPrepChangePersistence(Relation rel, bool toLogged)
-{	StackTrace("ATPrepChangePersistence");
+{
 	Relation	pg_constraint;
 	HeapTuple	tuple;
 	SysScanDesc scan;
@@ -11187,7 +11187,7 @@ ATPrepChangePersistence(Relation rel, bool toLogged)
  */
 ObjectAddress
 AlterTableNamespace(AlterObjectSchemaStmt *stmt, Oid *oldschema)
-{	StackTrace("AlterTableNamespace");
+{
 	Relation	rel;
 	Oid			relid;
 	Oid			oldNspOid;
@@ -11258,7 +11258,7 @@ AlterTableNamespace(AlterObjectSchemaStmt *stmt, Oid *oldschema)
 void
 AlterTableNamespaceInternal(Relation rel, Oid oldNspOid, Oid nspOid,
 							ObjectAddresses *objsMoved)
-{	StackTrace("AlterTableNamespaceInternal");
+{
 	Relation	classRel;
 
 	Assert(objsMoved != NULL);
@@ -11297,7 +11297,7 @@ AlterRelationNamespaceInternal(Relation classRel, Oid relOid,
 							   Oid oldNspOid, Oid newNspOid,
 							   bool hasDependEntry,
 							   ObjectAddresses *objsMoved)
-{	StackTrace("AlterRelationNamespaceInternal");
+{
 	HeapTuple	classTup;
 	Form_pg_class classForm;
 	ObjectAddress thisobj;
@@ -11360,7 +11360,7 @@ AlterRelationNamespaceInternal(Relation classRel, Oid relOid,
 static void
 AlterIndexNamespaces(Relation classRel, Relation rel,
 					 Oid oldNspOid, Oid newNspOid, ObjectAddresses *objsMoved)
-{	StackTrace("AlterIndexNamespaces");
+{
 	List	   *indexList;
 	ListCell   *l;
 
@@ -11406,7 +11406,7 @@ static void
 AlterSeqNamespaces(Relation classRel, Relation rel,
 				   Oid oldNspOid, Oid newNspOid, ObjectAddresses *objsMoved,
 				   LOCKMODE lockmode)
-{	StackTrace("AlterSeqNamespaces");
+{
 	Relation	depRel;
 	SysScanDesc scan;
 	ScanKeyData key[2];
@@ -11489,7 +11489,7 @@ AlterSeqNamespaces(Relation classRel, Relation rel,
  */
 void
 register_on_commit_action(Oid relid, OnCommitAction action)
-{	StackTrace("register_on_commit_action");
+{
 	OnCommitItem *oc;
 	MemoryContext oldcxt;
 
@@ -11520,7 +11520,7 @@ register_on_commit_action(Oid relid, OnCommitAction action)
  */
 void
 remove_on_commit_action(Oid relid)
-{	StackTrace("remove_on_commit_action");
+{
 	ListCell   *l;
 
 	foreach(l, on_commits)
@@ -11543,7 +11543,7 @@ remove_on_commit_action(Oid relid)
  */
 void
 PreCommit_on_commit_actions(void)
-{	StackTrace("PreCommit_on_commit_actions");
+{
 	ListCell   *l;
 	List	   *oids_to_truncate = NIL;
 
@@ -11614,7 +11614,7 @@ PreCommit_on_commit_actions(void)
  */
 void
 AtEOXact_on_commit_actions(bool isCommit)
-{	StackTrace("AtEOXact_on_commit_actions");
+{
 	ListCell   *cur_item;
 	ListCell   *prev_item;
 
@@ -11657,7 +11657,7 @@ AtEOXact_on_commit_actions(bool isCommit)
 void
 AtEOSubXact_on_commit_actions(bool isCommit, SubTransactionId mySubid,
 							  SubTransactionId parentSubid)
-{	StackTrace("AtEOSubXact_on_commit_actions");
+{
 	ListCell   *cur_item;
 	ListCell   *prev_item;
 
@@ -11702,7 +11702,7 @@ AtEOSubXact_on_commit_actions(bool isCommit, SubTransactionId mySubid,
 void
 RangeVarCallbackOwnsTable(const RangeVar *relation,
 						  Oid relId, Oid oldRelId, void *arg)
-{	StackTrace("RangeVarCallbackOwnsTable");
+{
 	char		relkind;
 
 	/* Nothing to do if the relation was not found. */
@@ -11735,7 +11735,7 @@ RangeVarCallbackOwnsTable(const RangeVar *relation,
 void
 RangeVarCallbackOwnsRelation(const RangeVar *relation,
 							 Oid relId, Oid oldRelId, void *arg)
-{	StackTrace("RangeVarCallbackOwnsRelation");
+{
 	HeapTuple	tuple;
 
 	/* Nothing to do if the relation was not found. */
@@ -11767,7 +11767,7 @@ RangeVarCallbackOwnsRelation(const RangeVar *relation,
 static void
 RangeVarCallbackForAlterRelation(const RangeVar *rv, Oid relid, Oid oldrelid,
 								 void *arg)
-{	StackTrace("RangeVarCallbackForAlterRelation");
+{
 	Node	   *stmt = (Node *) arg;
 	ObjectType	reltype;
 	HeapTuple	tuple;

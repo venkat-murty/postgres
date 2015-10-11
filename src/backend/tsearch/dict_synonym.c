@@ -41,7 +41,7 @@ typedef struct
  */
 static char *
 findwrd(char *in, char **end, uint16 *flags)
-{	StackTrace("findwrd");
+{
 	char	   *start;
 	char	   *lastchar;
 
@@ -82,14 +82,14 @@ findwrd(char *in, char **end, uint16 *flags)
 
 static int
 compareSyn(const void *a, const void *b)
-{	StackTrace("compareSyn");
+{
 	return strcmp(((const Syn *) a)->in, ((const Syn *) b)->in);
 }
 
 
 Datum
 dsynonym_init(PG_FUNCTION_ARGS)
-{	StackTrace("dsynonym_init");
+{
 	List	   *dictoptions = (List *) PG_GETARG_POINTER(0);
 	DictSyn    *d;
 	ListCell   *l;
@@ -207,7 +207,7 @@ skipline:
 
 Datum
 dsynonym_lexize(PG_FUNCTION_ARGS)
-{	StackTrace("dsynonym_lexize");
+{
 	DictSyn    *d = (DictSyn *) PG_GETARG_POINTER(0);
 	char	   *in = (char *) PG_GETARG_POINTER(1);
 	int32		len = PG_GETARG_INT32(2);

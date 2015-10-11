@@ -202,7 +202,7 @@ static void CleanupInvalidationState(int status, Datum arg);
  */
 Size
 SInvalShmemSize(void)
-{	StackTrace("SInvalShmemSize");
+{
 	Size		size;
 
 	size = offsetof(SISeg, procState);
@@ -217,7 +217,7 @@ SInvalShmemSize(void)
  */
 void
 CreateSharedInvalidationState(void)
-{	StackTrace("CreateSharedInvalidationState");
+{
 	int			i;
 	bool		found;
 
@@ -256,7 +256,7 @@ CreateSharedInvalidationState(void)
  */
 void
 SharedInvalBackendInit(bool sendOnly)
-{	StackTrace("SharedInvalBackendInit");
+{
 	int			index;
 	ProcState  *stateP = NULL;
 	SISeg	   *segP = shmInvalBuffer;
@@ -334,7 +334,7 @@ SharedInvalBackendInit(bool sendOnly)
  */
 static void
 CleanupInvalidationState(int status, Datum arg)
-{	StackTrace("CleanupInvalidationState");
+{
 	SISeg	   *segP = (SISeg *) DatumGetPointer(arg);
 	ProcState  *stateP;
 	int			i;
@@ -375,7 +375,7 @@ CleanupInvalidationState(int status, Datum arg)
  */
 PGPROC *
 BackendIdGetProc(int backendID)
-{	StackTrace("BackendIdGetProc");
+{
 	PGPROC	   *result = NULL;
 	SISeg	   *segP = shmInvalBuffer;
 
@@ -402,7 +402,7 @@ BackendIdGetProc(int backendID)
  */
 void
 BackendIdGetTransactionIds(int backendID, TransactionId *xid, TransactionId *xmin)
-{	StackTrace("BackendIdGetTransactionIds");
+{
 	SISeg	   *segP = shmInvalBuffer;
 
 	*xid = InvalidTransactionId;
@@ -434,7 +434,7 @@ BackendIdGetTransactionIds(int backendID, TransactionId *xid, TransactionId *xmi
  */
 void
 SIInsertDataEntries(const SharedInvalidationMessage *data, int n)
-{	StackTrace("SIInsertDataEntries");
+{
 	SISeg	   *segP = shmInvalBuffer;
 
 	/*
@@ -542,7 +542,7 @@ SIInsertDataEntries(const SharedInvalidationMessage *data, int n)
  */
 int
 SIGetDataEntries(SharedInvalidationMessage *data, int datasize)
-{	StackTrace("SIGetDataEntries");
+{
 	SISeg	   *segP;
 	ProcState  *stateP;
 	int			max;
@@ -651,7 +651,7 @@ SIGetDataEntries(SharedInvalidationMessage *data, int datasize)
  */
 void
 SICleanupQueue(bool callerHasWriteLock, int minFree)
-{	StackTrace("SICleanupQueue");
+{
 	SISeg	   *segP = shmInvalBuffer;
 	int			min,
 				minsig,
@@ -777,7 +777,7 @@ SICleanupQueue(bool callerHasWriteLock, int minFree)
  */
 LocalTransactionId
 GetNextLocalTransactionId(void)
-{	StackTrace("GetNextLocalTransactionId");
+{
 	LocalTransactionId result;
 
 	/* loop to avoid returning InvalidLocalTransactionId at wraparound */

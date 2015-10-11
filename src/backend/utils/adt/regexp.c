@@ -131,7 +131,7 @@ static Datum build_regexp_split_result(regexp_matches_ctx *splitctx);
  */
 static regex_t *
 RE_compile_and_cache(text *text_re, int cflags, Oid collation)
-{	StackTrace("RE_compile_and_cache");
+{
 	int			text_re_len = VARSIZE_ANY_EXHDR(text_re);
 	char	   *text_re_val = VARDATA_ANY(text_re);
 	pg_wchar   *pattern;
@@ -261,7 +261,7 @@ RE_compile_and_cache(text *text_re, int cflags, Oid collation)
 static bool
 RE_wchar_execute(regex_t *re, pg_wchar *data, int data_len,
 				 int start_search, int nmatch, regmatch_t *pmatch)
-{	StackTrace("RE_wchar_execute");
+{
 	int			regexec_result;
 	char		errMsg[100];
 
@@ -304,7 +304,7 @@ RE_wchar_execute(regex_t *re, pg_wchar *data, int data_len,
 static bool
 RE_execute(regex_t *re, char *dat, int dat_len,
 		   int nmatch, regmatch_t *pmatch)
-{	StackTrace("RE_execute");
+{
 	pg_wchar   *data;
 	int			data_len;
 	bool		match;
@@ -339,7 +339,7 @@ static bool
 RE_compile_and_execute(text *text_re, char *dat, int dat_len,
 					   int cflags, Oid collation,
 					   int nmatch, regmatch_t *pmatch)
-{	StackTrace("RE_compile_and_execute");
+{
 	regex_t    *re;
 
 	/* Compile RE */
@@ -360,7 +360,7 @@ RE_compile_and_execute(text *text_re, char *dat, int dat_len,
  */
 static void
 parse_re_flags(pg_re_flags *flags, text *opts)
-{	StackTrace("parse_re_flags");
+{
 	/* regex flavor is always folded into the compile flags */
 	flags->cflags = REG_ADVANCED;
 	flags->glob = false;
@@ -434,7 +434,7 @@ parse_re_flags(pg_re_flags *flags, text *opts)
 
 Datum
 nameregexeq(PG_FUNCTION_ARGS)
-{	StackTrace("nameregexeq");
+{
 	Name		n = PG_GETARG_NAME(0);
 	text	   *p = PG_GETARG_TEXT_PP(1);
 
@@ -448,7 +448,7 @@ nameregexeq(PG_FUNCTION_ARGS)
 
 Datum
 nameregexne(PG_FUNCTION_ARGS)
-{	StackTrace("nameregexne");
+{
 	Name		n = PG_GETARG_NAME(0);
 	text	   *p = PG_GETARG_TEXT_PP(1);
 
@@ -462,7 +462,7 @@ nameregexne(PG_FUNCTION_ARGS)
 
 Datum
 textregexeq(PG_FUNCTION_ARGS)
-{	StackTrace("textregexeq");
+{
 	text	   *s = PG_GETARG_TEXT_PP(0);
 	text	   *p = PG_GETARG_TEXT_PP(1);
 
@@ -476,7 +476,7 @@ textregexeq(PG_FUNCTION_ARGS)
 
 Datum
 textregexne(PG_FUNCTION_ARGS)
-{	StackTrace("textregexne");
+{
 	text	   *s = PG_GETARG_TEXT_PP(0);
 	text	   *p = PG_GETARG_TEXT_PP(1);
 
@@ -497,7 +497,7 @@ textregexne(PG_FUNCTION_ARGS)
 
 Datum
 nameicregexeq(PG_FUNCTION_ARGS)
-{	StackTrace("nameicregexeq");
+{
 	Name		n = PG_GETARG_NAME(0);
 	text	   *p = PG_GETARG_TEXT_PP(1);
 
@@ -511,7 +511,7 @@ nameicregexeq(PG_FUNCTION_ARGS)
 
 Datum
 nameicregexne(PG_FUNCTION_ARGS)
-{	StackTrace("nameicregexne");
+{
 	Name		n = PG_GETARG_NAME(0);
 	text	   *p = PG_GETARG_TEXT_PP(1);
 
@@ -525,7 +525,7 @@ nameicregexne(PG_FUNCTION_ARGS)
 
 Datum
 texticregexeq(PG_FUNCTION_ARGS)
-{	StackTrace("texticregexeq");
+{
 	text	   *s = PG_GETARG_TEXT_PP(0);
 	text	   *p = PG_GETARG_TEXT_PP(1);
 
@@ -539,7 +539,7 @@ texticregexeq(PG_FUNCTION_ARGS)
 
 Datum
 texticregexne(PG_FUNCTION_ARGS)
-{	StackTrace("texticregexne");
+{
 	text	   *s = PG_GETARG_TEXT_PP(0);
 	text	   *p = PG_GETARG_TEXT_PP(1);
 
@@ -558,7 +558,7 @@ texticregexne(PG_FUNCTION_ARGS)
  */
 Datum
 textregexsubstr(PG_FUNCTION_ARGS)
-{	StackTrace("textregexsubstr");
+{
 	text	   *s = PG_GETARG_TEXT_PP(0);
 	text	   *p = PG_GETARG_TEXT_PP(1);
 	regex_t    *re;
@@ -617,7 +617,7 @@ textregexsubstr(PG_FUNCTION_ARGS)
  */
 Datum
 textregexreplace_noopt(PG_FUNCTION_ARGS)
-{	StackTrace("textregexreplace_noopt");
+{
 	text	   *s = PG_GETARG_TEXT_PP(0);
 	text	   *p = PG_GETARG_TEXT_PP(1);
 	text	   *r = PG_GETARG_TEXT_PP(2);
@@ -634,7 +634,7 @@ textregexreplace_noopt(PG_FUNCTION_ARGS)
  */
 Datum
 textregexreplace(PG_FUNCTION_ARGS)
-{	StackTrace("textregexreplace");
+{
 	text	   *s = PG_GETARG_TEXT_PP(0);
 	text	   *p = PG_GETARG_TEXT_PP(1);
 	text	   *r = PG_GETARG_TEXT_PP(2);
@@ -656,7 +656,7 @@ textregexreplace(PG_FUNCTION_ARGS)
  */
 Datum
 similar_escape(PG_FUNCTION_ARGS)
-{	StackTrace("similar_escape");
+{
 	text	   *pat_text;
 	text	   *esc_text;
 	text	   *result;
@@ -846,7 +846,7 @@ similar_escape(PG_FUNCTION_ARGS)
  */
 Datum
 regexp_matches(PG_FUNCTION_ARGS)
-{	StackTrace("regexp_matches");
+{
 	FuncCallContext *funcctx;
 	regexp_matches_ctx *matchctx;
 
@@ -894,7 +894,7 @@ regexp_matches(PG_FUNCTION_ARGS)
 /* This is separate to keep the opr_sanity regression test from complaining */
 Datum
 regexp_matches_no_flags(PG_FUNCTION_ARGS)
-{	StackTrace("regexp_matches_no_flags");
+{
 	return regexp_matches(fcinfo);
 }
 
@@ -915,7 +915,7 @@ setup_regexp_matches(text *orig_str, text *pattern, text *flags,
 					 Oid collation,
 					 bool force_glob, bool use_subpatterns,
 					 bool ignore_degenerate)
-{	StackTrace("setup_regexp_matches");
+{
 	regexp_matches_ctx *matchctx = palloc0(sizeof(regexp_matches_ctx));
 	int			orig_len;
 	pg_wchar   *wide_str;
@@ -1046,7 +1046,7 @@ setup_regexp_matches(text *orig_str, text *pattern, text *flags,
  */
 static void
 cleanup_regexp_matches(regexp_matches_ctx *matchctx)
-{	StackTrace("cleanup_regexp_matches");
+{
 	pfree(matchctx->orig_str);
 	pfree(matchctx->match_locs);
 	if (matchctx->elems)
@@ -1061,7 +1061,7 @@ cleanup_regexp_matches(regexp_matches_ctx *matchctx)
  */
 static ArrayType *
 build_regexp_matches_result(regexp_matches_ctx *matchctx)
-{	StackTrace("build_regexp_matches_result");
+{
 	Datum	   *elems = matchctx->elems;
 	bool	   *nulls = matchctx->nulls;
 	int			dims[1];
@@ -1106,7 +1106,7 @@ build_regexp_matches_result(regexp_matches_ctx *matchctx)
  */
 Datum
 regexp_split_to_table(PG_FUNCTION_ARGS)
-{	StackTrace("regexp_split_to_table");
+{
 	FuncCallContext *funcctx;
 	regexp_matches_ctx *splitctx;
 
@@ -1149,7 +1149,7 @@ regexp_split_to_table(PG_FUNCTION_ARGS)
 /* This is separate to keep the opr_sanity regression test from complaining */
 Datum
 regexp_split_to_table_no_flags(PG_FUNCTION_ARGS)
-{	StackTrace("regexp_split_to_table_no_flags");
+{
 	return regexp_split_to_table(fcinfo);
 }
 
@@ -1160,7 +1160,7 @@ regexp_split_to_table_no_flags(PG_FUNCTION_ARGS)
  */
 Datum
 regexp_split_to_array(PG_FUNCTION_ARGS)
-{	StackTrace("regexp_split_to_array");
+{
 	ArrayBuildState *astate = NULL;
 	regexp_matches_ctx *splitctx;
 
@@ -1192,7 +1192,7 @@ regexp_split_to_array(PG_FUNCTION_ARGS)
 /* This is separate to keep the opr_sanity regression test from complaining */
 Datum
 regexp_split_to_array_no_flags(PG_FUNCTION_ARGS)
-{	StackTrace("regexp_split_to_array_no_flags");
+{
 	return regexp_split_to_array(fcinfo);
 }
 
@@ -1204,7 +1204,7 @@ regexp_split_to_array_no_flags(PG_FUNCTION_ARGS)
  */
 static Datum
 build_regexp_split_result(regexp_matches_ctx *splitctx)
-{	StackTrace("build_regexp_split_result");
+{
 	int			startpos;
 	int			endpos;
 
@@ -1243,7 +1243,7 @@ build_regexp_split_result(regexp_matches_ctx *splitctx)
 char *
 regexp_fixed_prefix(text *text_re, bool case_insensitive, Oid collation,
 					bool *exact)
-{	StackTrace("regexp_fixed_prefix");
+{
 	char	   *result;
 	regex_t    *re;
 	int			cflags;

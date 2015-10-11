@@ -513,7 +513,7 @@ static void compute_bucket(Numeric operand, Numeric bound1, Numeric bound2,
  */
 Datum
 numeric_in(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_in");
+{
 	char	   *str = PG_GETARG_CSTRING(0);
 
 #ifdef NOT_USED
@@ -595,7 +595,7 @@ numeric_in(PG_FUNCTION_ARGS)
  */
 Datum
 numeric_out(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_out");
+{
 	Numeric		num = PG_GETARG_NUMERIC(0);
 	NumericVar	x;
 	char	   *str;
@@ -623,7 +623,7 @@ numeric_out(PG_FUNCTION_ARGS)
  */
 bool
 numeric_is_nan(Numeric num)
-{	StackTrace("numeric_is_nan");
+{
 	return NUMERIC_IS_NAN(num);
 }
 
@@ -634,7 +634,7 @@ numeric_is_nan(Numeric num)
  */
 int32
 numeric_maximum_size(int32 typmod)
-{	StackTrace("numeric_maximum_size");
+{
 	int			precision;
 	int			numeric_digits;
 
@@ -673,7 +673,7 @@ numeric_maximum_size(int32 typmod)
  */
 char *
 numeric_out_sci(Numeric num, int scale)
-{	StackTrace("numeric_out_sci");
+{
 	NumericVar	x;
 	char	   *str;
 
@@ -700,7 +700,7 @@ numeric_out_sci(Numeric num, int scale)
  */
 char *
 numeric_normalize(Numeric num)
-{	StackTrace("numeric_normalize");
+{
 	NumericVar	x;
 	char	   *str;
 	int			last;
@@ -745,7 +745,7 @@ numeric_normalize(Numeric num)
  */
 Datum
 numeric_recv(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_recv");
+{
 	StringInfo	buf = (StringInfo) PG_GETARG_POINTER(0);
 
 #ifdef NOT_USED
@@ -816,7 +816,7 @@ numeric_recv(PG_FUNCTION_ARGS)
  */
 Datum
 numeric_send(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_send");
+{
 	Numeric		num = PG_GETARG_NUMERIC(0);
 	NumericVar	x;
 	StringInfoData buf;
@@ -848,7 +848,7 @@ numeric_send(PG_FUNCTION_ARGS)
  */
 Datum
 numeric_transform(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_transform");
+{
 	FuncExpr   *expr = (FuncExpr *) PG_GETARG_POINTER(0);
 	Node	   *ret = NULL;
 	Node	   *typmod;
@@ -892,7 +892,7 @@ numeric_transform(PG_FUNCTION_ARGS)
  */
 Datum
 numeric		(PG_FUNCTION_ARGS)
-{	StackTrace("numeric");
+{
 	Numeric		num = PG_GETARG_NUMERIC(0);
 	int32		typmod = PG_GETARG_INT32(1);
 	Numeric		new;
@@ -969,7 +969,7 @@ numeric		(PG_FUNCTION_ARGS)
 
 Datum
 numerictypmodin(PG_FUNCTION_ARGS)
-{	StackTrace("numerictypmodin");
+{
 	ArrayType  *ta = PG_GETARG_ARRAYTYPE_P(0);
 	int32	   *tl;
 	int			n;
@@ -1014,7 +1014,7 @@ numerictypmodin(PG_FUNCTION_ARGS)
 
 Datum
 numerictypmodout(PG_FUNCTION_ARGS)
-{	StackTrace("numerictypmodout");
+{
 	int32		typmod = PG_GETARG_INT32(0);
 	char	   *res = (char *) palloc(64);
 
@@ -1038,7 +1038,7 @@ numerictypmodout(PG_FUNCTION_ARGS)
 
 Datum
 numeric_abs(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_abs");
+{
 	Numeric		num = PG_GETARG_NUMERIC(0);
 	Numeric		res;
 
@@ -1066,7 +1066,7 @@ numeric_abs(PG_FUNCTION_ARGS)
 
 Datum
 numeric_uminus(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_uminus");
+{
 	Numeric		num = PG_GETARG_NUMERIC(0);
 	Numeric		res;
 
@@ -1107,7 +1107,7 @@ numeric_uminus(PG_FUNCTION_ARGS)
 
 Datum
 numeric_uplus(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_uplus");
+{
 	Numeric		num = PG_GETARG_NUMERIC(0);
 	Numeric		res;
 
@@ -1125,7 +1125,7 @@ numeric_uplus(PG_FUNCTION_ARGS)
  */
 Datum
 numeric_sign(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_sign");
+{
 	Numeric		num = PG_GETARG_NUMERIC(0);
 	Numeric		res;
 	NumericVar	result;
@@ -1170,7 +1170,7 @@ numeric_sign(PG_FUNCTION_ARGS)
  */
 Datum
 numeric_round(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_round");
+{
 	Numeric		num = PG_GETARG_NUMERIC(0);
 	int32		scale = PG_GETARG_INT32(1);
 	Numeric		res;
@@ -1219,7 +1219,7 @@ numeric_round(PG_FUNCTION_ARGS)
  */
 Datum
 numeric_trunc(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_trunc");
+{
 	Numeric		num = PG_GETARG_NUMERIC(0);
 	int32		scale = PG_GETARG_INT32(1);
 	Numeric		res;
@@ -1266,7 +1266,7 @@ numeric_trunc(PG_FUNCTION_ARGS)
  */
 Datum
 numeric_ceil(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_ceil");
+{
 	Numeric		num = PG_GETARG_NUMERIC(0);
 	Numeric		res;
 	NumericVar	result;
@@ -1291,7 +1291,7 @@ numeric_ceil(PG_FUNCTION_ARGS)
  */
 Datum
 numeric_floor(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_floor");
+{
 	Numeric		num = PG_GETARG_NUMERIC(0);
 	Numeric		res;
 	NumericVar	result;
@@ -1316,13 +1316,13 @@ numeric_floor(PG_FUNCTION_ARGS)
  */
 Datum
 generate_series_numeric(PG_FUNCTION_ARGS)
-{	StackTrace("generate_series_numeric");
+{
 	return generate_series_step_numeric(fcinfo);
 }
 
 Datum
 generate_series_step_numeric(PG_FUNCTION_ARGS)
-{	StackTrace("generate_series_step_numeric");
+{
 	generate_series_numeric_fctx *fctx;
 	FuncCallContext *funcctx;
 	MemoryContext oldcontext;
@@ -1439,7 +1439,7 @@ generate_series_step_numeric(PG_FUNCTION_ARGS)
  */
 Datum
 width_bucket_numeric(PG_FUNCTION_ARGS)
-{	StackTrace("width_bucket_numeric");
+{
 	Numeric		operand = PG_GETARG_NUMERIC(0);
 	Numeric		bound1 = PG_GETARG_NUMERIC(1);
 	Numeric		bound2 = PG_GETARG_NUMERIC(2);
@@ -1513,7 +1513,7 @@ width_bucket_numeric(PG_FUNCTION_ARGS)
 static void
 compute_bucket(Numeric operand, Numeric bound1, Numeric bound2,
 			   NumericVar *count_var, NumericVar *result_var)
-{	StackTrace("compute_bucket");
+{
 	NumericVar	bound1_var;
 	NumericVar	bound2_var;
 	NumericVar	operand_var;
@@ -1590,7 +1590,7 @@ compute_bucket(Numeric operand, Numeric bound1, Numeric bound2,
  */
 Datum
 numeric_sortsupport(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_sortsupport");
+{
 	SortSupport ssup = (SortSupport) PG_GETARG_POINTER(0);
 
 	ssup->comparator = numeric_fast_cmp;
@@ -1631,7 +1631,7 @@ numeric_sortsupport(PG_FUNCTION_ARGS)
  */
 static Datum
 numeric_abbrev_convert(Datum original_datum, SortSupport ssup)
-{	StackTrace("numeric_abbrev_convert");
+{
 	NumericSortSupport *nss = ssup->ssup_extra;
 	void	   *original_varatt = PG_DETOAST_DATUM_PACKED(original_datum);
 	Numeric		value;
@@ -1688,7 +1688,7 @@ numeric_abbrev_convert(Datum original_datum, SortSupport ssup)
  */
 static bool
 numeric_abbrev_abort(int memtupcount, SortSupport ssup)
-{	StackTrace("numeric_abbrev_abort");
+{
 	NumericSortSupport *nss = ssup->ssup_extra;
 	double		abbr_card;
 
@@ -1761,7 +1761,7 @@ numeric_abbrev_abort(int memtupcount, SortSupport ssup)
  */
 static int
 numeric_fast_cmp(Datum x, Datum y, SortSupport ssup)
-{	StackTrace("numeric_fast_cmp");
+{
 	Numeric		nx = DatumGetNumeric(x);
 	Numeric		ny = DatumGetNumeric(y);
 	int			result;
@@ -1783,7 +1783,7 @@ numeric_fast_cmp(Datum x, Datum y, SortSupport ssup)
  */
 static int
 numeric_cmp_abbrev(Datum x, Datum y, SortSupport ssup)
-{	StackTrace("numeric_cmp_abbrev");
+{
 	/*
 	 * NOTE WELL: this is intentionally backwards, because the abbreviation is
 	 * negated relative to the original value, to handle NaN.
@@ -1845,7 +1845,7 @@ numeric_cmp_abbrev(Datum x, Datum y, SortSupport ssup)
 
 static Datum
 numeric_abbrev_convert_var(NumericVar *var, NumericSortSupport *nss)
-{	StackTrace("numeric_abbrev_convert_var");
+{
 	int			ndigits = var->ndigits;
 	int			weight = var->weight;
 	int64		result;
@@ -1900,7 +1900,7 @@ numeric_abbrev_convert_var(NumericVar *var, NumericSortSupport *nss)
 
 static Datum
 numeric_abbrev_convert_var(NumericVar *var, NumericSortSupport *nss)
-{	StackTrace("numeric_abbrev_convert_var");
+{
 	int			ndigits = var->ndigits;
 	int			weight = var->weight;
 	int32		result;
@@ -1979,7 +1979,7 @@ numeric_abbrev_convert_var(NumericVar *var, NumericSortSupport *nss)
 
 Datum
 numeric_cmp(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_cmp");
+{
 	Numeric		num1 = PG_GETARG_NUMERIC(0);
 	Numeric		num2 = PG_GETARG_NUMERIC(1);
 	int			result;
@@ -1995,7 +1995,7 @@ numeric_cmp(PG_FUNCTION_ARGS)
 
 Datum
 numeric_eq(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_eq");
+{
 	Numeric		num1 = PG_GETARG_NUMERIC(0);
 	Numeric		num2 = PG_GETARG_NUMERIC(1);
 	bool		result;
@@ -2010,7 +2010,7 @@ numeric_eq(PG_FUNCTION_ARGS)
 
 Datum
 numeric_ne(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_ne");
+{
 	Numeric		num1 = PG_GETARG_NUMERIC(0);
 	Numeric		num2 = PG_GETARG_NUMERIC(1);
 	bool		result;
@@ -2025,7 +2025,7 @@ numeric_ne(PG_FUNCTION_ARGS)
 
 Datum
 numeric_gt(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_gt");
+{
 	Numeric		num1 = PG_GETARG_NUMERIC(0);
 	Numeric		num2 = PG_GETARG_NUMERIC(1);
 	bool		result;
@@ -2040,7 +2040,7 @@ numeric_gt(PG_FUNCTION_ARGS)
 
 Datum
 numeric_ge(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_ge");
+{
 	Numeric		num1 = PG_GETARG_NUMERIC(0);
 	Numeric		num2 = PG_GETARG_NUMERIC(1);
 	bool		result;
@@ -2055,7 +2055,7 @@ numeric_ge(PG_FUNCTION_ARGS)
 
 Datum
 numeric_lt(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_lt");
+{
 	Numeric		num1 = PG_GETARG_NUMERIC(0);
 	Numeric		num2 = PG_GETARG_NUMERIC(1);
 	bool		result;
@@ -2070,7 +2070,7 @@ numeric_lt(PG_FUNCTION_ARGS)
 
 Datum
 numeric_le(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_le");
+{
 	Numeric		num1 = PG_GETARG_NUMERIC(0);
 	Numeric		num2 = PG_GETARG_NUMERIC(1);
 	bool		result;
@@ -2085,7 +2085,7 @@ numeric_le(PG_FUNCTION_ARGS)
 
 static int
 cmp_numerics(Numeric num1, Numeric num2)
-{	StackTrace("cmp_numerics");
+{
 	int			result;
 
 	/*
@@ -2117,7 +2117,7 @@ cmp_numerics(Numeric num1, Numeric num2)
 
 Datum
 hash_numeric(PG_FUNCTION_ARGS)
-{	StackTrace("hash_numeric");
+{
 	Numeric		key = PG_GETARG_NUMERIC(0);
 	Datum		digit_hash;
 	Datum		result;
@@ -2207,7 +2207,7 @@ hash_numeric(PG_FUNCTION_ARGS)
  */
 Datum
 numeric_add(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_add");
+{
 	Numeric		num1 = PG_GETARG_NUMERIC(0);
 	Numeric		num2 = PG_GETARG_NUMERIC(1);
 	NumericVar	arg1;
@@ -2245,7 +2245,7 @@ numeric_add(PG_FUNCTION_ARGS)
  */
 Datum
 numeric_sub(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_sub");
+{
 	Numeric		num1 = PG_GETARG_NUMERIC(0);
 	Numeric		num2 = PG_GETARG_NUMERIC(1);
 	NumericVar	arg1;
@@ -2283,7 +2283,7 @@ numeric_sub(PG_FUNCTION_ARGS)
  */
 Datum
 numeric_mul(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_mul");
+{
 	Numeric		num1 = PG_GETARG_NUMERIC(0);
 	Numeric		num2 = PG_GETARG_NUMERIC(1);
 	NumericVar	arg1;
@@ -2325,7 +2325,7 @@ numeric_mul(PG_FUNCTION_ARGS)
  */
 Datum
 numeric_div(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_div");
+{
 	Numeric		num1 = PG_GETARG_NUMERIC(0);
 	Numeric		num2 = PG_GETARG_NUMERIC(1);
 	NumericVar	arg1;
@@ -2373,7 +2373,7 @@ numeric_div(PG_FUNCTION_ARGS)
  */
 Datum
 numeric_div_trunc(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_div_trunc");
+{
 	Numeric		num1 = PG_GETARG_NUMERIC(0);
 	Numeric		num2 = PG_GETARG_NUMERIC(1);
 	NumericVar	arg1;
@@ -2415,7 +2415,7 @@ numeric_div_trunc(PG_FUNCTION_ARGS)
  */
 Datum
 numeric_mod(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_mod");
+{
 	Numeric		num1 = PG_GETARG_NUMERIC(0);
 	Numeric		num2 = PG_GETARG_NUMERIC(1);
 	Numeric		res;
@@ -2448,7 +2448,7 @@ numeric_mod(PG_FUNCTION_ARGS)
  */
 Datum
 numeric_inc(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_inc");
+{
 	Numeric		num = PG_GETARG_NUMERIC(0);
 	NumericVar	arg;
 	Numeric		res;
@@ -2481,7 +2481,7 @@ numeric_inc(PG_FUNCTION_ARGS)
  */
 Datum
 numeric_smaller(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_smaller");
+{
 	Numeric		num1 = PG_GETARG_NUMERIC(0);
 	Numeric		num2 = PG_GETARG_NUMERIC(1);
 
@@ -2503,7 +2503,7 @@ numeric_smaller(PG_FUNCTION_ARGS)
  */
 Datum
 numeric_larger(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_larger");
+{
 	Numeric		num1 = PG_GETARG_NUMERIC(0);
 	Numeric		num2 = PG_GETARG_NUMERIC(1);
 
@@ -2532,7 +2532,7 @@ numeric_larger(PG_FUNCTION_ARGS)
  */
 Datum
 numeric_fac(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_fac");
+{
 	int64		num = PG_GETARG_INT64(0);
 	Numeric		res;
 	NumericVar	fact;
@@ -2580,7 +2580,7 @@ numeric_fac(PG_FUNCTION_ARGS)
  */
 Datum
 numeric_sqrt(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_sqrt");
+{
 	Numeric		num = PG_GETARG_NUMERIC(0);
 	Numeric		res;
 	NumericVar	arg;
@@ -2631,7 +2631,7 @@ numeric_sqrt(PG_FUNCTION_ARGS)
  */
 Datum
 numeric_exp(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_exp");
+{
 	Numeric		num = PG_GETARG_NUMERIC(0);
 	Numeric		res;
 	NumericVar	arg;
@@ -2692,7 +2692,7 @@ numeric_exp(PG_FUNCTION_ARGS)
  */
 Datum
 numeric_ln(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_ln");
+{
 	Numeric		num = PG_GETARG_NUMERIC(0);
 	Numeric		res;
 	NumericVar	arg;
@@ -2740,7 +2740,7 @@ numeric_ln(PG_FUNCTION_ARGS)
  */
 Datum
 numeric_log(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_log");
+{
 	Numeric		num1 = PG_GETARG_NUMERIC(0);
 	Numeric		num2 = PG_GETARG_NUMERIC(1);
 	Numeric		res;
@@ -2782,7 +2782,7 @@ numeric_log(PG_FUNCTION_ARGS)
  */
 Datum
 numeric_power(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_power");
+{
 	Numeric		num1 = PG_GETARG_NUMERIC(0);
 	Numeric		num2 = PG_GETARG_NUMERIC(1);
 	Numeric		res;
@@ -2850,7 +2850,7 @@ numeric_power(PG_FUNCTION_ARGS)
 
 Datum
 int4_numeric(PG_FUNCTION_ARGS)
-{	StackTrace("int4_numeric");
+{
 	int32		val = PG_GETARG_INT32(0);
 	Numeric		res;
 	NumericVar	result;
@@ -2869,7 +2869,7 @@ int4_numeric(PG_FUNCTION_ARGS)
 
 Datum
 numeric_int4(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_int4");
+{
 	Numeric		num = PG_GETARG_NUMERIC(0);
 	NumericVar	x;
 	int32		result;
@@ -2893,7 +2893,7 @@ numeric_int4(PG_FUNCTION_ARGS)
  */
 static int32
 numericvar_to_int32(NumericVar *var)
-{	StackTrace("numericvar_to_int32");
+{
 	int32		result;
 	int64		val;
 
@@ -2916,7 +2916,7 @@ numericvar_to_int32(NumericVar *var)
 
 Datum
 int8_numeric(PG_FUNCTION_ARGS)
-{	StackTrace("int8_numeric");
+{
 	int64		val = PG_GETARG_INT64(0);
 	Numeric		res;
 	NumericVar	result;
@@ -2935,7 +2935,7 @@ int8_numeric(PG_FUNCTION_ARGS)
 
 Datum
 numeric_int8(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_int8");
+{
 	Numeric		num = PG_GETARG_NUMERIC(0);
 	NumericVar	x;
 	int64		result;
@@ -2960,7 +2960,7 @@ numeric_int8(PG_FUNCTION_ARGS)
 
 Datum
 int2_numeric(PG_FUNCTION_ARGS)
-{	StackTrace("int2_numeric");
+{
 	int16		val = PG_GETARG_INT16(0);
 	Numeric		res;
 	NumericVar	result;
@@ -2979,7 +2979,7 @@ int2_numeric(PG_FUNCTION_ARGS)
 
 Datum
 numeric_int2(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_int2");
+{
 	Numeric		num = PG_GETARG_NUMERIC(0);
 	NumericVar	x;
 	int64		val;
@@ -3014,7 +3014,7 @@ numeric_int2(PG_FUNCTION_ARGS)
 
 Datum
 float8_numeric(PG_FUNCTION_ARGS)
-{	StackTrace("float8_numeric");
+{
 	float8		val = PG_GETARG_FLOAT8(0);
 	Numeric		res;
 	NumericVar	result;
@@ -3040,7 +3040,7 @@ float8_numeric(PG_FUNCTION_ARGS)
 
 Datum
 numeric_float8(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_float8");
+{
 	Numeric		num = PG_GETARG_NUMERIC(0);
 	char	   *tmp;
 	Datum		result;
@@ -3062,7 +3062,7 @@ numeric_float8(PG_FUNCTION_ARGS)
 /* Convert numeric to float8; if out of range, return +/- HUGE_VAL */
 Datum
 numeric_float8_no_overflow(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_float8_no_overflow");
+{
 	Numeric		num = PG_GETARG_NUMERIC(0);
 	double		val;
 
@@ -3076,7 +3076,7 @@ numeric_float8_no_overflow(PG_FUNCTION_ARGS)
 
 Datum
 float4_numeric(PG_FUNCTION_ARGS)
-{	StackTrace("float4_numeric");
+{
 	float4		val = PG_GETARG_FLOAT4(0);
 	Numeric		res;
 	NumericVar	result;
@@ -3102,7 +3102,7 @@ float4_numeric(PG_FUNCTION_ARGS)
 
 Datum
 numeric_float4(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_float4");
+{
 	Numeric		num = PG_GETARG_NUMERIC(0);
 	char	   *tmp;
 	Datum		result;
@@ -3153,7 +3153,7 @@ typedef struct NumericAggState
  */
 static NumericAggState *
 makeNumericAggState(FunctionCallInfo fcinfo, bool calcSumX2)
-{	StackTrace("makeNumericAggState");
+{
 	NumericAggState *state;
 	MemoryContext agg_context;
 	MemoryContext old_context;
@@ -3177,7 +3177,7 @@ makeNumericAggState(FunctionCallInfo fcinfo, bool calcSumX2)
  */
 static void
 do_numeric_accum(NumericAggState *state, Numeric newval)
-{	StackTrace("do_numeric_accum");
+{
 	NumericVar	X;
 	NumericVar	X2;
 	MemoryContext old_context;
@@ -3251,7 +3251,7 @@ do_numeric_accum(NumericAggState *state, Numeric newval)
  */
 static bool
 do_numeric_discard(NumericAggState *state, Numeric newval)
-{	StackTrace("do_numeric_discard");
+{
 	NumericVar	X;
 	NumericVar	X2;
 	MemoryContext old_context;
@@ -3330,7 +3330,7 @@ do_numeric_discard(NumericAggState *state, Numeric newval)
  */
 Datum
 numeric_accum(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_accum");
+{
 	NumericAggState *state;
 
 	state = PG_ARGISNULL(0) ? NULL : (NumericAggState *) PG_GETARG_POINTER(0);
@@ -3350,7 +3350,7 @@ numeric_accum(PG_FUNCTION_ARGS)
  */
 Datum
 numeric_avg_accum(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_avg_accum");
+{
 	NumericAggState *state;
 
 	state = PG_ARGISNULL(0) ? NULL : (NumericAggState *) PG_GETARG_POINTER(0);
@@ -3371,7 +3371,7 @@ numeric_avg_accum(PG_FUNCTION_ARGS)
  */
 Datum
 numeric_accum_inv(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_accum_inv");
+{
 	NumericAggState *state;
 
 	state = PG_ARGISNULL(0) ? NULL : (NumericAggState *) PG_GETARG_POINTER(0);
@@ -3420,7 +3420,7 @@ typedef struct Int128AggState
  */
 static Int128AggState *
 makeInt128AggState(FunctionCallInfo fcinfo, bool calcSumX2)
-{	StackTrace("makeInt128AggState");
+{
 	Int128AggState *state;
 	MemoryContext agg_context;
 	MemoryContext old_context;
@@ -3443,7 +3443,7 @@ makeInt128AggState(FunctionCallInfo fcinfo, bool calcSumX2)
  */
 static void
 do_int128_accum(Int128AggState *state, int128 newval)
-{	StackTrace("do_int128_accum");
+{
 	if (state->calcSumX2)
 		state->sumX2 += newval * newval;
 
@@ -3456,7 +3456,7 @@ do_int128_accum(Int128AggState *state, int128 newval)
  */
 static void
 do_int128_discard(Int128AggState *state, int128 newval)
-{	StackTrace("do_int128_discard");
+{
 	if (state->calcSumX2)
 		state->sumX2 -= newval * newval;
 
@@ -3473,7 +3473,7 @@ typedef NumericAggState PolyNumAggState;
 
 Datum
 int2_accum(PG_FUNCTION_ARGS)
-{	StackTrace("int2_accum");
+{
 	PolyNumAggState *state;
 
 	state = PG_ARGISNULL(0) ? NULL : (PolyNumAggState *) PG_GETARG_POINTER(0);
@@ -3500,7 +3500,7 @@ int2_accum(PG_FUNCTION_ARGS)
 
 Datum
 int4_accum(PG_FUNCTION_ARGS)
-{	StackTrace("int4_accum");
+{
 	PolyNumAggState *state;
 
 	state = PG_ARGISNULL(0) ? NULL : (PolyNumAggState *) PG_GETARG_POINTER(0);
@@ -3527,7 +3527,7 @@ int4_accum(PG_FUNCTION_ARGS)
 
 Datum
 int8_accum(PG_FUNCTION_ARGS)
-{	StackTrace("int8_accum");
+{
 	NumericAggState *state;
 
 	state = PG_ARGISNULL(0) ? NULL : (NumericAggState *) PG_GETARG_POINTER(0);
@@ -3553,7 +3553,7 @@ int8_accum(PG_FUNCTION_ARGS)
  */
 Datum
 int8_avg_accum(PG_FUNCTION_ARGS)
-{	StackTrace("int8_avg_accum");
+{
 	PolyNumAggState *state;
 
 	state = PG_ARGISNULL(0) ? NULL : (PolyNumAggState *) PG_GETARG_POINTER(0);
@@ -3585,7 +3585,7 @@ int8_avg_accum(PG_FUNCTION_ARGS)
 
 Datum
 int2_accum_inv(PG_FUNCTION_ARGS)
-{	StackTrace("int2_accum_inv");
+{
 	PolyNumAggState *state;
 
 	state = PG_ARGISNULL(0) ? NULL : (PolyNumAggState *) PG_GETARG_POINTER(0);
@@ -3615,7 +3615,7 @@ int2_accum_inv(PG_FUNCTION_ARGS)
 
 Datum
 int4_accum_inv(PG_FUNCTION_ARGS)
-{	StackTrace("int4_accum_inv");
+{
 	PolyNumAggState *state;
 
 	state = PG_ARGISNULL(0) ? NULL : (PolyNumAggState *) PG_GETARG_POINTER(0);
@@ -3645,7 +3645,7 @@ int4_accum_inv(PG_FUNCTION_ARGS)
 
 Datum
 int8_accum_inv(PG_FUNCTION_ARGS)
-{	StackTrace("int8_accum_inv");
+{
 	NumericAggState *state;
 
 	state = PG_ARGISNULL(0) ? NULL : (NumericAggState *) PG_GETARG_POINTER(0);
@@ -3671,7 +3671,7 @@ int8_accum_inv(PG_FUNCTION_ARGS)
 
 Datum
 int8_avg_accum_inv(PG_FUNCTION_ARGS)
-{	StackTrace("int8_avg_accum_inv");
+{
 	PolyNumAggState *state;
 
 	state = PG_ARGISNULL(0) ? NULL : (PolyNumAggState *) PG_GETARG_POINTER(0);
@@ -3701,7 +3701,7 @@ int8_avg_accum_inv(PG_FUNCTION_ARGS)
 
 Datum
 numeric_poly_sum(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_poly_sum");
+{
 #ifdef HAVE_INT128
 	PolyNumAggState *state;
 	Numeric		res;
@@ -3729,7 +3729,7 @@ numeric_poly_sum(PG_FUNCTION_ARGS)
 
 Datum
 numeric_poly_avg(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_poly_avg");
+{
 #ifdef HAVE_INT128
 	PolyNumAggState *state;
 	NumericVar	result;
@@ -3760,7 +3760,7 @@ numeric_poly_avg(PG_FUNCTION_ARGS)
 
 Datum
 numeric_avg(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_avg");
+{
 	NumericAggState *state;
 	Datum		N_datum;
 	Datum		sumX_datum;
@@ -3782,7 +3782,7 @@ numeric_avg(PG_FUNCTION_ARGS)
 
 Datum
 numeric_sum(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_sum");
+{
 	NumericAggState *state;
 
 	state = PG_ARGISNULL(0) ? NULL : (NumericAggState *) PG_GETARG_POINTER(0);
@@ -3812,7 +3812,7 @@ static Numeric
 numeric_stddev_internal(NumericAggState *state,
 						bool variance, bool sample,
 						bool *is_null)
-{	StackTrace("numeric_stddev_internal");
+{
 	Numeric		res;
 	NumericVar	vN,
 				vsumX,
@@ -3894,7 +3894,7 @@ numeric_stddev_internal(NumericAggState *state,
 
 Datum
 numeric_var_samp(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_var_samp");
+{
 	NumericAggState *state;
 	Numeric		res;
 	bool		is_null;
@@ -3911,7 +3911,7 @@ numeric_var_samp(PG_FUNCTION_ARGS)
 
 Datum
 numeric_stddev_samp(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_stddev_samp");
+{
 	NumericAggState *state;
 	Numeric		res;
 	bool		is_null;
@@ -3928,7 +3928,7 @@ numeric_stddev_samp(PG_FUNCTION_ARGS)
 
 Datum
 numeric_var_pop(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_var_pop");
+{
 	NumericAggState *state;
 	Numeric		res;
 	bool		is_null;
@@ -3945,7 +3945,7 @@ numeric_var_pop(PG_FUNCTION_ARGS)
 
 Datum
 numeric_stddev_pop(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_stddev_pop");
+{
 	NumericAggState *state;
 	Numeric		res;
 	bool		is_null;
@@ -3965,7 +3965,7 @@ static Numeric
 numeric_poly_stddev_internal(Int128AggState *state,
 							 bool variance, bool sample,
 							 bool *is_null)
-{	StackTrace("numeric_poly_stddev_internal");
+{
 	NumericAggState numstate;
 	Numeric		res;
 
@@ -3996,7 +3996,7 @@ numeric_poly_stddev_internal(Int128AggState *state,
 
 Datum
 numeric_poly_var_samp(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_poly_var_samp");
+{
 #ifdef HAVE_INT128
 	PolyNumAggState *state;
 	Numeric		res;
@@ -4017,7 +4017,7 @@ numeric_poly_var_samp(PG_FUNCTION_ARGS)
 
 Datum
 numeric_poly_stddev_samp(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_poly_stddev_samp");
+{
 #ifdef HAVE_INT128
 	PolyNumAggState *state;
 	Numeric		res;
@@ -4038,7 +4038,7 @@ numeric_poly_stddev_samp(PG_FUNCTION_ARGS)
 
 Datum
 numeric_poly_var_pop(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_poly_var_pop");
+{
 #ifdef HAVE_INT128
 	PolyNumAggState *state;
 	Numeric		res;
@@ -4059,7 +4059,7 @@ numeric_poly_var_pop(PG_FUNCTION_ARGS)
 
 Datum
 numeric_poly_stddev_pop(PG_FUNCTION_ARGS)
-{	StackTrace("numeric_poly_stddev_pop");
+{
 #ifdef HAVE_INT128
 	PolyNumAggState *state;
 	Numeric		res;
@@ -4100,7 +4100,7 @@ numeric_poly_stddev_pop(PG_FUNCTION_ARGS)
 
 Datum
 int2_sum(PG_FUNCTION_ARGS)
-{	StackTrace("int2_sum");
+{
 	int64		newval;
 
 	if (PG_ARGISNULL(0))
@@ -4149,7 +4149,7 @@ int2_sum(PG_FUNCTION_ARGS)
 
 Datum
 int4_sum(PG_FUNCTION_ARGS)
-{	StackTrace("int4_sum");
+{
 	int64		newval;
 
 	if (PG_ARGISNULL(0))
@@ -4201,7 +4201,7 @@ int4_sum(PG_FUNCTION_ARGS)
  */
 Datum
 int8_sum(PG_FUNCTION_ARGS)
-{	StackTrace("int8_sum");
+{
 	Numeric		oldsum;
 	Datum		newval;
 
@@ -4252,7 +4252,7 @@ typedef struct Int8TransTypeData
 
 Datum
 int2_avg_accum(PG_FUNCTION_ARGS)
-{	StackTrace("int2_avg_accum");
+{
 	ArrayType  *transarray;
 	int16		newval = PG_GETARG_INT16(1);
 	Int8TransTypeData *transdata;
@@ -4280,7 +4280,7 @@ int2_avg_accum(PG_FUNCTION_ARGS)
 
 Datum
 int4_avg_accum(PG_FUNCTION_ARGS)
-{	StackTrace("int4_avg_accum");
+{
 	ArrayType  *transarray;
 	int32		newval = PG_GETARG_INT32(1);
 	Int8TransTypeData *transdata;
@@ -4308,7 +4308,7 @@ int4_avg_accum(PG_FUNCTION_ARGS)
 
 Datum
 int2_avg_accum_inv(PG_FUNCTION_ARGS)
-{	StackTrace("int2_avg_accum_inv");
+{
 	ArrayType  *transarray;
 	int16		newval = PG_GETARG_INT16(1);
 	Int8TransTypeData *transdata;
@@ -4336,7 +4336,7 @@ int2_avg_accum_inv(PG_FUNCTION_ARGS)
 
 Datum
 int4_avg_accum_inv(PG_FUNCTION_ARGS)
-{	StackTrace("int4_avg_accum_inv");
+{
 	ArrayType  *transarray;
 	int32		newval = PG_GETARG_INT32(1);
 	Int8TransTypeData *transdata;
@@ -4364,7 +4364,7 @@ int4_avg_accum_inv(PG_FUNCTION_ARGS)
 
 Datum
 int8_avg(PG_FUNCTION_ARGS)
-{	StackTrace("int8_avg");
+{
 	ArrayType  *transarray = PG_GETARG_ARRAYTYPE_P(0);
 	Int8TransTypeData *transdata;
 	Datum		countd,
@@ -4393,7 +4393,7 @@ int8_avg(PG_FUNCTION_ARGS)
  */
 Datum
 int2int4_sum(PG_FUNCTION_ARGS)
-{	StackTrace("int2int4_sum");
+{
 	ArrayType  *transarray = PG_GETARG_ARRAYTYPE_P(0);
 	Int8TransTypeData *transdata;
 
@@ -4424,7 +4424,7 @@ int2int4_sum(PG_FUNCTION_ARGS)
  */
 static void
 dump_numeric(const char *str, Numeric num)
-{	StackTrace("dump_numeric");
+{
 	NumericDigit *digits = NUMERIC_DIGITS(num);
 	int			ndigits;
 	int			i;
@@ -4460,7 +4460,7 @@ dump_numeric(const char *str, Numeric num)
  */
 static void
 dump_var(const char *str, NumericVar *var)
-{	StackTrace("dump_var");
+{
 	int			i;
 
 	printf("%s: VAR w=%d d=%d ", str, var->weight, var->dscale);
@@ -4506,7 +4506,7 @@ dump_var(const char *str, NumericVar *var)
  */
 static void
 alloc_var(NumericVar *var, int ndigits)
-{	StackTrace("alloc_var");
+{
 	digitbuf_free(var->buf);
 	var->buf = digitbuf_alloc(ndigits + 1);
 	var->buf[0] = 0;			/* spare digit for rounding */
@@ -4522,7 +4522,7 @@ alloc_var(NumericVar *var, int ndigits)
  */
 static void
 free_var(NumericVar *var)
-{	StackTrace("free_var");
+{
 	digitbuf_free(var->buf);
 	var->buf = NULL;
 	var->digits = NULL;
@@ -4538,7 +4538,7 @@ free_var(NumericVar *var)
  */
 static void
 zero_var(NumericVar *var)
-{	StackTrace("zero_var");
+{
 	digitbuf_free(var->buf);
 	var->buf = NULL;
 	var->digits = NULL;
@@ -4562,7 +4562,7 @@ zero_var(NumericVar *var)
  */
 static const char *
 set_var_from_str(const char *str, const char *cp, NumericVar *dest)
-{	StackTrace("set_var_from_str");
+{
 	bool		have_dp = FALSE;
 	int			i;
 	unsigned char *decdigits;
@@ -4716,7 +4716,7 @@ set_var_from_str(const char *str, const char *cp, NumericVar *dest)
  */
 static void
 set_var_from_num(Numeric num, NumericVar *dest)
-{	StackTrace("set_var_from_num");
+{
 	int			ndigits;
 
 	ndigits = NUMERIC_NDIGITS(num);
@@ -4747,7 +4747,7 @@ set_var_from_num(Numeric num, NumericVar *dest)
  */
 static void
 init_var_from_num(Numeric num, NumericVar *dest)
-{	StackTrace("init_var_from_num");
+{
 	dest->ndigits = NUMERIC_NDIGITS(num);
 	dest->weight = NUMERIC_WEIGHT(num);
 	dest->sign = NUMERIC_SIGN(num);
@@ -4764,7 +4764,7 @@ init_var_from_num(Numeric num, NumericVar *dest)
  */
 static void
 set_var_from_var(NumericVar *value, NumericVar *dest)
-{	StackTrace("set_var_from_var");
+{
 	NumericDigit *newbuf;
 
 	newbuf = digitbuf_alloc(value->ndigits + 1);
@@ -4788,7 +4788,7 @@ set_var_from_var(NumericVar *value, NumericVar *dest)
  */
 static char *
 get_str_from_var(NumericVar *var)
-{	StackTrace("get_str_from_var");
+{
 	int			dscale;
 	char	   *str;
 	char	   *cp;
@@ -4941,7 +4941,7 @@ get_str_from_var(NumericVar *var)
  */
 static char *
 get_str_from_var_sci(NumericVar *var, int rscale)
-{	StackTrace("get_str_from_var_sci");
+{
 	int32		exponent;
 	NumericVar	denominator;
 	NumericVar	significand;
@@ -5027,7 +5027,7 @@ get_str_from_var_sci(NumericVar *var, int rscale)
  */
 static Numeric
 make_result(NumericVar *var)
-{	StackTrace("make_result");
+{
 	Numeric		result;
 	NumericDigit *digits = var->digits;
 	int			weight = var->weight;
@@ -5113,7 +5113,7 @@ make_result(NumericVar *var)
  */
 static void
 apply_typmod(NumericVar *var, int32 typmod)
-{	StackTrace("apply_typmod");
+{
 	int			precision;
 	int			scale;
 	int			maxdigits;
@@ -5189,7 +5189,7 @@ apply_typmod(NumericVar *var, int32 typmod)
  */
 static bool
 numericvar_to_int64(NumericVar *var, int64 *result)
-{	StackTrace("numericvar_to_int64");
+{
 	NumericDigit *digits;
 	int			ndigits;
 	int			weight;
@@ -5260,7 +5260,7 @@ numericvar_to_int64(NumericVar *var, int64 *result)
  */
 static void
 int64_to_numericvar(int64 val, NumericVar *var)
-{	StackTrace("int64_to_numericvar");
+{
 	uint64		uval,
 				newuval;
 	NumericDigit *ptr;
@@ -5306,7 +5306,7 @@ int64_to_numericvar(int64 val, NumericVar *var)
  */
 static void
 int128_to_numericvar(int128 val, NumericVar *var)
-{	StackTrace("int128_to_numericvar");
+{
 	uint128		uval,
 				newuval;
 	NumericDigit *ptr;
@@ -5352,7 +5352,7 @@ int128_to_numericvar(int128 val, NumericVar *var)
  */
 static double
 numeric_to_double_no_overflow(Numeric num)
-{	StackTrace("numeric_to_double_no_overflow");
+{
 	char	   *tmp;
 	double		val;
 	char	   *endptr;
@@ -5379,7 +5379,7 @@ numeric_to_double_no_overflow(Numeric num)
 /* As above, but work from a NumericVar */
 static double
 numericvar_to_double_no_overflow(NumericVar *var)
-{	StackTrace("numericvar_to_double_no_overflow");
+{
 	char	   *tmp;
 	double		val;
 	char	   *endptr;
@@ -5411,7 +5411,7 @@ numericvar_to_double_no_overflow(NumericVar *var)
  */
 static int
 cmp_var(NumericVar *var1, NumericVar *var2)
-{	StackTrace("cmp_var");
+{
 	return cmp_var_common(var1->digits, var1->ndigits,
 						  var1->weight, var1->sign,
 						  var2->digits, var2->ndigits,
@@ -5429,7 +5429,7 @@ cmp_var_common(const NumericDigit *var1digits, int var1ndigits,
 			   int var1weight, int var1sign,
 			   const NumericDigit *var2digits, int var2ndigits,
 			   int var2weight, int var2sign)
-{	StackTrace("cmp_var_common");
+{
 	if (var1ndigits == 0)
 	{
 		if (var2ndigits == 0)
@@ -5469,7 +5469,7 @@ cmp_var_common(const NumericDigit *var1digits, int var1ndigits,
  */
 static void
 add_var(NumericVar *var1, NumericVar *var2, NumericVar *result)
-{	StackTrace("add_var");
+{
 	/*
 	 * Decide on the signs of the two variables what to do
 	 */
@@ -5586,7 +5586,7 @@ add_var(NumericVar *var1, NumericVar *var2, NumericVar *result)
  */
 static void
 sub_var(NumericVar *var1, NumericVar *var2, NumericVar *result)
-{	StackTrace("sub_var");
+{
 	/*
 	 * Decide on the signs of the two variables what to do
 	 */
@@ -5708,7 +5708,7 @@ sub_var(NumericVar *var1, NumericVar *var2, NumericVar *result)
 static void
 mul_var(NumericVar *var1, NumericVar *var2, NumericVar *result,
 		int rscale)
-{	StackTrace("mul_var");
+{
 	int			res_ndigits;
 	int			res_sign;
 	int			res_weight;
@@ -5879,7 +5879,7 @@ mul_var(NumericVar *var1, NumericVar *var2, NumericVar *result,
 static void
 div_var(NumericVar *var1, NumericVar *var2, NumericVar *result,
 		int rscale, bool round)
-{	StackTrace("div_var");
+{
 	int			div_ndigits;
 	int			res_ndigits;
 	int			res_sign;
@@ -6158,7 +6158,7 @@ div_var(NumericVar *var1, NumericVar *var2, NumericVar *result,
 static void
 div_var_fast(NumericVar *var1, NumericVar *var2, NumericVar *result,
 			 int rscale, bool round)
-{	StackTrace("div_var_fast");
+{
 	int			div_ndigits;
 	int			res_sign;
 	int			res_weight;
@@ -6412,7 +6412,7 @@ div_var_fast(NumericVar *var1, NumericVar *var2, NumericVar *result,
  */
 static int
 select_div_scale(NumericVar *var1, NumericVar *var2)
-{	StackTrace("select_div_scale");
+{
 	int			weight1,
 				weight2,
 				qweight,
@@ -6481,7 +6481,7 @@ select_div_scale(NumericVar *var1, NumericVar *var2)
  */
 static void
 mod_var(NumericVar *var1, NumericVar *var2, NumericVar *result)
-{	StackTrace("mod_var");
+{
 	NumericVar	tmp;
 
 	init_var(&tmp);
@@ -6510,7 +6510,7 @@ mod_var(NumericVar *var1, NumericVar *var2, NumericVar *result)
  */
 static void
 ceil_var(NumericVar *var, NumericVar *result)
-{	StackTrace("ceil_var");
+{
 	NumericVar	tmp;
 
 	init_var(&tmp);
@@ -6534,7 +6534,7 @@ ceil_var(NumericVar *var, NumericVar *result)
  */
 static void
 floor_var(NumericVar *var, NumericVar *result)
-{	StackTrace("floor_var");
+{
 	NumericVar	tmp;
 
 	init_var(&tmp);
@@ -6557,7 +6557,7 @@ floor_var(NumericVar *var, NumericVar *result)
  */
 static void
 sqrt_var(NumericVar *arg, NumericVar *result, int rscale)
-{	StackTrace("sqrt_var");
+{
 	NumericVar	tmp_arg;
 	NumericVar	tmp_val;
 	NumericVar	last_val;
@@ -6630,7 +6630,7 @@ sqrt_var(NumericVar *arg, NumericVar *result, int rscale)
  */
 static void
 exp_var(NumericVar *arg, NumericVar *result, int rscale)
-{	StackTrace("exp_var");
+{
 	NumericVar	x;
 	int			xintval;
 	bool		xneg = FALSE;
@@ -6712,7 +6712,7 @@ exp_var(NumericVar *arg, NumericVar *result, int rscale)
  */
 static void
 exp_var_internal(NumericVar *arg, NumericVar *result, int rscale)
-{	StackTrace("exp_var_internal");
+{
 	NumericVar	x;
 	NumericVar	xpow;
 	NumericVar	ifac;
@@ -6786,7 +6786,7 @@ exp_var_internal(NumericVar *arg, NumericVar *result, int rscale)
  */
 static void
 ln_var(NumericVar *arg, NumericVar *result, int rscale)
-{	StackTrace("ln_var");
+{
 	NumericVar	x;
 	NumericVar	xx;
 	NumericVar	ni;
@@ -6884,7 +6884,7 @@ ln_var(NumericVar *arg, NumericVar *result, int rscale)
  */
 static void
 log_var(NumericVar *base, NumericVar *num, NumericVar *result)
-{	StackTrace("log_var");
+{
 	NumericVar	ln_base;
 	NumericVar	ln_num;
 	int			dec_digits;
@@ -6939,7 +6939,7 @@ log_var(NumericVar *base, NumericVar *num, NumericVar *result)
  */
 static void
 power_var(NumericVar *base, NumericVar *exp, NumericVar *result)
-{	StackTrace("power_var");
+{
 	NumericVar	ln_base;
 	NumericVar	ln_num;
 	int			dec_digits;
@@ -7042,7 +7042,7 @@ power_var(NumericVar *base, NumericVar *exp, NumericVar *result)
  */
 static void
 power_var_int(NumericVar *base, int exp, NumericVar *result, int rscale)
-{	StackTrace("power_var_int");
+{
 	unsigned int mask;
 	bool		neg;
 	NumericVar	base_prod;
@@ -7151,7 +7151,7 @@ power_var_int(NumericVar *base, int exp, NumericVar *result, int rscale)
  */
 static int
 cmp_abs(NumericVar *var1, NumericVar *var2)
-{	StackTrace("cmp_abs");
+{
 	return cmp_abs_common(var1->digits, var1->ndigits, var1->weight,
 						  var2->digits, var2->ndigits, var2->weight);
 }
@@ -7166,7 +7166,7 @@ cmp_abs(NumericVar *var1, NumericVar *var2)
 static int
 cmp_abs_common(const NumericDigit *var1digits, int var1ndigits, int var1weight,
 			 const NumericDigit *var2digits, int var2ndigits, int var2weight)
-{	StackTrace("cmp_abs_common");
+{
 	int			i1 = 0;
 	int			i2 = 0;
 
@@ -7229,7 +7229,7 @@ cmp_abs_common(const NumericDigit *var1digits, int var1ndigits, int var1weight,
  */
 static void
 add_abs(NumericVar *var1, NumericVar *var2, NumericVar *result)
-{	StackTrace("add_abs");
+{
 	NumericDigit *res_buf;
 	NumericDigit *res_digits;
 	int			res_ndigits;
@@ -7314,7 +7314,7 @@ add_abs(NumericVar *var1, NumericVar *var2, NumericVar *result)
  */
 static void
 sub_abs(NumericVar *var1, NumericVar *var2, NumericVar *result)
-{	StackTrace("sub_abs");
+{
 	NumericDigit *res_buf;
 	NumericDigit *res_digits;
 	int			res_ndigits;
@@ -7396,7 +7396,7 @@ sub_abs(NumericVar *var1, NumericVar *var2, NumericVar *result)
  */
 static void
 round_var(NumericVar *var, int rscale)
-{	StackTrace("round_var");
+{
 	NumericDigit *digits = var->digits;
 	int			di;
 	int			ndigits;
@@ -7502,7 +7502,7 @@ round_var(NumericVar *var, int rscale)
  */
 static void
 trunc_var(NumericVar *var, int rscale)
-{	StackTrace("trunc_var");
+{
 	int			di;
 	int			ndigits;
 
@@ -7564,7 +7564,7 @@ trunc_var(NumericVar *var, int rscale)
  */
 static void
 strip_var(NumericVar *var)
-{	StackTrace("strip_var");
+{
 	NumericDigit *digits = var->digits;
 	int			ndigits = var->ndigits;
 

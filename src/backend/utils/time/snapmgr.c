@@ -185,7 +185,7 @@ typedef struct SerializedSnapshotData
  */
 Snapshot
 GetTransactionSnapshot(void)
-{	StackTrace("GetTransactionSnapshot");
+{
 	/*
 	 * Return historic snapshot if doing logical decoding. We'll never need a
 	 * non-historic transaction snapshot in this (sub-)transaction, so there's
@@ -257,7 +257,7 @@ GetTransactionSnapshot(void)
  */
 Snapshot
 GetLatestSnapshot(void)
-{	StackTrace("GetLatestSnapshot");
+{
 	/*
 	 * We might be able to relax this, but nothing that could otherwise work
 	 * needs it.
@@ -288,7 +288,7 @@ GetLatestSnapshot(void)
  */
 Snapshot
 GetCatalogSnapshot(Oid relid)
-{	StackTrace("GetCatalogSnapshot");
+{
 	/*
 	 * Return historic snapshot while we're doing logical decoding, so we can
 	 * see the appropriate state of the catalog.
@@ -310,7 +310,7 @@ GetCatalogSnapshot(Oid relid)
  */
 Snapshot
 GetNonHistoricCatalogSnapshot(Oid relid)
-{	StackTrace("GetNonHistoricCatalogSnapshot");
+{
 	/*
 	 * If the caller is trying to scan a relation that has no syscache, no
 	 * catcache invalidations will be sent when it is updated.  For a few key
@@ -346,7 +346,7 @@ GetNonHistoricCatalogSnapshot(Oid relid)
  */
 void
 InvalidateCatalogSnapshot()
-{	StackTrace("InvalidateCatalogSnapshot");
+{
 	CatalogSnapshotStale = true;
 }
 
@@ -356,7 +356,7 @@ InvalidateCatalogSnapshot()
  */
 void
 SnapshotSetCommandId(CommandId curcid)
-{	StackTrace("SnapshotSetCommandId");
+{
 	if (!FirstSnapshotSet)
 		return;
 
@@ -377,7 +377,7 @@ SnapshotSetCommandId(CommandId curcid)
 static void
 SetTransactionSnapshot(Snapshot sourcesnap, TransactionId sourcexid,
 					   PGPROC *sourceproc)
-{	StackTrace("SetTransactionSnapshot");
+{
 	/* Caller should have checked this already */
 	Assert(!FirstSnapshotSet);
 
@@ -467,7 +467,7 @@ SetTransactionSnapshot(Snapshot sourcesnap, TransactionId sourcexid,
  */
 static Snapshot
 CopySnapshot(Snapshot snapshot)
-{	StackTrace("CopySnapshot");
+{
 	Snapshot	newsnap;
 	Size		subxipoff;
 	Size		size;
@@ -522,7 +522,7 @@ CopySnapshot(Snapshot snapshot)
  */
 static void
 FreeSnapshot(Snapshot snapshot)
-{	StackTrace("FreeSnapshot");
+{
 	Assert(snapshot->regd_count == 0);
 	Assert(snapshot->active_count == 0);
 	Assert(snapshot->copied);
@@ -540,7 +540,7 @@ FreeSnapshot(Snapshot snapshot)
  */
 void
 PushActiveSnapshot(Snapshot snap)
-{	StackTrace("PushActiveSnapshot");
+{
 	ActiveSnapshotElt *newactive;
 
 	Assert(snap != InvalidSnapshot);
@@ -574,7 +574,7 @@ PushActiveSnapshot(Snapshot snap)
  */
 void
 PushCopiedSnapshot(Snapshot snapshot)
-{	StackTrace("PushCopiedSnapshot");
+{
 	PushActiveSnapshot(CopySnapshot(snapshot));
 }
 
@@ -586,7 +586,7 @@ PushCopiedSnapshot(Snapshot snapshot)
  */
 void
 UpdateActiveSnapshotCommandId(void)
-{	StackTrace("UpdateActiveSnapshotCommandId");
+{
 	CommandId	save_curcid,
 				curcid;
 
@@ -617,7 +617,7 @@ UpdateActiveSnapshotCommandId(void)
  */
 void
 PopActiveSnapshot(void)
-{	StackTrace("PopActiveSnapshot");
+{
 	ActiveSnapshotElt *newstack;
 
 	newstack = ActiveSnapshot->as_next;
@@ -642,7 +642,7 @@ PopActiveSnapshot(void)
  */
 Snapshot
 GetActiveSnapshot(void)
-{	StackTrace("GetActiveSnapshot");
+{
 	Assert(ActiveSnapshot != NULL);
 
 	return ActiveSnapshot->as_snap;
@@ -654,7 +654,7 @@ GetActiveSnapshot(void)
  */
 bool
 ActiveSnapshotSet(void)
-{	StackTrace("ActiveSnapshotSet");
+{
 	return ActiveSnapshot != NULL;
 }
 
@@ -666,7 +666,7 @@ ActiveSnapshotSet(void)
  */
 Snapshot
 RegisterSnapshot(Snapshot snapshot)
-{	StackTrace("RegisterSnapshot");
+{
 	if (snapshot == InvalidSnapshot)
 		return InvalidSnapshot;
 
@@ -679,7 +679,7 @@ RegisterSnapshot(Snapshot snapshot)
  */
 Snapshot
 RegisterSnapshotOnOwner(Snapshot snapshot, ResourceOwner owner)
-{	StackTrace("RegisterSnapshotOnOwner");
+{
 	Snapshot	snap;
 
 	if (snapshot == InvalidSnapshot)
@@ -708,7 +708,7 @@ RegisterSnapshotOnOwner(Snapshot snapshot, ResourceOwner owner)
  */
 void
 UnregisterSnapshot(Snapshot snapshot)
-{	StackTrace("UnregisterSnapshot");
+{
 	if (snapshot == NULL)
 		return;
 
@@ -721,7 +721,7 @@ UnregisterSnapshot(Snapshot snapshot)
  */
 void
 UnregisterSnapshotFromOwner(Snapshot snapshot, ResourceOwner owner)
-{	StackTrace("UnregisterSnapshotFromOwner");
+{
 	if (snapshot == NULL)
 		return;
 
@@ -747,7 +747,7 @@ UnregisterSnapshotFromOwner(Snapshot snapshot, ResourceOwner owner)
  */
 static int
 xmin_cmp(const pairingheap_node *a, const pairingheap_node *b, void *arg)
-{	StackTrace("xmin_cmp");
+{
 	const SnapshotData *asnap = pairingheap_const_container(SnapshotData, ph_node, a);
 	const SnapshotData *bsnap = pairingheap_const_container(SnapshotData, ph_node, b);
 
@@ -773,7 +773,7 @@ xmin_cmp(const pairingheap_node *a, const pairingheap_node *b, void *arg)
  */
 static void
 SnapshotResetXmin(void)
-{	StackTrace("SnapshotResetXmin");
+{
 	Snapshot	minSnapshot;
 
 	if (ActiveSnapshot != NULL)
@@ -797,7 +797,7 @@ SnapshotResetXmin(void)
  */
 void
 AtSubCommit_Snapshot(int level)
-{	StackTrace("AtSubCommit_Snapshot");
+{
 	ActiveSnapshotElt *active;
 
 	/*
@@ -818,7 +818,7 @@ AtSubCommit_Snapshot(int level)
  */
 void
 AtSubAbort_Snapshot(int level)
-{	StackTrace("AtSubAbort_Snapshot");
+{
 	/* Forget the active snapshots set by this subtransaction */
 	while (ActiveSnapshot && ActiveSnapshot->as_level >= level)
 	{
@@ -852,7 +852,7 @@ AtSubAbort_Snapshot(int level)
  */
 void
 AtEOXact_Snapshot(bool isCommit)
-{	StackTrace("AtEOXact_Snapshot");
+{
 	/*
 	 * In transaction-snapshot mode we must release our privately-managed
 	 * reference to the transaction snapshot.  We must decrement
@@ -944,7 +944,7 @@ AtEOXact_Snapshot(bool isCommit)
  */
 char *
 ExportSnapshot(Snapshot snapshot)
-{	StackTrace("ExportSnapshot");
+{
 	TransactionId topXid;
 	TransactionId *children;
 	int			nchildren;
@@ -1109,7 +1109,7 @@ ExportSnapshot(Snapshot snapshot)
  */
 Datum
 pg_export_snapshot(PG_FUNCTION_ARGS)
-{	StackTrace("pg_export_snapshot");
+{
 	char	   *snapshotName;
 
 	snapshotName = ExportSnapshot(GetActiveSnapshot());
@@ -1124,7 +1124,7 @@ pg_export_snapshot(PG_FUNCTION_ARGS)
  */
 static int
 parseIntFromText(const char *prefix, char **s, const char *filename)
-{	StackTrace("parseIntFromText");
+{
 	char	   *ptr = *s;
 	int			prefixlen = strlen(prefix);
 	int			val;
@@ -1149,7 +1149,7 @@ parseIntFromText(const char *prefix, char **s, const char *filename)
 
 static TransactionId
 parseXidFromText(const char *prefix, char **s, const char *filename)
-{	StackTrace("parseXidFromText");
+{
 	char	   *ptr = *s;
 	int			prefixlen = strlen(prefix);
 	TransactionId val;
@@ -1180,7 +1180,7 @@ parseXidFromText(const char *prefix, char **s, const char *filename)
  */
 void
 ImportSnapshot(const char *idstr)
-{	StackTrace("ImportSnapshot");
+{
 	char		path[MAXPGPATH];
 	FILE	   *f;
 	struct stat stat_buf;
@@ -1351,7 +1351,7 @@ ImportSnapshot(const char *idstr)
  */
 bool
 XactHasExportedSnapshots(void)
-{	StackTrace("XactHasExportedSnapshots");
+{
 	return (exportedSnapshots != NIL);
 }
 
@@ -1364,7 +1364,7 @@ XactHasExportedSnapshots(void)
  */
 void
 DeleteAllExportedSnapshotFiles(void)
-{	StackTrace("DeleteAllExportedSnapshotFiles");
+{
 	char		buf[MAXPGPATH];
 	DIR		   *s_dir;
 	struct dirent *s_de;
@@ -1397,7 +1397,7 @@ DeleteAllExportedSnapshotFiles(void)
 
 bool
 ThereAreNoPriorRegisteredSnapshots(void)
-{	StackTrace("ThereAreNoPriorRegisteredSnapshots");
+{
 	if (pairingheap_is_empty(&RegisteredSnapshots) ||
 		pairingheap_is_singular(&RegisteredSnapshots))
 		return true;
@@ -1413,7 +1413,7 @@ ThereAreNoPriorRegisteredSnapshots(void)
  */
 void
 SetupHistoricSnapshot(Snapshot historic_snapshot, HTAB *tuplecids)
-{	StackTrace("SetupHistoricSnapshot");
+{
 	Assert(historic_snapshot != NULL);
 
 	/* setup the timetravel snapshot */
@@ -1429,20 +1429,20 @@ SetupHistoricSnapshot(Snapshot historic_snapshot, HTAB *tuplecids)
  */
 void
 TeardownHistoricSnapshot(bool is_error)
-{	StackTrace("TeardownHistoricSnapshot");
+{
 	HistoricSnapshot = NULL;
 	tuplecid_data = NULL;
 }
 
 bool
 HistoricSnapshotActive(void)
-{	StackTrace("HistoricSnapshotActive");
+{
 	return HistoricSnapshot != NULL;
 }
 
 HTAB *
 HistoricSnapshotGetTupleCids(void)
-{	StackTrace("HistoricSnapshotGetTupleCids");
+{
 	Assert(HistoricSnapshotActive());
 	return tuplecid_data;
 }
@@ -1456,7 +1456,7 @@ HistoricSnapshotGetTupleCids(void)
  */
 Size
 EstimateSnapshotSpace(Snapshot snap)
-{	StackTrace("EstimateSnapshotSpace");
+{
 	Size		size;
 
 	Assert(snap != InvalidSnapshot);
@@ -1480,7 +1480,7 @@ EstimateSnapshotSpace(Snapshot snap)
  */
 void
 SerializeSnapshot(Snapshot snapshot, char *start_address)
-{	StackTrace("SerializeSnapshot");
+{
 	SerializedSnapshotData *serialized_snapshot;
 
 	Assert(snapshot->subxcnt >= 0);
@@ -1534,7 +1534,7 @@ SerializeSnapshot(Snapshot snapshot, char *start_address)
  */
 Snapshot
 RestoreSnapshot(char *start_address)
-{	StackTrace("RestoreSnapshot");
+{
 	SerializedSnapshotData *serialized_snapshot;
 	Size		size;
 	Snapshot	snapshot;
@@ -1594,6 +1594,6 @@ RestoreSnapshot(char *start_address)
  */
 void
 RestoreTransactionSnapshot(Snapshot snapshot, void *master_pgproc)
-{	StackTrace("RestoreTransactionSnapshot");
+{
 	SetTransactionSnapshot(snapshot, InvalidTransactionId, master_pgproc);
 }

@@ -125,7 +125,7 @@ void
 AcquireRewriteLocks(Query *parsetree,
 					bool forExecute,
 					bool forUpdatePushedDown)
-{	StackTrace("AcquireRewriteLocks");
+{
 	ListCell   *l;
 	int			rt_index;
 	acquireLocksOnSubLinks_context context;
@@ -282,7 +282,7 @@ AcquireRewriteLocks(Query *parsetree,
  */
 static bool
 acquireLocksOnSubLinks(Node *node, acquireLocksOnSubLinks_context *context)
-{	StackTrace("acquireLocksOnSubLinks");
+{
 	if (node == NULL)
 		return false;
 	if (IsA(node, SubLink))
@@ -328,7 +328,7 @@ rewriteRuleAction(Query *parsetree,
 				  int rt_index,
 				  CmdType event,
 				  bool *returning_flag)
-{	StackTrace("rewriteRuleAction");
+{
 	int			current_varno,
 				new_varno;
 	int			rt_length;
@@ -609,7 +609,7 @@ rewriteRuleAction(Query *parsetree,
  */
 static List *
 adjustJoinTreeList(Query *parsetree, bool removert, int rt_index)
-{	StackTrace("adjustJoinTreeList");
+{
 	List	   *newjointree = copyObject(parsetree->jointree->fromlist);
 	ListCell   *l;
 
@@ -688,7 +688,7 @@ rewriteTargetListIU(List *targetList,
 					Relation target_relation,
 					int result_rti,
 					List **attrno_list)
-{	StackTrace("rewriteTargetListIU");
+{
 	TargetEntry **new_tles;
 	List	   *new_tlist = NIL;
 	List	   *junk_tlist = NIL;
@@ -865,7 +865,7 @@ static TargetEntry *
 process_matched_tle(TargetEntry *src_tle,
 					TargetEntry *prior_tle,
 					const char *attrName)
-{	StackTrace("process_matched_tle");
+{
 	TargetEntry *result;
 	Node	   *src_expr;
 	Node	   *prior_expr;
@@ -985,7 +985,7 @@ process_matched_tle(TargetEntry *src_tle,
  */
 static Node *
 get_assignment_input(Node *node)
-{	StackTrace("get_assignment_input");
+{
 	if (node == NULL)
 		return NULL;
 	if (IsA(node, FieldStore))
@@ -1012,7 +1012,7 @@ get_assignment_input(Node *node)
  */
 Node *
 build_column_default(Relation rel, int attrno)
-{	StackTrace("build_column_default");
+{
 	TupleDesc	rd_att = rel->rd_att;
 	Form_pg_attribute att_tup = rd_att->attrs[attrno - 1];
 	Oid			atttype = att_tup->atttypid;
@@ -1084,7 +1084,7 @@ build_column_default(Relation rel, int attrno)
 /* Does VALUES RTE contain any SetToDefault items? */
 static bool
 searchForDefault(RangeTblEntry *rte)
-{	StackTrace("searchForDefault");
+{
 	ListCell   *lc;
 
 	foreach(lc, rte->values_lists)
@@ -1116,7 +1116,7 @@ searchForDefault(RangeTblEntry *rte)
  */
 static void
 rewriteValuesRTE(RangeTblEntry *rte, Relation target_relation, List *attrnos)
-{	StackTrace("rewriteValuesRTE");
+{
 	List	   *newValues;
 	ListCell   *lc;
 
@@ -1205,7 +1205,7 @@ rewriteValuesRTE(RangeTblEntry *rte, Relation target_relation, List *attrnos)
 static void
 rewriteTargetListUD(Query *parsetree, RangeTblEntry *target_rte,
 					Relation target_relation)
-{	StackTrace("rewriteTargetListUD");
+{
 	Var		   *var = NULL;
 	const char *attrname;
 	TargetEntry *tle;
@@ -1295,7 +1295,7 @@ matchLocks(CmdType event,
 		   int varno,
 		   Query *parsetree,
 		   bool *hasUpdate)
-{	StackTrace("matchLocks");
+{
 	List	   *matching_locks = NIL;
 	int			nlocks;
 	int			i;
@@ -1362,7 +1362,7 @@ ApplyRetrieveRule(Query *parsetree,
 				  Relation relation,
 				  List *activeRIRs,
 				  bool forUpdatePushedDown)
-{	StackTrace("ApplyRetrieveRule");
+{
 	Query	   *rule_action;
 	RangeTblEntry *rte,
 			   *subrte;
@@ -1515,7 +1515,7 @@ static void
 markQueryForLocking(Query *qry, Node *jtnode,
 					LockClauseStrength strength, LockWaitPolicy waitPolicy,
 					bool pushedDown)
-{	StackTrace("markQueryForLocking");
+{
 	if (jtnode == NULL)
 		return;
 	if (IsA(jtnode, RangeTblRef))
@@ -1573,7 +1573,7 @@ markQueryForLocking(Query *qry, Node *jtnode,
  */
 static bool
 fireRIRonSubLink(Node *node, List *activeRIRs)
-{	StackTrace("fireRIRonSubLink");
+{
 	if (node == NULL)
 		return false;
 	if (IsA(node, SubLink))
@@ -1601,7 +1601,7 @@ fireRIRonSubLink(Node *node, List *activeRIRs)
  */
 static Query *
 fireRIRrules(Query *parsetree, List *activeRIRs, bool forUpdatePushedDown)
-{	StackTrace("fireRIRrules");
+{
 	int			origResultRelation = parsetree->resultRelation;
 	int			rt_index;
 	ListCell   *lc;
@@ -1851,7 +1851,7 @@ CopyAndAddInvertedQual(Query *parsetree,
 					   Node *rule_qual,
 					   int rt_index,
 					   CmdType event)
-{	StackTrace("CopyAndAddInvertedQual");
+{
 	/* Don't scribble on the passed qual (it's in the relcache!) */
 	Node	   *new_qual = (Node *) copyObject(rule_qual);
 	acquireLocksOnSubLinks_context context;
@@ -1924,7 +1924,7 @@ fireRules(Query *parsetree,
 		  bool *instead_flag,
 		  bool *returning_flag,
 		  Query **qual_product)
-{	StackTrace("fireRules");
+{
 	List	   *results = NIL;
 	ListCell   *l;
 
@@ -2006,7 +2006,7 @@ fireRules(Query *parsetree,
  */
 Query *
 get_view_query(Relation view)
-{	StackTrace("get_view_query");
+{
 	int			i;
 
 	Assert(view->rd_rel->relkind == RELKIND_VIEW);
@@ -2039,7 +2039,7 @@ get_view_query(Relation view)
  */
 static bool
 view_has_instead_trigger(Relation view, CmdType event)
-{	StackTrace("view_has_instead_trigger");
+{
 	TriggerDesc *trigDesc = view->trigdesc;
 
 	switch (event)
@@ -2074,7 +2074,7 @@ view_has_instead_trigger(Relation view, CmdType event)
  */
 static const char *
 view_col_is_auto_updatable(RangeTblRef *rtr, TargetEntry *tle)
-{	StackTrace("view_col_is_auto_updatable");
+{
 	Var		   *var = (Var *) tle->expr;
 
 	/*
@@ -2119,7 +2119,7 @@ view_col_is_auto_updatable(RangeTblRef *rtr, TargetEntry *tle)
  */
 const char *
 view_query_is_auto_updatable(Query *viewquery, bool check_cols)
-{	StackTrace("view_query_is_auto_updatable");
+{
 	RangeTblRef *rtr;
 	RangeTblEntry *base_rte;
 
@@ -2266,7 +2266,7 @@ view_cols_are_auto_updatable(Query *viewquery,
 							 Bitmapset *required_cols,
 							 Bitmapset **updatable_cols,
 							 char **non_updatable_col)
-{	StackTrace("view_cols_are_auto_updatable");
+{
 	RangeTblRef *rtr;
 	AttrNumber	col;
 	ListCell   *cell;
@@ -2344,7 +2344,7 @@ int
 relation_is_updatable(Oid reloid,
 					  bool include_triggers,
 					  Bitmapset *include_cols)
-{	StackTrace("relation_is_updatable");
+{
 	int			events = 0;
 	Relation	rel;
 	RuleLock   *rulelocks;
@@ -2506,7 +2506,7 @@ relation_is_updatable(Oid reloid,
  */
 static Bitmapset *
 adjust_view_column_set(Bitmapset *cols, List *targetlist)
-{	StackTrace("adjust_view_column_set");
+{
 	Bitmapset  *result = NULL;
 	int			col;
 
@@ -2577,7 +2577,7 @@ adjust_view_column_set(Bitmapset *cols, List *targetlist)
  */
 static Query *
 rewriteTargetView(Query *parsetree, Relation view)
-{	StackTrace("rewriteTargetView");
+{
 	Query	   *viewquery;
 	const char *auto_update_detail;
 	RangeTblRef *rtr;
@@ -3019,7 +3019,7 @@ rewriteTargetView(Query *parsetree, Relation view)
  */
 static List *
 RewriteQuery(Query *parsetree, List *rewrite_events)
-{	StackTrace("RewriteQuery");
+{
 	CmdType		event = parsetree->commandType;
 	bool		instead = false;
 	bool		returning = false;
@@ -3411,7 +3411,7 @@ RewriteQuery(Query *parsetree, List *rewrite_events)
  */
 List *
 QueryRewrite(Query *parsetree)
-{	StackTrace("QueryRewrite");
+{
 	uint32		input_query_id = parsetree->queryId;
 	List	   *querylist;
 	List	   *results;

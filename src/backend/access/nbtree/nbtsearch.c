@@ -51,7 +51,7 @@ static void _bt_drop_lock_and_maybe_pin(IndexScanDesc scan, BTScanPos sp);
  */
 static void
 _bt_drop_lock_and_maybe_pin(IndexScanDesc scan, BTScanPos sp)
-{	StackTrace("_bt_drop_lock_and_maybe_pin");
+{
 	LockBuffer(sp->buf, BUFFER_LOCK_UNLOCK);
 
 	if (IsMVCCSnapshot(scan->xs_snapshot) &&
@@ -88,7 +88,7 @@ _bt_drop_lock_and_maybe_pin(IndexScanDesc scan, BTScanPos sp)
 BTStack
 _bt_search(Relation rel, int keysz, ScanKey scankey, bool nextkey,
 		   Buffer *bufP, int access)
-{	StackTrace("_bt_search");
+{
 	BTStack		stack_in = NULL;
 
 	/* Get the root page to start with */
@@ -207,7 +207,7 @@ _bt_moveright(Relation rel,
 			  bool forupdate,
 			  BTStack stack,
 			  int access)
-{	StackTrace("_bt_moveright");
+{
 	Page		page;
 	BTPageOpaque opaque;
 	int32		cmpval;
@@ -311,7 +311,7 @@ _bt_binsrch(Relation rel,
 			int keysz,
 			ScanKey scankey,
 			bool nextkey)
-{	StackTrace("_bt_binsrch");
+{
 	Page		page;
 	BTPageOpaque opaque;
 	OffsetNumber low,
@@ -416,7 +416,7 @@ _bt_compare(Relation rel,
 			ScanKey scankey,
 			Page page,
 			OffsetNumber offnum)
-{	StackTrace("_bt_compare");
+{
 	TupleDesc	itupdesc = RelationGetDescr(rel);
 	BTPageOpaque opaque = (BTPageOpaque) PageGetSpecialPointer(page);
 	IndexTuple	itup;
@@ -520,7 +520,7 @@ _bt_compare(Relation rel,
  */
 bool
 _bt_first(IndexScanDesc scan, ScanDirection dir)
-{	StackTrace("_bt_first");
+{
 	Relation	rel = scan->indexRelation;
 	BTScanOpaque so = (BTScanOpaque) scan->opaque;
 	Buffer		buf;
@@ -1101,7 +1101,7 @@ _bt_first(IndexScanDesc scan, ScanDirection dir)
  */
 bool
 _bt_next(IndexScanDesc scan, ScanDirection dir)
-{	StackTrace("_bt_next");
+{
 	BTScanOpaque so = (BTScanOpaque) scan->opaque;
 	BTScanPosItem *currItem;
 
@@ -1152,7 +1152,7 @@ _bt_next(IndexScanDesc scan, ScanDirection dir)
  */
 static bool
 _bt_readpage(IndexScanDesc scan, ScanDirection dir, OffsetNumber offnum)
-{	StackTrace("_bt_readpage");
+{
 	BTScanOpaque so = (BTScanOpaque) scan->opaque;
 	Page		page;
 	BTPageOpaque opaque;
@@ -1272,7 +1272,7 @@ _bt_readpage(IndexScanDesc scan, ScanDirection dir, OffsetNumber offnum)
 static void
 _bt_saveitem(BTScanOpaque so, int itemIndex,
 			 OffsetNumber offnum, IndexTuple itup)
-{	StackTrace("_bt_saveitem");
+{
 	BTScanPosItem *currItem = &so->currPos.items[itemIndex];
 
 	currItem->heapTid = itup->t_tid;
@@ -1304,7 +1304,7 @@ _bt_saveitem(BTScanOpaque so, int itemIndex,
  */
 static bool
 _bt_steppage(IndexScanDesc scan, ScanDirection dir)
-{	StackTrace("_bt_steppage");
+{
 	BTScanOpaque so = (BTScanOpaque) scan->opaque;
 	Relation	rel;
 	Page		page;
@@ -1470,7 +1470,7 @@ _bt_steppage(IndexScanDesc scan, ScanDirection dir)
  */
 static Buffer
 _bt_walk_left(Relation rel, Buffer buf)
-{	StackTrace("_bt_walk_left");
+{
 	Page		page;
 	BTPageOpaque opaque;
 
@@ -1585,7 +1585,7 @@ _bt_walk_left(Relation rel, Buffer buf)
  */
 Buffer
 _bt_get_endpoint(Relation rel, uint32 level, bool rightmost)
-{	StackTrace("_bt_get_endpoint");
+{
 	Buffer		buf;
 	Page		page;
 	BTPageOpaque opaque;
@@ -1664,7 +1664,7 @@ _bt_get_endpoint(Relation rel, uint32 level, bool rightmost)
  */
 static bool
 _bt_endpoint(IndexScanDesc scan, ScanDirection dir)
-{	StackTrace("_bt_endpoint");
+{
 	Relation	rel = scan->indexRelation;
 	BTScanOpaque so = (BTScanOpaque) scan->opaque;
 	Buffer		buf;

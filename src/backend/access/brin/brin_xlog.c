@@ -21,7 +21,7 @@
  */
 static void
 brin_xlog_createidx(XLogReaderState *record)
-{	StackTrace("brin_xlog_createidx");
+{
 	XLogRecPtr	lsn = record->EndRecPtr;
 	xl_brin_createidx *xlrec = (xl_brin_createidx *) XLogRecGetData(record);
 	Buffer		buf;
@@ -44,7 +44,7 @@ brin_xlog_createidx(XLogReaderState *record)
 static void
 brin_xlog_insert_update(XLogReaderState *record,
 						xl_brin_insert *xlrec)
-{	StackTrace("brin_xlog_insert_update");
+{
 	XLogRecPtr	lsn = record->EndRecPtr;
 	Buffer		buffer;
 	BlockNumber	regpgno;
@@ -121,7 +121,7 @@ brin_xlog_insert_update(XLogReaderState *record,
  */
 static void
 brin_xlog_insert(XLogReaderState *record)
-{	StackTrace("brin_xlog_insert");
+{
 	xl_brin_insert *xlrec = (xl_brin_insert *) XLogRecGetData(record);
 
 	brin_xlog_insert_update(record, xlrec);
@@ -132,7 +132,7 @@ brin_xlog_insert(XLogReaderState *record)
  */
 static void
 brin_xlog_update(XLogReaderState *record)
-{	StackTrace("brin_xlog_update");
+{
 	XLogRecPtr	lsn = record->EndRecPtr;
 	xl_brin_update *xlrec = (xl_brin_update *) XLogRecGetData(record);
 	Buffer		buffer;
@@ -169,7 +169,7 @@ brin_xlog_update(XLogReaderState *record)
  */
 static void
 brin_xlog_samepage_update(XLogReaderState *record)
-{	StackTrace("brin_xlog_samepage_update");
+{
 	XLogRecPtr	lsn = record->EndRecPtr;
 	xl_brin_samepage_update *xlrec;
 	Buffer		buffer;
@@ -211,7 +211,7 @@ brin_xlog_samepage_update(XLogReaderState *record)
  */
 static void
 brin_xlog_revmap_extend(XLogReaderState *record)
-{	StackTrace("brin_xlog_revmap_extend");
+{
 	XLogRecPtr	lsn = record->EndRecPtr;
 	xl_brin_revmap_extend *xlrec;
 	Buffer		metabuf;
@@ -261,7 +261,7 @@ brin_xlog_revmap_extend(XLogReaderState *record)
 
 void
 brin_redo(XLogReaderState *record)
-{	StackTrace("brin_redo");
+{
 	uint8		info = XLogRecGetInfo(record) & ~XLR_INFO_MASK;
 
 	switch (info & XLOG_BRIN_OPMASK)

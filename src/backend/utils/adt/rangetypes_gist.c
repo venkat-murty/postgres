@@ -170,7 +170,7 @@ static float8 call_subtype_diff(TypeCacheEntry *typcache,
 /* GiST query consistency check */
 Datum
 range_gist_consistent(PG_FUNCTION_ARGS)
-{	StackTrace("range_gist_consistent");
+{
 	GISTENTRY  *entry = (GISTENTRY *) PG_GETARG_POINTER(0);
 	Datum		query = PG_GETARG_DATUM(1);
 	StrategyNumber strategy = (StrategyNumber) PG_GETARG_UINT16(2);
@@ -196,7 +196,7 @@ range_gist_consistent(PG_FUNCTION_ARGS)
 /* form union range */
 Datum
 range_gist_union(PG_FUNCTION_ARGS)
-{	StackTrace("range_gist_union");
+{
 	GistEntryVector *entryvec = (GistEntryVector *) PG_GETARG_POINTER(0);
 	GISTENTRY  *ent = entryvec->vector;
 	RangeType  *result_range;
@@ -219,7 +219,7 @@ range_gist_union(PG_FUNCTION_ARGS)
 /* compress, decompress, fetch are no-ops */
 Datum
 range_gist_compress(PG_FUNCTION_ARGS)
-{	StackTrace("range_gist_compress");
+{
 	GISTENTRY  *entry = (GISTENTRY *) PG_GETARG_POINTER(0);
 
 	PG_RETURN_POINTER(entry);
@@ -227,7 +227,7 @@ range_gist_compress(PG_FUNCTION_ARGS)
 
 Datum
 range_gist_decompress(PG_FUNCTION_ARGS)
-{	StackTrace("range_gist_decompress");
+{
 	GISTENTRY  *entry = (GISTENTRY *) PG_GETARG_POINTER(0);
 
 	PG_RETURN_POINTER(entry);
@@ -235,7 +235,7 @@ range_gist_decompress(PG_FUNCTION_ARGS)
 
 Datum
 range_gist_fetch(PG_FUNCTION_ARGS)
-{	StackTrace("range_gist_fetch");
+{
 	GISTENTRY  *entry = (GISTENTRY *) PG_GETARG_POINTER(0);
 
 	PG_RETURN_POINTER(entry);
@@ -253,7 +253,7 @@ range_gist_fetch(PG_FUNCTION_ARGS)
  */
 Datum
 range_gist_penalty(PG_FUNCTION_ARGS)
-{	StackTrace("range_gist_penalty");
+{
 	GISTENTRY  *origentry = (GISTENTRY *) PG_GETARG_POINTER(0);
 	GISTENTRY  *newentry = (GISTENTRY *) PG_GETARG_POINTER(1);
 	float	   *penalty = (float *) PG_GETARG_POINTER(2);
@@ -510,7 +510,7 @@ range_gist_penalty(PG_FUNCTION_ARGS)
  */
 Datum
 range_gist_picksplit(PG_FUNCTION_ARGS)
-{	StackTrace("range_gist_picksplit");
+{
 	GistEntryVector *entryvec = (GistEntryVector *) PG_GETARG_POINTER(0);
 	GIST_SPLITVEC *v = (GIST_SPLITVEC *) PG_GETARG_POINTER(1);
 	TypeCacheEntry *typcache;
@@ -669,7 +669,7 @@ range_gist_picksplit(PG_FUNCTION_ARGS)
 /* equality comparator for GiST */
 Datum
 range_gist_same(PG_FUNCTION_ARGS)
-{	StackTrace("range_gist_same");
+{
 	RangeType  *r1 = PG_GETARG_RANGE(0);
 	RangeType  *r2 = PG_GETARG_RANGE(1);
 	bool	   *result = (bool *) PG_GETARG_POINTER(2);
@@ -712,7 +712,7 @@ range_gist_same(PG_FUNCTION_ARGS)
  */
 static RangeType *
 range_super_union(TypeCacheEntry *typcache, RangeType *r1, RangeType *r2)
-{	StackTrace("range_super_union");
+{
 	RangeType  *result;
 	RangeBound	lower1,
 				lower2;
@@ -783,7 +783,7 @@ range_super_union(TypeCacheEntry *typcache, RangeType *r1, RangeType *r2)
 static bool
 range_gist_consistent_int(TypeCacheEntry *typcache, StrategyNumber strategy,
 						  RangeType *key, Datum query)
-{	StackTrace("range_gist_consistent_int");
+{
 	switch (strategy)
 	{
 		case RANGESTRAT_BEFORE:
@@ -855,7 +855,7 @@ range_gist_consistent_int(TypeCacheEntry *typcache, StrategyNumber strategy,
 static bool
 range_gist_consistent_leaf(TypeCacheEntry *typcache, StrategyNumber strategy,
 						   RangeType *key, Datum query)
-{	StackTrace("range_gist_consistent_leaf");
+{
 	switch (strategy)
 	{
 		case RANGESTRAT_BEFORE:
@@ -900,7 +900,7 @@ static void
 range_gist_fallback_split(TypeCacheEntry *typcache,
 						  GistEntryVector *entryvec,
 						  GIST_SPLITVEC *v)
-{	StackTrace("range_gist_fallback_split");
+{
 	RangeType  *left_range = NULL;
 	RangeType  *right_range = NULL;
 	OffsetNumber i,
@@ -939,7 +939,7 @@ range_gist_class_split(TypeCacheEntry *typcache,
 					   GistEntryVector *entryvec,
 					   GIST_SPLITVEC *v,
 					   SplitLR *classes_groups)
-{	StackTrace("range_gist_class_split");
+{
 	RangeType  *left_range = NULL;
 	RangeType  *right_range = NULL;
 	OffsetNumber i,
@@ -982,7 +982,7 @@ range_gist_single_sorting_split(TypeCacheEntry *typcache,
 								GistEntryVector *entryvec,
 								GIST_SPLITVEC *v,
 								bool use_upper_bound)
-{	StackTrace("range_gist_single_sorting_split");
+{
 	SingleBoundSortItem *sortItems;
 	RangeType  *left_range = NULL;
 	RangeType  *right_range = NULL;
@@ -1070,7 +1070,7 @@ static void
 range_gist_double_sorting_split(TypeCacheEntry *typcache,
 								GistEntryVector *entryvec,
 								GIST_SPLITVEC *v)
-{	StackTrace("range_gist_double_sorting_split");
+{
 	ConsiderSplitContext context;
 	OffsetNumber i,
 				maxoff;
@@ -1372,7 +1372,7 @@ static void
 range_gist_consider_split(ConsiderSplitContext *context,
 						  RangeBound *right_lower, int min_left_count,
 						  RangeBound *left_upper, int max_left_count)
-{	StackTrace("range_gist_consider_split");
+{
 	int			left_count,
 				right_count;
 	float4		ratio,
@@ -1453,7 +1453,7 @@ range_gist_consider_split(ConsiderSplitContext *context,
  */
 static int
 get_gist_range_class(RangeType *range)
-{	StackTrace("get_gist_range_class");
+{
 	int			classNumber;
 	char		flags;
 
@@ -1480,7 +1480,7 @@ get_gist_range_class(RangeType *range)
  */
 static int
 single_bound_cmp(const void *a, const void *b, void *arg)
-{	StackTrace("single_bound_cmp");
+{
 	SingleBoundSortItem *i1 = (SingleBoundSortItem *) a;
 	SingleBoundSortItem *i2 = (SingleBoundSortItem *) b;
 	TypeCacheEntry *typcache = (TypeCacheEntry *) arg;
@@ -1493,7 +1493,7 @@ single_bound_cmp(const void *a, const void *b, void *arg)
  */
 static int
 interval_cmp_lower(const void *a, const void *b, void *arg)
-{	StackTrace("interval_cmp_lower");
+{
 	NonEmptyRange *i1 = (NonEmptyRange *) a;
 	NonEmptyRange *i2 = (NonEmptyRange *) b;
 	TypeCacheEntry *typcache = (TypeCacheEntry *) arg;
@@ -1506,7 +1506,7 @@ interval_cmp_lower(const void *a, const void *b, void *arg)
  */
 static int
 interval_cmp_upper(const void *a, const void *b, void *arg)
-{	StackTrace("interval_cmp_upper");
+{
 	NonEmptyRange *i1 = (NonEmptyRange *) a;
 	NonEmptyRange *i2 = (NonEmptyRange *) b;
 	TypeCacheEntry *typcache = (TypeCacheEntry *) arg;
@@ -1519,7 +1519,7 @@ interval_cmp_upper(const void *a, const void *b, void *arg)
  */
 static int
 common_entry_cmp(const void *i1, const void *i2)
-{	StackTrace("common_entry_cmp");
+{
 	double		delta1 = ((CommonEntry *) i1)->delta;
 	double		delta2 = ((CommonEntry *) i2)->delta;
 
@@ -1537,7 +1537,7 @@ common_entry_cmp(const void *i1, const void *i2)
  */
 static float8
 call_subtype_diff(TypeCacheEntry *typcache, Datum val1, Datum val2)
-{	StackTrace("call_subtype_diff");
+{
 	float8		value;
 
 	value = DatumGetFloat8(FunctionCall2Coll(&typcache->rng_subdiff_finfo,

@@ -35,7 +35,7 @@ static ArrayType *enum_range_internal(Oid enumtypoid, Oid lower, Oid upper);
 
 Datum
 enum_in(PG_FUNCTION_ARGS)
-{	StackTrace("enum_in");
+{
 	char	   *name = PG_GETARG_CSTRING(0);
 	Oid			enumtypoid = PG_GETARG_OID(1);
 	Oid			enumoid;
@@ -72,7 +72,7 @@ enum_in(PG_FUNCTION_ARGS)
 
 Datum
 enum_out(PG_FUNCTION_ARGS)
-{	StackTrace("enum_out");
+{
 	Oid			enumval = PG_GETARG_OID(0);
 	char	   *result;
 	HeapTuple	tup;
@@ -96,7 +96,7 @@ enum_out(PG_FUNCTION_ARGS)
 /* Binary I/O support */
 Datum
 enum_recv(PG_FUNCTION_ARGS)
-{	StackTrace("enum_recv");
+{
 	StringInfo	buf = (StringInfo) PG_GETARG_POINTER(0);
 	Oid			enumtypoid = PG_GETARG_OID(1);
 	Oid			enumoid;
@@ -135,7 +135,7 @@ enum_recv(PG_FUNCTION_ARGS)
 
 Datum
 enum_send(PG_FUNCTION_ARGS)
-{	StackTrace("enum_send");
+{
 	Oid			enumval = PG_GETARG_OID(0);
 	StringInfoData buf;
 	HeapTuple	tup;
@@ -166,7 +166,7 @@ enum_send(PG_FUNCTION_ARGS)
  */
 static int
 enum_cmp_internal(Oid arg1, Oid arg2, FunctionCallInfo fcinfo)
-{	StackTrace("enum_cmp_internal");
+{
 	TypeCacheEntry *tcache;
 
 	/* Equal OIDs are equal no matter what */
@@ -211,7 +211,7 @@ enum_cmp_internal(Oid arg1, Oid arg2, FunctionCallInfo fcinfo)
 
 Datum
 enum_lt(PG_FUNCTION_ARGS)
-{	StackTrace("enum_lt");
+{
 	Oid			a = PG_GETARG_OID(0);
 	Oid			b = PG_GETARG_OID(1);
 
@@ -220,7 +220,7 @@ enum_lt(PG_FUNCTION_ARGS)
 
 Datum
 enum_le(PG_FUNCTION_ARGS)
-{	StackTrace("enum_le");
+{
 	Oid			a = PG_GETARG_OID(0);
 	Oid			b = PG_GETARG_OID(1);
 
@@ -229,7 +229,7 @@ enum_le(PG_FUNCTION_ARGS)
 
 Datum
 enum_eq(PG_FUNCTION_ARGS)
-{	StackTrace("enum_eq");
+{
 	Oid			a = PG_GETARG_OID(0);
 	Oid			b = PG_GETARG_OID(1);
 
@@ -238,7 +238,7 @@ enum_eq(PG_FUNCTION_ARGS)
 
 Datum
 enum_ne(PG_FUNCTION_ARGS)
-{	StackTrace("enum_ne");
+{
 	Oid			a = PG_GETARG_OID(0);
 	Oid			b = PG_GETARG_OID(1);
 
@@ -247,7 +247,7 @@ enum_ne(PG_FUNCTION_ARGS)
 
 Datum
 enum_ge(PG_FUNCTION_ARGS)
-{	StackTrace("enum_ge");
+{
 	Oid			a = PG_GETARG_OID(0);
 	Oid			b = PG_GETARG_OID(1);
 
@@ -256,7 +256,7 @@ enum_ge(PG_FUNCTION_ARGS)
 
 Datum
 enum_gt(PG_FUNCTION_ARGS)
-{	StackTrace("enum_gt");
+{
 	Oid			a = PG_GETARG_OID(0);
 	Oid			b = PG_GETARG_OID(1);
 
@@ -265,7 +265,7 @@ enum_gt(PG_FUNCTION_ARGS)
 
 Datum
 enum_smaller(PG_FUNCTION_ARGS)
-{	StackTrace("enum_smaller");
+{
 	Oid			a = PG_GETARG_OID(0);
 	Oid			b = PG_GETARG_OID(1);
 
@@ -274,7 +274,7 @@ enum_smaller(PG_FUNCTION_ARGS)
 
 Datum
 enum_larger(PG_FUNCTION_ARGS)
-{	StackTrace("enum_larger");
+{
 	Oid			a = PG_GETARG_OID(0);
 	Oid			b = PG_GETARG_OID(1);
 
@@ -283,7 +283,7 @@ enum_larger(PG_FUNCTION_ARGS)
 
 Datum
 enum_cmp(PG_FUNCTION_ARGS)
-{	StackTrace("enum_cmp");
+{
 	Oid			a = PG_GETARG_OID(0);
 	Oid			b = PG_GETARG_OID(1);
 
@@ -302,7 +302,7 @@ enum_cmp(PG_FUNCTION_ARGS)
  */
 static Oid
 enum_endpoint(Oid enumtypoid, ScanDirection direction)
-{	StackTrace("enum_endpoint");
+{
 	Relation	enum_rel;
 	Relation	enum_idx;
 	SysScanDesc enum_scan;
@@ -340,7 +340,7 @@ enum_endpoint(Oid enumtypoid, ScanDirection direction)
 
 Datum
 enum_first(PG_FUNCTION_ARGS)
-{	StackTrace("enum_first");
+{
 	Oid			enumtypoid;
 	Oid			min;
 
@@ -369,7 +369,7 @@ enum_first(PG_FUNCTION_ARGS)
 
 Datum
 enum_last(PG_FUNCTION_ARGS)
-{	StackTrace("enum_last");
+{
 	Oid			enumtypoid;
 	Oid			max;
 
@@ -399,7 +399,7 @@ enum_last(PG_FUNCTION_ARGS)
 /* 2-argument variant of enum_range */
 Datum
 enum_range_bounds(PG_FUNCTION_ARGS)
-{	StackTrace("enum_range_bounds");
+{
 	Oid			lower;
 	Oid			upper;
 	Oid			enumtypoid;
@@ -430,7 +430,7 @@ enum_range_bounds(PG_FUNCTION_ARGS)
 /* 1-argument variant of enum_range */
 Datum
 enum_range_all(PG_FUNCTION_ARGS)
-{	StackTrace("enum_range_all");
+{
 	Oid			enumtypoid;
 
 	/*
@@ -450,7 +450,7 @@ enum_range_all(PG_FUNCTION_ARGS)
 
 static ArrayType *
 enum_range_internal(Oid enumtypoid, Oid lower, Oid upper)
-{	StackTrace("enum_range_internal");
+{
 	ArrayType  *result;
 	Relation	enum_rel;
 	Relation	enum_idx;

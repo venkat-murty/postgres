@@ -46,7 +46,7 @@ static void _bt_log_reuse_page(Relation rel, BlockNumber blkno,
  */
 void
 _bt_initmetapage(Page page, BlockNumber rootbknum, uint32 level)
-{	StackTrace("_bt_initmetapage");
+{
 	BTMetaPageData *metad;
 	BTPageOpaque metaopaque;
 
@@ -101,7 +101,7 @@ _bt_initmetapage(Page page, BlockNumber rootbknum, uint32 level)
  */
 Buffer
 _bt_getroot(Relation rel, int access)
-{	StackTrace("_bt_getroot");
+{
 	Buffer		metabuf;
 	Page		metapg;
 	BTPageOpaque metaopaque;
@@ -338,7 +338,7 @@ _bt_getroot(Relation rel, int access)
  */
 Buffer
 _bt_gettrueroot(Relation rel)
-{	StackTrace("_bt_gettrueroot");
+{
 	Buffer		metabuf;
 	Page		metapg;
 	BTPageOpaque metaopaque;
@@ -432,7 +432,7 @@ _bt_gettrueroot(Relation rel)
  */
 int
 _bt_getrootheight(Relation rel)
-{	StackTrace("_bt_getrootheight");
+{
 	BTMetaPageData *metad;
 
 	/*
@@ -500,7 +500,7 @@ _bt_getrootheight(Relation rel)
  */
 void
 _bt_checkpage(Relation rel, Buffer buf)
-{	StackTrace("_bt_checkpage");
+{
 	Page		page = BufferGetPage(buf);
 
 	/*
@@ -534,7 +534,7 @@ _bt_checkpage(Relation rel, Buffer buf)
  */
 static void
 _bt_log_reuse_page(Relation rel, BlockNumber blkno, TransactionId latestRemovedXid)
-{	StackTrace("_bt_log_reuse_page");
+{
 	xl_btree_reuse_page xlrec_reuse;
 
 	/*
@@ -567,7 +567,7 @@ _bt_log_reuse_page(Relation rel, BlockNumber blkno, TransactionId latestRemovedX
  */
 Buffer
 _bt_getbuf(Relation rel, BlockNumber blkno, int access)
-{	StackTrace("_bt_getbuf");
+{
 	Buffer		buf;
 
 	if (blkno != P_NEW)
@@ -698,7 +698,7 @@ _bt_getbuf(Relation rel, BlockNumber blkno, int access)
  */
 Buffer
 _bt_relandgetbuf(Relation rel, Buffer obuf, BlockNumber blkno, int access)
-{	StackTrace("_bt_relandgetbuf");
+{
 	Buffer		buf;
 
 	Assert(blkno != P_NEW);
@@ -717,7 +717,7 @@ _bt_relandgetbuf(Relation rel, Buffer obuf, BlockNumber blkno, int access)
  */
 void
 _bt_relbuf(Relation rel, Buffer buf)
-{	StackTrace("_bt_relbuf");
+{
 	UnlockReleaseBuffer(buf);
 }
 
@@ -729,7 +729,7 @@ _bt_relbuf(Relation rel, Buffer buf)
  */
 void
 _bt_pageinit(Page page, Size size)
-{	StackTrace("_bt_pageinit");
+{
 	PageInit(page, size, sizeof(BTPageOpaqueData));
 }
 
@@ -741,7 +741,7 @@ _bt_pageinit(Page page, Size size)
  */
 bool
 _bt_page_recyclable(Page page)
-{	StackTrace("_bt_page_recyclable");
+{
 	BTPageOpaque opaque;
 
 	/*
@@ -788,7 +788,7 @@ void
 _bt_delitems_vacuum(Relation rel, Buffer buf,
 					OffsetNumber *itemnos, int nitems,
 					BlockNumber lastBlockVacuumed)
-{	StackTrace("_bt_delitems_vacuum");
+{
 	Page		page = BufferGetPage(buf);
 	BTPageOpaque opaque;
 
@@ -861,7 +861,7 @@ void
 _bt_delitems_delete(Relation rel, Buffer buf,
 					OffsetNumber *itemnos, int nitems,
 					Relation heapRel)
-{	StackTrace("_bt_delitems_delete");
+{
 	Page		page = BufferGetPage(buf);
 	BTPageOpaque opaque;
 
@@ -924,7 +924,7 @@ _bt_delitems_delete(Relation rel, Buffer buf,
  */
 static bool
 _bt_is_page_halfdead(Relation rel, BlockNumber blk)
-{	StackTrace("_bt_is_page_halfdead");
+{
 	Buffer		buf;
 	Page		page;
 	BTPageOpaque opaque;
@@ -970,7 +970,7 @@ static bool
 _bt_lock_branch_parent(Relation rel, BlockNumber child, BTStack stack,
 					   Buffer *topparent, OffsetNumber *topoff,
 					   BlockNumber *target, BlockNumber *rightsib)
-{	StackTrace("_bt_lock_branch_parent");
+{
 	BlockNumber parent;
 	OffsetNumber poffset,
 				maxoff;
@@ -1106,7 +1106,7 @@ _bt_lock_branch_parent(Relation rel, BlockNumber child, BTStack stack,
  */
 int
 _bt_pagedel(Relation rel, Buffer buf)
-{	StackTrace("_bt_pagedel");
+{
 	int			ndeleted = 0;
 	BlockNumber rightsib;
 	bool		rightsib_empty;
@@ -1318,7 +1318,7 @@ _bt_pagedel(Relation rel, Buffer buf)
  */
 static bool
 _bt_mark_page_halfdead(Relation rel, Buffer leafbuf, BTStack stack)
-{	StackTrace("_bt_mark_page_halfdead");
+{
 	BlockNumber leafblkno;
 	BlockNumber leafrightsib;
 	BlockNumber target;
@@ -1504,7 +1504,7 @@ _bt_mark_page_halfdead(Relation rel, Buffer leafbuf, BTStack stack)
  */
 static bool
 _bt_unlink_halfdead_page(Relation rel, Buffer leafbuf, bool *rightsib_empty)
-{	StackTrace("_bt_unlink_halfdead_page");
+{
 	BlockNumber leafblkno = BufferGetBlockNumber(leafbuf);
 	BlockNumber leafleftsib;
 	BlockNumber leafrightsib;

@@ -97,7 +97,7 @@ static const Pg_magic_struct magic_data = PG_MODULE_MAGIC_DATA;
 PGFunction
 load_external_function(char *filename, char *funcname,
 					   bool signalNotFound, void **filehandle)
-{	StackTrace("load_external_function");
+{
 	char	   *fullname;
 	void	   *lib_handle;
 	PGFunction	retval;
@@ -135,7 +135,7 @@ load_external_function(char *filename, char *funcname,
  */
 void
 load_file(const char *filename, bool restricted)
-{	StackTrace("load_file");
+{
 	char	   *fullname;
 
 	/* Apply security restriction if requested */
@@ -160,7 +160,7 @@ load_file(const char *filename, bool restricted)
  */
 PGFunction
 lookup_external_function(void *filehandle, char *funcname)
-{	StackTrace("lookup_external_function");
+{
 	return (PGFunction) pg_dlsym(filehandle, funcname);
 }
 
@@ -173,7 +173,7 @@ lookup_external_function(void *filehandle, char *funcname)
  */
 static void *
 internal_load_library(const char *libname)
-{	StackTrace("internal_load_library");
+{
 	DynamicFileList *file_scanner;
 	PGModuleMagicFunction magic_func;
 	char	   *load_error;
@@ -296,7 +296,7 @@ internal_load_library(const char *libname)
 static void
 incompatible_module_error(const char *libname,
 						  const Pg_magic_struct *module_magic_data)
-{	StackTrace("incompatible_module_error");
+{
 	StringInfoData details;
 
 	/*
@@ -390,7 +390,7 @@ incompatible_module_error(const char *libname,
  */
 static void
 internal_unload_library(const char *libname)
-{	StackTrace("internal_unload_library");
+{
 #ifdef NOT_USED
 	DynamicFileList *file_scanner,
 			   *prv,
@@ -444,7 +444,7 @@ internal_unload_library(const char *libname)
 
 static bool
 file_exists(const char *name)
-{	StackTrace("file_exists");
+{
 	struct stat st;
 
 	AssertArg(name != NULL);
@@ -476,7 +476,7 @@ file_exists(const char *name)
  */
 static char *
 expand_dynamic_library_name(const char *name)
-{	StackTrace("expand_dynamic_library_name");
+{
 	bool		have_slash;
 	char	   *new;
 	char	   *full;
@@ -531,7 +531,7 @@ expand_dynamic_library_name(const char *name)
  */
 static void
 check_restricted_library_name(const char *name)
-{	StackTrace("check_restricted_library_name");
+{
 	if (strncmp(name, "$libdir/plugins/", 16) != 0 ||
 		first_dir_separator(name + 16) != NULL)
 		ereport(ERROR,
@@ -546,7 +546,7 @@ check_restricted_library_name(const char *name)
  */
 static char *
 substitute_libpath_macro(const char *name)
-{	StackTrace("substitute_libpath_macro");
+{
 	const char *sep_ptr;
 
 	AssertArg(name != NULL);
@@ -577,7 +577,7 @@ substitute_libpath_macro(const char *name)
  */
 static char *
 find_in_dynamic_libpath(const char *basename)
-{	StackTrace("find_in_dynamic_libpath");
+{
 	const char *p;
 	size_t		baselen;
 
@@ -661,7 +661,7 @@ find_in_dynamic_libpath(const char *basename)
  */
 void	  **
 find_rendezvous_variable(const char *varName)
-{	StackTrace("find_rendezvous_variable");
+{
 	static HTAB *rendezvousHash = NULL;
 
 	rendezvousHashEntry *hentry;
@@ -700,7 +700,7 @@ find_rendezvous_variable(const char *varName)
  */
 Size
 EstimateLibraryStateSpace(void)
-{	StackTrace("EstimateLibraryStateSpace");
+{
 	DynamicFileList *file_scanner;
 	Size		size = 1;
 
@@ -717,7 +717,7 @@ EstimateLibraryStateSpace(void)
  */
 void
 SerializeLibraryState(Size maxsize, char *start_address)
-{	StackTrace("SerializeLibraryState");
+{
 	DynamicFileList *file_scanner;
 
 	for (file_scanner = file_list;
@@ -739,7 +739,7 @@ SerializeLibraryState(Size maxsize, char *start_address)
  */
 void
 RestoreLibraryState(char *start_address)
-{	StackTrace("RestoreLibraryState");
+{
 	while (*start_address != '\0')
 	{
 		internal_load_library(start_address);

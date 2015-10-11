@@ -49,7 +49,7 @@ static bool restriction_is_constant_false(List *restrictlist,
  */
 void
 join_search_one_level(PlannerInfo *root, int level)
-{	StackTrace("join_search_one_level");
+{
 	List	  **joinrels = root->join_rel_level;
 	ListCell   *r;
 	int			k;
@@ -260,7 +260,7 @@ static void
 make_rels_by_clause_joins(PlannerInfo *root,
 						  RelOptInfo *old_rel,
 						  ListCell *other_rels)
-{	StackTrace("make_rels_by_clause_joins");
+{
 	ListCell   *l;
 
 	for_each_cell(l, other_rels)
@@ -294,7 +294,7 @@ static void
 make_rels_by_clauseless_joins(PlannerInfo *root,
 							  RelOptInfo *old_rel,
 							  ListCell *other_rels)
-{	StackTrace("make_rels_by_clauseless_joins");
+{
 	ListCell   *l;
 
 	for_each_cell(l, other_rels)
@@ -327,7 +327,7 @@ static bool
 join_is_legal(PlannerInfo *root, RelOptInfo *rel1, RelOptInfo *rel2,
 			  Relids joinrelids,
 			  SpecialJoinInfo **sjinfo_p, bool *reversed_p)
-{	StackTrace("join_is_legal");
+{
 	SpecialJoinInfo *match_sjinfo;
 	bool		reversed;
 	bool		unique_ified;
@@ -575,7 +575,7 @@ join_is_legal(PlannerInfo *root, RelOptInfo *rel1, RelOptInfo *rel2,
  */
 RelOptInfo *
 make_join_rel(PlannerInfo *root, RelOptInfo *rel1, RelOptInfo *rel2)
-{	StackTrace("make_join_rel");
+{
 	Relids		joinrelids;
 	SpecialJoinInfo *sjinfo;
 	bool		reversed;
@@ -820,7 +820,7 @@ make_join_rel(PlannerInfo *root, RelOptInfo *rel1, RelOptInfo *rel2)
 bool
 have_join_order_restriction(PlannerInfo *root,
 							RelOptInfo *rel1, RelOptInfo *rel2)
-{	StackTrace("have_join_order_restriction");
+{
 	bool		result = false;
 	ListCell   *l;
 
@@ -924,7 +924,7 @@ have_join_order_restriction(PlannerInfo *root,
  */
 static bool
 has_join_restriction(PlannerInfo *root, RelOptInfo *rel)
-{	StackTrace("has_join_restriction");
+{
 	ListCell   *l;
 
 	foreach(l, root->lateral_info_list)
@@ -977,7 +977,7 @@ has_join_restriction(PlannerInfo *root, RelOptInfo *rel)
  */
 static bool
 has_legal_joinclause(PlannerInfo *root, RelOptInfo *rel)
-{	StackTrace("has_legal_joinclause");
+{
 	ListCell   *lc;
 
 	foreach(lc, root->initial_rels)
@@ -1018,7 +1018,7 @@ has_legal_joinclause(PlannerInfo *root, RelOptInfo *rel)
  */
 static bool
 is_dummy_rel(RelOptInfo *rel)
-{	StackTrace("is_dummy_rel");
+{
 	return IS_DUMMY_REL(rel);
 }
 
@@ -1039,7 +1039,7 @@ is_dummy_rel(RelOptInfo *rel)
  */
 static void
 mark_dummy_rel(RelOptInfo *rel)
-{	StackTrace("mark_dummy_rel");
+{
 	MemoryContext oldcontext;
 
 	/* Already marked? */
@@ -1078,7 +1078,7 @@ mark_dummy_rel(RelOptInfo *rel)
  */
 static bool
 restriction_is_constant_false(List *restrictlist, bool only_pushed_down)
-{	StackTrace("restriction_is_constant_false");
+{
 	ListCell   *lc;
 
 	/*

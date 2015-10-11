@@ -18,7 +18,7 @@
 
 void
 btree_desc(StringInfo buf, XLogReaderState *record)
-{	StackTrace("btree_desc");
+{
 	char	   *rec = XLogRecGetData(record);
 	uint8		info = XLogRecGetInfo(record) & ~XLR_INFO_MASK;
 
@@ -101,7 +101,7 @@ btree_desc(StringInfo buf, XLogReaderState *record)
 
 const char *
 btree_identify(uint8 info)
-{	StackTrace("btree_identify");
+{
 	const char *id = NULL;
 
 	switch (info & ~XLR_INFO_MASK)

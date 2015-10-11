@@ -338,7 +338,7 @@ static void parse_one_reloption(relopt_value *option, char *text_str,
  */
 static void
 initialize_reloptions(void)
-{	StackTrace("initialize_reloptions");
+{
 	int			i;
 	int			j;
 
@@ -411,7 +411,7 @@ initialize_reloptions(void)
  */
 relopt_kind
 add_reloption_kind(void)
-{	StackTrace("add_reloption_kind");
+{
 	/* don't hand out the last bit so that the enum's behavior is portable */
 	if (last_assigned_kind >= RELOPT_KIND_MAX)
 		ereport(ERROR,
@@ -428,7 +428,7 @@ add_reloption_kind(void)
  */
 static void
 add_reloption(relopt_gen *newoption)
-{	StackTrace("add_reloption");
+{
 	static int	max_custom_options = 0;
 
 	if (num_custom_options >= max_custom_options)
@@ -462,7 +462,7 @@ add_reloption(relopt_gen *newoption)
  */
 static relopt_gen *
 allocate_reloption(bits32 kinds, int type, char *name, char *desc)
-{	StackTrace("allocate_reloption");
+{
 	MemoryContext oldcxt;
 	size_t		size;
 	relopt_gen *newoption;
@@ -510,7 +510,7 @@ allocate_reloption(bits32 kinds, int type, char *name, char *desc)
  */
 void
 add_bool_reloption(bits32 kinds, char *name, char *desc, bool default_val)
-{	StackTrace("add_bool_reloption");
+{
 	relopt_bool *newoption;
 
 	newoption = (relopt_bool *) allocate_reloption(kinds, RELOPT_TYPE_BOOL,
@@ -527,7 +527,7 @@ add_bool_reloption(bits32 kinds, char *name, char *desc, bool default_val)
 void
 add_int_reloption(bits32 kinds, char *name, char *desc, int default_val,
 				  int min_val, int max_val)
-{	StackTrace("add_int_reloption");
+{
 	relopt_int *newoption;
 
 	newoption = (relopt_int *) allocate_reloption(kinds, RELOPT_TYPE_INT,
@@ -546,7 +546,7 @@ add_int_reloption(bits32 kinds, char *name, char *desc, int default_val,
 void
 add_real_reloption(bits32 kinds, char *name, char *desc, double default_val,
 				   double min_val, double max_val)
-{	StackTrace("add_real_reloption");
+{
 	relopt_real *newoption;
 
 	newoption = (relopt_real *) allocate_reloption(kinds, RELOPT_TYPE_REAL,
@@ -570,7 +570,7 @@ add_real_reloption(bits32 kinds, char *name, char *desc, double default_val,
 void
 add_string_reloption(bits32 kinds, char *name, char *desc, char *default_val,
 					 validate_string_relopt validator)
-{	StackTrace("add_string_reloption");
+{
 	relopt_string *newoption;
 
 	/* make sure the validator/default combination is sane */
@@ -623,7 +623,7 @@ add_string_reloption(bits32 kinds, char *name, char *desc, char *default_val,
 Datum
 transformRelOptions(Datum oldOptions, List *defList, char *namspace,
 					char *validnsps[], bool ignoreOids, bool isReset)
-{	StackTrace("transformRelOptions");
+{
 	Datum		result;
 	ArrayBuildState *astate;
 	ListCell   *cell;
@@ -785,7 +785,7 @@ transformRelOptions(Datum oldOptions, List *defList, char *namspace,
  */
 List *
 untransformRelOptions(Datum options)
-{	StackTrace("untransformRelOptions");
+{
 	List	   *result = NIL;
 	ArrayType  *array;
 	Datum	   *optiondatums;
@@ -833,7 +833,7 @@ untransformRelOptions(Datum options)
  */
 bytea *
 extractRelOptions(HeapTuple tuple, TupleDesc tupdesc, Oid amoptions)
-{	StackTrace("extractRelOptions");
+{
 	bytea	   *options;
 	bool		isnull;
 	Datum		datum;
@@ -895,7 +895,7 @@ extractRelOptions(HeapTuple tuple, TupleDesc tupdesc, Oid amoptions)
 relopt_value *
 parseRelOptions(Datum options, bool validate, relopt_kind kind,
 				int *numrelopts)
-{	StackTrace("parseRelOptions");
+{
 	relopt_value *reloptions;
 	int			numoptions = 0;
 	int			i;
@@ -992,7 +992,7 @@ parseRelOptions(Datum options, bool validate, relopt_kind kind,
 static void
 parse_one_reloption(relopt_value *option, char *text_str, int text_len,
 					bool validate)
-{	StackTrace("parse_one_reloption");
+{
 	char	   *value;
 	int			value_len;
 	bool		parsed;
@@ -1088,7 +1088,7 @@ parse_one_reloption(relopt_value *option, char *text_str, int text_len,
  */
 void *
 allocateReloptStruct(Size base, relopt_value *options, int numoptions)
-{	StackTrace("allocateReloptStruct");
+{
 	Size		size = base;
 	int			i;
 
@@ -1115,7 +1115,7 @@ fillRelOptions(void *rdopts, Size basesize,
 			   relopt_value *options, int numoptions,
 			   bool validate,
 			   const relopt_parse_elt *elems, int numelems)
-{	StackTrace("fillRelOptions");
+{
 	int			i;
 	int			offset = basesize;
 
@@ -1190,7 +1190,7 @@ fillRelOptions(void *rdopts, Size basesize,
  */
 bytea *
 default_reloptions(Datum reloptions, bool validate, relopt_kind kind)
-{	StackTrace("default_reloptions");
+{
 	relopt_value *options;
 	StdRdOptions *rdopts;
 	int			numoptions;
@@ -1249,7 +1249,7 @@ default_reloptions(Datum reloptions, bool validate, relopt_kind kind)
  */
 bytea *
 view_reloptions(Datum reloptions, bool validate)
-{	StackTrace("view_reloptions");
+{
 	relopt_value *options;
 	ViewOptions *vopts;
 	int			numoptions;
@@ -1281,7 +1281,7 @@ view_reloptions(Datum reloptions, bool validate)
  */
 bytea *
 heap_reloptions(char relkind, Datum reloptions, bool validate)
-{	StackTrace("heap_reloptions");
+{
 	StdRdOptions *rdopts;
 
 	switch (relkind)
@@ -1316,7 +1316,7 @@ heap_reloptions(char relkind, Datum reloptions, bool validate)
  */
 bytea *
 index_reloptions(RegProcedure amoptions, Datum reloptions, bool validate)
-{	StackTrace("index_reloptions");
+{
 	FmgrInfo	flinfo;
 	FunctionCallInfoData fcinfo;
 	Datum		result;
@@ -1350,7 +1350,7 @@ index_reloptions(RegProcedure amoptions, Datum reloptions, bool validate)
  */
 bytea *
 attribute_reloptions(Datum reloptions, bool validate)
-{	StackTrace("attribute_reloptions");
+{
 	relopt_value *options;
 	AttributeOpts *aopts;
 	int			numoptions;
@@ -1381,7 +1381,7 @@ attribute_reloptions(Datum reloptions, bool validate)
  */
 bytea *
 tablespace_reloptions(Datum reloptions, bool validate)
-{	StackTrace("tablespace_reloptions");
+{
 	relopt_value *options;
 	TableSpaceOpts *tsopts;
 	int			numoptions;

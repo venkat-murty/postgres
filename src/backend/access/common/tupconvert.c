@@ -66,7 +66,7 @@ TupleConversionMap *
 convert_tuples_by_position(TupleDesc indesc,
 						   TupleDesc outdesc,
 						   const char *msg)
-{	StackTrace("convert_tuples_by_position");
+{
 	TupleConversionMap *map;
 	AttrNumber *attrMap;
 	int			nincols;
@@ -203,7 +203,7 @@ TupleConversionMap *
 convert_tuples_by_name(TupleDesc indesc,
 					   TupleDesc outdesc,
 					   const char *msg)
-{	StackTrace("convert_tuples_by_name");
+{
 	TupleConversionMap *map;
 	AttrNumber *attrMap;
 	int			n;
@@ -317,7 +317,7 @@ convert_tuples_by_name(TupleDesc indesc,
  */
 HeapTuple
 do_convert_tuple(HeapTuple tuple, TupleConversionMap *map)
-{	StackTrace("do_convert_tuple");
+{
 	AttrNumber *attrMap = map->attrMap;
 	Datum	   *invalues = map->invalues;
 	bool	   *inisnull = map->inisnull;
@@ -355,7 +355,7 @@ do_convert_tuple(HeapTuple tuple, TupleConversionMap *map)
  */
 void
 free_conversion_map(TupleConversionMap *map)
-{	StackTrace("free_conversion_map");
+{
 	/* indesc and outdesc are not ours to free */
 	pfree(map->attrMap);
 	pfree(map->invalues);

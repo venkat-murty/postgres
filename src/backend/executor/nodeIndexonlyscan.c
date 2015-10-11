@@ -48,7 +48,7 @@ static void StoreIndexTuple(TupleTableSlot *slot, IndexTuple itup,
  */
 static TupleTableSlot *
 IndexOnlyNext(IndexOnlyScanState *node)
-{	StackTrace("IndexOnlyNext");
+{
 	EState	   *estate;
 	ExprContext *econtext;
 	ScanDirection direction;
@@ -209,7 +209,7 @@ IndexOnlyNext(IndexOnlyScanState *node)
  */
 static void
 StoreIndexTuple(TupleTableSlot *slot, IndexTuple itup, TupleDesc itupdesc)
-{	StackTrace("StoreIndexTuple");
+{
 	int			nindexatts = itupdesc->natts;
 	Datum	   *values = slot->tts_values;
 	bool	   *isnull = slot->tts_isnull;
@@ -240,7 +240,7 @@ StoreIndexTuple(TupleTableSlot *slot, IndexTuple itup, TupleDesc itupdesc)
  */
 static bool
 IndexOnlyRecheck(IndexOnlyScanState *node, TupleTableSlot *slot)
-{	StackTrace("IndexOnlyRecheck");
+{
 	elog(ERROR, "EvalPlanQual recheck is not supported in index-only scans");
 	return false;				/* keep compiler quiet */
 }
@@ -251,7 +251,7 @@ IndexOnlyRecheck(IndexOnlyScanState *node, TupleTableSlot *slot)
  */
 TupleTableSlot *
 ExecIndexOnlyScan(IndexOnlyScanState *node)
-{	StackTrace("ExecIndexOnlyScan");
+{
 	/*
 	 * If we have runtime keys and they've not already been set up, do it now.
 	 */
@@ -276,7 +276,7 @@ ExecIndexOnlyScan(IndexOnlyScanState *node)
  */
 void
 ExecReScanIndexOnlyScan(IndexOnlyScanState *node)
-{	StackTrace("ExecReScanIndexOnlyScan");
+{
 	/*
 	 * If we are doing runtime key calculations (ie, any of the index key
 	 * values weren't simple Consts), compute the new key values.  But first,
@@ -310,7 +310,7 @@ ExecReScanIndexOnlyScan(IndexOnlyScanState *node)
  */
 void
 ExecEndIndexOnlyScan(IndexOnlyScanState *node)
-{	StackTrace("ExecEndIndexOnlyScan");
+{
 	Relation	indexRelationDesc;
 	IndexScanDesc indexScanDesc;
 	Relation	relation;
@@ -364,7 +364,7 @@ ExecEndIndexOnlyScan(IndexOnlyScanState *node)
  */
 void
 ExecIndexOnlyMarkPos(IndexOnlyScanState *node)
-{	StackTrace("ExecIndexOnlyMarkPos");
+{
 	index_markpos(node->ioss_ScanDesc);
 }
 
@@ -391,7 +391,7 @@ ExecIndexOnlyRestrPos(IndexOnlyScanState *node)
  */
 IndexOnlyScanState *
 ExecInitIndexOnlyScan(IndexOnlyScan *node, EState *estate, int eflags)
-{	StackTrace("ExecInitIndexOnlyScan");
+{
 	IndexOnlyScanState *indexstate;
 	Relation	currentRelation;
 	bool		relistarget;

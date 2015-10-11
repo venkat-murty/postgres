@@ -174,7 +174,7 @@ static ReplicationState *session_replication_state = NULL;
 
 static void
 replorigin_check_prerequisites(bool check_slots, bool recoveryOK)
-{	StackTrace("replorigin_check_prerequisites");
+{
 	if (!superuser())
 		ereport(ERROR,
 				(errcode(ERRCODE_INSUFFICIENT_PRIVILEGE),
@@ -205,7 +205,7 @@ replorigin_check_prerequisites(bool check_slots, bool recoveryOK)
  */
 RepOriginId
 replorigin_by_name(char *roname, bool missing_ok)
-{	StackTrace("replorigin_by_name");
+{
 	Form_pg_replication_origin ident;
 	Oid			roident = InvalidOid;
 	HeapTuple	tuple;
@@ -234,7 +234,7 @@ replorigin_by_name(char *roname, bool missing_ok)
  */
 RepOriginId
 replorigin_create(char *roname)
-{	StackTrace("replorigin_create");
+{
 	Oid			roident;
 	HeapTuple	tuple = NULL;
 	Relation	rel;
@@ -327,7 +327,7 @@ replorigin_create(char *roname)
  */
 void
 replorigin_drop(RepOriginId roident)
-{	StackTrace("replorigin_drop");
+{
 	HeapTuple	tuple = NULL;
 	Relation	rel;
 	int			i;
@@ -394,7 +394,7 @@ replorigin_drop(RepOriginId roident)
  */
 bool
 replorigin_by_oid(RepOriginId roident, bool missing_ok, char **roname)
-{	StackTrace("replorigin_by_oid");
+{
 	HeapTuple	tuple;
 	Form_pg_replication_origin ric;
 
@@ -433,7 +433,7 @@ replorigin_by_oid(RepOriginId roident, bool missing_ok, char **roname)
 
 Size
 ReplicationOriginShmemSize(void)
-{	StackTrace("ReplicationOriginShmemSize");
+{
 	Size		size = 0;
 
 	/*
@@ -453,7 +453,7 @@ ReplicationOriginShmemSize(void)
 
 void
 ReplicationOriginShmemInit(void)
-{	StackTrace("ReplicationOriginShmemInit");
+{
 	bool		found;
 
 	if (max_replication_slots == 0)
@@ -505,7 +505,7 @@ ReplicationOriginShmemInit(void)
  */
 void
 CheckPointReplicationOrigin(void)
-{	StackTrace("CheckPointReplicationOrigin");
+{
 	const char *tmppath = "pg_logical/replorigin_checkpoint.tmp";
 	const char *path = "pg_logical/replorigin_checkpoint";
 	int			tmpfd;
@@ -635,7 +635,7 @@ CheckPointReplicationOrigin(void)
  */
 void
 StartupReplicationOrigin(void)
-{	StackTrace("StartupReplicationOrigin");
+{
 	const char *path = "pg_logical/replorigin_checkpoint";
 	int			fd;
 	int			readBytes;
@@ -750,7 +750,7 @@ StartupReplicationOrigin(void)
 
 void
 replorigin_redo(XLogReaderState *record)
-{	StackTrace("replorigin_redo");
+{
 	uint8		info = XLogRecGetInfo(record) & ~XLR_INFO_MASK;
 
 	switch (info)
@@ -813,7 +813,7 @@ void
 replorigin_advance(RepOriginId node,
 				   XLogRecPtr remote_commit, XLogRecPtr local_commit,
 				   bool go_backward, bool wal_log)
-{	StackTrace("replorigin_advance");
+{
 	int			i;
 	ReplicationState *replication_state = NULL;
 	ReplicationState *free_state = NULL;
@@ -934,7 +934,7 @@ replorigin_advance(RepOriginId node,
 
 XLogRecPtr
 replorigin_get_progress(RepOriginId node, bool flush)
-{	StackTrace("replorigin_get_progress");
+{
 	int			i;
 	XLogRecPtr	local_lsn = InvalidXLogRecPtr;
 	XLogRecPtr	remote_lsn = InvalidXLogRecPtr;
@@ -975,7 +975,7 @@ replorigin_get_progress(RepOriginId node, bool flush)
  */
 static void
 ReplicationOriginExitCleanup(int code, Datum arg)
-{	StackTrace("ReplicationOriginExitCleanup");
+{
 	LWLockAcquire(ReplicationOriginLock, LW_EXCLUSIVE);
 
 	if (session_replication_state != NULL &&
@@ -1000,7 +1000,7 @@ ReplicationOriginExitCleanup(int code, Datum arg)
  */
 void
 replorigin_session_setup(RepOriginId node)
-{	StackTrace("replorigin_session_setup");
+{
 	static bool registered_cleanup;
 	int			i;
 	int			free_slot = -1;
@@ -1085,7 +1085,7 @@ replorigin_session_setup(RepOriginId node)
  */
 void
 replorigin_session_reset(void)
-{	StackTrace("replorigin_session_reset");
+{
 	Assert(max_replication_slots != 0);
 
 	if (session_replication_state == NULL)
@@ -1109,7 +1109,7 @@ replorigin_session_reset(void)
  */
 void
 replorigin_session_advance(XLogRecPtr remote_commit, XLogRecPtr local_commit)
-{	StackTrace("replorigin_session_advance");
+{
 	Assert(session_replication_state != NULL);
 	Assert(session_replication_state->roident != InvalidRepOriginId);
 
@@ -1127,7 +1127,7 @@ replorigin_session_advance(XLogRecPtr remote_commit, XLogRecPtr local_commit)
  */
 XLogRecPtr
 replorigin_session_get_progress(bool flush)
-{	StackTrace("replorigin_session_get_progress");
+{
 	XLogRecPtr	remote_lsn;
 	XLogRecPtr	local_lsn;
 
@@ -1159,7 +1159,7 @@ replorigin_session_get_progress(bool flush)
  */
 Datum
 pg_replication_origin_create(PG_FUNCTION_ARGS)
-{	StackTrace("pg_replication_origin_create");
+{
 	char	   *name;
 	RepOriginId roident;
 
@@ -1178,7 +1178,7 @@ pg_replication_origin_create(PG_FUNCTION_ARGS)
  */
 Datum
 pg_replication_origin_drop(PG_FUNCTION_ARGS)
-{	StackTrace("pg_replication_origin_drop");
+{
 	char	   *name;
 	RepOriginId roident;
 
@@ -1201,7 +1201,7 @@ pg_replication_origin_drop(PG_FUNCTION_ARGS)
  */
 Datum
 pg_replication_origin_oid(PG_FUNCTION_ARGS)
-{	StackTrace("pg_replication_origin_oid");
+{
 	char	   *name;
 	RepOriginId roident;
 
@@ -1222,7 +1222,7 @@ pg_replication_origin_oid(PG_FUNCTION_ARGS)
  */
 Datum
 pg_replication_origin_session_setup(PG_FUNCTION_ARGS)
-{	StackTrace("pg_replication_origin_session_setup");
+{
 	char	   *name;
 	RepOriginId origin;
 
@@ -1244,7 +1244,7 @@ pg_replication_origin_session_setup(PG_FUNCTION_ARGS)
  */
 Datum
 pg_replication_origin_session_reset(PG_FUNCTION_ARGS)
-{	StackTrace("pg_replication_origin_session_reset");
+{
 	replorigin_check_prerequisites(true, false);
 
 	replorigin_session_reset();
@@ -1262,7 +1262,7 @@ pg_replication_origin_session_reset(PG_FUNCTION_ARGS)
  */
 Datum
 pg_replication_origin_session_is_setup(PG_FUNCTION_ARGS)
-{	StackTrace("pg_replication_origin_session_is_setup");
+{
 	replorigin_check_prerequisites(false, false);
 
 	PG_RETURN_BOOL(replorigin_sesssion_origin != InvalidRepOriginId);
@@ -1278,7 +1278,7 @@ pg_replication_origin_session_is_setup(PG_FUNCTION_ARGS)
  */
 Datum
 pg_replication_origin_session_progress(PG_FUNCTION_ARGS)
-{	StackTrace("pg_replication_origin_session_progress");
+{
 	XLogRecPtr	remote_lsn = InvalidXLogRecPtr;
 	bool		flush = PG_GETARG_BOOL(0);
 
@@ -1299,7 +1299,7 @@ pg_replication_origin_session_progress(PG_FUNCTION_ARGS)
 
 Datum
 pg_replication_origin_xact_setup(PG_FUNCTION_ARGS)
-{	StackTrace("pg_replication_origin_xact_setup");
+{
 	XLogRecPtr	location = PG_GETARG_LSN(0);
 
 	replorigin_check_prerequisites(true, false);
@@ -1317,7 +1317,7 @@ pg_replication_origin_xact_setup(PG_FUNCTION_ARGS)
 
 Datum
 pg_replication_origin_xact_reset(PG_FUNCTION_ARGS)
-{	StackTrace("pg_replication_origin_xact_reset");
+{
 	replorigin_check_prerequisites(true, false);
 
 	replorigin_sesssion_origin_lsn = InvalidXLogRecPtr;
@@ -1329,7 +1329,7 @@ pg_replication_origin_xact_reset(PG_FUNCTION_ARGS)
 
 Datum
 pg_replication_origin_advance(PG_FUNCTION_ARGS)
-{	StackTrace("pg_replication_origin_advance");
+{
 	text	   *name = PG_GETARG_TEXT_P(0);
 	XLogRecPtr	remote_commit = PG_GETARG_LSN(1);
 	RepOriginId node;
@@ -1364,7 +1364,7 @@ pg_replication_origin_advance(PG_FUNCTION_ARGS)
  */
 Datum
 pg_replication_origin_progress(PG_FUNCTION_ARGS)
-{	StackTrace("pg_replication_origin_progress");
+{
 	char	   *name;
 	bool		flush;
 	RepOriginId roident;
@@ -1389,7 +1389,7 @@ pg_replication_origin_progress(PG_FUNCTION_ARGS)
 
 Datum
 pg_show_replication_origin_status(PG_FUNCTION_ARGS)
-{	StackTrace("pg_show_replication_origin_status");
+{
 	ReturnSetInfo *rsinfo = (ReturnSetInfo *) fcinfo->resultinfo;
 	TupleDesc	tupdesc;
 	Tuplestorestate *tupstore;

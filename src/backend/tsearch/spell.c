@@ -37,7 +37,7 @@
  */
 void
 NIStartBuild(IspellDict *Conf)
-{	StackTrace("NIStartBuild");
+{
 	/*
 	 * The temp context is a child of CurTransactionContext, so that it will
 	 * go away automatically on error.
@@ -54,7 +54,7 @@ NIStartBuild(IspellDict *Conf)
  */
 void
 NIFinishBuild(IspellDict *Conf)
-{	StackTrace("NIFinishBuild");
+{
 	/* Release no-longer-needed temp memory */
 	MemoryContextDelete(Conf->buildCxt);
 	/* Just for cleanliness, zero the now-dangling pointers */
@@ -80,7 +80,7 @@ NIFinishBuild(IspellDict *Conf)
 
 static void *
 compact_palloc0(IspellDict *Conf, size_t size)
-{	StackTrace("compact_palloc0");
+{
 	void	   *result;
 
 	/* Should only be called during init */
@@ -112,7 +112,7 @@ compact_palloc0(IspellDict *Conf, size_t size)
 
 static char *
 cpstrdup(IspellDict *Conf, const char *str)
-{	StackTrace("cpstrdup");
+{
 	char	   *res = cpalloc(strlen(str) + 1);
 
 	strcpy(res, str);
@@ -125,7 +125,7 @@ cpstrdup(IspellDict *Conf, const char *str)
  */
 static char *
 lowerstr_ctx(IspellDict *Conf, const char *src)
-{	StackTrace("lowerstr_ctx");
+{
 	MemoryContext saveCtx;
 	char	   *dst;
 
@@ -147,18 +147,18 @@ static char *VoidString = "";
 
 static int
 cmpspell(const void *s1, const void *s2)
-{	StackTrace("cmpspell");
+{
 	return (strcmp((*(SPELL *const *) s1)->word, (*(SPELL *const *) s2)->word));
 }
 static int
 cmpspellaffix(const void *s1, const void *s2)
-{	StackTrace("cmpspellaffix");
+{
 	return (strncmp((*(SPELL *const *) s1)->p.flag, (*(SPELL *const *) s2)->p.flag, MAXFLAGLEN));
 }
 
 static char *
 findchar(char *str, int c)
-{	StackTrace("findchar");
+{
 	while (*str)
 	{
 		if (t_iseq(str, c))
@@ -173,7 +173,7 @@ findchar(char *str, int c)
 /* backward string compare for suffix tree operations */
 static int
 strbcmp(const unsigned char *s1, const unsigned char *s2)
-{	StackTrace("strbcmp");
+{
 	int			l1 = strlen((const char *) s1) - 1,
 				l2 = strlen((const char *) s2) - 1;
 
@@ -196,7 +196,7 @@ strbcmp(const unsigned char *s1, const unsigned char *s2)
 
 static int
 strbncmp(const unsigned char *s1, const unsigned char *s2, size_t count)
-{	StackTrace("strbncmp");
+{
 	int			l1 = strlen((const char *) s1) - 1,
 				l2 = strlen((const char *) s2) - 1,
 				l = count;
@@ -222,7 +222,7 @@ strbncmp(const unsigned char *s1, const unsigned char *s2, size_t count)
 
 static int
 cmpaffix(const void *s1, const void *s2)
-{	StackTrace("cmpaffix");
+{
 	const AFFIX *a1 = (const AFFIX *) s1;
 	const AFFIX *a2 = (const AFFIX *) s2;
 
@@ -239,7 +239,7 @@ cmpaffix(const void *s1, const void *s2)
 
 static void
 NIAddSpell(IspellDict *Conf, const char *word, const char *flag)
-{	StackTrace("NIAddSpell");
+{
 	if (Conf->nspell >= Conf->mspell)
 	{
 		if (Conf->mspell)
@@ -266,7 +266,7 @@ NIAddSpell(IspellDict *Conf, const char *word, const char *flag)
  */
 void
 NIImportDictionary(IspellDict *Conf, const char *filename)
-{	StackTrace("NIImportDictionary");
+{
 	tsearch_readline_state trst;
 	char	   *line;
 
@@ -327,7 +327,7 @@ NIImportDictionary(IspellDict *Conf, const char *filename)
 
 static int
 FindWord(IspellDict *Conf, const char *word, int affixflag, int flag)
-{	StackTrace("FindWord");
+{
 	SPNode	   *node = Conf->Dictionary;
 	SPNodeData *StopLow,
 			   *StopHigh,
@@ -375,7 +375,7 @@ FindWord(IspellDict *Conf, const char *word, int affixflag, int flag)
 
 static void
 NIAddAffix(IspellDict *Conf, int flag, char flagflags, const char *mask, const char *find, const char *repl, int type)
-{	StackTrace("NIAddAffix");
+{
 	AFFIX	   *Affix;
 
 	if (Conf->naffixes >= Conf->maffixes)
@@ -466,7 +466,7 @@ NIAddAffix(IspellDict *Conf, int flag, char flagflags, const char *mask, const c
 
 static bool
 parse_affentry(char *str, char *mask, char *find, char *repl)
-{	StackTrace("parse_affentry");
+{
 	int			state = PAE_WAIT_MASK;
 	char	   *pmask = mask,
 			   *pfind = find,
@@ -581,7 +581,7 @@ parse_affentry(char *str, char *mask, char *find, char *repl)
 
 static void
 addFlagValue(IspellDict *Conf, char *s, uint32 val)
-{	StackTrace("addFlagValue");
+{
 	while (*s && t_isspace(s))
 		s += pg_mblen(s);
 
@@ -604,7 +604,7 @@ addFlagValue(IspellDict *Conf, char *s, uint32 val)
  */
 static void
 NIImportOOAffixes(IspellDict *Conf, const char *filename)
-{	StackTrace("NIImportOOAffixes");
+{
 	char		type[BUFSIZ],
 			   *ptype = NULL;
 	char		sflag[BUFSIZ];
@@ -767,7 +767,7 @@ nextline:
  */
 void
 NIImportAffixes(IspellDict *Conf, const char *filename)
-{	StackTrace("NIImportAffixes");
+{
 	char	   *pstr = NULL;
 	char		mask[BUFSIZ];
 	char		find[BUFSIZ];
@@ -906,7 +906,7 @@ isnewformat:
 
 static int
 MergeAffix(IspellDict *Conf, int a1, int a2)
-{	StackTrace("MergeAffix");
+{
 	char	  **ptr;
 
 	while (Conf->nAffixData + 1 >= Conf->lenAffixData)
@@ -930,7 +930,7 @@ MergeAffix(IspellDict *Conf, int a1, int a2)
 
 static uint32
 makeCompoundFlags(IspellDict *Conf, int affix)
-{	StackTrace("makeCompoundFlags");
+{
 	uint32		flag = 0;
 	char	   *str = Conf->AffixData[affix];
 
@@ -945,7 +945,7 @@ makeCompoundFlags(IspellDict *Conf, int affix)
 
 static SPNode *
 mkSPNode(IspellDict *Conf, int low, int high, int level)
-{	StackTrace("mkSPNode");
+{
 	int			i;
 	int			nchar = 0;
 	char		lastchar = '\0';
@@ -1025,7 +1025,7 @@ mkSPNode(IspellDict *Conf, int low, int high, int level)
  */
 void
 NISortDictionary(IspellDict *Conf)
-{	StackTrace("NISortDictionary");
+{
 	int			i;
 	int			naffix = 0;
 	int			curaffix;
@@ -1072,7 +1072,7 @@ NISortDictionary(IspellDict *Conf)
 
 static AffixNode *
 mkANode(IspellDict *Conf, int low, int high, int level, int type)
-{	StackTrace("mkANode");
+{
 	int			i;
 	int			nchar = 0;
 	uint8		lastchar = '\0';
@@ -1143,7 +1143,7 @@ mkANode(IspellDict *Conf, int low, int high, int level, int type)
 
 static void
 mkVoidAffix(IspellDict *Conf, bool issuffix, int startsuffix)
-{	StackTrace("mkVoidAffix");
+{
 	int			i,
 				cnt = 0;
 	int			start = (issuffix) ? startsuffix : 0;
@@ -1186,7 +1186,7 @@ mkVoidAffix(IspellDict *Conf, bool issuffix, int startsuffix)
 
 static bool
 isAffixInUse(IspellDict *Conf, char flag)
-{	StackTrace("isAffixInUse");
+{
 	int			i;
 
 	for (i = 0; i < Conf->nAffixData; i++)
@@ -1198,7 +1198,7 @@ isAffixInUse(IspellDict *Conf, char flag)
 
 void
 NISortAffixes(IspellDict *Conf)
-{	StackTrace("NISortAffixes");
+{
 	AFFIX	   *Affix;
 	size_t		i;
 	CMPDAffix  *ptr;
@@ -1246,7 +1246,7 @@ NISortAffixes(IspellDict *Conf)
 
 static AffixNodeData *
 FindAffixes(AffixNode *node, const char *word, int wrdlen, int *level, int type)
-{	StackTrace("FindAffixes");
+{
 	AffixNodeData *StopLow,
 			   *StopHigh,
 			   *StopMiddle;
@@ -1289,7 +1289,7 @@ FindAffixes(AffixNode *node, const char *word, int wrdlen, int *level, int type)
 
 static char *
 CheckAffix(const char *word, size_t len, AFFIX *Affix, int flagflags, char *newword, int *baselen)
-{	StackTrace("CheckAffix");
+{
 	/*
 	 * Check compound allow flags
 	 */
@@ -1379,7 +1379,7 @@ CheckAffix(const char *word, size_t len, AFFIX *Affix, int flagflags, char *neww
 
 static int
 addToResult(char **forms, char **cur, char *word)
-{	StackTrace("addToResult");
+{
 	if (cur - forms >= MAX_NORM - 1)
 		return 0;
 	if (forms == cur || strcmp(word, *(cur - 1)) != 0)
@@ -1394,7 +1394,7 @@ addToResult(char **forms, char **cur, char *word)
 
 static char **
 NormalizeSubWord(IspellDict *Conf, char *word, int flag)
-{	StackTrace("NormalizeSubWord");
+{
 	AffixNodeData *suffix = NULL,
 			   *prefix = NULL;
 	int			slevel = 0,
@@ -1512,7 +1512,7 @@ typedef struct SplitVar
 
 static int
 CheckCompoundAffixes(CMPDAffix **ptr, char *word, int len, bool CheckInPlace)
-{	StackTrace("CheckCompoundAffixes");
+{
 	bool		issuffix;
 
 	/* in case CompoundAffix is null: */
@@ -1554,7 +1554,7 @@ CheckCompoundAffixes(CMPDAffix **ptr, char *word, int len, bool CheckInPlace)
 
 static SplitVar *
 CopyVar(SplitVar *s, int makedup)
-{	StackTrace("CopyVar");
+{
 	SplitVar   *v = (SplitVar *) palloc(sizeof(SplitVar));
 
 	v->next = NULL;
@@ -1579,7 +1579,7 @@ CopyVar(SplitVar *s, int makedup)
 
 static void
 AddStem(SplitVar *v, char *word)
-{	StackTrace("AddStem");
+{
 	if (v->nstem >= v->lenstem)
 	{
 		v->lenstem *= 2;
@@ -1592,7 +1592,7 @@ AddStem(SplitVar *v, char *word)
 
 static SplitVar *
 SplitToVariants(IspellDict *Conf, SPNode *snode, SplitVar *orig, char *word, int wordlen, int startpos, int minpos)
-{	StackTrace("SplitToVariants");
+{
 	SplitVar   *var = NULL;
 	SPNodeData *StopLow,
 			   *StopHigh,
@@ -1739,7 +1739,7 @@ SplitToVariants(IspellDict *Conf, SPNode *snode, SplitVar *orig, char *word, int
 
 static void
 addNorm(TSLexeme **lres, TSLexeme **lcur, char *word, int flags, uint16 NVariant)
-{	StackTrace("addNorm");
+{
 	if (*lres == NULL)
 		*lcur = *lres = (TSLexeme *) palloc(MAX_NORM * sizeof(TSLexeme));
 
@@ -1755,7 +1755,7 @@ addNorm(TSLexeme **lres, TSLexeme **lcur, char *word, int flags, uint16 NVariant
 
 TSLexeme *
 NINormalizeWord(IspellDict *Conf, char *word)
-{	StackTrace("NINormalizeWord");
+{
 	char	  **res;
 	TSLexeme   *lcur = NULL,
 			   *lres = NULL;

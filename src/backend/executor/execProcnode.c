@@ -132,7 +132,7 @@
  */
 PlanState *
 ExecInitNode(Plan *node, EState *estate, int eflags)
-{	StackTrace("ExecInitNode");
+{
 	PlanState  *result;
 	List	   *subps;
 	ListCell   *l;
@@ -365,7 +365,7 @@ ExecInitNode(Plan *node, EState *estate, int eflags)
  */
 TupleTableSlot *
 ExecProcNode(PlanState *node)
-{	StackTrace("ExecProcNode");
+{
 	TupleTableSlot *result;
 
 	CHECK_FOR_INTERRUPTS();
@@ -548,7 +548,7 @@ ExecProcNode(PlanState *node)
  */
 Node *
 MultiExecProcNode(PlanState *node)
-{	StackTrace("MultiExecProcNode");
+{
 	Node	   *result;
 
 	CHECK_FOR_INTERRUPTS();
@@ -601,7 +601,7 @@ MultiExecProcNode(PlanState *node)
  */
 void
 ExecEndNode(PlanState *node)
-{	StackTrace("ExecEndNode");
+{
 	/*
 	 * do nothing when we get to the end of a leaf on tree.
 	 */

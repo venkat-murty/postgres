@@ -98,7 +98,7 @@ static BackgroundWorkerArray *BackgroundWorkerData;
  */
 Size
 BackgroundWorkerShmemSize(void)
-{	StackTrace("BackgroundWorkerShmemSize");
+{
 	Size		size;
 
 	/* Array of workers is variably sized. */
@@ -114,7 +114,7 @@ BackgroundWorkerShmemSize(void)
  */
 void
 BackgroundWorkerShmemInit(void)
-{	StackTrace("BackgroundWorkerShmemInit");
+{
 	bool		found;
 
 	BackgroundWorkerData = ShmemInitStruct("Background Worker Data",
@@ -171,7 +171,7 @@ BackgroundWorkerShmemInit(void)
  */
 static RegisteredBgWorker *
 FindRegisteredWorkerBySlotNumber(int slotno)
-{	StackTrace("FindRegisteredWorkerBySlotNumber");
+{
 	slist_iter	siter;
 
 	slist_foreach(siter, &BackgroundWorkerList)
@@ -194,7 +194,7 @@ FindRegisteredWorkerBySlotNumber(int slotno)
  */
 void
 BackgroundWorkerStateChange(void)
-{	StackTrace("BackgroundWorkerStateChange");
+{
 	int			slotno;
 
 	/*
@@ -360,7 +360,7 @@ BackgroundWorkerStateChange(void)
  */
 void
 ForgetBackgroundWorker(slist_mutable_iter *cur)
-{	StackTrace("ForgetBackgroundWorker");
+{
 	RegisteredBgWorker *rw;
 	BackgroundWorkerSlot *slot;
 
@@ -385,7 +385,7 @@ ForgetBackgroundWorker(slist_mutable_iter *cur)
  */
 void
 ReportBackgroundWorkerPID(RegisteredBgWorker *rw)
-{	StackTrace("ReportBackgroundWorkerPID");
+{
 	BackgroundWorkerSlot *slot;
 
 	Assert(rw->rw_shmem_slot < max_worker_processes);
@@ -403,7 +403,7 @@ ReportBackgroundWorkerPID(RegisteredBgWorker *rw)
  */
 void
 BackgroundWorkerStopNotifications(pid_t pid)
-{	StackTrace("BackgroundWorkerStopNotifications");
+{
 	slist_iter	siter;
 
 	slist_foreach(siter, &BackgroundWorkerList)
@@ -425,7 +425,7 @@ BackgroundWorkerStopNotifications(pid_t pid)
  */
 void
 ResetBackgroundWorkerCrashTimes(void)
-{	StackTrace("ResetBackgroundWorkerCrashTimes");
+{
 	slist_mutable_iter iter;
 
 	slist_foreach_modify(iter, &BackgroundWorkerList)
@@ -451,7 +451,7 @@ ResetBackgroundWorkerCrashTimes(void)
  */
 BackgroundWorker *
 BackgroundWorkerEntry(int slotno)
-{	StackTrace("BackgroundWorkerEntry");
+{
 	static BackgroundWorker myEntry;
 	BackgroundWorkerSlot *slot;
 
@@ -472,7 +472,7 @@ BackgroundWorkerEntry(int slotno)
  */
 static bool
 SanityCheckBackgroundWorker(BackgroundWorker *worker, int elevel)
-{	StackTrace("SanityCheckBackgroundWorker");
+{
 	/* sanity check for flags */
 	if (worker->bgw_flags & BGWORKER_BACKEND_DATABASE_CONNECTION)
 	{
@@ -513,7 +513,7 @@ SanityCheckBackgroundWorker(BackgroundWorker *worker, int elevel)
 
 static void
 bgworker_quickdie(SIGNAL_ARGS)
-{	StackTrace("bgworker_quickdie");
+{
 	sigaddset(&BlockSig, SIGQUIT);		/* prevent nested calls */
 	PG_SETMASK(&BlockSig);
 
@@ -543,7 +543,7 @@ bgworker_quickdie(SIGNAL_ARGS)
  */
 static void
 bgworker_die(SIGNAL_ARGS)
-{	StackTrace("bgworker_die");
+{
 	PG_SETMASK(&BlockSig);
 
 	ereport(FATAL,
@@ -560,7 +560,7 @@ bgworker_die(SIGNAL_ARGS)
  */
 static void
 bgworker_sigusr1_handler(SIGNAL_ARGS)
-{	StackTrace("bgworker_sigusr1_handler");
+{
 	int			save_errno = errno;
 
 	latch_sigusr1_handler();
@@ -576,7 +576,7 @@ bgworker_sigusr1_handler(SIGNAL_ARGS)
  */
 void
 StartBackgroundWorker(void)
-{	StackTrace("StartBackgroundWorker");
+{
 	sigjmp_buf	local_sigjmp_buf;
 	char		buf[MAXPGPATH];
 	BackgroundWorker *worker = MyBgworkerEntry;
@@ -736,7 +736,7 @@ StartBackgroundWorker(void)
  */
 void
 RegisterBackgroundWorker(BackgroundWorker *worker)
-{	StackTrace("RegisterBackgroundWorker");
+{
 	RegisteredBgWorker *rw;
 	static int	numworkers = 0;
 
@@ -820,7 +820,7 @@ RegisterBackgroundWorker(BackgroundWorker *worker)
 bool
 RegisterDynamicBackgroundWorker(BackgroundWorker *worker,
 								BackgroundWorkerHandle **handle)
-{	StackTrace("RegisterDynamicBackgroundWorker");
+{
 	int			slotno;
 	bool		success = false;
 	uint64		generation = 0;
@@ -902,7 +902,7 @@ RegisterDynamicBackgroundWorker(BackgroundWorker *worker,
  */
 BgwHandleStatus
 GetBackgroundWorkerPid(BackgroundWorkerHandle *handle, pid_t *pidp)
-{	StackTrace("GetBackgroundWorkerPid");
+{
 	BackgroundWorkerSlot *slot;
 	pid_t		pid;
 
@@ -951,7 +951,7 @@ GetBackgroundWorkerPid(BackgroundWorkerHandle *handle, pid_t *pidp)
  */
 BgwHandleStatus
 WaitForBackgroundWorkerStartup(BackgroundWorkerHandle *handle, pid_t *pidp)
-{	StackTrace("WaitForBackgroundWorkerStartup");
+{
 	BgwHandleStatus status;
 	int			rc;
 	bool		save_set_latch_on_sigusr1;
@@ -1006,7 +1006,7 @@ WaitForBackgroundWorkerStartup(BackgroundWorkerHandle *handle, pid_t *pidp)
  */
 BgwHandleStatus
 WaitForBackgroundWorkerShutdown(BackgroundWorkerHandle *handle)
-{	StackTrace("WaitForBackgroundWorkerShutdown");
+{
 	BgwHandleStatus status;
 	int			rc;
 	bool		save_set_latch_on_sigusr1;
@@ -1055,7 +1055,7 @@ WaitForBackgroundWorkerShutdown(BackgroundWorkerHandle *handle)
  */
 void
 TerminateBackgroundWorker(BackgroundWorkerHandle *handle)
-{	StackTrace("TerminateBackgroundWorker");
+{
 	BackgroundWorkerSlot *slot;
 	bool		signal_postmaster = false;
 

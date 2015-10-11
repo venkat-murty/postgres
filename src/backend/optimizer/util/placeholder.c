@@ -36,7 +36,7 @@ static void find_placeholders_in_expr(PlannerInfo *root, Node *expr);
  */
 PlaceHolderVar *
 make_placeholder_expr(PlannerInfo *root, Expr *expr, Relids phrels)
-{	StackTrace("make_placeholder_expr");
+{
 	PlaceHolderVar *phv = makeNode(PlaceHolderVar);
 
 	phv->phexpr = expr;
@@ -67,7 +67,7 @@ make_placeholder_expr(PlannerInfo *root, Expr *expr, Relids phrels)
 PlaceHolderInfo *
 find_placeholder_info(PlannerInfo *root, PlaceHolderVar *phv,
 					  bool create_new_ph)
-{	StackTrace("find_placeholder_info");
+{
 	PlaceHolderInfo *phinfo;
 	Relids		rels_used;
 	ListCell   *lc;
@@ -141,7 +141,7 @@ find_placeholder_info(PlannerInfo *root, PlaceHolderVar *phv,
  */
 void
 find_placeholders_in_jointree(PlannerInfo *root)
-{	StackTrace("find_placeholders_in_jointree");
+{
 	/* We need do nothing if the query contains no PlaceHolderVars */
 	if (root->glob->lastPHId != 0)
 	{
@@ -160,7 +160,7 @@ find_placeholders_in_jointree(PlannerInfo *root)
  */
 static void
 find_placeholders_recurse(PlannerInfo *root, Node *jtnode)
-{	StackTrace("find_placeholders_recurse");
+{
 	if (jtnode == NULL)
 		return;
 	if (IsA(jtnode, RangeTblRef))
@@ -210,7 +210,7 @@ find_placeholders_recurse(PlannerInfo *root, Node *jtnode)
  */
 static void
 find_placeholders_in_expr(PlannerInfo *root, Node *expr)
-{	StackTrace("find_placeholders_in_expr");
+{
 	List	   *vars;
 	ListCell   *vl;
 
@@ -261,7 +261,7 @@ find_placeholders_in_expr(PlannerInfo *root, Node *expr)
  */
 void
 update_placeholder_eval_levels(PlannerInfo *root, SpecialJoinInfo *new_sjinfo)
-{	StackTrace("update_placeholder_eval_levels");
+{
 	ListCell   *lc1;
 
 	foreach(lc1, root->placeholder_list)
@@ -346,7 +346,7 @@ update_placeholder_eval_levels(PlannerInfo *root, SpecialJoinInfo *new_sjinfo)
  */
 void
 fix_placeholder_input_needed_levels(PlannerInfo *root)
-{	StackTrace("fix_placeholder_input_needed_levels");
+{
 	ListCell   *lc;
 
 	foreach(lc, root->placeholder_list)
@@ -376,7 +376,7 @@ fix_placeholder_input_needed_levels(PlannerInfo *root)
  */
 void
 add_placeholders_to_base_rels(PlannerInfo *root)
-{	StackTrace("add_placeholders_to_base_rels");
+{
 	ListCell   *lc;
 
 	foreach(lc, root->placeholder_list)
@@ -445,7 +445,7 @@ add_placeholders_to_base_rels(PlannerInfo *root)
  */
 void
 add_placeholders_to_joinrel(PlannerInfo *root, RelOptInfo *joinrel)
-{	StackTrace("add_placeholders_to_joinrel");
+{
 	Relids		relids = joinrel->relids;
 	ListCell   *lc;
 

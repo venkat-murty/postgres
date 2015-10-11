@@ -60,7 +60,7 @@ static void bitgetpage(HeapScanDesc scan, TBMIterateResult *tbmres);
  */
 static TupleTableSlot *
 BitmapHeapNext(BitmapHeapScanState *node)
-{	StackTrace("BitmapHeapNext");
+{
 	ExprContext *econtext;
 	HeapScanDesc scan;
 	TIDBitmap  *tbm;
@@ -314,7 +314,7 @@ BitmapHeapNext(BitmapHeapScanState *node)
  */
 static void
 bitgetpage(HeapScanDesc scan, TBMIterateResult *tbmres)
-{	StackTrace("bitgetpage");
+{
 	BlockNumber page = tbmres->blockno;
 	Buffer		buffer;
 	Snapshot	snapshot;
@@ -414,7 +414,7 @@ bitgetpage(HeapScanDesc scan, TBMIterateResult *tbmres)
  */
 static bool
 BitmapHeapRecheck(BitmapHeapScanState *node, TupleTableSlot *slot)
-{	StackTrace("BitmapHeapRecheck");
+{
 	ExprContext *econtext;
 
 	/*
@@ -436,7 +436,7 @@ BitmapHeapRecheck(BitmapHeapScanState *node, TupleTableSlot *slot)
  */
 TupleTableSlot *
 ExecBitmapHeapScan(BitmapHeapScanState *node)
-{	StackTrace("ExecBitmapHeapScan");
+{
 	return ExecScan(&node->ss,
 					(ExecScanAccessMtd) BitmapHeapNext,
 					(ExecScanRecheckMtd) BitmapHeapRecheck);
@@ -448,7 +448,7 @@ ExecBitmapHeapScan(BitmapHeapScanState *node)
  */
 void
 ExecReScanBitmapHeapScan(BitmapHeapScanState *node)
-{	StackTrace("ExecReScanBitmapHeapScan");
+{
 	PlanState  *outerPlan = outerPlanState(node);
 
 	/* rescan to release any page pin */
@@ -481,7 +481,7 @@ ExecReScanBitmapHeapScan(BitmapHeapScanState *node)
  */
 void
 ExecEndBitmapHeapScan(BitmapHeapScanState *node)
-{	StackTrace("ExecEndBitmapHeapScan");
+{
 	Relation	relation;
 	HeapScanDesc scanDesc;
 
@@ -536,7 +536,7 @@ ExecEndBitmapHeapScan(BitmapHeapScanState *node)
  */
 BitmapHeapScanState *
 ExecInitBitmapHeapScan(BitmapHeapScan *node, EState *estate, int eflags)
-{	StackTrace("ExecInitBitmapHeapScan");
+{
 	BitmapHeapScanState *scanstate;
 	Relation	currentRelation;
 

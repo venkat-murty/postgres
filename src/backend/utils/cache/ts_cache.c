@@ -90,7 +90,7 @@ static Oid	TSCurrentConfigCache = InvalidOid;
  */
 static void
 InvalidateTSCacheCallBack(Datum arg, int cacheid, uint32 hashvalue)
-{	StackTrace("InvalidateTSCacheCallBack");
+{
 	HTAB	   *hash = (HTAB *) DatumGetPointer(arg);
 	HASH_SEQ_STATUS status;
 	TSAnyCacheEntry *entry;
@@ -109,7 +109,7 @@ InvalidateTSCacheCallBack(Datum arg, int cacheid, uint32 hashvalue)
  */
 TSParserCacheEntry *
 lookup_ts_parser_cache(Oid prsId)
-{	StackTrace("lookup_ts_parser_cache");
+{
 	TSParserCacheEntry *entry;
 
 	if (TSParserCacheHash == NULL)
@@ -207,7 +207,7 @@ lookup_ts_parser_cache(Oid prsId)
  */
 TSDictionaryCacheEntry *
 lookup_ts_dictionary_cache(Oid dictId)
-{	StackTrace("lookup_ts_dictionary_cache");
+{
 	TSDictionaryCacheEntry *entry;
 
 	if (TSDictionaryCacheHash == NULL)
@@ -360,7 +360,7 @@ lookup_ts_dictionary_cache(Oid dictId)
  */
 static void
 init_ts_config_cache(void)
-{	StackTrace("init_ts_config_cache");
+{
 	HASHCTL		ctl;
 
 	MemSet(&ctl, 0, sizeof(ctl));
@@ -384,7 +384,7 @@ init_ts_config_cache(void)
  */
 TSConfigCacheEntry *
 lookup_ts_config_cache(Oid cfgId)
-{	StackTrace("lookup_ts_config_cache");
+{
 	TSConfigCacheEntry *entry;
 
 	if (TSConfigCacheHash == NULL)
@@ -555,7 +555,7 @@ lookup_ts_config_cache(Oid cfgId)
 
 Oid
 getTSCurrentConfig(bool emitError)
-{	StackTrace("getTSCurrentConfig");
+{
 	/* if we have a cached value, return it */
 	if (OidIsValid(TSCurrentConfigCache))
 		return TSCurrentConfigCache;
@@ -586,7 +586,7 @@ getTSCurrentConfig(bool emitError)
 /* GUC check_hook for default_text_search_config */
 bool
 check_TSCurrentConfig(char **newval, void **extra, GucSource source)
-{	StackTrace("check_TSCurrentConfig");
+{
 	/*
 	 * If we aren't inside a transaction, we cannot do database access so
 	 * cannot verify the config name.  Must accept it on faith.
@@ -646,7 +646,7 @@ check_TSCurrentConfig(char **newval, void **extra, GucSource source)
 /* GUC assign_hook for default_text_search_config */
 void
 assign_TSCurrentConfig(const char *newval, void *extra)
-{	StackTrace("assign_TSCurrentConfig");
+{
 	/* Just reset the cache to force a lookup on first use */
 	TSCurrentConfigCache = InvalidOid;
 }

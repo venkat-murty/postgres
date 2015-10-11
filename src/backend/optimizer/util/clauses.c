@@ -160,7 +160,7 @@ Expr *
 make_opclause(Oid opno, Oid opresulttype, bool opretset,
 			  Expr *leftop, Expr *rightop,
 			  Oid opcollid, Oid inputcollid)
-{	StackTrace("make_opclause");
+{
 	OpExpr	   *expr = makeNode(OpExpr);
 
 	expr->opno = opno;
@@ -185,7 +185,7 @@ make_opclause(Oid opno, Oid opresulttype, bool opretset,
  */
 Node *
 get_leftop(const Expr *clause)
-{	StackTrace("get_leftop");
+{
 	const OpExpr *expr = (const OpExpr *) clause;
 
 	if (expr->args != NIL)
@@ -202,7 +202,7 @@ get_leftop(const Expr *clause)
  */
 Node *
 get_rightop(const Expr *clause)
-{	StackTrace("get_rightop");
+{
 	const OpExpr *expr = (const OpExpr *) clause;
 
 	if (list_length(expr->args) >= 2)
@@ -222,7 +222,7 @@ get_rightop(const Expr *clause)
  */
 bool
 not_clause(Node *clause)
-{	StackTrace("not_clause");
+{
 	return (clause != NULL &&
 			IsA(clause, BoolExpr) &&
 			((BoolExpr *) clause)->boolop == NOT_EXPR);
@@ -235,7 +235,7 @@ not_clause(Node *clause)
  */
 Expr *
 make_notclause(Expr *notclause)
-{	StackTrace("make_notclause");
+{
 	BoolExpr   *expr = makeNode(BoolExpr);
 
 	expr->boolop = NOT_EXPR;
@@ -251,7 +251,7 @@ make_notclause(Expr *notclause)
  */
 Expr *
 get_notclausearg(Expr *notclause)
-{	StackTrace("get_notclausearg");
+{
 	return linitial(((BoolExpr *) notclause)->args);
 }
 
@@ -266,7 +266,7 @@ get_notclausearg(Expr *notclause)
  */
 bool
 or_clause(Node *clause)
-{	StackTrace("or_clause");
+{
 	return (clause != NULL &&
 			IsA(clause, BoolExpr) &&
 			((BoolExpr *) clause)->boolop == OR_EXPR);
@@ -279,7 +279,7 @@ or_clause(Node *clause)
  */
 Expr *
 make_orclause(List *orclauses)
-{	StackTrace("make_orclause");
+{
 	BoolExpr   *expr = makeNode(BoolExpr);
 
 	expr->boolop = OR_EXPR;
@@ -300,7 +300,7 @@ make_orclause(List *orclauses)
  */
 bool
 and_clause(Node *clause)
-{	StackTrace("and_clause");
+{
 	return (clause != NULL &&
 			IsA(clause, BoolExpr) &&
 			((BoolExpr *) clause)->boolop == AND_EXPR);
@@ -313,7 +313,7 @@ and_clause(Node *clause)
  */
 Expr *
 make_andclause(List *andclauses)
-{	StackTrace("make_andclause");
+{
 	BoolExpr   *expr = makeNode(BoolExpr);
 
 	expr->boolop = AND_EXPR;
@@ -334,7 +334,7 @@ make_andclause(List *andclauses)
  */
 Node *
 make_and_qual(Node *qual1, Node *qual2)
-{	StackTrace("make_and_qual");
+{
 	if (qual1 == NULL)
 		return qual2;
 	if (qual2 == NULL)
@@ -353,7 +353,7 @@ make_and_qual(Node *qual1, Node *qual2)
  */
 Expr *
 make_ands_explicit(List *andclauses)
-{	StackTrace("make_ands_explicit");
+{
 	if (andclauses == NIL)
 		return (Expr *) makeBoolConst(true, false);
 	else if (list_length(andclauses) == 1)
@@ -364,7 +364,7 @@ make_ands_explicit(List *andclauses)
 
 List *
 make_ands_implicit(Expr *clause)
-{	StackTrace("make_ands_implicit");
+{
 	/*
 	 * NB: because the parser sets the qual field to NULL in a query that has
 	 * no WHERE clause, we must consider a NULL input clause as TRUE, even
@@ -403,13 +403,13 @@ make_ands_implicit(Expr *clause)
  */
 bool
 contain_agg_clause(Node *clause)
-{	StackTrace("contain_agg_clause");
+{
 	return contain_agg_clause_walker(clause, NULL);
 }
 
 static bool
 contain_agg_clause_walker(Node *node, void *context)
-{	StackTrace("contain_agg_clause_walker");
+{
 	if (node == NULL)
 		return false;
 	if (IsA(node, Aggref))
@@ -442,7 +442,7 @@ contain_agg_clause_walker(Node *node, void *context)
  */
 void
 count_agg_clauses(PlannerInfo *root, Node *clause, AggClauseCosts *costs)
-{	StackTrace("count_agg_clauses");
+{
 	count_agg_clauses_context context;
 
 	context.root = root;
@@ -452,7 +452,7 @@ count_agg_clauses(PlannerInfo *root, Node *clause, AggClauseCosts *costs)
 
 static bool
 count_agg_clauses_walker(Node *node, count_agg_clauses_context *context)
-{	StackTrace("count_agg_clauses_walker");
+{
 	if (node == NULL)
 		return false;
 	if (IsA(node, Aggref))
@@ -620,7 +620,7 @@ count_agg_clauses_walker(Node *node, count_agg_clauses_context *context)
  */
 bool
 contain_window_function(Node *clause)
-{	StackTrace("contain_window_function");
+{
 	return contain_windowfuncs(clause);
 }
 
@@ -633,7 +633,7 @@ contain_window_function(Node *clause)
  */
 WindowFuncLists *
 find_window_functions(Node *clause, Index maxWinRef)
-{	StackTrace("find_window_functions");
+{
 	WindowFuncLists *lists = palloc(sizeof(WindowFuncLists));
 
 	lists->numWindowFuncs = 0;
@@ -645,7 +645,7 @@ find_window_functions(Node *clause, Index maxWinRef)
 
 static bool
 find_window_functions_walker(Node *node, WindowFuncLists *lists)
-{	StackTrace("find_window_functions_walker");
+{
 	if (node == NULL)
 		return false;
 	if (IsA(node, WindowFunc))
@@ -691,7 +691,7 @@ find_window_functions_walker(Node *node, WindowFuncLists *lists)
  */
 double
 expression_returns_set_rows(Node *clause)
-{	StackTrace("expression_returns_set_rows");
+{
 	double		result = 1;
 
 	(void) expression_returns_set_rows_walker(clause, &result);
@@ -700,7 +700,7 @@ expression_returns_set_rows(Node *clause)
 
 static bool
 expression_returns_set_rows_walker(Node *node, double *count)
-{	StackTrace("expression_returns_set_rows_walker");
+{
 	if (node == NULL)
 		return false;
 	if (IsA(node, FuncExpr))
@@ -775,7 +775,7 @@ expression_returns_set_rows_walker(Node *node, double *count)
  */
 double
 tlist_returns_set_rows(List *tlist)
-{	StackTrace("tlist_returns_set_rows");
+{
 	double		result = 1;
 	ListCell   *lc;
 
@@ -809,13 +809,13 @@ tlist_returns_set_rows(List *tlist)
  */
 bool
 contain_subplans(Node *clause)
-{	StackTrace("contain_subplans");
+{
 	return contain_subplans_walker(clause, NULL);
 }
 
 static bool
 contain_subplans_walker(Node *node, void *context)
-{	StackTrace("contain_subplans_walker");
+{
 	if (node == NULL)
 		return false;
 	if (IsA(node, SubPlan) ||
@@ -844,13 +844,13 @@ contain_subplans_walker(Node *node, void *context)
  */
 bool
 contain_mutable_functions(Node *clause)
-{	StackTrace("contain_mutable_functions");
+{
 	return contain_mutable_functions_walker(clause, NULL);
 }
 
 static bool
 contain_mutable_functions_walker(Node *node, void *context)
-{	StackTrace("contain_mutable_functions_walker");
+{
 	if (node == NULL)
 		return false;
 	if (IsA(node, FuncExpr))
@@ -973,13 +973,13 @@ contain_mutable_functions_walker(Node *node, void *context)
  */
 bool
 contain_volatile_functions(Node *clause)
-{	StackTrace("contain_volatile_functions");
+{
 	return contain_volatile_functions_walker(clause, NULL);
 }
 
 bool
 contain_volatile_functions_not_nextval(Node *clause)
-{	StackTrace("contain_volatile_functions_not_nextval");
+{
 	return contain_volatile_functions_not_nextval_walker(clause, NULL);
 }
 
@@ -992,7 +992,7 @@ contain_volatile_functions_not_nextval(Node *clause)
  */
 static bool
 contain_volatile_functions_walker(Node *node, void *context)
-{	StackTrace("contain_volatile_functions_walker");
+{
 	if (node == NULL)
 		return false;
 	if (IsA(node, FuncExpr))
@@ -1096,7 +1096,7 @@ contain_volatile_functions_walker(Node *node, void *context)
  */
 static bool
 contain_volatile_functions_not_nextval_walker(Node *node, void *context)
-{	StackTrace("contain_volatile_functions_not_nextval_walker");
+{
 	if (node == NULL)
 		return false;
 	if (IsA(node, FuncExpr))
@@ -1211,13 +1211,13 @@ contain_volatile_functions_not_nextval_walker(Node *node, void *context)
  */
 bool
 contain_nonstrict_functions(Node *clause)
-{	StackTrace("contain_nonstrict_functions");
+{
 	return contain_nonstrict_functions_walker(clause, NULL);
 }
 
 static bool
 contain_nonstrict_functions_walker(Node *node, void *context)
-{	StackTrace("contain_nonstrict_functions_walker");
+{
 	if (node == NULL)
 		return false;
 	if (IsA(node, Aggref))
@@ -1336,13 +1336,13 @@ contain_nonstrict_functions_walker(Node *node, void *context)
  */
 bool
 contain_leaked_vars(Node *clause)
-{	StackTrace("contain_leaked_vars");
+{
 	return contain_leaked_vars_walker(clause, NULL);
 }
 
 static bool
 contain_leaked_vars_walker(Node *node, void *context)
-{	StackTrace("contain_leaked_vars_walker");
+{
 	if (node == NULL)
 		return false;
 
@@ -1538,13 +1538,13 @@ contain_leaked_vars_walker(Node *node, void *context)
  */
 Relids
 find_nonnullable_rels(Node *clause)
-{	StackTrace("find_nonnullable_rels");
+{
 	return find_nonnullable_rels_walker(clause, true);
 }
 
 static Relids
 find_nonnullable_rels_walker(Node *node, bool top_level)
-{	StackTrace("find_nonnullable_rels_walker");
+{
 	Relids		result = NULL;
 	ListCell   *l;
 
@@ -1746,13 +1746,13 @@ find_nonnullable_rels_walker(Node *node, bool top_level)
  */
 List *
 find_nonnullable_vars(Node *clause)
-{	StackTrace("find_nonnullable_vars");
+{
 	return find_nonnullable_vars_walker(clause, true);
 }
 
 static List *
 find_nonnullable_vars_walker(Node *node, bool top_level)
-{	StackTrace("find_nonnullable_vars_walker");
+{
 	List	   *result = NIL;
 	ListCell   *l;
 
@@ -1939,7 +1939,7 @@ find_nonnullable_vars_walker(Node *node, bool top_level)
  */
 List *
 find_forced_null_vars(Node *node)
-{	StackTrace("find_forced_null_vars");
+{
 	List	   *result = NIL;
 	Var		   *var;
 	ListCell   *l;
@@ -1998,7 +1998,7 @@ find_forced_null_vars(Node *node)
  */
 Var *
 find_forced_null_var(Node *node)
-{	StackTrace("find_forced_null_var");
+{
 	if (node == NULL)
 		return NULL;
 	if (IsA(node, NullTest))
@@ -2047,7 +2047,7 @@ find_forced_null_var(Node *node)
  */
 static bool
 is_strict_saop(ScalarArrayOpExpr *expr, bool falseOK)
-{	StackTrace("is_strict_saop");
+{
 	Node	   *rightop;
 
 	/* The contained operator must be strict. */
@@ -2108,7 +2108,7 @@ is_strict_saop(ScalarArrayOpExpr *expr, bool falseOK)
  */
 bool
 is_pseudo_constant_clause(Node *clause)
-{	StackTrace("is_pseudo_constant_clause");
+{
 	/*
 	 * We could implement this check in one recursive scan.  But since the
 	 * check for volatile functions is both moderately expensive and unlikely
@@ -2128,7 +2128,7 @@ is_pseudo_constant_clause(Node *clause)
  */
 bool
 is_pseudo_constant_clause_relids(Node *clause, Relids relids)
-{	StackTrace("is_pseudo_constant_clause_relids");
+{
 	if (bms_is_empty(relids) &&
 		!contain_volatile_functions(clause))
 		return true;
@@ -2150,7 +2150,7 @@ is_pseudo_constant_clause_relids(Node *clause, Relids relids)
  */
 int
 NumRelids(Node *clause)
-{	StackTrace("NumRelids");
+{
 	Relids		varnos = pull_varnos(clause);
 	int			result = bms_num_members(varnos);
 
@@ -2165,7 +2165,7 @@ NumRelids(Node *clause)
  */
 void
 CommuteOpExpr(OpExpr *clause)
-{	StackTrace("CommuteOpExpr");
+{
 	Oid			opoid;
 	Node	   *temp;
 
@@ -2199,7 +2199,7 @@ CommuteOpExpr(OpExpr *clause)
  */
 void
 CommuteRowCompareExpr(RowCompareExpr *clause)
-{	StackTrace("CommuteRowCompareExpr");
+{
 	List	   *newops;
 	List	   *temp;
 	ListCell   *l;
@@ -2267,7 +2267,7 @@ static bool
 rowtype_field_matches(Oid rowtypeid, int fieldnum,
 					  Oid expectedtype, int32 expectedtypmod,
 					  Oid expectedcollation)
-{	StackTrace("rowtype_field_matches");
+{
 	TupleDesc	tupdesc;
 	Form_pg_attribute attr;
 
@@ -2333,7 +2333,7 @@ rowtype_field_matches(Oid rowtypeid, int fieldnum,
  */
 Node *
 eval_const_expressions(PlannerInfo *root, Node *node)
-{	StackTrace("eval_const_expressions");
+{
 	eval_const_expressions_context context;
 
 	if (root)
@@ -2366,7 +2366,7 @@ eval_const_expressions(PlannerInfo *root, Node *node)
  */
 Node *
 estimate_expression_value(PlannerInfo *root, Node *node)
-{	StackTrace("estimate_expression_value");
+{
 	eval_const_expressions_context context;
 
 	context.boundParams = root->glob->boundParams;		/* bound Params */
@@ -2381,7 +2381,7 @@ estimate_expression_value(PlannerInfo *root, Node *node)
 static Node *
 eval_const_expressions_mutator(Node *node,
 							   eval_const_expressions_context *context)
-{	StackTrace("eval_const_expressions_mutator");
+{
 	if (node == NULL)
 		return NULL;
 	switch (nodeTag(node))
@@ -3501,7 +3501,7 @@ static List *
 simplify_or_arguments(List *args,
 					  eval_const_expressions_context *context,
 					  bool *haveNull, bool *forceTrue)
-{	StackTrace("simplify_or_arguments");
+{
 	List	   *newargs = NIL;
 	List	   *unprocessed_args;
 
@@ -3613,7 +3613,7 @@ static List *
 simplify_and_arguments(List *args,
 					   eval_const_expressions_context *context,
 					   bool *haveNull, bool *forceFalse)
-{	StackTrace("simplify_and_arguments");
+{
 	List	   *newargs = NIL;
 	List	   *unprocessed_args;
 
@@ -3711,7 +3711,7 @@ simplify_and_arguments(List *args,
  */
 static Node *
 simplify_boolean_equality(Oid opno, List *args)
-{	StackTrace("simplify_boolean_equality");
+{
 	Node	   *leftop;
 	Node	   *rightop;
 
@@ -3783,7 +3783,7 @@ simplify_function(Oid funcid, Oid result_type, int32 result_typmod,
 				  Oid result_collid, Oid input_collid, List **args_p,
 				  bool funcvariadic, bool process_args, bool allow_non_const,
 				  eval_const_expressions_context *context)
-{	StackTrace("simplify_function");
+{
 	List	   *args = *args_p;
 	HeapTuple	func_tuple;
 	Form_pg_proc func_form;
@@ -3877,7 +3877,7 @@ simplify_function(Oid funcid, Oid result_type, int32 result_typmod,
  */
 static List *
 expand_function_arguments(List *args, Oid result_type, HeapTuple func_tuple)
-{	StackTrace("expand_function_arguments");
+{
 	Form_pg_proc funcform = (Form_pg_proc) GETSTRUCT(func_tuple);
 	bool		has_named_args = false;
 	ListCell   *lc;
@@ -3920,7 +3920,7 @@ expand_function_arguments(List *args, Oid result_type, HeapTuple func_tuple)
  */
 static List *
 reorder_function_arguments(List *args, HeapTuple func_tuple)
-{	StackTrace("reorder_function_arguments");
+{
 	Form_pg_proc funcform = (Form_pg_proc) GETSTRUCT(func_tuple);
 	int			pronargs = funcform->pronargs;
 	int			nargsprovided = list_length(args);
@@ -3990,7 +3990,7 @@ reorder_function_arguments(List *args, HeapTuple func_tuple)
  */
 static List *
 add_function_defaults(List *args, HeapTuple func_tuple)
-{	StackTrace("add_function_defaults");
+{
 	Form_pg_proc funcform = (Form_pg_proc) GETSTRUCT(func_tuple);
 	int			nargsprovided = list_length(args);
 	List	   *defaults;
@@ -4015,7 +4015,7 @@ add_function_defaults(List *args, HeapTuple func_tuple)
  */
 static List *
 fetch_function_defaults(HeapTuple func_tuple)
-{	StackTrace("fetch_function_defaults");
+{
 	List	   *defaults;
 	Datum		proargdefaults;
 	bool		isnull;
@@ -4051,7 +4051,7 @@ fetch_function_defaults(HeapTuple func_tuple)
  */
 static void
 recheck_cast_function_args(List *args, Oid result_type, HeapTuple func_tuple)
-{	StackTrace("recheck_cast_function_args");
+{
 	Form_pg_proc funcform = (Form_pg_proc) GETSTRUCT(func_tuple);
 	int			nargs;
 	Oid			actual_arg_types[FUNC_MAX_ARGS];
@@ -4099,7 +4099,7 @@ evaluate_function(Oid funcid, Oid result_type, int32 result_typmod,
 				  bool funcvariadic,
 				  HeapTuple func_tuple,
 				  eval_const_expressions_context *context)
-{	StackTrace("evaluate_function");
+{
 	Form_pg_proc funcform = (Form_pg_proc) GETSTRUCT(func_tuple);
 	bool		has_nonconst_input = false;
 	bool		has_null_input = false;
@@ -4224,7 +4224,7 @@ inline_function(Oid funcid, Oid result_type, Oid result_collid,
 				bool funcvariadic,
 				HeapTuple func_tuple,
 				eval_const_expressions_context *context)
-{	StackTrace("inline_function");
+{
 	Form_pg_proc funcform = (Form_pg_proc) GETSTRUCT(func_tuple);
 	char	   *src;
 	Datum		tmp;
@@ -4525,7 +4525,7 @@ fail:
 static Node *
 substitute_actual_parameters(Node *expr, int nargs, List *args,
 							 int *usecounts)
-{	StackTrace("substitute_actual_parameters");
+{
 	substitute_actual_parameters_context context;
 
 	context.nargs = nargs;
@@ -4538,7 +4538,7 @@ substitute_actual_parameters(Node *expr, int nargs, List *args,
 static Node *
 substitute_actual_parameters_mutator(Node *node,
 							   substitute_actual_parameters_context *context)
-{	StackTrace("substitute_actual_parameters_mutator");
+{
 	if (node == NULL)
 		return NULL;
 	if (IsA(node, Param))
@@ -4566,7 +4566,7 @@ substitute_actual_parameters_mutator(Node *node,
  */
 static void
 sql_inline_error_callback(void *arg)
-{	StackTrace("sql_inline_error_callback");
+{
 	inline_error_callback_arg *callback_arg = (inline_error_callback_arg *) arg;
 	int			syntaxerrposition;
 
@@ -4591,7 +4591,7 @@ sql_inline_error_callback(void *arg)
 static Expr *
 evaluate_expr(Expr *expr, Oid result_type, int32 result_typmod,
 			  Oid result_collation)
-{	StackTrace("evaluate_expr");
+{
 	EState	   *estate;
 	ExprState  *exprstate;
 	MemoryContext oldcontext;
@@ -4677,7 +4677,7 @@ evaluate_expr(Expr *expr, Oid result_type, int32 result_typmod,
  */
 Query *
 inline_set_returning_function(PlannerInfo *root, RangeTblEntry *rte)
-{	StackTrace("inline_set_returning_function");
+{
 	RangeTblFunction *rtfunc;
 	FuncExpr   *fexpr;
 	Oid			func_oid;
@@ -4967,7 +4967,7 @@ fail:
  */
 static Query *
 substitute_actual_srf_parameters(Query *expr, int nargs, List *args)
-{	StackTrace("substitute_actual_srf_parameters");
+{
 	substitute_actual_srf_parameters_context context;
 
 	context.nargs = nargs;
@@ -4983,7 +4983,7 @@ substitute_actual_srf_parameters(Query *expr, int nargs, List *args)
 static Node *
 substitute_actual_srf_parameters_mutator(Node *node,
 						   substitute_actual_srf_parameters_context *context)
-{	StackTrace("substitute_actual_srf_parameters_mutator");
+{
 	Node	   *result;
 
 	if (node == NULL)
@@ -5035,7 +5035,7 @@ substitute_actual_srf_parameters_mutator(Node *node,
  */
 static bool
 tlist_matches_coltypelist(List *tlist, List *coltypelist)
-{	StackTrace("tlist_matches_coltypelist");
+{
 	ListCell   *tlistitem;
 	ListCell   *clistitem;
 

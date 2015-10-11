@@ -892,7 +892,7 @@ static void WALInsertLockUpdateInsertingAt(XLogRecPtr insertingAt);
  */
 XLogRecPtr
 XLogInsertRecord(XLogRecData *rdata, XLogRecPtr fpw_lsn)
-{	StackTrace("XLogInsertRecord");
+{
 	XLogCtlInsert *Insert = &XLogCtl->Insert;
 	pg_crc32c	rdata_crc;
 	bool		inserted;
@@ -1144,7 +1144,7 @@ XLogInsertRecord(XLogRecData *rdata, XLogRecPtr fpw_lsn)
 static void
 ReserveXLogInsertLocation(int size, XLogRecPtr *StartPos, XLogRecPtr *EndPos,
 						  XLogRecPtr *PrevPtr)
-{	StackTrace("ReserveXLogInsertLocation");
+{
 	XLogCtlInsert *Insert = &XLogCtl->Insert;
 	uint64		startbytepos;
 	uint64		endbytepos;
@@ -1199,7 +1199,7 @@ ReserveXLogInsertLocation(int size, XLogRecPtr *StartPos, XLogRecPtr *EndPos,
 */
 static bool
 ReserveXLogSwitch(XLogRecPtr *StartPos, XLogRecPtr *EndPos, XLogRecPtr *PrevPtr)
-{	StackTrace("ReserveXLogSwitch");
+{
 	XLogCtlInsert *Insert = &XLogCtl->Insert;
 	uint64		startbytepos;
 	uint64		endbytepos;
@@ -1261,7 +1261,7 @@ ReserveXLogSwitch(XLogRecPtr *StartPos, XLogRecPtr *EndPos, XLogRecPtr *PrevPtr)
 static void
 CopyXLogRecordToWAL(int write_len, bool isLogSwitch, XLogRecData *rdata,
 					XLogRecPtr StartPos, XLogRecPtr EndPos)
-{	StackTrace("CopyXLogRecordToWAL");
+{
 	char	   *currpos;
 	int			freespace;
 	int			written;
@@ -1384,7 +1384,7 @@ CopyXLogRecordToWAL(int write_len, bool isLogSwitch, XLogRecData *rdata,
  */
 static void
 WALInsertLockAcquire(void)
-{	StackTrace("WALInsertLockAcquire");
+{
 	bool		immed;
 
 	/*
@@ -1431,7 +1431,7 @@ WALInsertLockAcquire(void)
  */
 static void
 WALInsertLockAcquireExclusive(void)
-{	StackTrace("WALInsertLockAcquireExclusive");
+{
 	int			i;
 
 	/*
@@ -1458,7 +1458,7 @@ WALInsertLockAcquireExclusive(void)
  */
 static void
 WALInsertLockRelease(void)
-{	StackTrace("WALInsertLockRelease");
+{
 	if (holdingAllLocks)
 	{
 		int			i;
@@ -1480,7 +1480,7 @@ WALInsertLockRelease(void)
  */
 static void
 WALInsertLockUpdateInsertingAt(XLogRecPtr insertingAt)
-{	StackTrace("WALInsertLockUpdateInsertingAt");
+{
 	if (holdingAllLocks)
 	{
 		/*
@@ -1513,7 +1513,7 @@ WALInsertLockUpdateInsertingAt(XLogRecPtr insertingAt)
  */
 static XLogRecPtr
 WaitXLogInsertionsToFinish(XLogRecPtr upto)
-{	StackTrace("WaitXLogInsertionsToFinish");
+{
 	uint64		bytepos;
 	XLogRecPtr	reservedUpto;
 	XLogRecPtr	finishedUpto;
@@ -1612,7 +1612,7 @@ WaitXLogInsertionsToFinish(XLogRecPtr upto)
  */
 static char *
 GetXLogBuffer(XLogRecPtr ptr)
-{	StackTrace("GetXLogBuffer");
+{
 	int			idx;
 	XLogRecPtr	endptr;
 	static uint64 cachedPage = 0;
@@ -1702,7 +1702,7 @@ GetXLogBuffer(XLogRecPtr ptr)
  */
 static XLogRecPtr
 XLogBytePosToRecPtr(uint64 bytepos)
-{	StackTrace("XLogBytePosToRecPtr");
+{
 	uint64		fullsegs;
 	uint64		fullpages;
 	uint64		bytesleft;
@@ -1742,7 +1742,7 @@ XLogBytePosToRecPtr(uint64 bytepos)
  */
 static XLogRecPtr
 XLogBytePosToEndRecPtr(uint64 bytepos)
-{	StackTrace("XLogBytePosToEndRecPtr");
+{
 	uint64		fullsegs;
 	uint64		fullpages;
 	uint64		bytesleft;
@@ -1785,7 +1785,7 @@ XLogBytePosToEndRecPtr(uint64 bytepos)
  */
 static uint64
 XLogRecPtrToBytePos(XLogRecPtr ptr)
-{	StackTrace("XLogRecPtrToBytePos");
+{
 	uint64		fullsegs;
 	uint32		fullpages;
 	uint32		offset;
@@ -1829,7 +1829,7 @@ XLogRecPtrToBytePos(XLogRecPtr ptr)
  */
 static void
 AdvanceXLInsertBuffer(XLogRecPtr upto, bool opportunistic)
-{	StackTrace("AdvanceXLInsertBuffer");
+{
 	XLogCtlInsert *Insert = &XLogCtl->Insert;
 	int			nextidx;
 	XLogRecPtr	OldPageRqstPtr;
@@ -1998,7 +1998,7 @@ AdvanceXLInsertBuffer(XLogRecPtr upto, bool opportunistic)
  */
 static void
 CalculateCheckpointSegments(void)
-{	StackTrace("CalculateCheckpointSegments");
+{
 	double		target;
 
 	/*-------
@@ -2021,14 +2021,14 @@ CalculateCheckpointSegments(void)
 
 void
 assign_max_wal_size(int newval, void *extra)
-{	StackTrace("assign_max_wal_size");
+{
 	max_wal_size = newval;
 	CalculateCheckpointSegments();
 }
 
 void
 assign_checkpoint_completion_target(double newval, void *extra)
-{	StackTrace("assign_checkpoint_completion_target");
+{
 	CheckPointCompletionTarget = newval;
 	CalculateCheckpointSegments();
 }
@@ -2039,7 +2039,7 @@ assign_checkpoint_completion_target(double newval, void *extra)
  */
 static XLogSegNo
 XLOGfileslop(XLogRecPtr PriorRedoPtr)
-{	StackTrace("XLOGfileslop");
+{
 	XLogSegNo	minSegNo;
 	XLogSegNo	maxSegNo;
 	double		distance;
@@ -2101,7 +2101,7 @@ XLOGfileslop(XLogRecPtr PriorRedoPtr)
  */
 static bool
 XLogCheckpointNeeded(XLogSegNo new_segno)
-{	StackTrace("XLogCheckpointNeeded");
+{
 	XLogSegNo	old_segno;
 
 	XLByteToSeg(RedoRecPtr, old_segno);
@@ -2125,7 +2125,7 @@ XLogCheckpointNeeded(XLogSegNo new_segno)
  */
 static void
 XLogWrite(XLogwrtRqst WriteRqst, bool flexible)
-{	StackTrace("XLogWrite");
+{
 	bool		ispartialpage;
 	bool		last_iteration;
 	bool		finishing_seg;
@@ -2392,7 +2392,7 @@ XLogWrite(XLogwrtRqst WriteRqst, bool flexible)
  */
 void
 XLogSetAsyncXactLSN(XLogRecPtr asyncXactLSN)
-{	StackTrace("XLogSetAsyncXactLSN");
+{
 	XLogRecPtr	WriteRqstPtr = asyncXactLSN;
 	bool		sleeping;
 
@@ -2433,7 +2433,7 @@ XLogSetAsyncXactLSN(XLogRecPtr asyncXactLSN)
  */
 void
 XLogSetReplicationSlotMinimumLSN(XLogRecPtr lsn)
-{	StackTrace("XLogSetReplicationSlotMinimumLSN");
+{
 	SpinLockAcquire(&XLogCtl->info_lck);
 	XLogCtl->replicationSlotMinLSN = lsn;
 	SpinLockRelease(&XLogCtl->info_lck);
@@ -2446,7 +2446,7 @@ XLogSetReplicationSlotMinimumLSN(XLogRecPtr lsn)
  */
 static XLogRecPtr
 XLogGetReplicationSlotMinimumLSN(void)
-{	StackTrace("XLogGetReplicationSlotMinimumLSN");
+{
 	XLogRecPtr	retval;
 
 	SpinLockAcquire(&XLogCtl->info_lck);
@@ -2467,7 +2467,7 @@ XLogGetReplicationSlotMinimumLSN(void)
  */
 static void
 UpdateMinRecoveryPoint(XLogRecPtr lsn, bool force)
-{	StackTrace("UpdateMinRecoveryPoint");
+{
 	/* Quick check using our local copy of the variable */
 	if (!updateMinRecoveryPoint || (!force && lsn <= minRecoveryPoint))
 		return;
@@ -2542,7 +2542,7 @@ UpdateMinRecoveryPoint(XLogRecPtr lsn, bool force)
  */
 void
 XLogFlush(XLogRecPtr record)
-{	StackTrace("XLogFlush");
+{
 	XLogRecPtr	WriteRqstPtr;
 	XLogwrtRqst WriteRqst;
 
@@ -2724,7 +2724,7 @@ XLogFlush(XLogRecPtr record)
  */
 bool
 XLogBackgroundFlush(void)
-{	StackTrace("XLogBackgroundFlush");
+{
 	XLogRecPtr	WriteRqstPtr;
 	bool		flexible = true;
 	bool		wrote_something = false;
@@ -2815,7 +2815,7 @@ XLogBackgroundFlush(void)
  */
 bool
 XLogNeedsFlush(XLogRecPtr record)
-{	StackTrace("XLogNeedsFlush");
+{
 	/*
 	 * During recovery, we don't flush WAL but update minRecoveryPoint
 	 * instead. So "needs flush" is taken to mean whether minRecoveryPoint
@@ -2891,7 +2891,7 @@ XLogNeedsFlush(XLogRecPtr record)
  */
 int
 XLogFileInit(XLogSegNo logsegno, bool *use_existent, bool use_lock)
-{	StackTrace("XLogFileInit");
+{
 	char		path[MAXPGPATH];
 	char		tmppath[MAXPGPATH];
 	char		zbuffer_raw[XLOG_BLCKSZ + MAXIMUM_ALIGNOF];
@@ -3057,7 +3057,7 @@ XLogFileInit(XLogSegNo logsegno, bool *use_existent, bool use_lock)
 static void
 XLogFileCopy(XLogSegNo destsegno, TimeLineID srcTLI, XLogSegNo srcsegno,
 			 int upto)
-{	StackTrace("XLogFileCopy");
+{
 	char		path[MAXPGPATH];
 	char		tmppath[MAXPGPATH];
 	char		buffer[XLOG_BLCKSZ];
@@ -3193,7 +3193,7 @@ static bool
 InstallXLogFileSegment(XLogSegNo *segno, char *tmppath,
 					   bool find_free, XLogSegNo max_segno,
 					   bool use_lock)
-{	StackTrace("InstallXLogFileSegment");
+{
 	char		path[MAXPGPATH];
 	struct stat stat_buf;
 
@@ -3268,7 +3268,7 @@ InstallXLogFileSegment(XLogSegNo *segno, char *tmppath,
  */
 int
 XLogFileOpen(XLogSegNo segno)
-{	StackTrace("XLogFileOpen");
+{
 	char		path[MAXPGPATH];
 	int			fd;
 
@@ -3293,7 +3293,7 @@ XLogFileOpen(XLogSegNo segno)
 static int
 XLogFileRead(XLogSegNo segno, int emode, TimeLineID tli,
 			 int source, bool notfoundOk)
-{	StackTrace("XLogFileRead");
+{
 	char		xlogfname[MAXFNAMELEN];
 	char		activitymsg[MAXFNAMELEN + 16];
 	char		path[MAXPGPATH];
@@ -3375,7 +3375,7 @@ XLogFileRead(XLogSegNo segno, int emode, TimeLineID tli,
  */
 static int
 XLogFileReadAnyTLI(XLogSegNo segno, int emode, int source)
-{	StackTrace("XLogFileReadAnyTLI");
+{
 	char		path[MAXPGPATH];
 	ListCell   *cell;
 	int			fd;
@@ -3451,7 +3451,7 @@ XLogFileReadAnyTLI(XLogSegNo segno, int emode, int source)
  */
 static void
 XLogFileClose(void)
-{	StackTrace("XLogFileClose");
+{
 	Assert(openLogFile >= 0);
 
 	/*
@@ -3485,7 +3485,7 @@ XLogFileClose(void)
  */
 static void
 PreallocXlogFiles(XLogRecPtr endptr)
-{	StackTrace("PreallocXlogFiles");
+{
 	XLogSegNo	_logSegNo;
 	int			lf;
 	bool		use_existent;
@@ -3511,7 +3511,7 @@ PreallocXlogFiles(XLogRecPtr endptr)
  */
 void
 CheckXLogRemoved(XLogSegNo segno, TimeLineID tli)
-{	StackTrace("CheckXLogRemoved");
+{
 	XLogSegNo	lastRemovedSegNo;
 
 	SpinLockAcquire(&XLogCtl->info_lck);
@@ -3539,7 +3539,7 @@ CheckXLogRemoved(XLogSegNo segno, TimeLineID tli)
  */
 XLogSegNo
 XLogGetLastRemovedSegno(void)
-{	StackTrace("XLogGetLastRemovedSegno");
+{
 	XLogSegNo	lastRemovedSegNo;
 
 	SpinLockAcquire(&XLogCtl->info_lck);
@@ -3555,7 +3555,7 @@ XLogGetLastRemovedSegno(void)
  */
 static void
 UpdateLastRemovedPtr(char *filename)
-{	StackTrace("UpdateLastRemovedPtr");
+{
 	uint32		tli;
 	XLogSegNo	segno;
 
@@ -3576,7 +3576,7 @@ UpdateLastRemovedPtr(char *filename)
  */
 static void
 RemoveOldXlogFiles(XLogSegNo segno, XLogRecPtr PriorRedoPtr, XLogRecPtr endptr)
-{	StackTrace("RemoveOldXlogFiles");
+{
 	DIR		   *xldir;
 	struct dirent *xlde;
 	char		lastoff[MAXFNAMELEN];
@@ -3648,7 +3648,7 @@ RemoveOldXlogFiles(XLogSegNo segno, XLogRecPtr PriorRedoPtr, XLogRecPtr endptr)
  */
 static void
 RemoveNonParentXlogFiles(XLogRecPtr switchpoint, TimeLineID newTLI)
-{	StackTrace("RemoveNonParentXlogFiles");
+{
 	DIR		   *xldir;
 	struct dirent *xlde;
 	char		switchseg[MAXFNAMELEN];
@@ -3710,7 +3710,7 @@ RemoveNonParentXlogFiles(XLogRecPtr switchpoint, TimeLineID newTLI)
  */
 static void
 RemoveXlogFile(const char *segname, XLogRecPtr PriorRedoPtr, XLogRecPtr endptr)
-{	StackTrace("RemoveXlogFile");
+{
 	char		path[MAXPGPATH];
 #ifdef WIN32
 	char		newpath[MAXPGPATH];
@@ -3810,7 +3810,7 @@ RemoveXlogFile(const char *segname, XLogRecPtr PriorRedoPtr, XLogRecPtr endptr)
  */
 static void
 ValidateXLOGDirectoryStructure(void)
-{	StackTrace("ValidateXLOGDirectoryStructure");
+{
 	char		path[MAXPGPATH];
 	struct stat stat_buf;
 
@@ -3849,7 +3849,7 @@ ValidateXLOGDirectoryStructure(void)
  */
 static void
 CleanupBackupHistory(void)
-{	StackTrace("CleanupBackupHistory");
+{
 	DIR		   *xldir;
 	struct dirent *xlde;
 	char		path[MAXPGPATH];
@@ -3896,7 +3896,7 @@ CleanupBackupHistory(void)
 static XLogRecord *
 ReadRecord(XLogReaderState *xlogreader, XLogRecPtr RecPtr, int emode,
 		   bool fetching_ckpt)
-{	StackTrace("ReadRecord");
+{
 	XLogRecord *record;
 	XLogPageReadPrivate *private = (XLogPageReadPrivate *) xlogreader->private_data;
 
@@ -4032,7 +4032,7 @@ ReadRecord(XLogReaderState *xlogreader, XLogRecPtr RecPtr, int emode,
  */
 static bool
 rescanLatestTimeLine(void)
-{	StackTrace("rescanLatestTimeLine");
+{
 	List	   *newExpectedTLEs;
 	bool		found;
 	ListCell   *cell;
@@ -4126,7 +4126,7 @@ rescanLatestTimeLine(void)
  */
 static void
 WriteControlFile(void)
-{	StackTrace("WriteControlFile");
+{
 	int			fd;
 	char		buffer[PG_CONTROL_SIZE];		/* need not be aligned */
 
@@ -4211,7 +4211,7 @@ WriteControlFile(void)
 
 static void
 ReadControlFile(void)
-{	StackTrace("ReadControlFile");
+{
 	pg_crc32c	crc;
 	int			fd;
 
@@ -4405,7 +4405,7 @@ ReadControlFile(void)
 
 void
 UpdateControlFile(void)
-{	StackTrace("UpdateControlFile");
+{
 	int			fd;
 
 	INIT_CRC32C(ControlFile->crc);
@@ -4450,7 +4450,7 @@ UpdateControlFile(void)
  */
 uint64
 GetSystemIdentifier(void)
-{	StackTrace("GetSystemIdentifier");
+{
 	Assert(ControlFile != NULL);
 	return ControlFile->system_identifier;
 }
@@ -4460,7 +4460,7 @@ GetSystemIdentifier(void)
  */
 bool
 DataChecksumsEnabled(void)
-{	StackTrace("DataChecksumsEnabled");
+{
 	Assert(ControlFile != NULL);
 	return (ControlFile->data_checksum_version > 0);
 }
@@ -4476,7 +4476,7 @@ DataChecksumsEnabled(void)
  */
 XLogRecPtr
 GetFakeLSNForUnloggedRel(void)
-{	StackTrace("GetFakeLSNForUnloggedRel");
+{
 	XLogRecPtr	nextUnloggedLSN;
 
 	/* increment the unloggedLSN counter, need SpinLock */
@@ -4500,7 +4500,7 @@ GetFakeLSNForUnloggedRel(void)
  */
 static int
 XLOGChooseNumBuffers(void)
-{	StackTrace("XLOGChooseNumBuffers");
+{
 	int			xbuffers;
 
 	xbuffers = NBuffers / 32;
@@ -4516,7 +4516,7 @@ XLOGChooseNumBuffers(void)
  */
 bool
 check_wal_buffers(int *newval, void **extra, GucSource source)
-{	StackTrace("check_wal_buffers");
+{
 	/*
 	 * -1 indicates a request for auto-tune.
 	 */
@@ -4551,7 +4551,7 @@ check_wal_buffers(int *newval, void **extra, GucSource source)
  */
 Size
 XLOGShmemSize(void)
-{	StackTrace("XLOGShmemSize");
+{
 	Size		size;
 
 	/*
@@ -4592,7 +4592,7 @@ XLOGShmemSize(void)
 
 void
 XLOGShmemInit(void)
-{	StackTrace("XLOGShmemInit");
+{
 	bool		foundCFile,
 				foundXLog;
 	char	   *allocptr;
@@ -4704,7 +4704,7 @@ XLOGShmemInit(void)
  */
 void
 BootStrapXLOG(void)
-{	StackTrace("BootStrapXLOG");
+{
 	CheckPoint	checkPoint;
 	char	   *buffer;
 	XLogPageHeader page;
@@ -4870,7 +4870,7 @@ BootStrapXLOG(void)
 
 static char *
 str_time(pg_time_t tnow)
-{	StackTrace("str_time");
+{
 	static char buf[128];
 
 	pg_strftime(buf, sizeof(buf),
@@ -4888,7 +4888,7 @@ str_time(pg_time_t tnow)
  */
 static void
 readRecoveryCommandFile(void)
-{	StackTrace("readRecoveryCommandFile");
+{
 	FILE	   *fd;
 	TimeLineID	rtli = 0;
 	bool		rtliGiven = false;
@@ -5171,7 +5171,7 @@ readRecoveryCommandFile(void)
  */
 static void
 exitArchiveRecovery(TimeLineID endTLI, XLogRecPtr endOfLog)
-{	StackTrace("exitArchiveRecovery");
+{
 	char		recoveryPath[MAXPGPATH];
 	char		xlogfname[MAXFNAMELEN];
 	XLogSegNo	endLogSegNo;
@@ -5288,7 +5288,7 @@ exitArchiveRecovery(TimeLineID endTLI, XLogRecPtr endOfLog)
  */
 static bool
 getRecordTimestamp(XLogReaderState *record, TimestampTz *recordXtime)
-{	StackTrace("getRecordTimestamp");
+{
 	uint8		info = XLogRecGetInfo(record) & ~XLR_INFO_MASK;
 	uint8		xact_info = info & XLOG_XACT_OPMASK;
 	uint8		rmid = XLogRecGetRmid(record);
@@ -5323,7 +5323,7 @@ getRecordTimestamp(XLogReaderState *record, TimestampTz *recordXtime)
  */
 static bool
 recoveryStopsBefore(XLogReaderState *record)
-{	StackTrace("recoveryStopsBefore");
+{
 	bool		stopsHere = false;
 	uint8		xact_info;
 	bool		isCommit;
@@ -5446,7 +5446,7 @@ recoveryStopsBefore(XLogReaderState *record)
  */
 static bool
 recoveryStopsAfter(XLogReaderState *record)
-{	StackTrace("recoveryStopsAfter");
+{
 	uint8		info;
 	uint8		xact_info;
 	uint8		rmid;
@@ -5583,7 +5583,7 @@ recoveryStopsAfter(XLogReaderState *record)
  */
 static void
 recoveryPausesHere(void)
-{	StackTrace("recoveryPausesHere");
+{
 	/* Don't pause unless users can connect! */
 	if (!LocalHotStandbyActive)
 		return;
@@ -5601,7 +5601,7 @@ recoveryPausesHere(void)
 
 bool
 RecoveryIsPaused(void)
-{	StackTrace("RecoveryIsPaused");
+{
 	bool		recoveryPause;
 
 	SpinLockAcquire(&XLogCtl->info_lck);
@@ -5613,7 +5613,7 @@ RecoveryIsPaused(void)
 
 void
 SetRecoveryPause(bool recoveryPause)
-{	StackTrace("SetRecoveryPause");
+{
 	SpinLockAcquire(&XLogCtl->info_lck);
 	XLogCtl->recoveryPause = recoveryPause;
 	SpinLockRelease(&XLogCtl->info_lck);
@@ -5634,7 +5634,7 @@ SetRecoveryPause(bool recoveryPause)
  */
 static bool
 recoveryApplyDelay(XLogReaderState *record)
-{	StackTrace("recoveryApplyDelay");
+{
 	uint8		xact_info;
 	TimestampTz xtime;
 	long		secs;
@@ -5716,7 +5716,7 @@ recoveryApplyDelay(XLogReaderState *record)
  */
 static void
 SetLatestXTime(TimestampTz xtime)
-{	StackTrace("SetLatestXTime");
+{
 	SpinLockAcquire(&XLogCtl->info_lck);
 	XLogCtl->recoveryLastXTime = xtime;
 	SpinLockRelease(&XLogCtl->info_lck);
@@ -5727,7 +5727,7 @@ SetLatestXTime(TimestampTz xtime)
  */
 TimestampTz
 GetLatestXTime(void)
-{	StackTrace("GetLatestXTime");
+{
 	TimestampTz xtime;
 
 	SpinLockAcquire(&XLogCtl->info_lck);
@@ -5745,7 +5745,7 @@ GetLatestXTime(void)
  */
 static void
 SetCurrentChunkStartTime(TimestampTz xtime)
-{	StackTrace("SetCurrentChunkStartTime");
+{
 	SpinLockAcquire(&XLogCtl->info_lck);
 	XLogCtl->currentChunkStartTime = xtime;
 	SpinLockRelease(&XLogCtl->info_lck);
@@ -5757,7 +5757,7 @@ SetCurrentChunkStartTime(TimestampTz xtime)
  */
 TimestampTz
 GetCurrentChunkReplayStartTime(void)
-{	StackTrace("GetCurrentChunkReplayStartTime");
+{
 	TimestampTz xtime;
 
 	SpinLockAcquire(&XLogCtl->info_lck);
@@ -5773,7 +5773,7 @@ GetCurrentChunkReplayStartTime(void)
  */
 void
 GetXLogReceiptTime(TimestampTz *rtime, bool *fromStream)
-{	StackTrace("GetXLogReceiptTime");
+{
 	/*
 	 * This must be executed in the startup process, since we don't export the
 	 * relevant state to shared memory.
@@ -5820,7 +5820,7 @@ do { \
  */
 static void
 CheckRequiredParameterValues(void)
-{	StackTrace("CheckRequiredParameterValues");
+{
 	/*
 	 * For archive recovery, the WAL must be generated with at least 'archive'
 	 * wal_level.
@@ -5867,7 +5867,7 @@ CheckRequiredParameterValues(void)
  */
 void
 StartupXLOG(void)
-{	StackTrace("StartupXLOG");
+{
 	XLogCtlInsert *Insert;
 	CheckPoint	checkPoint;
 	bool		wasShutdown;
@@ -7372,7 +7372,7 @@ StartupXLOG(void)
  */
 static void
 CheckRecoveryConsistency(void)
-{	StackTrace("CheckRecoveryConsistency");
+{
 	XLogRecPtr	lastReplayedEndRecPtr;
 
 	/*
@@ -7471,7 +7471,7 @@ CheckRecoveryConsistency(void)
  */
 bool
 RecoveryInProgress(void)
-{	StackTrace("RecoveryInProgress");
+{
 	/*
 	 * We check shared state each time only until we leave recovery mode. We
 	 * can't re-enter recovery, so there's no need to keep checking after the
@@ -7527,7 +7527,7 @@ RecoveryInProgress(void)
  */
 bool
 HotStandbyActive(void)
-{	StackTrace("HotStandbyActive");
+{
 	/*
 	 * We check shared state each time only until Hot Standby is active. We
 	 * can't de-activate Hot Standby, so there's no need to keep checking
@@ -7552,7 +7552,7 @@ HotStandbyActive(void)
  */
 bool
 HotStandbyActiveInReplay(void)
-{	StackTrace("HotStandbyActiveInReplay");
+{
 	Assert(AmStartupProcess() || !IsPostmasterEnvironment);
 	return LocalHotStandbyActive;
 }
@@ -7566,7 +7566,7 @@ HotStandbyActiveInReplay(void)
  */
 bool
 XLogInsertAllowed(void)
-{	StackTrace("XLogInsertAllowed");
+{
 	/*
 	 * If value is "unconditionally true" or "unconditionally false", just
 	 * return it.  This provides the normal fast path once recovery is known
@@ -7597,7 +7597,7 @@ XLogInsertAllowed(void)
  */
 static void
 LocalSetXLogInsertAllowed(void)
-{	StackTrace("LocalSetXLogInsertAllowed");
+{
 	Assert(LocalXLogInsertAllowed == -1);
 	LocalXLogInsertAllowed = 1;
 
@@ -7614,7 +7614,7 @@ LocalSetXLogInsertAllowed(void)
 static XLogRecord *
 ReadCheckpointRecord(XLogReaderState *xlogreader, XLogRecPtr RecPtr,
 					 int whichChkpt, bool report)
-{	StackTrace("ReadCheckpointRecord");
+{
 	XLogRecord *record;
 
 	if (!XRecOffIsValid(RecPtr))
@@ -7736,7 +7736,7 @@ ReadCheckpointRecord(XLogReaderState *xlogreader, XLogRecPtr RecPtr,
  */
 void
 InitXLOGAccess(void)
-{	StackTrace("InitXLOGAccess");
+{
 	XLogCtlInsert *Insert = &XLogCtl->Insert;
 
 	/* ThisTimeLineID doesn't change so we need no lock to copy it */
@@ -7759,7 +7759,7 @@ InitXLOGAccess(void)
  */
 XLogRecPtr
 GetRedoRecPtr(void)
-{	StackTrace("GetRedoRecPtr");
+{
 	XLogRecPtr	ptr;
 
 	/*
@@ -7787,7 +7787,7 @@ GetRedoRecPtr(void)
  */
 void
 GetFullPageWriteInfo(XLogRecPtr *RedoRecPtr_p, bool *doPageWrites_p)
-{	StackTrace("GetFullPageWriteInfo");
+{
 	*RedoRecPtr_p = RedoRecPtr;
 	*doPageWrites_p = doPageWrites;
 }
@@ -7802,7 +7802,7 @@ GetFullPageWriteInfo(XLogRecPtr *RedoRecPtr_p, bool *doPageWrites_p)
  */
 XLogRecPtr
 GetInsertRecPtr(void)
-{	StackTrace("GetInsertRecPtr");
+{
 	XLogRecPtr	recptr;
 
 	SpinLockAcquire(&XLogCtl->info_lck);
@@ -7818,7 +7818,7 @@ GetInsertRecPtr(void)
  */
 XLogRecPtr
 GetFlushRecPtr(void)
-{	StackTrace("GetFlushRecPtr");
+{
 	XLogRecPtr	recptr;
 
 	SpinLockAcquire(&XLogCtl->info_lck);
@@ -7833,7 +7833,7 @@ GetFlushRecPtr(void)
  */
 pg_time_t
 GetLastSegSwitchTime(void)
-{	StackTrace("GetLastSegSwitchTime");
+{
 	pg_time_t	result;
 
 	/* Need WALWriteLock, but shared lock is sufficient */
@@ -7854,7 +7854,7 @@ GetLastSegSwitchTime(void)
  */
 void
 GetNextXidAndEpoch(TransactionId *xid, uint32 *epoch)
-{	StackTrace("GetNextXidAndEpoch");
+{
 	uint32		ckptXidEpoch;
 	TransactionId ckptXid;
 	TransactionId nextXid;
@@ -7884,7 +7884,7 @@ GetNextXidAndEpoch(TransactionId *xid, uint32 *epoch)
  */
 void
 ShutdownXLOG(int code, Datum arg)
-{	StackTrace("ShutdownXLOG");
+{
 	/* Don't be chatty in standalone mode */
 	ereport(IsPostmasterEnvironment ? LOG : NOTICE,
 			(errmsg("shutting down")));
@@ -7919,7 +7919,7 @@ ShutdownXLOG(int code, Datum arg)
  */
 static void
 LogCheckpointStart(int flags, bool restartpoint)
-{	StackTrace("LogCheckpointStart");
+{
 	elog(LOG, "%s starting:%s%s%s%s%s%s%s%s",
 		 restartpoint ? "restartpoint" : "checkpoint",
 		 (flags & CHECKPOINT_IS_SHUTDOWN) ? " shutdown" : "",
@@ -7937,7 +7937,7 @@ LogCheckpointStart(int flags, bool restartpoint)
  */
 static void
 LogCheckpointEnd(bool restartpoint)
-{	StackTrace("LogCheckpointEnd");
+{
 	long		write_secs,
 				sync_secs,
 				total_secs,
@@ -8022,7 +8022,7 @@ LogCheckpointEnd(bool restartpoint)
  */
 static void
 UpdateCheckPointDistanceEstimate(uint64 nbytes)
-{	StackTrace("UpdateCheckPointDistanceEstimate");
+{
 	/*
 	 * To estimate the number of segments consumed between checkpoints, keep a
 	 * moving average of the amount of WAL generated in previous checkpoint
@@ -8084,7 +8084,7 @@ UpdateCheckPointDistanceEstimate(uint64 nbytes)
  */
 void
 CreateCheckPoint(int flags)
-{	StackTrace("CreateCheckPoint");
+{
 	bool		shutdown;
 	CheckPoint	checkPoint;
 	XLogRecPtr	recptr;
@@ -8523,7 +8523,7 @@ CreateCheckPoint(int flags)
  */
 static void
 CreateEndOfRecoveryRecord(void)
-{	StackTrace("CreateEndOfRecoveryRecord");
+{
 	xl_end_of_recovery xlrec;
 	XLogRecPtr	recptr;
 
@@ -8572,7 +8572,7 @@ CreateEndOfRecoveryRecord(void)
  */
 static void
 CheckPointGuts(XLogRecPtr checkPointRedo, int flags)
-{	StackTrace("CheckPointGuts");
+{
 	CheckPointCLOG();
 	CheckPointCommitTs();
 	CheckPointSUBTRANS();
@@ -8600,7 +8600,7 @@ CheckPointGuts(XLogRecPtr checkPointRedo, int flags)
  */
 static void
 RecoveryRestartPoint(const CheckPoint *checkPoint)
-{	StackTrace("RecoveryRestartPoint");
+{
 	/*
 	 * Also refrain from creating a restartpoint if we have seen any
 	 * references to non-existent pages. Restarting recovery from the
@@ -8641,7 +8641,7 @@ RecoveryRestartPoint(const CheckPoint *checkPoint)
  */
 bool
 CreateRestartPoint(int flags)
-{	StackTrace("CreateRestartPoint");
+{
 	XLogRecPtr	lastCheckPointRecPtr;
 	CheckPoint	lastCheckPoint;
 	XLogRecPtr	PriorRedoPtr;
@@ -8887,7 +8887,7 @@ CreateRestartPoint(int flags)
  */
 static void
 KeepLogSeg(XLogRecPtr recptr, XLogSegNo *logSegNo)
-{	StackTrace("KeepLogSeg");
+{
 	XLogSegNo	segno;
 	XLogRecPtr	keep;
 
@@ -8927,7 +8927,7 @@ KeepLogSeg(XLogRecPtr recptr, XLogSegNo *logSegNo)
  */
 void
 XLogPutNextOid(Oid nextOid)
-{	StackTrace("XLogPutNextOid");
+{
 	XLogBeginInsert();
 	XLogRegisterData((char *) (&nextOid), sizeof(Oid));
 	(void) XLogInsert(RM_XLOG_ID, XLOG_NEXTOID);
@@ -8964,7 +8964,7 @@ XLogPutNextOid(Oid nextOid)
  */
 XLogRecPtr
 RequestXLogSwitch(void)
-{	StackTrace("RequestXLogSwitch");
+{
 	XLogRecPtr	RecPtr;
 
 	/* XLOG SWITCH has no data */
@@ -8979,7 +8979,7 @@ RequestXLogSwitch(void)
  */
 XLogRecPtr
 XLogRestorePoint(const char *rpName)
-{	StackTrace("XLogRestorePoint");
+{
 	XLogRecPtr	RecPtr;
 	xl_restore_point xlrec;
 
@@ -9004,7 +9004,7 @@ XLogRestorePoint(const char *rpName)
  */
 static void
 XLogReportParameters(void)
-{	StackTrace("XLogReportParameters");
+{
 	if (wal_level != ControlFile->wal_level ||
 		wal_log_hints != ControlFile->wal_log_hints ||
 		MaxConnections != ControlFile->MaxConnections ||
@@ -9060,7 +9060,7 @@ XLogReportParameters(void)
  */
 void
 UpdateFullPageWrites(void)
-{	StackTrace("UpdateFullPageWrites");
+{
 	XLogCtlInsert *Insert = &XLogCtl->Insert;
 
 	/*
@@ -9118,7 +9118,7 @@ UpdateFullPageWrites(void)
  */
 static void
 checkTimeLineSwitch(XLogRecPtr lsn, TimeLineID newTLI, TimeLineID prevTLI)
-{	StackTrace("checkTimeLineSwitch");
+{
 	/* Check that the record agrees on what the current (old) timeline is */
 	if (prevTLI != ThisTimeLineID)
 		ereport(PANIC,
@@ -9164,7 +9164,7 @@ checkTimeLineSwitch(XLogRecPtr lsn, TimeLineID newTLI, TimeLineID prevTLI)
  */
 void
 xlog_redo(XLogReaderState *record)
-{	StackTrace("xlog_redo");
+{
 	uint8		info = XLogRecGetInfo(record) & ~XLR_INFO_MASK;
 	XLogRecPtr	lsn = record->EndRecPtr;
 
@@ -9494,7 +9494,7 @@ xlog_redo(XLogReaderState *record)
 
 static void
 xlog_outrec(StringInfo buf, XLogReaderState *record)
-{	StackTrace("xlog_outrec");
+{
 	int			block_id;
 
 	appendStringInfo(buf, "prev %X/%X; xid %u",
@@ -9539,7 +9539,7 @@ xlog_outrec(StringInfo buf, XLogReaderState *record)
  */
 static void
 xlog_outdesc(StringInfo buf, XLogReaderState *record)
-{	StackTrace("xlog_outdesc");
+{
 	RmgrId		rmid = XLogRecGetRmid(record);
 	uint8		info = XLogRecGetInfo(record);
 	const char *id;
@@ -9563,7 +9563,7 @@ xlog_outdesc(StringInfo buf, XLogReaderState *record)
  */
 static int
 get_sync_bit(int method)
-{	StackTrace("get_sync_bit");
+{
 	int			o_direct_flag = 0;
 
 	/* If fsync is disabled, never open in sync mode */
@@ -9619,7 +9619,7 @@ get_sync_bit(int method)
  */
 void
 assign_xlog_sync_method(int new_sync_method, void *extra)
-{	StackTrace("assign_xlog_sync_method");
+{
 	if (sync_method != new_sync_method)
 	{
 		/*
@@ -9650,7 +9650,7 @@ assign_xlog_sync_method(int new_sync_method, void *extra)
  */
 void
 issue_xlog_fsync(int fd, XLogSegNo segno)
-{	StackTrace("issue_xlog_fsync");
+{
 	switch (sync_method)
 	{
 		case SYNC_METHOD_FSYNC:
@@ -9693,7 +9693,7 @@ issue_xlog_fsync(int fd, XLogSegNo segno)
  */
 char *
 XLogFileNameP(TimeLineID tli, XLogSegNo segno)
-{	StackTrace("XLogFileNameP");
+{
 	char	   *result = palloc(MAXFNAMELEN);
 
 	XLogFileName(result, tli, segno);
@@ -9743,7 +9743,7 @@ do_pg_start_backup(const char *backupidstr, bool fast, TimeLineID *starttli_p,
 				   char **labelfile, DIR *tblspcdir, List **tablespaces,
 				   char **tblspcmapfile, bool infotbssize,
 				   bool needtblspcmapfile)
-{	StackTrace("do_pg_start_backup");
+{
 	bool		exclusive = (labelfile == NULL);
 	bool		backup_started_in_recovery = false;
 	XLogRecPtr	checkpointloc;
@@ -10164,7 +10164,7 @@ do_pg_start_backup(const char *backupidstr, bool fast, TimeLineID *starttli_p,
 /* Error cleanup callback for pg_start_backup */
 static void
 pg_start_backup_callback(int code, Datum arg)
-{	StackTrace("pg_start_backup_callback");
+{
 	bool		exclusive = DatumGetBool(arg);
 
 	/* Update backup counters and forcePageWrites on failure */
@@ -10203,7 +10203,7 @@ pg_start_backup_callback(int code, Datum arg)
  */
 XLogRecPtr
 do_pg_stop_backup(char *labelfile, bool waitforarchive, TimeLineID *stoptli_p)
-{	StackTrace("do_pg_stop_backup");
+{
 	bool		exclusive = (labelfile == NULL);
 	bool		backup_started_in_recovery = false;
 	XLogRecPtr	startpoint;
@@ -10559,7 +10559,7 @@ do_pg_stop_backup(char *labelfile, bool waitforarchive, TimeLineID *stoptli_p)
  */
 void
 do_pg_abort_backup(void)
-{	StackTrace("do_pg_abort_backup");
+{
 	WALInsertLockAcquireExclusive();
 	Assert(XLogCtl->Insert.nonExclusiveBackups > 0);
 	XLogCtl->Insert.nonExclusiveBackups--;
@@ -10579,7 +10579,7 @@ do_pg_abort_backup(void)
  */
 XLogRecPtr
 GetXLogReplayRecPtr(TimeLineID *replayTLI)
-{	StackTrace("GetXLogReplayRecPtr");
+{
 	XLogRecPtr	recptr;
 	TimeLineID	tli;
 
@@ -10598,7 +10598,7 @@ GetXLogReplayRecPtr(TimeLineID *replayTLI)
  */
 XLogRecPtr
 GetXLogInsertRecPtr(void)
-{	StackTrace("GetXLogInsertRecPtr");
+{
 	XLogCtlInsert *Insert = &XLogCtl->Insert;
 	uint64		current_bytepos;
 
@@ -10614,7 +10614,7 @@ GetXLogInsertRecPtr(void)
  */
 XLogRecPtr
 GetXLogWriteRecPtr(void)
-{	StackTrace("GetXLogWriteRecPtr");
+{
 	SpinLockAcquire(&XLogCtl->info_lck);
 	LogwrtResult = XLogCtl->LogwrtResult;
 	SpinLockRelease(&XLogCtl->info_lck);
@@ -10628,7 +10628,7 @@ GetXLogWriteRecPtr(void)
  */
 void
 GetOldestRestartPoint(XLogRecPtr *oldrecptr, TimeLineID *oldtli)
-{	StackTrace("GetOldestRestartPoint");
+{
 	LWLockAcquire(ControlFileLock, LW_SHARED);
 	*oldrecptr = ControlFile->checkPointCopy.redo;
 	*oldtli = ControlFile->checkPointCopy.ThisTimeLineID;
@@ -10654,7 +10654,7 @@ GetOldestRestartPoint(XLogRecPtr *oldrecptr, TimeLineID *oldtli)
 static bool
 read_backup_label(XLogRecPtr *checkPointLoc, bool *backupEndRequired,
 				  bool *backupFromStandby)
-{	StackTrace("read_backup_label");
+{
 	char		startxlogfilename[MAXFNAMELEN];
 	TimeLineID	tli;
 	FILE	   *lfp;
@@ -10738,7 +10738,7 @@ read_backup_label(XLogRecPtr *checkPointLoc, bool *backupEndRequired,
  */
 static bool
 read_tablespace_map(List **tablespaces)
-{	StackTrace("read_tablespace_map");
+{
 	tablespaceinfo *ti;
 	FILE	   *lfp;
 	char		tbsoid[MAXPGPATH];
@@ -10812,7 +10812,7 @@ read_tablespace_map(List **tablespaces)
  */
 static void
 rm_redo_error_callback(void *arg)
-{	StackTrace("rm_redo_error_callback");
+{
 	XLogReaderState *record = (XLogReaderState *) arg;
 	StringInfoData buf;
 
@@ -10831,7 +10831,7 @@ rm_redo_error_callback(void *arg)
  */
 bool
 BackupInProgress(void)
-{	StackTrace("BackupInProgress");
+{
 	struct stat stat_buf;
 
 	return (stat(BACKUP_LABEL_FILE, &stat_buf) == 0);
@@ -10851,7 +10851,7 @@ BackupInProgress(void)
  */
 void
 CancelBackup(void)
-{	StackTrace("CancelBackup");
+{
 	struct stat stat_buf;
 
 	/* if the file is not there, return */
@@ -10927,7 +10927,7 @@ CancelBackup(void)
 static int
 XLogPageRead(XLogReaderState *xlogreader, XLogRecPtr targetPagePtr, int reqLen,
 			 XLogRecPtr targetRecPtr, char *readBuf, TimeLineID *readTLI)
-{	StackTrace("XLogPageRead");
+{
 	XLogPageReadPrivate *private =
 	(XLogPageReadPrivate *) xlogreader->private_data;
 	int			emode = private->emode;
@@ -11085,7 +11085,7 @@ next_record_is_invalid:
 static bool
 WaitForWALToBecomeAvailable(XLogRecPtr RecPtr, bool randAccess,
 							bool fetching_ckpt, XLogRecPtr tliRecPtr)
-{	StackTrace("WaitForWALToBecomeAvailable");
+{
 	static TimestampTz last_fail_time = 0;
 	TimestampTz now;
 
@@ -11455,7 +11455,7 @@ WaitForWALToBecomeAvailable(XLogRecPtr RecPtr, bool randAccess,
  */
 static int
 emode_for_corrupt_record(int emode, XLogRecPtr RecPtr)
-{	StackTrace("emode_for_corrupt_record");
+{
 	static XLogRecPtr lastComplaint = 0;
 
 	if (readSource == XLOG_FROM_PG_XLOG && emode == LOG)
@@ -11474,7 +11474,7 @@ emode_for_corrupt_record(int emode, XLogRecPtr RecPtr)
  */
 static bool
 CheckForStandbyTrigger(void)
-{	StackTrace("CheckForStandbyTrigger");
+{
 	struct stat stat_buf;
 	static bool triggered = false;
 
@@ -11536,7 +11536,7 @@ CheckForStandbyTrigger(void)
  */
 bool
 CheckPromoteSignal(void)
-{	StackTrace("CheckPromoteSignal");
+{
 	struct stat stat_buf;
 
 	if (stat(PROMOTE_SIGNAL_FILE, &stat_buf) == 0 ||
@@ -11552,7 +11552,7 @@ CheckPromoteSignal(void)
  */
 void
 WakeupRecovery(void)
-{	StackTrace("WakeupRecovery");
+{
 	SetLatch(&XLogCtl->recoveryWakeupLatch);
 }
 
@@ -11561,7 +11561,7 @@ WakeupRecovery(void)
  */
 void
 SetWalWriterSleeping(bool sleeping)
-{	StackTrace("SetWalWriterSleeping");
+{
 	SpinLockAcquire(&XLogCtl->info_lck);
 	XLogCtl->WalWriterSleeping = sleeping;
 	SpinLockRelease(&XLogCtl->info_lck);

@@ -33,7 +33,7 @@ static MemoryContext opCtx;		/* working memory for operations */
  */
 static void
 gistRedoClearFollowRight(XLogReaderState *record, uint8 block_id)
-{	StackTrace("gistRedoClearFollowRight");
+{
 	XLogRecPtr	lsn = record->EndRecPtr;
 	Buffer		buffer;
 	Page		page;
@@ -63,7 +63,7 @@ gistRedoClearFollowRight(XLogReaderState *record, uint8 block_id)
  */
 static void
 gistRedoPageUpdateRecord(XLogReaderState *record)
-{	StackTrace("gistRedoPageUpdateRecord");
+{
 	XLogRecPtr	lsn = record->EndRecPtr;
 	gistxlogPageUpdate *xldata = (gistxlogPageUpdate *) XLogRecGetData(record);
 	Buffer		buffer;
@@ -142,7 +142,7 @@ gistRedoPageUpdateRecord(XLogReaderState *record)
  */
 static IndexTuple *
 decodePageSplitRecord(char *begin, int len, int *n)
-{	StackTrace("decodePageSplitRecord");
+{
 	char	   *ptr;
 	int			i = 0;
 	IndexTuple *tuples;
@@ -166,7 +166,7 @@ decodePageSplitRecord(char *begin, int len, int *n)
 
 static void
 gistRedoPageSplitRecord(XLogReaderState *record)
-{	StackTrace("gistRedoPageSplitRecord");
+{
 	XLogRecPtr	lsn = record->EndRecPtr;
 	gistxlogPageSplit *xldata = (gistxlogPageSplit *) XLogRecGetData(record);
 	Buffer		firstbuffer = InvalidBuffer;
@@ -260,7 +260,7 @@ gistRedoPageSplitRecord(XLogReaderState *record)
 
 static void
 gistRedoCreateIndex(XLogReaderState *record)
-{	StackTrace("gistRedoCreateIndex");
+{
 	XLogRecPtr	lsn = record->EndRecPtr;
 	Buffer		buffer;
 	Page		page;
@@ -279,7 +279,7 @@ gistRedoCreateIndex(XLogReaderState *record)
 
 void
 gist_redo(XLogReaderState *record)
-{	StackTrace("gist_redo");
+{
 	uint8		info = XLogRecGetInfo(record) & ~XLR_INFO_MASK;
 	MemoryContext oldCxt;
 
@@ -311,13 +311,13 @@ gist_redo(XLogReaderState *record)
 
 void
 gist_xlog_startup(void)
-{	StackTrace("gist_xlog_startup");
+{
 	opCtx = createTempGistContext();
 }
 
 void
 gist_xlog_cleanup(void)
-{	StackTrace("gist_xlog_cleanup");
+{
 	MemoryContextDelete(opCtx);
 }
 
@@ -329,7 +329,7 @@ gistXLogSplit(RelFileNode node, BlockNumber blkno, bool page_is_leaf,
 			  SplitedPageLayout *dist,
 			  BlockNumber origrlink, GistNSN orignsn,
 			  Buffer leftchildbuf, bool markfollowright)
-{	StackTrace("gistXLogSplit");
+{
 	gistxlogPageSplit xlrec;
 	SplitedPageLayout *ptr;
 	int			npage = 0;
@@ -393,7 +393,7 @@ gistXLogUpdate(RelFileNode node, Buffer buffer,
 			   OffsetNumber *todelete, int ntodelete,
 			   IndexTuple *itup, int ituplen,
 			   Buffer leftchildbuf)
-{	StackTrace("gistXLogUpdate");
+{
 	gistxlogPageUpdate xlrec;
 	int			i;
 	XLogRecPtr	recptr;

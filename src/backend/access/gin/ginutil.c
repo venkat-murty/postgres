@@ -31,7 +31,7 @@
  */
 void
 initGinState(GinState *state, Relation index)
-{	StackTrace("initGinState");
+{
 	TupleDesc	origTupdesc = RelationGetDescr(index);
 	int			i;
 
@@ -134,7 +134,7 @@ initGinState(GinState *state, Relation index)
  */
 OffsetNumber
 gintuple_get_attrnum(GinState *ginstate, IndexTuple tuple)
-{	StackTrace("gintuple_get_attrnum");
+{
 	OffsetNumber colN;
 
 	if (ginstate->oneCol)
@@ -168,7 +168,7 @@ gintuple_get_attrnum(GinState *ginstate, IndexTuple tuple)
 Datum
 gintuple_get_key(GinState *ginstate, IndexTuple tuple,
 				 GinNullCategory *category)
-{	StackTrace("gintuple_get_key");
+{
 	Datum		res;
 	bool		isnull;
 
@@ -208,7 +208,7 @@ gintuple_get_key(GinState *ginstate, IndexTuple tuple,
  */
 Buffer
 GinNewBuffer(Relation index)
-{	StackTrace("GinNewBuffer");
+{
 	Buffer		buffer;
 	bool		needLock;
 
@@ -259,7 +259,7 @@ GinNewBuffer(Relation index)
 
 void
 GinInitPage(Page page, uint32 f, Size pageSize)
-{	StackTrace("GinInitPage");
+{
 	GinPageOpaque opaque;
 
 	PageInit(page, pageSize, sizeof(GinPageOpaqueData));
@@ -272,13 +272,13 @@ GinInitPage(Page page, uint32 f, Size pageSize)
 
 void
 GinInitBuffer(Buffer b, uint32 f)
-{	StackTrace("GinInitBuffer");
+{
 	GinInitPage(BufferGetPage(b), f, BufferGetPageSize(b));
 }
 
 void
 GinInitMetabuffer(Buffer b)
-{	StackTrace("GinInitMetabuffer");
+{
 	GinMetaPageData *metadata;
 	Page		page = BufferGetPage(b);
 
@@ -304,7 +304,7 @@ int
 ginCompareEntries(GinState *ginstate, OffsetNumber attnum,
 				  Datum a, GinNullCategory categorya,
 				  Datum b, GinNullCategory categoryb)
-{	StackTrace("ginCompareEntries");
+{
 	/* if not of same null category, sort by that first */
 	if (categorya != categoryb)
 		return (categorya < categoryb) ? -1 : 1;
@@ -326,7 +326,7 @@ int
 ginCompareAttEntries(GinState *ginstate,
 					 OffsetNumber attnuma, Datum a, GinNullCategory categorya,
 					 OffsetNumber attnumb, Datum b, GinNullCategory categoryb)
-{	StackTrace("ginCompareAttEntries");
+{
 	/* attribute number is the first sort key */
 	if (attnuma != attnumb)
 		return (attnuma < attnumb) ? -1 : 1;
@@ -357,7 +357,7 @@ typedef struct
 
 static int
 cmpEntries(const void *a, const void *b, void *arg)
-{	StackTrace("cmpEntries");
+{
 	const keyEntryData *aa = (const keyEntryData *) a;
 	const keyEntryData *bb = (const keyEntryData *) b;
 	cmpEntriesArg *data = (cmpEntriesArg *) arg;
@@ -399,7 +399,7 @@ Datum *
 ginExtractEntries(GinState *ginstate, OffsetNumber attnum,
 				  Datum value, bool isNull,
 				  int32 *nentries, GinNullCategory **categories)
-{	StackTrace("ginExtractEntries");
+{
 	Datum	   *entries;
 	bool	   *nullFlags;
 	int32		i;
@@ -518,7 +518,7 @@ ginExtractEntries(GinState *ginstate, OffsetNumber attnum,
 
 Datum
 ginoptions(PG_FUNCTION_ARGS)
-{	StackTrace("ginoptions");
+{
 	Datum		reloptions = PG_GETARG_DATUM(0);
 	bool		validate = PG_GETARG_BOOL(1);
 	relopt_value *options;
@@ -555,7 +555,7 @@ ginoptions(PG_FUNCTION_ARGS)
  */
 void
 ginGetStats(Relation index, GinStatsData *stats)
-{	StackTrace("ginGetStats");
+{
 	Buffer		metabuffer;
 	Page		metapage;
 	GinMetaPageData *metadata;
@@ -582,7 +582,7 @@ ginGetStats(Relation index, GinStatsData *stats)
  */
 void
 ginUpdateStats(Relation index, const GinStatsData *stats)
-{	StackTrace("ginUpdateStats");
+{
 	Buffer		metabuffer;
 	Page		metapage;
 	GinMetaPageData *metadata;

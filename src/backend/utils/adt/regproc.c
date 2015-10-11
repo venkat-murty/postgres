@@ -62,7 +62,7 @@ static void parseNameAndArgTypes(const char *string, bool allowNone,
  */
 Datum
 regprocin(PG_FUNCTION_ARGS)
-{	StackTrace("regprocin");
+{
 	char	   *pro_name_or_oid = PG_GETARG_CSTRING(0);
 	RegProcedure result = InvalidOid;
 	List	   *names;
@@ -160,7 +160,7 @@ regprocin(PG_FUNCTION_ARGS)
  */
 Datum
 to_regproc(PG_FUNCTION_ARGS)
-{	StackTrace("to_regproc");
+{
 	char	   *pro_name = PG_GETARG_CSTRING(0);
 	List	   *names;
 	FuncCandidateList clist;
@@ -183,7 +183,7 @@ to_regproc(PG_FUNCTION_ARGS)
  */
 Datum
 regprocout(PG_FUNCTION_ARGS)
-{	StackTrace("regprocout");
+{
 	RegProcedure proid = PG_GETARG_OID(0);
 	char	   *result;
 	HeapTuple	proctup;
@@ -245,7 +245,7 @@ regprocout(PG_FUNCTION_ARGS)
  */
 Datum
 regprocrecv(PG_FUNCTION_ARGS)
-{	StackTrace("regprocrecv");
+{
 	/* Exactly the same as oidrecv, so share code */
 	return oidrecv(fcinfo);
 }
@@ -255,7 +255,7 @@ regprocrecv(PG_FUNCTION_ARGS)
  */
 Datum
 regprocsend(PG_FUNCTION_ARGS)
-{	StackTrace("regprocsend");
+{
 	/* Exactly the same as oidsend, so share code */
 	return oidsend(fcinfo);
 }
@@ -271,7 +271,7 @@ regprocsend(PG_FUNCTION_ARGS)
  */
 Datum
 regprocedurein(PG_FUNCTION_ARGS)
-{	StackTrace("regprocedurein");
+{
 	char	   *pro_name_or_oid = PG_GETARG_CSTRING(0);
 	RegProcedure result = InvalidOid;
 	List	   *names;
@@ -330,7 +330,7 @@ regprocedurein(PG_FUNCTION_ARGS)
  */
 Datum
 to_regprocedure(PG_FUNCTION_ARGS)
-{	StackTrace("to_regprocedure");
+{
 	char	   *pro_name = PG_GETARG_CSTRING(0);
 	List	   *names;
 	int			nargs;
@@ -363,13 +363,13 @@ to_regprocedure(PG_FUNCTION_ARGS)
  */
 char *
 format_procedure(Oid procedure_oid)
-{	StackTrace("format_procedure");
+{
 	return format_procedure_internal(procedure_oid, false);
 }
 
 char *
 format_procedure_qualified(Oid procedure_oid)
-{	StackTrace("format_procedure_qualified");
+{
 	return format_procedure_internal(procedure_oid, true);
 }
 
@@ -382,7 +382,7 @@ format_procedure_qualified(Oid procedure_oid)
  */
 static char *
 format_procedure_internal(Oid procedure_oid, bool force_qualify)
-{	StackTrace("format_procedure_internal");
+{
 	char	   *result;
 	HeapTuple	proctup;
 
@@ -447,7 +447,7 @@ format_procedure_internal(Oid procedure_oid, bool force_qualify)
  */
 void
 format_procedure_parts(Oid procedure_oid, List **objnames, List **objargs)
-{	StackTrace("format_procedure_parts");
+{
 	HeapTuple	proctup;
 	Form_pg_proc procform;
 	int			nargs;
@@ -479,7 +479,7 @@ format_procedure_parts(Oid procedure_oid, List **objnames, List **objargs)
  */
 Datum
 regprocedureout(PG_FUNCTION_ARGS)
-{	StackTrace("regprocedureout");
+{
 	RegProcedure proid = PG_GETARG_OID(0);
 	char	   *result;
 
@@ -496,7 +496,7 @@ regprocedureout(PG_FUNCTION_ARGS)
  */
 Datum
 regprocedurerecv(PG_FUNCTION_ARGS)
-{	StackTrace("regprocedurerecv");
+{
 	/* Exactly the same as oidrecv, so share code */
 	return oidrecv(fcinfo);
 }
@@ -506,7 +506,7 @@ regprocedurerecv(PG_FUNCTION_ARGS)
  */
 Datum
 regproceduresend(PG_FUNCTION_ARGS)
-{	StackTrace("regproceduresend");
+{
 	/* Exactly the same as oidsend, so share code */
 	return oidsend(fcinfo);
 }
@@ -522,7 +522,7 @@ regproceduresend(PG_FUNCTION_ARGS)
  */
 Datum
 regoperin(PG_FUNCTION_ARGS)
-{	StackTrace("regoperin");
+{
 	char	   *opr_name_or_oid = PG_GETARG_CSTRING(0);
 	Oid			result = InvalidOid;
 	List	   *names;
@@ -619,7 +619,7 @@ regoperin(PG_FUNCTION_ARGS)
  */
 Datum
 to_regoper(PG_FUNCTION_ARGS)
-{	StackTrace("to_regoper");
+{
 	char	   *opr_name = PG_GETARG_CSTRING(0);
 	List	   *names;
 	FuncCandidateList clist;
@@ -642,7 +642,7 @@ to_regoper(PG_FUNCTION_ARGS)
  */
 Datum
 regoperout(PG_FUNCTION_ARGS)
-{	StackTrace("regoperout");
+{
 	Oid			oprid = PG_GETARG_OID(0);
 	char	   *result;
 	HeapTuple	opertup;
@@ -710,7 +710,7 @@ regoperout(PG_FUNCTION_ARGS)
  */
 Datum
 regoperrecv(PG_FUNCTION_ARGS)
-{	StackTrace("regoperrecv");
+{
 	/* Exactly the same as oidrecv, so share code */
 	return oidrecv(fcinfo);
 }
@@ -720,7 +720,7 @@ regoperrecv(PG_FUNCTION_ARGS)
  */
 Datum
 regopersend(PG_FUNCTION_ARGS)
-{	StackTrace("regopersend");
+{
 	/* Exactly the same as oidsend, so share code */
 	return oidsend(fcinfo);
 }
@@ -736,7 +736,7 @@ regopersend(PG_FUNCTION_ARGS)
  */
 Datum
 regoperatorin(PG_FUNCTION_ARGS)
-{	StackTrace("regoperatorin");
+{
 	char	   *opr_name_or_oid = PG_GETARG_CSTRING(0);
 	Oid			result;
 	List	   *names;
@@ -796,7 +796,7 @@ regoperatorin(PG_FUNCTION_ARGS)
  */
 Datum
 to_regoperator(PG_FUNCTION_ARGS)
-{	StackTrace("to_regoperator");
+{
 	char	   *opr_name_or_oid = PG_GETARG_CSTRING(0);
 	Oid			result;
 	List	   *names;
@@ -836,7 +836,7 @@ to_regoperator(PG_FUNCTION_ARGS)
  */
 static char *
 format_operator_internal(Oid operator_oid, bool force_qualify)
-{	StackTrace("format_operator_internal");
+{
 	char	   *result;
 	HeapTuple	opertup;
 
@@ -901,19 +901,19 @@ format_operator_internal(Oid operator_oid, bool force_qualify)
 
 char *
 format_operator(Oid operator_oid)
-{	StackTrace("format_operator");
+{
 	return format_operator_internal(operator_oid, false);
 }
 
 char *
 format_operator_qualified(Oid operator_oid)
-{	StackTrace("format_operator_qualified");
+{
 	return format_operator_internal(operator_oid, true);
 }
 
 void
 format_operator_parts(Oid operator_oid, List **objnames, List **objargs)
-{	StackTrace("format_operator_parts");
+{
 	HeapTuple	opertup;
 	Form_pg_operator oprForm;
 
@@ -941,7 +941,7 @@ format_operator_parts(Oid operator_oid, List **objnames, List **objargs)
  */
 Datum
 regoperatorout(PG_FUNCTION_ARGS)
-{	StackTrace("regoperatorout");
+{
 	Oid			oprid = PG_GETARG_OID(0);
 	char	   *result;
 
@@ -958,7 +958,7 @@ regoperatorout(PG_FUNCTION_ARGS)
  */
 Datum
 regoperatorrecv(PG_FUNCTION_ARGS)
-{	StackTrace("regoperatorrecv");
+{
 	/* Exactly the same as oidrecv, so share code */
 	return oidrecv(fcinfo);
 }
@@ -968,7 +968,7 @@ regoperatorrecv(PG_FUNCTION_ARGS)
  */
 Datum
 regoperatorsend(PG_FUNCTION_ARGS)
-{	StackTrace("regoperatorsend");
+{
 	/* Exactly the same as oidsend, so share code */
 	return oidsend(fcinfo);
 }
@@ -984,7 +984,7 @@ regoperatorsend(PG_FUNCTION_ARGS)
  */
 Datum
 regclassin(PG_FUNCTION_ARGS)
-{	StackTrace("regclassin");
+{
 	char	   *class_name_or_oid = PG_GETARG_CSTRING(0);
 	Oid			result = InvalidOid;
 	List	   *names;
@@ -1061,7 +1061,7 @@ regclassin(PG_FUNCTION_ARGS)
  */
 Datum
 to_regclass(PG_FUNCTION_ARGS)
-{	StackTrace("to_regclass");
+{
 	char	   *class_name = PG_GETARG_CSTRING(0);
 	Oid			result;
 	List	   *names;
@@ -1086,7 +1086,7 @@ to_regclass(PG_FUNCTION_ARGS)
  */
 Datum
 regclassout(PG_FUNCTION_ARGS)
-{	StackTrace("regclassout");
+{
 	Oid			classid = PG_GETARG_OID(0);
 	char	   *result;
 	HeapTuple	classtup;
@@ -1143,7 +1143,7 @@ regclassout(PG_FUNCTION_ARGS)
  */
 Datum
 regclassrecv(PG_FUNCTION_ARGS)
-{	StackTrace("regclassrecv");
+{
 	/* Exactly the same as oidrecv, so share code */
 	return oidrecv(fcinfo);
 }
@@ -1153,7 +1153,7 @@ regclassrecv(PG_FUNCTION_ARGS)
  */
 Datum
 regclasssend(PG_FUNCTION_ARGS)
-{	StackTrace("regclasssend");
+{
 	/* Exactly the same as oidsend, so share code */
 	return oidsend(fcinfo);
 }
@@ -1175,7 +1175,7 @@ regclasssend(PG_FUNCTION_ARGS)
  */
 Datum
 regtypein(PG_FUNCTION_ARGS)
-{	StackTrace("regtypein");
+{
 	char	   *typ_name_or_oid = PG_GETARG_CSTRING(0);
 	Oid			result = InvalidOid;
 	int32		typmod;
@@ -1249,7 +1249,7 @@ regtypein(PG_FUNCTION_ARGS)
  */
 Datum
 to_regtype(PG_FUNCTION_ARGS)
-{	StackTrace("to_regtype");
+{
 	char	   *typ_name = PG_GETARG_CSTRING(0);
 	Oid			result;
 	int32		typmod;
@@ -1270,7 +1270,7 @@ to_regtype(PG_FUNCTION_ARGS)
  */
 Datum
 regtypeout(PG_FUNCTION_ARGS)
-{	StackTrace("regtypeout");
+{
 	Oid			typid = PG_GETARG_OID(0);
 	char	   *result;
 	HeapTuple	typetup;
@@ -1318,7 +1318,7 @@ regtypeout(PG_FUNCTION_ARGS)
  */
 Datum
 regtyperecv(PG_FUNCTION_ARGS)
-{	StackTrace("regtyperecv");
+{
 	/* Exactly the same as oidrecv, so share code */
 	return oidrecv(fcinfo);
 }
@@ -1328,7 +1328,7 @@ regtyperecv(PG_FUNCTION_ARGS)
  */
 Datum
 regtypesend(PG_FUNCTION_ARGS)
-{	StackTrace("regtypesend");
+{
 	/* Exactly the same as oidsend, so share code */
 	return oidsend(fcinfo);
 }
@@ -1347,7 +1347,7 @@ regtypesend(PG_FUNCTION_ARGS)
  */
 Datum
 regconfigin(PG_FUNCTION_ARGS)
-{	StackTrace("regconfigin");
+{
 	char	   *cfg_name_or_oid = PG_GETARG_CSTRING(0);
 	Oid			result;
 	List	   *names;
@@ -1382,7 +1382,7 @@ regconfigin(PG_FUNCTION_ARGS)
  */
 Datum
 regconfigout(PG_FUNCTION_ARGS)
-{	StackTrace("regconfigout");
+{
 	Oid			cfgid = PG_GETARG_OID(0);
 	char	   *result;
 	HeapTuple	cfgtup;
@@ -1428,7 +1428,7 @@ regconfigout(PG_FUNCTION_ARGS)
  */
 Datum
 regconfigrecv(PG_FUNCTION_ARGS)
-{	StackTrace("regconfigrecv");
+{
 	/* Exactly the same as oidrecv, so share code */
 	return oidrecv(fcinfo);
 }
@@ -1438,7 +1438,7 @@ regconfigrecv(PG_FUNCTION_ARGS)
  */
 Datum
 regconfigsend(PG_FUNCTION_ARGS)
-{	StackTrace("regconfigsend");
+{
 	/* Exactly the same as oidsend, so share code */
 	return oidsend(fcinfo);
 }
@@ -1457,7 +1457,7 @@ regconfigsend(PG_FUNCTION_ARGS)
  */
 Datum
 regdictionaryin(PG_FUNCTION_ARGS)
-{	StackTrace("regdictionaryin");
+{
 	char	   *dict_name_or_oid = PG_GETARG_CSTRING(0);
 	Oid			result;
 	List	   *names;
@@ -1492,7 +1492,7 @@ regdictionaryin(PG_FUNCTION_ARGS)
  */
 Datum
 regdictionaryout(PG_FUNCTION_ARGS)
-{	StackTrace("regdictionaryout");
+{
 	Oid			dictid = PG_GETARG_OID(0);
 	char	   *result;
 	HeapTuple	dicttup;
@@ -1539,7 +1539,7 @@ regdictionaryout(PG_FUNCTION_ARGS)
  */
 Datum
 regdictionaryrecv(PG_FUNCTION_ARGS)
-{	StackTrace("regdictionaryrecv");
+{
 	/* Exactly the same as oidrecv, so share code */
 	return oidrecv(fcinfo);
 }
@@ -1549,7 +1549,7 @@ regdictionaryrecv(PG_FUNCTION_ARGS)
  */
 Datum
 regdictionarysend(PG_FUNCTION_ARGS)
-{	StackTrace("regdictionarysend");
+{
 	/* Exactly the same as oidsend, so share code */
 	return oidsend(fcinfo);
 }
@@ -1567,7 +1567,7 @@ regdictionarysend(PG_FUNCTION_ARGS)
  */
 Datum
 regrolein(PG_FUNCTION_ARGS)
-{	StackTrace("regrolein");
+{
 	char	   *role_name_or_oid = PG_GETARG_CSTRING(0);
 	Oid			result;
 
@@ -1598,7 +1598,7 @@ regrolein(PG_FUNCTION_ARGS)
  */
 Datum
 to_regrole(PG_FUNCTION_ARGS)
-{	StackTrace("to_regrole");
+{
 	char	   *role_name = PG_GETARG_CSTRING(0);
 	Oid			result;
 
@@ -1615,7 +1615,7 @@ to_regrole(PG_FUNCTION_ARGS)
  */
 Datum
 regroleout(PG_FUNCTION_ARGS)
-{	StackTrace("regroleout");
+{
 	Oid			roleoid = PG_GETARG_OID(0);
 	char	   *result;
 
@@ -1641,7 +1641,7 @@ regroleout(PG_FUNCTION_ARGS)
  */
 Datum
 regrolerecv(PG_FUNCTION_ARGS)
-{	StackTrace("regrolerecv");
+{
 	/* Exactly the same as oidrecv, so share code */
 	return oidrecv(fcinfo);
 }
@@ -1651,7 +1651,7 @@ regrolerecv(PG_FUNCTION_ARGS)
  */
 Datum
 regrolesend(PG_FUNCTION_ARGS)
-{	StackTrace("regrolesend");
+{
 	/* Exactly the same as oidsend, so share code */
 	return oidsend(fcinfo);
 }
@@ -1666,7 +1666,7 @@ regrolesend(PG_FUNCTION_ARGS)
  */
 Datum
 regnamespacein(PG_FUNCTION_ARGS)
-{	StackTrace("regnamespacein");
+{
 	char	   *nsp_name_or_oid = PG_GETARG_CSTRING(0);
 	Oid			result = InvalidOid;
 
@@ -1697,7 +1697,7 @@ regnamespacein(PG_FUNCTION_ARGS)
  */
 Datum
 to_regnamespace(PG_FUNCTION_ARGS)
-{	StackTrace("to_regnamespace");
+{
 	char	   *nsp_name = PG_GETARG_CSTRING(0);
 	Oid			result;
 
@@ -1714,7 +1714,7 @@ to_regnamespace(PG_FUNCTION_ARGS)
  */
 Datum
 regnamespaceout(PG_FUNCTION_ARGS)
-{	StackTrace("regnamespaceout");
+{
 	Oid			nspid = PG_GETARG_OID(0);
 	char	   *result;
 
@@ -1739,7 +1739,7 @@ regnamespaceout(PG_FUNCTION_ARGS)
  */
 Datum
 regnamespacerecv(PG_FUNCTION_ARGS)
-{	StackTrace("regnamespacerecv");
+{
 	/* Exactly the same as oidrecv, so share code */
 	return oidrecv(fcinfo);
 }
@@ -1749,7 +1749,7 @@ regnamespacerecv(PG_FUNCTION_ARGS)
  */
 Datum
 regnamespacesend(PG_FUNCTION_ARGS)
-{	StackTrace("regnamespacesend");
+{
 	/* Exactly the same as oidsend, so share code */
 	return oidsend(fcinfo);
 }
@@ -1763,7 +1763,7 @@ regnamespacesend(PG_FUNCTION_ARGS)
  */
 Datum
 text_regclass(PG_FUNCTION_ARGS)
-{	StackTrace("text_regclass");
+{
 	text	   *relname = PG_GETARG_TEXT_P(0);
 	Oid			result;
 	RangeVar   *rv;
@@ -1782,7 +1782,7 @@ text_regclass(PG_FUNCTION_ARGS)
  */
 List *
 stringToQualifiedNameList(const char *string)
-{	StackTrace("stringToQualifiedNameList");
+{
 	char	   *rawname;
 	List	   *result = NIL;
 	List	   *namelist;
@@ -1831,7 +1831,7 @@ stringToQualifiedNameList(const char *string)
 static void
 parseNameAndArgTypes(const char *string, bool allowNone, List **names,
 					 int *nargs, Oid *argtypes)
-{	StackTrace("parseNameAndArgTypes");
+{
 	char	   *rawname;
 	char	   *ptr;
 	char	   *ptr2;

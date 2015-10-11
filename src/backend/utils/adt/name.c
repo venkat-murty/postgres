@@ -44,7 +44,7 @@
  */
 Datum
 namein(PG_FUNCTION_ARGS)
-{	StackTrace("namein");
+{
 	char	   *s = PG_GETARG_CSTRING(0);
 	Name		result;
 	int			len;
@@ -67,7 +67,7 @@ namein(PG_FUNCTION_ARGS)
  */
 Datum
 nameout(PG_FUNCTION_ARGS)
-{	StackTrace("nameout");
+{
 	Name		s = PG_GETARG_NAME(0);
 
 	PG_RETURN_CSTRING(pstrdup(NameStr(*s)));
@@ -78,7 +78,7 @@ nameout(PG_FUNCTION_ARGS)
  */
 Datum
 namerecv(PG_FUNCTION_ARGS)
-{	StackTrace("namerecv");
+{
 	StringInfo	buf = (StringInfo) PG_GETARG_POINTER(0);
 	Name		result;
 	char	   *str;
@@ -102,7 +102,7 @@ namerecv(PG_FUNCTION_ARGS)
  */
 Datum
 namesend(PG_FUNCTION_ARGS)
-{	StackTrace("namesend");
+{
 	Name		s = PG_GETARG_NAME(0);
 	StringInfoData buf;
 
@@ -132,7 +132,7 @@ namesend(PG_FUNCTION_ARGS)
  */
 Datum
 nameeq(PG_FUNCTION_ARGS)
-{	StackTrace("nameeq");
+{
 	Name		arg1 = PG_GETARG_NAME(0);
 	Name		arg2 = PG_GETARG_NAME(1);
 
@@ -141,7 +141,7 @@ nameeq(PG_FUNCTION_ARGS)
 
 Datum
 namene(PG_FUNCTION_ARGS)
-{	StackTrace("namene");
+{
 	Name		arg1 = PG_GETARG_NAME(0);
 	Name		arg2 = PG_GETARG_NAME(1);
 
@@ -150,7 +150,7 @@ namene(PG_FUNCTION_ARGS)
 
 Datum
 namelt(PG_FUNCTION_ARGS)
-{	StackTrace("namelt");
+{
 	Name		arg1 = PG_GETARG_NAME(0);
 	Name		arg2 = PG_GETARG_NAME(1);
 
@@ -159,7 +159,7 @@ namelt(PG_FUNCTION_ARGS)
 
 Datum
 namele(PG_FUNCTION_ARGS)
-{	StackTrace("namele");
+{
 	Name		arg1 = PG_GETARG_NAME(0);
 	Name		arg2 = PG_GETARG_NAME(1);
 
@@ -168,7 +168,7 @@ namele(PG_FUNCTION_ARGS)
 
 Datum
 namegt(PG_FUNCTION_ARGS)
-{	StackTrace("namegt");
+{
 	Name		arg1 = PG_GETARG_NAME(0);
 	Name		arg2 = PG_GETARG_NAME(1);
 
@@ -177,7 +177,7 @@ namegt(PG_FUNCTION_ARGS)
 
 Datum
 namege(PG_FUNCTION_ARGS)
-{	StackTrace("namege");
+{
 	Name		arg1 = PG_GETARG_NAME(0);
 	Name		arg2 = PG_GETARG_NAME(1);
 
@@ -189,7 +189,7 @@ namege(PG_FUNCTION_ARGS)
 
 int
 namecpy(Name n1, Name n2)
-{	StackTrace("namecpy");
+{
 	if (!n1 || !n2)
 		return -1;
 	StrNCpy(NameStr(*n1), NameStr(*n2), NAMEDATALEN);
@@ -199,7 +199,7 @@ namecpy(Name n1, Name n2)
 #ifdef NOT_USED
 int
 namecat(Name n1, Name n2)
-{	StackTrace("namecat");
+{
 	return namestrcat(n1, NameStr(*n2));		/* n2 can't be any longer than
 												 * n1 */
 }
@@ -208,14 +208,14 @@ namecat(Name n1, Name n2)
 #ifdef NOT_USED
 int
 namecmp(Name n1, Name n2)
-{	StackTrace("namecmp");
+{
 	return strncmp(NameStr(*n1), NameStr(*n2), NAMEDATALEN);
 }
 #endif
 
 int
 namestrcpy(Name name, const char *str)
-{	StackTrace("namestrcpy");
+{
 	if (!name || !str)
 		return -1;
 	StrNCpy(NameStr(*name), str, NAMEDATALEN);
@@ -225,7 +225,7 @@ namestrcpy(Name name, const char *str)
 #ifdef NOT_USED
 int
 namestrcat(Name name, const char *str)
-{	StackTrace("namestrcat");
+{
 	int			i;
 	char	   *p,
 			   *q;
@@ -246,7 +246,7 @@ namestrcat(Name name, const char *str)
 
 int
 namestrcmp(Name name, const char *str)
-{	StackTrace("namestrcmp");
+{
 	if (!name && !str)
 		return 0;
 	if (!name)
@@ -262,13 +262,13 @@ namestrcmp(Name name, const char *str)
  */
 Datum
 current_user(PG_FUNCTION_ARGS)
-{	StackTrace("current_user");
+{
 	PG_RETURN_DATUM(DirectFunctionCall1(namein, CStringGetDatum(GetUserNameFromId(GetUserId(), false))));
 }
 
 Datum
 session_user(PG_FUNCTION_ARGS)
-{	StackTrace("session_user");
+{
 	PG_RETURN_DATUM(DirectFunctionCall1(namein, CStringGetDatum(GetUserNameFromId(GetSessionUserId(), false))));
 }
 
@@ -278,7 +278,7 @@ session_user(PG_FUNCTION_ARGS)
  */
 Datum
 current_schema(PG_FUNCTION_ARGS)
-{	StackTrace("current_schema");
+{
 	List	   *search_path = fetch_search_path(false);
 	char	   *nspname;
 
@@ -293,7 +293,7 @@ current_schema(PG_FUNCTION_ARGS)
 
 Datum
 current_schemas(PG_FUNCTION_ARGS)
-{	StackTrace("current_schemas");
+{
 	List	   *search_path = fetch_search_path(PG_GETARG_BOOL(0));
 	ListCell   *l;
 	Datum	   *names;

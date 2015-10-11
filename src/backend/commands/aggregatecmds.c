@@ -54,7 +54,7 @@
 ObjectAddress
 DefineAggregate(List *name, List *args, bool oldstyle, List *parameters,
 				const char *queryString)
-{	StackTrace("DefineAggregate");
+{
 	char	   *aggName;
 	Oid			aggNamespace;
 	AclResult	aclresult;

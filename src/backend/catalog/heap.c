@@ -191,7 +191,7 @@ static const Form_pg_attribute SysAtt[] = {&a1, &a2, &a3, &a4, &a5, &a6, &a7};
  */
 Form_pg_attribute
 SystemAttributeDefinition(AttrNumber attno, bool relhasoids)
-{	StackTrace("SystemAttributeDefinition");
+{
 	if (attno >= 0 || attno < -(int) lengthof(SysAtt))
 		elog(ERROR, "invalid system attribute number %d", attno);
 	if (attno == ObjectIdAttributeNumber && !relhasoids)
@@ -205,7 +205,7 @@ SystemAttributeDefinition(AttrNumber attno, bool relhasoids)
  */
 Form_pg_attribute
 SystemAttributeByName(const char *attname, bool relhasoids)
-{	StackTrace("SystemAttributeByName");
+{
 	int			j;
 
 	for (j = 0; j < (int) lengthof(SysAtt); j++)
@@ -251,7 +251,7 @@ heap_create(const char *relname,
 			bool shared_relation,
 			bool mapped_relation,
 			bool allow_system_table_mods)
-{	StackTrace("heap_create");
+{
 	bool		create_storage;
 	Relation	rel;
 
@@ -401,7 +401,7 @@ heap_create(const char *relname,
 void
 CheckAttributeNamesTypes(TupleDesc tupdesc, char relkind,
 						 bool allow_system_table_mods)
-{	StackTrace("CheckAttributeNamesTypes");
+{
 	int			i;
 	int			j;
 	int			natts = tupdesc->natts;
@@ -481,7 +481,7 @@ CheckAttributeType(const char *attname,
 				   Oid atttypid, Oid attcollation,
 				   List *containing_rowtypes,
 				   bool allow_system_table_mods)
-{	StackTrace("CheckAttributeType");
+{
 	char		att_typtype = get_typtype(atttypid);
 	Oid			att_typelem;
 
@@ -600,7 +600,7 @@ void
 InsertPgAttributeTuple(Relation pg_attribute_rel,
 					   Form_pg_attribute new_attribute,
 					   CatalogIndexState indstate)
-{	StackTrace("InsertPgAttributeTuple");
+{
 	Datum		values[Natts_pg_attribute];
 	bool		nulls[Natts_pg_attribute];
 	HeapTuple	tup;
@@ -659,7 +659,7 @@ AddNewAttributeTuples(Oid new_rel_oid,
 					  char relkind,
 					  bool oidislocal,
 					  int oidinhcount)
-{	StackTrace("AddNewAttributeTuples");
+{
 	Form_pg_attribute attr;
 	int			i;
 	Relation	rel;
@@ -769,7 +769,7 @@ InsertPgClassTuple(Relation pg_class_desc,
 				   Oid new_rel_oid,
 				   Datum relacl,
 				   Datum reloptions)
-{	StackTrace("InsertPgClassTuple");
+{
 	Form_pg_class rd_rel = new_rel_desc->rd_rel;
 	Datum		values[Natts_pg_class];
 	bool		nulls[Natts_pg_class];
@@ -850,7 +850,7 @@ AddNewRelationTuple(Relation pg_class_desc,
 					char relkind,
 					Datum relacl,
 					Datum reloptions)
-{	StackTrace("AddNewRelationTuple");
+{
 	Form_pg_class new_rel_reltup;
 
 	/*
@@ -944,7 +944,7 @@ AddNewRelationType(const char *typeName,
 				   Oid ownerid,
 				   Oid new_row_type,
 				   Oid new_array_type)
-{	StackTrace("AddNewRelationType");
+{
 	return
 		TypeCreate(new_row_type,	/* optional predetermined OID */
 				   typeName,	/* type name */
@@ -1035,7 +1035,7 @@ heap_create_with_catalog(const char *relname,
 						 bool allow_system_table_mods,
 						 bool is_internal,
 						 ObjectAddress *typaddress)
-{	StackTrace("heap_create_with_catalog");
+{
 	Relation	pg_class_desc;
 	Relation	new_rel_desc;
 	Acl		   *relacl;
@@ -1375,7 +1375,7 @@ heap_create_with_catalog(const char *relname,
  */
 void
 heap_create_init_fork(Relation rel)
-{	StackTrace("heap_create_init_fork");
+{
 	RelationOpenSmgr(rel);
 	smgrcreate(rel->rd_smgr, INIT_FORKNUM, false);
 	if (XLogIsNeeded())
@@ -1394,7 +1394,7 @@ heap_create_init_fork(Relation rel)
  */
 static void
 RelationRemoveInheritance(Oid relid)
-{	StackTrace("RelationRemoveInheritance");
+{
 	Relation	catalogRelation;
 	SysScanDesc scan;
 	ScanKeyData key;
@@ -1427,7 +1427,7 @@ RelationRemoveInheritance(Oid relid)
  */
 void
 DeleteRelationTuple(Oid relid)
-{	StackTrace("DeleteRelationTuple");
+{
 	Relation	pg_class_desc;
 	HeapTuple	tup;
 
@@ -1456,7 +1456,7 @@ DeleteRelationTuple(Oid relid)
  */
 void
 DeleteAttributeTuples(Oid relid)
-{	StackTrace("DeleteAttributeTuples");
+{
 	Relation	attrel;
 	SysScanDesc scan;
 	ScanKeyData key[1];
@@ -1493,7 +1493,7 @@ DeleteAttributeTuples(Oid relid)
  */
 void
 DeleteSystemAttributeTuples(Oid relid)
-{	StackTrace("DeleteSystemAttributeTuples");
+{
 	Relation	attrel;
 	SysScanDesc scan;
 	ScanKeyData key[2];
@@ -1534,7 +1534,7 @@ DeleteSystemAttributeTuples(Oid relid)
  */
 void
 RemoveAttributeById(Oid relid, AttrNumber attnum)
-{	StackTrace("RemoveAttributeById");
+{
 	Relation	rel;
 	Relation	attr_rel;
 	HeapTuple	tuple;
@@ -1626,7 +1626,7 @@ RemoveAttributeById(Oid relid, AttrNumber attnum)
 void
 RemoveAttrDefault(Oid relid, AttrNumber attnum,
 				  DropBehavior behavior, bool complain, bool internal)
-{	StackTrace("RemoveAttrDefault");
+{
 	Relation	attrdef_rel;
 	ScanKeyData scankeys[2];
 	SysScanDesc scan;
@@ -1679,7 +1679,7 @@ RemoveAttrDefault(Oid relid, AttrNumber attnum,
  */
 void
 RemoveAttrDefaultById(Oid attrdefId)
-{	StackTrace("RemoveAttrDefaultById");
+{
 	Relation	attrdef_rel;
 	Relation	attr_rel;
 	Relation	myrel;
@@ -1755,7 +1755,7 @@ RemoveAttrDefaultById(Oid attrdefId)
  */
 void
 heap_drop_with_catalog(Oid relid)
-{	StackTrace("heap_drop_with_catalog");
+{
 	Relation	rel;
 
 	/*
@@ -1859,7 +1859,7 @@ heap_drop_with_catalog(Oid relid)
 Oid
 StoreAttrDefault(Relation rel, AttrNumber attnum,
 				 Node *expr, bool is_internal)
-{	StackTrace("StoreAttrDefault");
+{
 	char	   *adbin;
 	char	   *adsrc;
 	Relation	adrel;
@@ -1977,7 +1977,7 @@ static Oid
 StoreRelCheck(Relation rel, char *ccname, Node *expr,
 			  bool is_validated, bool is_local, int inhcount,
 			  bool is_no_inherit, bool is_internal)
-{	StackTrace("StoreRelCheck");
+{
 	char	   *ccbin;
 	char	   *ccsrc;
 	List	   *varList;
@@ -2083,7 +2083,7 @@ StoreRelCheck(Relation rel, char *ccname, Node *expr,
  */
 static void
 StoreConstraints(Relation rel, List *cooked_constraints, bool is_internal)
-{	StackTrace("StoreConstraints");
+{
 	int			numchecks = 0;
 	ListCell   *lc;
 
@@ -2158,7 +2158,7 @@ AddRelationNewConstraints(Relation rel,
 						  bool allow_merge,
 						  bool is_local,
 						  bool is_internal)
-{	StackTrace("AddRelationNewConstraints");
+{
 	List	   *cookedConstraints = NIL;
 	TupleDesc	tupleDesc;
 	TupleConstr *oldconstr;
@@ -2393,7 +2393,7 @@ static bool
 MergeWithExistingConstraint(Relation rel, char *ccname, Node *expr,
 							bool allow_merge, bool is_local,
 							bool is_no_inherit)
-{	StackTrace("MergeWithExistingConstraint");
+{
 	bool		found;
 	Relation	conDesc;
 	SysScanDesc conscan;
@@ -2492,7 +2492,7 @@ MergeWithExistingConstraint(Relation rel, char *ccname, Node *expr,
  */
 static void
 SetRelationNumChecks(Relation rel, int numchecks)
-{	StackTrace("SetRelationNumChecks");
+{
 	Relation	relrel;
 	HeapTuple	reltup;
 	Form_pg_class relStruct;
@@ -2542,7 +2542,7 @@ cookDefault(ParseState *pstate,
 			Oid atttypid,
 			int32 atttypmod,
 			char *attname)
-{	StackTrace("cookDefault");
+{
 	Node	   *expr;
 
 	Assert(raw_default != NULL);
@@ -2616,7 +2616,7 @@ static Node *
 cookConstraint(ParseState *pstate,
 			   Node *raw_constraint,
 			   char *relname)
-{	StackTrace("cookConstraint");
+{
 	Node	   *expr;
 
 	/*
@@ -2656,7 +2656,7 @@ cookConstraint(ParseState *pstate,
  */
 void
 RemoveStatistics(Oid relid, AttrNumber attnum)
-{	StackTrace("RemoveStatistics");
+{
 	Relation	pgstatistic;
 	SysScanDesc scan;
 	ScanKeyData key[2];
@@ -2703,7 +2703,7 @@ RemoveStatistics(Oid relid, AttrNumber attnum)
  */
 static void
 RelationTruncateIndexes(Relation heapRelation)
-{	StackTrace("RelationTruncateIndexes");
+{
 	ListCell   *indlist;
 
 	/* Ask the relcache to produce a list of the indexes of the rel */
@@ -2744,7 +2744,7 @@ RelationTruncateIndexes(Relation heapRelation)
  */
 void
 heap_truncate(List *relids)
-{	StackTrace("heap_truncate");
+{
 	List	   *relations = NIL;
 	ListCell   *cell;
 
@@ -2785,7 +2785,7 @@ heap_truncate(List *relids)
  */
 void
 heap_truncate_one_rel(Relation rel)
-{	StackTrace("heap_truncate_one_rel");
+{
 	Oid			toastrelid;
 
 	/* Truncate the actual file (and discard buffers) */
@@ -2822,7 +2822,7 @@ heap_truncate_one_rel(Relation rel)
  */
 void
 heap_truncate_check_FKs(List *relations, bool tempTables)
-{	StackTrace("heap_truncate_check_FKs");
+{
 	List	   *oids = NIL;
 	List	   *dependents;
 	ListCell   *cell;
@@ -2914,7 +2914,7 @@ heap_truncate_check_FKs(List *relations, bool tempTables)
  */
 List *
 heap_truncate_find_FKs(List *relationIds)
-{	StackTrace("heap_truncate_find_FKs");
+{
 	List	   *result = NIL;
 	Relation	fkeyRel;
 	SysScanDesc fkeyScan;
@@ -2964,7 +2964,7 @@ heap_truncate_find_FKs(List *relationIds)
  */
 static List *
 insert_ordered_unique_oid(List *list, Oid datum)
-{	StackTrace("insert_ordered_unique_oid");
+{
 	ListCell   *prev;
 
 	/* Does the datum belong at the front? */

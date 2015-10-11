@@ -39,7 +39,7 @@ typedef struct
 static void
 spgistBuildCallback(Relation index, HeapTuple htup, Datum *values,
 					bool *isnull, bool tupleIsAlive, void *state)
-{	StackTrace("spgistBuildCallback");
+{
 	SpGistBuildState *buildstate = (SpGistBuildState *) state;
 	MemoryContext oldCtx;
 
@@ -67,7 +67,7 @@ spgistBuildCallback(Relation index, HeapTuple htup, Datum *values,
  */
 Datum
 spgbuild(PG_FUNCTION_ARGS)
-{	StackTrace("spgbuild");
+{
 	Relation	heap = (Relation) PG_GETARG_POINTER(0);
 	Relation	index = (Relation) PG_GETARG_POINTER(1);
 	IndexInfo  *indexInfo = (IndexInfo *) PG_GETARG_POINTER(2);
@@ -159,7 +159,7 @@ spgbuild(PG_FUNCTION_ARGS)
  */
 Datum
 spgbuildempty(PG_FUNCTION_ARGS)
-{	StackTrace("spgbuildempty");
+{
 	Relation	index = (Relation) PG_GETARG_POINTER(0);
 	Page		page;
 
@@ -210,7 +210,7 @@ spgbuildempty(PG_FUNCTION_ARGS)
  */
 Datum
 spginsert(PG_FUNCTION_ARGS)
-{	StackTrace("spginsert");
+{
 	Relation	index = (Relation) PG_GETARG_POINTER(0);
 	Datum	   *values = (Datum *) PG_GETARG_POINTER(1);
 	bool	   *isnull = (bool *) PG_GETARG_POINTER(2);

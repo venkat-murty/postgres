@@ -232,7 +232,7 @@ Oid
 RangeVarGetRelidExtended(const RangeVar *relation, LOCKMODE lockmode,
 						 bool missing_ok, bool nowait,
 					   RangeVarGetRelidCallback callback, void *callback_arg)
-{	StackTrace("RangeVarGetRelidExtended");
+{
 	uint64		inval_count;
 	Oid			relId;
 	Oid			oldRelId = InvalidOid;
@@ -433,7 +433,7 @@ RangeVarGetRelidExtended(const RangeVar *relation, LOCKMODE lockmode,
  */
 Oid
 RangeVarGetCreationNamespace(const RangeVar *newRelation)
-{	StackTrace("RangeVarGetCreationNamespace");
+{
 	Oid			namespaceId;
 
 	/*
@@ -522,7 +522,7 @@ Oid
 RangeVarGetAndCheckCreationNamespace(RangeVar *relation,
 									 LOCKMODE lockmode,
 									 Oid *existing_relation_id)
-{	StackTrace("RangeVarGetAndCheckCreationNamespace");
+{
 	uint64		inval_count;
 	Oid			relid;
 	Oid			oldrelid = InvalidOid;
@@ -627,7 +627,7 @@ RangeVarGetAndCheckCreationNamespace(RangeVar *relation,
  */
 void
 RangeVarAdjustRelationPersistence(RangeVar *newRelation, Oid nspid)
-{	StackTrace("RangeVarAdjustRelationPersistence");
+{
 	switch (newRelation->relpersistence)
 	{
 		case RELPERSISTENCE_TEMP:
@@ -666,7 +666,7 @@ RangeVarAdjustRelationPersistence(RangeVar *newRelation, Oid nspid)
  */
 Oid
 RelnameGetRelid(const char *relname)
-{	StackTrace("RelnameGetRelid");
+{
 	Oid			relid;
 	ListCell   *l;
 
@@ -694,7 +694,7 @@ RelnameGetRelid(const char *relname)
  */
 bool
 RelationIsVisible(Oid relid)
-{	StackTrace("RelationIsVisible");
+{
 	HeapTuple	reltup;
 	Form_pg_class relform;
 	Oid			relnamespace;
@@ -760,7 +760,7 @@ RelationIsVisible(Oid relid)
  */
 Oid
 TypenameGetTypid(const char *typname)
-{	StackTrace("TypenameGetTypid");
+{
 	Oid			typid;
 	ListCell   *l;
 
@@ -789,7 +789,7 @@ TypenameGetTypid(const char *typname)
  */
 bool
 TypeIsVisible(Oid typid)
-{	StackTrace("TypeIsVisible");
+{
 	HeapTuple	typtup;
 	Form_pg_type typform;
 	Oid			typnamespace;
@@ -917,7 +917,7 @@ FuncCandidateList
 FuncnameGetCandidates(List *names, int nargs, List *argnames,
 					  bool expand_variadic, bool expand_defaults,
 					  bool missing_ok)
-{	StackTrace("FuncnameGetCandidates");
+{
 	FuncCandidateList resultList = NULL;
 	bool		any_special = false;
 	char	   *schemaname;
@@ -1279,7 +1279,7 @@ FuncnameGetCandidates(List *names, int nargs, List *argnames,
 static bool
 MatchNamedCall(HeapTuple proctup, int nargs, List *argnames,
 			   int **argnumbers)
-{	StackTrace("MatchNamedCall");
+{
 	Form_pg_proc procform = (Form_pg_proc) GETSTRUCT(proctup);
 	int			pronargs = procform->pronargs;
 	int			numposargs = nargs - list_length(argnames);
@@ -1386,7 +1386,7 @@ MatchNamedCall(HeapTuple proctup, int nargs, List *argnames,
  */
 bool
 FunctionIsVisible(Oid funcid)
-{	StackTrace("FunctionIsVisible");
+{
 	HeapTuple	proctup;
 	Form_pg_proc procform;
 	Oid			pronamespace;
@@ -1457,7 +1457,7 @@ FunctionIsVisible(Oid funcid)
  */
 Oid
 OpernameGetOprid(List *names, Oid oprleft, Oid oprright)
-{	StackTrace("OpernameGetOprid");
+{
 	char	   *schemaname;
 	char	   *opername;
 	CatCList   *catlist;
@@ -1559,7 +1559,7 @@ OpernameGetOprid(List *names, Oid oprleft, Oid oprright)
  */
 FuncCandidateList
 OpernameGetCandidates(List *names, char oprkind, bool missing_schema_ok)
-{	StackTrace("OpernameGetCandidates");
+{
 	FuncCandidateList resultList = NULL;
 	char	   *resultSpace = NULL;
 	int			nextResult = 0;
@@ -1719,7 +1719,7 @@ OpernameGetCandidates(List *names, char oprkind, bool missing_schema_ok)
  */
 bool
 OperatorIsVisible(Oid oprid)
-{	StackTrace("OperatorIsVisible");
+{
 	HeapTuple	oprtup;
 	Form_pg_operator oprform;
 	Oid			oprnamespace;
@@ -1772,7 +1772,7 @@ OperatorIsVisible(Oid oprid)
  */
 Oid
 OpclassnameGetOpcid(Oid amid, const char *opcname)
-{	StackTrace("OpclassnameGetOpcid");
+{
 	Oid			opcid;
 	ListCell   *l;
 
@@ -1805,7 +1805,7 @@ OpclassnameGetOpcid(Oid amid, const char *opcname)
  */
 bool
 OpclassIsVisible(Oid opcid)
-{	StackTrace("OpclassIsVisible");
+{
 	HeapTuple	opctup;
 	Form_pg_opclass opcform;
 	Oid			opcnamespace;
@@ -1855,7 +1855,7 @@ OpclassIsVisible(Oid opcid)
  */
 Oid
 OpfamilynameGetOpfid(Oid amid, const char *opfname)
-{	StackTrace("OpfamilynameGetOpfid");
+{
 	Oid			opfid;
 	ListCell   *l;
 
@@ -1888,7 +1888,7 @@ OpfamilynameGetOpfid(Oid amid, const char *opfname)
  */
 bool
 OpfamilyIsVisible(Oid opfid)
-{	StackTrace("OpfamilyIsVisible");
+{
 	HeapTuple	opftup;
 	Form_pg_opfamily opfform;
 	Oid			opfnamespace;
@@ -1935,7 +1935,7 @@ OpfamilyIsVisible(Oid opfid)
  */
 Oid
 CollationGetCollid(const char *collname)
-{	StackTrace("CollationGetCollid");
+{
 	int32		dbencoding = GetDatabaseEncoding();
 	ListCell   *l;
 
@@ -1978,7 +1978,7 @@ CollationGetCollid(const char *collname)
  */
 bool
 CollationIsVisible(Oid collid)
-{	StackTrace("CollationIsVisible");
+{
 	HeapTuple	colltup;
 	Form_pg_collation collform;
 	Oid			collnamespace;
@@ -2028,7 +2028,7 @@ CollationIsVisible(Oid collid)
  */
 Oid
 ConversionGetConid(const char *conname)
-{	StackTrace("ConversionGetConid");
+{
 	Oid			conid;
 	ListCell   *l;
 
@@ -2060,7 +2060,7 @@ ConversionGetConid(const char *conname)
  */
 bool
 ConversionIsVisible(Oid conid)
-{	StackTrace("ConversionIsVisible");
+{
 	HeapTuple	contup;
 	Form_pg_conversion conform;
 	Oid			connamespace;
@@ -2107,7 +2107,7 @@ ConversionIsVisible(Oid conid)
  */
 Oid
 get_ts_parser_oid(List *names, bool missing_ok)
-{	StackTrace("get_ts_parser_oid");
+{
 	char	   *schemaname;
 	char	   *parser_name;
 	Oid			namespaceId;
@@ -2165,7 +2165,7 @@ get_ts_parser_oid(List *names, bool missing_ok)
  */
 bool
 TSParserIsVisible(Oid prsId)
-{	StackTrace("TSParserIsVisible");
+{
 	HeapTuple	tup;
 	Form_pg_ts_parser form;
 	Oid			namespace;
@@ -2233,7 +2233,7 @@ TSParserIsVisible(Oid prsId)
  */
 Oid
 get_ts_dict_oid(List *names, bool missing_ok)
-{	StackTrace("get_ts_dict_oid");
+{
 	char	   *schemaname;
 	char	   *dict_name;
 	Oid			namespaceId;
@@ -2291,7 +2291,7 @@ get_ts_dict_oid(List *names, bool missing_ok)
  */
 bool
 TSDictionaryIsVisible(Oid dictId)
-{	StackTrace("TSDictionaryIsVisible");
+{
 	HeapTuple	tup;
 	Form_pg_ts_dict form;
 	Oid			namespace;
@@ -2360,7 +2360,7 @@ TSDictionaryIsVisible(Oid dictId)
  */
 Oid
 get_ts_template_oid(List *names, bool missing_ok)
-{	StackTrace("get_ts_template_oid");
+{
 	char	   *schemaname;
 	char	   *template_name;
 	Oid			namespaceId;
@@ -2418,7 +2418,7 @@ get_ts_template_oid(List *names, bool missing_ok)
  */
 bool
 TSTemplateIsVisible(Oid tmplId)
-{	StackTrace("TSTemplateIsVisible");
+{
 	HeapTuple	tup;
 	Form_pg_ts_template form;
 	Oid			namespace;
@@ -2486,7 +2486,7 @@ TSTemplateIsVisible(Oid tmplId)
  */
 Oid
 get_ts_config_oid(List *names, bool missing_ok)
-{	StackTrace("get_ts_config_oid");
+{
 	char	   *schemaname;
 	char	   *config_name;
 	Oid			namespaceId;
@@ -2544,7 +2544,7 @@ get_ts_config_oid(List *names, bool missing_ok)
  */
 bool
 TSConfigIsVisible(Oid cfgid)
-{	StackTrace("TSConfigIsVisible");
+{
 	HeapTuple	tup;
 	Form_pg_ts_config form;
 	Oid			namespace;
@@ -2618,7 +2618,7 @@ void
 DeconstructQualifiedName(List *names,
 						 char **nspname_p,
 						 char **objname_p)
-{	StackTrace("DeconstructQualifiedName");
+{
 	char	   *catalogname;
 	char	   *schemaname = NULL;
 	char	   *objname = NULL;
@@ -2670,7 +2670,7 @@ DeconstructQualifiedName(List *names,
  */
 Oid
 LookupNamespaceNoError(const char *nspname)
-{	StackTrace("LookupNamespaceNoError");
+{
 	/* check for pg_temp alias */
 	if (strcmp(nspname, "pg_temp") == 0)
 	{
@@ -2700,7 +2700,7 @@ LookupNamespaceNoError(const char *nspname)
  */
 Oid
 LookupExplicitNamespace(const char *nspname, bool missing_ok)
-{	StackTrace("LookupExplicitNamespace");
+{
 	Oid			namespaceId;
 	AclResult	aclresult;
 
@@ -2743,7 +2743,7 @@ LookupExplicitNamespace(const char *nspname, bool missing_ok)
  */
 Oid
 LookupCreationNamespace(const char *nspname)
-{	StackTrace("LookupCreationNamespace");
+{
 	Oid			namespaceId;
 	AclResult	aclresult;
 
@@ -2775,7 +2775,7 @@ LookupCreationNamespace(const char *nspname)
  */
 void
 CheckSetNamespace(Oid oldNspOid, Oid nspOid, Oid classid, Oid objid)
-{	StackTrace("CheckSetNamespace");
+{
 	if (oldNspOid == nspOid)
 		ereport(ERROR,
 				(classid == RelationRelationId ?
@@ -2814,7 +2814,7 @@ CheckSetNamespace(Oid oldNspOid, Oid nspOid, Oid classid, Oid objid)
  */
 Oid
 QualifiedNameGetCreationNamespace(List *names, char **objname_p)
-{	StackTrace("QualifiedNameGetCreationNamespace");
+{
 	char	   *schemaname;
 	Oid			namespaceId;
 
@@ -2863,7 +2863,7 @@ QualifiedNameGetCreationNamespace(List *names, char **objname_p)
  */
 Oid
 get_namespace_oid(const char *nspname, bool missing_ok)
-{	StackTrace("get_namespace_oid");
+{
 	Oid			oid;
 
 	oid = GetSysCacheOid1(NAMESPACENAME, CStringGetDatum(nspname));
@@ -2881,7 +2881,7 @@ get_namespace_oid(const char *nspname, bool missing_ok)
  */
 RangeVar *
 makeRangeVarFromNameList(List *names)
-{	StackTrace("makeRangeVarFromNameList");
+{
 	RangeVar   *rel = makeRangeVar(NULL, NULL, -1);
 
 	switch (list_length(names))
@@ -2921,7 +2921,7 @@ makeRangeVarFromNameList(List *names)
  */
 char *
 NameListToString(List *names)
-{	StackTrace("NameListToString");
+{
 	StringInfoData string;
 	ListCell   *l;
 
@@ -2955,7 +2955,7 @@ NameListToString(List *names)
  */
 char *
 NameListToQuotedString(List *names)
-{	StackTrace("NameListToQuotedString");
+{
 	StringInfoData string;
 	ListCell   *l;
 
@@ -2976,7 +2976,7 @@ NameListToQuotedString(List *names)
  */
 bool
 isTempNamespace(Oid namespaceId)
-{	StackTrace("isTempNamespace");
+{
 	if (OidIsValid(myTempNamespace) && myTempNamespace == namespaceId)
 		return true;
 	return false;
@@ -2988,7 +2988,7 @@ isTempNamespace(Oid namespaceId)
  */
 bool
 isTempToastNamespace(Oid namespaceId)
-{	StackTrace("isTempToastNamespace");
+{
 	if (OidIsValid(myTempToastNamespace) && myTempToastNamespace == namespaceId)
 		return true;
 	return false;
@@ -3000,7 +3000,7 @@ isTempToastNamespace(Oid namespaceId)
  */
 bool
 isTempOrTempToastNamespace(Oid namespaceId)
-{	StackTrace("isTempOrTempToastNamespace");
+{
 	if (OidIsValid(myTempNamespace) &&
 	 (myTempNamespace == namespaceId || myTempToastNamespace == namespaceId))
 		return true;
@@ -3014,7 +3014,7 @@ isTempOrTempToastNamespace(Oid namespaceId)
  */
 bool
 isAnyTempNamespace(Oid namespaceId)
-{	StackTrace("isAnyTempNamespace");
+{
 	bool		result;
 	char	   *nspname;
 
@@ -3037,7 +3037,7 @@ isAnyTempNamespace(Oid namespaceId)
  */
 bool
 isOtherTempNamespace(Oid namespaceId)
-{	StackTrace("isOtherTempNamespace");
+{
 	/* If it's my own temp namespace, say "false" */
 	if (isTempOrTempToastNamespace(namespaceId))
 		return false;
@@ -3053,7 +3053,7 @@ isOtherTempNamespace(Oid namespaceId)
  */
 int
 GetTempNamespaceBackendId(Oid namespaceId)
-{	StackTrace("GetTempNamespaceBackendId");
+{
 	int			result;
 	char	   *nspname;
 
@@ -3078,7 +3078,7 @@ GetTempNamespaceBackendId(Oid namespaceId)
  */
 Oid
 GetTempToastNamespace(void)
-{	StackTrace("GetTempToastNamespace");
+{
 	Assert(OidIsValid(myTempToastNamespace));
 	return myTempToastNamespace;
 }
@@ -3094,7 +3094,7 @@ GetTempToastNamespace(void)
  */
 OverrideSearchPath *
 GetOverrideSearchPath(MemoryContext context)
-{	StackTrace("GetOverrideSearchPath");
+{
 	OverrideSearchPath *result;
 	List	   *schemas;
 	MemoryContext oldcxt;
@@ -3130,7 +3130,7 @@ GetOverrideSearchPath(MemoryContext context)
  */
 OverrideSearchPath *
 CopyOverrideSearchPath(OverrideSearchPath *path)
-{	StackTrace("CopyOverrideSearchPath");
+{
 	OverrideSearchPath *result;
 
 	result = (OverrideSearchPath *) palloc(sizeof(OverrideSearchPath));
@@ -3146,7 +3146,7 @@ CopyOverrideSearchPath(OverrideSearchPath *path)
  */
 bool
 OverrideSearchPathMatchesCurrent(OverrideSearchPath *path)
-{	StackTrace("OverrideSearchPathMatchesCurrent");
+{
 	ListCell   *lc,
 			   *lcp;
 
@@ -3206,7 +3206,7 @@ OverrideSearchPathMatchesCurrent(OverrideSearchPath *path)
  */
 void
 PushOverrideSearchPath(OverrideSearchPath *newpath)
-{	StackTrace("PushOverrideSearchPath");
+{
 	OverrideStackEntry *entry;
 	List	   *oidlist;
 	Oid			firstNS;
@@ -3265,7 +3265,7 @@ PushOverrideSearchPath(OverrideSearchPath *newpath)
  */
 void
 PopOverrideSearchPath(void)
-{	StackTrace("PopOverrideSearchPath");
+{
 	OverrideStackEntry *entry;
 
 	/* Sanity checks. */
@@ -3303,7 +3303,7 @@ PopOverrideSearchPath(void)
  */
 Oid
 get_collation_oid(List *name, bool missing_ok)
-{	StackTrace("get_collation_oid");
+{
 	char	   *schemaname;
 	char	   *collation_name;
 	int32		dbencoding = GetDatabaseEncoding();
@@ -3376,7 +3376,7 @@ get_collation_oid(List *name, bool missing_ok)
  */
 Oid
 get_conversion_oid(List *name, bool missing_ok)
-{	StackTrace("get_conversion_oid");
+{
 	char	   *schemaname;
 	char	   *conversion_name;
 	Oid			namespaceId;
@@ -3431,7 +3431,7 @@ get_conversion_oid(List *name, bool missing_ok)
  */
 Oid
 FindDefaultConversionProc(int32 for_encoding, int32 to_encoding)
-{	StackTrace("FindDefaultConversionProc");
+{
 	Oid			proc;
 	ListCell   *l;
 
@@ -3458,7 +3458,7 @@ FindDefaultConversionProc(int32 for_encoding, int32 to_encoding)
  */
 static void
 recomputeNamespacePath(void)
-{	StackTrace("recomputeNamespacePath");
+{
 	Oid			roleid = GetUserId();
 	char	   *rawname;
 	List	   *namelist;
@@ -3608,7 +3608,7 @@ recomputeNamespacePath(void)
  */
 static void
 InitTempTableNamespace(void)
-{	StackTrace("InitTempTableNamespace");
+{
 	char		namespaceName[NAMEDATALEN];
 	Oid			namespaceId;
 	Oid			toastspaceId;
@@ -3717,7 +3717,7 @@ InitTempTableNamespace(void)
  */
 void
 AtEOXact_Namespace(bool isCommit, bool parallel)
-{	StackTrace("AtEOXact_Namespace");
+{
 	/*
 	 * If we abort the transaction in which a temp namespace was selected,
 	 * we'll have to do any creation or cleanout work over again.  So, just
@@ -3773,7 +3773,7 @@ AtEOXact_Namespace(bool isCommit, bool parallel)
 void
 AtEOSubXact_Namespace(bool isCommit, SubTransactionId mySubid,
 					  SubTransactionId parentSubid)
-{	StackTrace("AtEOSubXact_Namespace");
+{
 	OverrideStackEntry *entry;
 
 	if (myTempNamespaceSubID == mySubid)
@@ -3832,7 +3832,7 @@ AtEOSubXact_Namespace(bool isCommit, SubTransactionId mySubid,
  */
 static void
 RemoveTempRelations(Oid tempNamespaceId)
-{	StackTrace("RemoveTempRelations");
+{
 	ObjectAddress object;
 
 	/*
@@ -3853,7 +3853,7 @@ RemoveTempRelations(Oid tempNamespaceId)
  */
 static void
 RemoveTempRelationsCallback(int code, Datum arg)
-{	StackTrace("RemoveTempRelationsCallback");
+{
 	if (OidIsValid(myTempNamespace))	/* should always be true */
 	{
 		/* Need to ensure we have a usable transaction. */
@@ -3871,7 +3871,7 @@ RemoveTempRelationsCallback(int code, Datum arg)
  */
 void
 ResetTempTableNamespace(void)
-{	StackTrace("ResetTempTableNamespace");
+{
 	if (OidIsValid(myTempNamespace))
 		RemoveTempRelations(myTempNamespace);
 }
@@ -3884,7 +3884,7 @@ ResetTempTableNamespace(void)
 /* check_hook: validate new search_path value */
 bool
 check_search_path(char **newval, void **extra, GucSource source)
-{	StackTrace("check_search_path");
+{
 	char	   *rawname;
 	List	   *namelist;
 
@@ -3918,7 +3918,7 @@ check_search_path(char **newval, void **extra, GucSource source)
 /* assign_hook: do extra actions as needed */
 void
 assign_search_path(const char *newval, void *extra)
-{	StackTrace("assign_search_path");
+{
 	/*
 	 * We mark the path as needing recomputation, but don't do anything until
 	 * it's needed.  This avoids trying to do database access during GUC
@@ -3934,7 +3934,7 @@ assign_search_path(const char *newval, void *extra)
  */
 void
 InitializeSearchPath(void)
-{	StackTrace("InitializeSearchPath");
+{
 	if (IsBootstrapProcessingMode())
 	{
 		/*
@@ -3974,7 +3974,7 @@ InitializeSearchPath(void)
  */
 static void
 NamespaceCallback(Datum arg, int cacheid, uint32 hashvalue)
-{	StackTrace("NamespaceCallback");
+{
 	/* Force search path to be recomputed on next use */
 	baseSearchPathValid = false;
 }
@@ -3992,7 +3992,7 @@ NamespaceCallback(Datum arg, int cacheid, uint32 hashvalue)
  */
 List *
 fetch_search_path(bool includeImplicit)
-{	StackTrace("fetch_search_path");
+{
 	List	   *result;
 
 	recomputeNamespacePath();
@@ -4032,7 +4032,7 @@ fetch_search_path(bool includeImplicit)
  */
 int
 fetch_search_path_array(Oid *sarray, int sarray_len)
-{	StackTrace("fetch_search_path_array");
+{
 	int			count = 0;
 	ListCell   *l;
 
@@ -4069,7 +4069,7 @@ fetch_search_path_array(Oid *sarray, int sarray_len)
 
 Datum
 pg_table_is_visible(PG_FUNCTION_ARGS)
-{	StackTrace("pg_table_is_visible");
+{
 	Oid			oid = PG_GETARG_OID(0);
 
 	if (!SearchSysCacheExists1(RELOID, ObjectIdGetDatum(oid)))
@@ -4080,7 +4080,7 @@ pg_table_is_visible(PG_FUNCTION_ARGS)
 
 Datum
 pg_type_is_visible(PG_FUNCTION_ARGS)
-{	StackTrace("pg_type_is_visible");
+{
 	Oid			oid = PG_GETARG_OID(0);
 
 	if (!SearchSysCacheExists1(TYPEOID, ObjectIdGetDatum(oid)))
@@ -4091,7 +4091,7 @@ pg_type_is_visible(PG_FUNCTION_ARGS)
 
 Datum
 pg_function_is_visible(PG_FUNCTION_ARGS)
-{	StackTrace("pg_function_is_visible");
+{
 	Oid			oid = PG_GETARG_OID(0);
 
 	if (!SearchSysCacheExists1(PROCOID, ObjectIdGetDatum(oid)))
@@ -4102,7 +4102,7 @@ pg_function_is_visible(PG_FUNCTION_ARGS)
 
 Datum
 pg_operator_is_visible(PG_FUNCTION_ARGS)
-{	StackTrace("pg_operator_is_visible");
+{
 	Oid			oid = PG_GETARG_OID(0);
 
 	if (!SearchSysCacheExists1(OPEROID, ObjectIdGetDatum(oid)))
@@ -4113,7 +4113,7 @@ pg_operator_is_visible(PG_FUNCTION_ARGS)
 
 Datum
 pg_opclass_is_visible(PG_FUNCTION_ARGS)
-{	StackTrace("pg_opclass_is_visible");
+{
 	Oid			oid = PG_GETARG_OID(0);
 
 	if (!SearchSysCacheExists1(CLAOID, ObjectIdGetDatum(oid)))
@@ -4124,7 +4124,7 @@ pg_opclass_is_visible(PG_FUNCTION_ARGS)
 
 Datum
 pg_opfamily_is_visible(PG_FUNCTION_ARGS)
-{	StackTrace("pg_opfamily_is_visible");
+{
 	Oid			oid = PG_GETARG_OID(0);
 
 	if (!SearchSysCacheExists1(OPFAMILYOID, ObjectIdGetDatum(oid)))
@@ -4135,7 +4135,7 @@ pg_opfamily_is_visible(PG_FUNCTION_ARGS)
 
 Datum
 pg_collation_is_visible(PG_FUNCTION_ARGS)
-{	StackTrace("pg_collation_is_visible");
+{
 	Oid			oid = PG_GETARG_OID(0);
 
 	if (!SearchSysCacheExists1(COLLOID, ObjectIdGetDatum(oid)))
@@ -4146,7 +4146,7 @@ pg_collation_is_visible(PG_FUNCTION_ARGS)
 
 Datum
 pg_conversion_is_visible(PG_FUNCTION_ARGS)
-{	StackTrace("pg_conversion_is_visible");
+{
 	Oid			oid = PG_GETARG_OID(0);
 
 	if (!SearchSysCacheExists1(CONVOID, ObjectIdGetDatum(oid)))
@@ -4157,7 +4157,7 @@ pg_conversion_is_visible(PG_FUNCTION_ARGS)
 
 Datum
 pg_ts_parser_is_visible(PG_FUNCTION_ARGS)
-{	StackTrace("pg_ts_parser_is_visible");
+{
 	Oid			oid = PG_GETARG_OID(0);
 
 	if (!SearchSysCacheExists1(TSPARSEROID, ObjectIdGetDatum(oid)))
@@ -4168,7 +4168,7 @@ pg_ts_parser_is_visible(PG_FUNCTION_ARGS)
 
 Datum
 pg_ts_dict_is_visible(PG_FUNCTION_ARGS)
-{	StackTrace("pg_ts_dict_is_visible");
+{
 	Oid			oid = PG_GETARG_OID(0);
 
 	if (!SearchSysCacheExists1(TSDICTOID, ObjectIdGetDatum(oid)))
@@ -4179,7 +4179,7 @@ pg_ts_dict_is_visible(PG_FUNCTION_ARGS)
 
 Datum
 pg_ts_template_is_visible(PG_FUNCTION_ARGS)
-{	StackTrace("pg_ts_template_is_visible");
+{
 	Oid			oid = PG_GETARG_OID(0);
 
 	if (!SearchSysCacheExists1(TSTEMPLATEOID, ObjectIdGetDatum(oid)))
@@ -4190,7 +4190,7 @@ pg_ts_template_is_visible(PG_FUNCTION_ARGS)
 
 Datum
 pg_ts_config_is_visible(PG_FUNCTION_ARGS)
-{	StackTrace("pg_ts_config_is_visible");
+{
 	Oid			oid = PG_GETARG_OID(0);
 
 	if (!SearchSysCacheExists1(TSCONFIGOID, ObjectIdGetDatum(oid)))
@@ -4201,13 +4201,13 @@ pg_ts_config_is_visible(PG_FUNCTION_ARGS)
 
 Datum
 pg_my_temp_schema(PG_FUNCTION_ARGS)
-{	StackTrace("pg_my_temp_schema");
+{
 	PG_RETURN_OID(myTempNamespace);
 }
 
 Datum
 pg_is_other_temp_schema(PG_FUNCTION_ARGS)
-{	StackTrace("pg_is_other_temp_schema");
+{
 	Oid			oid = PG_GETARG_OID(0);
 
 	PG_RETURN_BOOL(isOtherTempNamespace(oid));

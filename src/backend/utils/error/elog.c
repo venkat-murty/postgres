@@ -188,7 +188,7 @@ static void setup_formatted_start_time(void);
  */
 bool
 in_error_recursion_trouble(void)
-{	StackTrace("in_error_recursion_trouble");
+{
 	/* Pull the plug if recurse more than once */
 	return (recursion_depth > 2);
 }
@@ -200,7 +200,7 @@ in_error_recursion_trouble(void)
  */
 static inline const char *
 err_gettext(const char *str)
-{	StackTrace("err_gettext");
+{
 #ifdef ENABLE_NLS
 	if (in_error_recursion_trouble())
 		return str;
@@ -226,7 +226,7 @@ err_gettext(const char *str)
 bool
 errstart(int elevel, const char *filename, int lineno,
 		 const char *funcname, const char *domain)
-{	StackTrace("errstart");
+{
 	ErrorData  *edata;
 	bool		output_to_server;
 	bool		output_to_client = false;
@@ -405,7 +405,7 @@ errstart(int elevel, const char *filename, int lineno,
  */
 void
 errfinish(int dummy,...)
-{	StackTrace("errfinish");
+{
 	ErrorData  *edata = &errordata[errordata_stack_depth];
 	int			elevel;
 	MemoryContext oldcontext;
@@ -567,7 +567,7 @@ errfinish(int dummy,...)
  */
 int
 errcode(int sqlerrcode)
-{	StackTrace("errcode");
+{
 	ErrorData  *edata = &errordata[errordata_stack_depth];
 
 	/* we don't bother incrementing recursion_depth */
@@ -590,7 +590,7 @@ errcode(int sqlerrcode)
  */
 int
 errcode_for_file_access(void)
-{	StackTrace("errcode_for_file_access");
+{
 	ErrorData  *edata = &errordata[errordata_stack_depth];
 
 	/* we don't bother incrementing recursion_depth */
@@ -661,7 +661,7 @@ errcode_for_file_access(void)
  */
 int
 errcode_for_socket_access(void)
-{	StackTrace("errcode_for_socket_access");
+{
 	ErrorData  *edata = &errordata[errordata_stack_depth];
 
 	/* we don't bother incrementing recursion_depth */
@@ -789,7 +789,7 @@ errcode_for_socket_access(void)
  */
 int
 errmsg(const char *fmt,...)
-{	StackTrace("errmsg");
+{
 	ErrorData  *edata = &errordata[errordata_stack_depth];
 	MemoryContext oldcontext;
 
@@ -818,7 +818,7 @@ errmsg(const char *fmt,...)
  */
 int
 errmsg_internal(const char *fmt,...)
-{	StackTrace("errmsg_internal");
+{
 	ErrorData  *edata = &errordata[errordata_stack_depth];
 	MemoryContext oldcontext;
 
@@ -841,7 +841,7 @@ errmsg_internal(const char *fmt,...)
 int
 errmsg_plural(const char *fmt_singular, const char *fmt_plural,
 			  unsigned long n,...)
-{	StackTrace("errmsg_plural");
+{
 	ErrorData  *edata = &errordata[errordata_stack_depth];
 	MemoryContext oldcontext;
 
@@ -862,7 +862,7 @@ errmsg_plural(const char *fmt_singular, const char *fmt_plural,
  */
 int
 errdetail(const char *fmt,...)
-{	StackTrace("errdetail");
+{
 	ErrorData  *edata = &errordata[errordata_stack_depth];
 	MemoryContext oldcontext;
 
@@ -889,7 +889,7 @@ errdetail(const char *fmt,...)
  */
 int
 errdetail_internal(const char *fmt,...)
-{	StackTrace("errdetail_internal");
+{
 	ErrorData  *edata = &errordata[errordata_stack_depth];
 	MemoryContext oldcontext;
 
@@ -910,7 +910,7 @@ errdetail_internal(const char *fmt,...)
  */
 int
 errdetail_log(const char *fmt,...)
-{	StackTrace("errdetail_log");
+{
 	ErrorData  *edata = &errordata[errordata_stack_depth];
 	MemoryContext oldcontext;
 
@@ -932,7 +932,7 @@ errdetail_log(const char *fmt,...)
 int
 errdetail_log_plural(const char *fmt_singular, const char *fmt_plural,
 					 unsigned long n,...)
-{	StackTrace("errdetail_log_plural");
+{
 	ErrorData  *edata = &errordata[errordata_stack_depth];
 	MemoryContext oldcontext;
 
@@ -955,7 +955,7 @@ errdetail_log_plural(const char *fmt_singular, const char *fmt_plural,
 int
 errdetail_plural(const char *fmt_singular, const char *fmt_plural,
 				 unsigned long n,...)
-{	StackTrace("errdetail_plural");
+{
 	ErrorData  *edata = &errordata[errordata_stack_depth];
 	MemoryContext oldcontext;
 
@@ -976,7 +976,7 @@ errdetail_plural(const char *fmt_singular, const char *fmt_plural,
  */
 int
 errhint(const char *fmt,...)
-{	StackTrace("errhint");
+{
 	ErrorData  *edata = &errordata[errordata_stack_depth];
 	MemoryContext oldcontext;
 
@@ -1001,7 +1001,7 @@ errhint(const char *fmt,...)
  */
 int
 errcontext_msg(const char *fmt,...)
-{	StackTrace("errcontext_msg");
+{
 	ErrorData  *edata = &errordata[errordata_stack_depth];
 	MemoryContext oldcontext;
 
@@ -1037,7 +1037,7 @@ errcontext_msg(const char *fmt,...)
  */
 int
 set_errcontext_domain(const char *domain)
-{	StackTrace("set_errcontext_domain");
+{
 	ErrorData  *edata = &errordata[errordata_stack_depth];
 
 	/* we don't bother incrementing recursion_depth */
@@ -1057,7 +1057,7 @@ set_errcontext_domain(const char *domain)
  */
 int
 errhidestmt(bool hide_stmt)
-{	StackTrace("errhidestmt");
+{
 	ErrorData  *edata = &errordata[errordata_stack_depth];
 
 	/* we don't bother incrementing recursion_depth */
@@ -1076,7 +1076,7 @@ errhidestmt(bool hide_stmt)
  */
 int
 errhidecontext(bool hide_ctx)
-{	StackTrace("errhidecontext");
+{
 	ErrorData  *edata = &errordata[errordata_stack_depth];
 
 	/* we don't bother incrementing recursion_depth */
@@ -1097,7 +1097,7 @@ errhidecontext(bool hide_ctx)
  */
 int
 errfunction(const char *funcname)
-{	StackTrace("errfunction");
+{
 	ErrorData  *edata = &errordata[errordata_stack_depth];
 
 	/* we don't bother incrementing recursion_depth */
@@ -1114,7 +1114,7 @@ errfunction(const char *funcname)
  */
 int
 errposition(int cursorpos)
-{	StackTrace("errposition");
+{
 	ErrorData  *edata = &errordata[errordata_stack_depth];
 
 	/* we don't bother incrementing recursion_depth */
@@ -1130,7 +1130,7 @@ errposition(int cursorpos)
  */
 int
 internalerrposition(int cursorpos)
-{	StackTrace("internalerrposition");
+{
 	ErrorData  *edata = &errordata[errordata_stack_depth];
 
 	/* we don't bother incrementing recursion_depth */
@@ -1150,7 +1150,7 @@ internalerrposition(int cursorpos)
  */
 int
 internalerrquery(const char *query)
-{	StackTrace("internalerrquery");
+{
 	ErrorData  *edata = &errordata[errordata_stack_depth];
 
 	/* we don't bother incrementing recursion_depth */
@@ -1180,7 +1180,7 @@ internalerrquery(const char *query)
  */
 int
 err_generic_string(int field, const char *str)
-{	StackTrace("err_generic_string");
+{
 	ErrorData  *edata = &errordata[errordata_stack_depth];
 
 	/* we don't bother incrementing recursion_depth */
@@ -1216,7 +1216,7 @@ err_generic_string(int field, const char *str)
  */
 static void
 set_errdata_field(MemoryContextData *cxt, char **ptr, const char *str)
-{	StackTrace("set_errdata_field");
+{
 	Assert(*ptr == NULL);
 	*ptr = MemoryContextStrdup(cxt, str);
 }
@@ -1229,7 +1229,7 @@ set_errdata_field(MemoryContextData *cxt, char **ptr, const char *str)
  */
 int
 geterrcode(void)
-{	StackTrace("geterrcode");
+{
 	ErrorData  *edata = &errordata[errordata_stack_depth];
 
 	/* we don't bother incrementing recursion_depth */
@@ -1246,7 +1246,7 @@ geterrcode(void)
  */
 int
 geterrposition(void)
-{	StackTrace("geterrposition");
+{
 	ErrorData  *edata = &errordata[errordata_stack_depth];
 
 	/* we don't bother incrementing recursion_depth */
@@ -1263,7 +1263,7 @@ geterrposition(void)
  */
 int
 getinternalerrposition(void)
-{	StackTrace("getinternalerrposition");
+{
 	ErrorData  *edata = &errordata[errordata_stack_depth];
 
 	/* we don't bother incrementing recursion_depth */
@@ -1287,7 +1287,7 @@ getinternalerrposition(void)
  */
 void
 elog_start(const char *filename, int lineno, const char *funcname)
-{	StackTrace("elog_start");
+{
 	ErrorData  *edata;
 
 	/* Make sure that memory context initialization has finished */
@@ -1337,7 +1337,7 @@ elog_start(const char *filename, int lineno, const char *funcname)
  */
 void
 elog_finish(int elevel, const char *fmt,...)
-{	StackTrace("elog_finish");
+{
 	ErrorData  *edata = &errordata[errordata_stack_depth];
 	MemoryContext oldcontext;
 
@@ -1392,7 +1392,7 @@ static const char *save_format_domain;
 
 void
 pre_format_elog_string(int errnumber, const char *domain)
-{	StackTrace("pre_format_elog_string");
+{
 	/* Save errno before evaluation of argument functions can change it */
 	save_format_errnumber = errnumber;
 	/* Save caller's text domain */
@@ -1401,7 +1401,7 @@ pre_format_elog_string(int errnumber, const char *domain)
 
 char *
 format_elog_string(const char *fmt,...)
-{	StackTrace("format_elog_string");
+{
 	ErrorData	errdata;
 	ErrorData  *edata;
 	MemoryContext oldcontext;
@@ -1433,7 +1433,7 @@ format_elog_string(const char *fmt,...)
  */
 void
 EmitErrorReport(void)
-{	StackTrace("EmitErrorReport");
+{
 	ErrorData  *edata = &errordata[errordata_stack_depth];
 	MemoryContext oldcontext;
 
@@ -1479,7 +1479,7 @@ EmitErrorReport(void)
  */
 ErrorData *
 CopyErrorData(void)
-{	StackTrace("CopyErrorData");
+{
 	ErrorData  *edata = &errordata[errordata_stack_depth];
 	ErrorData  *newedata;
 
@@ -1533,7 +1533,7 @@ CopyErrorData(void)
  */
 void
 FreeErrorData(ErrorData *edata)
-{	StackTrace("FreeErrorData");
+{
 	if (edata->message)
 		pfree(edata->message);
 	if (edata->detail)
@@ -1569,7 +1569,7 @@ FreeErrorData(ErrorData *edata)
  */
 void
 FlushErrorState(void)
-{	StackTrace("FlushErrorState");
+{
 	/*
 	 * Reset stack to empty.  The only case where it would be more than one
 	 * deep is if we serviced an error that interrupted construction of
@@ -1591,7 +1591,7 @@ FlushErrorState(void)
  */
 void
 ThrowErrorData(ErrorData *edata)
-{	StackTrace("ThrowErrorData");
+{
 	ErrorData  *newedata;
 	MemoryContext oldcontext;
 
@@ -1643,7 +1643,7 @@ ThrowErrorData(ErrorData *edata)
  */
 void
 ReThrowError(ErrorData *edata)
-{	StackTrace("ReThrowError");
+{
 	ErrorData  *newedata;
 
 	Assert(edata->elevel == ERROR);
@@ -1702,7 +1702,7 @@ ReThrowError(ErrorData *edata)
  */
 void
 pg_re_throw(void)
-{	StackTrace("pg_re_throw");
+{
 	/* If possible, throw the error to the next outer setjmp handler */
 	if (PG_exception_stack != NULL)
 		siglongjmp(*PG_exception_stack, 1);
@@ -1769,7 +1769,7 @@ pg_re_throw(void)
  */
 char *
 GetErrorContextStack(void)
-{	StackTrace("GetErrorContextStack");
+{
 	ErrorData  *edata;
 	ErrorContextCallback *econtext;
 
@@ -1836,7 +1836,7 @@ GetErrorContextStack(void)
  */
 void
 DebugFileOpen(void)
-{	StackTrace("DebugFileOpen");
+{
 	int			fd,
 				istty;
 
@@ -1887,7 +1887,7 @@ DebugFileOpen(void)
  */
 void
 set_syslog_parameters(const char *ident, int facility)
-{	StackTrace("set_syslog_parameters");
+{
 	/*
 	 * guc.c is likely to call us repeatedly with same parameters, so don't
 	 * thrash the syslog connection unnecessarily.  Also, we do not re-open
@@ -1920,7 +1920,7 @@ set_syslog_parameters(const char *ident, int facility)
  */
 static void
 write_syslog(int level, const char *line)
-{	StackTrace("write_syslog");
+{
 	static unsigned long seq = 0;
 
 	int			len;
@@ -2025,7 +2025,7 @@ write_syslog(int level, const char *line)
  */
 static int
 GetACPEncoding(void)
-{	StackTrace("GetACPEncoding");
+{
 	static int	encoding = -2;
 
 	if (encoding == -2)
@@ -2039,7 +2039,7 @@ GetACPEncoding(void)
  */
 static void
 write_eventlog(int level, const char *line, int len)
-{	StackTrace("write_eventlog");
+{
 	WCHAR	   *utf16;
 	int			eventlevel = EVENTLOG_ERROR_TYPE;
 	static HANDLE evtHandle = INVALID_HANDLE_VALUE;
@@ -2123,7 +2123,7 @@ write_eventlog(int level, const char *line, int len)
 
 static void
 write_console(const char *line, int len)
-{	StackTrace("write_console");
+{
 	int			rc;
 
 #ifdef WIN32
@@ -2194,7 +2194,7 @@ write_console(const char *line, int len)
  */
 static void
 setup_formatted_log_time(void)
-{	StackTrace("setup_formatted_log_time");
+{
 	struct timeval tv;
 	pg_time_t	stamp_time;
 	char		msbuf[8];
@@ -2222,7 +2222,7 @@ setup_formatted_log_time(void)
  */
 static void
 setup_formatted_start_time(void)
-{	StackTrace("setup_formatted_start_time");
+{
 	pg_time_t	stamp_time = (pg_time_t) MyStartTime;
 
 	/*
@@ -2244,7 +2244,7 @@ setup_formatted_start_time(void)
  */
 static const char *
 process_log_prefix_padding(const char *p, int *ppadding)
-{	StackTrace("process_log_prefix_padding");
+{
 	int			paddingsign = 1;
 	int			padding = 0;
 
@@ -2275,7 +2275,7 @@ process_log_prefix_padding(const char *p, int *ppadding)
  */
 static void
 log_line_prefix(StringInfo buf, ErrorData *edata)
-{	StackTrace("log_line_prefix");
+{
 	/* static counter for line numbers */
 	static long log_line_number = 0;
 
@@ -2565,7 +2565,7 @@ log_line_prefix(StringInfo buf, ErrorData *edata)
  */
 static inline void
 appendCSVLiteral(StringInfo buf, const char *data)
-{	StackTrace("appendCSVLiteral");
+{
 	const char *p = data;
 	char		c;
 
@@ -2589,7 +2589,7 @@ appendCSVLiteral(StringInfo buf, const char *data)
  */
 static void
 write_csvlog(ErrorData *edata)
-{	StackTrace("write_csvlog");
+{
 	StringInfoData buf;
 	bool		print_stmt = false;
 
@@ -2786,7 +2786,7 @@ write_csvlog(ErrorData *edata)
  */
 char *
 unpack_sql_state(int sql_state)
-{	StackTrace("unpack_sql_state");
+{
 	static char buf[12];
 	int			i;
 
@@ -2806,7 +2806,7 @@ unpack_sql_state(int sql_state)
  */
 static void
 send_message_to_server_log(ErrorData *edata)
-{	StackTrace("send_message_to_server_log");
+{
 	StringInfoData buf;
 
 	initStringInfo(&buf);
@@ -3032,7 +3032,7 @@ send_message_to_server_log(ErrorData *edata)
  */
 static void
 write_pipe_chunks(char *data, int len, int dest)
-{	StackTrace("write_pipe_chunks");
+{
 	PipeProtoChunk p;
 	int			fd = fileno(stderr);
 	int			rc;
@@ -3076,7 +3076,7 @@ write_pipe_chunks(char *data, int len, int dest)
  */
 static void
 err_sendstring(StringInfo buf, const char *str)
-{	StackTrace("err_sendstring");
+{
 	if (in_error_recursion_trouble())
 		pq_send_ascii_string(buf, str);
 	else
@@ -3088,7 +3088,7 @@ err_sendstring(StringInfo buf, const char *str)
  */
 static void
 send_message_to_frontend(ErrorData *edata)
-{	StackTrace("send_message_to_frontend");
+{
 	StringInfoData msgbuf;
 
 	/* 'N' (Notice) is for nonfatal conditions, 'E' is for errors */
@@ -3274,7 +3274,7 @@ send_message_to_frontend(ErrorData *edata)
  */
 static char *
 expand_fmt_string(const char *fmt, ErrorData *edata)
-{	StackTrace("expand_fmt_string");
+{
 	StringInfoData buf;
 	const char *cp;
 
@@ -3322,7 +3322,7 @@ expand_fmt_string(const char *fmt, ErrorData *edata)
  */
 static const char *
 useful_strerror(int errnum)
-{	StackTrace("useful_strerror");
+{
 	/* this buffer is only used if strerror() and get_errno_symbol() fail */
 	static char errorstr_buf[48];
 	const char *str;
@@ -3363,7 +3363,7 @@ useful_strerror(int errnum)
  */
 static const char *
 get_errno_symbol(int errnum)
-{	StackTrace("get_errno_symbol");
+{
 	switch (errnum)
 	{
 		case E2BIG:
@@ -3535,7 +3535,7 @@ get_errno_symbol(int errnum)
  */
 static const char *
 error_severity(int elevel)
-{	StackTrace("error_severity");
+{
 	const char *prefix;
 
 	switch (elevel)
@@ -3586,7 +3586,7 @@ error_severity(int elevel)
  */
 static void
 append_with_tabs(StringInfo buf, const char *str)
-{	StackTrace("append_with_tabs");
+{
 	char		ch;
 
 	while ((ch = *str++) != '\0')
@@ -3605,7 +3605,7 @@ append_with_tabs(StringInfo buf, const char *str)
  */
 void
 write_stderr(const char *fmt,...)
-{	StackTrace("write_stderr");
+{
 	va_list		ap;
 
 #ifdef WIN32
@@ -3651,7 +3651,7 @@ write_stderr(const char *fmt,...)
  */
 static bool
 is_log_level_output(int elevel, int log_min_level)
-{	StackTrace("is_log_level_output");
+{
 	if (elevel == LOG || elevel == COMMERROR)
 	{
 		if (log_min_level == LOG || log_min_level <= ERROR)
@@ -3687,7 +3687,7 @@ is_log_level_output(int elevel, int log_min_level)
  */
 int
 trace_recovery(int trace_level)
-{	StackTrace("trace_recovery");
+{
 	if (trace_level < LOG &&
 		trace_level >= trace_recovery_messages)
 		return LOG;

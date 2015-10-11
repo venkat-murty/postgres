@@ -27,7 +27,7 @@
  */
 void
 _hash_doinsert(Relation rel, IndexTuple itup)
-{	StackTrace("_hash_doinsert");
+{
 	Buffer		buf;
 	Buffer		metabuf;
 	HashMetaPage metap;
@@ -200,7 +200,7 @@ _hash_doinsert(Relation rel, IndexTuple itup)
  */
 OffsetNumber
 _hash_pgaddtup(Relation rel, Buffer buf, Size itemsize, IndexTuple itup)
-{	StackTrace("_hash_pgaddtup");
+{
 	OffsetNumber itup_off;
 	Page		page;
 	uint32		hashkey;

@@ -23,7 +23,7 @@
 
 Datum
 gtsquery_compress(PG_FUNCTION_ARGS)
-{	StackTrace("gtsquery_compress");
+{
 	GISTENTRY  *entry = (GISTENTRY *) PG_GETARG_POINTER(0);
 	GISTENTRY  *retval = entry;
 
@@ -44,13 +44,13 @@ gtsquery_compress(PG_FUNCTION_ARGS)
 
 Datum
 gtsquery_decompress(PG_FUNCTION_ARGS)
-{	StackTrace("gtsquery_decompress");
+{
 	PG_RETURN_DATUM(PG_GETARG_DATUM(0));
 }
 
 Datum
 gtsquery_consistent(PG_FUNCTION_ARGS)
-{	StackTrace("gtsquery_consistent");
+{
 	GISTENTRY  *entry = (GISTENTRY *) PG_GETARG_POINTER(0);
 	TSQuery		query = PG_GETARG_TSQUERY(1);
 	StrategyNumber strategy = (StrategyNumber) PG_GETARG_UINT16(2);
@@ -86,7 +86,7 @@ gtsquery_consistent(PG_FUNCTION_ARGS)
 
 Datum
 gtsquery_union(PG_FUNCTION_ARGS)
-{	StackTrace("gtsquery_union");
+{
 	GistEntryVector *entryvec = (GistEntryVector *) PG_GETARG_POINTER(0);
 	int		   *size = (int *) PG_GETARG_POINTER(1);
 	TSQuerySign sign;
@@ -104,7 +104,7 @@ gtsquery_union(PG_FUNCTION_ARGS)
 
 Datum
 gtsquery_same(PG_FUNCTION_ARGS)
-{	StackTrace("gtsquery_same");
+{
 	TSQuerySign a = PG_GETARG_TSQUERYSIGN(0);
 	TSQuerySign b = PG_GETARG_TSQUERYSIGN(1);
 	bool	   *result = (bool *) PG_GETARG_POINTER(2);
@@ -116,7 +116,7 @@ gtsquery_same(PG_FUNCTION_ARGS)
 
 static int
 sizebitvec(TSQuerySign sign)
-{	StackTrace("sizebitvec");
+{
 	int			size = 0,
 				i;
 
@@ -128,7 +128,7 @@ sizebitvec(TSQuerySign sign)
 
 static int
 hemdist(TSQuerySign a, TSQuerySign b)
-{	StackTrace("hemdist");
+{
 	TSQuerySign res = a ^ b;
 
 	return sizebitvec(res);
@@ -136,7 +136,7 @@ hemdist(TSQuerySign a, TSQuerySign b)
 
 Datum
 gtsquery_penalty(PG_FUNCTION_ARGS)
-{	StackTrace("gtsquery_penalty");
+{
 	TSQuerySign origval = DatumGetTSQuerySign(((GISTENTRY *) PG_GETARG_POINTER(0))->key);
 	TSQuerySign newval = DatumGetTSQuerySign(((GISTENTRY *) PG_GETARG_POINTER(1))->key);
 	float	   *penalty = (float *) PG_GETARG_POINTER(2);
@@ -155,7 +155,7 @@ typedef struct
 
 static int
 comparecost(const void *a, const void *b)
-{	StackTrace("comparecost");
+{
 	if (((const SPLITCOST *) a)->cost == ((const SPLITCOST *) b)->cost)
 		return 0;
 	else
@@ -166,7 +166,7 @@ comparecost(const void *a, const void *b)
 
 Datum
 gtsquery_picksplit(PG_FUNCTION_ARGS)
-{	StackTrace("gtsquery_picksplit");
+{
 	GistEntryVector *entryvec = (GistEntryVector *) PG_GETARG_POINTER(0);
 	GIST_SPLITVEC *v = (GIST_SPLITVEC *) PG_GETARG_POINTER(1);
 	OffsetNumber maxoff = entryvec->n - 2;

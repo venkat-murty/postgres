@@ -35,7 +35,7 @@
  */
 Datum
 cstring_in(PG_FUNCTION_ARGS)
-{	StackTrace("cstring_in");
+{
 	char	   *str = PG_GETARG_CSTRING(0);
 
 	PG_RETURN_CSTRING(pstrdup(str));
@@ -49,7 +49,7 @@ cstring_in(PG_FUNCTION_ARGS)
  */
 Datum
 cstring_out(PG_FUNCTION_ARGS)
-{	StackTrace("cstring_out");
+{
 	char	   *str = PG_GETARG_CSTRING(0);
 
 	PG_RETURN_CSTRING(pstrdup(str));
@@ -60,7 +60,7 @@ cstring_out(PG_FUNCTION_ARGS)
  */
 Datum
 cstring_recv(PG_FUNCTION_ARGS)
-{	StackTrace("cstring_recv");
+{
 	StringInfo	buf = (StringInfo) PG_GETARG_POINTER(0);
 	char	   *str;
 	int			nbytes;
@@ -74,7 +74,7 @@ cstring_recv(PG_FUNCTION_ARGS)
  */
 Datum
 cstring_send(PG_FUNCTION_ARGS)
-{	StackTrace("cstring_send");
+{
 	char	   *str = PG_GETARG_CSTRING(0);
 	StringInfoData buf;
 
@@ -89,7 +89,7 @@ cstring_send(PG_FUNCTION_ARGS)
  */
 Datum
 any_in(PG_FUNCTION_ARGS)
-{	StackTrace("any_in");
+{
 	ereport(ERROR,
 			(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
 			 errmsg("cannot accept a value of type any")));
@@ -102,7 +102,7 @@ any_in(PG_FUNCTION_ARGS)
  */
 Datum
 any_out(PG_FUNCTION_ARGS)
-{	StackTrace("any_out");
+{
 	ereport(ERROR,
 			(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
 			 errmsg("cannot display a value of type any")));
@@ -116,7 +116,7 @@ any_out(PG_FUNCTION_ARGS)
  */
 Datum
 anyarray_in(PG_FUNCTION_ARGS)
-{	StackTrace("anyarray_in");
+{
 	ereport(ERROR,
 			(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
 			 errmsg("cannot accept a value of type anyarray")));
@@ -131,7 +131,7 @@ anyarray_in(PG_FUNCTION_ARGS)
  */
 Datum
 anyarray_out(PG_FUNCTION_ARGS)
-{	StackTrace("anyarray_out");
+{
 	return array_out(fcinfo);
 }
 
@@ -144,7 +144,7 @@ anyarray_out(PG_FUNCTION_ARGS)
  */
 Datum
 anyarray_recv(PG_FUNCTION_ARGS)
-{	StackTrace("anyarray_recv");
+{
 	ereport(ERROR,
 			(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
 			 errmsg("cannot accept a value of type anyarray")));
@@ -159,7 +159,7 @@ anyarray_recv(PG_FUNCTION_ARGS)
  */
 Datum
 anyarray_send(PG_FUNCTION_ARGS)
-{	StackTrace("anyarray_send");
+{
 	return array_send(fcinfo);
 }
 
@@ -169,7 +169,7 @@ anyarray_send(PG_FUNCTION_ARGS)
  */
 Datum
 anyenum_in(PG_FUNCTION_ARGS)
-{	StackTrace("anyenum_in");
+{
 	ereport(ERROR,
 			(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
 			 errmsg("cannot accept a value of type anyenum")));
@@ -184,7 +184,7 @@ anyenum_in(PG_FUNCTION_ARGS)
  */
 Datum
 anyenum_out(PG_FUNCTION_ARGS)
-{	StackTrace("anyenum_out");
+{
 	return enum_out(fcinfo);
 }
 
@@ -193,7 +193,7 @@ anyenum_out(PG_FUNCTION_ARGS)
  */
 Datum
 anyrange_in(PG_FUNCTION_ARGS)
-{	StackTrace("anyrange_in");
+{
 	ereport(ERROR,
 			(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
 			 errmsg("cannot accept a value of type anyrange")));
@@ -208,7 +208,7 @@ anyrange_in(PG_FUNCTION_ARGS)
  */
 Datum
 anyrange_out(PG_FUNCTION_ARGS)
-{	StackTrace("anyrange_out");
+{
 	return range_out(fcinfo);
 }
 
@@ -221,7 +221,7 @@ anyrange_out(PG_FUNCTION_ARGS)
  */
 Datum
 void_in(PG_FUNCTION_ARGS)
-{	StackTrace("void_in");
+{
 	PG_RETURN_VOID();			/* you were expecting something different? */
 }
 
@@ -232,7 +232,7 @@ void_in(PG_FUNCTION_ARGS)
  */
 Datum
 void_out(PG_FUNCTION_ARGS)
-{	StackTrace("void_out");
+{
 	PG_RETURN_CSTRING(pstrdup(""));
 }
 
@@ -244,7 +244,7 @@ void_out(PG_FUNCTION_ARGS)
  */
 Datum
 void_recv(PG_FUNCTION_ARGS)
-{	StackTrace("void_recv");
+{
 	PG_RETURN_VOID();
 }
 
@@ -256,7 +256,7 @@ void_recv(PG_FUNCTION_ARGS)
  */
 Datum
 void_send(PG_FUNCTION_ARGS)
-{	StackTrace("void_send");
+{
 	StringInfoData buf;
 
 	/* send an empty string */
@@ -270,7 +270,7 @@ void_send(PG_FUNCTION_ARGS)
  */
 Datum
 trigger_in(PG_FUNCTION_ARGS)
-{	StackTrace("trigger_in");
+{
 	ereport(ERROR,
 			(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
 			 errmsg("cannot accept a value of type trigger")));
@@ -283,7 +283,7 @@ trigger_in(PG_FUNCTION_ARGS)
  */
 Datum
 trigger_out(PG_FUNCTION_ARGS)
-{	StackTrace("trigger_out");
+{
 	ereport(ERROR,
 			(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
 			 errmsg("cannot display a value of type trigger")));
@@ -297,7 +297,7 @@ trigger_out(PG_FUNCTION_ARGS)
  */
 Datum
 event_trigger_in(PG_FUNCTION_ARGS)
-{	StackTrace("event_trigger_in");
+{
 	ereport(ERROR,
 			(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
 			 errmsg("cannot accept a value of type event_trigger")));
@@ -310,7 +310,7 @@ event_trigger_in(PG_FUNCTION_ARGS)
  */
 Datum
 event_trigger_out(PG_FUNCTION_ARGS)
-{	StackTrace("event_trigger_out");
+{
 	ereport(ERROR,
 			(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
 			 errmsg("cannot display a value of type event_trigger")));
@@ -324,7 +324,7 @@ event_trigger_out(PG_FUNCTION_ARGS)
  */
 Datum
 language_handler_in(PG_FUNCTION_ARGS)
-{	StackTrace("language_handler_in");
+{
 	ereport(ERROR,
 			(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
 			 errmsg("cannot accept a value of type language_handler")));
@@ -337,7 +337,7 @@ language_handler_in(PG_FUNCTION_ARGS)
  */
 Datum
 language_handler_out(PG_FUNCTION_ARGS)
-{	StackTrace("language_handler_out");
+{
 	ereport(ERROR,
 			(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
 			 errmsg("cannot display a value of type language_handler")));
@@ -351,7 +351,7 @@ language_handler_out(PG_FUNCTION_ARGS)
  */
 Datum
 fdw_handler_in(PG_FUNCTION_ARGS)
-{	StackTrace("fdw_handler_in");
+{
 	ereport(ERROR,
 			(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
 			 errmsg("cannot accept a value of type fdw_handler")));
@@ -364,7 +364,7 @@ fdw_handler_in(PG_FUNCTION_ARGS)
  */
 Datum
 fdw_handler_out(PG_FUNCTION_ARGS)
-{	StackTrace("fdw_handler_out");
+{
 	ereport(ERROR,
 			(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
 			 errmsg("cannot display a value of type fdw_handler")));
@@ -378,7 +378,7 @@ fdw_handler_out(PG_FUNCTION_ARGS)
  */
 Datum
 internal_in(PG_FUNCTION_ARGS)
-{	StackTrace("internal_in");
+{
 	ereport(ERROR,
 			(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
 			 errmsg("cannot accept a value of type internal")));
@@ -391,7 +391,7 @@ internal_in(PG_FUNCTION_ARGS)
  */
 Datum
 internal_out(PG_FUNCTION_ARGS)
-{	StackTrace("internal_out");
+{
 	ereport(ERROR,
 			(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
 			 errmsg("cannot display a value of type internal")));
@@ -405,7 +405,7 @@ internal_out(PG_FUNCTION_ARGS)
  */
 Datum
 opaque_in(PG_FUNCTION_ARGS)
-{	StackTrace("opaque_in");
+{
 	ereport(ERROR,
 			(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
 			 errmsg("cannot accept a value of type opaque")));
@@ -418,7 +418,7 @@ opaque_in(PG_FUNCTION_ARGS)
  */
 Datum
 opaque_out(PG_FUNCTION_ARGS)
-{	StackTrace("opaque_out");
+{
 	ereport(ERROR,
 			(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
 			 errmsg("cannot display a value of type opaque")));
@@ -432,7 +432,7 @@ opaque_out(PG_FUNCTION_ARGS)
  */
 Datum
 anyelement_in(PG_FUNCTION_ARGS)
-{	StackTrace("anyelement_in");
+{
 	ereport(ERROR,
 			(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
 			 errmsg("cannot accept a value of type anyelement")));
@@ -445,7 +445,7 @@ anyelement_in(PG_FUNCTION_ARGS)
  */
 Datum
 anyelement_out(PG_FUNCTION_ARGS)
-{	StackTrace("anyelement_out");
+{
 	ereport(ERROR,
 			(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
 			 errmsg("cannot display a value of type anyelement")));
@@ -458,7 +458,7 @@ anyelement_out(PG_FUNCTION_ARGS)
  */
 Datum
 anynonarray_in(PG_FUNCTION_ARGS)
-{	StackTrace("anynonarray_in");
+{
 	ereport(ERROR,
 			(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
 			 errmsg("cannot accept a value of type anynonarray")));
@@ -471,7 +471,7 @@ anynonarray_in(PG_FUNCTION_ARGS)
  */
 Datum
 anynonarray_out(PG_FUNCTION_ARGS)
-{	StackTrace("anynonarray_out");
+{
 	ereport(ERROR,
 			(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
 			 errmsg("cannot display a value of type anynonarray")));
@@ -484,7 +484,7 @@ anynonarray_out(PG_FUNCTION_ARGS)
  */
 Datum
 shell_in(PG_FUNCTION_ARGS)
-{	StackTrace("shell_in");
+{
 	ereport(ERROR,
 			(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
 			 errmsg("cannot accept a value of a shell type")));
@@ -497,7 +497,7 @@ shell_in(PG_FUNCTION_ARGS)
  */
 Datum
 shell_out(PG_FUNCTION_ARGS)
-{	StackTrace("shell_out");
+{
 	ereport(ERROR,
 			(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
 			 errmsg("cannot display a value of a shell type")));
@@ -515,7 +515,7 @@ shell_out(PG_FUNCTION_ARGS)
  */
 Datum
 pg_node_tree_in(PG_FUNCTION_ARGS)
-{	StackTrace("pg_node_tree_in");
+{
 	/*
 	 * We disallow input of pg_node_tree values because the SQL functions that
 	 * operate on the type are not secure against malformed input.
@@ -535,7 +535,7 @@ pg_node_tree_in(PG_FUNCTION_ARGS)
  */
 Datum
 pg_node_tree_out(PG_FUNCTION_ARGS)
-{	StackTrace("pg_node_tree_out");
+{
 	return textout(fcinfo);
 }
 
@@ -544,7 +544,7 @@ pg_node_tree_out(PG_FUNCTION_ARGS)
  */
 Datum
 pg_node_tree_recv(PG_FUNCTION_ARGS)
-{	StackTrace("pg_node_tree_recv");
+{
 	ereport(ERROR,
 			(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
 			 errmsg("cannot accept a value of type %s", "pg_node_tree")));
@@ -557,7 +557,7 @@ pg_node_tree_recv(PG_FUNCTION_ARGS)
  */
 Datum
 pg_node_tree_send(PG_FUNCTION_ARGS)
-{	StackTrace("pg_node_tree_send");
+{
 	return textsend(fcinfo);
 }
 
@@ -569,7 +569,7 @@ pg_node_tree_send(PG_FUNCTION_ARGS)
  */
 Datum
 pg_ddl_command_in(PG_FUNCTION_ARGS)
-{	StackTrace("pg_ddl_command_in");
+{
 	/*
 	 * Disallow input of pg_ddl_command value.
 	 */
@@ -587,7 +587,7 @@ pg_ddl_command_in(PG_FUNCTION_ARGS)
  */
 Datum
 pg_ddl_command_out(PG_FUNCTION_ARGS)
-{	StackTrace("pg_ddl_command_out");
+{
 	ereport(ERROR,
 			(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
 			 errmsg("cannot output a value of type %s", "pg_ddl_command")));
@@ -600,7 +600,7 @@ pg_ddl_command_out(PG_FUNCTION_ARGS)
  */
 Datum
 pg_ddl_command_recv(PG_FUNCTION_ARGS)
-{	StackTrace("pg_ddl_command_recv");
+{
 	ereport(ERROR,
 			(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
 			 errmsg("cannot accept a value of type %s", "pg_ddl_command")));
@@ -613,7 +613,7 @@ pg_ddl_command_recv(PG_FUNCTION_ARGS)
  */
 Datum
 pg_ddl_command_send(PG_FUNCTION_ARGS)
-{	StackTrace("pg_ddl_command_send");
+{
 	ereport(ERROR,
 			(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
 			 errmsg("cannot output a value of type %s", "pg_ddl_command")));

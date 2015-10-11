@@ -19,7 +19,7 @@
 
 QTNode *
 QT2QTN(QueryItem *in, char *operand)
-{	StackTrace("QT2QTN");
+{
 	QTNode	   *node = (QTNode *) palloc0(sizeof(QTNode));
 
 	/* since this function recurses, it could be driven to stack overflow. */
@@ -52,7 +52,7 @@ QT2QTN(QueryItem *in, char *operand)
 
 void
 QTNFree(QTNode *in)
-{	StackTrace("QTNFree");
+{
 	if (!in)
 		return;
 
@@ -84,7 +84,7 @@ QTNFree(QTNode *in)
 
 int
 QTNodeCompare(QTNode *an, QTNode *bn)
-{	StackTrace("QTNodeCompare");
+{
 	/* since this function recurses, it could be driven to stack overflow. */
 	check_stack_depth();
 
@@ -133,13 +133,13 @@ QTNodeCompare(QTNode *an, QTNode *bn)
 
 static int
 cmpQTN(const void *a, const void *b)
-{	StackTrace("cmpQTN");
+{
 	return QTNodeCompare(*(QTNode *const *) a, *(QTNode *const *) b);
 }
 
 void
 QTNSort(QTNode *in)
-{	StackTrace("QTNSort");
+{
 	int			i;
 
 	/* since this function recurses, it could be driven to stack overflow. */
@@ -156,7 +156,7 @@ QTNSort(QTNode *in)
 
 bool
 QTNEq(QTNode *a, QTNode *b)
-{	StackTrace("QTNEq");
+{
 	uint32		sign = a->sign & b->sign;
 
 	if (!(sign == a->sign && sign == b->sign))
@@ -174,7 +174,7 @@ QTNEq(QTNode *a, QTNode *b)
  */
 void
 QTNTernary(QTNode *in)
-{	StackTrace("QTNTernary");
+{
 	int			i;
 
 	/* since this function recurses, it could be driven to stack overflow. */
@@ -217,7 +217,7 @@ QTNTernary(QTNode *in)
  */
 void
 QTNBinary(QTNode *in)
-{	StackTrace("QTNBinary");
+{
 	int			i;
 
 	/* since this function recurses, it could be driven to stack overflow. */
@@ -261,7 +261,7 @@ QTNBinary(QTNode *in)
  */
 static void
 cntsize(QTNode *in, int *sumlen, int *nnode)
-{	StackTrace("cntsize");
+{
 	/* since this function recurses, it could be driven to stack overflow. */
 	check_stack_depth();
 
@@ -288,7 +288,7 @@ typedef struct
 
 static void
 fillQT(QTN2QTState *state, QTNode *in)
-{	StackTrace("fillQT");
+{
 	/* since this function recurses, it could be driven to stack overflow. */
 	check_stack_depth();
 
@@ -325,7 +325,7 @@ fillQT(QTN2QTState *state, QTNode *in)
 
 TSQuery
 QTN2QT(QTNode *in)
-{	StackTrace("QTN2QT");
+{
 	TSQuery		out;
 	int			len;
 	int			sumlen = 0,
@@ -353,7 +353,7 @@ QTN2QT(QTNode *in)
 
 QTNode *
 QTNCopy(QTNode *in)
-{	StackTrace("QTNCopy");
+{
 	QTNode	   *out;
 
 	/* since this function recurses, it could be driven to stack overflow. */
@@ -388,7 +388,7 @@ QTNCopy(QTNode *in)
 
 void
 QTNClearFlags(QTNode *in, uint32 flags)
-{	StackTrace("QTNClearFlags");
+{
 	/* since this function recurses, it could be driven to stack overflow. */
 	check_stack_depth();
 

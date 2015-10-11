@@ -108,7 +108,7 @@ static void SaveSlotToPath(ReplicationSlot *slot, const char *path, int elevel);
  */
 Size
 ReplicationSlotsShmemSize(void)
-{	StackTrace("ReplicationSlotsShmemSize");
+{
 	Size		size = 0;
 
 	if (max_replication_slots == 0)
@@ -126,7 +126,7 @@ ReplicationSlotsShmemSize(void)
  */
 void
 ReplicationSlotsShmemInit(void)
-{	StackTrace("ReplicationSlotsShmemInit");
+{
 	bool		found;
 
 	if (max_replication_slots == 0)
@@ -164,7 +164,7 @@ ReplicationSlotsShmemInit(void)
  */
 bool
 ReplicationSlotValidateName(const char *name, int elevel)
-{	StackTrace("ReplicationSlotValidateName");
+{
 	const char *cp;
 
 	if (strlen(name) == 0)
@@ -212,7 +212,7 @@ ReplicationSlotValidateName(const char *name, int elevel)
 void
 ReplicationSlotCreate(const char *name, bool db_specific,
 					  ReplicationSlotPersistency persistency)
-{	StackTrace("ReplicationSlotCreate");
+{
 	ReplicationSlot *slot = NULL;
 	int			i;
 
@@ -311,7 +311,7 @@ ReplicationSlotCreate(const char *name, bool db_specific,
  */
 void
 ReplicationSlotAcquire(const char *name)
-{	StackTrace("ReplicationSlotAcquire");
+{
 	ReplicationSlot *slot = NULL;
 	int			i;
 	int			active_pid = 0;
@@ -362,7 +362,7 @@ ReplicationSlotAcquire(const char *name)
  */
 void
 ReplicationSlotRelease(void)
-{	StackTrace("ReplicationSlotRelease");
+{
 	ReplicationSlot *slot = MyReplicationSlot;
 
 	Assert(slot != NULL && slot->active_pid != 0);
@@ -399,7 +399,7 @@ ReplicationSlotRelease(void)
  */
 void
 ReplicationSlotDrop(const char *name)
-{	StackTrace("ReplicationSlotDrop");
+{
 	Assert(MyReplicationSlot == NULL);
 
 	ReplicationSlotAcquire(name);
@@ -413,7 +413,7 @@ ReplicationSlotDrop(const char *name)
  */
 static void
 ReplicationSlotDropAcquired(void)
-{	StackTrace("ReplicationSlotDropAcquired");
+{
 	char		path[MAXPGPATH];
 	char		tmppath[MAXPGPATH];
 	ReplicationSlot *slot = MyReplicationSlot;
@@ -513,7 +513,7 @@ ReplicationSlotDropAcquired(void)
  */
 void
 ReplicationSlotSave(void)
-{	StackTrace("ReplicationSlotSave");
+{
 	char		path[MAXPGPATH];
 
 	Assert(MyReplicationSlot != NULL);
@@ -531,7 +531,7 @@ ReplicationSlotSave(void)
  */
 void
 ReplicationSlotMarkDirty(void)
-{	StackTrace("ReplicationSlotMarkDirty");
+{
 	Assert(MyReplicationSlot != NULL);
 
 	{
@@ -550,7 +550,7 @@ ReplicationSlotMarkDirty(void)
  */
 void
 ReplicationSlotPersist(void)
-{	StackTrace("ReplicationSlotPersist");
+{
 	ReplicationSlot *slot = MyReplicationSlot;
 
 	Assert(slot != NULL);
@@ -573,7 +573,7 @@ ReplicationSlotPersist(void)
  */
 void
 ReplicationSlotsComputeRequiredXmin(bool already_locked)
-{	StackTrace("ReplicationSlotsComputeRequiredXmin");
+{
 	int			i;
 	TransactionId agg_xmin = InvalidTransactionId;
 	TransactionId agg_catalog_xmin = InvalidTransactionId;
@@ -625,7 +625,7 @@ ReplicationSlotsComputeRequiredXmin(bool already_locked)
  */
 void
 ReplicationSlotsComputeRequiredLSN(void)
-{	StackTrace("ReplicationSlotsComputeRequiredLSN");
+{
 	int			i;
 	XLogRecPtr	min_required = InvalidXLogRecPtr;
 
@@ -672,7 +672,7 @@ ReplicationSlotsComputeRequiredLSN(void)
  */
 XLogRecPtr
 ReplicationSlotsComputeLogicalRestartLSN(void)
-{	StackTrace("ReplicationSlotsComputeLogicalRestartLSN");
+{
 	XLogRecPtr	result = InvalidXLogRecPtr;
 	int			i;
 
@@ -721,7 +721,7 @@ ReplicationSlotsComputeLogicalRestartLSN(void)
  */
 bool
 ReplicationSlotsCountDBSlots(Oid dboid, int *nslots, int *nactive)
-{	StackTrace("ReplicationSlotsCountDBSlots");
+{
 	int			i;
 
 	*nslots = *nactive = 0;
@@ -769,7 +769,7 @@ ReplicationSlotsCountDBSlots(Oid dboid, int *nslots, int *nactive)
  */
 void
 CheckSlotRequirements(void)
-{	StackTrace("CheckSlotRequirements");
+{
 	if (max_replication_slots == 0)
 		ereport(ERROR,
 				(errcode(ERRCODE_OBJECT_NOT_IN_PREREQUISITE_STATE),
@@ -789,7 +789,7 @@ CheckSlotRequirements(void)
  */
 void
 CheckPointReplicationSlots(void)
-{	StackTrace("CheckPointReplicationSlots");
+{
 	int			i;
 
 	elog(DEBUG1, "performing replication slot checkpoint");
@@ -824,7 +824,7 @@ CheckPointReplicationSlots(void)
  */
 void
 StartupReplicationSlots(void)
-{	StackTrace("StartupReplicationSlots");
+{
 	DIR		   *replication_dir;
 	struct dirent *replication_de;
 
@@ -884,7 +884,7 @@ StartupReplicationSlots(void)
  */
 static void
 CreateSlotOnDisk(ReplicationSlot *slot)
-{	StackTrace("CreateSlotOnDisk");
+{
 	char		tmppath[MAXPGPATH];
 	char		path[MAXPGPATH];
 	struct stat st;
@@ -944,7 +944,7 @@ CreateSlotOnDisk(ReplicationSlot *slot)
  */
 static void
 SaveSlotToPath(ReplicationSlot *slot, const char *dir, int elevel)
-{	StackTrace("SaveSlotToPath");
+{
 	char		tmppath[MAXPGPATH];
 	char		path[MAXPGPATH];
 	int			fd;
@@ -1070,7 +1070,7 @@ SaveSlotToPath(ReplicationSlot *slot, const char *dir, int elevel)
  */
 static void
 RestoreSlotFromDisk(const char *name)
-{	StackTrace("RestoreSlotFromDisk");
+{
 	ReplicationSlotOnDisk cp;
 	int			i;
 	char		path[MAXPGPATH];

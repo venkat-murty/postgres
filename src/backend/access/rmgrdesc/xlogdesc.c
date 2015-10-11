@@ -33,7 +33,7 @@ const struct config_enum_entry wal_level_options[] = {
 
 void
 xlog_desc(StringInfo buf, XLogReaderState *record)
-{	StackTrace("xlog_desc");
+{
 	char	   *rec = XLogRecGetData(record);
 	uint8		info = XLogRecGetInfo(record) & ~XLR_INFO_MASK;
 
@@ -140,7 +140,7 @@ xlog_desc(StringInfo buf, XLogReaderState *record)
 
 const char *
 xlog_identify(uint8 info)
-{	StackTrace("xlog_identify");
+{
 	const char *id = NULL;
 
 	switch (info & ~XLR_INFO_MASK)

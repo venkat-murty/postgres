@@ -35,7 +35,7 @@
 /* Return physical size of directory contents, or 0 if dir doesn't exist */
 static int64
 db_dir_size(const char *path)
-{	StackTrace("db_dir_size");
+{
 	int64		dirsize = 0;
 	struct dirent *direntry;
 	DIR		   *dirdesc;
@@ -79,7 +79,7 @@ db_dir_size(const char *path)
  */
 static int64
 calculate_database_size(Oid dbOid)
-{	StackTrace("calculate_database_size");
+{
 	int64		totalsize;
 	DIR		   *dirdesc;
 	struct dirent *direntry;
@@ -128,7 +128,7 @@ calculate_database_size(Oid dbOid)
 
 Datum
 pg_database_size_oid(PG_FUNCTION_ARGS)
-{	StackTrace("pg_database_size_oid");
+{
 	Oid			dbOid = PG_GETARG_OID(0);
 	int64		size;
 
@@ -142,7 +142,7 @@ pg_database_size_oid(PG_FUNCTION_ARGS)
 
 Datum
 pg_database_size_name(PG_FUNCTION_ARGS)
-{	StackTrace("pg_database_size_name");
+{
 	Name		dbName = PG_GETARG_NAME(0);
 	Oid			dbOid = get_database_oid(NameStr(*dbName), false);
 	int64		size;
@@ -162,7 +162,7 @@ pg_database_size_name(PG_FUNCTION_ARGS)
  */
 static int64
 calculate_tablespace_size(Oid tblspcOid)
-{	StackTrace("calculate_tablespace_size");
+{
 	char		tblspcPath[MAXPGPATH];
 	char		pathname[MAXPGPATH];
 	int64		totalsize = 0;
@@ -231,7 +231,7 @@ calculate_tablespace_size(Oid tblspcOid)
 
 Datum
 pg_tablespace_size_oid(PG_FUNCTION_ARGS)
-{	StackTrace("pg_tablespace_size_oid");
+{
 	Oid			tblspcOid = PG_GETARG_OID(0);
 	int64		size;
 
@@ -245,7 +245,7 @@ pg_tablespace_size_oid(PG_FUNCTION_ARGS)
 
 Datum
 pg_tablespace_size_name(PG_FUNCTION_ARGS)
-{	StackTrace("pg_tablespace_size_name");
+{
 	Name		tblspcName = PG_GETARG_NAME(0);
 	Oid			tblspcOid = get_tablespace_oid(NameStr(*tblspcName), false);
 	int64		size;
@@ -267,7 +267,7 @@ pg_tablespace_size_name(PG_FUNCTION_ARGS)
  */
 static int64
 calculate_relation_size(RelFileNode *rfn, BackendId backend, ForkNumber forknum)
-{	StackTrace("calculate_relation_size");
+{
 	int64		totalsize = 0;
 	char	   *relationpath;
 	char		pathname[MAXPGPATH];
@@ -305,7 +305,7 @@ calculate_relation_size(RelFileNode *rfn, BackendId backend, ForkNumber forknum)
 
 Datum
 pg_relation_size(PG_FUNCTION_ARGS)
-{	StackTrace("pg_relation_size");
+{
 	Oid			relOid = PG_GETARG_OID(0);
 	text	   *forkName = PG_GETARG_TEXT_P(1);
 	Relation	rel;
@@ -337,7 +337,7 @@ pg_relation_size(PG_FUNCTION_ARGS)
  */
 static int64
 calculate_toast_table_size(Oid toastrelid)
-{	StackTrace("calculate_toast_table_size");
+{
 	int64		size = 0;
 	Relation	toastRel;
 	ForkNumber	forkNum;
@@ -383,7 +383,7 @@ calculate_toast_table_size(Oid toastrelid)
  */
 static int64
 calculate_table_size(Relation rel)
-{	StackTrace("calculate_table_size");
+{
 	int64		size = 0;
 	ForkNumber	forkNum;
 
@@ -410,7 +410,7 @@ calculate_table_size(Relation rel)
  */
 static int64
 calculate_indexes_size(Relation rel)
-{	StackTrace("calculate_indexes_size");
+{
 	int64		size = 0;
 
 	/*
@@ -445,7 +445,7 @@ calculate_indexes_size(Relation rel)
 
 Datum
 pg_table_size(PG_FUNCTION_ARGS)
-{	StackTrace("pg_table_size");
+{
 	Oid			relOid = PG_GETARG_OID(0);
 	Relation	rel;
 	int64		size;
@@ -464,7 +464,7 @@ pg_table_size(PG_FUNCTION_ARGS)
 
 Datum
 pg_indexes_size(PG_FUNCTION_ARGS)
-{	StackTrace("pg_indexes_size");
+{
 	Oid			relOid = PG_GETARG_OID(0);
 	Relation	rel;
 	int64		size;
@@ -487,7 +487,7 @@ pg_indexes_size(PG_FUNCTION_ARGS)
  */
 static int64
 calculate_total_relation_size(Relation rel)
-{	StackTrace("calculate_total_relation_size");
+{
 	int64		size;
 
 	/*
@@ -506,7 +506,7 @@ calculate_total_relation_size(Relation rel)
 
 Datum
 pg_total_relation_size(PG_FUNCTION_ARGS)
-{	StackTrace("pg_total_relation_size");
+{
 	Oid			relOid = PG_GETARG_OID(0);
 	Relation	rel;
 	int64		size;
@@ -528,7 +528,7 @@ pg_total_relation_size(PG_FUNCTION_ARGS)
  */
 Datum
 pg_size_pretty(PG_FUNCTION_ARGS)
-{	StackTrace("pg_size_pretty");
+{
 	int64		size = PG_GETARG_INT64(0);
 	char		buf[64];
 	int64		limit = 10 * 1024;
@@ -569,7 +569,7 @@ pg_size_pretty(PG_FUNCTION_ARGS)
 
 static char *
 numeric_to_cstring(Numeric n)
-{	StackTrace("numeric_to_cstring");
+{
 	Datum		d = NumericGetDatum(n);
 
 	return DatumGetCString(DirectFunctionCall1(numeric_out, d));
@@ -577,7 +577,7 @@ numeric_to_cstring(Numeric n)
 
 static Numeric
 int64_to_numeric(int64 v)
-{	StackTrace("int64_to_numeric");
+{
 	Datum		d = Int64GetDatum(v);
 
 	return DatumGetNumeric(DirectFunctionCall1(int8_numeric, d));
@@ -585,7 +585,7 @@ int64_to_numeric(int64 v)
 
 static bool
 numeric_is_less(Numeric a, Numeric b)
-{	StackTrace("numeric_is_less");
+{
 	Datum		da = NumericGetDatum(a);
 	Datum		db = NumericGetDatum(b);
 
@@ -594,7 +594,7 @@ numeric_is_less(Numeric a, Numeric b)
 
 static Numeric
 numeric_plus_one_over_two(Numeric n)
-{	StackTrace("numeric_plus_one_over_two");
+{
 	Datum		d = NumericGetDatum(n);
 	Datum		one;
 	Datum		two;
@@ -609,7 +609,7 @@ numeric_plus_one_over_two(Numeric n)
 
 static Numeric
 numeric_shift_right(Numeric n, unsigned count)
-{	StackTrace("numeric_shift_right");
+{
 	Datum		d = NumericGetDatum(n);
 	Datum		divisor_int64;
 	Datum		divisor_numeric;
@@ -623,7 +623,7 @@ numeric_shift_right(Numeric n, unsigned count)
 
 Datum
 pg_size_pretty_numeric(PG_FUNCTION_ARGS)
-{	StackTrace("pg_size_pretty_numeric");
+{
 	Numeric		size = PG_GETARG_NUMERIC(0);
 	Numeric		limit,
 				limit2;
@@ -700,7 +700,7 @@ pg_size_pretty_numeric(PG_FUNCTION_ARGS)
  */
 Datum
 pg_relation_filenode(PG_FUNCTION_ARGS)
-{	StackTrace("pg_relation_filenode");
+{
 	Oid			relid = PG_GETARG_OID(0);
 	Oid			result;
 	HeapTuple	tuple;
@@ -755,7 +755,7 @@ pg_relation_filenode(PG_FUNCTION_ARGS)
  */
 Datum
 pg_filenode_relation(PG_FUNCTION_ARGS)
-{	StackTrace("pg_filenode_relation");
+{
 	Oid			reltablespace = PG_GETARG_OID(0);
 	Oid			relfilenode = PG_GETARG_OID(1);
 	Oid			heaprel = InvalidOid;
@@ -775,7 +775,7 @@ pg_filenode_relation(PG_FUNCTION_ARGS)
  */
 Datum
 pg_relation_filepath(PG_FUNCTION_ARGS)
-{	StackTrace("pg_relation_filepath");
+{
 	Oid			relid = PG_GETARG_OID(0);
 	HeapTuple	tuple;
 	Form_pg_class relform;

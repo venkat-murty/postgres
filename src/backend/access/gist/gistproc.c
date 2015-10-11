@@ -41,7 +41,7 @@ static bool rtree_internal_consistent(BOX *key, BOX *query,
  */
 static void
 rt_box_union(BOX *n, BOX *a, BOX *b)
-{	StackTrace("rt_box_union");
+{
 	n->high.x = Max(a->high.x, b->high.x);
 	n->high.y = Max(a->high.y, b->high.y);
 	n->low.x = Min(a->low.x, b->low.x);
@@ -57,7 +57,7 @@ rt_box_union(BOX *n, BOX *a, BOX *b)
  */
 Datum
 gist_box_consistent(PG_FUNCTION_ARGS)
-{	StackTrace("gist_box_consistent");
+{
 	GISTENTRY  *entry = (GISTENTRY *) PG_GETARG_POINTER(0);
 	BOX		   *query = PG_GETARG_BOX_P(1);
 	StrategyNumber strategy = (StrategyNumber) PG_GETARG_UINT16(2);
@@ -87,7 +87,7 @@ gist_box_consistent(PG_FUNCTION_ARGS)
 
 static void
 adjustBox(BOX *b, BOX *addon)
-{	StackTrace("adjustBox");
+{
 	if (b->high.x < addon->high.x)
 		b->high.x = addon->high.x;
 	if (b->low.x > addon->low.x)
@@ -105,7 +105,7 @@ adjustBox(BOX *b, BOX *addon)
  */
 Datum
 gist_box_union(PG_FUNCTION_ARGS)
-{	StackTrace("gist_box_union");
+{
 	GistEntryVector *entryvec = (GistEntryVector *) PG_GETARG_POINTER(0);
 	int		   *sizep = (int *) PG_GETARG_POINTER(1);
 	int			numranges,
@@ -135,7 +135,7 @@ gist_box_union(PG_FUNCTION_ARGS)
  */
 Datum
 gist_box_compress(PG_FUNCTION_ARGS)
-{	StackTrace("gist_box_compress");
+{
 	PG_RETURN_POINTER(PG_GETARG_POINTER(0));
 }
 
@@ -147,7 +147,7 @@ gist_box_compress(PG_FUNCTION_ARGS)
  */
 Datum
 gist_box_decompress(PG_FUNCTION_ARGS)
-{	StackTrace("gist_box_decompress");
+{
 	PG_RETURN_POINTER(PG_GETARG_POINTER(0));
 }
 
@@ -157,7 +157,7 @@ gist_box_decompress(PG_FUNCTION_ARGS)
  */
 Datum
 gist_box_fetch(PG_FUNCTION_ARGS)
-{	StackTrace("gist_box_fetch");
+{
 	PG_RETURN_POINTER(PG_GETARG_POINTER(0));
 }
 
@@ -168,7 +168,7 @@ gist_box_fetch(PG_FUNCTION_ARGS)
  */
 Datum
 gist_box_penalty(PG_FUNCTION_ARGS)
-{	StackTrace("gist_box_penalty");
+{
 	GISTENTRY  *origentry = (GISTENTRY *) PG_GETARG_POINTER(0);
 	GISTENTRY  *newentry = (GISTENTRY *) PG_GETARG_POINTER(1);
 	float	   *result = (float *) PG_GETARG_POINTER(2);
@@ -187,7 +187,7 @@ gist_box_penalty(PG_FUNCTION_ARGS)
  */
 static void
 fallbackSplit(GistEntryVector *entryvec, GIST_SPLITVEC *v)
-{	StackTrace("fallbackSplit");
+{
 	OffsetNumber i,
 				maxoff;
 	BOX		   *unionL = NULL,
@@ -286,7 +286,7 @@ typedef struct
  */
 static int
 interval_cmp_lower(const void *i1, const void *i2)
-{	StackTrace("interval_cmp_lower");
+{
 	double		lower1 = ((const SplitInterval *) i1)->lower,
 				lower2 = ((const SplitInterval *) i2)->lower;
 
@@ -303,7 +303,7 @@ interval_cmp_lower(const void *i1, const void *i2)
  */
 static int
 interval_cmp_upper(const void *i1, const void *i2)
-{	StackTrace("interval_cmp_upper");
+{
 	double		upper1 = ((const SplitInterval *) i1)->upper,
 				upper2 = ((const SplitInterval *) i2)->upper;
 
@@ -320,7 +320,7 @@ interval_cmp_upper(const void *i1, const void *i2)
  */
 static inline float
 non_negative(float val)
-{	StackTrace("non_negative");
+{
 	if (val >= 0.0f)
 		return val;
 	else
@@ -334,7 +334,7 @@ static inline void
 g_box_consider_split(ConsiderSplitContext *context, int dimNum,
 					 double rightLower, int minLeftCount,
 					 double leftUpper, int maxLeftCount)
-{	StackTrace("g_box_consider_split");
+{
 	int			leftCount,
 				rightCount;
 	float4		ratio,
@@ -440,7 +440,7 @@ g_box_consider_split(ConsiderSplitContext *context, int dimNum,
  */
 static double
 box_penalty(BOX *original, BOX *new)
-{	StackTrace("box_penalty");
+{
 	double		union_width,
 				union_height;
 
@@ -457,7 +457,7 @@ box_penalty(BOX *original, BOX *new)
  */
 static int
 common_entry_cmp(const void *i1, const void *i2)
-{	StackTrace("common_entry_cmp");
+{
 	double		delta1 = ((const CommonEntry *) i1)->delta,
 				delta2 = ((const CommonEntry *) i2)->delta;
 
@@ -497,7 +497,7 @@ common_entry_cmp(const void *i1, const void *i2)
  */
 Datum
 gist_box_picksplit(PG_FUNCTION_ARGS)
-{	StackTrace("gist_box_picksplit");
+{
 	GistEntryVector *entryvec = (GistEntryVector *) PG_GETARG_POINTER(0);
 	GIST_SPLITVEC *v = (GIST_SPLITVEC *) PG_GETARG_POINTER(1);
 	OffsetNumber i,
@@ -850,7 +850,7 @@ gist_box_picksplit(PG_FUNCTION_ARGS)
  */
 Datum
 gist_box_same(PG_FUNCTION_ARGS)
-{	StackTrace("gist_box_same");
+{
 	BOX		   *b1 = PG_GETARG_BOX_P(0);
 	BOX		   *b2 = PG_GETARG_BOX_P(1);
 	bool	   *result = (bool *) PG_GETARG_POINTER(2);
@@ -868,7 +868,7 @@ gist_box_same(PG_FUNCTION_ARGS)
  */
 static bool
 gist_box_leaf_consistent(BOX *key, BOX *query, StrategyNumber strategy)
-{	StackTrace("gist_box_leaf_consistent");
+{
 	bool		retval;
 
 	switch (strategy)
@@ -945,7 +945,7 @@ gist_box_leaf_consistent(BOX *key, BOX *query, StrategyNumber strategy)
 
 static double
 size_box(BOX *box)
-{	StackTrace("size_box");
+{
 	if (box->high.x <= box->low.x || box->high.y <= box->low.y)
 		return 0.0;
 	return (box->high.x - box->low.x) * (box->high.y - box->low.y);
@@ -963,7 +963,7 @@ size_box(BOX *box)
  */
 static bool
 rtree_internal_consistent(BOX *key, BOX *query, StrategyNumber strategy)
-{	StackTrace("rtree_internal_consistent");
+{
 	bool		retval;
 
 	switch (strategy)
@@ -1043,7 +1043,7 @@ rtree_internal_consistent(BOX *key, BOX *query, StrategyNumber strategy)
  */
 Datum
 gist_poly_compress(PG_FUNCTION_ARGS)
-{	StackTrace("gist_poly_compress");
+{
 	GISTENTRY  *entry = (GISTENTRY *) PG_GETARG_POINTER(0);
 	GISTENTRY  *retval;
 
@@ -1070,7 +1070,7 @@ gist_poly_compress(PG_FUNCTION_ARGS)
  */
 Datum
 gist_poly_consistent(PG_FUNCTION_ARGS)
-{	StackTrace("gist_poly_consistent");
+{
 	GISTENTRY  *entry = (GISTENTRY *) PG_GETARG_POINTER(0);
 	POLYGON    *query = PG_GETARG_POLYGON_P(1);
 	StrategyNumber strategy = (StrategyNumber) PG_GETARG_UINT16(2);
@@ -1108,7 +1108,7 @@ gist_poly_consistent(PG_FUNCTION_ARGS)
  */
 Datum
 gist_circle_compress(PG_FUNCTION_ARGS)
-{	StackTrace("gist_circle_compress");
+{
 	GISTENTRY  *entry = (GISTENTRY *) PG_GETARG_POINTER(0);
 	GISTENTRY  *retval;
 
@@ -1138,7 +1138,7 @@ gist_circle_compress(PG_FUNCTION_ARGS)
  */
 Datum
 gist_circle_consistent(PG_FUNCTION_ARGS)
-{	StackTrace("gist_circle_consistent");
+{
 	GISTENTRY  *entry = (GISTENTRY *) PG_GETARG_POINTER(0);
 	CIRCLE	   *query = PG_GETARG_CIRCLE_P(1);
 	StrategyNumber strategy = (StrategyNumber) PG_GETARG_UINT16(2);
@@ -1176,7 +1176,7 @@ gist_circle_consistent(PG_FUNCTION_ARGS)
 
 Datum
 gist_point_compress(PG_FUNCTION_ARGS)
-{	StackTrace("gist_point_compress");
+{
 	GISTENTRY  *entry = (GISTENTRY *) PG_GETARG_POINTER(0);
 
 	if (entry->leafkey)			/* Point, actually */
@@ -1204,7 +1204,7 @@ gist_point_compress(PG_FUNCTION_ARGS)
  */
 Datum
 gist_point_fetch(PG_FUNCTION_ARGS)
-{	StackTrace("gist_point_fetch");
+{
 	GISTENTRY  *entry = (GISTENTRY *) PG_GETARG_POINTER(0);
 	BOX		   *in = DatumGetBoxP(entry->key);
 	Point	   *r;
@@ -1229,7 +1229,7 @@ gist_point_fetch(PG_FUNCTION_ARGS)
 
 static double
 computeDistance(bool isLeaf, BOX *box, Point *point)
-{	StackTrace("computeDistance");
+{
 	double		result = 0.0;
 
 	if (isLeaf)
@@ -1296,7 +1296,7 @@ computeDistance(bool isLeaf, BOX *box, Point *point)
 static bool
 gist_point_consistent_internal(StrategyNumber strategy,
 							   bool isLeaf, BOX *key, Point *query)
-{	StackTrace("gist_point_consistent_internal");
+{
 	bool		result = false;
 
 	switch (strategy)
@@ -1345,7 +1345,7 @@ gist_point_consistent_internal(StrategyNumber strategy,
 
 Datum
 gist_point_consistent(PG_FUNCTION_ARGS)
-{	StackTrace("gist_point_consistent");
+{
 	GISTENTRY  *entry = (GISTENTRY *) PG_GETARG_POINTER(0);
 	StrategyNumber strategy = (StrategyNumber) PG_GETARG_UINT16(2);
 	bool	   *recheck = (bool *) PG_GETARG_POINTER(4);
@@ -1457,7 +1457,7 @@ gist_point_consistent(PG_FUNCTION_ARGS)
 
 Datum
 gist_point_distance(PG_FUNCTION_ARGS)
-{	StackTrace("gist_point_distance");
+{
 	GISTENTRY  *entry = (GISTENTRY *) PG_GETARG_POINTER(0);
 	StrategyNumber strategy = (StrategyNumber) PG_GETARG_UINT16(2);
 	double		distance;
@@ -1491,7 +1491,7 @@ gist_point_distance(PG_FUNCTION_ARGS)
  */
 Datum
 gist_bbox_distance(PG_FUNCTION_ARGS)
-{	StackTrace("gist_bbox_distance");
+{
 	GISTENTRY  *entry = (GISTENTRY *) PG_GETARG_POINTER(0);
 	StrategyNumber strategy = (StrategyNumber) PG_GETARG_UINT16(2);
 	bool	   *recheck = (bool *) PG_GETARG_POINTER(4);

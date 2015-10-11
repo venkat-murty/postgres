@@ -61,7 +61,7 @@ static void LogAccessExclusiveLocks(int nlocks, xl_standby_lock *locks);
  */
 void
 InitRecoveryTransactionEnvironment(void)
-{	StackTrace("InitRecoveryTransactionEnvironment");
+{
 	VirtualTransactionId vxid;
 
 	/*
@@ -100,7 +100,7 @@ InitRecoveryTransactionEnvironment(void)
  */
 void
 ShutdownRecoveryTransactionEnvironment(void)
-{	StackTrace("ShutdownRecoveryTransactionEnvironment");
+{
 	/* Mark all tracked in-progress transactions as finished. */
 	ExpireAllKnownAssignedTransactionIds();
 
@@ -125,7 +125,7 @@ ShutdownRecoveryTransactionEnvironment(void)
  */
 static TimestampTz
 GetStandbyLimitTime(void)
-{	StackTrace("GetStandbyLimitTime");
+{
 	TimestampTz rtime;
 	bool		fromStream;
 
@@ -158,7 +158,7 @@ static int	standbyWait_us = STANDBY_INITIAL_WAIT_US;
  */
 static bool
 WaitExceedsMaxStandbyDelay(void)
-{	StackTrace("WaitExceedsMaxStandbyDelay");
+{
 	TimestampTz ltime;
 
 	/* Are we past the limit time? */
@@ -191,7 +191,7 @@ WaitExceedsMaxStandbyDelay(void)
 static void
 ResolveRecoveryConflictWithVirtualXIDs(VirtualTransactionId *waitlist,
 									   ProcSignalReason reason)
-{	StackTrace("ResolveRecoveryConflictWithVirtualXIDs");
+{
 	TimestampTz waitStart;
 	char	   *new_status;
 
@@ -263,7 +263,7 @@ ResolveRecoveryConflictWithVirtualXIDs(VirtualTransactionId *waitlist,
 
 void
 ResolveRecoveryConflictWithSnapshot(TransactionId latestRemovedXid, RelFileNode node)
-{	StackTrace("ResolveRecoveryConflictWithSnapshot");
+{
 	VirtualTransactionId *backends;
 
 	/*
@@ -285,7 +285,7 @@ ResolveRecoveryConflictWithSnapshot(TransactionId latestRemovedXid, RelFileNode 
 
 void
 ResolveRecoveryConflictWithTablespace(Oid tsid)
-{	StackTrace("ResolveRecoveryConflictWithTablespace");
+{
 	VirtualTransactionId *temp_file_users;
 
 	/*
@@ -313,7 +313,7 @@ ResolveRecoveryConflictWithTablespace(Oid tsid)
 
 void
 ResolveRecoveryConflictWithDatabase(Oid dbid)
-{	StackTrace("ResolveRecoveryConflictWithDatabase");
+{
 	/*
 	 * We don't do ResolveRecoveryConflictWithVirtualXIDs() here since that
 	 * only waits for transactions and completely idle sessions would block
@@ -339,7 +339,7 @@ ResolveRecoveryConflictWithDatabase(Oid dbid)
 
 static void
 ResolveRecoveryConflictWithLock(Oid dbOid, Oid relOid)
-{	StackTrace("ResolveRecoveryConflictWithLock");
+{
 	VirtualTransactionId *backends;
 	bool		lock_acquired = false;
 	int			num_attempts = 0;
@@ -401,7 +401,7 @@ ResolveRecoveryConflictWithLock(Oid dbOid, Oid relOid)
  */
 void
 ResolveRecoveryConflictWithBufferPin(void)
-{	StackTrace("ResolveRecoveryConflictWithBufferPin");
+{
 	TimestampTz ltime;
 
 	Assert(InHotStandby);
@@ -454,7 +454,7 @@ ResolveRecoveryConflictWithBufferPin(void)
 
 static void
 SendRecoveryConflictWithBufferPin(ProcSignalReason reason)
-{	StackTrace("SendRecoveryConflictWithBufferPin");
+{
 	Assert(reason == PROCSIG_RECOVERY_CONFLICT_BUFFERPIN ||
 		   reason == PROCSIG_RECOVERY_CONFLICT_STARTUP_DEADLOCK);
 
@@ -482,7 +482,7 @@ SendRecoveryConflictWithBufferPin(ProcSignalReason reason)
  */
 void
 CheckRecoveryConflictDeadlock(void)
-{	StackTrace("CheckRecoveryConflictDeadlock");
+{
 	Assert(!InRecovery);		/* do not call in Startup process */
 
 	if (!HoldingBufferPinThatDelaysRecovery())
@@ -514,7 +514,7 @@ CheckRecoveryConflictDeadlock(void)
  */
 void
 StandbyDeadLockHandler(void)
-{	StackTrace("StandbyDeadLockHandler");
+{
 	SendRecoveryConflictWithBufferPin(PROCSIG_RECOVERY_CONFLICT_STARTUP_DEADLOCK);
 }
 
@@ -525,7 +525,7 @@ StandbyDeadLockHandler(void)
  */
 void
 StandbyTimeoutHandler(void)
-{	StackTrace("StandbyTimeoutHandler");
+{
 	/* forget any pending STANDBY_DEADLOCK_TIMEOUT request */
 	disable_timeout(STANDBY_DEADLOCK_TIMEOUT, false);
 
@@ -565,7 +565,7 @@ StandbyTimeoutHandler(void)
 
 void
 StandbyAcquireAccessExclusiveLock(TransactionId xid, Oid dbOid, Oid relOid)
-{	StackTrace("StandbyAcquireAccessExclusiveLock");
+{
 	xl_standby_lock *newlock;
 	LOCKTAG		locktag;
 
@@ -599,7 +599,7 @@ StandbyAcquireAccessExclusiveLock(TransactionId xid, Oid dbOid, Oid relOid)
 
 static void
 StandbyReleaseLocks(TransactionId xid)
-{	StackTrace("StandbyReleaseLocks");
+{
 	ListCell   *cell,
 			   *prev,
 			   *next;
@@ -644,7 +644,7 @@ StandbyReleaseLocks(TransactionId xid)
  */
 void
 StandbyReleaseLockTree(TransactionId xid, int nsubxids, TransactionId *subxids)
-{	StackTrace("StandbyReleaseLockTree");
+{
 	int			i;
 
 	StandbyReleaseLocks(xid);
@@ -658,7 +658,7 @@ StandbyReleaseLockTree(TransactionId xid, int nsubxids, TransactionId *subxids)
  */
 void
 StandbyReleaseAllLocks(void)
-{	StackTrace("StandbyReleaseAllLocks");
+{
 	ListCell   *cell,
 			   *prev,
 			   *next;
@@ -693,7 +693,7 @@ StandbyReleaseAllLocks(void)
  */
 void
 StandbyReleaseOldLocks(int nxids, TransactionId *xids)
-{	StackTrace("StandbyReleaseOldLocks");
+{
 	ListCell   *cell,
 			   *prev,
 			   *next;
@@ -760,7 +760,7 @@ StandbyReleaseOldLocks(int nxids, TransactionId *xids)
 
 void
 standby_redo(XLogReaderState *record)
-{	StackTrace("standby_redo");
+{
 	uint8		info = XLogRecGetInfo(record) & ~XLR_INFO_MASK;
 
 	/* Backup blocks are not used in standby records */
@@ -867,7 +867,7 @@ standby_redo(XLogReaderState *record)
  */
 XLogRecPtr
 LogStandbySnapshot(void)
-{	StackTrace("LogStandbySnapshot");
+{
 	XLogRecPtr	recptr;
 	RunningTransactions running;
 	xl_standby_lock *locks;
@@ -926,7 +926,7 @@ LogStandbySnapshot(void)
  */
 static XLogRecPtr
 LogCurrentRunningXacts(RunningTransactions CurrRunningXacts)
-{	StackTrace("LogCurrentRunningXacts");
+{
 	xl_running_xacts xlrec;
 	XLogRecPtr	recptr;
 
@@ -985,7 +985,7 @@ LogCurrentRunningXacts(RunningTransactions CurrRunningXacts)
  */
 static void
 LogAccessExclusiveLocks(int nlocks, xl_standby_lock *locks)
-{	StackTrace("LogAccessExclusiveLocks");
+{
 	xl_standby_locks xlrec;
 
 	xlrec.nlocks = nlocks;
@@ -1002,7 +1002,7 @@ LogAccessExclusiveLocks(int nlocks, xl_standby_lock *locks)
  */
 void
 LogAccessExclusiveLock(Oid dbOid, Oid relOid)
-{	StackTrace("LogAccessExclusiveLock");
+{
 	xl_standby_lock xlrec;
 
 	xlrec.xid = GetTopTransactionId();
@@ -1023,7 +1023,7 @@ LogAccessExclusiveLock(Oid dbOid, Oid relOid)
  */
 void
 LogAccessExclusiveLockPrepare(void)
-{	StackTrace("LogAccessExclusiveLockPrepare");
+{
 	/*
 	 * Ensure that a TransactionId has been assigned to this transaction, for
 	 * two reasons, both related to lock release on the standby. First, we

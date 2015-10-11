@@ -47,7 +47,7 @@ volatile sig_atomic_t catchupInterruptPending = false;
  */
 void
 SendSharedInvalidMessages(const SharedInvalidationMessage *msgs, int n)
-{	StackTrace("SendSharedInvalidMessages");
+{
 	SIInsertDataEntries(msgs, n);
 }
 
@@ -71,7 +71,7 @@ void
 ReceiveSharedInvalidMessages(
 					  void (*invalFunction) (SharedInvalidationMessage *msg),
 							 void (*resetFunction) (void))
-{	StackTrace("(*resetFunction)");
+{
 #define MAXINVALMSGS 32
 	static SharedInvalidationMessage messages[MAXINVALMSGS];
 
@@ -155,7 +155,7 @@ ReceiveSharedInvalidMessages(
  */
 void
 HandleCatchupInterrupt(void)
-{	StackTrace("HandleCatchupInterrupt");
+{
 	/*
 	 * Note: this is called by a SIGNAL HANDLER. You must be very wary what
 	 * you do here.
@@ -175,7 +175,7 @@ HandleCatchupInterrupt(void)
  */
 void
 ProcessCatchupInterrupt(void)
-{	StackTrace("ProcessCatchupInterrupt");
+{
 	while (catchupInterruptPending)
 	{
 		/*

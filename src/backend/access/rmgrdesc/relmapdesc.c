@@ -18,7 +18,7 @@
 
 void
 relmap_desc(StringInfo buf, XLogReaderState *record)
-{	StackTrace("relmap_desc");
+{
 	char	   *rec = XLogRecGetData(record);
 	uint8		info = XLogRecGetInfo(record) & ~XLR_INFO_MASK;
 
@@ -33,7 +33,7 @@ relmap_desc(StringInfo buf, XLogReaderState *record)
 
 const char *
 relmap_identify(uint8 info)
-{	StackTrace("relmap_identify");
+{
 	const char *id = NULL;
 
 	switch (info & ~XLR_INFO_MASK)

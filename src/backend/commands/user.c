@@ -59,7 +59,7 @@ static void DelRoleMems(const char *rolename, Oid roleid,
 /* Check if current user has createrole privileges */
 static bool
 have_createrole_privilege(void)
-{	StackTrace("have_createrole_privilege");
+{
 	return has_createrole_privilege(GetUserId());
 }
 
@@ -69,7 +69,7 @@ have_createrole_privilege(void)
  */
 Oid
 CreateRole(CreateRoleStmt *stmt)
-{	StackTrace("CreateRole");
+{
 	Relation	pg_authid_rel;
 	TupleDesc	pg_authid_dsc;
 	HeapTuple	tuple;
@@ -475,7 +475,7 @@ CreateRole(CreateRoleStmt *stmt)
  */
 Oid
 AlterRole(AlterRoleStmt *stmt)
-{	StackTrace("AlterRole");
+{
 	Datum		new_record[Natts_pg_authid];
 	bool		new_record_nulls[Natts_pg_authid];
 	bool		new_record_repl[Natts_pg_authid];
@@ -857,7 +857,7 @@ AlterRole(AlterRoleStmt *stmt)
  */
 Oid
 AlterRoleSet(AlterRoleSetStmt *stmt)
-{	StackTrace("AlterRoleSet");
+{
 	HeapTuple	roletuple;
 	Oid			databaseid = InvalidOid;
 	Oid			roleid = InvalidOid;
@@ -934,7 +934,7 @@ AlterRoleSet(AlterRoleSetStmt *stmt)
  */
 void
 DropRole(DropRoleStmt *stmt)
-{	StackTrace("DropRole");
+{
 	Relation	pg_authid_rel,
 				pg_auth_members_rel;
 	ListCell   *item;
@@ -1111,7 +1111,7 @@ DropRole(DropRoleStmt *stmt)
  */
 ObjectAddress
 RenameRole(const char *oldname, const char *newname)
-{	StackTrace("RenameRole");
+{
 	HeapTuple	oldtuple,
 				newtuple;
 	TupleDesc	dsc;
@@ -1231,7 +1231,7 @@ RenameRole(const char *oldname, const char *newname)
  */
 void
 GrantRole(GrantRoleStmt *stmt)
-{	StackTrace("GrantRole");
+{
 	Relation	pg_authid_rel;
 	Oid			grantor;
 	List	   *grantee_ids;
@@ -1290,7 +1290,7 @@ GrantRole(GrantRoleStmt *stmt)
  */
 void
 DropOwnedObjects(DropOwnedStmt *stmt)
-{	StackTrace("DropOwnedObjects");
+{
 	List	   *role_ids = roleSpecsToIds(stmt->roles);
 	ListCell   *cell;
 
@@ -1316,7 +1316,7 @@ DropOwnedObjects(DropOwnedStmt *stmt)
  */
 void
 ReassignOwnedObjects(ReassignOwnedStmt *stmt)
-{	StackTrace("ReassignOwnedObjects");
+{
 	List	   *role_ids = roleSpecsToIds(stmt->roles);
 	ListCell   *cell;
 	Oid			newrole;
@@ -1353,7 +1353,7 @@ ReassignOwnedObjects(ReassignOwnedStmt *stmt)
  */
 List *
 roleSpecsToIds(List *memberNames)
-{	StackTrace("roleSpecsToIds");
+{
 	List	   *result = NIL;
 	ListCell   *l;
 
@@ -1384,7 +1384,7 @@ static void
 AddRoleMems(const char *rolename, Oid roleid,
 			List *memberSpecs, List *memberIds,
 			Oid grantorId, bool admin_opt)
-{	StackTrace("AddRoleMems");
+{
 	Relation	pg_authmem_rel;
 	TupleDesc	pg_authmem_dsc;
 	ListCell   *specitem;
@@ -1530,7 +1530,7 @@ static void
 DelRoleMems(const char *rolename, Oid roleid,
 			List *memberSpecs, List *memberIds,
 			bool admin_opt)
-{	StackTrace("DelRoleMems");
+{
 	Relation	pg_authmem_rel;
 	TupleDesc	pg_authmem_dsc;
 	ListCell   *specitem;

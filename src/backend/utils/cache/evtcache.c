@@ -62,7 +62,7 @@ static int	DecodeTextArrayToCString(Datum array, char ***cstringp);
  */
 List *
 EventCacheLookup(EventTriggerEvent event)
-{	StackTrace("EventCacheLookup");
+{
 	EventTriggerCacheEntry *entry;
 
 	if (EventTriggerCacheState != ETCS_VALID)
@@ -76,7 +76,7 @@ EventCacheLookup(EventTriggerEvent event)
  */
 static void
 BuildEventTriggerCache(void)
-{	StackTrace("BuildEventTriggerCache");
+{
 	HASHCTL		ctl;
 	HTAB	   *cache;
 	MemoryContext oldcontext;
@@ -225,7 +225,7 @@ BuildEventTriggerCache(void)
  */
 static int
 DecodeTextArrayToCString(Datum array, char ***cstringp)
-{	StackTrace("DecodeTextArrayToCString");
+{
 	ArrayType  *arr = DatumGetArrayTypeP(array);
 	Datum	   *elems;
 	char	  **cstring;
@@ -254,7 +254,7 @@ DecodeTextArrayToCString(Datum array, char ***cstringp)
  */
 static void
 InvalidateEventCacheCallback(Datum arg, int cacheid, uint32 hashvalue)
-{	StackTrace("InvalidateEventCacheCallback");
+{
 	/*
 	 * If the cache isn't valid, then there might be a rebuild in progress, so
 	 * we can't immediately blow it away.  But it's advantageous to do this

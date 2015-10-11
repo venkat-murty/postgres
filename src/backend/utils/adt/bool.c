@@ -28,13 +28,13 @@
  */
 bool
 parse_bool(const char *value, bool *result)
-{	StackTrace("parse_bool");
+{
 	return parse_bool_with_len(value, strlen(value), result);
 }
 
 bool
 parse_bool_with_len(const char *value, size_t len, bool *result)
-{	StackTrace("parse_bool_with_len");
+{
 	switch (*value)
 	{
 		case 't':
@@ -128,7 +128,7 @@ parse_bool_with_len(const char *value, size_t len, bool *result)
  */
 Datum
 boolin(PG_FUNCTION_ARGS)
-{	StackTrace("boolin");
+{
 	const char *in_str = PG_GETARG_CSTRING(0);
 	const char *str;
 	size_t		len;
@@ -161,7 +161,7 @@ boolin(PG_FUNCTION_ARGS)
  */
 Datum
 boolout(PG_FUNCTION_ARGS)
-{	StackTrace("boolout");
+{
 	bool		b = PG_GETARG_BOOL(0);
 	char	   *result = (char *) palloc(2);
 
@@ -178,7 +178,7 @@ boolout(PG_FUNCTION_ARGS)
  */
 Datum
 boolrecv(PG_FUNCTION_ARGS)
-{	StackTrace("boolrecv");
+{
 	StringInfo	buf = (StringInfo) PG_GETARG_POINTER(0);
 	int			ext;
 
@@ -191,7 +191,7 @@ boolrecv(PG_FUNCTION_ARGS)
  */
 Datum
 boolsend(PG_FUNCTION_ARGS)
-{	StackTrace("boolsend");
+{
 	bool		arg1 = PG_GETARG_BOOL(0);
 	StringInfoData buf;
 
@@ -208,7 +208,7 @@ boolsend(PG_FUNCTION_ARGS)
  */
 Datum
 booltext(PG_FUNCTION_ARGS)
-{	StackTrace("booltext");
+{
 	bool		arg1 = PG_GETARG_BOOL(0);
 	const char *str;
 
@@ -227,7 +227,7 @@ booltext(PG_FUNCTION_ARGS)
 
 Datum
 booleq(PG_FUNCTION_ARGS)
-{	StackTrace("booleq");
+{
 	bool		arg1 = PG_GETARG_BOOL(0);
 	bool		arg2 = PG_GETARG_BOOL(1);
 
@@ -236,7 +236,7 @@ booleq(PG_FUNCTION_ARGS)
 
 Datum
 boolne(PG_FUNCTION_ARGS)
-{	StackTrace("boolne");
+{
 	bool		arg1 = PG_GETARG_BOOL(0);
 	bool		arg2 = PG_GETARG_BOOL(1);
 
@@ -245,7 +245,7 @@ boolne(PG_FUNCTION_ARGS)
 
 Datum
 boollt(PG_FUNCTION_ARGS)
-{	StackTrace("boollt");
+{
 	bool		arg1 = PG_GETARG_BOOL(0);
 	bool		arg2 = PG_GETARG_BOOL(1);
 
@@ -254,7 +254,7 @@ boollt(PG_FUNCTION_ARGS)
 
 Datum
 boolgt(PG_FUNCTION_ARGS)
-{	StackTrace("boolgt");
+{
 	bool		arg1 = PG_GETARG_BOOL(0);
 	bool		arg2 = PG_GETARG_BOOL(1);
 
@@ -263,7 +263,7 @@ boolgt(PG_FUNCTION_ARGS)
 
 Datum
 boolle(PG_FUNCTION_ARGS)
-{	StackTrace("boolle");
+{
 	bool		arg1 = PG_GETARG_BOOL(0);
 	bool		arg2 = PG_GETARG_BOOL(1);
 
@@ -272,7 +272,7 @@ boolle(PG_FUNCTION_ARGS)
 
 Datum
 boolge(PG_FUNCTION_ARGS)
-{	StackTrace("boolge");
+{
 	bool		arg1 = PG_GETARG_BOOL(0);
 	bool		arg2 = PG_GETARG_BOOL(1);
 
@@ -291,7 +291,7 @@ boolge(PG_FUNCTION_ARGS)
  */
 Datum
 booland_statefunc(PG_FUNCTION_ARGS)
-{	StackTrace("booland_statefunc");
+{
 	PG_RETURN_BOOL(PG_GETARG_BOOL(0) && PG_GETARG_BOOL(1));
 }
 
@@ -303,7 +303,7 @@ booland_statefunc(PG_FUNCTION_ARGS)
  */
 Datum
 boolor_statefunc(PG_FUNCTION_ARGS)
-{	StackTrace("boolor_statefunc");
+{
 	PG_RETURN_BOOL(PG_GETARG_BOOL(0) || PG_GETARG_BOOL(1));
 }
 
@@ -315,7 +315,7 @@ typedef struct BoolAggState
 
 static BoolAggState *
 makeBoolAggState(FunctionCallInfo fcinfo)
-{	StackTrace("makeBoolAggState");
+{
 	BoolAggState *state;
 	MemoryContext agg_context;
 
@@ -332,7 +332,7 @@ makeBoolAggState(FunctionCallInfo fcinfo)
 
 Datum
 bool_accum(PG_FUNCTION_ARGS)
-{	StackTrace("bool_accum");
+{
 	BoolAggState *state;
 
 	state = PG_ARGISNULL(0) ? NULL : (BoolAggState *) PG_GETARG_POINTER(0);
@@ -353,7 +353,7 @@ bool_accum(PG_FUNCTION_ARGS)
 
 Datum
 bool_accum_inv(PG_FUNCTION_ARGS)
-{	StackTrace("bool_accum_inv");
+{
 	BoolAggState *state;
 
 	state = PG_ARGISNULL(0) ? NULL : (BoolAggState *) PG_GETARG_POINTER(0);
@@ -374,7 +374,7 @@ bool_accum_inv(PG_FUNCTION_ARGS)
 
 Datum
 bool_alltrue(PG_FUNCTION_ARGS)
-{	StackTrace("bool_alltrue");
+{
 	BoolAggState *state;
 
 	state = PG_ARGISNULL(0) ? NULL : (BoolAggState *) PG_GETARG_POINTER(0);
@@ -389,7 +389,7 @@ bool_alltrue(PG_FUNCTION_ARGS)
 
 Datum
 bool_anytrue(PG_FUNCTION_ARGS)
-{	StackTrace("bool_anytrue");
+{
 	BoolAggState *state;
 
 	state = PG_ARGISNULL(0) ? NULL : (BoolAggState *) PG_GETARG_POINTER(0);

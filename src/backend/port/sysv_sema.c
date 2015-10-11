@@ -84,7 +84,7 @@ static void ReleaseSemaphores(int status, Datum arg);
  */
 static IpcSemaphoreId
 InternalIpcSemaphoreCreate(IpcSemaphoreKey semKey, int numSems)
-{	StackTrace("InternalIpcSemaphoreCreate");
+{
 	int			semId;
 
 	semId = semget(semKey, numSems, IPC_CREAT | IPC_EXCL | IPCProtection);
@@ -133,7 +133,7 @@ InternalIpcSemaphoreCreate(IpcSemaphoreKey semKey, int numSems)
  */
 static void
 IpcSemaphoreInitialize(IpcSemaphoreId semId, int semNum, int value)
-{	StackTrace("IpcSemaphoreInitialize");
+{
 	union semun semun;
 
 	semun.val = value;
@@ -156,7 +156,7 @@ IpcSemaphoreInitialize(IpcSemaphoreId semId, int semNum, int value)
  */
 static void
 IpcSemaphoreKill(IpcSemaphoreId semId)
-{	StackTrace("IpcSemaphoreKill");
+{
 	union semun semun;
 
 	semun.val = 0;				/* unused, but keep compiler quiet */
@@ -168,7 +168,7 @@ IpcSemaphoreKill(IpcSemaphoreId semId)
 /* Get the current value (semval) of the semaphore */
 static int
 IpcSemaphoreGetValue(IpcSemaphoreId semId, int semNum)
-{	StackTrace("IpcSemaphoreGetValue");
+{
 	union semun dummy;			/* for Solaris */
 
 	dummy.val = 0;				/* unused */
@@ -179,7 +179,7 @@ IpcSemaphoreGetValue(IpcSemaphoreId semId, int semNum)
 /* Get the PID of the last process to do semop() on the semaphore */
 static pid_t
 IpcSemaphoreGetLastPID(IpcSemaphoreId semId, int semNum)
-{	StackTrace("IpcSemaphoreGetLastPID");
+{
 	union semun dummy;			/* for Solaris */
 
 	dummy.val = 0;				/* unused */
@@ -199,7 +199,7 @@ IpcSemaphoreGetLastPID(IpcSemaphoreId semId, int semNum)
  */
 static IpcSemaphoreId
 IpcSemaphoreCreate(int numSems)
-{	StackTrace("IpcSemaphoreCreate");
+{
 	IpcSemaphoreId semId;
 	union semun semun;
 	PGSemaphoreData mysema;
@@ -292,7 +292,7 @@ IpcSemaphoreCreate(int numSems)
  */
 void
 PGReserveSemaphores(int maxSemas, int port)
-{	StackTrace("PGReserveSemaphores");
+{
 	maxSemaSets = (maxSemas + SEMAS_PER_SET - 1) / SEMAS_PER_SET;
 	mySemaSets = (IpcSemaphoreId *)
 		malloc(maxSemaSets * sizeof(IpcSemaphoreId));
@@ -312,7 +312,7 @@ PGReserveSemaphores(int maxSemas, int port)
  */
 static void
 ReleaseSemaphores(int status, Datum arg)
-{	StackTrace("ReleaseSemaphores");
+{
 	int			i;
 
 	for (i = 0; i < numSemaSets; i++)
@@ -327,7 +327,7 @@ ReleaseSemaphores(int status, Datum arg)
  */
 void
 PGSemaphoreCreate(PGSemaphore sema)
-{	StackTrace("PGSemaphoreCreate");
+{
 	/* Can't do this in a backend, because static state is postmaster's */
 	Assert(!IsUnderPostmaster);
 
@@ -354,7 +354,7 @@ PGSemaphoreCreate(PGSemaphore sema)
  */
 void
 PGSemaphoreReset(PGSemaphore sema)
-{	StackTrace("PGSemaphoreReset");
+{
 	IpcSemaphoreInitialize(sema->semId, sema->semNum, 0);
 }
 
@@ -365,7 +365,7 @@ PGSemaphoreReset(PGSemaphore sema)
  */
 void
 PGSemaphoreLock(PGSemaphore sema)
-{	StackTrace("PGSemaphoreLock");
+{
 	int			errStatus;
 	struct sembuf sops;
 
@@ -398,7 +398,7 @@ PGSemaphoreLock(PGSemaphore sema)
  */
 void
 PGSemaphoreUnlock(PGSemaphore sema)
-{	StackTrace("PGSemaphoreUnlock");
+{
 	int			errStatus;
 	struct sembuf sops;
 
@@ -428,7 +428,7 @@ PGSemaphoreUnlock(PGSemaphore sema)
  */
 bool
 PGSemaphoreTryLock(PGSemaphore sema)
-{	StackTrace("PGSemaphoreTryLock");
+{
 	int			errStatus;
 	struct sembuf sops;
 

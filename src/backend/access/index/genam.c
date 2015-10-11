@@ -76,7 +76,7 @@
  */
 IndexScanDesc
 RelationGetIndexScan(Relation indexRelation, int nkeys, int norderbys)
-{	StackTrace("RelationGetIndexScan");
+{
 	IndexScanDesc scan;
 
 	scan = (IndexScanDesc) palloc(sizeof(IndexScanDescData));
@@ -142,7 +142,7 @@ RelationGetIndexScan(Relation indexRelation, int nkeys, int norderbys)
  */
 void
 IndexScanEnd(IndexScanDesc scan)
-{	StackTrace("IndexScanEnd");
+{
 	if (scan->keyData != NULL)
 		pfree(scan->keyData);
 	if (scan->orderByData != NULL)
@@ -170,7 +170,7 @@ IndexScanEnd(IndexScanDesc scan)
 char *
 BuildIndexValueDescription(Relation indexRelation,
 						   Datum *values, bool *isnull)
-{	StackTrace("BuildIndexValueDescription");
+{
 	StringInfoData buf;
 	Form_pg_index idxrec;
 	HeapTuple	ht_idx;
@@ -324,7 +324,7 @@ systable_beginscan(Relation heapRelation,
 				   bool indexOK,
 				   Snapshot snapshot,
 				   int nkeys, ScanKey key)
-{	StackTrace("systable_beginscan");
+{
 	SysScanDesc sysscan;
 	Relation	irel;
 
@@ -408,7 +408,7 @@ systable_beginscan(Relation heapRelation,
  */
 HeapTuple
 systable_getnext(SysScanDesc sysscan)
-{	StackTrace("systable_getnext");
+{
 	HeapTuple	htup;
 
 	if (sysscan->irel)
@@ -446,7 +446,7 @@ systable_getnext(SysScanDesc sysscan)
  */
 bool
 systable_recheck_tuple(SysScanDesc sysscan, HeapTuple tup)
-{	StackTrace("systable_recheck_tuple");
+{
 	Snapshot	freshsnap;
 	bool		result;
 
@@ -491,7 +491,7 @@ systable_recheck_tuple(SysScanDesc sysscan, HeapTuple tup)
  */
 void
 systable_endscan(SysScanDesc sysscan)
-{	StackTrace("systable_endscan");
+{
 	if (sysscan->irel)
 	{
 		index_endscan(sysscan->iscan);
@@ -528,7 +528,7 @@ systable_beginscan_ordered(Relation heapRelation,
 						   Relation indexRelation,
 						   Snapshot snapshot,
 						   int nkeys, ScanKey key)
-{	StackTrace("systable_beginscan_ordered");
+{
 	SysScanDesc sysscan;
 	int			i;
 
@@ -589,7 +589,7 @@ systable_beginscan_ordered(Relation heapRelation,
  */
 HeapTuple
 systable_getnext_ordered(SysScanDesc sysscan, ScanDirection direction)
-{	StackTrace("systable_getnext_ordered");
+{
 	HeapTuple	htup;
 
 	Assert(sysscan->irel);
@@ -606,7 +606,7 @@ systable_getnext_ordered(SysScanDesc sysscan, ScanDirection direction)
  */
 void
 systable_endscan_ordered(SysScanDesc sysscan)
-{	StackTrace("systable_endscan_ordered");
+{
 	Assert(sysscan->irel);
 	index_endscan(sysscan->iscan);
 	if (sysscan->snapshot)

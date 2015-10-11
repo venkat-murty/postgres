@@ -45,7 +45,7 @@ struct HSpool
  */
 HSpool *
 _h_spoolinit(Relation heap, Relation index, uint32 num_buckets)
-{	StackTrace("_h_spoolinit");
+{
 	HSpool	   *hspool = (HSpool *) palloc0(sizeof(HSpool));
 	uint32		hash_mask;
 
@@ -81,7 +81,7 @@ _h_spoolinit(Relation heap, Relation index, uint32 num_buckets)
  */
 void
 _h_spooldestroy(HSpool *hspool)
-{	StackTrace("_h_spooldestroy");
+{
 	tuplesort_end(hspool->sortstate);
 	pfree(hspool);
 }
@@ -91,7 +91,7 @@ _h_spooldestroy(HSpool *hspool)
  */
 void
 _h_spool(HSpool *hspool, ItemPointer self, Datum *values, bool *isnull)
-{	StackTrace("_h_spool");
+{
 	tuplesort_putindextuplevalues(hspool->sortstate, hspool->index,
 								  self, values, isnull);
 }
@@ -102,7 +102,7 @@ _h_spool(HSpool *hspool, ItemPointer self, Datum *values, bool *isnull)
  */
 void
 _h_indexbuild(HSpool *hspool)
-{	StackTrace("_h_indexbuild");
+{
 	IndexTuple	itup;
 	bool		should_free;
 

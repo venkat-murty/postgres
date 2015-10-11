@@ -78,7 +78,7 @@ bool		IgnoreSystemIndexes = false;
 
 void
 SetDatabasePath(const char *path)
-{	StackTrace("SetDatabasePath");
+{
 	/* This should happen only once per process */
 	Assert(!DatabasePath);
 	DatabasePath = MemoryContextStrdup(TopMemoryContext, path);
@@ -90,7 +90,7 @@ SetDatabasePath(const char *path)
  */
 void
 SetDataDir(const char *dir)
-{	StackTrace("SetDataDir");
+{
 	char	   *new;
 
 	AssertArg(dir);
@@ -111,7 +111,7 @@ SetDataDir(const char *dir)
  */
 void
 ChangeToDataDir(void)
-{	StackTrace("ChangeToDataDir");
+{
 	AssertState(DataDir);
 
 	if (chdir(DataDir) < 0)
@@ -171,7 +171,7 @@ static bool SetRoleIsActive = false;
  */
 void
 InitPostmasterChild(void)
-{	StackTrace("InitPostmasterChild");
+{
 	IsUnderPostmaster = true;	/* we are a postmaster subprocess now */
 
 	MyProcPid = getpid();		/* reset MyProcPid */
@@ -215,7 +215,7 @@ InitPostmasterChild(void)
  */
 void
 InitStandaloneProcess(const char *argv0)
-{	StackTrace("InitStandaloneProcess");
+{
 	Assert(!IsPostmasterEnvironment);
 
 	MyProcPid = getpid();		/* reset MyProcPid */
@@ -241,7 +241,7 @@ InitStandaloneProcess(const char *argv0)
 
 void
 SwitchToSharedLatch(void)
-{	StackTrace("SwitchToSharedLatch");
+{
 	Assert(MyLatch == &LocalLatchData);
 	Assert(MyProc != NULL);
 
@@ -257,7 +257,7 @@ SwitchToSharedLatch(void)
 
 void
 SwitchBackToLocalLatch(void)
-{	StackTrace("SwitchBackToLocalLatch");
+{
 	Assert(MyLatch != &LocalLatchData);
 	Assert(MyProc != NULL && MyLatch == &MyProc->procLatch);
 
@@ -272,7 +272,7 @@ SwitchBackToLocalLatch(void)
  */
 Oid
 GetUserId(void)
-{	StackTrace("GetUserId");
+{
 	AssertState(OidIsValid(CurrentUserId));
 	return CurrentUserId;
 }
@@ -283,7 +283,7 @@ GetUserId(void)
  */
 Oid
 GetOuterUserId(void)
-{	StackTrace("GetOuterUserId");
+{
 	AssertState(OidIsValid(OuterUserId));
 	return OuterUserId;
 }
@@ -291,7 +291,7 @@ GetOuterUserId(void)
 
 static void
 SetOuterUserId(Oid userid)
-{	StackTrace("SetOuterUserId");
+{
 	AssertState(SecurityRestrictionContext == 0);
 	AssertArg(OidIsValid(userid));
 	OuterUserId = userid;
@@ -306,7 +306,7 @@ SetOuterUserId(Oid userid)
  */
 Oid
 GetSessionUserId(void)
-{	StackTrace("GetSessionUserId");
+{
 	AssertState(OidIsValid(SessionUserId));
 	return SessionUserId;
 }
@@ -314,7 +314,7 @@ GetSessionUserId(void)
 
 static void
 SetSessionUserId(Oid userid, bool is_superuser)
-{	StackTrace("SetSessionUserId");
+{
 	AssertState(SecurityRestrictionContext == 0);
 	AssertArg(OidIsValid(userid));
 	SessionUserId = userid;
@@ -331,7 +331,7 @@ SetSessionUserId(Oid userid, bool is_superuser)
  */
 Oid
 GetAuthenticatedUserId(void)
-{	StackTrace("GetAuthenticatedUserId");
+{
 	AssertState(OidIsValid(AuthenticatedUserId));
 	return AuthenticatedUserId;
 }
@@ -370,14 +370,14 @@ GetAuthenticatedUserId(void)
  */
 void
 GetUserIdAndSecContext(Oid *userid, int *sec_context)
-{	StackTrace("GetUserIdAndSecContext");
+{
 	*userid = CurrentUserId;
 	*sec_context = SecurityRestrictionContext;
 }
 
 void
 SetUserIdAndSecContext(Oid userid, int sec_context)
-{	StackTrace("SetUserIdAndSecContext");
+{
 	CurrentUserId = userid;
 	SecurityRestrictionContext = sec_context;
 }
@@ -388,7 +388,7 @@ SetUserIdAndSecContext(Oid userid, int sec_context)
  */
 bool
 InLocalUserIdChange(void)
-{	StackTrace("InLocalUserIdChange");
+{
 	return (SecurityRestrictionContext & SECURITY_LOCAL_USERID_CHANGE) != 0;
 }
 
@@ -397,7 +397,7 @@ InLocalUserIdChange(void)
  */
 bool
 InSecurityRestrictedOperation(void)
-{	StackTrace("InSecurityRestrictedOperation");
+{
 	return (SecurityRestrictionContext & SECURITY_RESTRICTED_OPERATION) != 0;
 }
 
@@ -410,14 +410,14 @@ InSecurityRestrictedOperation(void)
  */
 void
 GetUserIdAndContext(Oid *userid, bool *sec_def_context)
-{	StackTrace("GetUserIdAndContext");
+{
 	*userid = CurrentUserId;
 	*sec_def_context = InLocalUserIdChange();
 }
 
 void
 SetUserIdAndContext(Oid userid, bool sec_def_context)
-{	StackTrace("SetUserIdAndContext");
+{
 	/* We throw the same error SET ROLE would. */
 	if (InSecurityRestrictedOperation())
 		ereport(ERROR,
@@ -437,7 +437,7 @@ SetUserIdAndContext(Oid userid, bool sec_def_context)
  */
 bool
 has_rolreplication(Oid roleid)
-{	StackTrace("has_rolreplication");
+{
 	bool		result = false;
 	HeapTuple	utup;
 
@@ -455,7 +455,7 @@ has_rolreplication(Oid roleid)
  */
 void
 InitializeSessionUserId(const char *rolename, Oid roleid)
-{	StackTrace("InitializeSessionUserId");
+{
 	HeapTuple	roleTup;
 	Form_pg_authid rform;
 
@@ -541,7 +541,7 @@ InitializeSessionUserId(const char *rolename, Oid roleid)
  */
 void
 InitializeSessionUserIdStandalone(void)
-{	StackTrace("InitializeSessionUserIdStandalone");
+{
 	/*
 	 * This function should only be called in single-user mode, in autovacuum
 	 * workers, and in background workers.
@@ -573,7 +573,7 @@ InitializeSessionUserIdStandalone(void)
  */
 void
 SetSessionAuthorization(Oid userid, bool is_superuser)
-{	StackTrace("SetSessionAuthorization");
+{
 	/* Must have authenticated already, else can't make permission check */
 	AssertState(OidIsValid(AuthenticatedUserId));
 
@@ -598,7 +598,7 @@ SetSessionAuthorization(Oid userid, bool is_superuser)
  */
 Oid
 GetCurrentRoleId(void)
-{	StackTrace("GetCurrentRoleId");
+{
 	if (SetRoleIsActive)
 		return OuterUserId;
 	else
@@ -619,7 +619,7 @@ GetCurrentRoleId(void)
  */
 void
 SetCurrentRoleId(Oid roleid, bool is_superuser)
-{	StackTrace("SetCurrentRoleId");
+{
 	/*
 	 * Get correct info if it's SET ROLE NONE
 	 *
@@ -654,7 +654,7 @@ SetCurrentRoleId(Oid roleid, bool is_superuser)
  */
 char *
 GetUserNameFromId(Oid roleid, bool noerr)
-{	StackTrace("GetUserNameFromId");
+{
 	HeapTuple	tuple;
 	char	   *result;
 
@@ -696,7 +696,7 @@ GetUserNameFromId(Oid roleid, bool noerr)
  */
 static void
 UnlinkLockFiles(int status, Datum arg)
-{	StackTrace("UnlinkLockFiles");
+{
 	ListCell   *l;
 
 	foreach(l, lock_files)
@@ -722,7 +722,7 @@ static void
 CreateLockFile(const char *filename, bool amPostmaster,
 			   const char *socketDir,
 			   bool isDDLock, const char *refName)
-{	StackTrace("CreateLockFile");
+{
 	int			fd;
 	char		buffer[MAXPGPATH * 2 + 256];
 	int			ntries;
@@ -1021,7 +1021,7 @@ CreateLockFile(const char *filename, bool amPostmaster,
  */
 void
 CreateDataDirLockFile(bool amPostmaster)
-{	StackTrace("CreateDataDirLockFile");
+{
 	CreateLockFile(DIRECTORY_LOCK_FILE, amPostmaster, "", true, DataDir);
 }
 
@@ -1031,7 +1031,7 @@ CreateDataDirLockFile(bool amPostmaster)
 void
 CreateSocketLockFile(const char *socketfile, bool amPostmaster,
 					 const char *socketDir)
-{	StackTrace("CreateSocketLockFile");
+{
 	char		lockfile[MAXPGPATH];
 
 	snprintf(lockfile, sizeof(lockfile), "%s.lock", socketfile);
@@ -1048,7 +1048,7 @@ CreateSocketLockFile(const char *socketfile, bool amPostmaster,
  */
 void
 TouchSocketLockFiles(void)
-{	StackTrace("TouchSocketLockFiles");
+{
 	ListCell   *l;
 
 	foreach(l, lock_files)
@@ -1097,7 +1097,7 @@ TouchSocketLockFiles(void)
  */
 void
 AddToDataDirLockFile(int target_line, const char *str)
-{	StackTrace("AddToDataDirLockFile");
+{
 	int			fd;
 	int			len;
 	int			lineno;
@@ -1211,7 +1211,7 @@ AddToDataDirLockFile(int target_line, const char *str)
  */
 void
 ValidatePgVersion(const char *path)
-{	StackTrace("ValidatePgVersion");
+{
 	char		full_path[MAXPGPATH];
 	FILE	   *file;
 	int			ret;
@@ -1288,7 +1288,7 @@ bool		process_shared_preload_libraries_in_progress = false;
  */
 static void
 load_libraries(const char *libraries, const char *gucname, bool restricted)
-{	StackTrace("load_libraries");
+{
 	char	   *rawstring;
 	List	   *elemlist;
 	ListCell   *l;
@@ -1343,7 +1343,7 @@ load_libraries(const char *libraries, const char *gucname, bool restricted)
  */
 void
 process_shared_preload_libraries(void)
-{	StackTrace("process_shared_preload_libraries");
+{
 	process_shared_preload_libraries_in_progress = true;
 	load_libraries(shared_preload_libraries_string,
 				   "shared_preload_libraries",
@@ -1356,7 +1356,7 @@ process_shared_preload_libraries(void)
  */
 void
 process_session_preload_libraries(void)
-{	StackTrace("process_session_preload_libraries");
+{
 	load_libraries(session_preload_libraries_string,
 				   "session_preload_libraries",
 				   false);
@@ -1367,7 +1367,7 @@ process_session_preload_libraries(void)
 
 void
 pg_bindtextdomain(const char *domain)
-{	StackTrace("pg_bindtextdomain");
+{
 #ifdef ENABLE_NLS
 	if (my_exec_path[0] != '\0')
 	{

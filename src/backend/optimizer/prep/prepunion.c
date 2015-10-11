@@ -219,7 +219,7 @@ recurse_set_operations(Node *setOp, PlannerInfo *root,
 					   bool junkOK,
 					   int flag, List *refnames_tlist,
 					   List **sortClauses, double *pNumGroups)
-{	StackTrace("recurse_set_operations");
+{
 	if (IsA(setOp, RangeTblRef))
 	{
 		RangeTblRef *rtr = (RangeTblRef *) setOp;
@@ -362,7 +362,7 @@ generate_recursion_plan(SetOperationStmt *setOp, PlannerInfo *root,
 						double tuple_fraction,
 						List *refnames_tlist,
 						List **sortClauses)
-{	StackTrace("generate_recursion_plan");
+{
 	Plan	   *plan;
 	Plan	   *lplan;
 	Plan	   *rplan;
@@ -451,7 +451,7 @@ generate_union_plan(SetOperationStmt *op, PlannerInfo *root,
 					double tuple_fraction,
 					List *refnames_tlist,
 					List **sortClauses, double *pNumGroups)
-{	StackTrace("generate_union_plan");
+{
 	List	   *planlist;
 	List	   *tlist;
 	Plan	   *plan;
@@ -526,7 +526,7 @@ generate_nonunion_plan(SetOperationStmt *op, PlannerInfo *root,
 					   double tuple_fraction,
 					   List *refnames_tlist,
 					   List **sortClauses, double *pNumGroups)
-{	StackTrace("generate_nonunion_plan");
+{
 	Plan	   *lplan,
 			   *rplan,
 			   *plan;
@@ -682,7 +682,7 @@ recurse_union_children(Node *setOp, PlannerInfo *root,
 					   double tuple_fraction,
 					   SetOperationStmt *top_union,
 					   List *refnames_tlist)
-{	StackTrace("recurse_union_children");
+{
 	List	   *child_sortclauses;
 
 	if (IsA(setOp, SetOperationStmt))
@@ -730,7 +730,7 @@ static Plan *
 make_union_unique(SetOperationStmt *op, Plan *plan,
 				  PlannerInfo *root, double tuple_fraction,
 				  List **sortClauses)
-{	StackTrace("make_union_unique");
+{
 	List	   *groupList;
 	double		dNumGroups;
 	long		numGroups;
@@ -801,7 +801,7 @@ choose_hashed_setop(PlannerInfo *root, List *groupClauses,
 					double dNumGroups, double dNumOutputRows,
 					double tuple_fraction,
 					const char *construct)
-{	StackTrace("choose_hashed_setop");
+{
 	int			numGroupCols = list_length(groupClauses);
 	bool		can_sort;
 	bool		can_hash;
@@ -904,7 +904,7 @@ generate_setop_tlist(List *colTypes, List *colCollations,
 					 bool hack_constants,
 					 List *input_tlist,
 					 List *refnames_tlist)
-{	StackTrace("generate_setop_tlist");
+{
 	List	   *tlist = NIL;
 	int			resno = 1;
 	ListCell   *ctlc,
@@ -1035,7 +1035,7 @@ generate_append_tlist(List *colTypes, List *colCollations,
 					  bool flag,
 					  List *input_plans,
 					  List *refnames_tlist)
-{	StackTrace("generate_append_tlist");
+{
 	List	   *tlist = NIL;
 	int			resno = 1;
 	ListCell   *curColType;
@@ -1152,7 +1152,7 @@ generate_append_tlist(List *colTypes, List *colCollations,
  */
 static List *
 generate_setop_grouplist(SetOperationStmt *op, List *targetlist)
-{	StackTrace("generate_setop_grouplist");
+{
 	List	   *grouplist = (List *) copyObject(op->groupClauses);
 	ListCell   *lg;
 	ListCell   *lt;
@@ -1193,7 +1193,7 @@ generate_setop_grouplist(SetOperationStmt *op, List *targetlist)
  */
 void
 expand_inherited_tables(PlannerInfo *root)
-{	StackTrace("expand_inherited_tables");
+{
 	Index		nrtes;
 	Index		rti;
 	ListCell   *rl;
@@ -1232,7 +1232,7 @@ expand_inherited_tables(PlannerInfo *root)
  */
 static void
 expand_inherited_rtentry(PlannerInfo *root, RangeTblEntry *rte, Index rti)
-{	StackTrace("expand_inherited_rtentry");
+{
 	Query	   *parse = root->parse;
 	Oid			parentOID;
 	PlanRowMark *oldrc;
@@ -1441,7 +1441,7 @@ static void
 make_inh_translation_list(Relation oldrelation, Relation newrelation,
 						  Index newvarno,
 						  List **translated_vars)
-{	StackTrace("make_inh_translation_list");
+{
 	List	   *vars = NIL;
 	TupleDesc	old_tupdesc = RelationGetDescr(oldrelation);
 	TupleDesc	new_tupdesc = RelationGetDescr(newrelation);
@@ -1547,7 +1547,7 @@ make_inh_translation_list(Relation oldrelation, Relation newrelation,
 static Bitmapset *
 translate_col_privs(const Bitmapset *parent_privs,
 					List *translated_vars)
-{	StackTrace("translate_col_privs");
+{
 	Bitmapset  *child_privs = NULL;
 	bool		whole_row;
 	int			attno;
@@ -1602,7 +1602,7 @@ translate_col_privs(const Bitmapset *parent_privs,
  */
 Node *
 adjust_appendrel_attrs(PlannerInfo *root, Node *node, AppendRelInfo *appinfo)
-{	StackTrace("adjust_appendrel_attrs");
+{
 	Node	   *result;
 	adjust_appendrel_attrs_context context;
 
@@ -1643,7 +1643,7 @@ adjust_appendrel_attrs(PlannerInfo *root, Node *node, AppendRelInfo *appinfo)
 static Node *
 adjust_appendrel_attrs_mutator(Node *node,
 							   adjust_appendrel_attrs_context *context)
-{	StackTrace("adjust_appendrel_attrs_mutator");
+{
 	AppendRelInfo *appinfo = context->appinfo;
 
 	if (node == NULL)
@@ -1883,7 +1883,7 @@ adjust_appendrel_attrs_mutator(Node *node,
  */
 static Relids
 adjust_relid_set(Relids relids, Index oldrelid, Index newrelid)
-{	StackTrace("adjust_relid_set");
+{
 	if (bms_is_member(oldrelid, relids))
 	{
 		/* Ensure we have a modifiable copy */
@@ -1913,7 +1913,7 @@ adjust_relid_set(Relids relids, Index oldrelid, Index newrelid)
  */
 static List *
 adjust_inherited_tlist(List *tlist, AppendRelInfo *context)
-{	StackTrace("adjust_inherited_tlist");
+{
 	bool		changed_it = false;
 	ListCell   *tl;
 	List	   *new_tlist;
@@ -2002,7 +2002,7 @@ adjust_inherited_tlist(List *tlist, AppendRelInfo *context)
 Node *
 adjust_appendrel_attrs_multilevel(PlannerInfo *root, Node *node,
 								  RelOptInfo *child_rel)
-{	StackTrace("adjust_appendrel_attrs_multilevel");
+{
 	AppendRelInfo *appinfo = find_childrel_appendrelinfo(root, child_rel);
 	RelOptInfo *parent_rel = find_base_rel(root, appinfo->parent_relid);
 

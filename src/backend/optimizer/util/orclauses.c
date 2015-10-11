@@ -71,7 +71,7 @@ static void consider_new_or_clause(PlannerInfo *root, RelOptInfo *rel,
  */
 void
 extract_restriction_or_clauses(PlannerInfo *root)
-{	StackTrace("extract_restriction_or_clauses");
+{
 	Index		rti;
 
 	/* Examine each baserel for potential join OR clauses */
@@ -127,7 +127,7 @@ extract_restriction_or_clauses(PlannerInfo *root)
  */
 static bool
 is_safe_restriction_clause_for(RestrictInfo *rinfo, RelOptInfo *rel)
-{	StackTrace("is_safe_restriction_clause_for");
+{
 	/*
 	 * We want clauses that mention the rel, and only the rel.  So in
 	 * particular pseudoconstant clauses can be rejected quickly.  Then check
@@ -157,7 +157,7 @@ is_safe_restriction_clause_for(RestrictInfo *rinfo, RelOptInfo *rel)
  */
 static Expr *
 extract_or_clause(RestrictInfo *or_rinfo, RelOptInfo *rel)
-{	StackTrace("extract_or_clause");
+{
 	List	   *clauselist = NIL;
 	ListCell   *lc;
 
@@ -257,7 +257,7 @@ extract_or_clause(RestrictInfo *or_rinfo, RelOptInfo *rel)
 static void
 consider_new_or_clause(PlannerInfo *root, RelOptInfo *rel,
 					   Expr *orclause, RestrictInfo *join_or_rinfo)
-{	StackTrace("consider_new_or_clause");
+{
 	RestrictInfo *or_rinfo;
 	Selectivity or_selec,
 				orig_selec;

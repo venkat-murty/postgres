@@ -80,7 +80,7 @@ static void btvacuumpage(BTVacState *vstate, BlockNumber blkno,
  */
 Datum
 btbuild(PG_FUNCTION_ARGS)
-{	StackTrace("btbuild");
+{
 	Relation	heap = (Relation) PG_GETARG_POINTER(0);
 	Relation	index = (Relation) PG_GETARG_POINTER(1);
 	IndexInfo  *indexInfo = (IndexInfo *) PG_GETARG_POINTER(2);
@@ -168,7 +168,7 @@ btbuildCallback(Relation index,
 				bool *isnull,
 				bool tupleIsAlive,
 				void *state)
-{	StackTrace("btbuildCallback");
+{
 	BTBuildState *buildstate = (BTBuildState *) state;
 
 	/*
@@ -192,7 +192,7 @@ btbuildCallback(Relation index,
  */
 Datum
 btbuildempty(PG_FUNCTION_ARGS)
-{	StackTrace("btbuildempty");
+{
 	Relation	index = (Relation) PG_GETARG_POINTER(0);
 	Page		metapage;
 
@@ -226,7 +226,7 @@ btbuildempty(PG_FUNCTION_ARGS)
  */
 Datum
 btinsert(PG_FUNCTION_ARGS)
-{	StackTrace("btinsert");
+{
 	Relation	rel = (Relation) PG_GETARG_POINTER(0);
 	Datum	   *values = (Datum *) PG_GETARG_POINTER(1);
 	bool	   *isnull = (bool *) PG_GETARG_POINTER(2);
@@ -252,7 +252,7 @@ btinsert(PG_FUNCTION_ARGS)
  */
 Datum
 btgettuple(PG_FUNCTION_ARGS)
-{	StackTrace("btgettuple");
+{
 	IndexScanDesc scan = (IndexScanDesc) PG_GETARG_POINTER(0);
 	ScanDirection dir = (ScanDirection) PG_GETARG_INT32(1);
 	BTScanOpaque so = (BTScanOpaque) scan->opaque;
@@ -328,7 +328,7 @@ btgettuple(PG_FUNCTION_ARGS)
  */
 Datum
 btgetbitmap(PG_FUNCTION_ARGS)
-{	StackTrace("btgetbitmap");
+{
 	IndexScanDesc scan = (IndexScanDesc) PG_GETARG_POINTER(0);
 	TIDBitmap  *tbm = (TIDBitmap *) PG_GETARG_POINTER(1);
 	BTScanOpaque so = (BTScanOpaque) scan->opaque;
@@ -388,7 +388,7 @@ btgetbitmap(PG_FUNCTION_ARGS)
  */
 Datum
 btbeginscan(PG_FUNCTION_ARGS)
-{	StackTrace("btbeginscan");
+{
 	Relation	rel = (Relation) PG_GETARG_POINTER(0);
 	int			nkeys = PG_GETARG_INT32(1);
 	int			norderbys = PG_GETARG_INT32(2);
@@ -437,7 +437,7 @@ btbeginscan(PG_FUNCTION_ARGS)
  */
 Datum
 btrescan(PG_FUNCTION_ARGS)
-{	StackTrace("btrescan");
+{
 	IndexScanDesc scan = (IndexScanDesc) PG_GETARG_POINTER(0);
 	ScanKey		scankey = (ScanKey) PG_GETARG_POINTER(1);
 
@@ -501,7 +501,7 @@ btrescan(PG_FUNCTION_ARGS)
  */
 Datum
 btendscan(PG_FUNCTION_ARGS)
-{	StackTrace("btendscan");
+{
 	IndexScanDesc scan = (IndexScanDesc) PG_GETARG_POINTER(0);
 	BTScanOpaque so = (BTScanOpaque) scan->opaque;
 
@@ -540,7 +540,7 @@ btendscan(PG_FUNCTION_ARGS)
  */
 Datum
 btmarkpos(PG_FUNCTION_ARGS)
-{	StackTrace("btmarkpos");
+{
 	IndexScanDesc scan = (IndexScanDesc) PG_GETARG_POINTER(0);
 	BTScanOpaque so = (BTScanOpaque) scan->opaque;
 
@@ -573,7 +573,7 @@ btmarkpos(PG_FUNCTION_ARGS)
  */
 Datum
 btrestrpos(PG_FUNCTION_ARGS)
-{	StackTrace("btrestrpos");
+{
 	IndexScanDesc scan = (IndexScanDesc) PG_GETARG_POINTER(0);
 	BTScanOpaque so = (BTScanOpaque) scan->opaque;
 
@@ -655,7 +655,7 @@ btrestrpos(PG_FUNCTION_ARGS)
  */
 Datum
 btbulkdelete(PG_FUNCTION_ARGS)
-{	StackTrace("btbulkdelete");
+{
 	IndexVacuumInfo *info = (IndexVacuumInfo *) PG_GETARG_POINTER(0);
 	IndexBulkDeleteResult *volatile stats = (IndexBulkDeleteResult *) PG_GETARG_POINTER(1);
 	IndexBulkDeleteCallback callback = (IndexBulkDeleteCallback) PG_GETARG_POINTER(2);
@@ -688,7 +688,7 @@ btbulkdelete(PG_FUNCTION_ARGS)
  */
 Datum
 btvacuumcleanup(PG_FUNCTION_ARGS)
-{	StackTrace("btvacuumcleanup");
+{
 	IndexVacuumInfo *info = (IndexVacuumInfo *) PG_GETARG_POINTER(0);
 	IndexBulkDeleteResult *stats = (IndexBulkDeleteResult *) PG_GETARG_POINTER(1);
 
@@ -745,7 +745,7 @@ static void
 btvacuumscan(IndexVacuumInfo *info, IndexBulkDeleteResult *stats,
 			 IndexBulkDeleteCallback callback, void *callback_state,
 			 BTCycleId cycleid)
-{	StackTrace("btvacuumscan");
+{
 	Relation	rel = info->index;
 	BTVacState	vstate;
 	BlockNumber num_pages;
@@ -871,7 +871,7 @@ btvacuumscan(IndexVacuumInfo *info, IndexBulkDeleteResult *stats,
  */
 static void
 btvacuumpage(BTVacState *vstate, BlockNumber blkno, BlockNumber orig_blkno)
-{	StackTrace("btvacuumpage");
+{
 	IndexVacuumInfo *info = vstate->info;
 	IndexBulkDeleteResult *stats = vstate->stats;
 	IndexBulkDeleteCallback callback = vstate->callback;
@@ -1127,6 +1127,6 @@ restart:
  */
 Datum
 btcanreturn(PG_FUNCTION_ARGS)
-{	StackTrace("btcanreturn");
+{
 	PG_RETURN_BOOL(true);
 }

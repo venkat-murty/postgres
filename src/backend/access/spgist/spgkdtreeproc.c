@@ -24,7 +24,7 @@
 
 Datum
 spg_kd_config(PG_FUNCTION_ARGS)
-{	StackTrace("spg_kd_config");
+{
 	/* spgConfigIn *cfgin = (spgConfigIn *) PG_GETARG_POINTER(0); */
 	spgConfigOut *cfg = (spgConfigOut *) PG_GETARG_POINTER(1);
 
@@ -37,7 +37,7 @@ spg_kd_config(PG_FUNCTION_ARGS)
 
 static int
 getSide(double coord, bool isX, Point *tst)
-{	StackTrace("getSide");
+{
 	double		tstcoord = (isX) ? tst->x : tst->y;
 
 	if (coord == tstcoord)
@@ -50,7 +50,7 @@ getSide(double coord, bool isX, Point *tst)
 
 Datum
 spg_kd_choose(PG_FUNCTION_ARGS)
-{	StackTrace("spg_kd_choose");
+{
 	spgChooseIn *in = (spgChooseIn *) PG_GETARG_POINTER(0);
 	spgChooseOut *out = (spgChooseOut *) PG_GETARG_POINTER(1);
 	Point	   *inPoint = DatumGetPointP(in->datum);
@@ -81,7 +81,7 @@ typedef struct SortedPoint
 
 static int
 x_cmp(const void *a, const void *b)
-{	StackTrace("x_cmp");
+{
 	SortedPoint *pa = (SortedPoint *) a;
 	SortedPoint *pb = (SortedPoint *) b;
 
@@ -92,7 +92,7 @@ x_cmp(const void *a, const void *b)
 
 static int
 y_cmp(const void *a, const void *b)
-{	StackTrace("y_cmp");
+{
 	SortedPoint *pa = (SortedPoint *) a;
 	SortedPoint *pb = (SortedPoint *) b;
 
@@ -104,7 +104,7 @@ y_cmp(const void *a, const void *b)
 
 Datum
 spg_kd_picksplit(PG_FUNCTION_ARGS)
-{	StackTrace("spg_kd_picksplit");
+{
 	spgPickSplitIn *in = (spgPickSplitIn *) PG_GETARG_POINTER(0);
 	spgPickSplitOut *out = (spgPickSplitOut *) PG_GETARG_POINTER(1);
 	int			i;
@@ -156,7 +156,7 @@ spg_kd_picksplit(PG_FUNCTION_ARGS)
 
 Datum
 spg_kd_inner_consistent(PG_FUNCTION_ARGS)
-{	StackTrace("spg_kd_inner_consistent");
+{
 	spgInnerConsistentIn *in = (spgInnerConsistentIn *) PG_GETARG_POINTER(0);
 	spgInnerConsistentOut *out = (spgInnerConsistentOut *) PG_GETARG_POINTER(1);
 	double		coord;

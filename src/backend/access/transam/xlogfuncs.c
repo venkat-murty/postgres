@@ -46,7 +46,7 @@
  */
 Datum
 pg_start_backup(PG_FUNCTION_ARGS)
-{	StackTrace("pg_start_backup");
+{
 	text	   *backupid = PG_GETARG_TEXT_P(0);
 	bool		fast = PG_GETARG_BOOL(1);
 	char	   *backupidstr;
@@ -89,7 +89,7 @@ pg_start_backup(PG_FUNCTION_ARGS)
  */
 Datum
 pg_stop_backup(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stop_backup");
+{
 	XLogRecPtr	stoppoint;
 
 	if (!superuser() && !has_rolreplication(GetUserId()))
@@ -107,7 +107,7 @@ pg_stop_backup(PG_FUNCTION_ARGS)
  */
 Datum
 pg_switch_xlog(PG_FUNCTION_ARGS)
-{	StackTrace("pg_switch_xlog");
+{
 	XLogRecPtr	switchpoint;
 
 	if (!superuser())
@@ -134,7 +134,7 @@ pg_switch_xlog(PG_FUNCTION_ARGS)
  */
 Datum
 pg_create_restore_point(PG_FUNCTION_ARGS)
-{	StackTrace("pg_create_restore_point");
+{
 	text	   *restore_name = PG_GETARG_TEXT_P(0);
 	char	   *restore_name_str;
 	XLogRecPtr	restorepoint;
@@ -180,7 +180,7 @@ pg_create_restore_point(PG_FUNCTION_ARGS)
  */
 Datum
 pg_current_xlog_location(PG_FUNCTION_ARGS)
-{	StackTrace("pg_current_xlog_location");
+{
 	XLogRecPtr	current_recptr;
 
 	if (RecoveryInProgress())
@@ -201,7 +201,7 @@ pg_current_xlog_location(PG_FUNCTION_ARGS)
  */
 Datum
 pg_current_xlog_insert_location(PG_FUNCTION_ARGS)
-{	StackTrace("pg_current_xlog_insert_location");
+{
 	XLogRecPtr	current_recptr;
 
 	if (RecoveryInProgress())
@@ -223,7 +223,7 @@ pg_current_xlog_insert_location(PG_FUNCTION_ARGS)
  */
 Datum
 pg_last_xlog_receive_location(PG_FUNCTION_ARGS)
-{	StackTrace("pg_last_xlog_receive_location");
+{
 	XLogRecPtr	recptr;
 
 	recptr = GetWalRcvWriteRecPtr(NULL, NULL);
@@ -242,7 +242,7 @@ pg_last_xlog_receive_location(PG_FUNCTION_ARGS)
  */
 Datum
 pg_last_xlog_replay_location(PG_FUNCTION_ARGS)
-{	StackTrace("pg_last_xlog_replay_location");
+{
 	XLogRecPtr	recptr;
 
 	recptr = GetXLogReplayRecPtr(NULL);
@@ -263,7 +263,7 @@ pg_last_xlog_replay_location(PG_FUNCTION_ARGS)
  */
 Datum
 pg_xlogfile_name_offset(PG_FUNCTION_ARGS)
-{	StackTrace("pg_xlogfile_name_offset");
+{
 	XLogSegNo	xlogsegno;
 	uint32		xrecoff;
 	XLogRecPtr	locationpoint = PG_GETARG_LSN(0);
@@ -325,7 +325,7 @@ pg_xlogfile_name_offset(PG_FUNCTION_ARGS)
  */
 Datum
 pg_xlogfile_name(PG_FUNCTION_ARGS)
-{	StackTrace("pg_xlogfile_name");
+{
 	XLogSegNo	xlogsegno;
 	XLogRecPtr	locationpoint = PG_GETARG_LSN(0);
 	char		xlogfilename[MAXFNAMELEN];
@@ -347,7 +347,7 @@ pg_xlogfile_name(PG_FUNCTION_ARGS)
  */
 Datum
 pg_xlog_replay_pause(PG_FUNCTION_ARGS)
-{	StackTrace("pg_xlog_replay_pause");
+{
 	if (!superuser())
 		ereport(ERROR,
 				(errcode(ERRCODE_INSUFFICIENT_PRIVILEGE),
@@ -369,7 +369,7 @@ pg_xlog_replay_pause(PG_FUNCTION_ARGS)
  */
 Datum
 pg_xlog_replay_resume(PG_FUNCTION_ARGS)
-{	StackTrace("pg_xlog_replay_resume");
+{
 	if (!superuser())
 		ereport(ERROR,
 				(errcode(ERRCODE_INSUFFICIENT_PRIVILEGE),
@@ -391,7 +391,7 @@ pg_xlog_replay_resume(PG_FUNCTION_ARGS)
  */
 Datum
 pg_is_xlog_replay_paused(PG_FUNCTION_ARGS)
-{	StackTrace("pg_is_xlog_replay_paused");
+{
 	if (!RecoveryInProgress())
 		ereport(ERROR,
 				(errcode(ERRCODE_OBJECT_NOT_IN_PREREQUISITE_STATE),
@@ -409,7 +409,7 @@ pg_is_xlog_replay_paused(PG_FUNCTION_ARGS)
  */
 Datum
 pg_last_xact_replay_timestamp(PG_FUNCTION_ARGS)
-{	StackTrace("pg_last_xact_replay_timestamp");
+{
 	TimestampTz xtime;
 
 	xtime = GetLatestXTime();
@@ -424,7 +424,7 @@ pg_last_xact_replay_timestamp(PG_FUNCTION_ARGS)
  */
 Datum
 pg_is_in_recovery(PG_FUNCTION_ARGS)
-{	StackTrace("pg_is_in_recovery");
+{
 	PG_RETURN_BOOL(RecoveryInProgress());
 }
 
@@ -433,7 +433,7 @@ pg_is_in_recovery(PG_FUNCTION_ARGS)
  */
 Datum
 pg_xlog_location_diff(PG_FUNCTION_ARGS)
-{	StackTrace("pg_xlog_location_diff");
+{
 	Datum		result;
 
 	result = DirectFunctionCall2(pg_lsn_mi,
@@ -448,7 +448,7 @@ pg_xlog_location_diff(PG_FUNCTION_ARGS)
  */
 Datum
 pg_is_in_backup(PG_FUNCTION_ARGS)
-{	StackTrace("pg_is_in_backup");
+{
 	PG_RETURN_BOOL(BackupInProgress());
 }
 
@@ -460,7 +460,7 @@ pg_is_in_backup(PG_FUNCTION_ARGS)
  */
 Datum
 pg_backup_start_time(PG_FUNCTION_ARGS)
-{	StackTrace("pg_backup_start_time");
+{
 	Datum		xtime;
 	FILE	   *lfp;
 	char		fline[MAXPGPATH];

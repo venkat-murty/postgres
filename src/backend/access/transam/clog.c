@@ -147,7 +147,7 @@ static void set_status_by_pages(int nsubxids, TransactionId *subxids,
 void
 TransactionIdSetTreeStatus(TransactionId xid, int nsubxids,
 					TransactionId *subxids, XidStatus status, XLogRecPtr lsn)
-{	StackTrace("TransactionIdSetTreeStatus");
+{
 	int			pageno = TransactionIdToPage(xid);		/* get page of parent */
 	int			i;
 
@@ -221,7 +221,7 @@ TransactionIdSetTreeStatus(TransactionId xid, int nsubxids,
 static void
 set_status_by_pages(int nsubxids, TransactionId *subxids,
 					XidStatus status, XLogRecPtr lsn)
-{	StackTrace("set_status_by_pages");
+{
 	int			pageno = TransactionIdToPage(subxids[0]);
 	int			offset = 0;
 	int			i = 0;
@@ -254,7 +254,7 @@ static void
 TransactionIdSetPageStatus(TransactionId xid, int nsubxids,
 						   TransactionId *subxids, XidStatus status,
 						   XLogRecPtr lsn, int pageno)
-{	StackTrace("TransactionIdSetPageStatus");
+{
 	int			slotno;
 	int			i;
 
@@ -321,7 +321,7 @@ TransactionIdSetPageStatus(TransactionId xid, int nsubxids,
  */
 static void
 TransactionIdSetStatusBit(TransactionId xid, XidStatus status, XLogRecPtr lsn, int slotno)
-{	StackTrace("TransactionIdSetStatusBit");
+{
 	int			byteno = TransactionIdToByte(xid);
 	int			bshift = TransactionIdToBIndex(xid) * CLOG_BITS_PER_XACT;
 	char	   *byteptr;
@@ -390,7 +390,7 @@ TransactionIdSetStatusBit(TransactionId xid, XidStatus status, XLogRecPtr lsn, i
  */
 XidStatus
 TransactionIdGetStatus(TransactionId xid, XLogRecPtr *lsn)
-{	StackTrace("TransactionIdGetStatus");
+{
 	int			pageno = TransactionIdToPage(xid);
 	int			byteno = TransactionIdToByte(xid);
 	int			bshift = TransactionIdToBIndex(xid) * CLOG_BITS_PER_XACT;
@@ -439,7 +439,7 @@ TransactionIdGetStatus(TransactionId xid, XLogRecPtr *lsn)
  */
 Size
 CLOGShmemBuffers(void)
-{	StackTrace("CLOGShmemBuffers");
+{
 	return Min(32, Max(4, NBuffers / 512));
 }
 
@@ -448,13 +448,13 @@ CLOGShmemBuffers(void)
  */
 Size
 CLOGShmemSize(void)
-{	StackTrace("CLOGShmemSize");
+{
 	return SimpleLruShmemSize(CLOGShmemBuffers(), CLOG_LSNS_PER_PAGE);
 }
 
 void
 CLOGShmemInit(void)
-{	StackTrace("CLOGShmemInit");
+{
 	ClogCtl->PagePrecedes = CLOGPagePrecedes;
 	SimpleLruInit(ClogCtl, "CLOG Ctl", CLOGShmemBuffers(), CLOG_LSNS_PER_PAGE,
 				  CLogControlLock, "pg_clog");
@@ -468,7 +468,7 @@ CLOGShmemInit(void)
  */
 void
 BootStrapCLOG(void)
-{	StackTrace("BootStrapCLOG");
+{
 	int			slotno;
 
 	LWLockAcquire(CLogControlLock, LW_EXCLUSIVE);
@@ -494,7 +494,7 @@ BootStrapCLOG(void)
  */
 static int
 ZeroCLOGPage(int pageno, bool writeXlog)
-{	StackTrace("ZeroCLOGPage");
+{
 	int			slotno;
 
 	slotno = SimpleLruZeroPage(ClogCtl, pageno);
@@ -511,7 +511,7 @@ ZeroCLOGPage(int pageno, bool writeXlog)
  */
 void
 StartupCLOG(void)
-{	StackTrace("StartupCLOG");
+{
 	TransactionId xid = ShmemVariableCache->nextXid;
 	int			pageno = TransactionIdToPage(xid);
 
@@ -530,7 +530,7 @@ StartupCLOG(void)
  */
 void
 TrimCLOG(void)
-{	StackTrace("TrimCLOG");
+{
 	TransactionId xid = ShmemVariableCache->nextXid;
 	int			pageno = TransactionIdToPage(xid);
 
@@ -579,7 +579,7 @@ TrimCLOG(void)
  */
 void
 ShutdownCLOG(void)
-{	StackTrace("ShutdownCLOG");
+{
 	/* Flush dirty CLOG pages to disk */
 	TRACE_POSTGRESQL_CLOG_CHECKPOINT_START(false);
 	SimpleLruFlush(ClogCtl, false);
@@ -591,7 +591,7 @@ ShutdownCLOG(void)
  */
 void
 CheckPointCLOG(void)
-{	StackTrace("CheckPointCLOG");
+{
 	/* Flush dirty CLOG pages to disk */
 	TRACE_POSTGRESQL_CLOG_CHECKPOINT_START(true);
 	SimpleLruFlush(ClogCtl, true);
@@ -609,7 +609,7 @@ CheckPointCLOG(void)
  */
 void
 ExtendCLOG(TransactionId newestXact)
-{	StackTrace("ExtendCLOG");
+{
 	int			pageno;
 
 	/*
@@ -648,7 +648,7 @@ ExtendCLOG(TransactionId newestXact)
  */
 void
 TruncateCLOG(TransactionId oldestXact)
-{	StackTrace("TruncateCLOG");
+{
 	int			cutoffPage;
 
 	/*
@@ -680,7 +680,7 @@ TruncateCLOG(TransactionId oldestXact)
  */
 static bool
 CLOGPagePrecedes(int page1, int page2)
-{	StackTrace("CLOGPagePrecedes");
+{
 	TransactionId xid1;
 	TransactionId xid2;
 
@@ -698,7 +698,7 @@ CLOGPagePrecedes(int page1, int page2)
  */
 static void
 WriteZeroPageXlogRec(int pageno)
-{	StackTrace("WriteZeroPageXlogRec");
+{
 	XLogBeginInsert();
 	XLogRegisterData((char *) (&pageno), sizeof(int));
 	(void) XLogInsert(RM_CLOG_ID, CLOG_ZEROPAGE);
@@ -712,7 +712,7 @@ WriteZeroPageXlogRec(int pageno)
  */
 static void
 WriteTruncateXlogRec(int pageno)
-{	StackTrace("WriteTruncateXlogRec");
+{
 	XLogRecPtr	recptr;
 
 	XLogBeginInsert();
@@ -726,7 +726,7 @@ WriteTruncateXlogRec(int pageno)
  */
 void
 clog_redo(XLogReaderState *record)
-{	StackTrace("clog_redo");
+{
 	uint8		info = XLogRecGetInfo(record) & ~XLR_INFO_MASK;
 
 	/* Backup blocks are not used in clog records */

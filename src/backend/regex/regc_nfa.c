@@ -94,7 +94,7 @@ newnfa(struct vars * v,
  */
 static int
 TooManyStates(struct nfa * nfa)
-{	StackTrace("TooManyStates");
+{
 	struct nfa *parent = nfa->parent;
 	size_t		sz = nfa->size;
 
@@ -113,7 +113,7 @@ TooManyStates(struct nfa * nfa)
  */
 static void
 IncrementSize(struct nfa * nfa)
-{	StackTrace("IncrementSize");
+{
 	struct nfa *parent = nfa->parent;
 
 	nfa->size++;
@@ -129,7 +129,7 @@ IncrementSize(struct nfa * nfa)
  */
 static void
 DecrementSize(struct nfa * nfa)
-{	StackTrace("DecrementSize");
+{
 	struct nfa *parent = nfa->parent;
 
 	nfa->size--;
@@ -145,7 +145,7 @@ DecrementSize(struct nfa * nfa)
  */
 static void
 freenfa(struct nfa * nfa)
-{	StackTrace("freenfa");
+{
 	struct state *s;
 
 	while ((s = nfa->states) != NULL)
@@ -171,7 +171,7 @@ freenfa(struct nfa * nfa)
  */
 static struct state *			/* NULL on error */
 newstate(struct nfa * nfa)
-{	StackTrace("newstate");
+{
 	struct state *s;
 
 	/*
@@ -237,7 +237,7 @@ newstate(struct nfa * nfa)
  */
 static struct state *			/* NULL on error */
 newfstate(struct nfa * nfa, int flag)
-{	StackTrace("newfstate");
+{
 	struct state *s;
 
 	s = newstate(nfa);
@@ -252,7 +252,7 @@ newfstate(struct nfa * nfa, int flag)
 static void
 dropstate(struct nfa * nfa,
 		  struct state * s)
-{	StackTrace("dropstate");
+{
 	struct arc *a;
 
 	while ((a = s->ins) != NULL)
@@ -268,7 +268,7 @@ dropstate(struct nfa * nfa,
 static void
 freestate(struct nfa * nfa,
 		  struct state * s)
-{	StackTrace("freestate");
+{
 	assert(s != NULL);
 	assert(s->nins == 0 && s->nouts == 0);
 
@@ -300,7 +300,7 @@ freestate(struct nfa * nfa,
 static void
 destroystate(struct nfa * nfa,
 			 struct state * s)
-{	StackTrace("destroystate");
+{
 	struct arcbatch *ab;
 	struct arcbatch *abnext;
 
@@ -325,7 +325,7 @@ newarc(struct nfa * nfa,
 	   pcolor co,
 	   struct state * from,
 	   struct state * to)
-{	StackTrace("newarc");
+{
 	struct arc *a;
 
 	assert(from != NULL && to != NULL);
@@ -369,7 +369,7 @@ newarc(struct nfa * nfa,
 static struct arc *				/* NULL for failure */
 allocarc(struct nfa * nfa,
 		 struct state * s)
-{	StackTrace("allocarc");
+{
 	struct arc *a;
 
 	/* shortcut */
@@ -416,7 +416,7 @@ allocarc(struct nfa * nfa,
 static void
 freearc(struct nfa * nfa,
 		struct arc * victim)
-{	StackTrace("freearc");
+{
 	struct state *from = victim->from;
 	struct state *to = victim->to;
 	struct arc *a;
@@ -472,7 +472,7 @@ freearc(struct nfa * nfa,
  */
 static int
 hasnonemptyout(struct state * s)
-{	StackTrace("hasnonemptyout");
+{
 	struct arc *a;
 
 	for (a = s->outs; a != NULL; a = a->outchain)
@@ -488,7 +488,7 @@ hasnonemptyout(struct state * s)
  */
 static int
 nonemptyouts(struct state * s)
-{	StackTrace("nonemptyouts");
+{
 	int			n = 0;
 	struct arc *a;
 
@@ -505,7 +505,7 @@ nonemptyouts(struct state * s)
  */
 static int
 nonemptyins(struct state * s)
-{	StackTrace("nonemptyins");
+{
 	int			n = 0;
 	struct arc *a;
 
@@ -525,7 +525,7 @@ static struct arc *
 findarc(struct state * s,
 		int type,
 		pcolor co)
-{	StackTrace("findarc");
+{
 	struct arc *a;
 
 	for (a = s->outs; a != NULL; a = a->outchain)
@@ -542,7 +542,7 @@ cparc(struct nfa * nfa,
 	  struct arc * oa,
 	  struct state * from,
 	  struct state * to)
-{	StackTrace("cparc");
+{
 	newarc(nfa, oa->type, oa->co, from, to);
 }
 
@@ -558,7 +558,7 @@ static void
 moveins(struct nfa * nfa,
 		struct state * oldState,
 		struct state * newState)
-{	StackTrace("moveins");
+{
 	struct arc *a;
 
 	assert(oldState != newState);
@@ -582,7 +582,7 @@ copyins(struct nfa * nfa,
 		struct state * oldState,
 		struct state * newState,
 		int all)
-{	StackTrace("copyins");
+{
 	struct arc *a;
 
 	assert(oldState != newState);
@@ -601,7 +601,7 @@ static void
 moveouts(struct nfa * nfa,
 		 struct state * oldState,
 		 struct state * newState)
-{	StackTrace("moveouts");
+{
 	struct arc *a;
 
 	assert(oldState != newState);
@@ -623,7 +623,7 @@ copyouts(struct nfa * nfa,
 		 struct state * oldState,
 		 struct state * newState,
 		 int all)
-{	StackTrace("copyouts");
+{
 	struct arc *a;
 
 	assert(oldState != newState);
@@ -644,7 +644,7 @@ cloneouts(struct nfa * nfa,
 		  struct state * from,
 		  struct state * to,
 		  int type)
-{	StackTrace("cloneouts");
+{
 	struct arc *a;
 
 	assert(old != from);
@@ -684,7 +684,7 @@ static void
 deltraverse(struct nfa * nfa,
 			struct state * leftend,
 			struct state * s)
-{	StackTrace("deltraverse");
+{
 	struct arc *a;
 	struct state *to;
 
@@ -779,7 +779,7 @@ duptraverse(struct nfa * nfa,
 static void
 cleartraverse(struct nfa * nfa,
 			  struct state * s)
-{	StackTrace("cleartraverse");
+{
 	struct arc *a;
 
 	if (s->tmp == NULL)
@@ -795,7 +795,7 @@ cleartraverse(struct nfa * nfa,
  */
 static void
 specialcolors(struct nfa * nfa)
-{	StackTrace("specialcolors");
+{
 	/* false colors for BOS, BOL, EOS, EOL */
 	if (nfa->parent == NULL)
 	{
@@ -908,7 +908,7 @@ pullback(struct nfa * nfa,
 static int						/* 0 couldn't, 1 could */
 pull(struct nfa * nfa,
 	 struct arc * con)
-{	StackTrace("pull");
+{
 	struct state *from = con->from;
 	struct state *to = con->to;
 	struct arc *a;
@@ -1052,7 +1052,7 @@ pushfwd(struct nfa * nfa,
 static int						/* 0 couldn't, 1 could */
 push(struct nfa * nfa,
 	 struct arc * con)
-{	StackTrace("push");
+{
 	struct state *from = con->from;
 	struct state *to = con->to;
 	struct arc *a;
@@ -1152,7 +1152,7 @@ push(struct nfa * nfa,
 static int
 combine(struct arc * con,
 		struct arc * a)
-{	StackTrace("combine");
+{
 #define  CA(ct,at)	 (((ct)<<CHAR_BIT) | (at))
 
 	switch (CA(con->type, a->type))
@@ -1332,7 +1332,7 @@ fixempties(struct nfa * nfa,
  */
 static struct state *
 emptyreachable(struct state * s, struct state * lastfound)
-{	StackTrace("emptyreachable");
+{
 	struct arc *a;
 
 	s->tmp = lastfound;
@@ -1355,7 +1355,7 @@ static void
 replaceempty(struct nfa * nfa,
 			 struct state * from,
 			 struct state * to)
-{	StackTrace("replaceempty");
+{
 	int			fromouts;
 	int			toins;
 
@@ -1414,7 +1414,7 @@ replaceempty(struct nfa * nfa,
  */
 static void
 cleanup(struct nfa * nfa)
-{	StackTrace("cleanup");
+{
 	struct state *s;
 	struct state *nexts;
 	int			n;
@@ -1484,7 +1484,7 @@ markcanreach(struct nfa * nfa,
  */
 static long						/* re_info bits to be ORed in */
 analyze(struct nfa * nfa)
-{	StackTrace("analyze");
+{
 	struct arc *a;
 	struct arc *aa;
 
@@ -1503,7 +1503,7 @@ analyze(struct nfa * nfa)
 static void
 compact(struct nfa * nfa,
 		struct cnfa * cnfa)
-{	StackTrace("compact");
+{
 	struct state *s;
 	struct arc *a;
 	size_t		nstates;
@@ -1594,7 +1594,7 @@ compact(struct nfa * nfa,
 static void
 carcsort(struct carc * first,
 		 struct carc * last)
-{	StackTrace("carcsort");
+{
 	struct carc *p;
 	struct carc *q;
 	struct carc tmp;
@@ -1619,7 +1619,7 @@ carcsort(struct carc * first,
  */
 static void
 freecnfa(struct cnfa * cnfa)
-{	StackTrace("freecnfa");
+{
 	assert(cnfa->nstates != 0); /* not empty already */
 	cnfa->nstates = 0;
 	FREE(cnfa->stflags);
@@ -1633,7 +1633,7 @@ freecnfa(struct cnfa * cnfa)
 static void
 dumpnfa(struct nfa * nfa,
 		FILE *f)
-{	StackTrace("dumpnfa");
+{
 #ifdef REG_DEBUG
 	struct state *s;
 
@@ -1663,7 +1663,7 @@ dumpnfa(struct nfa * nfa,
 static void
 dumpstate(struct state * s,
 		  FILE *f)
-{	StackTrace("dumpstate");
+{
 	struct arc *a;
 
 	fprintf(f, "%d%s%c", s->no, (s->tmp != NULL) ? "T" : "",
@@ -1689,7 +1689,7 @@ dumpstate(struct state * s,
 static void
 dumparcs(struct state * s,
 		 FILE *f)
-{	StackTrace("dumparcs");
+{
 	int			pos;
 
 	assert(s->nouts > 0);
@@ -1728,7 +1728,7 @@ static void
 dumparc(struct arc * a,
 		struct state * s,
 		FILE *f)
-{	StackTrace("dumparc");
+{
 	struct arc *aa;
 	struct arcbatch *ab;
 
@@ -1791,7 +1791,7 @@ dumparc(struct arc * a,
 static void
 dumpcnfa(struct cnfa * cnfa,
 		 FILE *f)
-{	StackTrace("dumpcnfa");
+{
 	int			st;
 
 	fprintf(f, "pre %d, post %d", cnfa->pre, cnfa->post);
@@ -1821,7 +1821,7 @@ static void
 dumpcstate(int st,
 		   struct cnfa * cnfa,
 		   FILE *f)
-{	StackTrace("dumpcstate");
+{
 	struct carc *ca;
 	int			pos;
 

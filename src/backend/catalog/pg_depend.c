@@ -44,7 +44,7 @@ void
 recordDependencyOn(const ObjectAddress *depender,
 				   const ObjectAddress *referenced,
 				   DependencyType behavior)
-{	StackTrace("recordDependencyOn");
+{
 	recordMultipleDependencies(depender, referenced, 1, behavior);
 }
 
@@ -57,7 +57,7 @@ recordMultipleDependencies(const ObjectAddress *depender,
 						   const ObjectAddress *referenced,
 						   int nreferenced,
 						   DependencyType behavior)
-{	StackTrace("recordMultipleDependencies");
+{
 	Relation	dependDesc;
 	CatalogIndexState indstate;
 	HeapTuple	tup;
@@ -140,7 +140,7 @@ recordMultipleDependencies(const ObjectAddress *depender,
 void
 recordDependencyOnCurrentExtension(const ObjectAddress *object,
 								   bool isReplace)
-{	StackTrace("recordDependencyOnCurrentExtension");
+{
 	/* Only whole objects can be extension members */
 	Assert(object->objectSubId == 0);
 
@@ -192,7 +192,7 @@ recordDependencyOnCurrentExtension(const ObjectAddress *object,
 long
 deleteDependencyRecordsFor(Oid classId, Oid objectId,
 						   bool skipExtensionDeps)
-{	StackTrace("deleteDependencyRecordsFor");
+{
 	long		count = 0;
 	Relation	depRel;
 	ScanKeyData key[2];
@@ -242,7 +242,7 @@ deleteDependencyRecordsFor(Oid classId, Oid objectId,
 long
 deleteDependencyRecordsForClass(Oid classId, Oid objectId,
 								Oid refclassId, char deptype)
-{	StackTrace("deleteDependencyRecordsForClass");
+{
 	long		count = 0;
 	Relation	depRel;
 	ScanKeyData key[2];
@@ -297,7 +297,7 @@ long
 changeDependencyFor(Oid classId, Oid objectId,
 					Oid refClassId, Oid oldRefObjectId,
 					Oid newRefObjectId)
-{	StackTrace("changeDependencyFor");
+{
 	long		count = 0;
 	Relation	depRel;
 	ScanKeyData key[2];
@@ -390,7 +390,7 @@ changeDependencyFor(Oid classId, Oid objectId,
  */
 static bool
 isObjectPinned(const ObjectAddress *object, Relation rel)
-{	StackTrace("isObjectPinned");
+{
 	bool		ret = false;
 	SysScanDesc scan;
 	HeapTuple	tup;
@@ -448,7 +448,7 @@ isObjectPinned(const ObjectAddress *object, Relation rel)
  */
 Oid
 getExtensionOfObject(Oid classId, Oid objectId)
-{	StackTrace("getExtensionOfObject");
+{
 	Oid			result = InvalidOid;
 	Relation	depRel;
 	ScanKeyData key[2];
@@ -501,7 +501,7 @@ getExtensionOfObject(Oid classId, Oid objectId)
  */
 bool
 sequenceIsOwned(Oid seqId, Oid *tableId, int32 *colId)
-{	StackTrace("sequenceIsOwned");
+{
 	bool		ret = false;
 	Relation	depRel;
 	ScanKeyData key[2];
@@ -551,7 +551,7 @@ sequenceIsOwned(Oid seqId, Oid *tableId, int32 *colId)
  */
 void
 markSequenceUnowned(Oid seqId)
-{	StackTrace("markSequenceUnowned");
+{
 	deleteDependencyRecordsForClass(RelationRelationId, seqId,
 									RelationRelationId, DEPENDENCY_AUTO);
 }
@@ -561,7 +561,7 @@ markSequenceUnowned(Oid seqId)
  */
 List *
 getOwnedSequences(Oid relid)
-{	StackTrace("getOwnedSequences");
+{
 	List	   *result = NIL;
 	Relation	depRel;
 	ScanKeyData key[2];
@@ -619,7 +619,7 @@ getOwnedSequences(Oid relid)
  */
 Oid
 get_constraint_index(Oid constraintId)
-{	StackTrace("get_constraint_index");
+{
 	Oid			indexId = InvalidOid;
 	Relation	depRel;
 	ScanKeyData key[3];
@@ -677,7 +677,7 @@ get_constraint_index(Oid constraintId)
  */
 Oid
 get_index_constraint(Oid indexId)
-{	StackTrace("get_index_constraint");
+{
 	Oid			constraintId = InvalidOid;
 	Relation	depRel;
 	ScanKeyData key[3];

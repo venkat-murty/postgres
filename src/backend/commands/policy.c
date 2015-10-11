@@ -62,7 +62,7 @@ static ArrayType *policy_role_list_to_array(List *roles);
 static void
 RangeVarCallbackForPolicy(const RangeVar *rv, Oid relid, Oid oldrelid,
 						  void *arg)
-{	StackTrace("RangeVarCallbackForPolicy");
+{
 	HeapTuple	tuple;
 	Form_pg_class classform;
 	char		relkind;
@@ -105,7 +105,7 @@ RangeVarCallbackForPolicy(const RangeVar *rv, Oid relid, Oid oldrelid,
  */
 static char
 parse_policy_command(const char *cmd_name)
-{	StackTrace("parse_policy_command");
+{
 	char		cmd;
 
 	if (!cmd_name)
@@ -133,7 +133,7 @@ parse_policy_command(const char *cmd_name)
  */
 static ArrayType *
 policy_role_list_to_array(List *roles)
-{	StackTrace("policy_role_list_to_array");
+{
 	ArrayType  *role_ids;
 	Datum	   *temp_array;
 	ListCell   *cell;
@@ -192,7 +192,7 @@ policy_role_list_to_array(List *roles)
  */
 void
 RelationBuildRowSecurity(Relation relation)
-{	StackTrace("RelationBuildRowSecurity");
+{
 	MemoryContext rscxt;
 	MemoryContext oldcxt = CurrentMemoryContext;
 	RowSecurityDesc *volatile rsdesc = NULL;
@@ -383,7 +383,7 @@ RelationBuildRowSecurity(Relation relation)
  */
 void
 RemovePolicyById(Oid policy_id)
-{	StackTrace("RemovePolicyById");
+{
 	Relation	pg_policy_rel;
 	SysScanDesc sscan;
 	ScanKeyData skey[1];
@@ -456,7 +456,7 @@ RemovePolicyById(Oid policy_id)
  */
 ObjectAddress
 CreatePolicy(CreatePolicyStmt *stmt)
-{	StackTrace("CreatePolicy");
+{
 	Relation	pg_policy_rel;
 	Oid			policy_id;
 	Relation	target_table;
@@ -631,7 +631,7 @@ CreatePolicy(CreatePolicyStmt *stmt)
  */
 ObjectAddress
 AlterPolicy(AlterPolicyStmt *stmt)
-{	StackTrace("AlterPolicy");
+{
 	Relation	pg_policy_rel;
 	Oid			policy_id;
 	Relation	target_table;
@@ -833,7 +833,7 @@ AlterPolicy(AlterPolicyStmt *stmt)
  */
 ObjectAddress
 rename_policy(RenameStmt *stmt)
-{	StackTrace("rename_policy");
+{
 	Relation	pg_policy_rel;
 	Relation	target_table;
 	Oid			table_id;
@@ -945,7 +945,7 @@ rename_policy(RenameStmt *stmt)
  */
 Oid
 get_relation_policy_oid(Oid relid, const char *policy_name, bool missing_ok)
-{	StackTrace("get_relation_policy_oid");
+{
 	Relation	pg_policy_rel;
 	ScanKeyData skey[2];
 	SysScanDesc sscan;

@@ -34,7 +34,7 @@
 
 char *
 scanstr(const char *s)
-{	StackTrace("scanstr");
+{
 	char	   *newStr;
 	int			len,
 				i,
@@ -129,7 +129,7 @@ scanstr(const char *s)
  */
 char *
 downcase_truncate_identifier(const char *ident, int len, bool warn)
-{	StackTrace("downcase_truncate_identifier");
+{
 	char	   *result;
 	int			i;
 	bool		enc_is_single_byte;
@@ -175,7 +175,7 @@ downcase_truncate_identifier(const char *ident, int len, bool warn)
  */
 void
 truncate_identifier(char *ident, int len, bool warn)
-{	StackTrace("truncate_identifier");
+{
 	if (len >= NAMEDATALEN)
 	{
 		len = pg_mbcliplen(ident, len, NAMEDATALEN - 1);
@@ -209,7 +209,7 @@ truncate_identifier(char *ident, int len, bool warn)
  */
 bool
 scanner_isspace(char ch)
-{	StackTrace("scanner_isspace");
+{
 	/* This must match scan.l's list of {space} characters */
 	if (ch == ' ' ||
 		ch == '\t' ||

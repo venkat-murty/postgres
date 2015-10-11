@@ -144,7 +144,7 @@ static void ForgetPrivateRefCountEntry(PrivateRefCountEntry *ref);
  */
 static void
 ReservePrivateRefCountEntry(void)
-{	StackTrace("ReservePrivateRefCountEntry");
+{
 	/* Already reserved (or freed), nothing to do */
 	if (ReservedRefCountEntry != NULL)
 		return;
@@ -210,7 +210,7 @@ ReservePrivateRefCountEntry(void)
  */
 static PrivateRefCountEntry *
 NewPrivateRefCountEntry(Buffer buffer)
-{	StackTrace("NewPrivateRefCountEntry");
+{
 	PrivateRefCountEntry *res;
 
 	/* only allowed to be called when a reservation has been made */
@@ -236,7 +236,7 @@ NewPrivateRefCountEntry(Buffer buffer)
  */
 static PrivateRefCountEntry *
 GetPrivateRefCountEntry(Buffer buffer, bool do_move)
-{	StackTrace("GetPrivateRefCountEntry");
+{
 	PrivateRefCountEntry *res;
 	int			i;
 
@@ -316,7 +316,7 @@ GetPrivateRefCountEntry(Buffer buffer, bool do_move)
  */
 static inline int32
 GetPrivateRefCount(Buffer buffer)
-{	StackTrace("GetPrivateRefCount");
+{
 	PrivateRefCountEntry *ref;
 
 	Assert(BufferIsValid(buffer));
@@ -339,7 +339,7 @@ GetPrivateRefCount(Buffer buffer)
  */
 static void
 ForgetPrivateRefCountEntry(PrivateRefCountEntry *ref)
-{	StackTrace("ForgetPrivateRefCountEntry");
+{
 	Assert(ref->refcount == 0);
 
 	if (ref >= &PrivateRefCountArray[0] &&
@@ -425,7 +425,7 @@ static int	rnode_comparator(const void *p1, const void *p2);
  */
 void
 PrefetchBuffer(Relation reln, ForkNumber forkNum, BlockNumber blockNum)
-{	StackTrace("PrefetchBuffer");
+{
 #ifdef USE_PREFETCH
 	Assert(RelationIsValid(reln));
 	Assert(BlockNumberIsValid(blockNum));
@@ -490,7 +490,7 @@ PrefetchBuffer(Relation reln, ForkNumber forkNum, BlockNumber blockNum)
  */
 Buffer
 ReadBuffer(Relation reln, BlockNumber blockNum)
-{	StackTrace("ReadBuffer");
+{
 	return ReadBufferExtended(reln, MAIN_FORKNUM, blockNum, RBM_NORMAL, NULL);
 }
 
@@ -537,7 +537,7 @@ ReadBuffer(Relation reln, BlockNumber blockNum)
 Buffer
 ReadBufferExtended(Relation reln, ForkNumber forkNum, BlockNumber blockNum,
 				   ReadBufferMode mode, BufferAccessStrategy strategy)
-{	StackTrace("ReadBufferExtended");
+{
 	bool		hit;
 	Buffer		buf;
 
@@ -580,7 +580,7 @@ Buffer
 ReadBufferWithoutRelcache(RelFileNode rnode, ForkNumber forkNum,
 						  BlockNumber blockNum, ReadBufferMode mode,
 						  BufferAccessStrategy strategy)
-{	StackTrace("ReadBufferWithoutRelcache");
+{
 	bool		hit;
 
 	SMgrRelation smgr = smgropen(rnode, InvalidBackendId);
@@ -601,7 +601,7 @@ static Buffer
 ReadBuffer_common(SMgrRelation smgr, char relpersistence, ForkNumber forkNum,
 				  BlockNumber blockNum, ReadBufferMode mode,
 				  BufferAccessStrategy strategy, bool *hit)
-{	StackTrace("ReadBuffer_common");
+{
 	volatile BufferDesc *bufHdr;
 	Block		bufBlock;
 	bool		found;
@@ -871,7 +871,7 @@ BufferAlloc(SMgrRelation smgr, char relpersistence, ForkNumber forkNum,
 			BlockNumber blockNum,
 			BufferAccessStrategy strategy,
 			bool *foundPtr)
-{	StackTrace("BufferAlloc");
+{
 	BufferTag	newTag;			/* identity of requested block */
 	uint32		newHash;		/* hash value for newTag */
 	LWLock	   *newPartitionLock;		/* buffer partition lock for it */
@@ -1221,7 +1221,7 @@ BufferAlloc(SMgrRelation smgr, char relpersistence, ForkNumber forkNum,
  */
 static void
 InvalidateBuffer(volatile BufferDesc *buf)
-{	StackTrace("InvalidateBuffer");
+{
 	BufferTag	oldTag;
 	uint32		oldHash;		/* hash value for oldTag */
 	LWLock	   *oldPartitionLock;		/* buffer partition lock for it */
@@ -1318,7 +1318,7 @@ retry:
  */
 void
 MarkBufferDirty(Buffer buffer)
-{	StackTrace("MarkBufferDirty");
+{
 	volatile BufferDesc *bufHdr;
 
 	if (!BufferIsValid(buffer))
@@ -1373,7 +1373,7 @@ Buffer
 ReleaseAndReadBuffer(Buffer buffer,
 					 Relation relation,
 					 BlockNumber blockNum)
-{	StackTrace("ReleaseAndReadBuffer");
+{
 	ForkNumber	forkNum = MAIN_FORKNUM;
 	volatile BufferDesc *bufHdr;
 
@@ -1425,7 +1425,7 @@ ReleaseAndReadBuffer(Buffer buffer,
  */
 static bool
 PinBuffer(volatile BufferDesc *buf, BufferAccessStrategy strategy)
-{	StackTrace("PinBuffer");
+{
 	int			b = buf->buf_id;
 	bool		result;
 	PrivateRefCountEntry *ref;
@@ -1488,7 +1488,7 @@ PinBuffer(volatile BufferDesc *buf, BufferAccessStrategy strategy)
  */
 static void
 PinBuffer_Locked(volatile BufferDesc *buf)
-{	StackTrace("PinBuffer_Locked");
+{
 	int			b = buf->buf_id;
 	PrivateRefCountEntry *ref;
 
@@ -1518,7 +1518,7 @@ PinBuffer_Locked(volatile BufferDesc *buf)
  */
 static void
 UnpinBuffer(volatile BufferDesc *buf, bool fixOwner)
-{	StackTrace("UnpinBuffer");
+{
 	PrivateRefCountEntry *ref;
 
 	/* not moving as we're likely deleting it soon anyway */
@@ -1573,7 +1573,7 @@ UnpinBuffer(volatile BufferDesc *buf, bool fixOwner)
  */
 static void
 BufferSync(int flags)
-{	StackTrace("BufferSync");
+{
 	int			buf_id;
 	int			num_to_scan;
 	int			num_to_write;
@@ -1715,7 +1715,7 @@ BufferSync(int flags)
  */
 bool
 BgBufferSync(void)
-{	StackTrace("BgBufferSync");
+{
 	/* info obtained from freelist.c */
 	int			strategy_buf_id;
 	uint32		strategy_passes;
@@ -2017,7 +2017,7 @@ BgBufferSync(void)
  */
 static int
 SyncOneBuffer(int buf_id, bool skip_recently_used)
-{	StackTrace("SyncOneBuffer");
+{
 	volatile BufferDesc *bufHdr = GetBufferDescriptor(buf_id);
 	int			result = 0;
 
@@ -2074,7 +2074,7 @@ SyncOneBuffer(int buf_id, bool skip_recently_used)
  */
 void
 AtEOXact_Buffers(bool isCommit)
-{	StackTrace("AtEOXact_Buffers");
+{
 	CheckForBufferLeaks();
 
 	AtEOXact_LocalBuffers(isCommit);
@@ -2096,7 +2096,7 @@ AtEOXact_Buffers(bool isCommit)
  */
 void
 InitBufferPoolAccess(void)
-{	StackTrace("InitBufferPoolAccess");
+{
 	HASHCTL		hash_ctl;
 
 	memset(&PrivateRefCountArray, 0, sizeof(PrivateRefCountArray));
@@ -2120,7 +2120,7 @@ InitBufferPoolAccess(void)
  */
 void
 InitBufferPoolBackend(void)
-{	StackTrace("InitBufferPoolBackend");
+{
 	on_shmem_exit(AtProcExit_Buffers, 0);
 }
 
@@ -2130,7 +2130,7 @@ InitBufferPoolBackend(void)
  */
 static void
 AtProcExit_Buffers(int code, Datum arg)
-{	StackTrace("AtProcExit_Buffers");
+{
 	AbortBufferIO();
 	UnlockBuffers();
 
@@ -2149,7 +2149,7 @@ AtProcExit_Buffers(int code, Datum arg)
  */
 static void
 CheckForBufferLeaks(void)
-{	StackTrace("CheckForBufferLeaks");
+{
 #ifdef USE_ASSERT_CHECKING
 	int			RefCountErrors = 0;
 	PrivateRefCountEntry *res;
@@ -2190,7 +2190,7 @@ CheckForBufferLeaks(void)
  */
 void
 PrintBufferLeakWarning(Buffer buffer)
-{	StackTrace("PrintBufferLeakWarning");
+{
 	volatile BufferDesc *buf;
 	int32		loccount;
 	char	   *path;
@@ -2231,7 +2231,7 @@ PrintBufferLeakWarning(Buffer buffer)
  */
 void
 CheckPointBuffers(int flags)
-{	StackTrace("CheckPointBuffers");
+{
 	TRACE_POSTGRESQL_BUFFER_CHECKPOINT_START(flags);
 	CheckpointStats.ckpt_write_t = GetCurrentTimestamp();
 	BufferSync(flags);
@@ -2248,7 +2248,7 @@ CheckPointBuffers(int flags)
  */
 void
 BufmgrCommit(void)
-{	StackTrace("BufmgrCommit");
+{
 	/* Nothing to do in bufmgr anymore... */
 }
 
@@ -2262,7 +2262,7 @@ BufmgrCommit(void)
  */
 BlockNumber
 BufferGetBlockNumber(Buffer buffer)
-{	StackTrace("BufferGetBlockNumber");
+{
 	volatile BufferDesc *bufHdr;
 
 	Assert(BufferIsPinned(buffer));
@@ -2284,7 +2284,7 @@ BufferGetBlockNumber(Buffer buffer)
 void
 BufferGetTag(Buffer buffer, RelFileNode *rnode, ForkNumber *forknum,
 			 BlockNumber *blknum)
-{	StackTrace("BufferGetTag");
+{
 	volatile BufferDesc *bufHdr;
 
 	/* Do the same checks as BufferGetBlockNumber. */
@@ -2322,7 +2322,7 @@ BufferGetTag(Buffer buffer, RelFileNode *rnode, ForkNumber *forknum,
  */
 static void
 FlushBuffer(volatile BufferDesc *buf, SMgrRelation reln)
-{	StackTrace("FlushBuffer");
+{
 	XLogRecPtr	recptr;
 	ErrorContextCallback errcallback;
 	instr_time	io_start,
@@ -2444,7 +2444,7 @@ FlushBuffer(volatile BufferDesc *buf, SMgrRelation reln)
  */
 BlockNumber
 RelationGetNumberOfBlocksInFork(Relation relation, ForkNumber forkNum)
-{	StackTrace("RelationGetNumberOfBlocksInFork");
+{
 	/* Open it at the smgr level if not already done */
 	RelationOpenSmgr(relation);
 
@@ -2458,7 +2458,7 @@ RelationGetNumberOfBlocksInFork(Relation relation, ForkNumber forkNum)
  */
 bool
 BufferIsPermanent(Buffer buffer)
-{	StackTrace("BufferIsPermanent");
+{
 	volatile BufferDesc *bufHdr;
 
 	/* Local buffers are used only for temp relations. */
@@ -2488,7 +2488,7 @@ BufferIsPermanent(Buffer buffer)
  */
 XLogRecPtr
 BufferGetLSNAtomic(Buffer buffer)
-{	StackTrace("BufferGetLSNAtomic");
+{
 	volatile BufferDesc *bufHdr = GetBufferDescriptor(buffer - 1);
 	char	   *page = BufferGetPage(buffer);
 	XLogRecPtr	lsn;
@@ -2539,7 +2539,7 @@ BufferGetLSNAtomic(Buffer buffer)
 void
 DropRelFileNodeBuffers(RelFileNodeBackend rnode, ForkNumber forkNum,
 					   BlockNumber firstDelBlock)
-{	StackTrace("DropRelFileNodeBuffers");
+{
 	int			i;
 
 	/* If it's a local relation, it's localbuf.c's problem. */
@@ -2594,7 +2594,7 @@ DropRelFileNodeBuffers(RelFileNodeBackend rnode, ForkNumber forkNum,
  */
 void
 DropRelFileNodesAllBuffers(RelFileNodeBackend *rnodes, int nnodes)
-{	StackTrace("DropRelFileNodesAllBuffers");
+{
 	int			i,
 				n = 0;
 	RelFileNode *nodes;
@@ -2696,7 +2696,7 @@ DropRelFileNodesAllBuffers(RelFileNodeBackend *rnodes, int nnodes)
  */
 void
 DropDatabaseBuffers(Oid dbid)
-{	StackTrace("DropDatabaseBuffers");
+{
 	int			i;
 
 	/*
@@ -2733,7 +2733,7 @@ DropDatabaseBuffers(Oid dbid)
 #ifdef NOT_USED
 void
 PrintBufferDescs(void)
-{	StackTrace("PrintBufferDescs");
+{
 	int			i;
 
 	for (i = 0; i < NBuffers; ++i)
@@ -2755,7 +2755,7 @@ PrintBufferDescs(void)
 #ifdef NOT_USED
 void
 PrintPinnedBufs(void)
-{	StackTrace("PrintPinnedBufs");
+{
 	int			i;
 
 	for (i = 0; i < NBuffers; ++i)
@@ -2798,7 +2798,7 @@ PrintPinnedBufs(void)
  */
 void
 FlushRelationBuffers(Relation rel)
-{	StackTrace("FlushRelationBuffers");
+{
 	int			i;
 	volatile BufferDesc *bufHdr;
 
@@ -2890,7 +2890,7 @@ FlushRelationBuffers(Relation rel)
  */
 void
 FlushDatabaseBuffers(Oid dbid)
-{	StackTrace("FlushDatabaseBuffers");
+{
 	int			i;
 	volatile BufferDesc *bufHdr;
 
@@ -2930,7 +2930,7 @@ FlushDatabaseBuffers(Oid dbid)
  */
 void
 ReleaseBuffer(Buffer buffer)
-{	StackTrace("ReleaseBuffer");
+{
 	if (!BufferIsValid(buffer))
 		elog(ERROR, "bad buffer ID: %d", buffer);
 
@@ -2953,7 +2953,7 @@ ReleaseBuffer(Buffer buffer)
  */
 void
 UnlockReleaseBuffer(Buffer buffer)
-{	StackTrace("UnlockReleaseBuffer");
+{
 	LockBuffer(buffer, BUFFER_LOCK_UNLOCK);
 	ReleaseBuffer(buffer);
 }
@@ -2968,7 +2968,7 @@ UnlockReleaseBuffer(Buffer buffer)
  */
 void
 IncrBufferRefCount(Buffer buffer)
-{	StackTrace("IncrBufferRefCount");
+{
 	Assert(BufferIsPinned(buffer));
 	ResourceOwnerEnlargeBuffers(CurrentResourceOwner);
 	ResourceOwnerRememberBuffer(CurrentResourceOwner, buffer);
@@ -3000,7 +3000,7 @@ IncrBufferRefCount(Buffer buffer)
  */
 void
 MarkBufferDirtyHint(Buffer buffer, bool buffer_std)
-{	StackTrace("MarkBufferDirtyHint");
+{
 	volatile BufferDesc *bufHdr;
 	Page		page = BufferGetPage(buffer);
 
@@ -3134,7 +3134,7 @@ MarkBufferDirtyHint(Buffer buffer, bool buffer_std)
  */
 void
 UnlockBuffers(void)
-{	StackTrace("UnlockBuffers");
+{
 	volatile BufferDesc *buf = PinCountWaitBuf;
 
 	if (buf)
@@ -3160,7 +3160,7 @@ UnlockBuffers(void)
  */
 void
 LockBuffer(Buffer buffer, int mode)
-{	StackTrace("LockBuffer");
+{
 	volatile BufferDesc *buf;
 
 	Assert(BufferIsValid(buffer));
@@ -3186,7 +3186,7 @@ LockBuffer(Buffer buffer, int mode)
  */
 bool
 ConditionalLockBuffer(Buffer buffer)
-{	StackTrace("ConditionalLockBuffer");
+{
 	volatile BufferDesc *buf;
 
 	Assert(BufferIsValid(buffer));
@@ -3216,7 +3216,7 @@ ConditionalLockBuffer(Buffer buffer)
  */
 void
 LockBufferForCleanup(Buffer buffer)
-{	StackTrace("LockBufferForCleanup");
+{
 	volatile BufferDesc *bufHdr;
 
 	Assert(BufferIsValid(buffer));
@@ -3302,7 +3302,7 @@ LockBufferForCleanup(Buffer buffer)
  */
 bool
 HoldingBufferPinThatDelaysRecovery(void)
-{	StackTrace("HoldingBufferPinThatDelaysRecovery");
+{
 	int			bufid = GetStartupBufferPinWaitBufId();
 
 	/*
@@ -3328,7 +3328,7 @@ HoldingBufferPinThatDelaysRecovery(void)
  */
 bool
 ConditionalLockBufferForCleanup(Buffer buffer)
-{	StackTrace("ConditionalLockBufferForCleanup");
+{
 	volatile BufferDesc *bufHdr;
 
 	Assert(BufferIsValid(buffer));
@@ -3383,7 +3383,7 @@ ConditionalLockBufferForCleanup(Buffer buffer)
  */
 static void
 WaitIO(volatile BufferDesc *buf)
-{	StackTrace("WaitIO");
+{
 	/*
 	 * Changed to wait until there's no IO - Inoue 01/13/2000
 	 *
@@ -3430,7 +3430,7 @@ WaitIO(volatile BufferDesc *buf)
  */
 static bool
 StartBufferIO(volatile BufferDesc *buf, bool forInput)
-{	StackTrace("StartBufferIO");
+{
 	Assert(!InProgressBuf);
 
 	for (;;)
@@ -3497,7 +3497,7 @@ StartBufferIO(volatile BufferDesc *buf, bool forInput)
 static void
 TerminateBufferIO(volatile BufferDesc *buf, bool clear_dirty,
 				  int set_flag_bits)
-{	StackTrace("TerminateBufferIO");
+{
 	Assert(buf == InProgressBuf);
 
 	LockBufHdr(buf);
@@ -3526,7 +3526,7 @@ TerminateBufferIO(volatile BufferDesc *buf, bool clear_dirty,
  */
 void
 AbortBufferIO(void)
-{	StackTrace("AbortBufferIO");
+{
 	volatile BufferDesc *buf = InProgressBuf;
 
 	if (buf)
@@ -3579,7 +3579,7 @@ AbortBufferIO(void)
  */
 static void
 shared_buffer_write_error_callback(void *arg)
-{	StackTrace("shared_buffer_write_error_callback");
+{
 	volatile BufferDesc *bufHdr = (volatile BufferDesc *) arg;
 
 	/* Buffer is pinned, so we can read the tag without locking the spinlock */
@@ -3598,7 +3598,7 @@ shared_buffer_write_error_callback(void *arg)
  */
 static void
 local_buffer_write_error_callback(void *arg)
-{	StackTrace("local_buffer_write_error_callback");
+{
 	volatile BufferDesc *bufHdr = (volatile BufferDesc *) arg;
 
 	if (bufHdr != NULL)
@@ -3617,7 +3617,7 @@ local_buffer_write_error_callback(void *arg)
  */
 static int
 rnode_comparator(const void *p1, const void *p2)
-{	StackTrace("rnode_comparator");
+{
 	RelFileNode n1 = *(RelFileNode *) p1;
 	RelFileNode n2 = *(RelFileNode *) p2;
 

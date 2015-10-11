@@ -29,7 +29,7 @@
  */
 int
 ArrayGetOffset(int n, const int *dim, const int *lb, const int *indx)
-{	StackTrace("ArrayGetOffset");
+{
 	int			i,
 				scale = 1,
 				offset = 0;
@@ -48,7 +48,7 @@ ArrayGetOffset(int n, const int *dim, const int *lb, const int *indx)
  */
 int
 ArrayGetOffset0(int n, const int *tup, const int *scale)
-{	StackTrace("ArrayGetOffset0");
+{
 	int			i,
 				lin = 0;
 
@@ -73,7 +73,7 @@ ArrayGetOffset0(int n, const int *tup, const int *scale)
  */
 int
 ArrayGetNItems(int ndim, const int *dims)
-{	StackTrace("ArrayGetNItems");
+{
 	int32		ret;
 	int			i;
 
@@ -132,7 +132,7 @@ mda_get_range(int n, int *span, const int *st, const int *endp)
  */
 void
 mda_get_prod(int n, const int *range, int *prod)
-{	StackTrace("mda_get_prod");
+{
 	int			i;
 
 	prod[n - 1] = 1;
@@ -148,7 +148,7 @@ mda_get_prod(int n, const int *range, int *prod)
  */
 void
 mda_get_offset_values(int n, int *dist, const int *prod, const int *span)
-{	StackTrace("mda_get_offset_values");
+{
 	int			i,
 				j;
 
@@ -173,7 +173,7 @@ mda_get_offset_values(int n, int *dist, const int *prod, const int *span)
  */
 int
 mda_next_tuple(int n, int *curr, const int *span)
-{	StackTrace("mda_next_tuple");
+{
 	int			i;
 
 	if (n <= 0)
@@ -198,7 +198,7 @@ mda_next_tuple(int n, int *curr, const int *span)
  */
 int32 *
 ArrayGetIntegerTypmods(ArrayType *arr, int *n)
-{	StackTrace("ArrayGetIntegerTypmods");
+{
 	int32	   *result;
 	Datum	   *elem_values;
 	int			i;

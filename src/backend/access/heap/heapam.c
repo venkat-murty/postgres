@@ -208,7 +208,7 @@ static const int MultiXactStatusLock[MaxMultiXactStatus + 1] =
  */
 static void
 initscan(HeapScanDesc scan, ScanKey key, bool is_rescan)
-{	StackTrace("initscan");
+{
 	bool		allow_strat;
 	bool		allow_sync;
 
@@ -304,7 +304,7 @@ initscan(HeapScanDesc scan, ScanKey key, bool is_rescan)
 
 void
 heap_setscanlimits(HeapScanDesc scan, BlockNumber startBlk, BlockNumber numBlks)
-{	StackTrace("heap_setscanlimits");
+{
 	scan->rs_startblock = startBlk;
 	scan->rs_initblock = startBlk;
 	scan->rs_numblocks = numBlks;
@@ -319,7 +319,7 @@ heap_setscanlimits(HeapScanDesc scan, BlockNumber startBlk, BlockNumber numBlks)
  */
 void
 heapgetpage(HeapScanDesc scan, BlockNumber page)
-{	StackTrace("heapgetpage");
+{
 	Buffer		buffer;
 	Snapshot	snapshot;
 	Page		dp;
@@ -455,7 +455,7 @@ heapgettup(HeapScanDesc scan,
 		   ScanDirection dir,
 		   int nkeys,
 		   ScanKey key)
-{	StackTrace("heapgettup");
+{
 	HeapTuple	tuple = &(scan->rs_ctup);
 	Snapshot	snapshot = scan->rs_snapshot;
 	bool		backward = ScanDirectionIsBackward(dir);
@@ -732,7 +732,7 @@ heapgettup_pagemode(HeapScanDesc scan,
 					ScanDirection dir,
 					int nkeys,
 					ScanKey key)
-{	StackTrace("heapgettup_pagemode");
+{
 	HeapTuple	tuple = &(scan->rs_ctup);
 	bool		backward = ScanDirectionIsBackward(dir);
 	BlockNumber page;
@@ -978,7 +978,7 @@ heapgettup_pagemode(HeapScanDesc scan,
 Datum
 fastgetattr(HeapTuple tup, int attnum, TupleDesc tupleDesc,
 			bool *isnull)
-{	StackTrace("fastgetattr");
+{
 	return (
 			(attnum) > 0 ?
 			(
@@ -1037,7 +1037,7 @@ fastgetattr(HeapTuple tup, int attnum, TupleDesc tupleDesc,
  */
 Relation
 relation_open(Oid relationId, LOCKMODE lockmode)
-{	StackTrace("relation_open");
+{
 	Relation	r;
 
 	Assert(lockmode >= NoLock && lockmode < MAX_LOCKMODES);
@@ -1076,7 +1076,7 @@ relation_open(Oid relationId, LOCKMODE lockmode)
  */
 Relation
 try_relation_open(Oid relationId, LOCKMODE lockmode)
-{	StackTrace("try_relation_open");
+{
 	Relation	r;
 
 	Assert(lockmode >= NoLock && lockmode < MAX_LOCKMODES);
@@ -1127,7 +1127,7 @@ try_relation_open(Oid relationId, LOCKMODE lockmode)
  */
 Relation
 relation_openrv(const RangeVar *relation, LOCKMODE lockmode)
-{	StackTrace("relation_openrv");
+{
 	Oid			relOid;
 
 	/*
@@ -1163,7 +1163,7 @@ relation_openrv(const RangeVar *relation, LOCKMODE lockmode)
 Relation
 relation_openrv_extended(const RangeVar *relation, LOCKMODE lockmode,
 						 bool missing_ok)
-{	StackTrace("relation_openrv_extended");
+{
 	Oid			relOid;
 
 	/*
@@ -1195,7 +1195,7 @@ relation_openrv_extended(const RangeVar *relation, LOCKMODE lockmode,
  */
 void
 relation_close(Relation relation, LOCKMODE lockmode)
-{	StackTrace("relation_close");
+{
 	LockRelId	relid = relation->rd_lockInfo.lockRelId;
 
 	Assert(lockmode >= NoLock && lockmode < MAX_LOCKMODES);
@@ -1219,7 +1219,7 @@ relation_close(Relation relation, LOCKMODE lockmode)
  */
 Relation
 heap_open(Oid relationId, LOCKMODE lockmode)
-{	StackTrace("heap_open");
+{
 	Relation	r;
 
 	r = relation_open(relationId, lockmode);
@@ -1247,7 +1247,7 @@ heap_open(Oid relationId, LOCKMODE lockmode)
  */
 Relation
 heap_openrv(const RangeVar *relation, LOCKMODE lockmode)
-{	StackTrace("heap_openrv");
+{
 	Relation	r;
 
 	r = relation_openrv(relation, lockmode);
@@ -1277,7 +1277,7 @@ heap_openrv(const RangeVar *relation, LOCKMODE lockmode)
 Relation
 heap_openrv_extended(const RangeVar *relation, LOCKMODE lockmode,
 					 bool missing_ok)
-{	StackTrace("heap_openrv_extended");
+{
 	Relation	r;
 
 	r = relation_openrv_extended(relation, lockmode, missing_ok);
@@ -1320,14 +1320,14 @@ heap_openrv_extended(const RangeVar *relation, LOCKMODE lockmode,
 HeapScanDesc
 heap_beginscan(Relation relation, Snapshot snapshot,
 			   int nkeys, ScanKey key)
-{	StackTrace("heap_beginscan");
+{
 	return heap_beginscan_internal(relation, snapshot, nkeys, key,
 								   true, true, true, false, false, false);
 }
 
 HeapScanDesc
 heap_beginscan_catalog(Relation relation, int nkeys, ScanKey key)
-{	StackTrace("heap_beginscan_catalog");
+{
 	Oid			relid = RelationGetRelid(relation);
 	Snapshot	snapshot = RegisterSnapshot(GetCatalogSnapshot(relid));
 
@@ -1339,7 +1339,7 @@ HeapScanDesc
 heap_beginscan_strat(Relation relation, Snapshot snapshot,
 					 int nkeys, ScanKey key,
 					 bool allow_strat, bool allow_sync)
-{	StackTrace("heap_beginscan_strat");
+{
 	return heap_beginscan_internal(relation, snapshot, nkeys, key,
 								   allow_strat, allow_sync, true,
 								   false, false, false);
@@ -1348,7 +1348,7 @@ heap_beginscan_strat(Relation relation, Snapshot snapshot,
 HeapScanDesc
 heap_beginscan_bm(Relation relation, Snapshot snapshot,
 				  int nkeys, ScanKey key)
-{	StackTrace("heap_beginscan_bm");
+{
 	return heap_beginscan_internal(relation, snapshot, nkeys, key,
 								   false, false, true, true, false, false);
 }
@@ -1357,7 +1357,7 @@ HeapScanDesc
 heap_beginscan_sampling(Relation relation, Snapshot snapshot,
 						int nkeys, ScanKey key,
 						bool allow_strat, bool allow_pagemode)
-{	StackTrace("heap_beginscan_sampling");
+{
 	return heap_beginscan_internal(relation, snapshot, nkeys, key,
 								   allow_strat, false, allow_pagemode,
 								   false, true, false);
@@ -1368,7 +1368,7 @@ heap_beginscan_internal(Relation relation, Snapshot snapshot,
 						int nkeys, ScanKey key,
 					  bool allow_strat, bool allow_sync, bool allow_pagemode,
 					  bool is_bitmapscan, bool is_samplescan, bool temp_snap)
-{	StackTrace("heap_beginscan_internal");
+{
 	HeapScanDesc scan;
 
 	/*
@@ -1438,7 +1438,7 @@ heap_beginscan_internal(Relation relation, Snapshot snapshot,
 void
 heap_rescan(HeapScanDesc scan,
 			ScanKey key)
-{	StackTrace("heap_rescan");
+{
 	/*
 	 * unpin scan buffers
 	 */
@@ -1460,7 +1460,7 @@ heap_rescan(HeapScanDesc scan,
  */
 void
 heap_endscan(HeapScanDesc scan)
-{	StackTrace("heap_endscan");
+{
 	/* Note: no locking manipulations needed */
 
 	/*
@@ -1512,7 +1512,7 @@ heap_endscan(HeapScanDesc scan)
 
 HeapTuple
 heap_getnext(HeapScanDesc scan, ScanDirection direction)
-{	StackTrace("heap_getnext");
+{
 	/* Note: no locking manipulations needed */
 
 	HEAPDEBUG_1;				/* heap_getnext( info ) */
@@ -1585,7 +1585,7 @@ heap_fetch(Relation relation,
 		   Buffer *userbuf,
 		   bool keep_buf,
 		   Relation stats_relation)
-{	StackTrace("heap_fetch");
+{
 	ItemPointer tid = &(tuple->t_self);
 	ItemId		lp;
 	Buffer		buffer;
@@ -1716,7 +1716,7 @@ bool
 heap_hot_search_buffer(ItemPointer tid, Relation relation, Buffer buffer,
 					   Snapshot snapshot, HeapTuple heapTuple,
 					   bool *all_dead, bool first_call)
-{	StackTrace("heap_hot_search_buffer");
+{
 	Page		dp = (Page) BufferGetPage(buffer);
 	TransactionId prev_xmax = InvalidTransactionId;
 	OffsetNumber offnum;
@@ -1857,7 +1857,7 @@ heap_hot_search_buffer(ItemPointer tid, Relation relation, Buffer buffer,
 bool
 heap_hot_search(ItemPointer tid, Relation relation, Snapshot snapshot,
 				bool *all_dead)
-{	StackTrace("heap_hot_search");
+{
 	bool		result;
 	Buffer		buffer;
 	HeapTupleData heapTuple;
@@ -1886,7 +1886,7 @@ void
 heap_get_latest_tid(Relation relation,
 					Snapshot snapshot,
 					ItemPointer tid)
-{	StackTrace("heap_get_latest_tid");
+{
 	BlockNumber blk;
 	ItemPointerData ctid;
 	TransactionId priorXmax;
@@ -2013,7 +2013,7 @@ heap_get_latest_tid(Relation relation,
  */
 static void
 UpdateXmaxHintBits(HeapTupleHeader tuple, Buffer buffer, TransactionId xid)
-{	StackTrace("UpdateXmaxHintBits");
+{
 	Assert(TransactionIdEquals(HeapTupleHeaderGetRawXmax(tuple), xid));
 	Assert(!(tuple->t_infomask & HEAP_XMAX_IS_MULTI));
 
@@ -2035,7 +2035,7 @@ UpdateXmaxHintBits(HeapTupleHeader tuple, Buffer buffer, TransactionId xid)
  */
 BulkInsertState
 GetBulkInsertState(void)
-{	StackTrace("GetBulkInsertState");
+{
 	BulkInsertState bistate;
 
 	bistate = (BulkInsertState) palloc(sizeof(BulkInsertStateData));
@@ -2049,7 +2049,7 @@ GetBulkInsertState(void)
  */
 void
 FreeBulkInsertState(BulkInsertState bistate)
-{	StackTrace("FreeBulkInsertState");
+{
 	if (bistate->current_buf != InvalidBuffer)
 		ReleaseBuffer(bistate->current_buf);
 	FreeAccessStrategy(bistate->strategy);
@@ -2102,7 +2102,7 @@ FreeBulkInsertState(BulkInsertState bistate)
 Oid
 heap_insert(Relation relation, HeapTuple tup, CommandId cid,
 			int options, BulkInsertState bistate)
-{	StackTrace("heap_insert");
+{
 	TransactionId xid = GetCurrentTransactionId();
 	HeapTuple	heaptup;
 	Buffer		buffer;
@@ -2281,7 +2281,7 @@ heap_insert(Relation relation, HeapTuple tup, CommandId cid,
 static HeapTuple
 heap_prepare_insert(Relation relation, HeapTuple tup, TransactionId xid,
 					CommandId cid, int options)
-{	StackTrace("heap_prepare_insert");
+{
 	/*
 	 * For now, parallel operations are required to be strictly read-only.
 	 * Unlike heap_update() and heap_delete(), an insert should never create a
@@ -2359,7 +2359,7 @@ heap_prepare_insert(Relation relation, HeapTuple tup, TransactionId xid,
 void
 heap_multi_insert(Relation relation, HeapTuple *tuples, int ntuples,
 				  CommandId cid, int options, BulkInsertState bistate)
-{	StackTrace("heap_multi_insert");
+{
 	TransactionId xid = GetCurrentTransactionId();
 	HeapTuple  *heaptuples;
 	int			i;
@@ -2610,7 +2610,7 @@ heap_multi_insert(Relation relation, HeapTuple *tuples, int ntuples,
  */
 Oid
 simple_heap_insert(Relation relation, HeapTuple tup)
-{	StackTrace("simple_heap_insert");
+{
 	return heap_insert(relation, tup, GetCurrentCommandId(true), 0, NULL);
 }
 
@@ -2623,7 +2623,7 @@ simple_heap_insert(Relation relation, HeapTuple tup)
  */
 static uint8
 compute_infobits(uint16 infomask, uint16 infomask2)
-{	StackTrace("compute_infobits");
+{
 	return
 		((infomask & HEAP_XMAX_IS_MULTI) != 0 ? XLHL_XMAX_IS_MULTI : 0) |
 		((infomask & HEAP_XMAX_LOCK_ONLY) != 0 ? XLHL_XMAX_LOCK_ONLY : 0) |
@@ -2645,7 +2645,7 @@ compute_infobits(uint16 infomask, uint16 infomask2)
  */
 static inline bool
 xmax_infomask_changed(uint16 new_infomask, uint16 old_infomask)
-{	StackTrace("xmax_infomask_changed");
+{
 	const uint16 interesting =
 	HEAP_XMAX_IS_MULTI | HEAP_XMAX_LOCK_ONLY | HEAP_LOCK_MASK;
 
@@ -2684,7 +2684,7 @@ HTSU_Result
 heap_delete(Relation relation, ItemPointer tid,
 			CommandId cid, Snapshot crosscheck, bool wait,
 			HeapUpdateFailureData *hufd)
-{	StackTrace("heap_delete");
+{
 	HTSU_Result result;
 	TransactionId xid = GetCurrentTransactionId();
 	ItemId		lp;
@@ -3062,7 +3062,7 @@ l1:
  */
 void
 simple_heap_delete(Relation relation, ItemPointer tid)
-{	StackTrace("simple_heap_delete");
+{
 	HTSU_Result result;
 	HeapUpdateFailureData hufd;
 
@@ -3128,7 +3128,7 @@ HTSU_Result
 heap_update(Relation relation, ItemPointer otid, HeapTuple newtup,
 			CommandId cid, Snapshot crosscheck, bool wait,
 			HeapUpdateFailureData *hufd, LockTupleMode *lockmode)
-{	StackTrace("heap_update");
+{
 	HTSU_Result result;
 	TransactionId xid = GetCurrentTransactionId();
 	Bitmapset  *hot_attrs;
@@ -3903,7 +3903,7 @@ l2:
 static bool
 heap_tuple_attr_equals(TupleDesc tupdesc, int attrnum,
 					   HeapTuple tup1, HeapTuple tup2)
-{	StackTrace("heap_tuple_attr_equals");
+{
 	Datum		value1,
 				value2;
 	bool		isnull1,
@@ -3997,7 +3997,7 @@ HeapSatisfiesHOTandKeyUpdate(Relation relation, Bitmapset *hot_attrs,
 							 bool *satisfies_hot, bool *satisfies_key,
 							 bool *satisfies_id,
 							 HeapTuple oldtup, HeapTuple newtup)
-{	StackTrace("HeapSatisfiesHOTandKeyUpdate");
+{
 	int			next_hot_attnum;
 	int			next_key_attnum;
 	int			next_id_attnum;
@@ -4097,7 +4097,7 @@ HeapSatisfiesHOTandKeyUpdate(Relation relation, Bitmapset *hot_attrs,
  */
 void
 simple_heap_update(Relation relation, ItemPointer otid, HeapTuple tup)
-{	StackTrace("simple_heap_update");
+{
 	HTSU_Result result;
 	HeapUpdateFailureData hufd;
 	LockTupleMode lockmode;
@@ -4133,7 +4133,7 @@ simple_heap_update(Relation relation, ItemPointer otid, HeapTuple tup)
  */
 static MultiXactStatus
 get_mxact_status_for_lock(LockTupleMode mode, bool is_update)
-{	StackTrace("get_mxact_status_for_lock");
+{
 	int			retval;
 
 	if (is_update)
@@ -4189,7 +4189,7 @@ heap_lock_tuple(Relation relation, HeapTuple tuple,
 				CommandId cid, LockTupleMode mode, LockWaitPolicy wait_policy,
 				bool follow_updates,
 				Buffer *buffer, HeapUpdateFailureData *hufd)
-{	StackTrace("heap_lock_tuple");
+{
 	HTSU_Result result;
 	ItemPointer tid = &(tuple->t_self);
 	ItemId		lp;
@@ -4791,7 +4791,7 @@ failed:
 static bool
 heap_acquire_tuplock(Relation relation, ItemPointer tid, LockTupleMode mode,
 					 LockWaitPolicy wait_policy, bool *have_tuple_lock)
-{	StackTrace("heap_acquire_tuplock");
+{
 	if (*have_tuple_lock)
 		return true;
 
@@ -4843,7 +4843,7 @@ compute_new_xmax_infomask(TransactionId xmax, uint16 old_infomask,
 						  LockTupleMode mode, bool is_update,
 						  TransactionId *result_xmax, uint16 *result_infomask,
 						  uint16 *result_infomask2)
-{	StackTrace("compute_new_xmax_infomask");
+{
 	TransactionId new_xmax;
 	uint16		new_infomask,
 				new_infomask2;
@@ -5121,7 +5121,7 @@ l5:
 static HTSU_Result
 test_lockmode_for_conflict(MultiXactStatus status, TransactionId xid,
 						   LockTupleMode mode, bool *needwait)
-{	StackTrace("test_lockmode_for_conflict");
+{
 	MultiXactStatus wantedstatus;
 
 	*needwait = false;
@@ -5205,7 +5205,7 @@ test_lockmode_for_conflict(MultiXactStatus status, TransactionId xid,
 static HTSU_Result
 heap_lock_updated_tuple_rec(Relation rel, ItemPointer tid, TransactionId xid,
 							LockTupleMode mode)
-{	StackTrace("heap_lock_updated_tuple_rec");
+{
 	ItemPointerData tupid;
 	HeapTupleData mytup;
 	Buffer		buf;
@@ -5442,7 +5442,7 @@ l4:
 static HTSU_Result
 heap_lock_updated_tuple(Relation rel, HeapTuple tuple, ItemPointer ctid,
 						TransactionId xid, LockTupleMode mode)
-{	StackTrace("heap_lock_updated_tuple");
+{
 	if (!ItemPointerEquals(&tuple->t_self, ctid))
 	{
 		/*
@@ -5481,7 +5481,7 @@ heap_lock_updated_tuple(Relation rel, HeapTuple tuple, ItemPointer ctid,
  */
 void
 heap_finish_speculative(Relation relation, HeapTuple tuple)
-{	StackTrace("heap_finish_speculative");
+{
 	Buffer		buffer;
 	Page		page;
 	OffsetNumber offnum;
@@ -5571,7 +5571,7 @@ heap_finish_speculative(Relation relation, HeapTuple tuple)
  */
 void
 heap_abort_speculative(Relation relation, HeapTuple tuple)
-{	StackTrace("heap_abort_speculative");
+{
 	TransactionId xid = GetCurrentTransactionId();
 	ItemPointer tid = &(tuple->t_self);
 	ItemId		lp;
@@ -5709,7 +5709,7 @@ heap_abort_speculative(Relation relation, HeapTuple tuple)
  */
 void
 heap_inplace_update(Relation relation, HeapTuple tuple)
-{	StackTrace("heap_inplace_update");
+{
 	Buffer		buffer;
 	Page		page;
 	OffsetNumber offnum;
@@ -5822,7 +5822,7 @@ static TransactionId
 FreezeMultiXactId(MultiXactId multi, uint16 t_infomask,
 				  TransactionId cutoff_xid, MultiXactId cutoff_multi,
 				  uint16 *flags)
-{	StackTrace("FreezeMultiXactId");
+{
 	TransactionId xid = InvalidTransactionId;
 	int			i;
 	MultiXactMember *members;
@@ -6093,7 +6093,7 @@ heap_prepare_freeze_tuple(HeapTupleHeader tuple, TransactionId cutoff_xid,
 						  TransactionId cutoff_multi,
 						  xl_heap_freeze_tuple *frz)
 
-{	StackTrace("heap_prepare_freeze_tuple");
+{
 	bool		changed = false;
 	bool		freeze_xmax = false;
 	TransactionId xid;
@@ -6251,7 +6251,7 @@ heap_prepare_freeze_tuple(HeapTupleHeader tuple, TransactionId cutoff_xid,
  */
 void
 heap_execute_freeze_tuple(HeapTupleHeader tuple, xl_heap_freeze_tuple *frz)
-{	StackTrace("heap_execute_freeze_tuple");
+{
 	HeapTupleHeaderSetXmax(tuple, frz->xmax);
 
 	if (frz->frzflags & XLH_FREEZE_XVAC)
@@ -6273,7 +6273,7 @@ heap_execute_freeze_tuple(HeapTupleHeader tuple, xl_heap_freeze_tuple *frz)
 bool
 heap_freeze_tuple(HeapTupleHeader tuple, TransactionId cutoff_xid,
 				  TransactionId cutoff_multi)
-{	StackTrace("heap_freeze_tuple");
+{
 	xl_heap_freeze_tuple frz;
 	bool		do_freeze;
 
@@ -6300,7 +6300,7 @@ heap_freeze_tuple(HeapTupleHeader tuple, TransactionId cutoff_xid,
 static void
 GetMultiXactIdHintBits(MultiXactId multi, uint16 *new_infomask,
 					   uint16 *new_infomask2)
-{	StackTrace("GetMultiXactIdHintBits");
+{
 	int			nmembers;
 	MultiXactMember *members;
 	int			i;
@@ -6380,7 +6380,7 @@ GetMultiXactIdHintBits(MultiXactId multi, uint16 *new_infomask,
  */
 static TransactionId
 MultiXactIdGetUpdateXid(TransactionId xmax, uint16 t_infomask)
-{	StackTrace("MultiXactIdGetUpdateXid");
+{
 	TransactionId update_xact = InvalidTransactionId;
 	MultiXactMember *members;
 	int			nmembers;
@@ -6432,7 +6432,7 @@ MultiXactIdGetUpdateXid(TransactionId xmax, uint16 t_infomask)
  */
 TransactionId
 HeapTupleGetUpdateXid(HeapTupleHeader tuple)
-{	StackTrace("HeapTupleGetUpdateXid");
+{
 	return MultiXactIdGetUpdateXid(HeapTupleHeaderGetRawXmax(tuple),
 								   tuple->t_infomask);
 }
@@ -6446,7 +6446,7 @@ HeapTupleGetUpdateXid(HeapTupleHeader tuple)
 static bool
 DoesMultiXactIdConflict(MultiXactId multi, uint16 infomask,
 						LockTupleMode lockmode)
-{	StackTrace("DoesMultiXactIdConflict");
+{
 	bool		allow_old;
 	int			nmembers;
 	MultiXactMember *members;
@@ -6536,7 +6536,7 @@ Do_MultiXactIdWait(MultiXactId multi, MultiXactStatus status,
 				   uint16 infomask, bool nowait,
 				   Relation rel, ItemPointer ctid, XLTW_Oper oper,
 				   int *remaining)
-{	StackTrace("Do_MultiXactIdWait");
+{
 	bool		allow_old;
 	bool		result = true;
 	MultiXactMember *members;
@@ -6613,7 +6613,7 @@ static void
 MultiXactIdWait(MultiXactId multi, MultiXactStatus status, uint16 infomask,
 				Relation rel, ItemPointer ctid, XLTW_Oper oper,
 				int *remaining)
-{	StackTrace("MultiXactIdWait");
+{
 	(void) Do_MultiXactIdWait(multi, status, infomask, false,
 							  rel, ctid, oper, remaining);
 }
@@ -6634,7 +6634,7 @@ MultiXactIdWait(MultiXactId multi, MultiXactStatus status, uint16 infomask,
 static bool
 ConditionalMultiXactIdWait(MultiXactId multi, MultiXactStatus status,
 						   uint16 infomask, Relation rel, int *remaining)
-{	StackTrace("ConditionalMultiXactIdWait");
+{
 	return Do_MultiXactIdWait(multi, status, infomask, true,
 							  rel, NULL, XLTW_None, remaining);
 }
@@ -6654,7 +6654,7 @@ ConditionalMultiXactIdWait(MultiXactId multi, MultiXactStatus status,
 bool
 heap_tuple_needs_freeze(HeapTupleHeader tuple, TransactionId cutoff_xid,
 						MultiXactId cutoff_multi, Buffer buf)
-{	StackTrace("heap_tuple_needs_freeze");
+{
 	TransactionId xid;
 
 	xid = HeapTupleHeaderGetXmin(tuple);
@@ -6734,7 +6734,7 @@ heap_tuple_needs_freeze(HeapTupleHeader tuple, TransactionId cutoff_xid,
 void
 HeapTupleHeaderAdvanceLatestRemovedXid(HeapTupleHeader tuple,
 									   TransactionId *latestRemovedXid)
-{	StackTrace("HeapTupleHeaderAdvanceLatestRemovedXid");
+{
 	TransactionId xmin = HeapTupleHeaderGetXmin(tuple);
 	TransactionId xmax = HeapTupleHeaderGetUpdateXid(tuple);
 	TransactionId xvac = HeapTupleHeaderGetXvac(tuple);
@@ -6772,7 +6772,7 @@ HeapTupleHeaderAdvanceLatestRemovedXid(HeapTupleHeader tuple,
  */
 XLogRecPtr
 log_heap_cleanup_info(RelFileNode rnode, TransactionId latestRemovedXid)
-{	StackTrace("log_heap_cleanup_info");
+{
 	xl_heap_cleanup_info xlrec;
 	XLogRecPtr	recptr;
 
@@ -6805,7 +6805,7 @@ log_heap_clean(Relation reln, Buffer buffer,
 			   OffsetNumber *nowdead, int ndead,
 			   OffsetNumber *nowunused, int nunused,
 			   TransactionId latestRemovedXid)
-{	StackTrace("log_heap_clean");
+{
 	xl_heap_clean xlrec;
 	XLogRecPtr	recptr;
 
@@ -6853,7 +6853,7 @@ log_heap_clean(Relation reln, Buffer buffer,
 XLogRecPtr
 log_heap_freeze(Relation reln, Buffer buffer, TransactionId cutoff_xid,
 				xl_heap_freeze_tuple *tuples, int ntuples)
-{	StackTrace("log_heap_freeze");
+{
 	xl_heap_freeze_page xlrec;
 	XLogRecPtr	recptr;
 
@@ -6894,7 +6894,7 @@ log_heap_freeze(Relation reln, Buffer buffer, TransactionId cutoff_xid,
 XLogRecPtr
 log_heap_visible(RelFileNode rnode, Buffer heap_buffer, Buffer vm_buffer,
 				 TransactionId cutoff_xid)
-{	StackTrace("log_heap_visible");
+{
 	xl_heap_visible xlrec;
 	XLogRecPtr	recptr;
 	uint8		flags;
@@ -6927,7 +6927,7 @@ log_heap_update(Relation reln, Buffer oldbuf,
 				Buffer newbuf, HeapTuple oldtup, HeapTuple newtup,
 				HeapTuple old_key_tuple,
 				bool all_visible_cleared, bool new_all_visible_cleared)
-{	StackTrace("log_heap_update");
+{
 	xl_heap_update xlrec;
 	xl_heap_header xlhdr;
 	xl_heap_header xlhdr_idx;
@@ -7146,7 +7146,7 @@ log_heap_update(Relation reln, Buffer oldbuf,
  */
 static XLogRecPtr
 log_heap_new_cid(Relation relation, HeapTuple tup)
-{	StackTrace("log_heap_new_cid");
+{
 	xl_heap_new_cid xlrec;
 
 	XLogRecPtr	recptr;
@@ -7222,7 +7222,7 @@ log_heap_new_cid(Relation relation, HeapTuple tup)
  */
 static HeapTuple
 ExtractReplicaIdentity(Relation relation, HeapTuple tp, bool key_changed, bool *copy)
-{	StackTrace("ExtractReplicaIdentity");
+{
 	TupleDesc	desc = RelationGetDescr(relation);
 	Oid			replidindex;
 	Relation	idx_rel;
@@ -7334,7 +7334,7 @@ ExtractReplicaIdentity(Relation relation, HeapTuple tp, bool key_changed, bool *
  */
 static void
 heap_xlog_cleanup_info(XLogReaderState *record)
-{	StackTrace("heap_xlog_cleanup_info");
+{
 	xl_heap_cleanup_info *xlrec = (xl_heap_cleanup_info *) XLogRecGetData(record);
 
 	if (InHotStandby)
@@ -7355,7 +7355,7 @@ heap_xlog_cleanup_info(XLogReaderState *record)
  */
 static void
 heap_xlog_clean(XLogReaderState *record)
-{	StackTrace("heap_xlog_clean");
+{
 	XLogRecPtr	lsn = record->EndRecPtr;
 	xl_heap_clean *xlrec = (xl_heap_clean *) XLogRecGetData(record);
 	Buffer		buffer;
@@ -7445,7 +7445,7 @@ heap_xlog_clean(XLogReaderState *record)
  */
 static void
 heap_xlog_visible(XLogReaderState *record)
-{	StackTrace("heap_xlog_visible");
+{
 	XLogRecPtr	lsn = record->EndRecPtr;
 	xl_heap_visible *xlrec = (xl_heap_visible *) XLogRecGetData(record);
 	Buffer		vmbuffer = InvalidBuffer;
@@ -7558,7 +7558,7 @@ heap_xlog_visible(XLogReaderState *record)
  */
 static void
 heap_xlog_freeze_page(XLogReaderState *record)
-{	StackTrace("heap_xlog_freeze_page");
+{
 	XLogRecPtr	lsn = record->EndRecPtr;
 	xl_heap_freeze_page *xlrec = (xl_heap_freeze_page *) XLogRecGetData(record);
 	TransactionId cutoff_xid = xlrec->cutoff_xid;
@@ -7616,7 +7616,7 @@ heap_xlog_freeze_page(XLogReaderState *record)
  */
 static void
 fix_infomask_from_infobits(uint8 infobits, uint16 *infomask, uint16 *infomask2)
-{	StackTrace("fix_infomask_from_infobits");
+{
 	*infomask &= ~(HEAP_XMAX_IS_MULTI | HEAP_XMAX_LOCK_ONLY |
 				   HEAP_XMAX_KEYSHR_LOCK | HEAP_XMAX_EXCL_LOCK);
 	*infomask2 &= ~HEAP_KEYS_UPDATED;
@@ -7637,7 +7637,7 @@ fix_infomask_from_infobits(uint8 infobits, uint16 *infomask, uint16 *infomask2)
 
 static void
 heap_xlog_delete(XLogReaderState *record)
-{	StackTrace("heap_xlog_delete");
+{
 	XLogRecPtr	lsn = record->EndRecPtr;
 	xl_heap_delete *xlrec = (xl_heap_delete *) XLogRecGetData(record);
 	Buffer		buffer;
@@ -7707,7 +7707,7 @@ heap_xlog_delete(XLogReaderState *record)
 
 static void
 heap_xlog_insert(XLogReaderState *record)
-{	StackTrace("heap_xlog_insert");
+{
 	XLogRecPtr	lsn = record->EndRecPtr;
 	xl_heap_insert *xlrec = (xl_heap_insert *) XLogRecGetData(record);
 	Buffer		buffer;
@@ -7823,7 +7823,7 @@ heap_xlog_insert(XLogReaderState *record)
  */
 static void
 heap_xlog_multi_insert(XLogReaderState *record)
-{	StackTrace("heap_xlog_multi_insert");
+{
 	XLogRecPtr	lsn = record->EndRecPtr;
 	xl_heap_multi_insert *xlrec;
 	RelFileNode rnode;
@@ -7962,7 +7962,7 @@ heap_xlog_multi_insert(XLogReaderState *record)
  */
 static void
 heap_xlog_update(XLogReaderState *record, bool hot_update)
-{	StackTrace("heap_xlog_update");
+{
 	XLogRecPtr	lsn = record->EndRecPtr;
 	xl_heap_update *xlrec = (xl_heap_update *) XLogRecGetData(record);
 	RelFileNode rnode;
@@ -8234,7 +8234,7 @@ heap_xlog_update(XLogReaderState *record, bool hot_update)
 
 static void
 heap_xlog_confirm(XLogReaderState *record)
-{	StackTrace("heap_xlog_confirm");
+{
 	XLogRecPtr	lsn = record->EndRecPtr;
 	xl_heap_confirm *xlrec = (xl_heap_confirm *) XLogRecGetData(record);
 	Buffer		buffer;
@@ -8270,7 +8270,7 @@ heap_xlog_confirm(XLogReaderState *record)
 
 static void
 heap_xlog_lock(XLogReaderState *record)
-{	StackTrace("heap_xlog_lock");
+{
 	XLogRecPtr	lsn = record->EndRecPtr;
 	xl_heap_lock *xlrec = (xl_heap_lock *) XLogRecGetData(record);
 	Buffer		buffer;
@@ -8318,7 +8318,7 @@ heap_xlog_lock(XLogReaderState *record)
 
 static void
 heap_xlog_lock_updated(XLogReaderState *record)
-{	StackTrace("heap_xlog_lock_updated");
+{
 	XLogRecPtr	lsn = record->EndRecPtr;
 	xl_heap_lock_updated *xlrec;
 	Buffer		buffer;
@@ -8355,7 +8355,7 @@ heap_xlog_lock_updated(XLogReaderState *record)
 
 static void
 heap_xlog_inplace(XLogReaderState *record)
-{	StackTrace("heap_xlog_inplace");
+{
 	XLogRecPtr	lsn = record->EndRecPtr;
 	xl_heap_inplace *xlrec = (xl_heap_inplace *) XLogRecGetData(record);
 	Buffer		buffer;
@@ -8396,7 +8396,7 @@ heap_xlog_inplace(XLogReaderState *record)
 
 void
 heap_redo(XLogReaderState *record)
-{	StackTrace("heap_redo");
+{
 	uint8		info = XLogRecGetInfo(record) & ~XLR_INFO_MASK;
 
 	/*
@@ -8434,7 +8434,7 @@ heap_redo(XLogReaderState *record)
 
 void
 heap2_redo(XLogReaderState *record)
-{	StackTrace("heap2_redo");
+{
 	uint8		info = XLogRecGetInfo(record) & ~XLR_INFO_MASK;
 
 	switch (info & XLOG_HEAP_OPMASK)
@@ -8488,7 +8488,7 @@ heap2_redo(XLogReaderState *record)
  */
 void
 heap_sync(Relation rel)
-{	StackTrace("heap_sync");
+{
 	/* non-WAL-logged tables never need fsync */
 	if (!RelationNeedsWAL(rel))
 		return;

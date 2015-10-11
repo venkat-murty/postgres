@@ -51,7 +51,7 @@ static HashScanList HashScans = NULL;
  */
 void
 ReleaseResources_hash(void)
-{	StackTrace("ReleaseResources_hash");
+{
 	HashScanList l;
 	HashScanList prev;
 	HashScanList next;
@@ -91,7 +91,7 @@ ReleaseResources_hash(void)
  */
 void
 _hash_regscan(IndexScanDesc scan)
-{	StackTrace("_hash_regscan");
+{
 	HashScanList new_el;
 
 	new_el = (HashScanList) MemoryContextAlloc(TopMemoryContext,
@@ -107,7 +107,7 @@ _hash_regscan(IndexScanDesc scan)
  */
 void
 _hash_dropscan(IndexScanDesc scan)
-{	StackTrace("_hash_dropscan");
+{
 	HashScanList chk,
 				last;
 
@@ -133,7 +133,7 @@ _hash_dropscan(IndexScanDesc scan)
  */
 bool
 _hash_has_active_scan(Relation rel, Bucket bucket)
-{	StackTrace("_hash_has_active_scan");
+{
 	Oid			relid = RelationGetRelid(rel);
 	HashScanList l;
 

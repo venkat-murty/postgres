@@ -270,7 +270,7 @@ static bool TParserGet(TParser *prs);
 
 static TParserPosition *
 newTParserPosition(TParserPosition *prev)
-{	StackTrace("newTParserPosition");
+{
 	TParserPosition *res = (TParserPosition *) palloc(sizeof(TParserPosition));
 
 	if (prev)
@@ -287,7 +287,7 @@ newTParserPosition(TParserPosition *prev)
 
 static TParser *
 TParserInit(char *str, int len)
-{	StackTrace("TParserInit");
+{
 	TParser    *prs = (TParser *) palloc0(sizeof(TParser));
 
 	prs->charmaxlen = pg_database_encoding_max_length();
@@ -354,7 +354,7 @@ TParserInit(char *str, int len)
  */
 static TParser *
 TParserCopyInit(const TParser *orig)
-{	StackTrace("TParserCopyInit");
+{
 	TParser    *prs = (TParser *) palloc0(sizeof(TParser));
 
 	prs->charmaxlen = orig->charmaxlen;
@@ -384,7 +384,7 @@ TParserCopyInit(const TParser *orig)
 
 static void
 TParserClose(TParser *prs)
-{	StackTrace("TParserClose");
+{
 	while (prs->state)
 	{
 		TParserPosition *ptr = prs->state->prev;
@@ -411,7 +411,7 @@ TParserClose(TParser *prs)
  */
 static void
 TParserCopyClose(TParser *prs)
-{	StackTrace("TParserCopyClose");
+{
 	while (prs->state)
 	{
 		TParserPosition *ptr = prs->state->prev;
@@ -465,7 +465,7 @@ p_isnot##type(TParser *prs) {												\
 
 static int
 p_isalnum(TParser *prs)
-{	StackTrace("p_isalnum");
+{
 	Assert(prs->state);
 
 	if (prs->usewide)
@@ -491,13 +491,13 @@ p_isalnum(TParser *prs)
 }
 static int
 p_isnotalnum(TParser *prs)
-{	StackTrace("p_isnotalnum");
+{
 	return !p_isalnum(prs);
 }
 
 static int
 p_isalpha(TParser *prs)
-{	StackTrace("p_isalpha");
+{
 	Assert(prs->state);
 
 	if (prs->usewide)
@@ -524,7 +524,7 @@ p_isalpha(TParser *prs)
 
 static int
 p_isnotalpha(TParser *prs)
-{	StackTrace("p_isnotalpha");
+{
 	return !p_isalpha(prs);
 }
 
@@ -532,7 +532,7 @@ p_isnotalpha(TParser *prs)
 
 static int
 p_iseq(TParser *prs, char c)
-{	StackTrace("p_iseq");
+{
 	Assert(prs->state);
 	return ((prs->state->charlen == 1 && *(prs->str + prs->state->posbyte) == c)) ? 1 : 0;
 }
@@ -553,7 +553,7 @@ p_isnot##type(TParser *prs) {												\
 
 static int
 p_iseq(TParser *prs, char c)
-{	StackTrace("p_iseq");
+{
 	Assert(prs->state);
 	return (*(prs->str + prs->state->posbyte) == c) ? 1 : 0;
 }
@@ -572,38 +572,38 @@ p_iswhat(xdigit)
 
 static int
 p_isEOF(TParser *prs)
-{	StackTrace("p_isEOF");
+{
 	Assert(prs->state);
 	return (prs->state->posbyte == prs->lenstr || prs->state->charlen == 0) ? 1 : 0;
 }
 
 static int
 p_iseqC(TParser *prs)
-{	StackTrace("p_iseqC");
+{
 	return p_iseq(prs, prs->c);
 }
 
 static int
 p_isneC(TParser *prs)
-{	StackTrace("p_isneC");
+{
 	return !p_iseq(prs, prs->c);
 }
 
 static int
 p_isascii(TParser *prs)
-{	StackTrace("p_isascii");
+{
 	return (prs->state->charlen == 1 && isascii((unsigned char) *(prs->str + prs->state->posbyte))) ? 1 : 0;
 }
 
 static int
 p_isasclet(TParser *prs)
-{	StackTrace("p_isasclet");
+{
 	return (p_isascii(prs) && p_isalpha(prs)) ? 1 : 0;
 }
 
 static int
 p_isurlchar(TParser *prs)
-{	StackTrace("p_isurlchar");
+{
 	char		ch;
 
 	/* no non-ASCII need apply */
@@ -635,7 +635,7 @@ p_isurlchar(TParser *prs)
 void		_make_compiler_happy(void);
 void
 _make_compiler_happy(void)
-{	StackTrace("_make_compiler_happy");
+{
 	p_isalnum(NULL);
 	p_isnotalnum(NULL);
 	p_isalpha(NULL);
@@ -662,7 +662,7 @@ _make_compiler_happy(void)
 
 static void
 SpecialTags(TParser *prs)
-{	StackTrace("SpecialTags");
+{
 	switch (prs->state->lenchartoken)
 	{
 		case 8:			/* </script */
@@ -686,7 +686,7 @@ SpecialTags(TParser *prs)
 
 static void
 SpecialFURL(TParser *prs)
-{	StackTrace("SpecialFURL");
+{
 	prs->wanthost = true;
 	prs->state->posbyte -= prs->state->lenbytetoken;
 	prs->state->poschar -= prs->state->lenchartoken;
@@ -694,14 +694,14 @@ SpecialFURL(TParser *prs)
 
 static void
 SpecialHyphen(TParser *prs)
-{	StackTrace("SpecialHyphen");
+{
 	prs->state->posbyte -= prs->state->lenbytetoken;
 	prs->state->poschar -= prs->state->lenchartoken;
 }
 
 static void
 SpecialVerVersion(TParser *prs)
-{	StackTrace("SpecialVerVersion");
+{
 	prs->state->posbyte -= prs->state->lenbytetoken;
 	prs->state->poschar -= prs->state->lenchartoken;
 	prs->state->lenbytetoken = 0;
@@ -710,7 +710,7 @@ SpecialVerVersion(TParser *prs)
 
 static int
 p_isstophost(TParser *prs)
-{	StackTrace("p_isstophost");
+{
 	if (prs->wanthost)
 	{
 		prs->wanthost = false;
@@ -721,13 +721,13 @@ p_isstophost(TParser *prs)
 
 static int
 p_isignore(TParser *prs)
-{	StackTrace("p_isignore");
+{
 	return (prs->ignore) ? 1 : 0;
 }
 
 static int
 p_ishost(TParser *prs)
-{	StackTrace("p_ishost");
+{
 	TParser    *tmpprs = TParserCopyInit(prs);
 	int			res = 0;
 
@@ -749,7 +749,7 @@ p_ishost(TParser *prs)
 
 static int
 p_isURLPath(TParser *prs)
-{	StackTrace("p_isURLPath");
+{
 	TParser    *tmpprs = TParserCopyInit(prs);
 	int			res = 0;
 
@@ -778,7 +778,7 @@ p_isURLPath(TParser *prs)
  */
 static int
 p_isspecial(TParser *prs)
-{	StackTrace("p_isspecial");
+{
 	/*
 	 * pg_dsplen could return -1 which means error or control character
 	 */
@@ -1796,7 +1796,7 @@ static const TParserStateAction Actions[] = {
 
 static bool
 TParserGet(TParser *prs)
-{	StackTrace("TParserGet");
+{
 	const TParserStateActionItem *item = NULL;
 
 	Assert(prs->state);
@@ -1962,7 +1962,7 @@ TParserGet(TParser *prs)
 
 Datum
 prsd_lextype(PG_FUNCTION_ARGS)
-{	StackTrace("prsd_lextype");
+{
 	LexDescr   *descr = (LexDescr *) palloc(sizeof(LexDescr) * (LASTNUM + 1));
 	int			i;
 
@@ -1980,13 +1980,13 @@ prsd_lextype(PG_FUNCTION_ARGS)
 
 Datum
 prsd_start(PG_FUNCTION_ARGS)
-{	StackTrace("prsd_start");
+{
 	PG_RETURN_POINTER(TParserInit((char *) PG_GETARG_POINTER(0), PG_GETARG_INT32(1)));
 }
 
 Datum
 prsd_nexttoken(PG_FUNCTION_ARGS)
-{	StackTrace("prsd_nexttoken");
+{
 	TParser    *p = (TParser *) PG_GETARG_POINTER(0);
 	char	  **t = (char **) PG_GETARG_POINTER(1);
 	int		   *tlen = (int *) PG_GETARG_POINTER(2);
@@ -2002,7 +2002,7 @@ prsd_nexttoken(PG_FUNCTION_ARGS)
 
 Datum
 prsd_end(PG_FUNCTION_ARGS)
-{	StackTrace("prsd_end");
+{
 	TParser    *p = (TParser *) PG_GETARG_POINTER(0);
 
 	TParserClose(p);
@@ -2028,7 +2028,7 @@ typedef struct
 
 static bool
 checkcondition_HL(void *checkval, QueryOperand *val)
-{	StackTrace("checkcondition_HL");
+{
 	int			i;
 
 	for (i = 0; i < ((hlCheck *) checkval)->len; i++)
@@ -2042,7 +2042,7 @@ checkcondition_HL(void *checkval, QueryOperand *val)
 
 static bool
 hlCover(HeadlineParsedText *prs, TSQuery query, int *p, int *q)
-{	StackTrace("hlCover");
+{
 	int			i,
 				j;
 	QueryItem  *item = GETQUERY(query);
@@ -2113,7 +2113,7 @@ hlCover(HeadlineParsedText *prs, TSQuery query, int *p, int *q)
 
 static void
 mark_fragment(HeadlineParsedText *prs, int highlight, int startpos, int endpos)
-{	StackTrace("mark_fragment");
+{
 	int			i;
 
 	for (i = startpos; i <= endpos; i++)
@@ -2150,7 +2150,7 @@ typedef struct
 static void
 get_next_fragment(HeadlineParsedText *prs, int *startpos, int *endpos,
 				  int *curlen, int *poslen, int max_words)
-{	StackTrace("get_next_fragment");
+{
 	int			i;
 
 	/*
@@ -2196,7 +2196,7 @@ static void
 mark_hl_fragments(HeadlineParsedText *prs, TSQuery query, int highlight,
 				  int shortword, int min_words,
 				  int max_words, int max_fragments)
-{	StackTrace("mark_hl_fragments");
+{
 	int32		poslen,
 				curlen,
 				i,
@@ -2366,7 +2366,7 @@ mark_hl_fragments(HeadlineParsedText *prs, TSQuery query, int highlight,
 static void
 mark_hl_words(HeadlineParsedText *prs, TSQuery query, int highlight,
 			  int shortword, int min_words, int max_words)
-{	StackTrace("mark_hl_words");
+{
 	int			p = 0,
 				q = 0;
 	int			bestb = -1,
@@ -2509,7 +2509,7 @@ mark_hl_words(HeadlineParsedText *prs, TSQuery query, int highlight,
 
 Datum
 prsd_headline(PG_FUNCTION_ARGS)
-{	StackTrace("prsd_headline");
+{
 	HeadlineParsedText *prs = (HeadlineParsedText *) PG_GETARG_POINTER(0);
 	List	   *prsoptions = (List *) PG_GETARG_POINTER(1);
 	TSQuery		query = PG_GETARG_TSQUERY(2);

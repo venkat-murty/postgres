@@ -88,7 +88,7 @@ static void MemoryContextStatsInternal(MemoryContext context, int level);
  */
 void
 MemoryContextInit(void)
-{	StackTrace("MemoryContextInit");
+{
 	AssertState(TopMemoryContext == NULL);
 
 	/*
@@ -137,7 +137,7 @@ MemoryContextInit(void)
  */
 void
 MemoryContextReset(MemoryContext context)
-{	StackTrace("MemoryContextReset");
+{
 	AssertArg(MemoryContextIsValid(context));
 
 	/* save a function call in common case where there are no children */
@@ -156,7 +156,7 @@ MemoryContextReset(MemoryContext context)
  */
 void
 MemoryContextResetOnly(MemoryContext context)
-{	StackTrace("MemoryContextResetOnly");
+{
 	AssertArg(MemoryContextIsValid(context));
 
 	/* Nothing to do if no pallocs since startup or last reset */
@@ -178,7 +178,7 @@ MemoryContextResetOnly(MemoryContext context)
  */
 void
 MemoryContextResetChildren(MemoryContext context)
-{	StackTrace("MemoryContextResetChildren");
+{
 	MemoryContext child;
 
 	AssertArg(MemoryContextIsValid(context));
@@ -202,7 +202,7 @@ MemoryContextResetChildren(MemoryContext context)
  */
 void
 MemoryContextDelete(MemoryContext context)
-{	StackTrace("MemoryContextDelete");
+{
 	AssertArg(MemoryContextIsValid(context));
 	/* We had better not be deleting TopMemoryContext ... */
 	Assert(context != TopMemoryContext);
@@ -238,7 +238,7 @@ MemoryContextDelete(MemoryContext context)
  */
 void
 MemoryContextDeleteChildren(MemoryContext context)
-{	StackTrace("MemoryContextDeleteChildren");
+{
 	AssertArg(MemoryContextIsValid(context));
 
 	/*
@@ -268,7 +268,7 @@ MemoryContextDeleteChildren(MemoryContext context)
 void
 MemoryContextRegisterResetCallback(MemoryContext context,
 								   MemoryContextCallback *cb)
-{	StackTrace("MemoryContextRegisterResetCallback");
+{
 	AssertArg(MemoryContextIsValid(context));
 
 	/* Push onto head so this will be called before older registrants. */
@@ -284,7 +284,7 @@ MemoryContextRegisterResetCallback(MemoryContext context,
  */
 static void
 MemoryContextCallResetCallbacks(MemoryContext context)
-{	StackTrace("MemoryContextCallResetCallbacks");
+{
 	MemoryContextCallback *cb;
 
 	/*
@@ -319,7 +319,7 @@ MemoryContextCallResetCallbacks(MemoryContext context)
  */
 void
 MemoryContextSetParent(MemoryContext context, MemoryContext new_parent)
-{	StackTrace("MemoryContextSetParent");
+{
 	AssertArg(MemoryContextIsValid(context));
 	AssertArg(context != new_parent);
 
@@ -377,7 +377,7 @@ MemoryContextSetParent(MemoryContext context, MemoryContext new_parent)
  */
 void
 MemoryContextAllowInCriticalSection(MemoryContext context, bool allow)
-{	StackTrace("MemoryContextAllowInCriticalSection");
+{
 	AssertArg(MemoryContextIsValid(context));
 
 	context->allowInCritSection = allow;
@@ -393,7 +393,7 @@ MemoryContextAllowInCriticalSection(MemoryContext context, bool allow)
  */
 Size
 GetMemoryChunkSpace(void *pointer)
-{	StackTrace("GetMemoryChunkSpace");
+{
 	StandardChunkHeader *header;
 
 	/*
@@ -423,7 +423,7 @@ GetMemoryChunkSpace(void *pointer)
  */
 MemoryContext
 GetMemoryChunkContext(void *pointer)
-{	StackTrace("GetMemoryChunkContext");
+{
 	StandardChunkHeader *header;
 
 	/*
@@ -451,7 +451,7 @@ GetMemoryChunkContext(void *pointer)
  */
 MemoryContext
 MemoryContextGetParent(MemoryContext context)
-{	StackTrace("MemoryContextGetParent");
+{
 	AssertArg(MemoryContextIsValid(context));
 
 	return context->parent;
@@ -463,7 +463,7 @@ MemoryContextGetParent(MemoryContext context)
  */
 bool
 MemoryContextIsEmpty(MemoryContext context)
-{	StackTrace("MemoryContextIsEmpty");
+{
 	AssertArg(MemoryContextIsValid(context));
 
 	/*
@@ -485,13 +485,13 @@ MemoryContextIsEmpty(MemoryContext context)
  */
 void
 MemoryContextStats(MemoryContext context)
-{	StackTrace("MemoryContextStats");
+{
 	MemoryContextStatsInternal(context, 0);
 }
 
 static void
 MemoryContextStatsInternal(MemoryContext context, int level)
-{	StackTrace("MemoryContextStatsInternal");
+{
 	MemoryContext child;
 
 	AssertArg(MemoryContextIsValid(context));
@@ -510,7 +510,7 @@ MemoryContextStatsInternal(MemoryContext context, int level)
 #ifdef MEMORY_CONTEXT_CHECKING
 void
 MemoryContextCheck(MemoryContext context)
-{	StackTrace("MemoryContextCheck");
+{
 	MemoryContext child;
 
 	AssertArg(MemoryContextIsValid(context));
@@ -534,7 +534,7 @@ MemoryContextCheck(MemoryContext context)
  */
 bool
 MemoryContextContains(MemoryContext context, void *pointer)
-{	StackTrace("MemoryContextContains");
+{
 	StandardChunkHeader *header;
 
 	/*
@@ -607,7 +607,7 @@ MemoryContextCreate(NodeTag tag, Size size,
 					MemoryContextMethods *methods,
 					MemoryContext parent,
 					const char *name)
-{	StackTrace("MemoryContextCreate");
+{
 	MemoryContext node;
 	Size		needed = size + strlen(name) + 1;
 
@@ -668,7 +668,7 @@ MemoryContextCreate(NodeTag tag, Size size,
  */
 void *
 MemoryContextAlloc(MemoryContext context, Size size)
-{	StackTrace("MemoryContextAlloc");
+{
 	void	   *ret;
 
 	AssertArg(MemoryContextIsValid(context));
@@ -703,7 +703,7 @@ MemoryContextAlloc(MemoryContext context, Size size)
  */
 void *
 MemoryContextAllocZero(MemoryContext context, Size size)
-{	StackTrace("MemoryContextAllocZero");
+{
 	void	   *ret;
 
 	AssertArg(MemoryContextIsValid(context));
@@ -740,7 +740,7 @@ MemoryContextAllocZero(MemoryContext context, Size size)
  */
 void *
 MemoryContextAllocZeroAligned(MemoryContext context, Size size)
-{	StackTrace("MemoryContextAllocZeroAligned");
+{
 	void	   *ret;
 
 	AssertArg(MemoryContextIsValid(context));
@@ -774,7 +774,7 @@ MemoryContextAllocZeroAligned(MemoryContext context, Size size)
  */
 void *
 MemoryContextAllocExtended(MemoryContext context, Size size, int flags)
-{	StackTrace("MemoryContextAllocExtended");
+{
 	void	   *ret;
 
 	AssertArg(MemoryContextIsValid(context));
@@ -810,7 +810,7 @@ MemoryContextAllocExtended(MemoryContext context, Size size, int flags)
 
 void *
 palloc(Size size)
-{	StackTrace("palloc");
+{
 	/* duplicates MemoryContextAlloc to avoid increased overhead */
 	void	   *ret;
 
@@ -839,7 +839,7 @@ palloc(Size size)
 
 void *
 palloc0(Size size)
-{	StackTrace("palloc0");
+{
 	/* duplicates MemoryContextAllocZero to avoid increased overhead */
 	void	   *ret;
 
@@ -870,7 +870,7 @@ palloc0(Size size)
 
 void *
 palloc_extended(Size size, int flags)
-{	StackTrace("palloc_extended");
+{
 	/* duplicates MemoryContextAllocExtended to avoid increased overhead */
 	void	   *ret;
 
@@ -911,7 +911,7 @@ palloc_extended(Size size, int flags)
  */
 void
 pfree(void *pointer)
-{	StackTrace("pfree");
+{
 	MemoryContext context;
 
 	/*
@@ -940,7 +940,7 @@ pfree(void *pointer)
  */
 void *
 repalloc(void *pointer, Size size)
-{	StackTrace("repalloc");
+{
 	MemoryContext context;
 	void	   *ret;
 
@@ -987,7 +987,7 @@ repalloc(void *pointer, Size size)
  */
 void *
 MemoryContextAllocHuge(MemoryContext context, Size size)
-{	StackTrace("MemoryContextAllocHuge");
+{
 	void	   *ret;
 
 	AssertArg(MemoryContextIsValid(context));
@@ -1020,7 +1020,7 @@ MemoryContextAllocHuge(MemoryContext context, Size size)
  */
 void *
 repalloc_huge(void *pointer, Size size)
-{	StackTrace("repalloc_huge");
+{
 	MemoryContext context;
 	void	   *ret;
 
@@ -1065,7 +1065,7 @@ repalloc_huge(void *pointer, Size size)
  */
 char *
 MemoryContextStrdup(MemoryContext context, const char *string)
-{	StackTrace("MemoryContextStrdup");
+{
 	char	   *nstr;
 	Size		len = strlen(string) + 1;
 
@@ -1078,7 +1078,7 @@ MemoryContextStrdup(MemoryContext context, const char *string)
 
 char *
 pstrdup(const char *in)
-{	StackTrace("pstrdup");
+{
 	return MemoryContextStrdup(CurrentMemoryContext, in);
 }
 
@@ -1089,7 +1089,7 @@ pstrdup(const char *in)
  */
 char *
 pnstrdup(const char *in, Size len)
-{	StackTrace("pnstrdup");
+{
 	char	   *out = palloc(len + 1);
 
 	memcpy(out, in, len);

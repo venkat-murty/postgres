@@ -63,7 +63,7 @@ static List *TidQualFromRestrictinfo(List *restrictinfo, int varno);
  */
 static bool
 IsTidEqualClause(OpExpr *node, int varno)
-{	StackTrace("IsTidEqualClause");
+{
 	Node	   *arg1,
 			   *arg2,
 			   *other;
@@ -115,7 +115,7 @@ IsTidEqualClause(OpExpr *node, int varno)
  */
 static bool
 IsTidEqualAnyClause(ScalarArrayOpExpr *node, int varno)
-{	StackTrace("IsTidEqualAnyClause");
+{
 	Node	   *arg1,
 			   *arg2;
 
@@ -164,7 +164,7 @@ IsTidEqualAnyClause(ScalarArrayOpExpr *node, int varno)
  */
 static List *
 TidQualFromExpr(Node *expr, int varno)
-{	StackTrace("TidQualFromExpr");
+{
 	List	   *rlst = NIL;
 	ListCell   *l;
 
@@ -223,7 +223,7 @@ TidQualFromExpr(Node *expr, int varno)
  */
 static List *
 TidQualFromRestrictinfo(List *restrictinfo, int varno)
-{	StackTrace("TidQualFromRestrictinfo");
+{
 	List	   *rlst = NIL;
 	ListCell   *l;
 
@@ -248,7 +248,7 @@ TidQualFromRestrictinfo(List *restrictinfo, int varno)
  */
 void
 create_tidscan_paths(PlannerInfo *root, RelOptInfo *rel)
-{	StackTrace("create_tidscan_paths");
+{
 	Relids		required_outer;
 	List	   *tidquals;
 

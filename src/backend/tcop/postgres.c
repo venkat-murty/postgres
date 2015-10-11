@@ -217,7 +217,7 @@ static void log_disconnections(int code, Datum arg);
 
 static int
 InteractiveBackend(StringInfo inBuf)
-{	StackTrace("InteractiveBackend");
+{
 	int			c;				/* character read from getc() */
 	bool		end = false;	/* end-of-input flag */
 	bool		backslashSeen = false;	/* have we seen a \ ? */
@@ -306,7 +306,7 @@ InteractiveBackend(StringInfo inBuf)
  */
 static int
 interactive_getc(void)
-{	StackTrace("interactive_getc");
+{
 	int			c;
 
 	/*
@@ -334,7 +334,7 @@ interactive_getc(void)
  */
 static int
 SocketBackend(StringInfo inBuf)
-{	StackTrace("SocketBackend");
+{
 	int			qtype;
 
 	/*
@@ -511,7 +511,7 @@ SocketBackend(StringInfo inBuf)
  */
 static int
 ReadCommand(StringInfo inBuf)
-{	StackTrace("ReadCommand");
+{
 	int			result;
 
 	if (whereToSendOutput == DestRemote)
@@ -531,7 +531,7 @@ ReadCommand(StringInfo inBuf)
  */
 void
 ProcessClientReadInterrupt(bool blocked)
-{	StackTrace("ProcessClientReadInterrupt");
+{
 	int			save_errno = errno;
 
 	if (DoingCommandRead)
@@ -569,7 +569,7 @@ ProcessClientReadInterrupt(bool blocked)
  */
 void
 ProcessClientWriteInterrupt(bool blocked)
-{	StackTrace("ProcessClientWriteInterrupt");
+{
 	int			save_errno = errno;
 
 	/*
@@ -611,7 +611,7 @@ ProcessClientWriteInterrupt(bool blocked)
  */
 List *
 pg_parse_query(const char *query_string)
-{	StackTrace("pg_parse_query");
+{
 	List	   *raw_parsetree_list;
 
 	TRACE_POSTGRESQL_QUERY_PARSE_START(query_string);
@@ -654,7 +654,7 @@ pg_parse_query(const char *query_string)
 List *
 pg_analyze_and_rewrite(Node *parsetree, const char *query_string,
 					   Oid *paramTypes, int numParams)
-{	StackTrace("pg_analyze_and_rewrite");
+{
 	Query	   *query;
 	List	   *querytree_list;
 
@@ -691,7 +691,7 @@ pg_analyze_and_rewrite_params(Node *parsetree,
 							  const char *query_string,
 							  ParserSetupHook parserSetup,
 							  void *parserSetupArg)
-{	StackTrace("pg_analyze_and_rewrite_params");
+{
 	ParseState *pstate;
 	Query	   *query;
 	List	   *querytree_list;
@@ -738,7 +738,7 @@ pg_analyze_and_rewrite_params(Node *parsetree,
  */
 static List *
 pg_rewrite_query(Query *query)
-{	StackTrace("pg_rewrite_query");
+{
 	List	   *querytree_list;
 
 	if (Debug_print_parse)
@@ -790,7 +790,7 @@ pg_rewrite_query(Query *query)
  */
 PlannedStmt *
 pg_plan_query(Query *querytree, int cursorOptions, ParamListInfo boundParams)
-{	StackTrace("pg_plan_query");
+{
 	PlannedStmt *plan;
 
 	/* Utility commands have no plans. */
@@ -849,7 +849,7 @@ pg_plan_query(Query *querytree, int cursorOptions, ParamListInfo boundParams)
  */
 List *
 pg_plan_queries(List *querytrees, int cursorOptions, ParamListInfo boundParams)
-{	StackTrace("pg_plan_queries");
+{
 	List	   *stmt_list = NIL;
 	ListCell   *query_list;
 
@@ -882,7 +882,7 @@ pg_plan_queries(List *querytrees, int cursorOptions, ParamListInfo boundParams)
  */
 static void
 exec_simple_query(const char *query_string)
-{	StackTrace("exec_simple_query");
+{
 	CommandDest dest = whereToSendOutput;
 	MemoryContext oldcontext;
 	List	   *parsetree_list;
@@ -1464,7 +1464,7 @@ exec_parse_message(const char *query_string,	/* string to execute */
  */
 static void
 exec_bind_message(StringInfo input_message)
-{	StackTrace("exec_bind_message");
+{
 	const char *portal_name;
 	const char *stmt_name;
 	int			numPFormats;
@@ -1845,7 +1845,7 @@ exec_bind_message(StringInfo input_message)
  */
 static void
 exec_execute_message(const char *portal_name, long max_rows)
-{	StackTrace("exec_execute_message");
+{
 	CommandDest dest;
 	DestReceiver *receiver;
 	Portal		portal;
@@ -2067,7 +2067,7 @@ exec_execute_message(const char *portal_name, long max_rows)
  */
 static bool
 check_log_statement(List *stmt_list)
-{	StackTrace("check_log_statement");
+{
 	ListCell   *stmt_item;
 
 	if (log_statement == LOGSTMT_NONE)
@@ -2104,7 +2104,7 @@ check_log_statement(List *stmt_list)
  */
 int
 check_log_duration(char *msec_str, bool was_logged)
-{	StackTrace("check_log_duration");
+{
 	if (log_duration || log_min_duration_statement >= 0)
 	{
 		long		secs;
@@ -2149,7 +2149,7 @@ check_log_duration(char *msec_str, bool was_logged)
  */
 static int
 errdetail_execute(List *raw_parsetree_list)
-{	StackTrace("errdetail_execute");
+{
 	ListCell   *parsetree_item;
 
 	foreach(parsetree_item, raw_parsetree_list)
@@ -2180,7 +2180,7 @@ errdetail_execute(List *raw_parsetree_list)
  */
 static int
 errdetail_params(ParamListInfo params)
-{	StackTrace("errdetail_params");
+{
 	/* We mustn't call user-defined I/O functions when in an aborted xact */
 	if (params && params->numParams > 0 && !IsAbortedTransactionBlockState())
 	{
@@ -2244,7 +2244,7 @@ errdetail_params(ParamListInfo params)
  */
 static int
 errdetail_abort(void)
-{	StackTrace("errdetail_abort");
+{
 	if (MyProc->recoveryConflictPending)
 		errdetail("abort reason: recovery conflict");
 
@@ -2258,7 +2258,7 @@ errdetail_abort(void)
  */
 static int
 errdetail_recovery_conflict(void)
-{	StackTrace("errdetail_recovery_conflict");
+{
 	switch (RecoveryConflictReason)
 	{
 		case PROCSIG_RECOVERY_CONFLICT_BUFFERPIN:
@@ -2294,7 +2294,7 @@ errdetail_recovery_conflict(void)
  */
 static void
 exec_describe_statement_message(const char *stmt_name)
-{	StackTrace("exec_describe_statement_message");
+{
 	CachedPlanSource *psrc;
 	StringInfoData buf;
 	int			i;
@@ -2387,7 +2387,7 @@ exec_describe_statement_message(const char *stmt_name)
  */
 static void
 exec_describe_portal_message(const char *portal_name)
-{	StackTrace("exec_describe_portal_message");
+{
 	Portal		portal;
 
 	/*
@@ -2438,7 +2438,7 @@ exec_describe_portal_message(const char *portal_name)
  */
 static void
 start_xact_command(void)
-{	StackTrace("start_xact_command");
+{
 	if (!xact_started)
 	{
 		ereport(DEBUG3,
@@ -2458,7 +2458,7 @@ start_xact_command(void)
 
 static void
 finish_xact_command(void)
-{	StackTrace("finish_xact_command");
+{
 	if (xact_started)
 	{
 		/* Cancel any active statement timeout before committing */
@@ -2494,7 +2494,7 @@ finish_xact_command(void)
 /* Test a bare parsetree */
 static bool
 IsTransactionExitStmt(Node *parsetree)
-{	StackTrace("IsTransactionExitStmt");
+{
 	if (parsetree && IsA(parsetree, TransactionStmt))
 	{
 		TransactionStmt *stmt = (TransactionStmt *) parsetree;
@@ -2511,7 +2511,7 @@ IsTransactionExitStmt(Node *parsetree)
 /* Test a list that might contain Query nodes or bare parsetrees */
 static bool
 IsTransactionExitStmtList(List *parseTrees)
-{	StackTrace("IsTransactionExitStmtList");
+{
 	if (list_length(parseTrees) == 1)
 	{
 		Node	   *stmt = (Node *) linitial(parseTrees);
@@ -2533,7 +2533,7 @@ IsTransactionExitStmtList(List *parseTrees)
 /* Test a list that might contain Query nodes or bare parsetrees */
 static bool
 IsTransactionStmtList(List *parseTrees)
-{	StackTrace("IsTransactionStmtList");
+{
 	if (list_length(parseTrees) == 1)
 	{
 		Node	   *stmt = (Node *) linitial(parseTrees);
@@ -2555,7 +2555,7 @@ IsTransactionStmtList(List *parseTrees)
 /* Release any existing unnamed prepared statement */
 static void
 drop_unnamed_stmt(void)
-{	StackTrace("drop_unnamed_stmt");
+{
 	/* paranoia to avoid a dangling pointer in case of error */
 	if (unnamed_stmt_psrc)
 	{
@@ -2580,7 +2580,7 @@ drop_unnamed_stmt(void)
  */
 void
 quickdie(SIGNAL_ARGS)
-{	StackTrace("quickdie");
+{
 	sigaddset(&BlockSig, SIGQUIT);		/* prevent nested calls */
 	PG_SETMASK(&BlockSig);
 
@@ -2641,7 +2641,7 @@ quickdie(SIGNAL_ARGS)
  */
 void
 die(SIGNAL_ARGS)
-{	StackTrace("die");
+{
 	int			save_errno = errno;
 
 	/* Don't joggle the elbow of proc_exit */
@@ -2672,7 +2672,7 @@ die(SIGNAL_ARGS)
  */
 void
 StatementCancelHandler(SIGNAL_ARGS)
-{	StackTrace("StatementCancelHandler");
+{
 	int			save_errno = errno;
 
 	/*
@@ -2693,7 +2693,7 @@ StatementCancelHandler(SIGNAL_ARGS)
 /* signal handler for floating point exception */
 void
 FloatExceptionHandler(SIGNAL_ARGS)
-{	StackTrace("FloatExceptionHandler");
+{
 	/* We're not returning, so no need to save errno */
 	ereport(ERROR,
 			(errcode(ERRCODE_FLOATING_POINT_EXCEPTION),
@@ -2706,7 +2706,7 @@ FloatExceptionHandler(SIGNAL_ARGS)
 /* SIGHUP: set flag to re-read config file at next convenient time */
 static void
 SigHupHandler(SIGNAL_ARGS)
-{	StackTrace("SigHupHandler");
+{
 	int			save_errno = errno;
 
 	got_SIGHUP = true;
@@ -2723,7 +2723,7 @@ SigHupHandler(SIGNAL_ARGS)
  */
 void
 RecoveryConflictInterrupt(ProcSignalReason reason)
-{	StackTrace("RecoveryConflictInterrupt");
+{
 	int			save_errno = errno;
 
 	/*
@@ -2845,7 +2845,7 @@ RecoveryConflictInterrupt(ProcSignalReason reason)
  */
 void
 ProcessInterrupts(void)
-{	StackTrace("ProcessInterrupts");
+{
 	/* OK to accept any interrupts now? */
 	if (InterruptHoldoffCount != 0 || CritSectionCount != 0)
 		return;
@@ -3015,7 +3015,7 @@ ProcessInterrupts(void)
 
 static __inline__ char *
 ia64_get_bsp(void)
-{	StackTrace("ia64_get_bsp");
+{
 	char	   *ret;
 
 #ifndef __INTEL_COMPILER
@@ -3040,7 +3040,7 @@ ia64_get_bsp(void)
  */
 pg_stack_base_t
 set_stack_base(void)
-{	StackTrace("set_stack_base");
+{
 	char		stack_base;
 	pg_stack_base_t old;
 
@@ -3071,7 +3071,7 @@ set_stack_base(void)
  */
 void
 restore_stack_base(pg_stack_base_t base)
-{	StackTrace("restore_stack_base");
+{
 #if defined(__ia64__) || defined(__ia64)
 	stack_base_ptr = base.stack_base_ptr;
 	register_stack_base_ptr = base.register_stack_base_ptr;
@@ -3090,7 +3090,7 @@ restore_stack_base(pg_stack_base_t base)
  */
 void
 check_stack_depth(void)
-{	StackTrace("check_stack_depth");
+{
 	char		stack_top_loc;
 	long		stack_depth;
 
@@ -3151,7 +3151,7 @@ check_stack_depth(void)
 /* GUC check hook for max_stack_depth */
 bool
 check_max_stack_depth(int *newval, void **extra, GucSource source)
-{	StackTrace("check_max_stack_depth");
+{
 	long		newval_bytes = *newval * 1024L;
 	long		stack_rlimit = get_stack_depth_rlimit();
 
@@ -3168,7 +3168,7 @@ check_max_stack_depth(int *newval, void **extra, GucSource source)
 /* GUC assign hook for max_stack_depth */
 void
 assign_max_stack_depth(int newval, void *extra)
-{	StackTrace("assign_max_stack_depth");
+{
 	long		newval_bytes = newval * 1024L;
 
 	max_stack_depth_bytes = newval_bytes;
@@ -3183,7 +3183,7 @@ assign_max_stack_depth(int newval, void *extra)
  */
 void
 set_debug_options(int debug_flag, GucContext context, GucSource source)
-{	StackTrace("set_debug_options");
+{
 	if (debug_flag > 0)
 	{
 		char		debugstr[64];
@@ -3212,7 +3212,7 @@ set_debug_options(int debug_flag, GucContext context, GucSource source)
 
 bool
 set_plan_disabling_options(const char *arg, GucContext context, GucSource source)
-{	StackTrace("set_plan_disabling_options");
+{
 	const char *tmp = NULL;
 
 	switch (arg[0])
@@ -3254,7 +3254,7 @@ set_plan_disabling_options(const char *arg, GucContext context, GucSource source
 
 const char *
 get_stats_option_name(const char *arg)
-{	StackTrace("get_stats_option_name");
+{
 	switch (arg[0])
 	{
 		case 'p':
@@ -3295,7 +3295,7 @@ get_stats_option_name(const char *arg)
 void
 process_postgres_switches(int argc, char *argv[], GucContext ctx,
 						  const char **dbname)
-{	StackTrace("process_postgres_switches");
+{
 	bool		secure = (ctx == PGC_POSTMASTER);
 	int			errs = 0;
 	GucSource	gucsource;
@@ -3555,7 +3555,7 @@ void
 PostgresMain(int argc, char *argv[],
 			 const char *dbname,
 			 const char *username)
-{	StackTrace("PostgresMain");
+{
 	int			firstchar;
 	StringInfoData input_message;
 	sigjmp_buf	local_sigjmp_buf;
@@ -4280,7 +4280,7 @@ PostgresMain(int argc, char *argv[],
  */
 static void
 forbidden_in_wal_sender(char firstchar)
-{	StackTrace("forbidden_in_wal_sender");
+{
 	if (am_walsender)
 	{
 		if (firstchar == 'F')
@@ -4302,7 +4302,7 @@ forbidden_in_wal_sender(char firstchar)
  */
 long
 get_stack_depth_rlimit(void)
-{	StackTrace("get_stack_depth_rlimit");
+{
 #if defined(HAVE_GETRLIMIT) && defined(RLIMIT_STACK)
 	static long val = 0;
 
@@ -4338,14 +4338,14 @@ static struct timeval Save_t;
 
 void
 ResetUsage(void)
-{	StackTrace("ResetUsage");
+{
 	getrusage(RUSAGE_SELF, &Save_r);
 	gettimeofday(&Save_t, NULL);
 }
 
 void
 ShowUsage(const char *title)
-{	StackTrace("ShowUsage");
+{
 	StringInfoData str;
 	struct timeval user,
 				sys;
@@ -4440,7 +4440,7 @@ ShowUsage(const char *title)
  */
 static void
 log_disconnections(int code, Datum arg)
-{	StackTrace("log_disconnections");
+{
 	Port	   *port = MyProcPort;
 	long		secs;
 	int			usecs;

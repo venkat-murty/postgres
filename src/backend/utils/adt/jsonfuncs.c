@@ -276,7 +276,7 @@ static void make_row_from_rec_and_jsonb(Jsonb *element,
  */
 Datum
 jsonb_object_keys(PG_FUNCTION_ARGS)
-{	StackTrace("jsonb_object_keys");
+{
 	FuncCallContext *funcctx;
 	OkeysState *state;
 	int			i;
@@ -354,7 +354,7 @@ jsonb_object_keys(PG_FUNCTION_ARGS)
 
 Datum
 json_object_keys(PG_FUNCTION_ARGS)
-{	StackTrace("json_object_keys");
+{
 	FuncCallContext *funcctx;
 	OkeysState *state;
 	int			i;
@@ -417,7 +417,7 @@ json_object_keys(PG_FUNCTION_ARGS)
 
 static void
 okeys_object_field_start(void *state, char *fname, bool isnull)
-{	StackTrace("okeys_object_field_start");
+{
 	OkeysState *_state = (OkeysState *) state;
 
 	/* only collecting keys for the top level object */
@@ -438,7 +438,7 @@ okeys_object_field_start(void *state, char *fname, bool isnull)
 
 static void
 okeys_array_start(void *state)
-{	StackTrace("okeys_array_start");
+{
 	OkeysState *_state = (OkeysState *) state;
 
 	/* top level must be a json object */
@@ -451,7 +451,7 @@ okeys_array_start(void *state)
 
 static void
 okeys_scalar(void *state, char *token, JsonTokenType tokentype)
-{	StackTrace("okeys_scalar");
+{
 	OkeysState *_state = (OkeysState *) state;
 
 	/* top level must be a json object */
@@ -471,7 +471,7 @@ okeys_scalar(void *state, char *token, JsonTokenType tokentype)
 
 Datum
 json_object_field(PG_FUNCTION_ARGS)
-{	StackTrace("json_object_field");
+{
 	text	   *json = PG_GETARG_TEXT_P(0);
 	text	   *fname = PG_GETARG_TEXT_PP(1);
 	char	   *fnamestr = text_to_cstring(fname);
@@ -487,7 +487,7 @@ json_object_field(PG_FUNCTION_ARGS)
 
 Datum
 jsonb_object_field(PG_FUNCTION_ARGS)
-{	StackTrace("jsonb_object_field");
+{
 	Jsonb	   *jb = PG_GETARG_JSONB(0);
 	text	   *key = PG_GETARG_TEXT_PP(1);
 	JsonbValue *v;
@@ -507,7 +507,7 @@ jsonb_object_field(PG_FUNCTION_ARGS)
 
 Datum
 json_object_field_text(PG_FUNCTION_ARGS)
-{	StackTrace("json_object_field_text");
+{
 	text	   *json = PG_GETARG_TEXT_P(0);
 	text	   *fname = PG_GETARG_TEXT_PP(1);
 	char	   *fnamestr = text_to_cstring(fname);
@@ -523,7 +523,7 @@ json_object_field_text(PG_FUNCTION_ARGS)
 
 Datum
 jsonb_object_field_text(PG_FUNCTION_ARGS)
-{	StackTrace("jsonb_object_field_text");
+{
 	Jsonb	   *jb = PG_GETARG_JSONB(0);
 	text	   *key = PG_GETARG_TEXT_PP(1);
 	JsonbValue *v;
@@ -574,7 +574,7 @@ jsonb_object_field_text(PG_FUNCTION_ARGS)
 
 Datum
 json_array_element(PG_FUNCTION_ARGS)
-{	StackTrace("json_array_element");
+{
 	text	   *json = PG_GETARG_TEXT_P(0);
 	int			element = PG_GETARG_INT32(1);
 	text	   *result;
@@ -589,7 +589,7 @@ json_array_element(PG_FUNCTION_ARGS)
 
 Datum
 jsonb_array_element(PG_FUNCTION_ARGS)
-{	StackTrace("jsonb_array_element");
+{
 	Jsonb	   *jb = PG_GETARG_JSONB(0);
 	int			element = PG_GETARG_INT32(1);
 	JsonbValue *v;
@@ -606,7 +606,7 @@ jsonb_array_element(PG_FUNCTION_ARGS)
 
 Datum
 json_array_element_text(PG_FUNCTION_ARGS)
-{	StackTrace("json_array_element_text");
+{
 	text	   *json = PG_GETARG_TEXT_P(0);
 	int			element = PG_GETARG_INT32(1);
 	text	   *result;
@@ -621,7 +621,7 @@ json_array_element_text(PG_FUNCTION_ARGS)
 
 Datum
 jsonb_array_element_text(PG_FUNCTION_ARGS)
-{	StackTrace("jsonb_array_element_text");
+{
 	Jsonb	   *jb = PG_GETARG_JSONB(0);
 	int			element = PG_GETARG_INT32(1);
 	JsonbValue *v;
@@ -669,13 +669,13 @@ jsonb_array_element_text(PG_FUNCTION_ARGS)
 
 Datum
 json_extract_path(PG_FUNCTION_ARGS)
-{	StackTrace("json_extract_path");
+{
 	return get_path_all(fcinfo, false);
 }
 
 Datum
 json_extract_path_text(PG_FUNCTION_ARGS)
-{	StackTrace("json_extract_path_text");
+{
 	return get_path_all(fcinfo, true);
 }
 
@@ -684,7 +684,7 @@ json_extract_path_text(PG_FUNCTION_ARGS)
  */
 static Datum
 get_path_all(FunctionCallInfo fcinfo, bool as_text)
-{	StackTrace("get_path_all");
+{
 	text	   *json = PG_GETARG_TEXT_P(0);
 	ArrayType  *path = PG_GETARG_ARRAYTYPE_P(1);
 	text	   *result;
@@ -767,7 +767,7 @@ get_worker(text *json,
 		   int *ipath,
 		   int npath,
 		   bool normalize_results)
-{	StackTrace("get_worker");
+{
 	JsonLexContext *lex = makeJsonLexContext(json, true);
 	JsonSemAction *sem = palloc0(sizeof(JsonSemAction));
 	GetState   *state = palloc0(sizeof(GetState));
@@ -819,7 +819,7 @@ get_worker(text *json,
 
 static void
 get_object_start(void *state)
-{	StackTrace("get_object_start");
+{
 	GetState   *_state = (GetState *) state;
 	int			lex_level = _state->lex->lex_level;
 
@@ -836,7 +836,7 @@ get_object_start(void *state)
 
 static void
 get_object_end(void *state)
-{	StackTrace("get_object_end");
+{
 	GetState   *_state = (GetState *) state;
 	int			lex_level = _state->lex->lex_level;
 
@@ -852,7 +852,7 @@ get_object_end(void *state)
 
 static void
 get_object_field_start(void *state, char *fname, bool isnull)
-{	StackTrace("get_object_field_start");
+{
 	GetState   *_state = (GetState *) state;
 	bool		get_next = false;
 	int			lex_level = _state->lex->lex_level;
@@ -897,7 +897,7 @@ get_object_field_start(void *state, char *fname, bool isnull)
 
 static void
 get_object_field_end(void *state, char *fname, bool isnull)
-{	StackTrace("get_object_field_end");
+{
 	GetState   *_state = (GetState *) state;
 	bool		get_last = false;
 	int			lex_level = _state->lex->lex_level;
@@ -946,7 +946,7 @@ get_object_field_end(void *state, char *fname, bool isnull)
 
 static void
 get_array_start(void *state)
-{	StackTrace("get_array_start");
+{
 	GetState   *_state = (GetState *) state;
 	int			lex_level = _state->lex->lex_level;
 
@@ -968,7 +968,7 @@ get_array_start(void *state)
 
 static void
 get_array_end(void *state)
-{	StackTrace("get_array_end");
+{
 	GetState   *_state = (GetState *) state;
 	int			lex_level = _state->lex->lex_level;
 
@@ -984,7 +984,7 @@ get_array_end(void *state)
 
 static void
 get_array_element_start(void *state, bool isnull)
-{	StackTrace("get_array_element_start");
+{
 	GetState   *_state = (GetState *) state;
 	bool		get_next = false;
 	int			lex_level = _state->lex->lex_level;
@@ -1030,7 +1030,7 @@ get_array_element_start(void *state, bool isnull)
 
 static void
 get_array_element_end(void *state, bool isnull)
-{	StackTrace("get_array_element_end");
+{
 	GetState   *_state = (GetState *) state;
 	bool		get_last = false;
 	int			lex_level = _state->lex->lex_level;
@@ -1072,7 +1072,7 @@ get_array_element_end(void *state, bool isnull)
 
 static void
 get_scalar(void *state, char *token, JsonTokenType tokentype)
-{	StackTrace("get_scalar");
+{
 	GetState   *_state = (GetState *) state;
 	int			lex_level = _state->lex->lex_level;
 
@@ -1113,19 +1113,19 @@ get_scalar(void *state, char *token, JsonTokenType tokentype)
 
 Datum
 jsonb_extract_path(PG_FUNCTION_ARGS)
-{	StackTrace("jsonb_extract_path");
+{
 	return get_jsonb_path_all(fcinfo, false);
 }
 
 Datum
 jsonb_extract_path_text(PG_FUNCTION_ARGS)
-{	StackTrace("jsonb_extract_path_text");
+{
 	return get_jsonb_path_all(fcinfo, true);
 }
 
 static Datum
 get_jsonb_path_all(FunctionCallInfo fcinfo, bool as_text)
-{	StackTrace("get_jsonb_path_all");
+{
 	Jsonb	   *jb = PG_GETARG_JSONB(0);
 	ArrayType  *path = PG_GETARG_ARRAYTYPE_P(1);
 	Jsonb	   *res;
@@ -1272,7 +1272,7 @@ get_jsonb_path_all(FunctionCallInfo fcinfo, bool as_text)
  */
 Datum
 json_array_length(PG_FUNCTION_ARGS)
-{	StackTrace("json_array_length");
+{
 	text	   *json = PG_GETARG_TEXT_P(0);
 	AlenState  *state;
 	JsonLexContext *lex;
@@ -1300,7 +1300,7 @@ json_array_length(PG_FUNCTION_ARGS)
 
 Datum
 jsonb_array_length(PG_FUNCTION_ARGS)
-{	StackTrace("jsonb_array_length");
+{
 	Jsonb	   *jb = PG_GETARG_JSONB(0);
 
 	if (JB_ROOT_IS_SCALAR(jb))
@@ -1322,7 +1322,7 @@ jsonb_array_length(PG_FUNCTION_ARGS)
 
 static void
 alen_object_start(void *state)
-{	StackTrace("alen_object_start");
+{
 	AlenState  *_state = (AlenState *) state;
 
 	/* json structure check */
@@ -1334,7 +1334,7 @@ alen_object_start(void *state)
 
 static void
 alen_scalar(void *state, char *token, JsonTokenType tokentype)
-{	StackTrace("alen_scalar");
+{
 	AlenState  *_state = (AlenState *) state;
 
 	/* json structure check */
@@ -1346,7 +1346,7 @@ alen_scalar(void *state, char *token, JsonTokenType tokentype)
 
 static void
 alen_array_element_start(void *state, bool isnull)
-{	StackTrace("alen_array_element_start");
+{
 	AlenState  *_state = (AlenState *) state;
 
 	/* just count up all the level 1 elements */
@@ -1366,31 +1366,31 @@ alen_array_element_start(void *state, bool isnull)
  */
 Datum
 json_each(PG_FUNCTION_ARGS)
-{	StackTrace("json_each");
+{
 	return each_worker(fcinfo, false);
 }
 
 Datum
 jsonb_each(PG_FUNCTION_ARGS)
-{	StackTrace("jsonb_each");
+{
 	return each_worker_jsonb(fcinfo, "jsonb_each", false);
 }
 
 Datum
 json_each_text(PG_FUNCTION_ARGS)
-{	StackTrace("json_each_text");
+{
 	return each_worker(fcinfo, true);
 }
 
 Datum
 jsonb_each_text(PG_FUNCTION_ARGS)
-{	StackTrace("jsonb_each_text");
+{
 	return each_worker_jsonb(fcinfo, "jsonb_each_text", true);
 }
 
 static Datum
 each_worker_jsonb(FunctionCallInfo fcinfo, const char *funcname, bool as_text)
-{	StackTrace("each_worker_jsonb");
+{
 	Jsonb	   *jb = PG_GETARG_JSONB(0);
 	ReturnSetInfo *rsi;
 	Tuplestorestate *tuple_store;
@@ -1528,7 +1528,7 @@ each_worker_jsonb(FunctionCallInfo fcinfo, const char *funcname, bool as_text)
 
 static Datum
 each_worker(FunctionCallInfo fcinfo, bool as_text)
-{	StackTrace("each_worker");
+{
 	text	   *json = PG_GETARG_TEXT_P(0);
 	JsonLexContext *lex;
 	JsonSemAction *sem;
@@ -1594,7 +1594,7 @@ each_worker(FunctionCallInfo fcinfo, bool as_text)
 
 static void
 each_object_field_start(void *state, char *fname, bool isnull)
-{	StackTrace("each_object_field_start");
+{
 	EachState  *_state = (EachState *) state;
 
 	/* save a pointer to where the value starts */
@@ -1614,7 +1614,7 @@ each_object_field_start(void *state, char *fname, bool isnull)
 
 static void
 each_object_field_end(void *state, char *fname, bool isnull)
-{	StackTrace("each_object_field_end");
+{
 	EachState  *_state = (EachState *) state;
 	MemoryContext old_cxt;
 	int			len;
@@ -1660,7 +1660,7 @@ each_object_field_end(void *state, char *fname, bool isnull)
 
 static void
 each_array_start(void *state)
-{	StackTrace("each_array_start");
+{
 	EachState  *_state = (EachState *) state;
 
 	/* json structure check */
@@ -1672,7 +1672,7 @@ each_array_start(void *state)
 
 static void
 each_scalar(void *state, char *token, JsonTokenType tokentype)
-{	StackTrace("each_scalar");
+{
 	EachState  *_state = (EachState *) state;
 
 	/* json structure check */
@@ -1696,20 +1696,20 @@ each_scalar(void *state, char *token, JsonTokenType tokentype)
 
 Datum
 jsonb_array_elements(PG_FUNCTION_ARGS)
-{	StackTrace("jsonb_array_elements");
+{
 	return elements_worker_jsonb(fcinfo, "jsonb_array_elements", false);
 }
 
 Datum
 jsonb_array_elements_text(PG_FUNCTION_ARGS)
-{	StackTrace("jsonb_array_elements_text");
+{
 	return elements_worker_jsonb(fcinfo, "jsonb_array_elements_text", true);
 }
 
 static Datum
 elements_worker_jsonb(FunctionCallInfo fcinfo, const char *funcname,
 					  bool as_text)
-{	StackTrace("elements_worker_jsonb");
+{
 	Jsonb	   *jb = PG_GETARG_JSONB(0);
 	ReturnSetInfo *rsi;
 	Tuplestorestate *tuple_store;
@@ -1834,19 +1834,19 @@ elements_worker_jsonb(FunctionCallInfo fcinfo, const char *funcname,
 
 Datum
 json_array_elements(PG_FUNCTION_ARGS)
-{	StackTrace("json_array_elements");
+{
 	return elements_worker(fcinfo, "json_array_elements", false);
 }
 
 Datum
 json_array_elements_text(PG_FUNCTION_ARGS)
-{	StackTrace("json_array_elements_text");
+{
 	return elements_worker(fcinfo, "json_array_elements_text", true);
 }
 
 static Datum
 elements_worker(FunctionCallInfo fcinfo, const char *funcname, bool as_text)
-{	StackTrace("elements_worker");
+{
 	text	   *json = PG_GETARG_TEXT_P(0);
 
 	/* elements only needs escaped strings when as_text */
@@ -1914,7 +1914,7 @@ elements_worker(FunctionCallInfo fcinfo, const char *funcname, bool as_text)
 
 static void
 elements_array_element_start(void *state, bool isnull)
-{	StackTrace("elements_array_element_start");
+{
 	ElementsState *_state = (ElementsState *) state;
 
 	/* save a pointer to where the value starts */
@@ -1934,7 +1934,7 @@ elements_array_element_start(void *state, bool isnull)
 
 static void
 elements_array_element_end(void *state, bool isnull)
-{	StackTrace("elements_array_element_end");
+{
 	ElementsState *_state = (ElementsState *) state;
 	MemoryContext old_cxt;
 	int			len;
@@ -1978,7 +1978,7 @@ elements_array_element_end(void *state, bool isnull)
 
 static void
 elements_object_start(void *state)
-{	StackTrace("elements_object_start");
+{
 	ElementsState *_state = (ElementsState *) state;
 
 	/* json structure check */
@@ -1991,7 +1991,7 @@ elements_object_start(void *state)
 
 static void
 elements_scalar(void *state, char *token, JsonTokenType tokentype)
-{	StackTrace("elements_scalar");
+{
 	ElementsState *_state = (ElementsState *) state;
 
 	/* json structure check */
@@ -2020,32 +2020,32 @@ elements_scalar(void *state, char *token, JsonTokenType tokentype)
  */
 Datum
 jsonb_populate_record(PG_FUNCTION_ARGS)
-{	StackTrace("jsonb_populate_record");
+{
 	return populate_record_worker(fcinfo, "jsonb_populate_record", true);
 }
 
 Datum
 jsonb_to_record(PG_FUNCTION_ARGS)
-{	StackTrace("jsonb_to_record");
+{
 	return populate_record_worker(fcinfo, "jsonb_to_record", false);
 }
 
 Datum
 json_populate_record(PG_FUNCTION_ARGS)
-{	StackTrace("json_populate_record");
+{
 	return populate_record_worker(fcinfo, "json_populate_record", true);
 }
 
 Datum
 json_to_record(PG_FUNCTION_ARGS)
-{	StackTrace("json_to_record");
+{
 	return populate_record_worker(fcinfo, "json_to_record", false);
 }
 
 static Datum
 populate_record_worker(FunctionCallInfo fcinfo, const char *funcname,
 					   bool have_record_arg)
-{	StackTrace("populate_record_worker");
+{
 	int			json_arg_num = have_record_arg ? 1 : 0;
 	Oid			jtype = get_fn_expr_argtype(fcinfo->flinfo, json_arg_num);
 	text	   *json;
@@ -2318,7 +2318,7 @@ populate_record_worker(FunctionCallInfo fcinfo, const char *funcname,
  */
 static HTAB *
 get_json_object_as_hash(text *json, const char *funcname)
-{	StackTrace("get_json_object_as_hash");
+{
 	HASHCTL		ctl;
 	HTAB	   *tab;
 	JHashState *state;
@@ -2354,7 +2354,7 @@ get_json_object_as_hash(text *json, const char *funcname)
 
 static void
 hash_object_field_start(void *state, char *fname, bool isnull)
-{	StackTrace("hash_object_field_start");
+{
 	JHashState *_state = (JHashState *) state;
 
 	if (_state->lex->lex_level > 1)
@@ -2375,7 +2375,7 @@ hash_object_field_start(void *state, char *fname, bool isnull)
 
 static void
 hash_object_field_end(void *state, char *fname, bool isnull)
-{	StackTrace("hash_object_field_end");
+{
 	JHashState *_state = (JHashState *) state;
 	JsonHashEntry *hashentry;
 	bool		found;
@@ -2422,7 +2422,7 @@ hash_object_field_end(void *state, char *fname, bool isnull)
 
 static void
 hash_array_start(void *state)
-{	StackTrace("hash_array_start");
+{
 	JHashState *_state = (JHashState *) state;
 
 	if (_state->lex->lex_level == 0)
@@ -2433,7 +2433,7 @@ hash_array_start(void *state)
 
 static void
 hash_scalar(void *state, char *token, JsonTokenType tokentype)
-{	StackTrace("hash_scalar");
+{
 	JHashState *_state = (JHashState *) state;
 
 	if (_state->lex->lex_level == 0)
@@ -2458,31 +2458,31 @@ hash_scalar(void *state, char *token, JsonTokenType tokentype)
  */
 Datum
 jsonb_populate_recordset(PG_FUNCTION_ARGS)
-{	StackTrace("jsonb_populate_recordset");
+{
 	return populate_recordset_worker(fcinfo, "jsonb_populate_recordset", true);
 }
 
 Datum
 jsonb_to_recordset(PG_FUNCTION_ARGS)
-{	StackTrace("jsonb_to_recordset");
+{
 	return populate_recordset_worker(fcinfo, "jsonb_to_recordset", false);
 }
 
 Datum
 json_populate_recordset(PG_FUNCTION_ARGS)
-{	StackTrace("json_populate_recordset");
+{
 	return populate_recordset_worker(fcinfo, "json_populate_recordset", true);
 }
 
 Datum
 json_to_recordset(PG_FUNCTION_ARGS)
-{	StackTrace("json_to_recordset");
+{
 	return populate_recordset_worker(fcinfo, "json_to_recordset", false);
 }
 
 static void
 make_row_from_rec_and_jsonb(Jsonb *element, PopulateRecordsetState *state)
-{	StackTrace("make_row_from_rec_and_jsonb");
+{
 	Datum	   *values;
 	bool	   *nulls;
 	int			i;
@@ -2604,7 +2604,7 @@ make_row_from_rec_and_jsonb(Jsonb *element, PopulateRecordsetState *state)
 static Datum
 populate_recordset_worker(FunctionCallInfo fcinfo, const char *funcname,
 						  bool have_record_arg)
-{	StackTrace("populate_recordset_worker");
+{
 	int			json_arg_num = have_record_arg ? 1 : 0;
 	Oid			jtype = get_fn_expr_argtype(fcinfo->flinfo, json_arg_num);
 	ReturnSetInfo *rsi;
@@ -2775,7 +2775,7 @@ populate_recordset_worker(FunctionCallInfo fcinfo, const char *funcname,
 
 static void
 populate_recordset_object_start(void *state)
-{	StackTrace("populate_recordset_object_start");
+{
 	PopulateRecordsetState *_state = (PopulateRecordsetState *) state;
 	int			lex_level = _state->lex->lex_level;
 	HASHCTL		ctl;
@@ -2804,7 +2804,7 @@ populate_recordset_object_start(void *state)
 
 static void
 populate_recordset_object_end(void *state)
-{	StackTrace("populate_recordset_object_end");
+{
 	PopulateRecordsetState *_state = (PopulateRecordsetState *) state;
 	HTAB	   *json_hash = _state->json_hash;
 	Datum	   *values;
@@ -2920,7 +2920,7 @@ populate_recordset_object_end(void *state)
 
 static void
 populate_recordset_array_element_start(void *state, bool isnull)
-{	StackTrace("populate_recordset_array_element_start");
+{
 	PopulateRecordsetState *_state = (PopulateRecordsetState *) state;
 
 	if (_state->lex->lex_level == 1 &&
@@ -2933,13 +2933,13 @@ populate_recordset_array_element_start(void *state, bool isnull)
 
 static void
 populate_recordset_array_start(void *state)
-{	StackTrace("populate_recordset_array_start");
+{
 	/* nothing to do */
 }
 
 static void
 populate_recordset_scalar(void *state, char *token, JsonTokenType tokentype)
-{	StackTrace("populate_recordset_scalar");
+{
 	PopulateRecordsetState *_state = (PopulateRecordsetState *) state;
 
 	if (_state->lex->lex_level == 0)
@@ -2954,7 +2954,7 @@ populate_recordset_scalar(void *state, char *token, JsonTokenType tokentype)
 
 static void
 populate_recordset_object_field_start(void *state, char *fname, bool isnull)
-{	StackTrace("populate_recordset_object_field_start");
+{
 	PopulateRecordsetState *_state = (PopulateRecordsetState *) state;
 
 	if (_state->lex->lex_level > 2)
@@ -2973,7 +2973,7 @@ populate_recordset_object_field_start(void *state, char *fname, bool isnull)
 
 static void
 populate_recordset_object_field_end(void *state, char *fname, bool isnull)
-{	StackTrace("populate_recordset_object_field_end");
+{
 	PopulateRecordsetState *_state = (PopulateRecordsetState *) state;
 	JsonHashEntry *hashentry;
 	bool		found;
@@ -3024,7 +3024,7 @@ populate_recordset_object_field_end(void *state, char *fname, bool isnull)
 static JsonbValue *
 findJsonbValueFromContainerLen(JsonbContainer *container, uint32 flags,
 							   char *key, uint32 keylen)
-{	StackTrace("findJsonbValueFromContainerLen");
+{
 	JsonbValue	k;
 
 	k.type = jbvString;
@@ -3045,7 +3045,7 @@ findJsonbValueFromContainerLen(JsonbContainer *container, uint32 flags,
 
 static void
 sn_object_start(void *state)
-{	StackTrace("sn_object_start");
+{
 	StripnullState *_state = (StripnullState *) state;
 
 	appendStringInfoCharMacro(_state->strval, '{');
@@ -3053,7 +3053,7 @@ sn_object_start(void *state)
 
 static void
 sn_object_end(void *state)
-{	StackTrace("sn_object_end");
+{
 	StripnullState *_state = (StripnullState *) state;
 
 	appendStringInfoCharMacro(_state->strval, '}');
@@ -3061,7 +3061,7 @@ sn_object_end(void *state)
 
 static void
 sn_array_start(void *state)
-{	StackTrace("sn_array_start");
+{
 	StripnullState *_state = (StripnullState *) state;
 
 	appendStringInfoCharMacro(_state->strval, '[');
@@ -3069,7 +3069,7 @@ sn_array_start(void *state)
 
 static void
 sn_array_end(void *state)
-{	StackTrace("sn_array_end");
+{
 	StripnullState *_state = (StripnullState *) state;
 
 	appendStringInfoCharMacro(_state->strval, ']');
@@ -3077,7 +3077,7 @@ sn_array_end(void *state)
 
 static void
 sn_object_field_start(void *state, char *fname, bool isnull)
-{	StackTrace("sn_object_field_start");
+{
 	StripnullState *_state = (StripnullState *) state;
 
 	if (isnull)
@@ -3105,7 +3105,7 @@ sn_object_field_start(void *state, char *fname, bool isnull)
 
 static void
 sn_array_element_start(void *state, bool isnull)
-{	StackTrace("sn_array_element_start");
+{
 	StripnullState *_state = (StripnullState *) state;
 
 	if (_state->strval->data[_state->strval->len - 1] != '[')
@@ -3114,7 +3114,7 @@ sn_array_element_start(void *state, bool isnull)
 
 static void
 sn_scalar(void *state, char *token, JsonTokenType tokentype)
-{	StackTrace("sn_scalar");
+{
 	StripnullState *_state = (StripnullState *) state;
 
 	if (_state->skip_next_null)
@@ -3135,7 +3135,7 @@ sn_scalar(void *state, char *token, JsonTokenType tokentype)
  */
 Datum
 json_strip_nulls(PG_FUNCTION_ARGS)
-{	StackTrace("json_strip_nulls");
+{
 	text	   *json = PG_GETARG_TEXT_P(0);
 	StripnullState *state;
 	JsonLexContext *lex;
@@ -3170,7 +3170,7 @@ json_strip_nulls(PG_FUNCTION_ARGS)
  */
 Datum
 jsonb_strip_nulls(PG_FUNCTION_ARGS)
-{	StackTrace("jsonb_strip_nulls");
+{
 	Jsonb	   *jb = PG_GETARG_JSONB(0);
 	JsonbIterator *it;
 	JsonbParseState *parseState = NULL;
@@ -3232,7 +3232,7 @@ jsonb_strip_nulls(PG_FUNCTION_ARGS)
  */
 static void
 addJsonbToParseState(JsonbParseState **jbps, Jsonb *jb)
-{	StackTrace("addJsonbToParseState");
+{
 	JsonbIterator *it;
 	JsonbValue *o = &(*jbps)->contVal;
 	int			type;
@@ -3279,7 +3279,7 @@ addJsonbToParseState(JsonbParseState **jbps, Jsonb *jb)
  */
 Datum
 jsonb_pretty(PG_FUNCTION_ARGS)
-{	StackTrace("jsonb_pretty");
+{
 	Jsonb	   *jb = PG_GETARG_JSONB(0);
 	StringInfo	str = makeStringInfo();
 
@@ -3295,7 +3295,7 @@ jsonb_pretty(PG_FUNCTION_ARGS)
  */
 Datum
 jsonb_concat(PG_FUNCTION_ARGS)
-{	StackTrace("jsonb_concat");
+{
 	Jsonb	   *jb1 = PG_GETARG_JSONB(0);
 	Jsonb	   *jb2 = PG_GETARG_JSONB(1);
 	JsonbParseState *state = NULL;
@@ -3330,7 +3330,7 @@ jsonb_concat(PG_FUNCTION_ARGS)
  */
 Datum
 jsonb_delete(PG_FUNCTION_ARGS)
-{	StackTrace("jsonb_delete");
+{
 	Jsonb	   *in = PG_GETARG_JSONB(0);
 	text	   *key = PG_GETARG_TEXT_PP(1);
 	char	   *keyptr = VARDATA_ANY(key);
@@ -3384,7 +3384,7 @@ jsonb_delete(PG_FUNCTION_ARGS)
  */
 Datum
 jsonb_delete_idx(PG_FUNCTION_ARGS)
-{	StackTrace("jsonb_delete_idx");
+{
 	Jsonb	   *in = PG_GETARG_JSONB(0);
 	int			idx = PG_GETARG_INT32(1);
 	JsonbParseState *state = NULL;
@@ -3455,7 +3455,7 @@ jsonb_delete_idx(PG_FUNCTION_ARGS)
  */
 Datum
 jsonb_set(PG_FUNCTION_ARGS)
-{	StackTrace("jsonb_set");
+{
 	Jsonb	   *in = PG_GETARG_JSONB(0);
 	ArrayType  *path = PG_GETARG_ARRAYTYPE_P(1);
 	Jsonb	   *newval = PG_GETARG_JSONB(2);
@@ -3502,7 +3502,7 @@ jsonb_set(PG_FUNCTION_ARGS)
  */
 Datum
 jsonb_delete_path(PG_FUNCTION_ARGS)
-{	StackTrace("jsonb_delete_path");
+{
 	Jsonb	   *in = PG_GETARG_JSONB(0);
 	ArrayType  *path = PG_GETARG_ARRAYTYPE_P(1);
 	JsonbValue *res = NULL;
@@ -3550,7 +3550,7 @@ jsonb_delete_path(PG_FUNCTION_ARGS)
 static JsonbValue *
 IteratorConcat(JsonbIterator **it1, JsonbIterator **it2,
 			   JsonbParseState **state)
-{	StackTrace("IteratorConcat");
+{
 	uint32		r1,
 				r2,
 				rk1,
@@ -3664,7 +3664,7 @@ static JsonbValue *
 setPath(JsonbIterator **it, Datum *path_elems,
 		bool *path_nulls, int path_len,
 		JsonbParseState **st, int level, Jsonb *newval, bool create)
-{	StackTrace("setPath");
+{
 	JsonbValue	v;
 	JsonbValue *res = NULL;
 	int			r;
@@ -3709,7 +3709,7 @@ static void
 setPathObject(JsonbIterator **it, Datum *path_elems, bool *path_nulls,
 			  int path_len, JsonbParseState **st, int level,
 			  Jsonb *newval, uint32 npairs, bool create)
-{	StackTrace("setPathObject");
+{
 	JsonbValue	v;
 	int			i;
 	JsonbValue	k;
@@ -3803,7 +3803,7 @@ static void
 setPathArray(JsonbIterator **it, Datum *path_elems, bool *path_nulls,
 			 int path_len, JsonbParseState **st, int level,
 			 Jsonb *newval, uint32 nelems, bool create)
-{	StackTrace("setPathArray");
+{
 	JsonbValue	v;
 	int			idx,
 				i;

@@ -23,7 +23,7 @@
 
 Datum
 gin_cmp_tslexeme(PG_FUNCTION_ARGS)
-{	StackTrace("gin_cmp_tslexeme");
+{
 	text	   *a = PG_GETARG_TEXT_PP(0);
 	text	   *b = PG_GETARG_TEXT_PP(1);
 	int			cmp;
@@ -39,7 +39,7 @@ gin_cmp_tslexeme(PG_FUNCTION_ARGS)
 
 Datum
 gin_cmp_prefix(PG_FUNCTION_ARGS)
-{	StackTrace("gin_cmp_prefix");
+{
 	text	   *a = PG_GETARG_TEXT_PP(0);
 	text	   *b = PG_GETARG_TEXT_PP(1);
 
@@ -63,7 +63,7 @@ gin_cmp_prefix(PG_FUNCTION_ARGS)
 
 Datum
 gin_extract_tsvector(PG_FUNCTION_ARGS)
-{	StackTrace("gin_extract_tsvector");
+{
 	TSVector	vector = PG_GETARG_TSVECTOR(0);
 	int32	   *nentries = (int32 *) PG_GETARG_POINTER(1);
 	Datum	   *entries = NULL;
@@ -93,7 +93,7 @@ gin_extract_tsvector(PG_FUNCTION_ARGS)
 
 Datum
 gin_extract_tsquery(PG_FUNCTION_ARGS)
-{	StackTrace("gin_extract_tsquery");
+{
 	TSQuery		query = PG_GETARG_TSQUERY(0);
 	int32	   *nentries = (int32 *) PG_GETARG_POINTER(1);
 
@@ -180,7 +180,7 @@ typedef struct
 
 static GinTernaryValue
 checkcondition_gin(void *checkval, QueryOperand *val)
-{	StackTrace("checkcondition_gin");
+{
 	GinChkVal  *gcv = (GinChkVal *) checkval;
 	int			j;
 
@@ -205,7 +205,7 @@ checkcondition_gin(void *checkval, QueryOperand *val)
 static GinTernaryValue
 TS_execute_ternary(QueryItem *curitem, void *checkval,
 			  GinTernaryValue (*chkcond) (void *checkval, QueryOperand *val))
-{	StackTrace("(*chkcond)");
+{
 	GinTernaryValue val1,
 				val2,
 				result;
@@ -260,7 +260,7 @@ TS_execute_ternary(QueryItem *curitem, void *checkval,
 
 Datum
 gin_tsquery_consistent(PG_FUNCTION_ARGS)
-{	StackTrace("gin_tsquery_consistent");
+{
 	bool	   *check = (bool *) PG_GETARG_POINTER(0);
 
 	/* StrategyNumber strategy = PG_GETARG_UINT16(1); */
@@ -299,7 +299,7 @@ gin_tsquery_consistent(PG_FUNCTION_ARGS)
 
 Datum
 gin_tsquery_triconsistent(PG_FUNCTION_ARGS)
-{	StackTrace("gin_tsquery_triconsistent");
+{
 	GinTernaryValue *check = (GinTernaryValue *) PG_GETARG_POINTER(0);
 
 	/* StrategyNumber strategy = PG_GETARG_UINT16(1); */
@@ -348,7 +348,7 @@ gin_tsquery_triconsistent(PG_FUNCTION_ARGS)
  */
 Datum
 gin_extract_tsvector_2args(PG_FUNCTION_ARGS)
-{	StackTrace("gin_extract_tsvector_2args");
+{
 	if (PG_NARGS() < 3)			/* should not happen */
 		elog(ERROR, "gin_extract_tsvector requires three arguments");
 	return gin_extract_tsvector(fcinfo);
@@ -360,7 +360,7 @@ gin_extract_tsvector_2args(PG_FUNCTION_ARGS)
  */
 Datum
 gin_extract_tsquery_5args(PG_FUNCTION_ARGS)
-{	StackTrace("gin_extract_tsquery_5args");
+{
 	if (PG_NARGS() < 7)			/* should not happen */
 		elog(ERROR, "gin_extract_tsquery requires seven arguments");
 	return gin_extract_tsquery(fcinfo);
@@ -372,7 +372,7 @@ gin_extract_tsquery_5args(PG_FUNCTION_ARGS)
  */
 Datum
 gin_tsquery_consistent_6args(PG_FUNCTION_ARGS)
-{	StackTrace("gin_tsquery_consistent_6args");
+{
 	if (PG_NARGS() < 8)			/* should not happen */
 		elog(ERROR, "gin_tsquery_consistent requires eight arguments");
 	return gin_tsquery_consistent(fcinfo);

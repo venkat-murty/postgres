@@ -39,7 +39,7 @@ bool		ignore_checksum_failure = false;
  */
 void
 PageInit(Page page, Size pageSize, Size specialSize)
-{	StackTrace("PageInit");
+{
 	PageHeader	p = (PageHeader) page;
 
 	specialSize = MAXALIGN(specialSize);
@@ -79,7 +79,7 @@ PageInit(Page page, Size pageSize, Size specialSize)
  */
 bool
 PageIsVerified(Page page, BlockNumber blkno)
-{	StackTrace("PageIsVerified");
+{
 	PageHeader	p = (PageHeader) page;
 	char	   *pagebytes;
 	int			i;
@@ -179,7 +179,7 @@ PageAddItem(Page page,
 			OffsetNumber offsetNumber,
 			bool overwrite,
 			bool is_heap)
-{	StackTrace("PageAddItem");
+{
 	PageHeader	phdr = (PageHeader) page;
 	Size		alignedSize;
 	int			lower;
@@ -330,7 +330,7 @@ PageAddItem(Page page,
  */
 Page
 PageGetTempPage(Page page)
-{	StackTrace("PageGetTempPage");
+{
 	Size		pageSize;
 	Page		temp;
 
@@ -347,7 +347,7 @@ PageGetTempPage(Page page)
  */
 Page
 PageGetTempPageCopy(Page page)
-{	StackTrace("PageGetTempPageCopy");
+{
 	Size		pageSize;
 	Page		temp;
 
@@ -367,7 +367,7 @@ PageGetTempPageCopy(Page page)
  */
 Page
 PageGetTempPageCopySpecial(Page page)
-{	StackTrace("PageGetTempPageCopySpecial");
+{
 	Size		pageSize;
 	Page		temp;
 
@@ -389,7 +389,7 @@ PageGetTempPageCopySpecial(Page page)
  */
 void
 PageRestoreTempPage(Page tempPage, Page oldPage)
-{	StackTrace("PageRestoreTempPage");
+{
 	Size		pageSize;
 
 	pageSize = PageGetPageSize(tempPage);
@@ -412,7 +412,7 @@ typedef itemIdSortData *itemIdSort;
 
 static int
 itemoffcompare(const void *itemidp1, const void *itemidp2)
-{	StackTrace("itemoffcompare");
+{
 	/* Sort in decreasing itemoff order */
 	return ((itemIdSort) itemidp2)->itemoff -
 		((itemIdSort) itemidp1)->itemoff;
@@ -424,7 +424,7 @@ itemoffcompare(const void *itemidp1, const void *itemidp2)
  */
 static void
 compactify_tuples(itemIdSort itemidbase, int nitems, Page page)
-{	StackTrace("compactify_tuples");
+{
 	PageHeader	phdr = (PageHeader) page;
 	Offset		upper;
 	int			i;
@@ -462,7 +462,7 @@ compactify_tuples(itemIdSort itemidbase, int nitems, Page page)
  */
 void
 PageRepairFragmentation(Page page)
-{	StackTrace("PageRepairFragmentation");
+{
 	Offset		pd_lower = ((PageHeader) page)->pd_lower;
 	Offset		pd_upper = ((PageHeader) page)->pd_upper;
 	Offset		pd_special = ((PageHeader) page)->pd_special;
@@ -565,7 +565,7 @@ PageRepairFragmentation(Page page)
  */
 Size
 PageGetFreeSpace(Page page)
-{	StackTrace("PageGetFreeSpace");
+{
 	int			space;
 
 	/*
@@ -589,7 +589,7 @@ PageGetFreeSpace(Page page)
  */
 Size
 PageGetExactFreeSpace(Page page)
-{	StackTrace("PageGetExactFreeSpace");
+{
 	int			space;
 
 	/*
@@ -622,7 +622,7 @@ PageGetExactFreeSpace(Page page)
  */
 Size
 PageGetHeapFreeSpace(Page page)
-{	StackTrace("PageGetHeapFreeSpace");
+{
 	Size		space;
 
 	space = PageGetFreeSpace(page);
@@ -683,7 +683,7 @@ PageGetHeapFreeSpace(Page page)
  */
 void
 PageIndexTupleDelete(Page page, OffsetNumber offnum)
-{	StackTrace("PageIndexTupleDelete");
+{
 	PageHeader	phdr = (PageHeader) page;
 	char	   *addr;
 	ItemId		tup;
@@ -789,7 +789,7 @@ PageIndexTupleDelete(Page page, OffsetNumber offnum)
  */
 void
 PageIndexMultiDelete(Page page, OffsetNumber *itemnos, int nitems)
-{	StackTrace("PageIndexMultiDelete");
+{
 	PageHeader	phdr = (PageHeader) page;
 	Offset		pd_lower = phdr->pd_lower;
 	Offset		pd_upper = phdr->pd_upper;
@@ -913,7 +913,7 @@ PageIndexMultiDelete(Page page, OffsetNumber *itemnos, int nitems)
  */
 void
 PageIndexDeleteNoCompact(Page page, OffsetNumber *itemnos, int nitems)
-{	StackTrace("PageIndexDeleteNoCompact");
+{
 	PageHeader	phdr = (PageHeader) page;
 	LocationIndex pd_lower = phdr->pd_lower;
 	LocationIndex pd_upper = phdr->pd_upper;
@@ -1066,7 +1066,7 @@ PageIndexDeleteNoCompact(Page page, OffsetNumber *itemnos, int nitems)
  */
 char *
 PageSetChecksumCopy(Page page, BlockNumber blkno)
-{	StackTrace("PageSetChecksumCopy");
+{
 	static char *pageCopy = NULL;
 
 	/* If we don't need a checksum, just return the passed-in data */
@@ -1095,7 +1095,7 @@ PageSetChecksumCopy(Page page, BlockNumber blkno)
  */
 void
 PageSetChecksumInplace(Page page, BlockNumber blkno)
-{	StackTrace("PageSetChecksumInplace");
+{
 	/* If we don't need a checksum, just return */
 	if (PageIsNew(page) || !DataChecksumsEnabled())
 		return;

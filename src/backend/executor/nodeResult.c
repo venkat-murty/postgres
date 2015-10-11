@@ -65,7 +65,7 @@
  */
 TupleTableSlot *
 ExecResult(ResultState *node)
-{	StackTrace("ExecResult");
+{
 	TupleTableSlot *outerTupleSlot;
 	TupleTableSlot *resultSlot;
 	PlanState  *outerPlan;
@@ -170,7 +170,7 @@ ExecResult(ResultState *node)
  */
 void
 ExecResultMarkPos(ResultState *node)
-{	StackTrace("ExecResultMarkPos");
+{
 	PlanState  *outerPlan = outerPlanState(node);
 
 	if (outerPlan != NULL)
@@ -185,7 +185,7 @@ ExecResultMarkPos(ResultState *node)
  */
 void
 ExecResultRestrPos(ResultState *node)
-{	StackTrace("ExecResultRestrPos");
+{
 	PlanState  *outerPlan = outerPlanState(node);
 
 	if (outerPlan != NULL)
@@ -204,7 +204,7 @@ ExecResultRestrPos(ResultState *node)
  */
 ResultState *
 ExecInitResult(Result *node, EState *estate, int eflags)
-{	StackTrace("ExecInitResult");
+{
 	ResultState *resstate;
 
 	/* check for unsupported flags */
@@ -274,7 +274,7 @@ ExecInitResult(Result *node, EState *estate, int eflags)
  */
 void
 ExecEndResult(ResultState *node)
-{	StackTrace("ExecEndResult");
+{
 	/*
 	 * Free the exprcontext
 	 */
@@ -293,7 +293,7 @@ ExecEndResult(ResultState *node)
 
 void
 ExecReScanResult(ResultState *node)
-{	StackTrace("ExecReScanResult");
+{
 	node->rs_done = false;
 	node->ps.ps_TupFromTlist = false;
 	node->rs_checkqual = (node->resconstantqual == NULL) ? false : true;

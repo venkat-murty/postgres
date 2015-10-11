@@ -33,7 +33,7 @@
  */
 List *
 raw_parser(const char *str)
-{	StackTrace("raw_parser");
+{
 	core_yyscan_t yyscanner;
 	base_yy_extra_type yyextra;
 	int			yyresult;
@@ -80,7 +80,7 @@ raw_parser(const char *str)
  */
 int
 base_yylex(YYSTYPE *lvalp, YYLTYPE *llocp, core_yyscan_t yyscanner)
-{	StackTrace("base_yylex");
+{
 	base_yy_extra_type *yyextra = pg_yyget_extra(yyscanner);
 	int			cur_token;
 	int			next_token;

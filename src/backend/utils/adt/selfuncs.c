@@ -214,7 +214,7 @@ static List *add_predicate_to_quals(IndexOptInfo *index, List *indexQuals);
  */
 Datum
 eqsel(PG_FUNCTION_ARGS)
-{	StackTrace("eqsel");
+{
 	PlannerInfo *root = (PlannerInfo *) PG_GETARG_POINTER(0);
 	Oid			operator = PG_GETARG_OID(1);
 	List	   *args = (List *) PG_GETARG_POINTER(2);
@@ -260,7 +260,7 @@ static double
 var_eq_const(VariableStatData *vardata, Oid operator,
 			 Datum constval, bool constisnull,
 			 bool varonleft)
-{	StackTrace("var_eq_const");
+{
 	double		selec;
 	bool		isdefault;
 
@@ -402,7 +402,7 @@ static double
 var_eq_non_const(VariableStatData *vardata, Oid operator,
 				 Node *other,
 				 bool varonleft)
-{	StackTrace("var_eq_non_const");
+{
 	double		selec;
 	bool		isdefault;
 
@@ -481,7 +481,7 @@ var_eq_non_const(VariableStatData *vardata, Oid operator,
  */
 Datum
 neqsel(PG_FUNCTION_ARGS)
-{	StackTrace("neqsel");
+{
 	PlannerInfo *root = (PlannerInfo *) PG_GETARG_POINTER(0);
 	Oid			operator = PG_GETARG_OID(1);
 	List	   *args = (List *) PG_GETARG_POINTER(2);
@@ -527,7 +527,7 @@ neqsel(PG_FUNCTION_ARGS)
 static double
 scalarineqsel(PlannerInfo *root, Oid operator, bool isgt,
 			  VariableStatData *vardata, Datum constval, Oid consttype)
-{	StackTrace("scalarineqsel");
+{
 	Form_pg_statistic stats;
 	FmgrInfo	opproc;
 	double		mcv_selec,
@@ -602,7 +602,7 @@ double
 mcv_selectivity(VariableStatData *vardata, FmgrInfo *opproc,
 				Datum constval, bool varonleft,
 				double *sumcommonp)
-{	StackTrace("mcv_selectivity");
+{
 	double		mcv_selec,
 				sumcommon;
 	Datum	   *values;
@@ -681,7 +681,7 @@ histogram_selectivity(VariableStatData *vardata, FmgrInfo *opproc,
 					  Datum constval, bool varonleft,
 					  int min_hist_size, int n_skip,
 					  int *hist_size)
-{	StackTrace("histogram_selectivity");
+{
 	double		result;
 	Datum	   *values;
 	int			nvalues;
@@ -749,7 +749,7 @@ ineq_histogram_selectivity(PlannerInfo *root,
 						   VariableStatData *vardata,
 						   FmgrInfo *opproc, bool isgt,
 						   Datum constval, Oid consttype)
-{	StackTrace("ineq_histogram_selectivity");
+{
 	double		hist_selec;
 	Oid			hist_op;
 	Datum	   *values;
@@ -957,7 +957,7 @@ ineq_histogram_selectivity(PlannerInfo *root,
  */
 Datum
 scalarltsel(PG_FUNCTION_ARGS)
-{	StackTrace("scalarltsel");
+{
 	PlannerInfo *root = (PlannerInfo *) PG_GETARG_POINTER(0);
 	Oid			operator = PG_GETARG_OID(1);
 	List	   *args = (List *) PG_GETARG_POINTER(2);
@@ -1032,7 +1032,7 @@ scalarltsel(PG_FUNCTION_ARGS)
  */
 Datum
 scalargtsel(PG_FUNCTION_ARGS)
-{	StackTrace("scalargtsel");
+{
 	PlannerInfo *root = (PlannerInfo *) PG_GETARG_POINTER(0);
 	Oid			operator = PG_GETARG_OID(1);
 	List	   *args = (List *) PG_GETARG_POINTER(2);
@@ -1107,7 +1107,7 @@ scalargtsel(PG_FUNCTION_ARGS)
  */
 static double
 patternsel(PG_FUNCTION_ARGS, Pattern_Type ptype, bool negate)
-{	StackTrace("patternsel");
+{
 	PlannerInfo *root = (PlannerInfo *) PG_GETARG_POINTER(0);
 	Oid			operator = PG_GETARG_OID(1);
 	List	   *args = (List *) PG_GETARG_POINTER(2);
@@ -1372,7 +1372,7 @@ patternsel(PG_FUNCTION_ARGS, Pattern_Type ptype, bool negate)
  */
 Datum
 regexeqsel(PG_FUNCTION_ARGS)
-{	StackTrace("regexeqsel");
+{
 	PG_RETURN_FLOAT8(patternsel(fcinfo, Pattern_Type_Regex, false));
 }
 
@@ -1381,7 +1381,7 @@ regexeqsel(PG_FUNCTION_ARGS)
  */
 Datum
 icregexeqsel(PG_FUNCTION_ARGS)
-{	StackTrace("icregexeqsel");
+{
 	PG_RETURN_FLOAT8(patternsel(fcinfo, Pattern_Type_Regex_IC, false));
 }
 
@@ -1390,7 +1390,7 @@ icregexeqsel(PG_FUNCTION_ARGS)
  */
 Datum
 likesel(PG_FUNCTION_ARGS)
-{	StackTrace("likesel");
+{
 	PG_RETURN_FLOAT8(patternsel(fcinfo, Pattern_Type_Like, false));
 }
 
@@ -1399,7 +1399,7 @@ likesel(PG_FUNCTION_ARGS)
  */
 Datum
 iclikesel(PG_FUNCTION_ARGS)
-{	StackTrace("iclikesel");
+{
 	PG_RETURN_FLOAT8(patternsel(fcinfo, Pattern_Type_Like_IC, false));
 }
 
@@ -1408,7 +1408,7 @@ iclikesel(PG_FUNCTION_ARGS)
  */
 Datum
 regexnesel(PG_FUNCTION_ARGS)
-{	StackTrace("regexnesel");
+{
 	PG_RETURN_FLOAT8(patternsel(fcinfo, Pattern_Type_Regex, true));
 }
 
@@ -1417,7 +1417,7 @@ regexnesel(PG_FUNCTION_ARGS)
  */
 Datum
 icregexnesel(PG_FUNCTION_ARGS)
-{	StackTrace("icregexnesel");
+{
 	PG_RETURN_FLOAT8(patternsel(fcinfo, Pattern_Type_Regex_IC, true));
 }
 
@@ -1426,7 +1426,7 @@ icregexnesel(PG_FUNCTION_ARGS)
  */
 Datum
 nlikesel(PG_FUNCTION_ARGS)
-{	StackTrace("nlikesel");
+{
 	PG_RETURN_FLOAT8(patternsel(fcinfo, Pattern_Type_Like, true));
 }
 
@@ -1435,7 +1435,7 @@ nlikesel(PG_FUNCTION_ARGS)
  */
 Datum
 icnlikesel(PG_FUNCTION_ARGS)
-{	StackTrace("icnlikesel");
+{
 	PG_RETURN_FLOAT8(patternsel(fcinfo, Pattern_Type_Like_IC, true));
 }
 
@@ -1445,7 +1445,7 @@ icnlikesel(PG_FUNCTION_ARGS)
 Selectivity
 booltestsel(PlannerInfo *root, BoolTestType booltesttype, Node *arg,
 			int varRelid, JoinType jointype, SpecialJoinInfo *sjinfo)
-{	StackTrace("booltestsel");
+{
 	VariableStatData vardata;
 	double		selec;
 
@@ -1610,7 +1610,7 @@ booltestsel(PlannerInfo *root, BoolTestType booltesttype, Node *arg,
 Selectivity
 nulltestsel(PlannerInfo *root, NullTestType nulltesttype, Node *arg,
 			int varRelid, JoinType jointype, SpecialJoinInfo *sjinfo)
-{	StackTrace("nulltestsel");
+{
 	VariableStatData vardata;
 	double		selec;
 
@@ -1685,7 +1685,7 @@ nulltestsel(PlannerInfo *root, NullTestType nulltesttype, Node *arg,
  */
 static Node *
 strip_array_coercion(Node *node)
-{	StackTrace("strip_array_coercion");
+{
 	for (;;)
 	{
 		if (node && IsA(node, ArrayCoerceExpr) &&
@@ -1714,7 +1714,7 @@ scalararraysel(PlannerInfo *root,
 			   int varRelid,
 			   JoinType jointype,
 			   SpecialJoinInfo *sjinfo)
-{	StackTrace("scalararraysel");
+{
 	Oid			operator = clause->opno;
 	bool		useOr = clause->useOr;
 	bool		isEquality = false;
@@ -2028,7 +2028,7 @@ scalararraysel(PlannerInfo *root,
  */
 int
 estimate_array_length(Node *arrayexpr)
-{	StackTrace("estimate_array_length");
+{
 	/* look through any binary-compatible relabeling of arrayexpr */
 	arrayexpr = strip_array_coercion(arrayexpr);
 
@@ -2068,7 +2068,7 @@ Selectivity
 rowcomparesel(PlannerInfo *root,
 			  RowCompareExpr *clause,
 			  int varRelid, JoinType jointype, SpecialJoinInfo *sjinfo)
-{	StackTrace("rowcomparesel");
+{
 	Selectivity s1;
 	Oid			opno = linitial_oid(clause->opnos);
 	Oid			inputcollid = linitial_oid(clause->inputcollids);
@@ -2133,7 +2133,7 @@ rowcomparesel(PlannerInfo *root,
  */
 Datum
 eqjoinsel(PG_FUNCTION_ARGS)
-{	StackTrace("eqjoinsel");
+{
 	PlannerInfo *root = (PlannerInfo *) PG_GETARG_POINTER(0);
 	Oid			operator = PG_GETARG_OID(1);
 	List	   *args = (List *) PG_GETARG_POINTER(2);
@@ -2202,7 +2202,7 @@ eqjoinsel(PG_FUNCTION_ARGS)
 static double
 eqjoinsel_inner(Oid operator,
 				VariableStatData *vardata1, VariableStatData *vardata2)
-{	StackTrace("eqjoinsel_inner");
+{
 	double		selec;
 	double		nd1;
 	double		nd2;
@@ -2429,7 +2429,7 @@ static double
 eqjoinsel_semi(Oid operator,
 			   VariableStatData *vardata1, VariableStatData *vardata2,
 			   RelOptInfo *inner_rel)
-{	StackTrace("eqjoinsel_semi");
+{
 	double		selec;
 	double		nd1;
 	double		nd2;
@@ -2629,7 +2629,7 @@ eqjoinsel_semi(Oid operator,
  */
 Datum
 neqjoinsel(PG_FUNCTION_ARGS)
-{	StackTrace("neqjoinsel");
+{
 	PlannerInfo *root = (PlannerInfo *) PG_GETARG_POINTER(0);
 	Oid			operator = PG_GETARG_OID(1);
 	List	   *args = (List *) PG_GETARG_POINTER(2);
@@ -2666,7 +2666,7 @@ neqjoinsel(PG_FUNCTION_ARGS)
  */
 Datum
 scalarltjoinsel(PG_FUNCTION_ARGS)
-{	StackTrace("scalarltjoinsel");
+{
 	PG_RETURN_FLOAT8(DEFAULT_INEQ_SEL);
 }
 
@@ -2675,7 +2675,7 @@ scalarltjoinsel(PG_FUNCTION_ARGS)
  */
 Datum
 scalargtjoinsel(PG_FUNCTION_ARGS)
-{	StackTrace("scalargtjoinsel");
+{
 	PG_RETURN_FLOAT8(DEFAULT_INEQ_SEL);
 }
 
@@ -2684,7 +2684,7 @@ scalargtjoinsel(PG_FUNCTION_ARGS)
  */
 static double
 patternjoinsel(PG_FUNCTION_ARGS, Pattern_Type ptype, bool negate)
-{	StackTrace("patternjoinsel");
+{
 	/* For the moment we just punt. */
 	return negate ? (1.0 - DEFAULT_MATCH_SEL) : DEFAULT_MATCH_SEL;
 }
@@ -2694,7 +2694,7 @@ patternjoinsel(PG_FUNCTION_ARGS, Pattern_Type ptype, bool negate)
  */
 Datum
 regexeqjoinsel(PG_FUNCTION_ARGS)
-{	StackTrace("regexeqjoinsel");
+{
 	PG_RETURN_FLOAT8(patternjoinsel(fcinfo, Pattern_Type_Regex, false));
 }
 
@@ -2703,7 +2703,7 @@ regexeqjoinsel(PG_FUNCTION_ARGS)
  */
 Datum
 icregexeqjoinsel(PG_FUNCTION_ARGS)
-{	StackTrace("icregexeqjoinsel");
+{
 	PG_RETURN_FLOAT8(patternjoinsel(fcinfo, Pattern_Type_Regex_IC, false));
 }
 
@@ -2712,7 +2712,7 @@ icregexeqjoinsel(PG_FUNCTION_ARGS)
  */
 Datum
 likejoinsel(PG_FUNCTION_ARGS)
-{	StackTrace("likejoinsel");
+{
 	PG_RETURN_FLOAT8(patternjoinsel(fcinfo, Pattern_Type_Like, false));
 }
 
@@ -2721,7 +2721,7 @@ likejoinsel(PG_FUNCTION_ARGS)
  */
 Datum
 iclikejoinsel(PG_FUNCTION_ARGS)
-{	StackTrace("iclikejoinsel");
+{
 	PG_RETURN_FLOAT8(patternjoinsel(fcinfo, Pattern_Type_Like_IC, false));
 }
 
@@ -2730,7 +2730,7 @@ iclikejoinsel(PG_FUNCTION_ARGS)
  */
 Datum
 regexnejoinsel(PG_FUNCTION_ARGS)
-{	StackTrace("regexnejoinsel");
+{
 	PG_RETURN_FLOAT8(patternjoinsel(fcinfo, Pattern_Type_Regex, true));
 }
 
@@ -2739,7 +2739,7 @@ regexnejoinsel(PG_FUNCTION_ARGS)
  */
 Datum
 icregexnejoinsel(PG_FUNCTION_ARGS)
-{	StackTrace("icregexnejoinsel");
+{
 	PG_RETURN_FLOAT8(patternjoinsel(fcinfo, Pattern_Type_Regex_IC, true));
 }
 
@@ -2748,7 +2748,7 @@ icregexnejoinsel(PG_FUNCTION_ARGS)
  */
 Datum
 nlikejoinsel(PG_FUNCTION_ARGS)
-{	StackTrace("nlikejoinsel");
+{
 	PG_RETURN_FLOAT8(patternjoinsel(fcinfo, Pattern_Type_Like, true));
 }
 
@@ -2757,7 +2757,7 @@ nlikejoinsel(PG_FUNCTION_ARGS)
  */
 Datum
 icnlikejoinsel(PG_FUNCTION_ARGS)
-{	StackTrace("icnlikejoinsel");
+{
 	PG_RETURN_FLOAT8(patternjoinsel(fcinfo, Pattern_Type_Like_IC, true));
 }
 
@@ -2787,7 +2787,7 @@ mergejoinscansel(PlannerInfo *root, Node *clause,
 				 Oid opfamily, int strategy, bool nulls_first,
 				 Selectivity *leftstart, Selectivity *leftend,
 				 Selectivity *rightstart, Selectivity *rightend)
-{	StackTrace("mergejoinscansel");
+{
 	Node	   *left,
 			   *right;
 	VariableStatData leftvar,
@@ -3091,7 +3091,7 @@ typedef struct
 static List *
 add_unique_group_var(PlannerInfo *root, List *varinfos,
 					 Node *var, VariableStatData *vardata)
-{	StackTrace("add_unique_group_var");
+{
 	GroupVarInfo *varinfo;
 	double		ndistinct;
 	bool		isdefault;
@@ -3209,7 +3209,7 @@ add_unique_group_var(PlannerInfo *root, List *varinfos,
 double
 estimate_num_groups(PlannerInfo *root, List *groupExprs, double input_rows,
 					List **pgset)
-{	StackTrace("estimate_num_groups");
+{
 	List	   *varinfos = NIL;
 	double		numdistinct;
 	ListCell   *l;
@@ -3447,7 +3447,7 @@ estimate_num_groups(PlannerInfo *root, List *groupExprs, double input_rows,
  */
 Selectivity
 estimate_hash_bucketsize(PlannerInfo *root, Node *hashkey, double nbuckets)
-{	StackTrace("estimate_hash_bucketsize");
+{
 	VariableStatData vardata;
 	double		estfract,
 				ndistinct,
@@ -3591,7 +3591,7 @@ static bool
 convert_to_scalar(Datum value, Oid valuetypid, double *scaledvalue,
 				  Datum lobound, Datum hibound, Oid boundstypid,
 				  double *scaledlobound, double *scaledhibound)
-{	StackTrace("convert_to_scalar");
+{
 	/*
 	 * Both the valuetypid and the boundstypid should exactly match the
 	 * declared input type(s) of the operator we are invoked for, so we just
@@ -3706,7 +3706,7 @@ convert_to_scalar(Datum value, Oid valuetypid, double *scaledvalue,
  */
 static double
 convert_numeric_to_scalar(Datum value, Oid typid)
-{	StackTrace("convert_numeric_to_scalar");
+{
 	switch (typid)
 	{
 		case BOOLOID:
@@ -3776,7 +3776,7 @@ convert_string_to_scalar(char *value,
 						 double *scaledlobound,
 						 char *hibound,
 						 double *scaledhibound)
-{	StackTrace("convert_string_to_scalar");
+{
 	int			rangelo,
 				rangehi;
 	char	   *sptr;
@@ -3851,7 +3851,7 @@ convert_string_to_scalar(char *value,
 
 static double
 convert_one_string_to_scalar(char *value, int rangelo, int rangehi)
-{	StackTrace("convert_one_string_to_scalar");
+{
 	int			slen = strlen(value);
 	double		num,
 				denom,
@@ -3893,7 +3893,7 @@ convert_one_string_to_scalar(char *value, int rangelo, int rangehi)
  */
 static char *
 convert_string_datum(Datum value, Oid typid)
-{	StackTrace("convert_string_datum");
+{
 	char	   *val;
 
 	switch (typid)
@@ -4000,7 +4000,7 @@ convert_bytea_to_scalar(Datum value,
 						double *scaledlobound,
 						Datum hibound,
 						double *scaledhibound)
-{	StackTrace("convert_bytea_to_scalar");
+{
 	int			rangelo,
 				rangehi,
 				valuelen = VARSIZE(DatumGetPointer(value)) - VARHDRSZ,
@@ -4041,7 +4041,7 @@ convert_bytea_to_scalar(Datum value,
 static double
 convert_one_bytea_to_scalar(unsigned char *value, int valuelen,
 							int rangelo, int rangehi)
-{	StackTrace("convert_one_bytea_to_scalar");
+{
 	double		num,
 				denom,
 				base;
@@ -4080,7 +4080,7 @@ convert_one_bytea_to_scalar(unsigned char *value, int valuelen,
  */
 static double
 convert_timevalue_to_scalar(Datum value, Oid typid)
-{	StackTrace("convert_timevalue_to_scalar");
+{
 	switch (typid)
 	{
 		case TIMESTAMPOID:
@@ -4179,7 +4179,7 @@ bool
 get_restriction_variable(PlannerInfo *root, List *args, int varRelid,
 						 VariableStatData *vardata, Node **other,
 						 bool *varonleft)
-{	StackTrace("get_restriction_variable");
+{
 	Node	   *left,
 			   *right;
 	VariableStatData rdata;
@@ -4239,7 +4239,7 @@ void
 get_join_variables(PlannerInfo *root, List *args, SpecialJoinInfo *sjinfo,
 				   VariableStatData *vardata1, VariableStatData *vardata2,
 				   bool *join_is_reversed)
-{	StackTrace("get_join_variables");
+{
 	Node	   *left,
 			   *right;
 
@@ -4297,7 +4297,7 @@ get_join_variables(PlannerInfo *root, List *args, SpecialJoinInfo *sjinfo,
 void
 examine_variable(PlannerInfo *root, Node *node, int varRelid,
 				 VariableStatData *vardata)
-{	StackTrace("examine_variable");
+{
 	Node	   *basenode;
 	Relids		varnos;
 	RelOptInfo *onerel;
@@ -4484,7 +4484,7 @@ examine_variable(PlannerInfo *root, Node *node, int varRelid,
 static void
 examine_simple_variable(PlannerInfo *root, Var *var,
 						VariableStatData *vardata)
-{	StackTrace("examine_simple_variable");
+{
 	RangeTblEntry *rte = root->simple_rte_array[var->varno];
 
 	Assert(IsA(rte, RangeTblEntry));
@@ -4640,7 +4640,7 @@ examine_simple_variable(PlannerInfo *root, Var *var,
  */
 double
 get_variable_numdistinct(VariableStatData *vardata, bool *isdefault)
-{	StackTrace("get_variable_numdistinct");
+{
 	double		stadistinct;
 	double		ntuples;
 
@@ -4759,7 +4759,7 @@ get_variable_numdistinct(VariableStatData *vardata, bool *isdefault)
 static bool
 get_variable_range(PlannerInfo *root, VariableStatData *vardata, Oid sortop,
 				   Datum *min, Datum *max)
-{	StackTrace("get_variable_range");
+{
 	Datum		tmin = 0;
 	Datum		tmax = 0;
 	bool		have_data = false;
@@ -4892,7 +4892,7 @@ static bool
 get_actual_variable_range(PlannerInfo *root, VariableStatData *vardata,
 						  Oid sortop,
 						  Datum *min, Datum *max)
-{	StackTrace("get_actual_variable_range");
+{
 	bool		have_data = false;
 	RelOptInfo *rel = vardata->rel;
 	RangeTblEntry *rte;
@@ -5116,7 +5116,7 @@ get_actual_variable_range(PlannerInfo *root, VariableStatData *vardata,
  */
 static RelOptInfo *
 find_join_input_rel(PlannerInfo *root, Relids relids)
-{	StackTrace("find_join_input_rel");
+{
 	RelOptInfo *rel = NULL;
 
 	switch (bms_membership(relids))
@@ -5167,7 +5167,7 @@ find_join_input_rel(PlannerInfo *root, Relids relids)
 static int
 pattern_char_isalpha(char c, bool is_multibyte,
 					 pg_locale_t locale, bool locale_is_c)
-{	StackTrace("pattern_char_isalpha");
+{
 	if (locale_is_c)
 		return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
 	else if (is_multibyte && IS_HIGHBIT_SET(c))
@@ -5196,7 +5196,7 @@ pattern_char_isalpha(char c, bool is_multibyte,
 static Pattern_Prefix_Status
 like_fixed_prefix(Const *patt_const, bool case_insensitive, Oid collation,
 				  Const **prefix_const, Selectivity *rest_selec)
-{	StackTrace("like_fixed_prefix");
+{
 	char	   *match;
 	char	   *patt;
 	int			pattlen;
@@ -5305,7 +5305,7 @@ like_fixed_prefix(Const *patt_const, bool case_insensitive, Oid collation,
 static Pattern_Prefix_Status
 regex_fixed_prefix(Const *patt_const, bool case_insensitive, Oid collation,
 				   Const **prefix_const, Selectivity *rest_selec)
-{	StackTrace("regex_fixed_prefix");
+{
 	Oid			typeid = patt_const->consttype;
 	char	   *prefix;
 	bool		exact;
@@ -5373,7 +5373,7 @@ regex_fixed_prefix(Const *patt_const, bool case_insensitive, Oid collation,
 Pattern_Prefix_Status
 pattern_fixed_prefix(Const *patt, Pattern_Type ptype, Oid collation,
 					 Const **prefix, Selectivity *rest_selec)
-{	StackTrace("pattern_fixed_prefix");
+{
 	Pattern_Prefix_Status result;
 
 	switch (ptype)
@@ -5424,7 +5424,7 @@ pattern_fixed_prefix(Const *patt, Pattern_Type ptype, Oid collation,
 static Selectivity
 prefix_selectivity(PlannerInfo *root, VariableStatData *vardata,
 				   Oid vartype, Oid opfamily, Const *prefixcon)
-{	StackTrace("prefix_selectivity");
+{
 	Selectivity prefixsel;
 	Oid			cmpopr;
 	FmgrInfo	opproc;
@@ -5523,7 +5523,7 @@ prefix_selectivity(PlannerInfo *root, VariableStatData *vardata,
 
 static Selectivity
 like_selectivity(const char *patt, int pattlen, bool case_insensitive)
-{	StackTrace("like_selectivity");
+{
 	Selectivity sel = 1.0;
 	int			pos;
 
@@ -5560,7 +5560,7 @@ like_selectivity(const char *patt, int pattlen, bool case_insensitive)
 
 static Selectivity
 regex_selectivity_sub(const char *patt, int pattlen, bool case_insensitive)
-{	StackTrace("regex_selectivity_sub");
+{
 	Selectivity sel = 1.0;
 	int			paren_depth = 0;
 	int			paren_pos = 0;	/* dummy init to keep compiler quiet */
@@ -5654,7 +5654,7 @@ regex_selectivity_sub(const char *patt, int pattlen, bool case_insensitive)
 static Selectivity
 regex_selectivity(const char *patt, int pattlen, bool case_insensitive,
 				  int fixed_prefix_len)
-{	StackTrace("regex_selectivity");
+{
 	Selectivity sel;
 
 	/* If patt doesn't end with $, consider it to have a trailing wildcard */
@@ -5687,7 +5687,7 @@ regex_selectivity(const char *patt, int pattlen, bool case_insensitive,
  */
 static bool
 byte_increment(unsigned char *ptr, int len)
-{	StackTrace("byte_increment");
+{
 	if (*ptr >= 255)
 		return false;
 	(*ptr)++;
@@ -5737,7 +5737,7 @@ byte_increment(unsigned char *ptr, int len)
  */
 Const *
 make_greater_string(const Const *str_const, FmgrInfo *ltproc, Oid collation)
-{	StackTrace("make_greater_string");
+{
 	Oid			datatype = str_const->consttype;
 	char	   *workstr;
 	int			len;
@@ -5881,7 +5881,7 @@ make_greater_string(const Const *str_const, FmgrInfo *ltproc, Oid collation)
  */
 static Datum
 string_to_datum(const char *str, Oid datatype)
-{	StackTrace("string_to_datum");
+{
 	Assert(str != NULL);
 
 	/*
@@ -5901,7 +5901,7 @@ string_to_datum(const char *str, Oid datatype)
  */
 static Const *
 string_to_const(const char *str, Oid datatype)
-{	StackTrace("string_to_const");
+{
 	Datum		conval = string_to_datum(str, datatype);
 	Oid			collation;
 	int			constlen;
@@ -5944,7 +5944,7 @@ string_to_const(const char *str, Oid datatype)
  */
 static Const *
 string_to_bytea_const(const char *str, size_t str_len)
-{	StackTrace("string_to_bytea_const");
+{
 	bytea	   *bstr = palloc(VARHDRSZ + str_len);
 	Datum		conval;
 
@@ -5978,7 +5978,7 @@ typedef struct
 
 static List *
 deconstruct_indexquals(IndexPath *path)
-{	StackTrace("deconstruct_indexquals");
+{
 	List	   *result = NIL;
 	IndexOptInfo *index = path->indexinfo;
 	ListCell   *lcc,
@@ -6074,7 +6074,7 @@ deconstruct_indexquals(IndexPath *path)
  */
 static Cost
 other_operands_eval_cost(PlannerInfo *root, List *qinfos)
-{	StackTrace("other_operands_eval_cost");
+{
 	Cost		qual_arg_cost = 0;
 	ListCell   *lc;
 
@@ -6099,7 +6099,7 @@ other_operands_eval_cost(PlannerInfo *root, List *qinfos)
  */
 static Cost
 orderby_operands_eval_cost(PlannerInfo *root, IndexPath *path)
-{	StackTrace("orderby_operands_eval_cost");
+{
 	Cost		qual_arg_cost = 0;
 	ListCell   *lc;
 
@@ -6160,7 +6160,7 @@ genericcostestimate(PlannerInfo *root,
 					double loop_count,
 					List *qinfos,
 					GenericCosts *costs)
-{	StackTrace("genericcostestimate");
+{
 	IndexOptInfo *index = path->indexinfo;
 	List	   *indexQuals = path->indexquals;
 	List	   *indexOrderBys = path->indexorderbys;
@@ -6375,7 +6375,7 @@ genericcostestimate(PlannerInfo *root,
  */
 static List *
 add_predicate_to_quals(IndexOptInfo *index, List *indexQuals)
-{	StackTrace("add_predicate_to_quals");
+{
 	List	   *predExtraQuals = NIL;
 	ListCell   *lc;
 
@@ -6397,7 +6397,7 @@ add_predicate_to_quals(IndexOptInfo *index, List *indexQuals)
 
 Datum
 btcostestimate(PG_FUNCTION_ARGS)
-{	StackTrace("btcostestimate");
+{
 	PlannerInfo *root = (PlannerInfo *) PG_GETARG_POINTER(0);
 	IndexPath  *path = (IndexPath *) PG_GETARG_POINTER(1);
 	double		loop_count = PG_GETARG_FLOAT8(2);
@@ -6699,7 +6699,7 @@ btcostestimate(PG_FUNCTION_ARGS)
 
 Datum
 hashcostestimate(PG_FUNCTION_ARGS)
-{	StackTrace("hashcostestimate");
+{
 	PlannerInfo *root = (PlannerInfo *) PG_GETARG_POINTER(0);
 	IndexPath  *path = (IndexPath *) PG_GETARG_POINTER(1);
 	double		loop_count = PG_GETARG_FLOAT8(2);
@@ -6752,7 +6752,7 @@ hashcostestimate(PG_FUNCTION_ARGS)
 
 Datum
 gistcostestimate(PG_FUNCTION_ARGS)
-{	StackTrace("gistcostestimate");
+{
 	PlannerInfo *root = (PlannerInfo *) PG_GETARG_POINTER(0);
 	IndexPath  *path = (IndexPath *) PG_GETARG_POINTER(1);
 	double		loop_count = PG_GETARG_FLOAT8(2);
@@ -6818,7 +6818,7 @@ gistcostestimate(PG_FUNCTION_ARGS)
 
 Datum
 spgcostestimate(PG_FUNCTION_ARGS)
-{	StackTrace("spgcostestimate");
+{
 	PlannerInfo *root = (PlannerInfo *) PG_GETARG_POINTER(0);
 	IndexPath  *path = (IndexPath *) PG_GETARG_POINTER(1);
 	double		loop_count = PG_GETARG_FLOAT8(2);
@@ -6905,7 +6905,7 @@ static bool
 gincost_pattern(IndexOptInfo *index, int indexcol,
 				Oid clause_op, Datum query,
 				GinQualCounts *counts)
-{	StackTrace("gincost_pattern");
+{
 	Oid			extractProcOid;
 	Oid			collation;
 	int			strategy_op;
@@ -7008,7 +7008,7 @@ gincost_opexpr(PlannerInfo *root,
 			   IndexOptInfo *index,
 			   IndexQualInfo *qinfo,
 			   GinQualCounts *counts)
-{	StackTrace("gincost_opexpr");
+{
 	int			indexcol = qinfo->indexcol;
 	Oid			clause_op = qinfo->clause_op;
 	Node	   *operand = qinfo->other_operand;
@@ -7065,7 +7065,7 @@ gincost_scalararrayopexpr(PlannerInfo *root,
 						  IndexQualInfo *qinfo,
 						  double numIndexEntries,
 						  GinQualCounts *counts)
-{	StackTrace("gincost_scalararrayopexpr");
+{
 	int			indexcol = qinfo->indexcol;
 	Oid			clause_op = qinfo->clause_op;
 	Node	   *rightop = qinfo->other_operand;
@@ -7176,7 +7176,7 @@ gincost_scalararrayopexpr(PlannerInfo *root,
  */
 Datum
 gincostestimate(PG_FUNCTION_ARGS)
-{	StackTrace("gincostestimate");
+{
 	PlannerInfo *root = (PlannerInfo *) PG_GETARG_POINTER(0);
 	IndexPath  *path = (IndexPath *) PG_GETARG_POINTER(1);
 	double		loop_count = PG_GETARG_FLOAT8(2);
@@ -7465,7 +7465,7 @@ gincostestimate(PG_FUNCTION_ARGS)
  */
 Datum
 brincostestimate(PG_FUNCTION_ARGS)
-{	StackTrace("brincostestimate");
+{
 	PlannerInfo *root = (PlannerInfo *) PG_GETARG_POINTER(0);
 	IndexPath  *path = (IndexPath *) PG_GETARG_POINTER(1);
 	double		loop_count = PG_GETARG_FLOAT8(2);

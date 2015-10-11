@@ -61,7 +61,7 @@ typedef struct
  */
 static Datum
 VXIDGetDatum(BackendId bid, LocalTransactionId lxid)
-{	StackTrace("VXIDGetDatum");
+{
 	/*
 	 * The representation is "<bid>/<lxid>", decimal and unsigned decimal
 	 * respectively.  Note that elog.c also knows how to format a vxid.
@@ -79,7 +79,7 @@ VXIDGetDatum(BackendId bid, LocalTransactionId lxid)
  */
 Datum
 pg_lock_status(PG_FUNCTION_ARGS)
-{	StackTrace("pg_lock_status");
+{
 	FuncCallContext *funcctx;
 	PG_Lock_Status *mystatus;
 	LockData   *lockData;
@@ -415,7 +415,7 @@ pg_lock_status(PG_FUNCTION_ARGS)
 
 static void
 PreventAdvisoryLocksInParallelMode(void)
-{	StackTrace("PreventAdvisoryLocksInParallelMode");
+{
 	if (IsInParallelMode())
 		ereport(ERROR,
 				(errcode(ERRCODE_INVALID_TRANSACTION_STATE),
@@ -427,7 +427,7 @@ PreventAdvisoryLocksInParallelMode(void)
  */
 Datum
 pg_advisory_lock_int8(PG_FUNCTION_ARGS)
-{	StackTrace("pg_advisory_lock_int8");
+{
 	int64		key = PG_GETARG_INT64(0);
 	LOCKTAG		tag;
 
@@ -445,7 +445,7 @@ pg_advisory_lock_int8(PG_FUNCTION_ARGS)
  */
 Datum
 pg_advisory_xact_lock_int8(PG_FUNCTION_ARGS)
-{	StackTrace("pg_advisory_xact_lock_int8");
+{
 	int64		key = PG_GETARG_INT64(0);
 	LOCKTAG		tag;
 
@@ -462,7 +462,7 @@ pg_advisory_xact_lock_int8(PG_FUNCTION_ARGS)
  */
 Datum
 pg_advisory_lock_shared_int8(PG_FUNCTION_ARGS)
-{	StackTrace("pg_advisory_lock_shared_int8");
+{
 	int64		key = PG_GETARG_INT64(0);
 	LOCKTAG		tag;
 
@@ -480,7 +480,7 @@ pg_advisory_lock_shared_int8(PG_FUNCTION_ARGS)
  */
 Datum
 pg_advisory_xact_lock_shared_int8(PG_FUNCTION_ARGS)
-{	StackTrace("pg_advisory_xact_lock_shared_int8");
+{
 	int64		key = PG_GETARG_INT64(0);
 	LOCKTAG		tag;
 
@@ -499,7 +499,7 @@ pg_advisory_xact_lock_shared_int8(PG_FUNCTION_ARGS)
  */
 Datum
 pg_try_advisory_lock_int8(PG_FUNCTION_ARGS)
-{	StackTrace("pg_try_advisory_lock_int8");
+{
 	int64		key = PG_GETARG_INT64(0);
 	LOCKTAG		tag;
 	LockAcquireResult res;
@@ -520,7 +520,7 @@ pg_try_advisory_lock_int8(PG_FUNCTION_ARGS)
  */
 Datum
 pg_try_advisory_xact_lock_int8(PG_FUNCTION_ARGS)
-{	StackTrace("pg_try_advisory_xact_lock_int8");
+{
 	int64		key = PG_GETARG_INT64(0);
 	LOCKTAG		tag;
 	LockAcquireResult res;
@@ -540,7 +540,7 @@ pg_try_advisory_xact_lock_int8(PG_FUNCTION_ARGS)
  */
 Datum
 pg_try_advisory_lock_shared_int8(PG_FUNCTION_ARGS)
-{	StackTrace("pg_try_advisory_lock_shared_int8");
+{
 	int64		key = PG_GETARG_INT64(0);
 	LOCKTAG		tag;
 	LockAcquireResult res;
@@ -561,7 +561,7 @@ pg_try_advisory_lock_shared_int8(PG_FUNCTION_ARGS)
  */
 Datum
 pg_try_advisory_xact_lock_shared_int8(PG_FUNCTION_ARGS)
-{	StackTrace("pg_try_advisory_xact_lock_shared_int8");
+{
 	int64		key = PG_GETARG_INT64(0);
 	LOCKTAG		tag;
 	LockAcquireResult res;
@@ -581,7 +581,7 @@ pg_try_advisory_xact_lock_shared_int8(PG_FUNCTION_ARGS)
 */
 Datum
 pg_advisory_unlock_int8(PG_FUNCTION_ARGS)
-{	StackTrace("pg_advisory_unlock_int8");
+{
 	int64		key = PG_GETARG_INT64(0);
 	LOCKTAG		tag;
 	bool		res;
@@ -601,7 +601,7 @@ pg_advisory_unlock_int8(PG_FUNCTION_ARGS)
  */
 Datum
 pg_advisory_unlock_shared_int8(PG_FUNCTION_ARGS)
-{	StackTrace("pg_advisory_unlock_shared_int8");
+{
 	int64		key = PG_GETARG_INT64(0);
 	LOCKTAG		tag;
 	bool		res;
@@ -619,7 +619,7 @@ pg_advisory_unlock_shared_int8(PG_FUNCTION_ARGS)
  */
 Datum
 pg_advisory_lock_int4(PG_FUNCTION_ARGS)
-{	StackTrace("pg_advisory_lock_int4");
+{
 	int32		key1 = PG_GETARG_INT32(0);
 	int32		key2 = PG_GETARG_INT32(1);
 	LOCKTAG		tag;
@@ -638,7 +638,7 @@ pg_advisory_lock_int4(PG_FUNCTION_ARGS)
  */
 Datum
 pg_advisory_xact_lock_int4(PG_FUNCTION_ARGS)
-{	StackTrace("pg_advisory_xact_lock_int4");
+{
 	int32		key1 = PG_GETARG_INT32(0);
 	int32		key2 = PG_GETARG_INT32(1);
 	LOCKTAG		tag;
@@ -656,7 +656,7 @@ pg_advisory_xact_lock_int4(PG_FUNCTION_ARGS)
  */
 Datum
 pg_advisory_lock_shared_int4(PG_FUNCTION_ARGS)
-{	StackTrace("pg_advisory_lock_shared_int4");
+{
 	int32		key1 = PG_GETARG_INT32(0);
 	int32		key2 = PG_GETARG_INT32(1);
 	LOCKTAG		tag;
@@ -675,7 +675,7 @@ pg_advisory_lock_shared_int4(PG_FUNCTION_ARGS)
  */
 Datum
 pg_advisory_xact_lock_shared_int4(PG_FUNCTION_ARGS)
-{	StackTrace("pg_advisory_xact_lock_shared_int4");
+{
 	int32		key1 = PG_GETARG_INT32(0);
 	int32		key2 = PG_GETARG_INT32(1);
 	LOCKTAG		tag;
@@ -695,7 +695,7 @@ pg_advisory_xact_lock_shared_int4(PG_FUNCTION_ARGS)
  */
 Datum
 pg_try_advisory_lock_int4(PG_FUNCTION_ARGS)
-{	StackTrace("pg_try_advisory_lock_int4");
+{
 	int32		key1 = PG_GETARG_INT32(0);
 	int32		key2 = PG_GETARG_INT32(1);
 	LOCKTAG		tag;
@@ -717,7 +717,7 @@ pg_try_advisory_lock_int4(PG_FUNCTION_ARGS)
  */
 Datum
 pg_try_advisory_xact_lock_int4(PG_FUNCTION_ARGS)
-{	StackTrace("pg_try_advisory_xact_lock_int4");
+{
 	int32		key1 = PG_GETARG_INT32(0);
 	int32		key2 = PG_GETARG_INT32(1);
 	LOCKTAG		tag;
@@ -738,7 +738,7 @@ pg_try_advisory_xact_lock_int4(PG_FUNCTION_ARGS)
  */
 Datum
 pg_try_advisory_lock_shared_int4(PG_FUNCTION_ARGS)
-{	StackTrace("pg_try_advisory_lock_shared_int4");
+{
 	int32		key1 = PG_GETARG_INT32(0);
 	int32		key2 = PG_GETARG_INT32(1);
 	LOCKTAG		tag;
@@ -760,7 +760,7 @@ pg_try_advisory_lock_shared_int4(PG_FUNCTION_ARGS)
  */
 Datum
 pg_try_advisory_xact_lock_shared_int4(PG_FUNCTION_ARGS)
-{	StackTrace("pg_try_advisory_xact_lock_shared_int4");
+{
 	int32		key1 = PG_GETARG_INT32(0);
 	int32		key2 = PG_GETARG_INT32(1);
 	LOCKTAG		tag;
@@ -781,7 +781,7 @@ pg_try_advisory_xact_lock_shared_int4(PG_FUNCTION_ARGS)
 */
 Datum
 pg_advisory_unlock_int4(PG_FUNCTION_ARGS)
-{	StackTrace("pg_advisory_unlock_int4");
+{
 	int32		key1 = PG_GETARG_INT32(0);
 	int32		key2 = PG_GETARG_INT32(1);
 	LOCKTAG		tag;
@@ -802,7 +802,7 @@ pg_advisory_unlock_int4(PG_FUNCTION_ARGS)
  */
 Datum
 pg_advisory_unlock_shared_int4(PG_FUNCTION_ARGS)
-{	StackTrace("pg_advisory_unlock_shared_int4");
+{
 	int32		key1 = PG_GETARG_INT32(0);
 	int32		key2 = PG_GETARG_INT32(1);
 	LOCKTAG		tag;
@@ -821,7 +821,7 @@ pg_advisory_unlock_shared_int4(PG_FUNCTION_ARGS)
  */
 Datum
 pg_advisory_unlock_all(PG_FUNCTION_ARGS)
-{	StackTrace("pg_advisory_unlock_all");
+{
 	LockReleaseSession(USER_LOCKMETHOD);
 
 	PG_RETURN_VOID();

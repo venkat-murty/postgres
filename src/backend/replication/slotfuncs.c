@@ -25,7 +25,7 @@
 
 static void
 check_permissions(void)
-{	StackTrace("check_permissions");
+{
 	if (!superuser() && !has_rolreplication(GetUserId()))
 		ereport(ERROR,
 				(errcode(ERRCODE_INSUFFICIENT_PRIVILEGE),
@@ -38,7 +38,7 @@ check_permissions(void)
  */
 Datum
 pg_create_physical_replication_slot(PG_FUNCTION_ARGS)
-{	StackTrace("pg_create_physical_replication_slot");
+{
 	Name		name = PG_GETARG_NAME(0);
 	Datum		values[2];
 	bool		nulls[2];
@@ -77,7 +77,7 @@ pg_create_physical_replication_slot(PG_FUNCTION_ARGS)
  */
 Datum
 pg_create_logical_replication_slot(PG_FUNCTION_ARGS)
-{	StackTrace("pg_create_logical_replication_slot");
+{
 	Name		name = PG_GETARG_NAME(0);
 	Name		plugin = PG_GETARG_NAME(1);
 
@@ -140,7 +140,7 @@ pg_create_logical_replication_slot(PG_FUNCTION_ARGS)
  */
 Datum
 pg_drop_replication_slot(PG_FUNCTION_ARGS)
-{	StackTrace("pg_drop_replication_slot");
+{
 	Name		name = PG_GETARG_NAME(0);
 
 	check_permissions();
@@ -157,7 +157,7 @@ pg_drop_replication_slot(PG_FUNCTION_ARGS)
  */
 Datum
 pg_get_replication_slots(PG_FUNCTION_ARGS)
-{	StackTrace("pg_get_replication_slots");
+{
 #define PG_GET_REPLICATION_SLOTS_COLS 9
 	ReturnSetInfo *rsinfo = (ReturnSetInfo *) fcinfo->resultinfo;
 	TupleDesc	tupdesc;

@@ -30,7 +30,7 @@ typedef struct
 /* Compare two WordEntryPos values for qsort */
 static int
 comparePos(const void *a, const void *b)
-{	StackTrace("comparePos");
+{
 	int			apos = WEP_GETPOS(*(const WordEntryPos *) a);
 	int			bpos = WEP_GETPOS(*(const WordEntryPos *) b);
 
@@ -47,7 +47,7 @@ comparePos(const void *a, const void *b)
  */
 static int
 uniquePos(WordEntryPos *a, int l)
-{	StackTrace("uniquePos");
+{
 	WordEntryPos *ptr,
 			   *res;
 
@@ -79,7 +79,7 @@ uniquePos(WordEntryPos *a, int l)
 /* Compare two WordEntryIN values for qsort */
 static int
 compareentry(const void *va, const void *vb, void *arg)
-{	StackTrace("compareentry");
+{
 	const WordEntryIN *a = (const WordEntryIN *) va;
 	const WordEntryIN *b = (const WordEntryIN *) vb;
 	char	   *BufferStr = (char *) arg;
@@ -95,7 +95,7 @@ compareentry(const void *va, const void *vb, void *arg)
  */
 static int
 uniqueentry(WordEntryIN *a, int l, char *buf, int *outbuflen)
-{	StackTrace("uniqueentry");
+{
 	int			buflen;
 	WordEntryIN *ptr,
 			   *res;
@@ -167,14 +167,14 @@ uniqueentry(WordEntryIN *a, int l, char *buf, int *outbuflen)
 
 static int
 WordEntryCMP(WordEntry *a, WordEntry *b, char *buf)
-{	StackTrace("WordEntryCMP");
+{
 	return compareentry(a, b, buf);
 }
 
 
 Datum
 tsvectorin(PG_FUNCTION_ARGS)
-{	StackTrace("tsvectorin");
+{
 	char	   *buf = PG_GETARG_CSTRING(0);
 	TSVectorParseState state;
 	WordEntryIN *arr;
@@ -307,7 +307,7 @@ tsvectorin(PG_FUNCTION_ARGS)
 
 Datum
 tsvectorout(PG_FUNCTION_ARGS)
-{	StackTrace("tsvectorout");
+{
 	TSVector	out = PG_GETARG_TSVECTOR(0);
 	char	   *outbuf;
 	int32		i,
@@ -400,7 +400,7 @@ tsvectorout(PG_FUNCTION_ARGS)
 
 Datum
 tsvectorsend(PG_FUNCTION_ARGS)
-{	StackTrace("tsvectorsend");
+{
 	TSVector	vec = PG_GETARG_TSVECTOR(0);
 	StringInfoData buf;
 	int			i,
@@ -439,7 +439,7 @@ tsvectorsend(PG_FUNCTION_ARGS)
 
 Datum
 tsvectorrecv(PG_FUNCTION_ARGS)
-{	StackTrace("tsvectorrecv");
+{
 	StringInfo	buf = (StringInfo) PG_GETARG_POINTER(0);
 	TSVector	vec;
 	int			i;

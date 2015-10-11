@@ -27,7 +27,7 @@ ExceptionalCondition(const char *conditionName,
 					 const char *errorType,
 					 const char *fileName,
 					 int lineNumber)
-{	StackTrace("ExceptionalCondition");
+{
 	if (!PointerIsValid(conditionName)
 		|| !PointerIsValid(fileName)
 		|| !PointerIsValid(errorType))

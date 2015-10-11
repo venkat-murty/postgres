@@ -93,7 +93,7 @@ get_row_security_policies(Query *root, CmdType commandType, RangeTblEntry *rte,
 						  int rt_index, List **securityQuals,
 						  List **withCheckOptions, bool *hasRowSecurity,
 						  bool *hasSubLinks)
-{	StackTrace("get_row_security_policies");
+{
 	Expr	   *rowsec_expr = NULL;
 	Expr	   *rowsec_with_check_expr = NULL;
 	Expr	   *hook_expr_restrictive = NULL;
@@ -425,7 +425,7 @@ get_row_security_policies(Query *root, CmdType commandType, RangeTblEntry *rte,
  */
 static List *
 pull_row_security_policies(CmdType cmd, Relation relation, Oid user_id)
-{	StackTrace("pull_row_security_policies");
+{
 	List	   *policies = NIL;
 	ListCell   *item;
 
@@ -522,7 +522,7 @@ static void
 process_policies(Query *root, List *policies, int rt_index, Expr **qual_eval,
 				 Expr **with_check_eval, bool *hassublinks,
 				 BoolExprType boolop)
-{	StackTrace("process_policies");
+{
 	ListCell   *item;
 	List	   *quals = NIL;
 	List	   *with_check_quals = NIL;
@@ -618,7 +618,7 @@ process_policies(Query *root, List *policies, int rt_index, Expr **qual_eval,
  */
 static bool
 check_role_for_policy(ArrayType *policy_roles, Oid user_id)
-{	StackTrace("check_role_for_policy");
+{
 	int			i;
 	Oid		   *roles = (Oid *) ARR_DATA_PTR(policy_roles);
 

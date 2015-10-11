@@ -27,7 +27,7 @@ typedef struct
 
 Datum
 dispell_init(PG_FUNCTION_ARGS)
-{	StackTrace("dispell_init");
+{
 	List	   *dictoptions = (List *) PG_GETARG_POINTER(0);
 	DictISpell *d;
 	bool		affloaded = false,
@@ -108,7 +108,7 @@ dispell_init(PG_FUNCTION_ARGS)
 
 Datum
 dispell_lexize(PG_FUNCTION_ARGS)
-{	StackTrace("dispell_lexize");
+{
 	DictISpell *d = (DictISpell *) PG_GETARG_POINTER(0);
 	char	   *in = (char *) PG_GETARG_POINTER(1);
 	int32		len = PG_GETARG_INT32(2);

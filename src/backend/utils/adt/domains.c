@@ -70,7 +70,7 @@ typedef struct DomainIOData
  */
 static DomainIOData *
 domain_state_setup(Oid domainType, bool binary, MemoryContext mcxt)
-{	StackTrace("domain_state_setup");
+{
 	DomainIOData *my_extra;
 	Oid			baseType;
 
@@ -116,7 +116,7 @@ domain_state_setup(Oid domainType, bool binary, MemoryContext mcxt)
  */
 static void
 domain_check_input(Datum value, bool isnull, DomainIOData *my_extra)
-{	StackTrace("domain_check_input");
+{
 	ExprContext *econtext = my_extra->econtext;
 	ListCell   *l;
 
@@ -199,7 +199,7 @@ domain_check_input(Datum value, bool isnull, DomainIOData *my_extra)
  */
 Datum
 domain_in(PG_FUNCTION_ARGS)
-{	StackTrace("domain_in");
+{
 	char	   *string;
 	Oid			domainType;
 	DomainIOData *my_extra;
@@ -255,7 +255,7 @@ domain_in(PG_FUNCTION_ARGS)
  */
 Datum
 domain_recv(PG_FUNCTION_ARGS)
-{	StackTrace("domain_recv");
+{
 	StringInfo	buf;
 	Oid			domainType;
 	DomainIOData *my_extra;
@@ -315,7 +315,7 @@ domain_recv(PG_FUNCTION_ARGS)
 void
 domain_check(Datum value, bool isnull, Oid domainType,
 			 void **extra, MemoryContext mcxt)
-{	StackTrace("domain_check");
+{
 	DomainIOData *my_extra = NULL;
 
 	if (mcxt == NULL)
@@ -347,7 +347,7 @@ domain_check(Datum value, bool isnull, Oid domainType,
  */
 int
 errdatatype(Oid datatypeOid)
-{	StackTrace("errdatatype");
+{
 	HeapTuple	tup;
 	Form_pg_type typtup;
 
@@ -371,7 +371,7 @@ errdatatype(Oid datatypeOid)
  */
 int
 errdomainconstraint(Oid datatypeOid, const char *conname)
-{	StackTrace("errdomainconstraint");
+{
 	errdatatype(datatypeOid);
 	err_generic_string(PG_DIAG_CONSTRAINT_NAME, conname);
 

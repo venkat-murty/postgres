@@ -97,7 +97,7 @@ static int	on_proc_exit_index,
  */
 void
 proc_exit(int code)
-{	StackTrace("proc_exit");
+{
 	/* Clean up everything that must be cleaned up */
 	proc_exit_prepare(code);
 
@@ -150,7 +150,7 @@ proc_exit(int code)
  */
 static void
 proc_exit_prepare(int code)
-{	StackTrace("proc_exit_prepare");
+{
 	/*
 	 * Once we set this flag, we are committed to exit.  Any ereport() will
 	 * NOT send control back to the main loop, but right back here.
@@ -213,7 +213,7 @@ proc_exit_prepare(int code)
  */
 void
 shmem_exit(int code)
-{	StackTrace("shmem_exit");
+{
 	/*
 	 * Call before_shmem_exit callbacks.
 	 *
@@ -275,7 +275,7 @@ shmem_exit(int code)
  */
 static void
 atexit_callback(void)
-{	StackTrace("atexit_callback");
+{
 	/* Clean up everything that must be cleaned up */
 	/* ... too bad we don't know the real exit code ... */
 	proc_exit_prepare(-1);
@@ -290,7 +290,7 @@ atexit_callback(void)
  */
 void
 on_proc_exit(pg_on_exit_callback function, Datum arg)
-{	StackTrace("on_proc_exit");
+{
 	if (on_proc_exit_index >= MAX_ON_EXITS)
 		ereport(FATAL,
 				(errcode(ERRCODE_PROGRAM_LIMIT_EXCEEDED),
@@ -318,7 +318,7 @@ on_proc_exit(pg_on_exit_callback function, Datum arg)
  */
 void
 before_shmem_exit(pg_on_exit_callback function, Datum arg)
-{	StackTrace("before_shmem_exit");
+{
 	if (before_shmem_exit_index >= MAX_ON_EXITS)
 		ereport(FATAL,
 				(errcode(ERRCODE_PROGRAM_LIMIT_EXCEEDED),
@@ -346,7 +346,7 @@ before_shmem_exit(pg_on_exit_callback function, Datum arg)
  */
 void
 on_shmem_exit(pg_on_exit_callback function, Datum arg)
-{	StackTrace("on_shmem_exit");
+{
 	if (on_shmem_exit_index >= MAX_ON_EXITS)
 		ereport(FATAL,
 				(errcode(ERRCODE_PROGRAM_LIMIT_EXCEEDED),
@@ -375,7 +375,7 @@ on_shmem_exit(pg_on_exit_callback function, Datum arg)
  */
 void
 cancel_before_shmem_exit(pg_on_exit_callback function, Datum arg)
-{	StackTrace("cancel_before_shmem_exit");
+{
 	if (before_shmem_exit_index > 0 &&
 		before_shmem_exit_list[before_shmem_exit_index - 1].function
 		== function &&
@@ -394,7 +394,7 @@ cancel_before_shmem_exit(pg_on_exit_callback function, Datum arg)
  */
 void
 on_exit_reset(void)
-{	StackTrace("on_exit_reset");
+{
 	before_shmem_exit_index = 0;
 	on_shmem_exit_index = 0;
 	on_proc_exit_index = 0;

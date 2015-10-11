@@ -68,7 +68,7 @@ static Oid	fetch_agg_sort_op(Oid aggfnoid);
  */
 void
 preprocess_minmax_aggregates(PlannerInfo *root, List *tlist)
-{	StackTrace("preprocess_minmax_aggregates");
+{
 	Query	   *parse = root->parse;
 	FromExpr   *jtnode;
 	RangeTblRef *rtr;
@@ -203,7 +203,7 @@ preprocess_minmax_aggregates(PlannerInfo *root, List *tlist)
 Plan *
 optimize_minmax_aggregates(PlannerInfo *root, List *tlist,
 						   const AggClauseCosts *aggcosts, Path *best_path)
-{	StackTrace("optimize_minmax_aggregates");
+{
 	Query	   *parse = root->parse;
 	Cost		total_cost;
 	Path		agg_p;
@@ -303,7 +303,7 @@ optimize_minmax_aggregates(PlannerInfo *root, List *tlist,
  */
 static bool
 find_minmax_aggs_walker(Node *node, List **context)
-{	StackTrace("find_minmax_aggs_walker");
+{
 	if (node == NULL)
 		return false;
 	if (IsA(node, Aggref))
@@ -399,7 +399,7 @@ find_minmax_aggs_walker(Node *node, List **context)
 static bool
 build_minmax_path(PlannerInfo *root, MinMaxAggInfo *mminfo,
 				  Oid eqop, Oid sortop, bool nulls_first)
-{	StackTrace("build_minmax_path");
+{
 	PlannerInfo *subroot;
 	Query	   *parse;
 	TargetEntry *tle;
@@ -521,7 +521,7 @@ build_minmax_path(PlannerInfo *root, MinMaxAggInfo *mminfo,
  */
 static void
 minmax_qp_callback(PlannerInfo *root, void *extra)
-{	StackTrace("minmax_qp_callback");
+{
 	root->group_pathkeys = NIL;
 	root->window_pathkeys = NIL;
 	root->distinct_pathkeys = NIL;
@@ -539,7 +539,7 @@ minmax_qp_callback(PlannerInfo *root, void *extra)
  */
 static void
 make_agg_subplan(PlannerInfo *root, MinMaxAggInfo *mminfo)
-{	StackTrace("make_agg_subplan");
+{
 	PlannerInfo *subroot = mminfo->subroot;
 	Query	   *subparse = subroot->parse;
 	Plan	   *plan;
@@ -602,7 +602,7 @@ make_agg_subplan(PlannerInfo *root, MinMaxAggInfo *mminfo)
  */
 static Node *
 replace_aggs_with_params_mutator(Node *node, PlannerInfo *root)
-{	StackTrace("replace_aggs_with_params_mutator");
+{
 	if (node == NULL)
 		return NULL;
 	if (IsA(node, Aggref))
@@ -632,7 +632,7 @@ replace_aggs_with_params_mutator(Node *node, PlannerInfo *root)
  */
 static Oid
 fetch_agg_sort_op(Oid aggfnoid)
-{	StackTrace("fetch_agg_sort_op");
+{
 	HeapTuple	aggTuple;
 	Form_pg_aggregate aggform;
 	Oid			aggsortop;

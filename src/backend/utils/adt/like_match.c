@@ -78,7 +78,7 @@
 static int
 MatchText(char *t, int tlen, char *p, int plen,
 		  pg_locale_t locale, bool locale_is_c)
-{	StackTrace("MatchText");
+{
 	/* Fast path for match-everything pattern */
 	if (plen == 1 && *p == '%')
 		return LIKE_TRUE;
@@ -243,7 +243,7 @@ MatchText(char *t, int tlen, char *p, int plen,
 
 static text *
 do_like_escape(text *pat, text *esc)
-{	StackTrace("do_like_escape");
+{
 	text	   *result;
 	char	   *p,
 			   *e,

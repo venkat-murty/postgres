@@ -25,7 +25,7 @@ static text *encode_to_ascii(text *data, int enc);
  */
 static void
 pg_to_ascii(unsigned char *src, unsigned char *src_end, unsigned char *dest, int enc)
-{	StackTrace("pg_to_ascii");
+{
 	unsigned char *x;
 	const unsigned char *ascii;
 	int			range;
@@ -100,7 +100,7 @@ pg_to_ascii(unsigned char *src, unsigned char *src_end, unsigned char *dest, int
  */
 static text *
 encode_to_ascii(text *data, int enc)
-{	StackTrace("encode_to_ascii");
+{
 	pg_to_ascii((unsigned char *) VARDATA(data),		/* src */
 				(unsigned char *) (data) + VARSIZE(data),		/* src end */
 				(unsigned char *) VARDATA(data),		/* dest */
@@ -115,7 +115,7 @@ encode_to_ascii(text *data, int enc)
  */
 Datum
 to_ascii_encname(PG_FUNCTION_ARGS)
-{	StackTrace("to_ascii_encname");
+{
 	text	   *data = PG_GETARG_TEXT_P_COPY(0);
 	char	   *encname = NameStr(*PG_GETARG_NAME(1));
 	int			enc = pg_char_to_encoding(encname);
@@ -134,7 +134,7 @@ to_ascii_encname(PG_FUNCTION_ARGS)
  */
 Datum
 to_ascii_enc(PG_FUNCTION_ARGS)
-{	StackTrace("to_ascii_enc");
+{
 	text	   *data = PG_GETARG_TEXT_P_COPY(0);
 	int			enc = PG_GETARG_INT32(1);
 
@@ -152,7 +152,7 @@ to_ascii_enc(PG_FUNCTION_ARGS)
  */
 Datum
 to_ascii_default(PG_FUNCTION_ARGS)
-{	StackTrace("to_ascii_default");
+{
 	text	   *data = PG_GETARG_TEXT_P_COPY(0);
 	int			enc = GetDatabaseEncoding();
 
@@ -170,7 +170,7 @@ to_ascii_default(PG_FUNCTION_ARGS)
  */
 void
 ascii_safe_strlcpy(char *dest, const char *src, size_t destsiz)
-{	StackTrace("ascii_safe_strlcpy");
+{
 	if (destsiz == 0)			/* corner case: no room for trailing nul */
 		return;
 

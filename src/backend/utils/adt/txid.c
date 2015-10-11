@@ -88,7 +88,7 @@ typedef struct
  */
 static void
 load_xid_epoch(TxidEpoch *state)
-{	StackTrace("load_xid_epoch");
+{
 	GetNextXidAndEpoch(&state->last_xid, &state->epoch);
 }
 
@@ -97,7 +97,7 @@ load_xid_epoch(TxidEpoch *state)
  */
 static txid
 convert_xid(TransactionId xid, const TxidEpoch *state)
-{	StackTrace("convert_xid");
+{
 	uint64		epoch;
 
 	/* return special xid's as-is */
@@ -121,7 +121,7 @@ convert_xid(TransactionId xid, const TxidEpoch *state)
  */
 static int
 cmp_txid(const void *aa, const void *bb)
-{	StackTrace("cmp_txid");
+{
 	txid		a = *(const txid *) aa;
 	txid		b = *(const txid *) bb;
 
@@ -141,7 +141,7 @@ cmp_txid(const void *aa, const void *bb)
  */
 static void
 sort_snapshot(TxidSnapshot *snap)
-{	StackTrace("sort_snapshot");
+{
 	txid		last = 0;
 	int			nxip,
 				idx1,
@@ -170,7 +170,7 @@ sort_snapshot(TxidSnapshot *snap)
  */
 static bool
 is_visible_txid(txid value, const TxidSnapshot *snap)
-{	StackTrace("is_visible_txid");
+{
 	if (value < snap->xmin)
 		return true;
 	else if (value >= snap->xmax)
@@ -204,7 +204,7 @@ is_visible_txid(txid value, const TxidSnapshot *snap)
 
 static StringInfo
 buf_init(txid xmin, txid xmax)
-{	StackTrace("buf_init");
+{
 	TxidSnapshot snap;
 	StringInfo	buf;
 
@@ -219,7 +219,7 @@ buf_init(txid xmin, txid xmax)
 
 static void
 buf_add_txid(StringInfo buf, txid xid)
-{	StackTrace("buf_add_txid");
+{
 	TxidSnapshot *snap = (TxidSnapshot *) buf->data;
 
 	/* do this before possible realloc */
@@ -230,7 +230,7 @@ buf_add_txid(StringInfo buf, txid xid)
 
 static TxidSnapshot *
 buf_finalize(StringInfo buf)
-{	StackTrace("buf_finalize");
+{
 	TxidSnapshot *snap = (TxidSnapshot *) buf->data;
 
 	SET_VARSIZE(snap, buf->len);
@@ -249,7 +249,7 @@ buf_finalize(StringInfo buf)
  */
 static txid
 str2txid(const char *s, const char **endp)
-{	StackTrace("str2txid");
+{
 	txid		val = 0;
 	txid		cutoff = MAX_TXID / 10;
 	txid		cutlim = MAX_TXID % 10;
@@ -283,7 +283,7 @@ str2txid(const char *s, const char **endp)
  */
 static TxidSnapshot *
 parse_snapshot(const char *str)
-{	StackTrace("parse_snapshot");
+{
 	txid		xmin;
 	txid		xmax;
 	txid		last_val = 0,
@@ -354,7 +354,7 @@ bad_format:
  */
 Datum
 txid_current(PG_FUNCTION_ARGS)
-{	StackTrace("txid_current");
+{
 	txid		val;
 	TxidEpoch	state;
 
@@ -382,7 +382,7 @@ txid_current(PG_FUNCTION_ARGS)
  */
 Datum
 txid_current_snapshot(PG_FUNCTION_ARGS)
-{	StackTrace("txid_current_snapshot");
+{
 	TxidSnapshot *snap;
 	uint32		nxip,
 				i;
@@ -435,7 +435,7 @@ txid_current_snapshot(PG_FUNCTION_ARGS)
  */
 Datum
 txid_snapshot_in(PG_FUNCTION_ARGS)
-{	StackTrace("txid_snapshot_in");
+{
 	char	   *str = PG_GETARG_CSTRING(0);
 	TxidSnapshot *snap;
 
@@ -451,7 +451,7 @@ txid_snapshot_in(PG_FUNCTION_ARGS)
  */
 Datum
 txid_snapshot_out(PG_FUNCTION_ARGS)
-{	StackTrace("txid_snapshot_out");
+{
 	TxidSnapshot *snap = (TxidSnapshot *) PG_GETARG_VARLENA_P(0);
 	StringInfoData str;
 	uint32		i;
@@ -480,7 +480,7 @@ txid_snapshot_out(PG_FUNCTION_ARGS)
  */
 Datum
 txid_snapshot_recv(PG_FUNCTION_ARGS)
-{	StackTrace("txid_snapshot_recv");
+{
 	StringInfo	buf = (StringInfo) PG_GETARG_POINTER(0);
 	TxidSnapshot *snap;
 	txid		last = 0;
@@ -539,7 +539,7 @@ bad_format:
  */
 Datum
 txid_snapshot_send(PG_FUNCTION_ARGS)
-{	StackTrace("txid_snapshot_send");
+{
 	TxidSnapshot *snap = (TxidSnapshot *) PG_GETARG_VARLENA_P(0);
 	StringInfoData buf;
 	uint32		i;
@@ -560,7 +560,7 @@ txid_snapshot_send(PG_FUNCTION_ARGS)
  */
 Datum
 txid_visible_in_snapshot(PG_FUNCTION_ARGS)
-{	StackTrace("txid_visible_in_snapshot");
+{
 	txid		value = PG_GETARG_INT64(0);
 	TxidSnapshot *snap = (TxidSnapshot *) PG_GETARG_VARLENA_P(1);
 
@@ -574,7 +574,7 @@ txid_visible_in_snapshot(PG_FUNCTION_ARGS)
  */
 Datum
 txid_snapshot_xmin(PG_FUNCTION_ARGS)
-{	StackTrace("txid_snapshot_xmin");
+{
 	TxidSnapshot *snap = (TxidSnapshot *) PG_GETARG_VARLENA_P(0);
 
 	PG_RETURN_INT64(snap->xmin);
@@ -587,7 +587,7 @@ txid_snapshot_xmin(PG_FUNCTION_ARGS)
  */
 Datum
 txid_snapshot_xmax(PG_FUNCTION_ARGS)
-{	StackTrace("txid_snapshot_xmax");
+{
 	TxidSnapshot *snap = (TxidSnapshot *) PG_GETARG_VARLENA_P(0);
 
 	PG_RETURN_INT64(snap->xmax);
@@ -600,7 +600,7 @@ txid_snapshot_xmax(PG_FUNCTION_ARGS)
  */
 Datum
 txid_snapshot_xip(PG_FUNCTION_ARGS)
-{	StackTrace("txid_snapshot_xip");
+{
 	FuncCallContext *fctx;
 	TxidSnapshot *snap;
 	txid		value;

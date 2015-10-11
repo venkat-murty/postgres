@@ -43,7 +43,7 @@ typedef struct
  */
 Datum
 tsm_bernoulli_init(PG_FUNCTION_ARGS)
-{	StackTrace("tsm_bernoulli_init");
+{
 	TableSampleDesc *tsdesc = (TableSampleDesc *) PG_GETARG_POINTER(0);
 	uint32		seed = PG_GETARG_UINT32(1);
 	float4		percent = PG_ARGISNULL(2) ? -1 : PG_GETARG_FLOAT4(2);
@@ -78,7 +78,7 @@ tsm_bernoulli_init(PG_FUNCTION_ARGS)
  */
 Datum
 tsm_bernoulli_nextblock(PG_FUNCTION_ARGS)
-{	StackTrace("tsm_bernoulli_nextblock");
+{
 	TableSampleDesc *tsdesc = (TableSampleDesc *) PG_GETARG_POINTER(0);
 	BernoulliSamplerData *sampler = (BernoulliSamplerData *) tsdesc->tsmdata;
 
@@ -127,7 +127,7 @@ tsm_bernoulli_nextblock(PG_FUNCTION_ARGS)
  */
 Datum
 tsm_bernoulli_nexttuple(PG_FUNCTION_ARGS)
-{	StackTrace("tsm_bernoulli_nexttuple");
+{
 	TableSampleDesc *tsdesc = (TableSampleDesc *) PG_GETARG_POINTER(0);
 	OffsetNumber maxoffset = PG_GETARG_UINT16(2);
 	BernoulliSamplerData *sampler = (BernoulliSamplerData *) tsdesc->tsmdata;
@@ -168,7 +168,7 @@ tsm_bernoulli_nexttuple(PG_FUNCTION_ARGS)
  */
 Datum
 tsm_bernoulli_end(PG_FUNCTION_ARGS)
-{	StackTrace("tsm_bernoulli_end");
+{
 	TableSampleDesc *tsdesc = (TableSampleDesc *) PG_GETARG_POINTER(0);
 
 	pfree(tsdesc->tsmdata);
@@ -181,7 +181,7 @@ tsm_bernoulli_end(PG_FUNCTION_ARGS)
  */
 Datum
 tsm_bernoulli_reset(PG_FUNCTION_ARGS)
-{	StackTrace("tsm_bernoulli_reset");
+{
 	TableSampleDesc *tsdesc = (TableSampleDesc *) PG_GETARG_POINTER(0);
 	BernoulliSamplerData *sampler = (BernoulliSamplerData *) tsdesc->tsmdata;
 
@@ -197,7 +197,7 @@ tsm_bernoulli_reset(PG_FUNCTION_ARGS)
  */
 Datum
 tsm_bernoulli_cost(PG_FUNCTION_ARGS)
-{	StackTrace("tsm_bernoulli_cost");
+{
 	PlannerInfo *root = (PlannerInfo *) PG_GETARG_POINTER(0);
 	Path	   *path = (Path *) PG_GETARG_POINTER(1);
 	RelOptInfo *baserel = (RelOptInfo *) PG_GETARG_POINTER(2);

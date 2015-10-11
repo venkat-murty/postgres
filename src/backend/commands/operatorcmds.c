@@ -61,7 +61,7 @@
  */
 ObjectAddress
 DefineOperator(List *names, List *parameters)
-{	StackTrace("DefineOperator");
+{
 	char	   *oprName;
 	Oid			oprNamespace;
 	AclResult	aclresult;
@@ -304,7 +304,7 @@ DefineOperator(List *names, List *parameters)
  */
 void
 RemoveOperatorById(Oid operOid)
-{	StackTrace("RemoveOperatorById");
+{
 	Relation	relation;
 	HeapTuple	tup;
 

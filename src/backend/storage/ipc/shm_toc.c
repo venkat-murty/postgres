@@ -38,7 +38,7 @@ struct shm_toc
  */
 shm_toc *
 shm_toc_create(uint64 magic, void *address, Size nbytes)
-{	StackTrace("shm_toc_create");
+{
 	shm_toc    *toc = (shm_toc *) address;
 
 	Assert(nbytes > offsetof(shm_toc, toc_entry));
@@ -57,7 +57,7 @@ shm_toc_create(uint64 magic, void *address, Size nbytes)
  */
 extern shm_toc *
 shm_toc_attach(uint64 magic, void *address)
-{	StackTrace("shm_toc_attach");
+{
 	shm_toc    *toc = (shm_toc *) address;
 
 	if (toc->toc_magic != magic)
@@ -81,7 +81,7 @@ shm_toc_attach(uint64 magic, void *address)
  */
 extern void *
 shm_toc_allocate(shm_toc *toc, Size nbytes)
-{	StackTrace("shm_toc_allocate");
+{
 	volatile shm_toc *vtoc = toc;
 	Size		total_bytes;
 	Size		allocated_bytes;
@@ -119,7 +119,7 @@ shm_toc_allocate(shm_toc *toc, Size nbytes)
  */
 extern Size
 shm_toc_freespace(shm_toc *toc)
-{	StackTrace("shm_toc_freespace");
+{
 	volatile shm_toc *vtoc = toc;
 	Size		total_bytes;
 	Size		allocated_bytes;
@@ -159,7 +159,7 @@ shm_toc_freespace(shm_toc *toc)
  */
 void
 shm_toc_insert(shm_toc *toc, uint64 key, void *address)
-{	StackTrace("shm_toc_insert");
+{
 	volatile shm_toc *vtoc = toc;
 	uint64		total_bytes;
 	uint64		allocated_bytes;
@@ -216,7 +216,7 @@ shm_toc_insert(shm_toc *toc, uint64 key, void *address)
  */
 void *
 shm_toc_lookup(shm_toc *toc, uint64 key)
-{	StackTrace("shm_toc_lookup");
+{
 	uint64		nentry;
 	uint64		i;
 
@@ -239,7 +239,7 @@ shm_toc_lookup(shm_toc *toc, uint64 key)
  */
 Size
 shm_toc_estimate(shm_toc_estimator *e)
-{	StackTrace("shm_toc_estimate");
+{
 	return add_size(offsetof(shm_toc, toc_entry),
 				 add_size(mul_size(e->number_of_keys, sizeof(shm_toc_entry)),
 						  e->space_for_chunks));

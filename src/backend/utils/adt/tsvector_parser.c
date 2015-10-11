@@ -43,7 +43,7 @@ struct TSVectorParseStateData
  */
 TSVectorParseState
 init_tsvector_parser(char *input, bool oprisdelim, bool is_tsquery)
-{	StackTrace("init_tsvector_parser");
+{
 	TSVectorParseState state;
 
 	state = (TSVectorParseState) palloc(sizeof(struct TSVectorParseStateData));
@@ -63,7 +63,7 @@ init_tsvector_parser(char *input, bool oprisdelim, bool is_tsquery)
  */
 void
 reset_tsvector_parser(TSVectorParseState state, char *input)
-{	StackTrace("reset_tsvector_parser");
+{
 	state->prsbuf = input;
 }
 
@@ -72,7 +72,7 @@ reset_tsvector_parser(TSVectorParseState state, char *input)
  */
 void
 close_tsvector_parser(TSVectorParseState state)
-{	StackTrace("close_tsvector_parser");
+{
 	pfree(state->word);
 	pfree(state);
 }
@@ -126,7 +126,7 @@ do { \
 
 static void
 prssyntaxerror(TSVectorParseState state)
-{	StackTrace("prssyntaxerror");
+{
 	ereport(ERROR,
 			(errcode(ERRCODE_SYNTAX_ERROR),
 			 state->is_tsquery ?
@@ -156,7 +156,7 @@ gettoken_tsvector(TSVectorParseState state,
 				  char **strval, int *lenval,
 				  WordEntryPos **pos_ptr, int *poslen,
 				  char **endptr)
-{	StackTrace("gettoken_tsvector");
+{
 	int			oldstate = 0;
 	char	   *curpos = state->word;
 	int			statecode = WAITWORD;

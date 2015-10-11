@@ -141,7 +141,7 @@ static bool SlruScanDirCbDeleteCutoff(SlruCtl ctl, char *filename,
 
 Size
 SimpleLruShmemSize(int nslots, int nlsns)
-{	StackTrace("SimpleLruShmemSize");
+{
 	Size		sz;
 
 	/* we assume nslots isn't so large as to risk overflow */
@@ -162,7 +162,7 @@ SimpleLruShmemSize(int nslots, int nlsns)
 void
 SimpleLruInit(SlruCtl ctl, const char *name, int nslots, int nlsns,
 			  LWLock *ctllock, const char *subdir)
-{	StackTrace("SimpleLruInit");
+{
 	SlruShared	shared;
 	bool		found;
 
@@ -244,7 +244,7 @@ SimpleLruInit(SlruCtl ctl, const char *name, int nslots, int nlsns,
  */
 int
 SimpleLruZeroPage(SlruCtl ctl, int pageno)
-{	StackTrace("SimpleLruZeroPage");
+{
 	SlruShared	shared = ctl->shared;
 	int			slotno;
 
@@ -285,7 +285,7 @@ SimpleLruZeroPage(SlruCtl ctl, int pageno)
  */
 static void
 SimpleLruZeroLSNs(SlruCtl ctl, int slotno)
-{	StackTrace("SimpleLruZeroLSNs");
+{
 	SlruShared	shared = ctl->shared;
 
 	if (shared->lsn_groups_per_page > 0)
@@ -302,7 +302,7 @@ SimpleLruZeroLSNs(SlruCtl ctl, int slotno)
  */
 static void
 SimpleLruWaitIO(SlruCtl ctl, int slotno)
-{	StackTrace("SimpleLruWaitIO");
+{
 	SlruShared	shared = ctl->shared;
 
 	/* See notes at top of file */
@@ -357,7 +357,7 @@ SimpleLruWaitIO(SlruCtl ctl, int slotno)
 int
 SimpleLruReadPage(SlruCtl ctl, int pageno, bool write_ok,
 				  TransactionId xid)
-{	StackTrace("SimpleLruReadPage");
+{
 	SlruShared	shared = ctl->shared;
 
 	/* Outer loop handles restart if we must wait for someone else's I/O */
@@ -448,7 +448,7 @@ SimpleLruReadPage(SlruCtl ctl, int pageno, bool write_ok,
  */
 int
 SimpleLruReadPage_ReadOnly(SlruCtl ctl, int pageno, TransactionId xid)
-{	StackTrace("SimpleLruReadPage_ReadOnly");
+{
 	SlruShared	shared = ctl->shared;
 	int			slotno;
 
@@ -488,7 +488,7 @@ SimpleLruReadPage_ReadOnly(SlruCtl ctl, int pageno, TransactionId xid)
  */
 static void
 SlruInternalWritePage(SlruCtl ctl, int slotno, SlruFlush fdata)
-{	StackTrace("SlruInternalWritePage");
+{
 	SlruShared	shared = ctl->shared;
 	int			pageno = shared->page_number[slotno];
 	bool		ok;
@@ -559,7 +559,7 @@ SlruInternalWritePage(SlruCtl ctl, int slotno, SlruFlush fdata)
  */
 void
 SimpleLruWritePage(SlruCtl ctl, int slotno)
-{	StackTrace("SimpleLruWritePage");
+{
 	SlruInternalWritePage(ctl, slotno, NULL);
 }
 
@@ -571,7 +571,7 @@ SimpleLruWritePage(SlruCtl ctl, int slotno)
  */
 bool
 SimpleLruDoesPhysicalPageExist(SlruCtl ctl, int pageno)
-{	StackTrace("SimpleLruDoesPhysicalPageExist");
+{
 	int			segno = pageno / SLRU_PAGES_PER_SEGMENT;
 	int			rpageno = pageno % SLRU_PAGES_PER_SEGMENT;
 	int			offset = rpageno * BLCKSZ;
@@ -620,7 +620,7 @@ SimpleLruDoesPhysicalPageExist(SlruCtl ctl, int pageno)
  */
 static bool
 SlruPhysicalReadPage(SlruCtl ctl, int pageno, int slotno)
-{	StackTrace("SlruPhysicalReadPage");
+{
 	SlruShared	shared = ctl->shared;
 	int			segno = pageno / SLRU_PAGES_PER_SEGMENT;
 	int			rpageno = pageno % SLRU_PAGES_PER_SEGMENT;
@@ -697,7 +697,7 @@ SlruPhysicalReadPage(SlruCtl ctl, int pageno, int slotno)
  */
 static bool
 SlruPhysicalWritePage(SlruCtl ctl, int pageno, int slotno, SlruFlush fdata)
-{	StackTrace("SlruPhysicalWritePage");
+{
 	SlruShared	shared = ctl->shared;
 	int			segno = pageno / SLRU_PAGES_PER_SEGMENT;
 	int			rpageno = pageno % SLRU_PAGES_PER_SEGMENT;
@@ -865,7 +865,7 @@ SlruPhysicalWritePage(SlruCtl ctl, int pageno, int slotno, SlruFlush fdata)
  */
 static void
 SlruReportIOError(SlruCtl ctl, int pageno, TransactionId xid)
-{	StackTrace("SlruReportIOError");
+{
 	int			segno = pageno / SLRU_PAGES_PER_SEGMENT;
 	int			rpageno = pageno % SLRU_PAGES_PER_SEGMENT;
 	int			offset = rpageno * BLCKSZ;
@@ -939,7 +939,7 @@ SlruReportIOError(SlruCtl ctl, int pageno, TransactionId xid)
  */
 static int
 SlruSelectLRUPage(SlruCtl ctl, int pageno)
-{	StackTrace("SlruSelectLRUPage");
+{
 	SlruShared	shared = ctl->shared;
 
 	/* Outer loop handles restart after I/O */
@@ -1076,7 +1076,7 @@ SlruSelectLRUPage(SlruCtl ctl, int pageno)
  */
 void
 SimpleLruFlush(SlruCtl ctl, bool checkpoint)
-{	StackTrace("SimpleLruFlush");
+{
 	SlruShared	shared = ctl->shared;
 	SlruFlushData fdata;
 	int			slotno;
@@ -1139,7 +1139,7 @@ SimpleLruFlush(SlruCtl ctl, bool checkpoint)
  */
 void
 SimpleLruTruncate(SlruCtl ctl, int cutoffPage)
-{	StackTrace("SimpleLruTruncate");
+{
 	SlruShared	shared = ctl->shared;
 	int			slotno;
 
@@ -1212,7 +1212,7 @@ restart:;
 
 void
 SlruDeleteSegment(SlruCtl ctl, char *filename)
-{	StackTrace("SlruDeleteSegment");
+{
 	char		path[MAXPGPATH];
 
 	snprintf(path, MAXPGPATH, "%s/%s", ctl->Dir, filename);
@@ -1228,7 +1228,7 @@ SlruDeleteSegment(SlruCtl ctl, char *filename)
  */
 bool
 SlruScanDirCbReportPresence(SlruCtl ctl, char *filename, int segpage, void *data)
-{	StackTrace("SlruScanDirCbReportPresence");
+{
 	int			cutoffPage = *(int *) data;
 
 	cutoffPage -= cutoffPage % SLRU_PAGES_PER_SEGMENT;
@@ -1245,7 +1245,7 @@ SlruScanDirCbReportPresence(SlruCtl ctl, char *filename, int segpage, void *data
  */
 static bool
 SlruScanDirCbDeleteCutoff(SlruCtl ctl, char *filename, int segpage, void *data)
-{	StackTrace("SlruScanDirCbDeleteCutoff");
+{
 	int			cutoffPage = *(int *) data;
 
 	if (ctl->PagePrecedes(segpage, cutoffPage))
@@ -1260,7 +1260,7 @@ SlruScanDirCbDeleteCutoff(SlruCtl ctl, char *filename, int segpage, void *data)
  */
 bool
 SlruScanDirCbDeleteAll(SlruCtl ctl, char *filename, int segpage, void *data)
-{	StackTrace("SlruScanDirCbDeleteAll");
+{
 	SlruDeleteSegment(ctl, filename);
 
 	return false;				/* keep going */
@@ -1283,7 +1283,7 @@ SlruScanDirCbDeleteAll(SlruCtl ctl, char *filename, int segpage, void *data)
  */
 bool
 SlruScanDirectory(SlruCtl ctl, SlruScanCallback callback, void *data)
-{	StackTrace("SlruScanDirectory");
+{
 	bool		retval = false;
 	DIR		   *cldir;
 	struct dirent *clde;

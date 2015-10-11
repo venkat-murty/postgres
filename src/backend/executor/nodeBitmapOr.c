@@ -41,7 +41,7 @@
  */
 BitmapOrState *
 ExecInitBitmapOr(BitmapOr *node, EState *estate, int eflags)
-{	StackTrace("ExecInitBitmapOr");
+{
 	BitmapOrState *bitmaporstate = makeNode(BitmapOrState);
 	PlanState **bitmapplanstates;
 	int			nplans;
@@ -95,7 +95,7 @@ ExecInitBitmapOr(BitmapOr *node, EState *estate, int eflags)
  */
 Node *
 MultiExecBitmapOr(BitmapOrState *node)
-{	StackTrace("MultiExecBitmapOr");
+{
 	PlanState **bitmapplans;
 	int			nplans;
 	int			i;
@@ -178,7 +178,7 @@ MultiExecBitmapOr(BitmapOrState *node)
  */
 void
 ExecEndBitmapOr(BitmapOrState *node)
-{	StackTrace("ExecEndBitmapOr");
+{
 	PlanState **bitmapplans;
 	int			nplans;
 	int			i;
@@ -201,7 +201,7 @@ ExecEndBitmapOr(BitmapOrState *node)
 
 void
 ExecReScanBitmapOr(BitmapOrState *node)
-{	StackTrace("ExecReScanBitmapOr");
+{
 	int			i;
 
 	for (i = 0; i < node->nplans; i++)

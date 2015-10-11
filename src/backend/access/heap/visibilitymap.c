@@ -149,7 +149,7 @@ static void vm_extend(Relation rel, BlockNumber nvmblocks);
  */
 void
 visibilitymap_clear(Relation rel, BlockNumber heapBlk, Buffer buf)
-{	StackTrace("visibilitymap_clear");
+{
 	BlockNumber mapBlock = HEAPBLK_TO_MAPBLOCK(heapBlk);
 	int			mapByte = HEAPBLK_TO_MAPBYTE(heapBlk);
 	int			mapBit = HEAPBLK_TO_MAPBIT(heapBlk);
@@ -194,7 +194,7 @@ visibilitymap_clear(Relation rel, BlockNumber heapBlk, Buffer buf)
  */
 void
 visibilitymap_pin(Relation rel, BlockNumber heapBlk, Buffer *buf)
-{	StackTrace("visibilitymap_pin");
+{
 	BlockNumber mapBlock = HEAPBLK_TO_MAPBLOCK(heapBlk);
 
 	/* Reuse the old pinned buffer if possible */
@@ -218,7 +218,7 @@ visibilitymap_pin(Relation rel, BlockNumber heapBlk, Buffer *buf)
  */
 bool
 visibilitymap_pin_ok(BlockNumber heapBlk, Buffer buf)
-{	StackTrace("visibilitymap_pin_ok");
+{
 	BlockNumber mapBlock = HEAPBLK_TO_MAPBLOCK(heapBlk);
 
 	return BufferIsValid(buf) && BufferGetBlockNumber(buf) == mapBlock;
@@ -246,7 +246,7 @@ visibilitymap_pin_ok(BlockNumber heapBlk, Buffer buf)
 void
 visibilitymap_set(Relation rel, BlockNumber heapBlk, Buffer heapBuf,
 				  XLogRecPtr recptr, Buffer vmBuf, TransactionId cutoff_xid)
-{	StackTrace("visibilitymap_set");
+{
 	BlockNumber mapBlock = HEAPBLK_TO_MAPBLOCK(heapBlk);
 	uint32		mapByte = HEAPBLK_TO_MAPBYTE(heapBlk);
 	uint8		mapBit = HEAPBLK_TO_MAPBIT(heapBlk);
@@ -329,7 +329,7 @@ visibilitymap_set(Relation rel, BlockNumber heapBlk, Buffer heapBuf,
  */
 bool
 visibilitymap_test(Relation rel, BlockNumber heapBlk, Buffer *buf)
-{	StackTrace("visibilitymap_test");
+{
 	BlockNumber mapBlock = HEAPBLK_TO_MAPBLOCK(heapBlk);
 	uint32		mapByte = HEAPBLK_TO_MAPBYTE(heapBlk);
 	uint8		mapBit = HEAPBLK_TO_MAPBIT(heapBlk);
@@ -378,7 +378,7 @@ visibilitymap_test(Relation rel, BlockNumber heapBlk, Buffer *buf)
  */
 BlockNumber
 visibilitymap_count(Relation rel)
-{	StackTrace("visibilitymap_count");
+{
 	BlockNumber result = 0;
 	BlockNumber mapBlock;
 
@@ -426,7 +426,7 @@ visibilitymap_count(Relation rel)
  */
 void
 visibilitymap_truncate(Relation rel, BlockNumber nheapblocks)
-{	StackTrace("visibilitymap_truncate");
+{
 	BlockNumber newnblocks;
 
 	/* last remaining block, byte, and bit */
@@ -522,7 +522,7 @@ visibilitymap_truncate(Relation rel, BlockNumber nheapblocks)
  */
 static Buffer
 vm_readbuf(Relation rel, BlockNumber blkno, bool extend)
-{	StackTrace("vm_readbuf");
+{
 	Buffer		buf;
 
 	/*
@@ -574,7 +574,7 @@ vm_readbuf(Relation rel, BlockNumber blkno, bool extend)
  */
 static void
 vm_extend(Relation rel, BlockNumber vm_nblocks)
-{	StackTrace("vm_extend");
+{
 	BlockNumber vm_nblocks_now;
 	Page		pg;
 

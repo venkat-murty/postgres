@@ -53,7 +53,7 @@ static void check_root(const char *progname);
  */
 int
 main(int argc, char *argv[])
-{	StackTrace("main");
+{
 	bool		do_check_root = true;
 
 	progname = get_progname(argv[0]);
@@ -237,7 +237,7 @@ main(int argc, char *argv[])
  */
 static void
 startup_hacks(const char *progname)
-{	StackTrace("startup_hacks");
+{
 	/*
 	 * Windows-specific execution environment hacking.
 	 */
@@ -281,7 +281,7 @@ startup_hacks(const char *progname)
  */
 static void
 init_locale(const char *categoryname, int category, const char *locale)
-{	StackTrace("init_locale");
+{
 	if (pg_perm_setlocale(category, locale) == NULL &&
 		pg_perm_setlocale(category, "C") == NULL)
 		elog(FATAL, "could not adopt \"%s\" locale nor C locale for %s",
@@ -300,7 +300,7 @@ init_locale(const char *categoryname, int category, const char *locale)
  */
 static void
 help(const char *progname)
-{	StackTrace("help");
+{
 	printf(_("%s is the PostgreSQL server.\n\n"), progname);
 	printf(_("Usage:\n  %s [OPTION]...\n\n"), progname);
 	printf(_("Options:\n"));
@@ -360,7 +360,7 @@ help(const char *progname)
 
 static void
 check_root(const char *progname)
-{	StackTrace("check_root");
+{
 #ifndef WIN32
 	if (geteuid() == 0)
 	{

@@ -37,7 +37,7 @@
  */
 TupleTableSlot *				/* return: a tuple or NULL */
 ExecLockRows(LockRowsState *node)
-{	StackTrace("ExecLockRows");
+{
 	TupleTableSlot *slot;
 	EState	   *estate;
 	PlanState  *outerPlan;
@@ -350,7 +350,7 @@ lnext:
  */
 LockRowsState *
 ExecInitLockRows(LockRows *node, EState *estate, int eflags)
-{	StackTrace("ExecInitLockRows");
+{
 	LockRowsState *lrstate;
 	Plan	   *outerPlan = outerPlan(node);
 	List	   *epq_arowmarks;
@@ -450,7 +450,7 @@ ExecInitLockRows(LockRows *node, EState *estate, int eflags)
  */
 void
 ExecEndLockRows(LockRowsState *node)
-{	StackTrace("ExecEndLockRows");
+{
 	EvalPlanQualEnd(&node->lr_epqstate);
 	ExecEndNode(outerPlanState(node));
 }
@@ -458,7 +458,7 @@ ExecEndLockRows(LockRowsState *node)
 
 void
 ExecReScanLockRows(LockRowsState *node)
-{	StackTrace("ExecReScanLockRows");
+{
 	/*
 	 * if chgParam of subnode is not null then plan will be re-scanned by
 	 * first ExecProcNode.

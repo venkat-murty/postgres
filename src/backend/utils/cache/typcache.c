@@ -180,7 +180,7 @@ static int	enum_oid_cmp(const void *left, const void *right);
  */
 TypeCacheEntry *
 lookup_type_cache(Oid type_id, int flags)
-{	StackTrace("lookup_type_cache");
+{
 	TypeCacheEntry *typentry;
 	bool		found;
 
@@ -556,7 +556,7 @@ lookup_type_cache(Oid type_id, int flags)
  */
 static void
 load_typcache_tupdesc(TypeCacheEntry *typentry)
-{	StackTrace("load_typcache_tupdesc");
+{
 	Relation	rel;
 
 	if (!OidIsValid(typentry->typrelid))		/* should not happen */
@@ -584,7 +584,7 @@ load_typcache_tupdesc(TypeCacheEntry *typentry)
  */
 static void
 load_rangetype_info(TypeCacheEntry *typentry)
-{	StackTrace("load_rangetype_info");
+{
 	Form_pg_range pg_range;
 	HeapTuple	tup;
 	Oid			subtypeOid;
@@ -647,7 +647,7 @@ load_rangetype_info(TypeCacheEntry *typentry)
  */
 static void
 load_domaintype_info(TypeCacheEntry *typentry)
-{	StackTrace("load_domaintype_info");
+{
 	Oid			typeOid = typentry->type_id;
 	DomainConstraintCache *dcc;
 	bool		notNull = false;
@@ -876,7 +876,7 @@ load_domaintype_info(TypeCacheEntry *typentry)
  */
 static int
 dcs_cmp(const void *a, const void *b)
-{	StackTrace("dcs_cmp");
+{
 	const DomainConstraintState *const * ca = (const DomainConstraintState *const *) a;
 	const DomainConstraintState *const * cb = (const DomainConstraintState *const *) b;
 
@@ -889,7 +889,7 @@ dcs_cmp(const void *a, const void *b)
  */
 static void
 decr_dcc_refcount(DomainConstraintCache *dcc)
-{	StackTrace("decr_dcc_refcount");
+{
 	Assert(dcc->dccRefCount > 0);
 	if (--(dcc->dccRefCount) <= 0)
 		MemoryContextDelete(dcc->dccContext);
@@ -900,7 +900,7 @@ decr_dcc_refcount(DomainConstraintCache *dcc)
  */
 static void
 dccref_deletion_callback(void *arg)
-{	StackTrace("dccref_deletion_callback");
+{
 	DomainConstraintRef *ref = (DomainConstraintRef *) arg;
 	DomainConstraintCache *dcc = ref->dcc;
 
@@ -922,7 +922,7 @@ dccref_deletion_callback(void *arg)
 void
 InitDomainConstraintRef(Oid type_id, DomainConstraintRef *ref,
 						MemoryContext refctx)
-{	StackTrace("InitDomainConstraintRef");
+{
 	/* Look up the typcache entry --- we assume it survives indefinitely */
 	ref->tcache = lookup_type_cache(type_id, TYPECACHE_DOMAIN_INFO);
 	/* For safety, establish the callback before acquiring a refcount */
@@ -953,7 +953,7 @@ InitDomainConstraintRef(Oid type_id, DomainConstraintRef *ref,
  */
 void
 UpdateDomainConstraintRef(DomainConstraintRef *ref)
-{	StackTrace("UpdateDomainConstraintRef");
+{
 	TypeCacheEntry *typentry = ref->tcache;
 
 	/* Make sure typcache entry's data is up to date */
@@ -990,7 +990,7 @@ UpdateDomainConstraintRef(DomainConstraintRef *ref)
  */
 bool
 DomainHasConstraints(Oid type_id)
-{	StackTrace("DomainHasConstraints");
+{
 	TypeCacheEntry *typentry;
 
 	/*
@@ -1017,7 +1017,7 @@ DomainHasConstraints(Oid type_id)
 
 static bool
 array_element_has_equality(TypeCacheEntry *typentry)
-{	StackTrace("array_element_has_equality");
+{
 	if (!(typentry->flags & TCFLAGS_CHECKED_ELEM_PROPERTIES))
 		cache_array_element_properties(typentry);
 	return (typentry->flags & TCFLAGS_HAVE_ELEM_EQUALITY) != 0;
@@ -1025,7 +1025,7 @@ array_element_has_equality(TypeCacheEntry *typentry)
 
 static bool
 array_element_has_compare(TypeCacheEntry *typentry)
-{	StackTrace("array_element_has_compare");
+{
 	if (!(typentry->flags & TCFLAGS_CHECKED_ELEM_PROPERTIES))
 		cache_array_element_properties(typentry);
 	return (typentry->flags & TCFLAGS_HAVE_ELEM_COMPARE) != 0;
@@ -1033,7 +1033,7 @@ array_element_has_compare(TypeCacheEntry *typentry)
 
 static bool
 array_element_has_hashing(TypeCacheEntry *typentry)
-{	StackTrace("array_element_has_hashing");
+{
 	if (!(typentry->flags & TCFLAGS_CHECKED_ELEM_PROPERTIES))
 		cache_array_element_properties(typentry);
 	return (typentry->flags & TCFLAGS_HAVE_ELEM_HASHING) != 0;
@@ -1041,7 +1041,7 @@ array_element_has_hashing(TypeCacheEntry *typentry)
 
 static void
 cache_array_element_properties(TypeCacheEntry *typentry)
-{	StackTrace("cache_array_element_properties");
+{
 	Oid			elem_type = get_base_element_type(typentry->type_id);
 
 	if (OidIsValid(elem_type))
@@ -1064,7 +1064,7 @@ cache_array_element_properties(TypeCacheEntry *typentry)
 
 static bool
 record_fields_have_equality(TypeCacheEntry *typentry)
-{	StackTrace("record_fields_have_equality");
+{
 	if (!(typentry->flags & TCFLAGS_CHECKED_FIELD_PROPERTIES))
 		cache_record_field_properties(typentry);
 	return (typentry->flags & TCFLAGS_HAVE_FIELD_EQUALITY) != 0;
@@ -1072,7 +1072,7 @@ record_fields_have_equality(TypeCacheEntry *typentry)
 
 static bool
 record_fields_have_compare(TypeCacheEntry *typentry)
-{	StackTrace("record_fields_have_compare");
+{
 	if (!(typentry->flags & TCFLAGS_CHECKED_FIELD_PROPERTIES))
 		cache_record_field_properties(typentry);
 	return (typentry->flags & TCFLAGS_HAVE_FIELD_COMPARE) != 0;
@@ -1080,7 +1080,7 @@ record_fields_have_compare(TypeCacheEntry *typentry)
 
 static void
 cache_record_field_properties(TypeCacheEntry *typentry)
-{	StackTrace("cache_record_field_properties");
+{
 	/*
 	 * For type RECORD, we can't really tell what will work, since we don't
 	 * have access here to the specific anonymous type.  Just assume that
@@ -1141,7 +1141,7 @@ cache_record_field_properties(TypeCacheEntry *typentry)
  */
 static TupleDesc
 lookup_rowtype_tupdesc_internal(Oid type_id, int32 typmod, bool noError)
-{	StackTrace("lookup_rowtype_tupdesc_internal");
+{
 	if (type_id != RECORDOID)
 	{
 		/*
@@ -1186,7 +1186,7 @@ lookup_rowtype_tupdesc_internal(Oid type_id, int32 typmod, bool noError)
  */
 TupleDesc
 lookup_rowtype_tupdesc(Oid type_id, int32 typmod)
-{	StackTrace("lookup_rowtype_tupdesc");
+{
 	TupleDesc	tupDesc;
 
 	tupDesc = lookup_rowtype_tupdesc_internal(type_id, typmod, false);
@@ -1203,7 +1203,7 @@ lookup_rowtype_tupdesc(Oid type_id, int32 typmod)
  */
 TupleDesc
 lookup_rowtype_tupdesc_noerror(Oid type_id, int32 typmod, bool noError)
-{	StackTrace("lookup_rowtype_tupdesc_noerror");
+{
 	TupleDesc	tupDesc;
 
 	tupDesc = lookup_rowtype_tupdesc_internal(type_id, typmod, noError);
@@ -1220,7 +1220,7 @@ lookup_rowtype_tupdesc_noerror(Oid type_id, int32 typmod, bool noError)
  */
 TupleDesc
 lookup_rowtype_tupdesc_copy(Oid type_id, int32 typmod)
-{	StackTrace("lookup_rowtype_tupdesc_copy");
+{
 	TupleDesc	tmp;
 
 	tmp = lookup_rowtype_tupdesc_internal(type_id, typmod, false);
@@ -1237,7 +1237,7 @@ lookup_rowtype_tupdesc_copy(Oid type_id, int32 typmod)
  */
 void
 assign_record_type_typmod(TupleDesc tupDesc)
-{	StackTrace("assign_record_type_typmod");
+{
 	RecordCacheEntry *recentry;
 	TupleDesc	entDesc;
 	Oid			hashkey[REC_HASH_KEYS];
@@ -1350,7 +1350,7 @@ assign_record_type_typmod(TupleDesc tupDesc)
  */
 static void
 TypeCacheRelCallback(Datum arg, Oid relid)
-{	StackTrace("TypeCacheRelCallback");
+{
 	HASH_SEQ_STATUS status;
 	TypeCacheEntry *typentry;
 
@@ -1402,7 +1402,7 @@ TypeCacheRelCallback(Datum arg, Oid relid)
  */
 static void
 TypeCacheOpcCallback(Datum arg, int cacheid, uint32 hashvalue)
-{	StackTrace("TypeCacheOpcCallback");
+{
 	HASH_SEQ_STATUS status;
 	TypeCacheEntry *typentry;
 
@@ -1431,7 +1431,7 @@ TypeCacheOpcCallback(Datum arg, int cacheid, uint32 hashvalue)
  */
 static void
 TypeCacheConstrCallback(Datum arg, int cacheid, uint32 hashvalue)
-{	StackTrace("TypeCacheConstrCallback");
+{
 	TypeCacheEntry *typentry;
 
 	/*
@@ -1455,7 +1455,7 @@ TypeCacheConstrCallback(Datum arg, int cacheid, uint32 hashvalue)
  */
 static inline bool
 enum_known_sorted(TypeCacheEnumData *enumdata, Oid arg)
-{	StackTrace("enum_known_sorted");
+{
 	Oid			offset;
 
 	if (arg < enumdata->bitmap_base)
@@ -1484,7 +1484,7 @@ enum_known_sorted(TypeCacheEnumData *enumdata, Oid arg)
  */
 int
 compare_values_of_enum(TypeCacheEntry *tcache, Oid arg1, Oid arg2)
-{	StackTrace("compare_values_of_enum");
+{
 	TypeCacheEnumData *enumdata;
 	EnumItem   *item1;
 	EnumItem   *item2;
@@ -1557,7 +1557,7 @@ compare_values_of_enum(TypeCacheEntry *tcache, Oid arg1, Oid arg2)
  */
 static void
 load_enum_cache_data(TypeCacheEntry *tcache)
-{	StackTrace("load_enum_cache_data");
+{
 	TypeCacheEnumData *enumdata;
 	Relation	enum_rel;
 	SysScanDesc enum_scan;
@@ -1712,7 +1712,7 @@ load_enum_cache_data(TypeCacheEntry *tcache)
  */
 static EnumItem *
 find_enumitem(TypeCacheEnumData *enumdata, Oid arg)
-{	StackTrace("find_enumitem");
+{
 	EnumItem	srch;
 
 	/* On some versions of Solaris, bsearch of zero items dumps core */
@@ -1729,7 +1729,7 @@ find_enumitem(TypeCacheEnumData *enumdata, Oid arg)
  */
 static int
 enum_oid_cmp(const void *left, const void *right)
-{	StackTrace("enum_oid_cmp");
+{
 	const EnumItem *l = (const EnumItem *) left;
 	const EnumItem *r = (const EnumItem *) right;
 

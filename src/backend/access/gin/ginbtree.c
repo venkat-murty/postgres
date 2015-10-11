@@ -31,7 +31,7 @@ static void ginFinishSplit(GinBtree btree, GinBtreeStack *stack,
  */
 static int
 ginTraverseLock(Buffer buffer, bool searchMode)
-{	StackTrace("ginTraverseLock");
+{
 	Page		page;
 	int			access = GIN_SHARE;
 
@@ -72,7 +72,7 @@ ginTraverseLock(Buffer buffer, bool searchMode)
  */
 GinBtreeStack *
 ginFindLeafPage(GinBtree btree, bool searchMode)
-{	StackTrace("ginFindLeafPage");
+{
 	GinBtreeStack *stack;
 
 	stack = (GinBtreeStack *) palloc(sizeof(GinBtreeStack));
@@ -159,7 +159,7 @@ ginFindLeafPage(GinBtree btree, bool searchMode)
  */
 Buffer
 ginStepRight(Buffer buffer, Relation index, int lockmode)
-{	StackTrace("ginStepRight");
+{
 	Buffer		nextbuffer;
 	Page		page = BufferGetPage(buffer);
 	bool		isLeaf = GinPageIsLeaf(page);
@@ -187,7 +187,7 @@ ginStepRight(Buffer buffer, Relation index, int lockmode)
 
 void
 freeGinBtreeStack(GinBtreeStack *stack)
-{	StackTrace("freeGinBtreeStack");
+{
 	while (stack)
 	{
 		GinBtreeStack *tmp = stack->parent;
@@ -207,7 +207,7 @@ freeGinBtreeStack(GinBtreeStack *stack)
  */
 static void
 ginFindParents(GinBtree btree, GinBtreeStack *stack)
-{	StackTrace("ginFindParents");
+{
 	Page		page;
 	Buffer		buffer;
 	BlockNumber blkno,
@@ -324,7 +324,7 @@ static bool
 ginPlaceToPage(GinBtree btree, GinBtreeStack *stack,
 			   void *insertdata, BlockNumber updateblkno,
 			   Buffer childbuf, GinStatsData *buildStats)
-{	StackTrace("ginPlaceToPage");
+{
 	Page		page = BufferGetPage(stack->buffer);
 	GinPlaceToPageRC rc;
 	uint16		xlflags = 0;
@@ -629,7 +629,7 @@ ginPlaceToPage(GinBtree btree, GinBtreeStack *stack,
 static void
 ginFinishSplit(GinBtree btree, GinBtreeStack *stack, bool freestack,
 			   GinStatsData *buildStats)
-{	StackTrace("ginFinishSplit");
+{
 	Page		page;
 	bool		done;
 	bool		first = true;
@@ -738,7 +738,7 @@ ginFinishSplit(GinBtree btree, GinBtreeStack *stack, bool freestack,
 void
 ginInsertValue(GinBtree btree, GinBtreeStack *stack, void *insertdata,
 			   GinStatsData *buildStats)
-{	StackTrace("ginInsertValue");
+{
 	bool		done;
 
 	/* If the leaf page was incompletely split, finish the split first */

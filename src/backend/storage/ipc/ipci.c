@@ -64,7 +64,7 @@ static bool addin_request_allowed = true;
  */
 void
 RequestAddinShmemSpace(Size size)
-{	StackTrace("RequestAddinShmemSpace");
+{
 	if (IsUnderPostmaster || !addin_request_allowed)
 		return;					/* too late */
 	total_addin_request = add_size(total_addin_request, size);
@@ -91,7 +91,7 @@ RequestAddinShmemSpace(Size size)
  */
 void
 CreateSharedMemoryAndSemaphores(bool makePrivate, int port)
-{	StackTrace("CreateSharedMemoryAndSemaphores");
+{
 	PGShmemHeader *shim = NULL;
 
 	if (!IsUnderPostmaster)

@@ -37,7 +37,7 @@
 
 void
 geqo_mutation(PlannerInfo *root, Gene *tour, int num_gene)
-{	StackTrace("geqo_mutation");
+{
 	int			swap1;
 	int			swap2;
 	int			num_swaps = geqo_randint(root, num_gene / 3, 0);

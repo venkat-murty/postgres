@@ -133,7 +133,7 @@ static void RoleMembershipCacheCallback(Datum arg, int cacheid, uint32 hashvalue
  */
 static const char *
 getid(const char *s, char *n)
-{	StackTrace("getid");
+{
 	int			len = 0;
 	bool		in_quotes = false;
 
@@ -185,7 +185,7 @@ getid(const char *s, char *n)
  */
 static void
 putid(char *p, const char *s)
-{	StackTrace("putid");
+{
 	const char *src;
 	bool		safe = true;
 
@@ -234,7 +234,7 @@ putid(char *p, const char *s)
  */
 static const char *
 aclparse(const char *s, AclItem *aip)
-{	StackTrace("aclparse");
+{
 	AclMode		privs,
 				goption,
 				read;
@@ -372,7 +372,7 @@ aclparse(const char *s, AclItem *aip)
  */
 static Acl *
 allocacl(int n)
-{	StackTrace("allocacl");
+{
 	Acl		   *new_acl;
 	Size		size;
 
@@ -394,7 +394,7 @@ allocacl(int n)
  */
 Acl *
 make_empty_acl(void)
-{	StackTrace("make_empty_acl");
+{
 	return allocacl(0);
 }
 
@@ -403,7 +403,7 @@ make_empty_acl(void)
  */
 Acl *
 aclcopy(const Acl *orig_acl)
-{	StackTrace("aclcopy");
+{
 	Acl		   *result_acl;
 
 	result_acl = allocacl(ACL_NUM(orig_acl));
@@ -423,7 +423,7 @@ aclcopy(const Acl *orig_acl)
  */
 Acl *
 aclconcat(const Acl *left_acl, const Acl *right_acl)
-{	StackTrace("aclconcat");
+{
 	Acl		   *result_acl;
 
 	result_acl = allocacl(ACL_NUM(left_acl) + ACL_NUM(right_acl));
@@ -447,7 +447,7 @@ aclconcat(const Acl *left_acl, const Acl *right_acl)
  */
 Acl *
 aclmerge(const Acl *left_acl, const Acl *right_acl, Oid ownerId)
-{	StackTrace("aclmerge");
+{
 	Acl		   *result_acl;
 	AclItem    *aip;
 	int			i,
@@ -491,7 +491,7 @@ aclmerge(const Acl *left_acl, const Acl *right_acl, Oid ownerId)
  */
 void
 aclitemsort(Acl *acl)
-{	StackTrace("aclitemsort");
+{
 	if (acl != NULL && ACL_NUM(acl) > 1)
 		qsort(ACL_DAT(acl), ACL_NUM(acl), sizeof(AclItem), aclitemComparator);
 }
@@ -505,7 +505,7 @@ aclitemsort(Acl *acl)
  */
 bool
 aclequal(const Acl *left_acl, const Acl *right_acl)
-{	StackTrace("aclequal");
+{
 	/* Check for cases where one or both are empty/null */
 	if (left_acl == NULL || ACL_NUM(left_acl) == 0)
 	{
@@ -536,7 +536,7 @@ aclequal(const Acl *left_acl, const Acl *right_acl)
  */
 static void
 check_acl(const Acl *acl)
-{	StackTrace("check_acl");
+{
 	if (ARR_ELEMTYPE(acl) != ACLITEMOID)
 		ereport(ERROR,
 				(errcode(ERRCODE_INVALID_PARAMETER_VALUE),
@@ -561,7 +561,7 @@ check_acl(const Acl *acl)
  */
 Datum
 aclitemin(PG_FUNCTION_ARGS)
-{	StackTrace("aclitemin");
+{
 	const char *s = PG_GETARG_CSTRING(0);
 	AclItem    *aip;
 
@@ -587,7 +587,7 @@ aclitemin(PG_FUNCTION_ARGS)
  */
 Datum
 aclitemout(PG_FUNCTION_ARGS)
-{	StackTrace("aclitemout");
+{
 	AclItem    *aip = PG_GETARG_ACLITEM_P(0);
 	char	   *p;
 	char	   *out;
@@ -654,7 +654,7 @@ aclitemout(PG_FUNCTION_ARGS)
  */
 static bool
 aclitem_match(const AclItem *a1, const AclItem *a2)
-{	StackTrace("aclitem_match");
+{
 	return a1->ai_grantee == a2->ai_grantee &&
 		a1->ai_grantor == a2->ai_grantor;
 }
@@ -665,7 +665,7 @@ aclitem_match(const AclItem *a1, const AclItem *a2)
  */
 static int
 aclitemComparator(const void *arg1, const void *arg2)
-{	StackTrace("aclitemComparator");
+{
 	const AclItem *a1 = (const AclItem *) arg1;
 	const AclItem *a2 = (const AclItem *) arg2;
 
@@ -689,7 +689,7 @@ aclitemComparator(const void *arg1, const void *arg2)
  */
 Datum
 aclitem_eq(PG_FUNCTION_ARGS)
-{	StackTrace("aclitem_eq");
+{
 	AclItem    *a1 = PG_GETARG_ACLITEM_P(0);
 	AclItem    *a2 = PG_GETARG_ACLITEM_P(1);
 	bool		result;
@@ -709,7 +709,7 @@ aclitem_eq(PG_FUNCTION_ARGS)
  */
 Datum
 hash_aclitem(PG_FUNCTION_ARGS)
-{	StackTrace("hash_aclitem");
+{
 	AclItem    *a = PG_GETARG_ACLITEM_P(0);
 
 	/* not very bright, but avoids any issue of padding in struct */
@@ -728,7 +728,7 @@ hash_aclitem(PG_FUNCTION_ARGS)
  */
 Acl *
 acldefault(GrantObjectType objtype, Oid ownerId)
-{	StackTrace("acldefault");
+{
 	AclMode		world_default;
 	AclMode		owner_default;
 	int			nacl;
@@ -842,7 +842,7 @@ acldefault(GrantObjectType objtype, Oid ownerId)
  */
 Datum
 acldefault_sql(PG_FUNCTION_ARGS)
-{	StackTrace("acldefault_sql");
+{
 	char		objtypec = PG_GETARG_CHAR(0);
 	Oid			owner = PG_GETARG_OID(1);
 	GrantObjectType objtype = 0;
@@ -912,7 +912,7 @@ acldefault_sql(PG_FUNCTION_ARGS)
 Acl *
 aclupdate(const Acl *old_acl, const AclItem *mod_aip,
 		  int modechg, Oid ownerId, DropBehavior behavior)
-{	StackTrace("aclupdate");
+{
 	Acl		   *new_acl = NULL;
 	AclItem    *old_aip,
 			   *new_aip = NULL;
@@ -1032,7 +1032,7 @@ aclupdate(const Acl *old_acl, const AclItem *mod_aip,
  */
 Acl *
 aclnewowner(const Acl *old_acl, Oid oldOwnerId, Oid newOwnerId)
-{	StackTrace("aclnewowner");
+{
 	Acl		   *new_acl;
 	AclItem    *new_aip;
 	AclItem    *old_aip;
@@ -1136,7 +1136,7 @@ aclnewowner(const Acl *old_acl, Oid oldOwnerId, Oid newOwnerId)
 static void
 check_circularity(const Acl *old_acl, const AclItem *mod_aip,
 				  Oid ownerId)
-{	StackTrace("check_circularity");
+{
 	Acl		   *acl;
 	AclItem    *aip;
 	int			i,
@@ -1219,7 +1219,7 @@ recursive_revoke(Acl *acl,
 				 AclMode revoke_privs,
 				 Oid ownerId,
 				 DropBehavior behavior)
-{	StackTrace("recursive_revoke");
+{
 	AclMode		still_has;
 	AclItem    *aip;
 	int			i,
@@ -1302,7 +1302,7 @@ restart:
 AclMode
 aclmask(const Acl *acl, Oid roleid, Oid ownerId,
 		AclMode mask, AclMaskHow how)
-{	StackTrace("aclmask");
+{
 	AclMode		result;
 	AclMode		remaining;
 	AclItem    *aidat;
@@ -1391,7 +1391,7 @@ aclmask(const Acl *acl, Oid roleid, Oid ownerId,
 static AclMode
 aclmask_direct(const Acl *acl, Oid roleid, Oid ownerId,
 			   AclMode mask, AclMaskHow how)
-{	StackTrace("aclmask_direct");
+{
 	AclMode		result;
 	AclItem    *aidat;
 	int			i,
@@ -1453,7 +1453,7 @@ aclmask_direct(const Acl *acl, Oid roleid, Oid ownerId,
  */
 int
 aclmembers(const Acl *acl, Oid **roleids)
-{	StackTrace("aclmembers");
+{
 	Oid		   *list;
 	const AclItem *acldat;
 	int			i,
@@ -1513,7 +1513,7 @@ aclmembers(const Acl *acl, Oid **roleids)
  */
 static int
 oidComparator(const void *arg1, const void *arg2)
-{	StackTrace("oidComparator");
+{
 	Oid			oid1 = *(const Oid *) arg1;
 	Oid			oid2 = *(const Oid *) arg2;
 
@@ -1530,7 +1530,7 @@ oidComparator(const void *arg1, const void *arg2)
  */
 Datum
 aclinsert(PG_FUNCTION_ARGS)
-{	StackTrace("aclinsert");
+{
 	ereport(ERROR,
 			(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
 			 errmsg("aclinsert is no longer supported")));
@@ -1540,7 +1540,7 @@ aclinsert(PG_FUNCTION_ARGS)
 
 Datum
 aclremove(PG_FUNCTION_ARGS)
-{	StackTrace("aclremove");
+{
 	ereport(ERROR,
 			(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
 			 errmsg("aclremove is no longer supported")));
@@ -1550,7 +1550,7 @@ aclremove(PG_FUNCTION_ARGS)
 
 Datum
 aclcontains(PG_FUNCTION_ARGS)
-{	StackTrace("aclcontains");
+{
 	Acl		   *acl = PG_GETARG_ACL_P(0);
 	AclItem    *aip = PG_GETARG_ACLITEM_P(1);
 	AclItem    *aidat;
@@ -1572,7 +1572,7 @@ aclcontains(PG_FUNCTION_ARGS)
 
 Datum
 makeaclitem(PG_FUNCTION_ARGS)
-{	StackTrace("makeaclitem");
+{
 	Oid			grantee = PG_GETARG_OID(0);
 	Oid			grantor = PG_GETARG_OID(1);
 	text	   *privtext = PG_GETARG_TEXT_P(2);
@@ -1595,7 +1595,7 @@ makeaclitem(PG_FUNCTION_ARGS)
 
 static AclMode
 convert_priv_string(text *priv_type_text)
-{	StackTrace("convert_priv_string");
+{
 	char	   *priv_type = text_to_cstring(priv_type_text);
 
 	if (pg_strcasecmp(priv_type, "SELECT") == 0)
@@ -1646,7 +1646,7 @@ convert_priv_string(text *priv_type_text)
 static AclMode
 convert_any_priv_string(text *priv_type_text,
 						const priv_map *privileges)
-{	StackTrace("convert_any_priv_string");
+{
 	AclMode		result = 0;
 	char	   *priv_type = text_to_cstring(priv_type_text);
 	char	   *chunk;
@@ -1693,7 +1693,7 @@ convert_any_priv_string(text *priv_type_text,
 
 static const char *
 convert_aclright_to_string(int aclright)
-{	StackTrace("convert_aclright_to_string");
+{
 	switch (aclright)
 	{
 		case ACL_INSERT:
@@ -1743,7 +1743,7 @@ convert_aclright_to_string(int aclright)
  */
 Datum
 aclexplode(PG_FUNCTION_ARGS)
-{	StackTrace("aclexplode");
+{
 	Acl		   *acl = PG_GETARG_ACL_P(0);
 	FuncCallContext *funcctx;
 	int		   *idx;
@@ -1849,7 +1849,7 @@ aclexplode(PG_FUNCTION_ARGS)
  */
 Datum
 has_table_privilege_name_name(PG_FUNCTION_ARGS)
-{	StackTrace("has_table_privilege_name_name");
+{
 	Name		rolename = PG_GETARG_NAME(0);
 	text	   *tablename = PG_GETARG_TEXT_P(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -1875,7 +1875,7 @@ has_table_privilege_name_name(PG_FUNCTION_ARGS)
  */
 Datum
 has_table_privilege_name(PG_FUNCTION_ARGS)
-{	StackTrace("has_table_privilege_name");
+{
 	text	   *tablename = PG_GETARG_TEXT_P(0);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(1);
 	Oid			roleid;
@@ -1899,7 +1899,7 @@ has_table_privilege_name(PG_FUNCTION_ARGS)
  */
 Datum
 has_table_privilege_name_id(PG_FUNCTION_ARGS)
-{	StackTrace("has_table_privilege_name_id");
+{
 	Name		username = PG_GETARG_NAME(0);
 	Oid			tableoid = PG_GETARG_OID(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -1926,7 +1926,7 @@ has_table_privilege_name_id(PG_FUNCTION_ARGS)
  */
 Datum
 has_table_privilege_id(PG_FUNCTION_ARGS)
-{	StackTrace("has_table_privilege_id");
+{
 	Oid			tableoid = PG_GETARG_OID(0);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(1);
 	Oid			roleid;
@@ -1951,7 +1951,7 @@ has_table_privilege_id(PG_FUNCTION_ARGS)
  */
 Datum
 has_table_privilege_id_name(PG_FUNCTION_ARGS)
-{	StackTrace("has_table_privilege_id_name");
+{
 	Oid			roleid = PG_GETARG_OID(0);
 	text	   *tablename = PG_GETARG_TEXT_P(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -1974,7 +1974,7 @@ has_table_privilege_id_name(PG_FUNCTION_ARGS)
  */
 Datum
 has_table_privilege_id_id(PG_FUNCTION_ARGS)
-{	StackTrace("has_table_privilege_id_id");
+{
 	Oid			roleid = PG_GETARG_OID(0);
 	Oid			tableoid = PG_GETARG_OID(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -2000,7 +2000,7 @@ has_table_privilege_id_id(PG_FUNCTION_ARGS)
  */
 static Oid
 convert_table_name(text *tablename)
-{	StackTrace("convert_table_name");
+{
 	RangeVar   *relrv;
 
 	relrv = makeRangeVarFromNameList(textToQualifiedNameList(tablename));
@@ -2015,7 +2015,7 @@ convert_table_name(text *tablename)
  */
 static AclMode
 convert_table_priv_string(text *priv_type_text)
-{	StackTrace("convert_table_priv_string");
+{
 	static const priv_map table_priv_map[] = {
 		{"SELECT", ACL_SELECT},
 		{"SELECT WITH GRANT OPTION", ACL_GRANT_OPTION_FOR(ACL_SELECT)},
@@ -2057,7 +2057,7 @@ convert_table_priv_string(text *priv_type_text)
  */
 Datum
 has_sequence_privilege_name_name(PG_FUNCTION_ARGS)
-{	StackTrace("has_sequence_privilege_name_name");
+{
 	Name		rolename = PG_GETARG_NAME(0);
 	text	   *sequencename = PG_GETARG_TEXT_P(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -2088,7 +2088,7 @@ has_sequence_privilege_name_name(PG_FUNCTION_ARGS)
  */
 Datum
 has_sequence_privilege_name(PG_FUNCTION_ARGS)
-{	StackTrace("has_sequence_privilege_name");
+{
 	text	   *sequencename = PG_GETARG_TEXT_P(0);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(1);
 	Oid			roleid;
@@ -2117,7 +2117,7 @@ has_sequence_privilege_name(PG_FUNCTION_ARGS)
  */
 Datum
 has_sequence_privilege_name_id(PG_FUNCTION_ARGS)
-{	StackTrace("has_sequence_privilege_name_id");
+{
 	Name		username = PG_GETARG_NAME(0);
 	Oid			sequenceoid = PG_GETARG_OID(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -2150,7 +2150,7 @@ has_sequence_privilege_name_id(PG_FUNCTION_ARGS)
  */
 Datum
 has_sequence_privilege_id(PG_FUNCTION_ARGS)
-{	StackTrace("has_sequence_privilege_id");
+{
 	Oid			sequenceoid = PG_GETARG_OID(0);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(1);
 	Oid			roleid;
@@ -2181,7 +2181,7 @@ has_sequence_privilege_id(PG_FUNCTION_ARGS)
  */
 Datum
 has_sequence_privilege_id_name(PG_FUNCTION_ARGS)
-{	StackTrace("has_sequence_privilege_id_name");
+{
 	Oid			roleid = PG_GETARG_OID(0);
 	text	   *sequencename = PG_GETARG_TEXT_P(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -2209,7 +2209,7 @@ has_sequence_privilege_id_name(PG_FUNCTION_ARGS)
  */
 Datum
 has_sequence_privilege_id_id(PG_FUNCTION_ARGS)
-{	StackTrace("has_sequence_privilege_id_id");
+{
 	Oid			roleid = PG_GETARG_OID(0);
 	Oid			sequenceoid = PG_GETARG_OID(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -2238,7 +2238,7 @@ has_sequence_privilege_id_id(PG_FUNCTION_ARGS)
  */
 static AclMode
 convert_sequence_priv_string(text *priv_type_text)
-{	StackTrace("convert_sequence_priv_string");
+{
 	static const priv_map sequence_priv_map[] = {
 		{"USAGE", ACL_USAGE},
 		{"SELECT", ACL_SELECT},
@@ -2268,7 +2268,7 @@ convert_sequence_priv_string(text *priv_type_text)
  */
 Datum
 has_any_column_privilege_name_name(PG_FUNCTION_ARGS)
-{	StackTrace("has_any_column_privilege_name_name");
+{
 	Name		rolename = PG_GETARG_NAME(0);
 	text	   *tablename = PG_GETARG_TEXT_P(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -2298,7 +2298,7 @@ has_any_column_privilege_name_name(PG_FUNCTION_ARGS)
  */
 Datum
 has_any_column_privilege_name(PG_FUNCTION_ARGS)
-{	StackTrace("has_any_column_privilege_name");
+{
 	text	   *tablename = PG_GETARG_TEXT_P(0);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(1);
 	Oid			roleid;
@@ -2326,7 +2326,7 @@ has_any_column_privilege_name(PG_FUNCTION_ARGS)
  */
 Datum
 has_any_column_privilege_name_id(PG_FUNCTION_ARGS)
-{	StackTrace("has_any_column_privilege_name_id");
+{
 	Name		username = PG_GETARG_NAME(0);
 	Oid			tableoid = PG_GETARG_OID(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -2357,7 +2357,7 @@ has_any_column_privilege_name_id(PG_FUNCTION_ARGS)
  */
 Datum
 has_any_column_privilege_id(PG_FUNCTION_ARGS)
-{	StackTrace("has_any_column_privilege_id");
+{
 	Oid			tableoid = PG_GETARG_OID(0);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(1);
 	Oid			roleid;
@@ -2386,7 +2386,7 @@ has_any_column_privilege_id(PG_FUNCTION_ARGS)
  */
 Datum
 has_any_column_privilege_id_name(PG_FUNCTION_ARGS)
-{	StackTrace("has_any_column_privilege_id_name");
+{
 	Oid			roleid = PG_GETARG_OID(0);
 	text	   *tablename = PG_GETARG_TEXT_P(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -2413,7 +2413,7 @@ has_any_column_privilege_id_name(PG_FUNCTION_ARGS)
  */
 Datum
 has_any_column_privilege_id_id(PG_FUNCTION_ARGS)
-{	StackTrace("has_any_column_privilege_id_id");
+{
 	Oid			roleid = PG_GETARG_OID(0);
 	Oid			tableoid = PG_GETARG_OID(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -2457,7 +2457,7 @@ has_any_column_privilege_id_id(PG_FUNCTION_ARGS)
 static int
 column_privilege_check(Oid tableoid, AttrNumber attnum,
 					   Oid roleid, AclMode mode)
-{	StackTrace("column_privilege_check");
+{
 	AclResult	aclresult;
 	HeapTuple	attTuple;
 	Form_pg_attribute attributeForm;
@@ -2508,7 +2508,7 @@ column_privilege_check(Oid tableoid, AttrNumber attnum,
  */
 Datum
 has_column_privilege_name_name_name(PG_FUNCTION_ARGS)
-{	StackTrace("has_column_privilege_name_name_name");
+{
 	Name		rolename = PG_GETARG_NAME(0);
 	text	   *tablename = PG_GETARG_TEXT_P(1);
 	text	   *column = PG_GETARG_TEXT_P(2);
@@ -2537,7 +2537,7 @@ has_column_privilege_name_name_name(PG_FUNCTION_ARGS)
  */
 Datum
 has_column_privilege_name_name_attnum(PG_FUNCTION_ARGS)
-{	StackTrace("has_column_privilege_name_name_attnum");
+{
 	Name		rolename = PG_GETARG_NAME(0);
 	text	   *tablename = PG_GETARG_TEXT_P(1);
 	AttrNumber	colattnum = PG_GETARG_INT16(2);
@@ -2564,7 +2564,7 @@ has_column_privilege_name_name_attnum(PG_FUNCTION_ARGS)
  */
 Datum
 has_column_privilege_name_id_name(PG_FUNCTION_ARGS)
-{	StackTrace("has_column_privilege_name_id_name");
+{
 	Name		username = PG_GETARG_NAME(0);
 	Oid			tableoid = PG_GETARG_OID(1);
 	text	   *column = PG_GETARG_TEXT_P(2);
@@ -2591,7 +2591,7 @@ has_column_privilege_name_id_name(PG_FUNCTION_ARGS)
  */
 Datum
 has_column_privilege_name_id_attnum(PG_FUNCTION_ARGS)
-{	StackTrace("has_column_privilege_name_id_attnum");
+{
 	Name		username = PG_GETARG_NAME(0);
 	Oid			tableoid = PG_GETARG_OID(1);
 	AttrNumber	colattnum = PG_GETARG_INT16(2);
@@ -2616,7 +2616,7 @@ has_column_privilege_name_id_attnum(PG_FUNCTION_ARGS)
  */
 Datum
 has_column_privilege_id_name_name(PG_FUNCTION_ARGS)
-{	StackTrace("has_column_privilege_id_name_name");
+{
 	Oid			roleid = PG_GETARG_OID(0);
 	text	   *tablename = PG_GETARG_TEXT_P(1);
 	text	   *column = PG_GETARG_TEXT_P(2);
@@ -2643,7 +2643,7 @@ has_column_privilege_id_name_name(PG_FUNCTION_ARGS)
  */
 Datum
 has_column_privilege_id_name_attnum(PG_FUNCTION_ARGS)
-{	StackTrace("has_column_privilege_id_name_attnum");
+{
 	Oid			roleid = PG_GETARG_OID(0);
 	text	   *tablename = PG_GETARG_TEXT_P(1);
 	AttrNumber	colattnum = PG_GETARG_INT16(2);
@@ -2668,7 +2668,7 @@ has_column_privilege_id_name_attnum(PG_FUNCTION_ARGS)
  */
 Datum
 has_column_privilege_id_id_name(PG_FUNCTION_ARGS)
-{	StackTrace("has_column_privilege_id_id_name");
+{
 	Oid			roleid = PG_GETARG_OID(0);
 	Oid			tableoid = PG_GETARG_OID(1);
 	text	   *column = PG_GETARG_TEXT_P(2);
@@ -2693,7 +2693,7 @@ has_column_privilege_id_id_name(PG_FUNCTION_ARGS)
  */
 Datum
 has_column_privilege_id_id_attnum(PG_FUNCTION_ARGS)
-{	StackTrace("has_column_privilege_id_id_attnum");
+{
 	Oid			roleid = PG_GETARG_OID(0);
 	Oid			tableoid = PG_GETARG_OID(1);
 	AttrNumber	colattnum = PG_GETARG_INT16(2);
@@ -2717,7 +2717,7 @@ has_column_privilege_id_id_attnum(PG_FUNCTION_ARGS)
  */
 Datum
 has_column_privilege_name_name(PG_FUNCTION_ARGS)
-{	StackTrace("has_column_privilege_name_name");
+{
 	text	   *tablename = PG_GETARG_TEXT_P(0);
 	text	   *column = PG_GETARG_TEXT_P(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -2746,7 +2746,7 @@ has_column_privilege_name_name(PG_FUNCTION_ARGS)
  */
 Datum
 has_column_privilege_name_attnum(PG_FUNCTION_ARGS)
-{	StackTrace("has_column_privilege_name_attnum");
+{
 	text	   *tablename = PG_GETARG_TEXT_P(0);
 	AttrNumber	colattnum = PG_GETARG_INT16(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -2773,7 +2773,7 @@ has_column_privilege_name_attnum(PG_FUNCTION_ARGS)
  */
 Datum
 has_column_privilege_id_name(PG_FUNCTION_ARGS)
-{	StackTrace("has_column_privilege_id_name");
+{
 	Oid			tableoid = PG_GETARG_OID(0);
 	text	   *column = PG_GETARG_TEXT_P(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -2800,7 +2800,7 @@ has_column_privilege_id_name(PG_FUNCTION_ARGS)
  */
 Datum
 has_column_privilege_id_attnum(PG_FUNCTION_ARGS)
-{	StackTrace("has_column_privilege_id_attnum");
+{
 	Oid			tableoid = PG_GETARG_OID(0);
 	AttrNumber	colattnum = PG_GETARG_INT16(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -2827,7 +2827,7 @@ has_column_privilege_id_attnum(PG_FUNCTION_ARGS)
  */
 static AttrNumber
 convert_column_name(Oid tableoid, text *column)
-{	StackTrace("convert_column_name");
+{
 	AttrNumber	attnum;
 	char	   *colname;
 
@@ -2848,7 +2848,7 @@ convert_column_name(Oid tableoid, text *column)
  */
 static AclMode
 convert_column_priv_string(text *priv_type_text)
-{	StackTrace("convert_column_priv_string");
+{
 	static const priv_map column_priv_map[] = {
 		{"SELECT", ACL_SELECT},
 		{"SELECT WITH GRANT OPTION", ACL_GRANT_OPTION_FOR(ACL_SELECT)},
@@ -2882,7 +2882,7 @@ convert_column_priv_string(text *priv_type_text)
  */
 Datum
 has_database_privilege_name_name(PG_FUNCTION_ARGS)
-{	StackTrace("has_database_privilege_name_name");
+{
 	Name		username = PG_GETARG_NAME(0);
 	text	   *databasename = PG_GETARG_TEXT_P(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -2908,7 +2908,7 @@ has_database_privilege_name_name(PG_FUNCTION_ARGS)
  */
 Datum
 has_database_privilege_name(PG_FUNCTION_ARGS)
-{	StackTrace("has_database_privilege_name");
+{
 	text	   *databasename = PG_GETARG_TEXT_P(0);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(1);
 	Oid			roleid;
@@ -2932,7 +2932,7 @@ has_database_privilege_name(PG_FUNCTION_ARGS)
  */
 Datum
 has_database_privilege_name_id(PG_FUNCTION_ARGS)
-{	StackTrace("has_database_privilege_name_id");
+{
 	Name		username = PG_GETARG_NAME(0);
 	Oid			databaseoid = PG_GETARG_OID(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -2959,7 +2959,7 @@ has_database_privilege_name_id(PG_FUNCTION_ARGS)
  */
 Datum
 has_database_privilege_id(PG_FUNCTION_ARGS)
-{	StackTrace("has_database_privilege_id");
+{
 	Oid			databaseoid = PG_GETARG_OID(0);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(1);
 	Oid			roleid;
@@ -2984,7 +2984,7 @@ has_database_privilege_id(PG_FUNCTION_ARGS)
  */
 Datum
 has_database_privilege_id_name(PG_FUNCTION_ARGS)
-{	StackTrace("has_database_privilege_id_name");
+{
 	Oid			roleid = PG_GETARG_OID(0);
 	text	   *databasename = PG_GETARG_TEXT_P(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -3007,7 +3007,7 @@ has_database_privilege_id_name(PG_FUNCTION_ARGS)
  */
 Datum
 has_database_privilege_id_id(PG_FUNCTION_ARGS)
-{	StackTrace("has_database_privilege_id_id");
+{
 	Oid			roleid = PG_GETARG_OID(0);
 	Oid			databaseoid = PG_GETARG_OID(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -3033,7 +3033,7 @@ has_database_privilege_id_id(PG_FUNCTION_ARGS)
  */
 static Oid
 convert_database_name(text *databasename)
-{	StackTrace("convert_database_name");
+{
 	char	   *dbname = text_to_cstring(databasename);
 
 	return get_database_oid(dbname, false);
@@ -3045,7 +3045,7 @@ convert_database_name(text *databasename)
  */
 static AclMode
 convert_database_priv_string(text *priv_type_text)
-{	StackTrace("convert_database_priv_string");
+{
 	static const priv_map database_priv_map[] = {
 		{"CREATE", ACL_CREATE},
 		{"CREATE WITH GRANT OPTION", ACL_GRANT_OPTION_FOR(ACL_CREATE)},
@@ -3080,7 +3080,7 @@ convert_database_priv_string(text *priv_type_text)
  */
 Datum
 has_foreign_data_wrapper_privilege_name_name(PG_FUNCTION_ARGS)
-{	StackTrace("has_foreign_data_wrapper_privilege_name_name");
+{
 	Name		username = PG_GETARG_NAME(0);
 	text	   *fdwname = PG_GETARG_TEXT_P(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -3106,7 +3106,7 @@ has_foreign_data_wrapper_privilege_name_name(PG_FUNCTION_ARGS)
  */
 Datum
 has_foreign_data_wrapper_privilege_name(PG_FUNCTION_ARGS)
-{	StackTrace("has_foreign_data_wrapper_privilege_name");
+{
 	text	   *fdwname = PG_GETARG_TEXT_P(0);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(1);
 	Oid			roleid;
@@ -3130,7 +3130,7 @@ has_foreign_data_wrapper_privilege_name(PG_FUNCTION_ARGS)
  */
 Datum
 has_foreign_data_wrapper_privilege_name_id(PG_FUNCTION_ARGS)
-{	StackTrace("has_foreign_data_wrapper_privilege_name_id");
+{
 	Name		username = PG_GETARG_NAME(0);
 	Oid			fdwid = PG_GETARG_OID(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -3154,7 +3154,7 @@ has_foreign_data_wrapper_privilege_name_id(PG_FUNCTION_ARGS)
  */
 Datum
 has_foreign_data_wrapper_privilege_id(PG_FUNCTION_ARGS)
-{	StackTrace("has_foreign_data_wrapper_privilege_id");
+{
 	Oid			fdwid = PG_GETARG_OID(0);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(1);
 	Oid			roleid;
@@ -3176,7 +3176,7 @@ has_foreign_data_wrapper_privilege_id(PG_FUNCTION_ARGS)
  */
 Datum
 has_foreign_data_wrapper_privilege_id_name(PG_FUNCTION_ARGS)
-{	StackTrace("has_foreign_data_wrapper_privilege_id_name");
+{
 	Oid			roleid = PG_GETARG_OID(0);
 	text	   *fdwname = PG_GETARG_TEXT_P(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -3199,7 +3199,7 @@ has_foreign_data_wrapper_privilege_id_name(PG_FUNCTION_ARGS)
  */
 Datum
 has_foreign_data_wrapper_privilege_id_id(PG_FUNCTION_ARGS)
-{	StackTrace("has_foreign_data_wrapper_privilege_id_id");
+{
 	Oid			roleid = PG_GETARG_OID(0);
 	Oid			fdwid = PG_GETARG_OID(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -3222,7 +3222,7 @@ has_foreign_data_wrapper_privilege_id_id(PG_FUNCTION_ARGS)
  */
 static Oid
 convert_foreign_data_wrapper_name(text *fdwname)
-{	StackTrace("convert_foreign_data_wrapper_name");
+{
 	char	   *fdwstr = text_to_cstring(fdwname);
 
 	return get_foreign_data_wrapper_oid(fdwstr, false);
@@ -3234,7 +3234,7 @@ convert_foreign_data_wrapper_name(text *fdwname)
  */
 static AclMode
 convert_foreign_data_wrapper_priv_string(text *priv_type_text)
-{	StackTrace("convert_foreign_data_wrapper_priv_string");
+{
 	static const priv_map foreign_data_wrapper_priv_map[] = {
 		{"USAGE", ACL_USAGE},
 		{"USAGE WITH GRANT OPTION", ACL_GRANT_OPTION_FOR(ACL_USAGE)},
@@ -3262,7 +3262,7 @@ convert_foreign_data_wrapper_priv_string(text *priv_type_text)
  */
 Datum
 has_function_privilege_name_name(PG_FUNCTION_ARGS)
-{	StackTrace("has_function_privilege_name_name");
+{
 	Name		username = PG_GETARG_NAME(0);
 	text	   *functionname = PG_GETARG_TEXT_P(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -3288,7 +3288,7 @@ has_function_privilege_name_name(PG_FUNCTION_ARGS)
  */
 Datum
 has_function_privilege_name(PG_FUNCTION_ARGS)
-{	StackTrace("has_function_privilege_name");
+{
 	text	   *functionname = PG_GETARG_TEXT_P(0);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(1);
 	Oid			roleid;
@@ -3312,7 +3312,7 @@ has_function_privilege_name(PG_FUNCTION_ARGS)
  */
 Datum
 has_function_privilege_name_id(PG_FUNCTION_ARGS)
-{	StackTrace("has_function_privilege_name_id");
+{
 	Name		username = PG_GETARG_NAME(0);
 	Oid			functionoid = PG_GETARG_OID(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -3339,7 +3339,7 @@ has_function_privilege_name_id(PG_FUNCTION_ARGS)
  */
 Datum
 has_function_privilege_id(PG_FUNCTION_ARGS)
-{	StackTrace("has_function_privilege_id");
+{
 	Oid			functionoid = PG_GETARG_OID(0);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(1);
 	Oid			roleid;
@@ -3364,7 +3364,7 @@ has_function_privilege_id(PG_FUNCTION_ARGS)
  */
 Datum
 has_function_privilege_id_name(PG_FUNCTION_ARGS)
-{	StackTrace("has_function_privilege_id_name");
+{
 	Oid			roleid = PG_GETARG_OID(0);
 	text	   *functionname = PG_GETARG_TEXT_P(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -3387,7 +3387,7 @@ has_function_privilege_id_name(PG_FUNCTION_ARGS)
  */
 Datum
 has_function_privilege_id_id(PG_FUNCTION_ARGS)
-{	StackTrace("has_function_privilege_id_id");
+{
 	Oid			roleid = PG_GETARG_OID(0);
 	Oid			functionoid = PG_GETARG_OID(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -3413,7 +3413,7 @@ has_function_privilege_id_id(PG_FUNCTION_ARGS)
  */
 static Oid
 convert_function_name(text *functionname)
-{	StackTrace("convert_function_name");
+{
 	char	   *funcname = text_to_cstring(functionname);
 	Oid			oid;
 
@@ -3434,7 +3434,7 @@ convert_function_name(text *functionname)
  */
 static AclMode
 convert_function_priv_string(text *priv_type_text)
-{	StackTrace("convert_function_priv_string");
+{
 	static const priv_map function_priv_map[] = {
 		{"EXECUTE", ACL_EXECUTE},
 		{"EXECUTE WITH GRANT OPTION", ACL_GRANT_OPTION_FOR(ACL_EXECUTE)},
@@ -3462,7 +3462,7 @@ convert_function_priv_string(text *priv_type_text)
  */
 Datum
 has_language_privilege_name_name(PG_FUNCTION_ARGS)
-{	StackTrace("has_language_privilege_name_name");
+{
 	Name		username = PG_GETARG_NAME(0);
 	text	   *languagename = PG_GETARG_TEXT_P(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -3488,7 +3488,7 @@ has_language_privilege_name_name(PG_FUNCTION_ARGS)
  */
 Datum
 has_language_privilege_name(PG_FUNCTION_ARGS)
-{	StackTrace("has_language_privilege_name");
+{
 	text	   *languagename = PG_GETARG_TEXT_P(0);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(1);
 	Oid			roleid;
@@ -3512,7 +3512,7 @@ has_language_privilege_name(PG_FUNCTION_ARGS)
  */
 Datum
 has_language_privilege_name_id(PG_FUNCTION_ARGS)
-{	StackTrace("has_language_privilege_name_id");
+{
 	Name		username = PG_GETARG_NAME(0);
 	Oid			languageoid = PG_GETARG_OID(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -3539,7 +3539,7 @@ has_language_privilege_name_id(PG_FUNCTION_ARGS)
  */
 Datum
 has_language_privilege_id(PG_FUNCTION_ARGS)
-{	StackTrace("has_language_privilege_id");
+{
 	Oid			languageoid = PG_GETARG_OID(0);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(1);
 	Oid			roleid;
@@ -3564,7 +3564,7 @@ has_language_privilege_id(PG_FUNCTION_ARGS)
  */
 Datum
 has_language_privilege_id_name(PG_FUNCTION_ARGS)
-{	StackTrace("has_language_privilege_id_name");
+{
 	Oid			roleid = PG_GETARG_OID(0);
 	text	   *languagename = PG_GETARG_TEXT_P(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -3587,7 +3587,7 @@ has_language_privilege_id_name(PG_FUNCTION_ARGS)
  */
 Datum
 has_language_privilege_id_id(PG_FUNCTION_ARGS)
-{	StackTrace("has_language_privilege_id_id");
+{
 	Oid			roleid = PG_GETARG_OID(0);
 	Oid			languageoid = PG_GETARG_OID(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -3613,7 +3613,7 @@ has_language_privilege_id_id(PG_FUNCTION_ARGS)
  */
 static Oid
 convert_language_name(text *languagename)
-{	StackTrace("convert_language_name");
+{
 	char	   *langname = text_to_cstring(languagename);
 
 	return get_language_oid(langname, false);
@@ -3625,7 +3625,7 @@ convert_language_name(text *languagename)
  */
 static AclMode
 convert_language_priv_string(text *priv_type_text)
-{	StackTrace("convert_language_priv_string");
+{
 	static const priv_map language_priv_map[] = {
 		{"USAGE", ACL_USAGE},
 		{"USAGE WITH GRANT OPTION", ACL_GRANT_OPTION_FOR(ACL_USAGE)},
@@ -3653,7 +3653,7 @@ convert_language_priv_string(text *priv_type_text)
  */
 Datum
 has_schema_privilege_name_name(PG_FUNCTION_ARGS)
-{	StackTrace("has_schema_privilege_name_name");
+{
 	Name		username = PG_GETARG_NAME(0);
 	text	   *schemaname = PG_GETARG_TEXT_P(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -3679,7 +3679,7 @@ has_schema_privilege_name_name(PG_FUNCTION_ARGS)
  */
 Datum
 has_schema_privilege_name(PG_FUNCTION_ARGS)
-{	StackTrace("has_schema_privilege_name");
+{
 	text	   *schemaname = PG_GETARG_TEXT_P(0);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(1);
 	Oid			roleid;
@@ -3703,7 +3703,7 @@ has_schema_privilege_name(PG_FUNCTION_ARGS)
  */
 Datum
 has_schema_privilege_name_id(PG_FUNCTION_ARGS)
-{	StackTrace("has_schema_privilege_name_id");
+{
 	Name		username = PG_GETARG_NAME(0);
 	Oid			schemaoid = PG_GETARG_OID(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -3730,7 +3730,7 @@ has_schema_privilege_name_id(PG_FUNCTION_ARGS)
  */
 Datum
 has_schema_privilege_id(PG_FUNCTION_ARGS)
-{	StackTrace("has_schema_privilege_id");
+{
 	Oid			schemaoid = PG_GETARG_OID(0);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(1);
 	Oid			roleid;
@@ -3755,7 +3755,7 @@ has_schema_privilege_id(PG_FUNCTION_ARGS)
  */
 Datum
 has_schema_privilege_id_name(PG_FUNCTION_ARGS)
-{	StackTrace("has_schema_privilege_id_name");
+{
 	Oid			roleid = PG_GETARG_OID(0);
 	text	   *schemaname = PG_GETARG_TEXT_P(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -3778,7 +3778,7 @@ has_schema_privilege_id_name(PG_FUNCTION_ARGS)
  */
 Datum
 has_schema_privilege_id_id(PG_FUNCTION_ARGS)
-{	StackTrace("has_schema_privilege_id_id");
+{
 	Oid			roleid = PG_GETARG_OID(0);
 	Oid			schemaoid = PG_GETARG_OID(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -3804,7 +3804,7 @@ has_schema_privilege_id_id(PG_FUNCTION_ARGS)
  */
 static Oid
 convert_schema_name(text *schemaname)
-{	StackTrace("convert_schema_name");
+{
 	char	   *nspname = text_to_cstring(schemaname);
 
 	return get_namespace_oid(nspname, false);
@@ -3816,7 +3816,7 @@ convert_schema_name(text *schemaname)
  */
 static AclMode
 convert_schema_priv_string(text *priv_type_text)
-{	StackTrace("convert_schema_priv_string");
+{
 	static const priv_map schema_priv_map[] = {
 		{"CREATE", ACL_CREATE},
 		{"CREATE WITH GRANT OPTION", ACL_GRANT_OPTION_FOR(ACL_CREATE)},
@@ -3846,7 +3846,7 @@ convert_schema_priv_string(text *priv_type_text)
  */
 Datum
 has_server_privilege_name_name(PG_FUNCTION_ARGS)
-{	StackTrace("has_server_privilege_name_name");
+{
 	Name		username = PG_GETARG_NAME(0);
 	text	   *servername = PG_GETARG_TEXT_P(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -3872,7 +3872,7 @@ has_server_privilege_name_name(PG_FUNCTION_ARGS)
  */
 Datum
 has_server_privilege_name(PG_FUNCTION_ARGS)
-{	StackTrace("has_server_privilege_name");
+{
 	text	   *servername = PG_GETARG_TEXT_P(0);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(1);
 	Oid			roleid;
@@ -3896,7 +3896,7 @@ has_server_privilege_name(PG_FUNCTION_ARGS)
  */
 Datum
 has_server_privilege_name_id(PG_FUNCTION_ARGS)
-{	StackTrace("has_server_privilege_name_id");
+{
 	Name		username = PG_GETARG_NAME(0);
 	Oid			serverid = PG_GETARG_OID(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -3920,7 +3920,7 @@ has_server_privilege_name_id(PG_FUNCTION_ARGS)
  */
 Datum
 has_server_privilege_id(PG_FUNCTION_ARGS)
-{	StackTrace("has_server_privilege_id");
+{
 	Oid			serverid = PG_GETARG_OID(0);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(1);
 	Oid			roleid;
@@ -3942,7 +3942,7 @@ has_server_privilege_id(PG_FUNCTION_ARGS)
  */
 Datum
 has_server_privilege_id_name(PG_FUNCTION_ARGS)
-{	StackTrace("has_server_privilege_id_name");
+{
 	Oid			roleid = PG_GETARG_OID(0);
 	text	   *servername = PG_GETARG_TEXT_P(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -3965,7 +3965,7 @@ has_server_privilege_id_name(PG_FUNCTION_ARGS)
  */
 Datum
 has_server_privilege_id_id(PG_FUNCTION_ARGS)
-{	StackTrace("has_server_privilege_id_id");
+{
 	Oid			roleid = PG_GETARG_OID(0);
 	Oid			serverid = PG_GETARG_OID(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -3988,7 +3988,7 @@ has_server_privilege_id_id(PG_FUNCTION_ARGS)
  */
 static Oid
 convert_server_name(text *servername)
-{	StackTrace("convert_server_name");
+{
 	char	   *serverstr = text_to_cstring(servername);
 
 	return get_foreign_server_oid(serverstr, false);
@@ -4000,7 +4000,7 @@ convert_server_name(text *servername)
  */
 static AclMode
 convert_server_priv_string(text *priv_type_text)
-{	StackTrace("convert_server_priv_string");
+{
 	static const priv_map server_priv_map[] = {
 		{"USAGE", ACL_USAGE},
 		{"USAGE WITH GRANT OPTION", ACL_GRANT_OPTION_FOR(ACL_USAGE)},
@@ -4028,7 +4028,7 @@ convert_server_priv_string(text *priv_type_text)
  */
 Datum
 has_tablespace_privilege_name_name(PG_FUNCTION_ARGS)
-{	StackTrace("has_tablespace_privilege_name_name");
+{
 	Name		username = PG_GETARG_NAME(0);
 	text	   *tablespacename = PG_GETARG_TEXT_P(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -4054,7 +4054,7 @@ has_tablespace_privilege_name_name(PG_FUNCTION_ARGS)
  */
 Datum
 has_tablespace_privilege_name(PG_FUNCTION_ARGS)
-{	StackTrace("has_tablespace_privilege_name");
+{
 	text	   *tablespacename = PG_GETARG_TEXT_P(0);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(1);
 	Oid			roleid;
@@ -4078,7 +4078,7 @@ has_tablespace_privilege_name(PG_FUNCTION_ARGS)
  */
 Datum
 has_tablespace_privilege_name_id(PG_FUNCTION_ARGS)
-{	StackTrace("has_tablespace_privilege_name_id");
+{
 	Name		username = PG_GETARG_NAME(0);
 	Oid			tablespaceoid = PG_GETARG_OID(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -4102,7 +4102,7 @@ has_tablespace_privilege_name_id(PG_FUNCTION_ARGS)
  */
 Datum
 has_tablespace_privilege_id(PG_FUNCTION_ARGS)
-{	StackTrace("has_tablespace_privilege_id");
+{
 	Oid			tablespaceoid = PG_GETARG_OID(0);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(1);
 	Oid			roleid;
@@ -4124,7 +4124,7 @@ has_tablespace_privilege_id(PG_FUNCTION_ARGS)
  */
 Datum
 has_tablespace_privilege_id_name(PG_FUNCTION_ARGS)
-{	StackTrace("has_tablespace_privilege_id_name");
+{
 	Oid			roleid = PG_GETARG_OID(0);
 	text	   *tablespacename = PG_GETARG_TEXT_P(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -4147,7 +4147,7 @@ has_tablespace_privilege_id_name(PG_FUNCTION_ARGS)
  */
 Datum
 has_tablespace_privilege_id_id(PG_FUNCTION_ARGS)
-{	StackTrace("has_tablespace_privilege_id_id");
+{
 	Oid			roleid = PG_GETARG_OID(0);
 	Oid			tablespaceoid = PG_GETARG_OID(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -4170,7 +4170,7 @@ has_tablespace_privilege_id_id(PG_FUNCTION_ARGS)
  */
 static Oid
 convert_tablespace_name(text *tablespacename)
-{	StackTrace("convert_tablespace_name");
+{
 	char	   *spcname = text_to_cstring(tablespacename);
 
 	return get_tablespace_oid(spcname, false);
@@ -4182,7 +4182,7 @@ convert_tablespace_name(text *tablespacename)
  */
 static AclMode
 convert_tablespace_priv_string(text *priv_type_text)
-{	StackTrace("convert_tablespace_priv_string");
+{
 	static const priv_map tablespace_priv_map[] = {
 		{"CREATE", ACL_CREATE},
 		{"CREATE WITH GRANT OPTION", ACL_GRANT_OPTION_FOR(ACL_CREATE)},
@@ -4209,7 +4209,7 @@ convert_tablespace_priv_string(text *priv_type_text)
  */
 Datum
 has_type_privilege_name_name(PG_FUNCTION_ARGS)
-{	StackTrace("has_type_privilege_name_name");
+{
 	Name		username = PG_GETARG_NAME(0);
 	text	   *typename = PG_GETARG_TEXT_P(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -4235,7 +4235,7 @@ has_type_privilege_name_name(PG_FUNCTION_ARGS)
  */
 Datum
 has_type_privilege_name(PG_FUNCTION_ARGS)
-{	StackTrace("has_type_privilege_name");
+{
 	text	   *typename = PG_GETARG_TEXT_P(0);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(1);
 	Oid			roleid;
@@ -4259,7 +4259,7 @@ has_type_privilege_name(PG_FUNCTION_ARGS)
  */
 Datum
 has_type_privilege_name_id(PG_FUNCTION_ARGS)
-{	StackTrace("has_type_privilege_name_id");
+{
 	Name		username = PG_GETARG_NAME(0);
 	Oid			typeoid = PG_GETARG_OID(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -4286,7 +4286,7 @@ has_type_privilege_name_id(PG_FUNCTION_ARGS)
  */
 Datum
 has_type_privilege_id(PG_FUNCTION_ARGS)
-{	StackTrace("has_type_privilege_id");
+{
 	Oid			typeoid = PG_GETARG_OID(0);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(1);
 	Oid			roleid;
@@ -4311,7 +4311,7 @@ has_type_privilege_id(PG_FUNCTION_ARGS)
  */
 Datum
 has_type_privilege_id_name(PG_FUNCTION_ARGS)
-{	StackTrace("has_type_privilege_id_name");
+{
 	Oid			roleid = PG_GETARG_OID(0);
 	text	   *typename = PG_GETARG_TEXT_P(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -4334,7 +4334,7 @@ has_type_privilege_id_name(PG_FUNCTION_ARGS)
  */
 Datum
 has_type_privilege_id_id(PG_FUNCTION_ARGS)
-{	StackTrace("has_type_privilege_id_id");
+{
 	Oid			roleid = PG_GETARG_OID(0);
 	Oid			typeoid = PG_GETARG_OID(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -4360,7 +4360,7 @@ has_type_privilege_id_id(PG_FUNCTION_ARGS)
  */
 static Oid
 convert_type_name(text *typename)
-{	StackTrace("convert_type_name");
+{
 	char	   *typname = text_to_cstring(typename);
 	Oid			oid;
 
@@ -4381,7 +4381,7 @@ convert_type_name(text *typename)
  */
 static AclMode
 convert_type_priv_string(text *priv_type_text)
-{	StackTrace("convert_type_priv_string");
+{
 	static const priv_map type_priv_map[] = {
 		{"USAGE", ACL_USAGE},
 		{"USAGE WITH GRANT OPTION", ACL_GRANT_OPTION_FOR(ACL_USAGE)},
@@ -4409,7 +4409,7 @@ convert_type_priv_string(text *priv_type_text)
  */
 Datum
 pg_has_role_name_name(PG_FUNCTION_ARGS)
-{	StackTrace("pg_has_role_name_name");
+{
 	Name		username = PG_GETARG_NAME(0);
 	Name		rolename = PG_GETARG_NAME(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -4435,7 +4435,7 @@ pg_has_role_name_name(PG_FUNCTION_ARGS)
  */
 Datum
 pg_has_role_name(PG_FUNCTION_ARGS)
-{	StackTrace("pg_has_role_name");
+{
 	Name		rolename = PG_GETARG_NAME(0);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(1);
 	Oid			roleid;
@@ -4459,7 +4459,7 @@ pg_has_role_name(PG_FUNCTION_ARGS)
  */
 Datum
 pg_has_role_name_id(PG_FUNCTION_ARGS)
-{	StackTrace("pg_has_role_name_id");
+{
 	Name		username = PG_GETARG_NAME(0);
 	Oid			roleoid = PG_GETARG_OID(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -4483,7 +4483,7 @@ pg_has_role_name_id(PG_FUNCTION_ARGS)
  */
 Datum
 pg_has_role_id(PG_FUNCTION_ARGS)
-{	StackTrace("pg_has_role_id");
+{
 	Oid			roleoid = PG_GETARG_OID(0);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(1);
 	Oid			roleid;
@@ -4505,7 +4505,7 @@ pg_has_role_id(PG_FUNCTION_ARGS)
  */
 Datum
 pg_has_role_id_name(PG_FUNCTION_ARGS)
-{	StackTrace("pg_has_role_id_name");
+{
 	Oid			roleid = PG_GETARG_OID(0);
 	Name		rolename = PG_GETARG_NAME(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -4528,7 +4528,7 @@ pg_has_role_id_name(PG_FUNCTION_ARGS)
  */
 Datum
 pg_has_role_id_id(PG_FUNCTION_ARGS)
-{	StackTrace("pg_has_role_id_id");
+{
 	Oid			roleid = PG_GETARG_OID(0);
 	Oid			roleoid = PG_GETARG_OID(1);
 	text	   *priv_type_text = PG_GETARG_TEXT_P(2);
@@ -4558,7 +4558,7 @@ pg_has_role_id_id(PG_FUNCTION_ARGS)
  */
 static AclMode
 convert_role_priv_string(text *priv_type_text)
-{	StackTrace("convert_role_priv_string");
+{
 	static const priv_map role_priv_map[] = {
 		{"USAGE", ACL_USAGE},
 		{"MEMBER", ACL_CREATE},
@@ -4578,7 +4578,7 @@ convert_role_priv_string(text *priv_type_text)
  */
 static AclResult
 pg_role_aclcheck(Oid role_oid, Oid roleid, AclMode mode)
-{	StackTrace("pg_role_aclcheck");
+{
 	if (mode & ACL_GRANT_OPTION_FOR(ACL_CREATE))
 	{
 		/*
@@ -4608,7 +4608,7 @@ pg_role_aclcheck(Oid role_oid, Oid roleid, AclMode mode)
  */
 void
 initialize_acl(void)
-{	StackTrace("initialize_acl");
+{
 	if (!IsBootstrapProcessingMode())
 	{
 		/*
@@ -4627,7 +4627,7 @@ initialize_acl(void)
  */
 static void
 RoleMembershipCacheCallback(Datum arg, int cacheid, uint32 hashvalue)
-{	StackTrace("RoleMembershipCacheCallback");
+{
 	/* Force membership caches to be recomputed on next use */
 	cached_privs_role = InvalidOid;
 	cached_member_role = InvalidOid;
@@ -4637,7 +4637,7 @@ RoleMembershipCacheCallback(Datum arg, int cacheid, uint32 hashvalue)
 /* Check if specified role has rolinherit set */
 static bool
 has_rolinherit(Oid roleid)
-{	StackTrace("has_rolinherit");
+{
 	bool		result = false;
 	HeapTuple	utup;
 
@@ -4667,7 +4667,7 @@ has_rolinherit(Oid roleid)
  */
 static List *
 roles_has_privs_of(Oid roleid)
-{	StackTrace("roles_has_privs_of");
+{
 	List	   *roles_list;
 	ListCell   *l;
 	List	   *new_cached_privs_roles;
@@ -4750,7 +4750,7 @@ roles_has_privs_of(Oid roleid)
  */
 static List *
 roles_is_member_of(Oid roleid)
-{	StackTrace("roles_is_member_of");
+{
 	List	   *roles_list;
 	ListCell   *l;
 	List	   *new_cached_membership_roles;
@@ -4827,7 +4827,7 @@ roles_is_member_of(Oid roleid)
  */
 bool
 has_privs_of_role(Oid member, Oid role)
-{	StackTrace("has_privs_of_role");
+{
 	/* Fast path for simple case */
 	if (member == role)
 		return true;
@@ -4851,7 +4851,7 @@ has_privs_of_role(Oid member, Oid role)
  */
 bool
 is_member_of_role(Oid member, Oid role)
-{	StackTrace("is_member_of_role");
+{
 	/* Fast path for simple case */
 	if (member == role)
 		return true;
@@ -4873,7 +4873,7 @@ is_member_of_role(Oid member, Oid role)
  */
 void
 check_is_member_of_role(Oid member, Oid role)
-{	StackTrace("check_is_member_of_role");
+{
 	if (!is_member_of_role(member, role))
 		ereport(ERROR,
 				(errcode(ERRCODE_INSUFFICIENT_PRIVILEGE),
@@ -4889,7 +4889,7 @@ check_is_member_of_role(Oid member, Oid role)
  */
 bool
 is_member_of_role_nosuper(Oid member, Oid role)
-{	StackTrace("is_member_of_role_nosuper");
+{
 	/* Fast path for simple case */
 	if (member == role)
 		return true;
@@ -4909,7 +4909,7 @@ is_member_of_role_nosuper(Oid member, Oid role)
  */
 bool
 is_admin_of_role(Oid member, Oid role)
-{	StackTrace("is_admin_of_role");
+{
 	bool		result = false;
 	List	   *roles_list;
 	ListCell   *l;
@@ -4995,7 +4995,7 @@ is_admin_of_role(Oid member, Oid role)
 /* does what it says ... */
 static int
 count_one_bits(AclMode mask)
-{	StackTrace("count_one_bits");
+{
 	int			nbits = 0;
 
 	/* this code relies on AclMode being an unsigned type */
@@ -5037,7 +5037,7 @@ void
 select_best_grantor(Oid roleId, AclMode privileges,
 					const Acl *acl, Oid ownerId,
 					Oid *grantorId, AclMode *grantOptions)
-{	StackTrace("select_best_grantor");
+{
 	AclMode		needed_goptions = ACL_GRANT_OPTION_FOR(privileges);
 	List	   *roles_list;
 	int			nrights;
@@ -5110,7 +5110,7 @@ select_best_grantor(Oid roleId, AclMode privileges,
  */
 Oid
 get_role_oid(const char *rolname, bool missing_ok)
-{	StackTrace("get_role_oid");
+{
 	Oid			oid;
 
 	oid = GetSysCacheOid1(AUTHNAME, CStringGetDatum(rolname));
@@ -5127,7 +5127,7 @@ get_role_oid(const char *rolname, bool missing_ok)
  */
 Oid
 get_role_oid_or_public(const char *rolname)
-{	StackTrace("get_role_oid_or_public");
+{
 	if (strcmp(rolname, "public") == 0)
 		return ACL_ID_PUBLIC;
 
@@ -5143,7 +5143,7 @@ get_role_oid_or_public(const char *rolname)
  */
 Oid
 get_rolespec_oid(const Node *node, bool missing_ok)
-{	StackTrace("get_rolespec_oid");
+{
 	RoleSpec   *role;
 	Oid			oid;
 
@@ -5186,7 +5186,7 @@ get_rolespec_oid(const Node *node, bool missing_ok)
  */
 HeapTuple
 get_rolespec_tuple(const Node *node)
-{	StackTrace("get_rolespec_tuple");
+{
 	RoleSpec   *role;
 	HeapTuple	tuple;
 
@@ -5235,7 +5235,7 @@ get_rolespec_tuple(const Node *node)
  */
 char *
 get_rolespec_name(const Node *node)
-{	StackTrace("get_rolespec_name");
+{
 	HeapTuple	tp;
 	Form_pg_authid authForm;
 	char	   *rolename;

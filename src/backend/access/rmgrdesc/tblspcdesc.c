@@ -19,7 +19,7 @@
 
 void
 tblspc_desc(StringInfo buf, XLogReaderState *record)
-{	StackTrace("tblspc_desc");
+{
 	char	   *rec = XLogRecGetData(record);
 	uint8		info = XLogRecGetInfo(record) & ~XLR_INFO_MASK;
 
@@ -39,7 +39,7 @@ tblspc_desc(StringInfo buf, XLogReaderState *record)
 
 const char *
 tblspc_identify(uint8 info)
-{	StackTrace("tblspc_identify");
+{
 	const char *id = NULL;
 
 	switch (info & ~XLR_INFO_MASK)

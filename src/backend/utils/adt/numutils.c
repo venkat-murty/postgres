@@ -35,7 +35,7 @@
  */
 int32
 pg_atoi(const char *s, int size, int c)
-{	StackTrace("pg_atoi");
+{
 	long		l;
 	char	   *badp;
 
@@ -116,7 +116,7 @@ pg_atoi(const char *s, int size, int c)
  */
 void
 pg_itoa(int16 i, char *a)
-{	StackTrace("pg_itoa");
+{
 	pg_ltoa((int32) i, a);
 }
 
@@ -128,7 +128,7 @@ pg_itoa(int16 i, char *a)
  */
 void
 pg_ltoa(int32 value, char *a)
-{	StackTrace("pg_ltoa");
+{
 	char	   *start = a;
 	bool		neg = false;
 
@@ -182,7 +182,7 @@ pg_ltoa(int32 value, char *a)
  */
 void
 pg_lltoa(int64 value, char *a)
-{	StackTrace("pg_lltoa");
+{
 	char	   *start = a;
 	bool		neg = false;
 

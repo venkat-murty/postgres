@@ -65,7 +65,7 @@ static int adjacent_cmp_bounds(TypeCacheEntry *typcache, RangeBound *arg,
  */
 Datum
 spg_range_quad_config(PG_FUNCTION_ARGS)
-{	StackTrace("spg_range_quad_config");
+{
 	/* spgConfigIn *cfgin = (spgConfigIn *) PG_GETARG_POINTER(0); */
 	spgConfigOut *cfg = (spgConfigOut *) PG_GETARG_POINTER(1);
 
@@ -100,7 +100,7 @@ spg_range_quad_config(PG_FUNCTION_ARGS)
  */
 static int16
 getQuadrant(TypeCacheEntry *typcache, RangeType *centroid, RangeType *tst)
-{	StackTrace("getQuadrant");
+{
 	RangeBound	centroidLower,
 				centroidUpper;
 	bool		centroidEmpty;
@@ -136,7 +136,7 @@ getQuadrant(TypeCacheEntry *typcache, RangeType *centroid, RangeType *tst)
  */
 Datum
 spg_range_quad_choose(PG_FUNCTION_ARGS)
-{	StackTrace("spg_range_quad_choose");
+{
 	spgChooseIn *in = (spgChooseIn *) PG_GETARG_POINTER(0);
 	spgChooseOut *out = (spgChooseOut *) PG_GETARG_POINTER(1);
 	RangeType  *inRange = DatumGetRangeType(in->datum),
@@ -191,7 +191,7 @@ spg_range_quad_choose(PG_FUNCTION_ARGS)
  */
 static int
 bound_cmp(const void *a, const void *b, void *arg)
-{	StackTrace("bound_cmp");
+{
 	RangeBound *ba = (RangeBound *) a;
 	RangeBound *bb = (RangeBound *) b;
 	TypeCacheEntry *typcache = (TypeCacheEntry *) arg;
@@ -205,7 +205,7 @@ bound_cmp(const void *a, const void *b, void *arg)
  */
 Datum
 spg_range_quad_picksplit(PG_FUNCTION_ARGS)
-{	StackTrace("spg_range_quad_picksplit");
+{
 	spgPickSplitIn *in = (spgPickSplitIn *) PG_GETARG_POINTER(0);
 	spgPickSplitOut *out = (spgPickSplitOut *) PG_GETARG_POINTER(1);
 	int			i;
@@ -305,7 +305,7 @@ spg_range_quad_picksplit(PG_FUNCTION_ARGS)
  */
 Datum
 spg_range_quad_inner_consistent(PG_FUNCTION_ARGS)
-{	StackTrace("spg_range_quad_inner_consistent");
+{
 	spgInnerConsistentIn *in = (spgInnerConsistentIn *) PG_GETARG_POINTER(0);
 	spgInnerConsistentOut *out = (spgInnerConsistentOut *) PG_GETARG_POINTER(1);
 	int			which;
@@ -777,7 +777,7 @@ spg_range_quad_inner_consistent(PG_FUNCTION_ARGS)
 static int
 adjacent_cmp_bounds(TypeCacheEntry *typcache, RangeBound *arg,
 					RangeBound *centroid)
-{	StackTrace("adjacent_cmp_bounds");
+{
 	int			cmp;
 
 	Assert(arg->lower != centroid->lower);
@@ -879,7 +879,7 @@ adjacent_cmp_bounds(TypeCacheEntry *typcache, RangeBound *arg,
 static int
 adjacent_inner_consistent(TypeCacheEntry *typcache, RangeBound *arg,
 						  RangeBound *centroid, RangeBound *prev)
-{	StackTrace("adjacent_inner_consistent");
+{
 	if (prev)
 	{
 		int			prevcmp;
@@ -908,7 +908,7 @@ adjacent_inner_consistent(TypeCacheEntry *typcache, RangeBound *arg,
  */
 Datum
 spg_range_quad_leaf_consistent(PG_FUNCTION_ARGS)
-{	StackTrace("spg_range_quad_leaf_consistent");
+{
 	spgLeafConsistentIn *in = (spgLeafConsistentIn *) PG_GETARG_POINTER(0);
 	spgLeafConsistentOut *out = (spgLeafConsistentOut *) PG_GETARG_POINTER(1);
 	RangeType  *leafRange = DatumGetRangeType(in->leafDatum);

@@ -69,7 +69,7 @@ typedef struct
 
 static void
 newLexeme(DictThesaurus *d, char *b, char *e, uint32 idsubst, uint16 posinsubst)
-{	StackTrace("newLexeme");
+{
 	TheLexeme  *ptr;
 
 	if (d->nwrds >= d->ntwrds)
@@ -103,7 +103,7 @@ newLexeme(DictThesaurus *d, char *b, char *e, uint32 idsubst, uint16 posinsubst)
 
 static void
 addWrd(DictThesaurus *d, char *b, char *e, uint32 idsubst, uint16 nwrd, uint16 posinsubst, bool useasis)
-{	StackTrace("addWrd");
+{
 	static int	nres = 0;
 	static int	ntres = 0;
 	TheSubstitute *ptr;
@@ -165,7 +165,7 @@ addWrd(DictThesaurus *d, char *b, char *e, uint32 idsubst, uint16 nwrd, uint16 p
 
 static void
 thesaurusRead(char *filename, DictThesaurus *d)
-{	StackTrace("thesaurusRead");
+{
 	tsearch_readline_state trst;
 	uint32		idsubst = 0;
 	bool		useasis = false;
@@ -305,7 +305,7 @@ thesaurusRead(char *filename, DictThesaurus *d)
 
 static TheLexeme *
 addCompiledLexeme(TheLexeme *newwrds, int *nnw, int *tnm, TSLexeme *lexeme, LexemeInfo *src, uint16 tnvariant)
-{	StackTrace("addCompiledLexeme");
+{
 	if (*nnw >= *tnm)
 	{
 		*tnm *= 2;
@@ -336,7 +336,7 @@ addCompiledLexeme(TheLexeme *newwrds, int *nnw, int *tnm, TSLexeme *lexeme, Lexe
 
 static int
 cmpLexemeInfo(LexemeInfo *a, LexemeInfo *b)
-{	StackTrace("cmpLexemeInfo");
+{
 	if (a == NULL || b == NULL)
 		return 0;
 
@@ -358,7 +358,7 @@ cmpLexemeInfo(LexemeInfo *a, LexemeInfo *b)
 
 static int
 cmpLexeme(const TheLexeme *a, const TheLexeme *b)
-{	StackTrace("cmpLexeme");
+{
 	if (a->lexeme == NULL)
 	{
 		if (b->lexeme == NULL)
@@ -374,13 +374,13 @@ cmpLexeme(const TheLexeme *a, const TheLexeme *b)
 
 static int
 cmpLexemeQ(const void *a, const void *b)
-{	StackTrace("cmpLexemeQ");
+{
 	return cmpLexeme((const TheLexeme *) a, (const TheLexeme *) b);
 }
 
 static int
 cmpTheLexeme(const void *a, const void *b)
-{	StackTrace("cmpTheLexeme");
+{
 	const TheLexeme *la = (const TheLexeme *) a;
 	const TheLexeme *lb = (const TheLexeme *) b;
 	int			res;
@@ -393,7 +393,7 @@ cmpTheLexeme(const void *a, const void *b)
 
 static void
 compileTheLexeme(DictThesaurus *d)
-{	StackTrace("compileTheLexeme");
+{
 	int			i,
 				nnw = 0,
 				tnm = 16;
@@ -504,7 +504,7 @@ compileTheLexeme(DictThesaurus *d)
 
 static void
 compileTheSubstitute(DictThesaurus *d)
-{	StackTrace("compileTheSubstitute");
+{
 	int			i;
 
 	for (i = 0; i < d->nsubst; i++)
@@ -602,7 +602,7 @@ compileTheSubstitute(DictThesaurus *d)
 
 Datum
 thesaurus_init(PG_FUNCTION_ARGS)
-{	StackTrace("thesaurus_init");
+{
 	List	   *dictoptions = (List *) PG_GETARG_POINTER(0);
 	DictThesaurus *d;
 	char	   *subdictname = NULL;
@@ -661,7 +661,7 @@ thesaurus_init(PG_FUNCTION_ARGS)
 
 static LexemeInfo *
 findTheLexeme(DictThesaurus *d, char *lexeme)
-{	StackTrace("findTheLexeme");
+{
 	TheLexeme	key,
 			   *res;
 
@@ -680,7 +680,7 @@ findTheLexeme(DictThesaurus *d, char *lexeme)
 
 static bool
 matchIdSubst(LexemeInfo *stored, uint32 idsubst)
-{	StackTrace("matchIdSubst");
+{
 	bool		res = true;
 
 	if (stored)
@@ -700,7 +700,7 @@ matchIdSubst(LexemeInfo *stored, uint32 idsubst)
 
 static LexemeInfo *
 findVariant(LexemeInfo *in, LexemeInfo *stored, uint16 curpos, LexemeInfo **newin, int newn)
-{	StackTrace("findVariant");
+{
 	for (;;)
 	{
 		int			i;
@@ -757,7 +757,7 @@ findVariant(LexemeInfo *in, LexemeInfo *stored, uint16 curpos, LexemeInfo **newi
 
 static TSLexeme *
 copyTSLexeme(TheSubstitute *ts)
-{	StackTrace("copyTSLexeme");
+{
 	TSLexeme   *res;
 	uint16		i;
 
@@ -775,7 +775,7 @@ copyTSLexeme(TheSubstitute *ts)
 
 static TSLexeme *
 checkMatch(DictThesaurus *d, LexemeInfo *info, uint16 curpos, bool *moreres)
-{	StackTrace("checkMatch");
+{
 	*moreres = false;
 	while (info)
 	{
@@ -792,7 +792,7 @@ checkMatch(DictThesaurus *d, LexemeInfo *info, uint16 curpos, bool *moreres)
 
 Datum
 thesaurus_lexize(PG_FUNCTION_ARGS)
-{	StackTrace("thesaurus_lexize");
+{
 	DictThesaurus *d = (DictThesaurus *) PG_GETARG_POINTER(0);
 	DictSubState *dstate = (DictSubState *) PG_GETARG_POINTER(3);
 	TSLexeme   *res = NULL;

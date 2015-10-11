@@ -70,7 +70,6 @@ usage(const char *progname)
 	printf(_("\nReport bugs to <pgsql-bugs@postgresql.org>.\n"));
 }
 
-FunctionStack *mt_current = NULL;
 
 int
 main(int argc, char **argv)

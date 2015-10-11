@@ -51,7 +51,7 @@ static Gene edge_failure(PlannerInfo *root, Gene *gene, int index, Edge *edge_ta
 
 Edge *
 alloc_edge_table(PlannerInfo *root, int num_gene)
-{	StackTrace("alloc_edge_table");
+{
 	Edge	   *edge_table;
 
 	/*
@@ -71,7 +71,7 @@ alloc_edge_table(PlannerInfo *root, int num_gene)
  */
 void
 free_edge_table(PlannerInfo *root, Edge *edge_table)
-{	StackTrace("free_edge_table");
+{
 	pfree(edge_table);
 }
 
@@ -91,7 +91,7 @@ free_edge_table(PlannerInfo *root, Edge *edge_table)
 float
 gimme_edge_table(PlannerInfo *root, Gene *tour1, Gene *tour2,
 				 int num_gene, Edge *edge_table)
-{	StackTrace("gimme_edge_table");
+{
 	int			i,
 				index1,
 				index2;
@@ -149,7 +149,7 @@ gimme_edge_table(PlannerInfo *root, Gene *tour1, Gene *tour2,
  */
 static int
 gimme_edge(PlannerInfo *root, Gene gene1, Gene gene2, Edge *edge_table)
-{	StackTrace("gimme_edge");
+{
 	int			i;
 	int			edges;
 	int			city1 = (int) gene1;
@@ -191,7 +191,7 @@ gimme_edge(PlannerInfo *root, Gene gene1, Gene gene2, Edge *edge_table)
  */
 int
 gimme_tour(PlannerInfo *root, Edge *edge_table, Gene *new_gene, int num_gene)
-{	StackTrace("gimme_tour");
+{
 	int			i;
 	int			edge_failures = 0;
 
@@ -237,7 +237,7 @@ gimme_tour(PlannerInfo *root, Edge *edge_table, Gene *new_gene, int num_gene)
  */
 static void
 remove_gene(PlannerInfo *root, Gene gene, Edge edge, Edge *edge_table)
-{	StackTrace("remove_gene");
+{
 	int			i,
 				j;
 	int			possess_edge;
@@ -279,7 +279,7 @@ remove_gene(PlannerInfo *root, Gene gene, Edge edge, Edge *edge_table)
  */
 static Gene
 gimme_gene(PlannerInfo *root, Edge edge, Edge *edge_table)
-{	StackTrace("gimme_gene");
+{
 	int			i;
 	Gene		friend;
 	int			minimum_edges;
@@ -370,7 +370,7 @@ gimme_gene(PlannerInfo *root, Edge edge, Edge *edge_table)
  */
 static Gene
 edge_failure(PlannerInfo *root, Gene *gene, int index, Edge *edge_table, int num_gene)
-{	StackTrace("edge_failure");
+{
 	int			i;
 	Gene		fail_gene = gene[index];
 	int			remaining_edges = 0;

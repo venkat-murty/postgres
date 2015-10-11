@@ -153,7 +153,7 @@ static void sigUsr1Handler(SIGNAL_ARGS);
  */
 NON_EXEC_STATIC void
 SysLoggerMain(int argc, char *argv[])
-{	StackTrace("SysLoggerMain");
+{
 #ifndef WIN32
 	char		logbuffer[READ_BUF_SIZE];
 	int			bytes_in_logbuffer = 0;
@@ -682,7 +682,7 @@ SysLogger_Start(void)
  */
 static pid_t
 syslogger_forkexec(void)
-{	StackTrace("syslogger_forkexec");
+{
 	char	   *av[10];
 	int			ac = 0;
 	char		filenobuf[32];
@@ -720,7 +720,7 @@ syslogger_forkexec(void)
  */
 static void
 syslogger_parseArgs(int argc, char *argv[])
-{	StackTrace("syslogger_parseArgs");
+{
 	int			fd;
 
 	Assert(argc == 4);
@@ -779,7 +779,7 @@ syslogger_parseArgs(int argc, char *argv[])
  */
 static void
 process_pipe_input(char *logbuffer, int *bytes_in_logbuffer)
-{	StackTrace("process_pipe_input");
+{
 	char	   *cursor = logbuffer;
 	int			count = *bytes_in_logbuffer;
 	int			dest = LOG_DESTINATION_STDERR;
@@ -930,7 +930,7 @@ process_pipe_input(char *logbuffer, int *bytes_in_logbuffer)
  */
 static void
 flush_pipe_input(char *logbuffer, int *bytes_in_logbuffer)
-{	StackTrace("flush_pipe_input");
+{
 	int			i;
 
 	/* Dump any incomplete protocol messages */
@@ -981,7 +981,7 @@ flush_pipe_input(char *logbuffer, int *bytes_in_logbuffer)
  */
 void
 write_syslogger_file(const char *buffer, int count, int destination)
-{	StackTrace("write_syslogger_file");
+{
 	int			rc;
 	FILE	   *logfile;
 
@@ -1007,7 +1007,7 @@ write_syslogger_file(const char *buffer, int count, int destination)
  */
 static unsigned int __stdcall
 pipeThread(void *arg)
-{	StackTrace("pipeThread");
+{
 	char		logbuffer[READ_BUF_SIZE];
 	int			bytes_in_logbuffer = 0;
 
@@ -1084,7 +1084,7 @@ pipeThread(void *arg)
  */
 static void
 open_csvlogfile(void)
-{	StackTrace("open_csvlogfile");
+{
 	char	   *filename;
 
 	filename = logfile_getname(time(NULL), ".csv");
@@ -1106,7 +1106,7 @@ open_csvlogfile(void)
  */
 static FILE *
 logfile_open(const char *filename, const char *mode, bool allow_errors)
-{	StackTrace("logfile_open");
+{
 	FILE	   *fh;
 	mode_t		oumask;
 
@@ -1146,7 +1146,7 @@ logfile_open(const char *filename, const char *mode, bool allow_errors)
  */
 static void
 logfile_rotate(bool time_based_rotation, int size_rotation_for)
-{	StackTrace("logfile_rotate");
+{
 	char	   *filename;
 	char	   *csvfilename = NULL;
 	pg_time_t	fntime;
@@ -1279,7 +1279,7 @@ logfile_rotate(bool time_based_rotation, int size_rotation_for)
  */
 static char *
 logfile_getname(pg_time_t timestamp, const char *suffix)
-{	StackTrace("logfile_getname");
+{
 	char	   *filename;
 	int			len;
 
@@ -1309,7 +1309,7 @@ logfile_getname(pg_time_t timestamp, const char *suffix)
  */
 static void
 set_next_rotation_time(void)
-{	StackTrace("set_next_rotation_time");
+{
 	pg_time_t	now;
 	struct pg_tm *tm;
 	int			rotinterval;
@@ -1342,7 +1342,7 @@ set_next_rotation_time(void)
 /* SIGHUP: set flag to reload config file */
 static void
 sigHupHandler(SIGNAL_ARGS)
-{	StackTrace("sigHupHandler");
+{
 	int			save_errno = errno;
 
 	got_SIGHUP = true;
@@ -1354,7 +1354,7 @@ sigHupHandler(SIGNAL_ARGS)
 /* SIGUSR1: set flag to rotate logfile */
 static void
 sigUsr1Handler(SIGNAL_ARGS)
-{	StackTrace("sigUsr1Handler");
+{
 	int			save_errno = errno;
 
 	rotation_requested = true;

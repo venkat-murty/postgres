@@ -37,7 +37,7 @@ extern Datum postgresql_fdw_validator(PG_FUNCTION_ARGS);
  */
 ForeignDataWrapper *
 GetForeignDataWrapper(Oid fdwid)
-{	StackTrace("GetForeignDataWrapper");
+{
 	Form_pg_foreign_data_wrapper fdwform;
 	ForeignDataWrapper *fdw;
 	Datum		datum;
@@ -80,7 +80,7 @@ GetForeignDataWrapper(Oid fdwid)
  */
 ForeignDataWrapper *
 GetForeignDataWrapperByName(const char *fdwname, bool missing_ok)
-{	StackTrace("GetForeignDataWrapperByName");
+{
 	Oid			fdwId = get_foreign_data_wrapper_oid(fdwname, missing_ok);
 
 	if (!OidIsValid(fdwId))
@@ -95,7 +95,7 @@ GetForeignDataWrapperByName(const char *fdwname, bool missing_ok)
  */
 ForeignServer *
 GetForeignServer(Oid serverid)
-{	StackTrace("GetForeignServer");
+{
 	Form_pg_foreign_server serverform;
 	ForeignServer *server;
 	HeapTuple	tp;
@@ -150,7 +150,7 @@ GetForeignServer(Oid serverid)
  */
 ForeignServer *
 GetForeignServerByName(const char *srvname, bool missing_ok)
-{	StackTrace("GetForeignServerByName");
+{
 	Oid			serverid = get_foreign_server_oid(srvname, missing_ok);
 
 	if (!OidIsValid(serverid))
@@ -168,7 +168,7 @@ GetForeignServerByName(const char *srvname, bool missing_ok)
  */
 UserMapping *
 GetUserMapping(Oid userid, Oid serverid)
-{	StackTrace("GetUserMapping");
+{
 	Datum		datum;
 	HeapTuple	tp;
 	bool		isnull;
@@ -217,7 +217,7 @@ GetUserMapping(Oid userid, Oid serverid)
  */
 ForeignTable *
 GetForeignTable(Oid relid)
-{	StackTrace("GetForeignTable");
+{
 	Form_pg_foreign_table tableform;
 	ForeignTable *ft;
 	HeapTuple	tp;
@@ -255,7 +255,7 @@ GetForeignTable(Oid relid)
  */
 List *
 GetForeignColumnOptions(Oid relid, AttrNumber attnum)
-{	StackTrace("GetForeignColumnOptions");
+{
 	List	   *options;
 	HeapTuple	tp;
 	Datum		datum;
@@ -288,7 +288,7 @@ GetForeignColumnOptions(Oid relid, AttrNumber attnum)
  */
 FdwRoutine *
 GetFdwRoutine(Oid fdwhandler)
-{	StackTrace("GetFdwRoutine");
+{
 	Datum		datum;
 	FdwRoutine *routine;
 
@@ -309,7 +309,7 @@ GetFdwRoutine(Oid fdwhandler)
  */
 Oid
 GetForeignServerIdByRelId(Oid relid)
-{	StackTrace("GetForeignServerIdByRelId");
+{
 	HeapTuple	tp;
 	Form_pg_foreign_table tableform;
 	Oid			serverid;
@@ -331,7 +331,7 @@ GetForeignServerIdByRelId(Oid relid)
  */
 FdwRoutine *
 GetFdwRoutineByServerId(Oid serverid)
-{	StackTrace("GetFdwRoutineByServerId");
+{
 	HeapTuple	tp;
 	Form_pg_foreign_data_wrapper fdwform;
 	Form_pg_foreign_server serverform;
@@ -373,7 +373,7 @@ GetFdwRoutineByServerId(Oid serverid)
  */
 FdwRoutine *
 GetFdwRoutineByRelId(Oid relid)
-{	StackTrace("GetFdwRoutineByRelId");
+{
 	Oid			serverid;
 
 	/* Get server OID for the foreign table. */
@@ -396,7 +396,7 @@ GetFdwRoutineByRelId(Oid relid)
  */
 FdwRoutine *
 GetFdwRoutineForRelation(Relation relation, bool makecopy)
-{	StackTrace("GetFdwRoutineForRelation");
+{
 	FdwRoutine *fdwroutine;
 	FdwRoutine *cfdwroutine;
 
@@ -437,7 +437,7 @@ GetFdwRoutineForRelation(Relation relation, bool makecopy)
 bool
 IsImportableForeignTable(const char *tablename,
 						 ImportForeignSchemaStmt *stmt)
-{	StackTrace("IsImportableForeignTable");
+{
 	ListCell   *lc;
 
 	switch (stmt->list_type)
@@ -475,7 +475,7 @@ IsImportableForeignTable(const char *tablename,
  */
 static void
 deflist_to_tuplestore(ReturnSetInfo *rsinfo, List *options)
-{	StackTrace("deflist_to_tuplestore");
+{
 	ListCell   *cell;
 	TupleDesc	tupdesc;
 	Tuplestorestate *tupstore;
@@ -539,7 +539,7 @@ deflist_to_tuplestore(ReturnSetInfo *rsinfo, List *options)
  */
 Datum
 pg_options_to_table(PG_FUNCTION_ARGS)
-{	StackTrace("pg_options_to_table");
+{
 	Datum		array = PG_GETARG_DATUM(0);
 
 	deflist_to_tuplestore((ReturnSetInfo *) fcinfo->resultinfo,
@@ -589,7 +589,7 @@ static struct ConnectionOption libpq_conninfo_options[] = {
  */
 static bool
 is_conninfo_option(const char *option, Oid context)
-{	StackTrace("is_conninfo_option");
+{
 	struct ConnectionOption *opt;
 
 	for (opt = libpq_conninfo_options; opt->optname; opt++)
@@ -613,7 +613,7 @@ is_conninfo_option(const char *option, Oid context)
  */
 Datum
 postgresql_fdw_validator(PG_FUNCTION_ARGS)
-{	StackTrace("postgresql_fdw_validator");
+{
 	List	   *options_list = untransformRelOptions(PG_GETARG_DATUM(0));
 	Oid			catalog = PG_GETARG_OID(1);
 
@@ -660,7 +660,7 @@ postgresql_fdw_validator(PG_FUNCTION_ARGS)
  */
 Oid
 get_foreign_data_wrapper_oid(const char *fdwname, bool missing_ok)
-{	StackTrace("get_foreign_data_wrapper_oid");
+{
 	Oid			oid;
 
 	oid = GetSysCacheOid1(FOREIGNDATAWRAPPERNAME, CStringGetDatum(fdwname));
@@ -681,7 +681,7 @@ get_foreign_data_wrapper_oid(const char *fdwname, bool missing_ok)
  */
 Oid
 get_foreign_server_oid(const char *servername, bool missing_ok)
-{	StackTrace("get_foreign_server_oid");
+{
 	Oid			oid;
 
 	oid = GetSysCacheOid1(FOREIGNSERVERNAME, CStringGetDatum(servername));

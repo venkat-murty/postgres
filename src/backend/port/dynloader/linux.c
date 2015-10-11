@@ -30,7 +30,7 @@
 
 void *
 pg_dlopen(char *filename)
-{	StackTrace("pg_dlopen");
+{
 #ifndef HAVE_DLD_H
 	elog(ERROR, "dynamic load not supported");
 	return NULL;
@@ -102,7 +102,7 @@ pg_dlopen(char *filename)
 
 PGFunction
 pg_dlsym(void *handle, char *funcname)
-{	StackTrace("pg_dlsym");
+{
 #ifndef HAVE_DLD_H
 	return NULL;
 #else
@@ -112,7 +112,7 @@ pg_dlsym(void *handle, char *funcname)
 
 void
 pg_dlclose(void *handle)
-{	StackTrace("pg_dlclose");
+{
 #ifndef HAVE_DLD_H
 #else
 	dld_unlink_by_file(handle, 1);
@@ -122,7 +122,7 @@ pg_dlclose(void *handle)
 
 char *
 pg_dlerror(void)
-{	StackTrace("pg_dlerror");
+{
 #ifndef HAVE_DLD_H
 	return "dynaloader unspported";
 #else

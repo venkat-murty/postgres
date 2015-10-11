@@ -53,7 +53,7 @@ typedef struct
  */
 bool
 scanint8(const char *str, bool errorOK, int64 *result)
-{	StackTrace("scanint8");
+{
 	const char *ptr = str;
 	int64		tmp = 0;
 	int			sign = 1;
@@ -143,7 +143,7 @@ gotdigits:
  */
 Datum
 int8in(PG_FUNCTION_ARGS)
-{	StackTrace("int8in");
+{
 	char	   *str = PG_GETARG_CSTRING(0);
 	int64		result;
 
@@ -156,7 +156,7 @@ int8in(PG_FUNCTION_ARGS)
  */
 Datum
 int8out(PG_FUNCTION_ARGS)
-{	StackTrace("int8out");
+{
 	int64		val = PG_GETARG_INT64(0);
 	char		buf[MAXINT8LEN + 1];
 	char	   *result;
@@ -171,7 +171,7 @@ int8out(PG_FUNCTION_ARGS)
  */
 Datum
 int8recv(PG_FUNCTION_ARGS)
-{	StackTrace("int8recv");
+{
 	StringInfo	buf = (StringInfo) PG_GETARG_POINTER(0);
 
 	PG_RETURN_INT64(pq_getmsgint64(buf));
@@ -182,7 +182,7 @@ int8recv(PG_FUNCTION_ARGS)
  */
 Datum
 int8send(PG_FUNCTION_ARGS)
-{	StackTrace("int8send");
+{
 	int64		arg1 = PG_GETARG_INT64(0);
 	StringInfoData buf;
 
@@ -201,7 +201,7 @@ int8send(PG_FUNCTION_ARGS)
  */
 Datum
 int8eq(PG_FUNCTION_ARGS)
-{	StackTrace("int8eq");
+{
 	int64		val1 = PG_GETARG_INT64(0);
 	int64		val2 = PG_GETARG_INT64(1);
 
@@ -210,7 +210,7 @@ int8eq(PG_FUNCTION_ARGS)
 
 Datum
 int8ne(PG_FUNCTION_ARGS)
-{	StackTrace("int8ne");
+{
 	int64		val1 = PG_GETARG_INT64(0);
 	int64		val2 = PG_GETARG_INT64(1);
 
@@ -219,7 +219,7 @@ int8ne(PG_FUNCTION_ARGS)
 
 Datum
 int8lt(PG_FUNCTION_ARGS)
-{	StackTrace("int8lt");
+{
 	int64		val1 = PG_GETARG_INT64(0);
 	int64		val2 = PG_GETARG_INT64(1);
 
@@ -228,7 +228,7 @@ int8lt(PG_FUNCTION_ARGS)
 
 Datum
 int8gt(PG_FUNCTION_ARGS)
-{	StackTrace("int8gt");
+{
 	int64		val1 = PG_GETARG_INT64(0);
 	int64		val2 = PG_GETARG_INT64(1);
 
@@ -237,7 +237,7 @@ int8gt(PG_FUNCTION_ARGS)
 
 Datum
 int8le(PG_FUNCTION_ARGS)
-{	StackTrace("int8le");
+{
 	int64		val1 = PG_GETARG_INT64(0);
 	int64		val2 = PG_GETARG_INT64(1);
 
@@ -246,7 +246,7 @@ int8le(PG_FUNCTION_ARGS)
 
 Datum
 int8ge(PG_FUNCTION_ARGS)
-{	StackTrace("int8ge");
+{
 	int64		val1 = PG_GETARG_INT64(0);
 	int64		val2 = PG_GETARG_INT64(1);
 
@@ -258,7 +258,7 @@ int8ge(PG_FUNCTION_ARGS)
  */
 Datum
 int84eq(PG_FUNCTION_ARGS)
-{	StackTrace("int84eq");
+{
 	int64		val1 = PG_GETARG_INT64(0);
 	int32		val2 = PG_GETARG_INT32(1);
 
@@ -267,7 +267,7 @@ int84eq(PG_FUNCTION_ARGS)
 
 Datum
 int84ne(PG_FUNCTION_ARGS)
-{	StackTrace("int84ne");
+{
 	int64		val1 = PG_GETARG_INT64(0);
 	int32		val2 = PG_GETARG_INT32(1);
 
@@ -276,7 +276,7 @@ int84ne(PG_FUNCTION_ARGS)
 
 Datum
 int84lt(PG_FUNCTION_ARGS)
-{	StackTrace("int84lt");
+{
 	int64		val1 = PG_GETARG_INT64(0);
 	int32		val2 = PG_GETARG_INT32(1);
 
@@ -285,7 +285,7 @@ int84lt(PG_FUNCTION_ARGS)
 
 Datum
 int84gt(PG_FUNCTION_ARGS)
-{	StackTrace("int84gt");
+{
 	int64		val1 = PG_GETARG_INT64(0);
 	int32		val2 = PG_GETARG_INT32(1);
 
@@ -294,7 +294,7 @@ int84gt(PG_FUNCTION_ARGS)
 
 Datum
 int84le(PG_FUNCTION_ARGS)
-{	StackTrace("int84le");
+{
 	int64		val1 = PG_GETARG_INT64(0);
 	int32		val2 = PG_GETARG_INT32(1);
 
@@ -303,7 +303,7 @@ int84le(PG_FUNCTION_ARGS)
 
 Datum
 int84ge(PG_FUNCTION_ARGS)
-{	StackTrace("int84ge");
+{
 	int64		val1 = PG_GETARG_INT64(0);
 	int32		val2 = PG_GETARG_INT32(1);
 
@@ -315,7 +315,7 @@ int84ge(PG_FUNCTION_ARGS)
  */
 Datum
 int48eq(PG_FUNCTION_ARGS)
-{	StackTrace("int48eq");
+{
 	int32		val1 = PG_GETARG_INT32(0);
 	int64		val2 = PG_GETARG_INT64(1);
 
@@ -324,7 +324,7 @@ int48eq(PG_FUNCTION_ARGS)
 
 Datum
 int48ne(PG_FUNCTION_ARGS)
-{	StackTrace("int48ne");
+{
 	int32		val1 = PG_GETARG_INT32(0);
 	int64		val2 = PG_GETARG_INT64(1);
 
@@ -333,7 +333,7 @@ int48ne(PG_FUNCTION_ARGS)
 
 Datum
 int48lt(PG_FUNCTION_ARGS)
-{	StackTrace("int48lt");
+{
 	int32		val1 = PG_GETARG_INT32(0);
 	int64		val2 = PG_GETARG_INT64(1);
 
@@ -342,7 +342,7 @@ int48lt(PG_FUNCTION_ARGS)
 
 Datum
 int48gt(PG_FUNCTION_ARGS)
-{	StackTrace("int48gt");
+{
 	int32		val1 = PG_GETARG_INT32(0);
 	int64		val2 = PG_GETARG_INT64(1);
 
@@ -351,7 +351,7 @@ int48gt(PG_FUNCTION_ARGS)
 
 Datum
 int48le(PG_FUNCTION_ARGS)
-{	StackTrace("int48le");
+{
 	int32		val1 = PG_GETARG_INT32(0);
 	int64		val2 = PG_GETARG_INT64(1);
 
@@ -360,7 +360,7 @@ int48le(PG_FUNCTION_ARGS)
 
 Datum
 int48ge(PG_FUNCTION_ARGS)
-{	StackTrace("int48ge");
+{
 	int32		val1 = PG_GETARG_INT32(0);
 	int64		val2 = PG_GETARG_INT64(1);
 
@@ -372,7 +372,7 @@ int48ge(PG_FUNCTION_ARGS)
  */
 Datum
 int82eq(PG_FUNCTION_ARGS)
-{	StackTrace("int82eq");
+{
 	int64		val1 = PG_GETARG_INT64(0);
 	int16		val2 = PG_GETARG_INT16(1);
 
@@ -381,7 +381,7 @@ int82eq(PG_FUNCTION_ARGS)
 
 Datum
 int82ne(PG_FUNCTION_ARGS)
-{	StackTrace("int82ne");
+{
 	int64		val1 = PG_GETARG_INT64(0);
 	int16		val2 = PG_GETARG_INT16(1);
 
@@ -390,7 +390,7 @@ int82ne(PG_FUNCTION_ARGS)
 
 Datum
 int82lt(PG_FUNCTION_ARGS)
-{	StackTrace("int82lt");
+{
 	int64		val1 = PG_GETARG_INT64(0);
 	int16		val2 = PG_GETARG_INT16(1);
 
@@ -399,7 +399,7 @@ int82lt(PG_FUNCTION_ARGS)
 
 Datum
 int82gt(PG_FUNCTION_ARGS)
-{	StackTrace("int82gt");
+{
 	int64		val1 = PG_GETARG_INT64(0);
 	int16		val2 = PG_GETARG_INT16(1);
 
@@ -408,7 +408,7 @@ int82gt(PG_FUNCTION_ARGS)
 
 Datum
 int82le(PG_FUNCTION_ARGS)
-{	StackTrace("int82le");
+{
 	int64		val1 = PG_GETARG_INT64(0);
 	int16		val2 = PG_GETARG_INT16(1);
 
@@ -417,7 +417,7 @@ int82le(PG_FUNCTION_ARGS)
 
 Datum
 int82ge(PG_FUNCTION_ARGS)
-{	StackTrace("int82ge");
+{
 	int64		val1 = PG_GETARG_INT64(0);
 	int16		val2 = PG_GETARG_INT16(1);
 
@@ -429,7 +429,7 @@ int82ge(PG_FUNCTION_ARGS)
  */
 Datum
 int28eq(PG_FUNCTION_ARGS)
-{	StackTrace("int28eq");
+{
 	int16		val1 = PG_GETARG_INT16(0);
 	int64		val2 = PG_GETARG_INT64(1);
 
@@ -438,7 +438,7 @@ int28eq(PG_FUNCTION_ARGS)
 
 Datum
 int28ne(PG_FUNCTION_ARGS)
-{	StackTrace("int28ne");
+{
 	int16		val1 = PG_GETARG_INT16(0);
 	int64		val2 = PG_GETARG_INT64(1);
 
@@ -447,7 +447,7 @@ int28ne(PG_FUNCTION_ARGS)
 
 Datum
 int28lt(PG_FUNCTION_ARGS)
-{	StackTrace("int28lt");
+{
 	int16		val1 = PG_GETARG_INT16(0);
 	int64		val2 = PG_GETARG_INT64(1);
 
@@ -456,7 +456,7 @@ int28lt(PG_FUNCTION_ARGS)
 
 Datum
 int28gt(PG_FUNCTION_ARGS)
-{	StackTrace("int28gt");
+{
 	int16		val1 = PG_GETARG_INT16(0);
 	int64		val2 = PG_GETARG_INT64(1);
 
@@ -465,7 +465,7 @@ int28gt(PG_FUNCTION_ARGS)
 
 Datum
 int28le(PG_FUNCTION_ARGS)
-{	StackTrace("int28le");
+{
 	int16		val1 = PG_GETARG_INT16(0);
 	int64		val2 = PG_GETARG_INT64(1);
 
@@ -474,7 +474,7 @@ int28le(PG_FUNCTION_ARGS)
 
 Datum
 int28ge(PG_FUNCTION_ARGS)
-{	StackTrace("int28ge");
+{
 	int16		val1 = PG_GETARG_INT16(0);
 	int64		val2 = PG_GETARG_INT64(1);
 
@@ -488,7 +488,7 @@ int28ge(PG_FUNCTION_ARGS)
 
 Datum
 int8um(PG_FUNCTION_ARGS)
-{	StackTrace("int8um");
+{
 	int64		arg = PG_GETARG_INT64(0);
 	int64		result;
 
@@ -503,7 +503,7 @@ int8um(PG_FUNCTION_ARGS)
 
 Datum
 int8up(PG_FUNCTION_ARGS)
-{	StackTrace("int8up");
+{
 	int64		arg = PG_GETARG_INT64(0);
 
 	PG_RETURN_INT64(arg);
@@ -511,7 +511,7 @@ int8up(PG_FUNCTION_ARGS)
 
 Datum
 int8pl(PG_FUNCTION_ARGS)
-{	StackTrace("int8pl");
+{
 	int64		arg1 = PG_GETARG_INT64(0);
 	int64		arg2 = PG_GETARG_INT64(1);
 	int64		result;
@@ -532,7 +532,7 @@ int8pl(PG_FUNCTION_ARGS)
 
 Datum
 int8mi(PG_FUNCTION_ARGS)
-{	StackTrace("int8mi");
+{
 	int64		arg1 = PG_GETARG_INT64(0);
 	int64		arg2 = PG_GETARG_INT64(1);
 	int64		result;
@@ -553,7 +553,7 @@ int8mi(PG_FUNCTION_ARGS)
 
 Datum
 int8mul(PG_FUNCTION_ARGS)
-{	StackTrace("int8mul");
+{
 	int64		arg1 = PG_GETARG_INT64(0);
 	int64		arg2 = PG_GETARG_INT64(1);
 	int64		result;
@@ -585,7 +585,7 @@ int8mul(PG_FUNCTION_ARGS)
 
 Datum
 int8div(PG_FUNCTION_ARGS)
-{	StackTrace("int8div");
+{
 	int64		arg1 = PG_GETARG_INT64(0);
 	int64		arg2 = PG_GETARG_INT64(1);
 	int64		result;
@@ -628,7 +628,7 @@ int8div(PG_FUNCTION_ARGS)
  */
 Datum
 int8abs(PG_FUNCTION_ARGS)
-{	StackTrace("int8abs");
+{
 	int64		arg1 = PG_GETARG_INT64(0);
 	int64		result;
 
@@ -646,7 +646,7 @@ int8abs(PG_FUNCTION_ARGS)
  */
 Datum
 int8mod(PG_FUNCTION_ARGS)
-{	StackTrace("int8mod");
+{
 	int64		arg1 = PG_GETARG_INT64(0);
 	int64		arg2 = PG_GETARG_INT64(1);
 
@@ -675,7 +675,7 @@ int8mod(PG_FUNCTION_ARGS)
 
 Datum
 int8inc(PG_FUNCTION_ARGS)
-{	StackTrace("int8inc");
+{
 	/*
 	 * When int8 is pass-by-reference, we provide this special case to avoid
 	 * palloc overhead for COUNT(): when called as an aggregate, we know that
@@ -719,7 +719,7 @@ int8inc(PG_FUNCTION_ARGS)
 
 Datum
 int8dec(PG_FUNCTION_ARGS)
-{	StackTrace("int8dec");
+{
 	/*
 	 * When int8 is pass-by-reference, we provide this special case to avoid
 	 * palloc overhead for COUNT(): when called as an aggregate, we know that
@@ -773,26 +773,26 @@ int8dec(PG_FUNCTION_ARGS)
 
 Datum
 int8inc_any(PG_FUNCTION_ARGS)
-{	StackTrace("int8inc_any");
+{
 	return int8inc(fcinfo);
 }
 
 Datum
 int8inc_float8_float8(PG_FUNCTION_ARGS)
-{	StackTrace("int8inc_float8_float8");
+{
 	return int8inc(fcinfo);
 }
 
 Datum
 int8dec_any(PG_FUNCTION_ARGS)
-{	StackTrace("int8dec_any");
+{
 	return int8dec(fcinfo);
 }
 
 
 Datum
 int8larger(PG_FUNCTION_ARGS)
-{	StackTrace("int8larger");
+{
 	int64		arg1 = PG_GETARG_INT64(0);
 	int64		arg2 = PG_GETARG_INT64(1);
 	int64		result;
@@ -804,7 +804,7 @@ int8larger(PG_FUNCTION_ARGS)
 
 Datum
 int8smaller(PG_FUNCTION_ARGS)
-{	StackTrace("int8smaller");
+{
 	int64		arg1 = PG_GETARG_INT64(0);
 	int64		arg2 = PG_GETARG_INT64(1);
 	int64		result;
@@ -816,7 +816,7 @@ int8smaller(PG_FUNCTION_ARGS)
 
 Datum
 int84pl(PG_FUNCTION_ARGS)
-{	StackTrace("int84pl");
+{
 	int64		arg1 = PG_GETARG_INT64(0);
 	int32		arg2 = PG_GETARG_INT32(1);
 	int64		result;
@@ -837,7 +837,7 @@ int84pl(PG_FUNCTION_ARGS)
 
 Datum
 int84mi(PG_FUNCTION_ARGS)
-{	StackTrace("int84mi");
+{
 	int64		arg1 = PG_GETARG_INT64(0);
 	int32		arg2 = PG_GETARG_INT32(1);
 	int64		result;
@@ -858,7 +858,7 @@ int84mi(PG_FUNCTION_ARGS)
 
 Datum
 int84mul(PG_FUNCTION_ARGS)
-{	StackTrace("int84mul");
+{
 	int64		arg1 = PG_GETARG_INT64(0);
 	int32		arg2 = PG_GETARG_INT32(1);
 	int64		result;
@@ -885,7 +885,7 @@ int84mul(PG_FUNCTION_ARGS)
 
 Datum
 int84div(PG_FUNCTION_ARGS)
-{	StackTrace("int84div");
+{
 	int64		arg1 = PG_GETARG_INT64(0);
 	int32		arg2 = PG_GETARG_INT32(1);
 	int64		result;
@@ -925,7 +925,7 @@ int84div(PG_FUNCTION_ARGS)
 
 Datum
 int48pl(PG_FUNCTION_ARGS)
-{	StackTrace("int48pl");
+{
 	int32		arg1 = PG_GETARG_INT32(0);
 	int64		arg2 = PG_GETARG_INT64(1);
 	int64		result;
@@ -946,7 +946,7 @@ int48pl(PG_FUNCTION_ARGS)
 
 Datum
 int48mi(PG_FUNCTION_ARGS)
-{	StackTrace("int48mi");
+{
 	int32		arg1 = PG_GETARG_INT32(0);
 	int64		arg2 = PG_GETARG_INT64(1);
 	int64		result;
@@ -967,7 +967,7 @@ int48mi(PG_FUNCTION_ARGS)
 
 Datum
 int48mul(PG_FUNCTION_ARGS)
-{	StackTrace("int48mul");
+{
 	int32		arg1 = PG_GETARG_INT32(0);
 	int64		arg2 = PG_GETARG_INT64(1);
 	int64		result;
@@ -994,7 +994,7 @@ int48mul(PG_FUNCTION_ARGS)
 
 Datum
 int48div(PG_FUNCTION_ARGS)
-{	StackTrace("int48div");
+{
 	int32		arg1 = PG_GETARG_INT32(0);
 	int64		arg2 = PG_GETARG_INT64(1);
 
@@ -1013,7 +1013,7 @@ int48div(PG_FUNCTION_ARGS)
 
 Datum
 int82pl(PG_FUNCTION_ARGS)
-{	StackTrace("int82pl");
+{
 	int64		arg1 = PG_GETARG_INT64(0);
 	int16		arg2 = PG_GETARG_INT16(1);
 	int64		result;
@@ -1034,7 +1034,7 @@ int82pl(PG_FUNCTION_ARGS)
 
 Datum
 int82mi(PG_FUNCTION_ARGS)
-{	StackTrace("int82mi");
+{
 	int64		arg1 = PG_GETARG_INT64(0);
 	int16		arg2 = PG_GETARG_INT16(1);
 	int64		result;
@@ -1055,7 +1055,7 @@ int82mi(PG_FUNCTION_ARGS)
 
 Datum
 int82mul(PG_FUNCTION_ARGS)
-{	StackTrace("int82mul");
+{
 	int64		arg1 = PG_GETARG_INT64(0);
 	int16		arg2 = PG_GETARG_INT16(1);
 	int64		result;
@@ -1082,7 +1082,7 @@ int82mul(PG_FUNCTION_ARGS)
 
 Datum
 int82div(PG_FUNCTION_ARGS)
-{	StackTrace("int82div");
+{
 	int64		arg1 = PG_GETARG_INT64(0);
 	int16		arg2 = PG_GETARG_INT16(1);
 	int64		result;
@@ -1122,7 +1122,7 @@ int82div(PG_FUNCTION_ARGS)
 
 Datum
 int28pl(PG_FUNCTION_ARGS)
-{	StackTrace("int28pl");
+{
 	int16		arg1 = PG_GETARG_INT16(0);
 	int64		arg2 = PG_GETARG_INT64(1);
 	int64		result;
@@ -1143,7 +1143,7 @@ int28pl(PG_FUNCTION_ARGS)
 
 Datum
 int28mi(PG_FUNCTION_ARGS)
-{	StackTrace("int28mi");
+{
 	int16		arg1 = PG_GETARG_INT16(0);
 	int64		arg2 = PG_GETARG_INT64(1);
 	int64		result;
@@ -1164,7 +1164,7 @@ int28mi(PG_FUNCTION_ARGS)
 
 Datum
 int28mul(PG_FUNCTION_ARGS)
-{	StackTrace("int28mul");
+{
 	int16		arg1 = PG_GETARG_INT16(0);
 	int64		arg2 = PG_GETARG_INT64(1);
 	int64		result;
@@ -1191,7 +1191,7 @@ int28mul(PG_FUNCTION_ARGS)
 
 Datum
 int28div(PG_FUNCTION_ARGS)
-{	StackTrace("int28div");
+{
 	int16		arg1 = PG_GETARG_INT16(0);
 	int64		arg2 = PG_GETARG_INT64(1);
 
@@ -1220,7 +1220,7 @@ int28div(PG_FUNCTION_ARGS)
 
 Datum
 int8and(PG_FUNCTION_ARGS)
-{	StackTrace("int8and");
+{
 	int64		arg1 = PG_GETARG_INT64(0);
 	int64		arg2 = PG_GETARG_INT64(1);
 
@@ -1229,7 +1229,7 @@ int8and(PG_FUNCTION_ARGS)
 
 Datum
 int8or(PG_FUNCTION_ARGS)
-{	StackTrace("int8or");
+{
 	int64		arg1 = PG_GETARG_INT64(0);
 	int64		arg2 = PG_GETARG_INT64(1);
 
@@ -1238,7 +1238,7 @@ int8or(PG_FUNCTION_ARGS)
 
 Datum
 int8xor(PG_FUNCTION_ARGS)
-{	StackTrace("int8xor");
+{
 	int64		arg1 = PG_GETARG_INT64(0);
 	int64		arg2 = PG_GETARG_INT64(1);
 
@@ -1247,7 +1247,7 @@ int8xor(PG_FUNCTION_ARGS)
 
 Datum
 int8not(PG_FUNCTION_ARGS)
-{	StackTrace("int8not");
+{
 	int64		arg1 = PG_GETARG_INT64(0);
 
 	PG_RETURN_INT64(~arg1);
@@ -1255,7 +1255,7 @@ int8not(PG_FUNCTION_ARGS)
 
 Datum
 int8shl(PG_FUNCTION_ARGS)
-{	StackTrace("int8shl");
+{
 	int64		arg1 = PG_GETARG_INT64(0);
 	int32		arg2 = PG_GETARG_INT32(1);
 
@@ -1264,7 +1264,7 @@ int8shl(PG_FUNCTION_ARGS)
 
 Datum
 int8shr(PG_FUNCTION_ARGS)
-{	StackTrace("int8shr");
+{
 	int64		arg1 = PG_GETARG_INT64(0);
 	int32		arg2 = PG_GETARG_INT32(1);
 
@@ -1277,7 +1277,7 @@ int8shr(PG_FUNCTION_ARGS)
 
 Datum
 int48(PG_FUNCTION_ARGS)
-{	StackTrace("int48");
+{
 	int32		arg = PG_GETARG_INT32(0);
 
 	PG_RETURN_INT64((int64) arg);
@@ -1285,7 +1285,7 @@ int48(PG_FUNCTION_ARGS)
 
 Datum
 int84(PG_FUNCTION_ARGS)
-{	StackTrace("int84");
+{
 	int64		arg = PG_GETARG_INT64(0);
 	int32		result;
 
@@ -1302,7 +1302,7 @@ int84(PG_FUNCTION_ARGS)
 
 Datum
 int28(PG_FUNCTION_ARGS)
-{	StackTrace("int28");
+{
 	int16		arg = PG_GETARG_INT16(0);
 
 	PG_RETURN_INT64((int64) arg);
@@ -1310,7 +1310,7 @@ int28(PG_FUNCTION_ARGS)
 
 Datum
 int82(PG_FUNCTION_ARGS)
-{	StackTrace("int82");
+{
 	int64		arg = PG_GETARG_INT64(0);
 	int16		result;
 
@@ -1327,7 +1327,7 @@ int82(PG_FUNCTION_ARGS)
 
 Datum
 i8tod(PG_FUNCTION_ARGS)
-{	StackTrace("i8tod");
+{
 	int64		arg = PG_GETARG_INT64(0);
 	float8		result;
 
@@ -1341,7 +1341,7 @@ i8tod(PG_FUNCTION_ARGS)
  */
 Datum
 dtoi8(PG_FUNCTION_ARGS)
-{	StackTrace("dtoi8");
+{
 	float8		arg = PG_GETARG_FLOAT8(0);
 	int64		result;
 
@@ -1365,7 +1365,7 @@ dtoi8(PG_FUNCTION_ARGS)
 
 Datum
 i8tof(PG_FUNCTION_ARGS)
-{	StackTrace("i8tof");
+{
 	int64		arg = PG_GETARG_INT64(0);
 	float4		result;
 
@@ -1379,7 +1379,7 @@ i8tof(PG_FUNCTION_ARGS)
  */
 Datum
 ftoi8(PG_FUNCTION_ARGS)
-{	StackTrace("ftoi8");
+{
 	float4		arg = PG_GETARG_FLOAT4(0);
 	int64		result;
 	float8		darg;
@@ -1404,7 +1404,7 @@ ftoi8(PG_FUNCTION_ARGS)
 
 Datum
 i8tooid(PG_FUNCTION_ARGS)
-{	StackTrace("i8tooid");
+{
 	int64		arg = PG_GETARG_INT64(0);
 	Oid			result;
 
@@ -1421,7 +1421,7 @@ i8tooid(PG_FUNCTION_ARGS)
 
 Datum
 oidtoi8(PG_FUNCTION_ARGS)
-{	StackTrace("oidtoi8");
+{
 	Oid			arg = PG_GETARG_OID(0);
 
 	PG_RETURN_INT64((int64) arg);
@@ -1432,13 +1432,13 @@ oidtoi8(PG_FUNCTION_ARGS)
  */
 Datum
 generate_series_int8(PG_FUNCTION_ARGS)
-{	StackTrace("generate_series_int8");
+{
 	return generate_series_step_int8(fcinfo);
 }
 
 Datum
 generate_series_step_int8(PG_FUNCTION_ARGS)
-{	StackTrace("generate_series_step_int8");
+{
 	FuncCallContext *funcctx;
 	generate_series_fctx *fctx;
 	int64		result;

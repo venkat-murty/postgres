@@ -73,7 +73,7 @@ static void intorel_destroy(DestReceiver *self);
 ObjectAddress
 ExecCreateTableAs(CreateTableAsStmt *stmt, const char *queryString,
 				  ParamListInfo params, char *completionTag)
-{	StackTrace("ExecCreateTableAs");
+{
 	Query	   *query = (Query *) stmt->query;
 	IntoClause *into = stmt->into;
 	bool		is_matview = (into->viewQuery != NULL);
@@ -232,7 +232,7 @@ ExecCreateTableAs(CreateTableAsStmt *stmt, const char *queryString,
  */
 int
 GetIntoRelEFlags(IntoClause *intoClause)
-{	StackTrace("GetIntoRelEFlags");
+{
 	int			flags;
 
 	/*
@@ -263,7 +263,7 @@ GetIntoRelEFlags(IntoClause *intoClause)
  */
 DestReceiver *
 CreateIntoRelDestReceiver(IntoClause *intoClause)
-{	StackTrace("CreateIntoRelDestReceiver");
+{
 	DR_intorel *self = (DR_intorel *) palloc0(sizeof(DR_intorel));
 
 	self->pub.receiveSlot = intorel_receive;
@@ -282,7 +282,7 @@ CreateIntoRelDestReceiver(IntoClause *intoClause)
  */
 static void
 intorel_startup(DestReceiver *self, int operation, TupleDesc typeinfo)
-{	StackTrace("intorel_startup");
+{
 	DR_intorel *myState = (DR_intorel *) self;
 	IntoClause *into = myState->into;
 	bool		is_matview;
@@ -484,7 +484,7 @@ intorel_startup(DestReceiver *self, int operation, TupleDesc typeinfo)
  */
 static void
 intorel_receive(TupleTableSlot *slot, DestReceiver *self)
-{	StackTrace("intorel_receive");
+{
 	DR_intorel *myState = (DR_intorel *) self;
 	HeapTuple	tuple;
 
@@ -514,7 +514,7 @@ intorel_receive(TupleTableSlot *slot, DestReceiver *self)
  */
 static void
 intorel_shutdown(DestReceiver *self)
-{	StackTrace("intorel_shutdown");
+{
 	DR_intorel *myState = (DR_intorel *) self;
 
 	FreeBulkInsertState(myState->bistate);
@@ -533,6 +533,6 @@ intorel_shutdown(DestReceiver *self)
  */
 static void
 intorel_destroy(DestReceiver *self)
-{	StackTrace("intorel_destroy");
+{
 	pfree(self);
 }

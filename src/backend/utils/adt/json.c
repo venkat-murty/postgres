@@ -114,7 +114,7 @@ static JsonSemAction nullSemAction =
 */
 static inline JsonTokenType
 lex_peek(JsonLexContext *lex)
-{	StackTrace("lex_peek");
+{
 	return lex->token_type;
 }
 
@@ -129,7 +129,7 @@ lex_peek(JsonLexContext *lex)
  */
 static inline bool
 lex_accept(JsonLexContext *lex, JsonTokenType token, char **lexeme)
-{	StackTrace("lex_accept");
+{
 	if (lex->token_type == token)
 	{
 		if (lexeme != NULL)
@@ -163,7 +163,7 @@ lex_accept(JsonLexContext *lex, JsonTokenType token, char **lexeme)
  */
 static inline void
 lex_expect(JsonParseContext ctx, JsonLexContext *lex, JsonTokenType token)
-{	StackTrace("lex_expect");
+{
 	if (!lex_accept(lex, token, NULL))
 		report_parse_error(ctx, lex);
 }
@@ -179,7 +179,7 @@ lex_expect(JsonParseContext ctx, JsonLexContext *lex, JsonTokenType token)
 /* utility function to check if a string is a valid JSON number */
 extern bool
 IsValidJsonNumber(const char *str, int len)
-{	StackTrace("IsValidJsonNumber");
+{
 	bool		numeric_error;
 	JsonLexContext dummy_lex;
 
@@ -211,7 +211,7 @@ IsValidJsonNumber(const char *str, int len)
  */
 Datum
 json_in(PG_FUNCTION_ARGS)
-{	StackTrace("json_in");
+{
 	char	   *json = PG_GETARG_CSTRING(0);
 	text	   *result = cstring_to_text(json);
 	JsonLexContext *lex;
@@ -229,7 +229,7 @@ json_in(PG_FUNCTION_ARGS)
  */
 Datum
 json_out(PG_FUNCTION_ARGS)
-{	StackTrace("json_out");
+{
 	/* we needn't detoast because text_to_cstring will handle that */
 	Datum		txt = PG_GETARG_DATUM(0);
 
@@ -241,7 +241,7 @@ json_out(PG_FUNCTION_ARGS)
  */
 Datum
 json_send(PG_FUNCTION_ARGS)
-{	StackTrace("json_send");
+{
 	text	   *t = PG_GETARG_TEXT_PP(0);
 	StringInfoData buf;
 
@@ -255,7 +255,7 @@ json_send(PG_FUNCTION_ARGS)
  */
 Datum
 json_recv(PG_FUNCTION_ARGS)
-{	StackTrace("json_recv");
+{
 	StringInfo	buf = (StringInfo) PG_GETARG_POINTER(0);
 	char	   *str;
 	int			nbytes;
@@ -284,7 +284,7 @@ json_recv(PG_FUNCTION_ARGS)
  */
 JsonLexContext *
 makeJsonLexContext(text *json, bool need_escapes)
-{	StackTrace("makeJsonLexContext");
+{
 	return makeJsonLexContextCstringLen(VARDATA(json),
 										VARSIZE(json) - VARHDRSZ,
 										need_escapes);
@@ -292,7 +292,7 @@ makeJsonLexContext(text *json, bool need_escapes)
 
 JsonLexContext *
 makeJsonLexContextCstringLen(char *json, int len, bool need_escapes)
-{	StackTrace("makeJsonLexContextCstringLen");
+{
 	JsonLexContext *lex = palloc0(sizeof(JsonLexContext));
 
 	lex->input = lex->token_terminator = lex->line_start = json;
@@ -315,7 +315,7 @@ makeJsonLexContextCstringLen(char *json, int len, bool need_escapes)
  */
 void
 pg_parse_json(JsonLexContext *lex, JsonSemAction *sem)
-{	StackTrace("pg_parse_json");
+{
 	JsonTokenType tok;
 
 	/* get the initial token */
@@ -351,7 +351,7 @@ pg_parse_json(JsonLexContext *lex, JsonSemAction *sem)
  */
 static inline void
 parse_scalar(JsonLexContext *lex, JsonSemAction *sem)
-{	StackTrace("parse_scalar");
+{
 	char	   *val = NULL;
 	json_scalar_action sfunc = sem->scalar;
 	char	  **valaddr;
@@ -387,7 +387,7 @@ parse_scalar(JsonLexContext *lex, JsonSemAction *sem)
 
 static void
 parse_object_field(JsonLexContext *lex, JsonSemAction *sem)
-{	StackTrace("parse_object_field");
+{
 	/*
 	 * An object field is "fieldname" : value where value can be a scalar,
 	 * object or array.  Note: in user-facing docs and error messages, we
@@ -433,7 +433,7 @@ parse_object_field(JsonLexContext *lex, JsonSemAction *sem)
 
 static void
 parse_object(JsonLexContext *lex, JsonSemAction *sem)
-{	StackTrace("parse_object");
+{
 	/*
 	 * an object is a possibly empty sequence of object fields, separated by
 	 * commas and surrounded by curly braces.
@@ -481,7 +481,7 @@ parse_object(JsonLexContext *lex, JsonSemAction *sem)
 
 static void
 parse_array_element(JsonLexContext *lex, JsonSemAction *sem)
-{	StackTrace("parse_array_element");
+{
 	json_aelem_action astart = sem->array_element_start;
 	json_aelem_action aend = sem->array_element_end;
 	JsonTokenType tok = lex_peek(lex);
@@ -512,7 +512,7 @@ parse_array_element(JsonLexContext *lex, JsonSemAction *sem)
 
 static void
 parse_array(JsonLexContext *lex, JsonSemAction *sem)
-{	StackTrace("parse_array");
+{
 	/*
 	 * an array is a possibly empty sequence of array elements, separated by
 	 * commas and surrounded by square brackets.
@@ -554,7 +554,7 @@ parse_array(JsonLexContext *lex, JsonSemAction *sem)
  */
 static inline void
 json_lex(JsonLexContext *lex)
-{	StackTrace("json_lex");
+{
 	char	   *s;
 	int			len;
 
@@ -695,7 +695,7 @@ json_lex(JsonLexContext *lex)
  */
 static inline void
 json_lex_string(JsonLexContext *lex)
-{	StackTrace("json_lex_string");
+{
 	char	   *s;
 	int			len;
 	int			hi_surrogate = -1;
@@ -962,7 +962,7 @@ json_lex_string(JsonLexContext *lex)
  */
 static inline void
 json_lex_number(JsonLexContext *lex, char *s, bool *num_err)
-{	StackTrace("json_lex_number");
+{
 	bool		error = false;
 	char	   *p;
 	int			len;
@@ -1056,7 +1056,7 @@ json_lex_number(JsonLexContext *lex, char *s, bool *num_err)
  */
 static void
 report_parse_error(JsonParseContext ctx, JsonLexContext *lex)
-{	StackTrace("report_parse_error");
+{
 	char	   *token;
 	int			toklen;
 
@@ -1163,7 +1163,7 @@ report_parse_error(JsonParseContext ctx, JsonLexContext *lex)
  */
 static void
 report_invalid_token(JsonLexContext *lex)
-{	StackTrace("report_invalid_token");
+{
 	char	   *token;
 	int			toklen;
 
@@ -1192,7 +1192,7 @@ report_invalid_token(JsonLexContext *lex)
  */
 static int
 report_json_context(JsonLexContext *lex)
-{	StackTrace("report_json_context");
+{
 	const char *context_start;
 	const char *context_end;
 	const char *line_start;
@@ -1257,7 +1257,7 @@ report_json_context(JsonLexContext *lex)
  */
 static char *
 extract_mb_char(char *s)
-{	StackTrace("extract_mb_char");
+{
 	char	   *res;
 	int			len;
 
@@ -1280,7 +1280,7 @@ static void
 json_categorize_type(Oid typoid,
 					 JsonTypeCategory *tcategory,
 					 Oid *outfuncoid)
-{	StackTrace("json_categorize_type");
+{
 	bool		typisvarlena;
 
 	/* Look through any domain */
@@ -1381,7 +1381,7 @@ static void
 datum_to_json(Datum val, bool is_null, StringInfo result,
 			  JsonTypeCategory tcategory, Oid outfuncoid,
 			  bool key_scalar)
-{	StackTrace("datum_to_json");
+{
 	char	   *outputstr;
 	text	   *jsontext;
 
@@ -1536,7 +1536,7 @@ static void
 array_dim_to_json(StringInfo result, int dim, int ndims, int *dims, Datum *vals,
 				  bool *nulls, int *valcount, JsonTypeCategory tcategory,
 				  Oid outfuncoid, bool use_line_feeds)
-{	StackTrace("array_dim_to_json");
+{
 	int			i;
 	const char *sep;
 
@@ -1576,7 +1576,7 @@ array_dim_to_json(StringInfo result, int dim, int ndims, int *dims, Datum *vals,
  */
 static void
 array_to_json_internal(Datum array, StringInfo result, bool use_line_feeds)
-{	StackTrace("array_to_json_internal");
+{
 	ArrayType  *v = DatumGetArrayTypeP(array);
 	Oid			element_type = ARR_ELEMTYPE(v);
 	int		   *dim;
@@ -1623,7 +1623,7 @@ array_to_json_internal(Datum array, StringInfo result, bool use_line_feeds)
  */
 static void
 composite_to_json(Datum composite, StringInfo result, bool use_line_feeds)
-{	StackTrace("composite_to_json");
+{
 	HeapTupleHeader td;
 	Oid			tupType;
 	int32		tupTypmod;
@@ -1697,7 +1697,7 @@ composite_to_json(Datum composite, StringInfo result, bool use_line_feeds)
 static void
 add_json(Datum val, bool is_null, StringInfo result,
 		 Oid val_type, bool key_scalar)
-{	StackTrace("add_json");
+{
 	JsonTypeCategory tcategory;
 	Oid			outfuncoid;
 
@@ -1723,7 +1723,7 @@ add_json(Datum val, bool is_null, StringInfo result,
  */
 extern Datum
 array_to_json(PG_FUNCTION_ARGS)
-{	StackTrace("array_to_json");
+{
 	Datum		array = PG_GETARG_DATUM(0);
 	StringInfo	result;
 
@@ -1739,7 +1739,7 @@ array_to_json(PG_FUNCTION_ARGS)
  */
 extern Datum
 array_to_json_pretty(PG_FUNCTION_ARGS)
-{	StackTrace("array_to_json_pretty");
+{
 	Datum		array = PG_GETARG_DATUM(0);
 	bool		use_line_feeds = PG_GETARG_BOOL(1);
 	StringInfo	result;
@@ -1756,7 +1756,7 @@ array_to_json_pretty(PG_FUNCTION_ARGS)
  */
 extern Datum
 row_to_json(PG_FUNCTION_ARGS)
-{	StackTrace("row_to_json");
+{
 	Datum		array = PG_GETARG_DATUM(0);
 	StringInfo	result;
 
@@ -1772,7 +1772,7 @@ row_to_json(PG_FUNCTION_ARGS)
  */
 extern Datum
 row_to_json_pretty(PG_FUNCTION_ARGS)
-{	StackTrace("row_to_json_pretty");
+{
 	Datum		array = PG_GETARG_DATUM(0);
 	bool		use_line_feeds = PG_GETARG_BOOL(1);
 	StringInfo	result;
@@ -1789,7 +1789,7 @@ row_to_json_pretty(PG_FUNCTION_ARGS)
  */
 Datum
 to_json(PG_FUNCTION_ARGS)
-{	StackTrace("to_json");
+{
 	Datum		val = PG_GETARG_DATUM(0);
 	Oid			val_type = get_fn_expr_argtype(fcinfo->flinfo, 0);
 	StringInfo	result;
@@ -1818,7 +1818,7 @@ to_json(PG_FUNCTION_ARGS)
  */
 Datum
 json_agg_transfn(PG_FUNCTION_ARGS)
-{	StackTrace("json_agg_transfn");
+{
 	Oid			val_type = get_fn_expr_argtype(fcinfo->flinfo, 1);
 	MemoryContext aggcontext,
 				oldcontext;
@@ -1893,7 +1893,7 @@ json_agg_transfn(PG_FUNCTION_ARGS)
  */
 Datum
 json_agg_finalfn(PG_FUNCTION_ARGS)
-{	StackTrace("json_agg_finalfn");
+{
 	StringInfo	state;
 
 	/* cannot be called directly because of internal-type argument */
@@ -1916,7 +1916,7 @@ json_agg_finalfn(PG_FUNCTION_ARGS)
  */
 Datum
 json_object_agg_transfn(PG_FUNCTION_ARGS)
-{	StackTrace("json_object_agg_transfn");
+{
 	Oid			val_type;
 	MemoryContext aggcontext,
 				oldcontext;
@@ -1996,7 +1996,7 @@ json_object_agg_transfn(PG_FUNCTION_ARGS)
  */
 Datum
 json_object_agg_finalfn(PG_FUNCTION_ARGS)
-{	StackTrace("json_object_agg_finalfn");
+{
 	StringInfo	state;
 
 	/* cannot be called directly because of internal-type argument */
@@ -2019,7 +2019,7 @@ json_object_agg_finalfn(PG_FUNCTION_ARGS)
  */
 static text *
 catenate_stringinfo_string(StringInfo buffer, const char *addon)
-{	StackTrace("catenate_stringinfo_string");
+{
 	/* custom version of cstring_to_text_with_len */
 	int			buflen = buffer->len;
 	int			addlen = strlen(addon);
@@ -2037,7 +2037,7 @@ catenate_stringinfo_string(StringInfo buffer, const char *addon)
  */
 Datum
 json_build_object(PG_FUNCTION_ARGS)
-{	StackTrace("json_build_object");
+{
 	int			nargs = PG_NARGS();
 	int			i;
 	Datum		arg;
@@ -2115,7 +2115,7 @@ json_build_object(PG_FUNCTION_ARGS)
  */
 Datum
 json_build_object_noargs(PG_FUNCTION_ARGS)
-{	StackTrace("json_build_object_noargs");
+{
 	PG_RETURN_TEXT_P(cstring_to_text_with_len("{}", 2));
 }
 
@@ -2124,7 +2124,7 @@ json_build_object_noargs(PG_FUNCTION_ARGS)
  */
 Datum
 json_build_array(PG_FUNCTION_ARGS)
-{	StackTrace("json_build_array");
+{
 	int			nargs = PG_NARGS();
 	int			i;
 	Datum		arg;
@@ -2174,7 +2174,7 @@ json_build_array(PG_FUNCTION_ARGS)
  */
 Datum
 json_build_array_noargs(PG_FUNCTION_ARGS)
-{	StackTrace("json_build_array_noargs");
+{
 	PG_RETURN_TEXT_P(cstring_to_text_with_len("[]", 2));
 }
 
@@ -2186,7 +2186,7 @@ json_build_array_noargs(PG_FUNCTION_ARGS)
  */
 Datum
 json_object(PG_FUNCTION_ARGS)
-{	StackTrace("json_object");
+{
 	ArrayType  *in_array = PG_GETARG_ARRAYTYPE_P(0);
 	int			ndims = ARR_NDIM(in_array);
 	StringInfoData result;
@@ -2277,7 +2277,7 @@ json_object(PG_FUNCTION_ARGS)
  */
 Datum
 json_object_two_arg(PG_FUNCTION_ARGS)
-{	StackTrace("json_object_two_arg");
+{
 	ArrayType  *key_array = PG_GETARG_ARRAYTYPE_P(0);
 	ArrayType  *val_array = PG_GETARG_ARRAYTYPE_P(1);
 	int			nkdims = ARR_NDIM(key_array);
@@ -2360,7 +2360,7 @@ json_object_two_arg(PG_FUNCTION_ARGS)
  */
 void
 escape_json(StringInfo buf, const char *str)
-{	StackTrace("escape_json");
+{
 	const char *p;
 
 	appendStringInfoCharMacro(buf, '\"');
@@ -2414,7 +2414,7 @@ escape_json(StringInfo buf, const char *str)
  */
 Datum
 json_typeof(PG_FUNCTION_ARGS)
-{	StackTrace("json_typeof");
+{
 	text	   *json;
 
 	JsonLexContext *lex;

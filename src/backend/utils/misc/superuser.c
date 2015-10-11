@@ -45,7 +45,7 @@ static void RoleidCallback(Datum arg, int cacheid, uint32 hashvalue);
  */
 bool
 superuser(void)
-{	StackTrace("superuser");
+{
 	return superuser_arg(GetUserId());
 }
 
@@ -55,7 +55,7 @@ superuser(void)
  */
 bool
 superuser_arg(Oid roleid)
-{	StackTrace("superuser_arg");
+{
 	bool		result;
 	HeapTuple	rtup;
 
@@ -102,7 +102,7 @@ superuser_arg(Oid roleid)
  */
 static void
 RoleidCallback(Datum arg, int cacheid, uint32 hashvalue)
-{	StackTrace("RoleidCallback");
+{
 	/* Invalidate our local cache in case role's superuserness changed */
 	last_roleid = InvalidOid;
 }

@@ -162,7 +162,7 @@ bool
 dsm_impl_op(dsm_op op, dsm_handle handle, Size request_size,
 			void **impl_private, void **mapped_address, Size *mapped_size,
 			int elevel)
-{	StackTrace("dsm_impl_op");
+{
 	Assert(op == DSM_OP_CREATE || op == DSM_OP_RESIZE || request_size == 0);
 	Assert((op != DSM_OP_CREATE && op != DSM_OP_ATTACH) ||
 		   (*mapped_address == NULL && *mapped_size == 0));
@@ -205,7 +205,7 @@ dsm_impl_op(dsm_op op, dsm_handle handle, Size request_size,
  */
 bool
 dsm_impl_can_resize(void)
-{	StackTrace("dsm_impl_can_resize");
+{
 	switch (dynamic_shared_memory_type)
 	{
 		case DSM_IMPL_NONE:
@@ -242,7 +242,7 @@ static bool
 dsm_impl_posix(dsm_op op, dsm_handle handle, Size request_size,
 			   void **impl_private, void **mapped_address, Size *mapped_size,
 			   int elevel)
-{	StackTrace("dsm_impl_posix");
+{
 	char		name[64];
 	int			flags;
 	int			fd;
@@ -408,7 +408,7 @@ static bool
 dsm_impl_sysv(dsm_op op, dsm_handle handle, Size request_size,
 			  void **impl_private, void **mapped_address, Size *mapped_size,
 			  int elevel)
-{	StackTrace("dsm_impl_sysv");
+{
 	key_t		key;
 	int			ident;
 	char	   *address;
@@ -606,7 +606,7 @@ static bool
 dsm_impl_windows(dsm_op op, dsm_handle handle, Size request_size,
 				 void **impl_private, void **mapped_address,
 				 Size *mapped_size, int elevel)
-{	StackTrace("dsm_impl_windows");
+{
 	char	   *address;
 	HANDLE		hmap;
 	char		name[64];
@@ -791,7 +791,7 @@ static bool
 dsm_impl_mmap(dsm_op op, dsm_handle handle, Size request_size,
 			  void **impl_private, void **mapped_address, Size *mapped_size,
 			  int elevel)
-{	StackTrace("dsm_impl_mmap");
+{
 	char		name[64];
 	int			flags;
 	int			fd;
@@ -997,7 +997,7 @@ dsm_impl_mmap(dsm_op op, dsm_handle handle, Size request_size,
  */
 void
 dsm_impl_pin_segment(dsm_handle handle, void *impl_private)
-{	StackTrace("dsm_impl_pin_segment");
+{
 	switch (dynamic_shared_memory_type)
 	{
 #ifdef USE_DSM_WINDOWS
@@ -1028,7 +1028,7 @@ dsm_impl_pin_segment(dsm_handle handle, void *impl_private)
 
 static int
 errcode_for_dynamic_shared_memory()
-{	StackTrace("errcode_for_dynamic_shared_memory");
+{
 	if (errno == EFBIG || errno == ENOMEM)
 		return errcode(ERRCODE_OUT_OF_MEMORY);
 	else

@@ -94,7 +94,7 @@ static bool SyncRepQueueIsOrderedByLSN(int mode);
  */
 void
 SyncRepWaitForLSN(XLogRecPtr XactCommitLSN)
-{	StackTrace("SyncRepWaitForLSN");
+{
 	char	   *new_status = NULL;
 	const char *old_status;
 	int			mode = SyncRepWaitMode;
@@ -265,7 +265,7 @@ SyncRepWaitForLSN(XLogRecPtr XactCommitLSN)
  */
 static void
 SyncRepQueueInsert(int mode)
-{	StackTrace("SyncRepQueueInsert");
+{
 	PGPROC	   *proc;
 
 	Assert(mode >= 0 && mode < NUM_SYNC_REP_WAIT_MODE);
@@ -298,7 +298,7 @@ SyncRepQueueInsert(int mode)
  */
 static void
 SyncRepCancelWait(void)
-{	StackTrace("SyncRepCancelWait");
+{
 	LWLockAcquire(SyncRepLock, LW_EXCLUSIVE);
 	if (!SHMQueueIsDetached(&(MyProc->syncRepLinks)))
 		SHMQueueDelete(&(MyProc->syncRepLinks));
@@ -308,7 +308,7 @@ SyncRepCancelWait(void)
 
 void
 SyncRepCleanupAtProcExit(void)
-{	StackTrace("SyncRepCleanupAtProcExit");
+{
 	if (!SHMQueueIsDetached(&(MyProc->syncRepLinks)))
 	{
 		LWLockAcquire(SyncRepLock, LW_EXCLUSIVE);
@@ -329,7 +329,7 @@ SyncRepCleanupAtProcExit(void)
  */
 void
 SyncRepInitConfig(void)
-{	StackTrace("SyncRepInitConfig");
+{
 	int			priority;
 
 	/*
@@ -356,7 +356,7 @@ SyncRepInitConfig(void)
  */
 WalSnd *
 SyncRepGetSynchronousStandby(void)
-{	StackTrace("SyncRepGetSynchronousStandby");
+{
 	WalSnd	   *result = NULL;
 	int			result_priority = 0;
 	int			i;
@@ -411,7 +411,7 @@ SyncRepGetSynchronousStandby(void)
  */
 void
 SyncRepReleaseWaiters(void)
-{	StackTrace("SyncRepReleaseWaiters");
+{
 	volatile WalSndCtlData *walsndctl = WalSndCtl;
 	WalSnd	   *syncWalSnd;
 	int			numwrite = 0;
@@ -492,7 +492,7 @@ SyncRepReleaseWaiters(void)
  */
 static int
 SyncRepGetStandbyPriority(void)
-{	StackTrace("SyncRepGetStandbyPriority");
+{
 	char	   *rawstring;
 	List	   *elemlist;
 	ListCell   *l;
@@ -549,7 +549,7 @@ SyncRepGetStandbyPriority(void)
  */
 static int
 SyncRepWakeQueue(bool all, int mode)
-{	StackTrace("SyncRepWakeQueue");
+{
 	volatile WalSndCtlData *walsndctl = WalSndCtl;
 	PGPROC	   *proc = NULL;
 	PGPROC	   *thisproc = NULL;
@@ -610,7 +610,7 @@ SyncRepWakeQueue(bool all, int mode)
  */
 void
 SyncRepUpdateSyncStandbysDefined(void)
-{	StackTrace("SyncRepUpdateSyncStandbysDefined");
+{
 	bool		sync_standbys_defined = SyncStandbysDefined();
 
 	if (sync_standbys_defined != WalSndCtl->sync_standbys_defined)
@@ -646,7 +646,7 @@ SyncRepUpdateSyncStandbysDefined(void)
 #ifdef USE_ASSERT_CHECKING
 static bool
 SyncRepQueueIsOrderedByLSN(int mode)
-{	StackTrace("SyncRepQueueIsOrderedByLSN");
+{
 	PGPROC	   *proc = NULL;
 	XLogRecPtr	lastLSN;
 
@@ -686,7 +686,7 @@ SyncRepQueueIsOrderedByLSN(int mode)
 
 bool
 check_synchronous_standby_names(char **newval, void **extra, GucSource source)
-{	StackTrace("check_synchronous_standby_names");
+{
 	char	   *rawstring;
 	List	   *elemlist;
 
@@ -719,7 +719,7 @@ check_synchronous_standby_names(char **newval, void **extra, GucSource source)
 
 void
 assign_synchronous_commit(int newval, void *extra)
-{	StackTrace("assign_synchronous_commit");
+{
 	switch (newval)
 	{
 		case SYNCHRONOUS_COMMIT_REMOTE_WRITE:

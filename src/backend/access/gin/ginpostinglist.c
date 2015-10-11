@@ -75,7 +75,7 @@
 
 static inline uint64
 itemptr_to_uint64(const ItemPointer iptr)
-{	StackTrace("itemptr_to_uint64");
+{
 	uint64		val;
 
 	Assert(ItemPointerIsValid(iptr));
@@ -92,7 +92,7 @@ itemptr_to_uint64(const ItemPointer iptr)
 
 static inline void
 uint64_to_itemptr(uint64 val, ItemPointer iptr)
-{	StackTrace("uint64_to_itemptr");
+{
 	iptr->ip_posid = val & ((1 << MaxHeapTuplesPerPageBits) - 1);
 	val = val >> MaxHeapTuplesPerPageBits;
 	iptr->ip_blkid.bi_lo = val & 0xFFFF;
@@ -107,7 +107,7 @@ uint64_to_itemptr(uint64 val, ItemPointer iptr)
  */
 static void
 encode_varbyte(uint64 val, unsigned char **ptr)
-{	StackTrace("encode_varbyte");
+{
 	unsigned char *p = *ptr;
 
 	while (val > 0x7F)
@@ -125,7 +125,7 @@ encode_varbyte(uint64 val, unsigned char **ptr)
  */
 static uint64
 decode_varbyte(unsigned char **ptr)
-{	StackTrace("decode_varbyte");
+{
 	uint64		val;
 	unsigned char *p = *ptr;
 	uint64		c;
@@ -183,7 +183,7 @@ decode_varbyte(unsigned char **ptr)
 GinPostingList *
 ginCompressPostingList(const ItemPointer ipd, int nipd, int maxsize,
 					   int *nwritten)
-{	StackTrace("ginCompressPostingList");
+{
 	uint64		prev;
 	int			totalpacked = 0;
 	int			maxbytes;
@@ -271,7 +271,7 @@ ginCompressPostingList(const ItemPointer ipd, int nipd, int maxsize,
  */
 ItemPointer
 ginPostingListDecode(GinPostingList *plist, int *ndecoded)
-{	StackTrace("ginPostingListDecode");
+{
 	return ginPostingListDecodeAllSegments(plist,
 										   SizeOfGinPostingList(plist),
 										   ndecoded);
@@ -284,7 +284,7 @@ ginPostingListDecode(GinPostingList *plist, int *ndecoded)
  */
 ItemPointer
 ginPostingListDecodeAllSegments(GinPostingList *segment, int len, int *ndecoded_out)
-{	StackTrace("ginPostingListDecodeAllSegments");
+{
 	ItemPointer result;
 	int			nallocated;
 	uint64		val;
@@ -346,7 +346,7 @@ ginPostingListDecodeAllSegments(GinPostingList *segment, int len, int *ndecoded_
 int
 ginPostingListDecodeAllSegmentsToTbm(GinPostingList *ptr, int len,
 									 TIDBitmap *tbm)
-{	StackTrace("ginPostingListDecodeAllSegmentsToTbm");
+{
 	int			ndecoded;
 	ItemPointer items;
 
@@ -367,7 +367,7 @@ ItemPointer
 ginMergeItemPointers(ItemPointerData *a, uint32 na,
 					 ItemPointerData *b, uint32 nb,
 					 int *nmerged)
-{	StackTrace("ginMergeItemPointers");
+{
 	ItemPointerData *dst;
 
 	dst = (ItemPointer) palloc((na + nb) * sizeof(ItemPointerData));

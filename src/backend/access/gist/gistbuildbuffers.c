@@ -46,7 +46,7 @@ static void WriteTempFileBlock(BufFile *file, long blknum, void *ptr);
  */
 GISTBuildBuffers *
 gistInitBuildBuffers(int pagesPerBuffer, int levelStep, int maxLevel)
-{	StackTrace("gistInitBuildBuffers");
+{
 	GISTBuildBuffers *gfbb;
 	HASHCTL		hashCtl;
 
@@ -117,7 +117,7 @@ gistInitBuildBuffers(int pagesPerBuffer, int levelStep, int maxLevel)
 GISTNodeBuffer *
 gistGetNodeBuffer(GISTBuildBuffers *gfbb, GISTSTATE *giststate,
 				  BlockNumber nodeBlocknum, int level)
-{	StackTrace("gistGetNodeBuffer");
+{
 	GISTNodeBuffer *nodeBuffer;
 	bool		found;
 
@@ -183,7 +183,7 @@ gistGetNodeBuffer(GISTBuildBuffers *gfbb, GISTSTATE *giststate,
  */
 static GISTNodeBufferPage *
 gistAllocateNewPageBuffer(GISTBuildBuffers *gfbb)
-{	StackTrace("gistAllocateNewPageBuffer");
+{
 	GISTNodeBufferPage *pageBuffer;
 
 	pageBuffer = (GISTNodeBufferPage *) MemoryContextAlloc(gfbb->context,
@@ -200,7 +200,7 @@ gistAllocateNewPageBuffer(GISTBuildBuffers *gfbb)
  */
 static void
 gistAddLoadedBuffer(GISTBuildBuffers *gfbb, GISTNodeBuffer *nodeBuffer)
-{	StackTrace("gistAddLoadedBuffer");
+{
 	/* Never add a temporary buffer to the array */
 	if (nodeBuffer->isTemp)
 		return;
@@ -223,7 +223,7 @@ gistAddLoadedBuffer(GISTBuildBuffers *gfbb, GISTNodeBuffer *nodeBuffer)
  */
 static void
 gistLoadNodeBuffer(GISTBuildBuffers *gfbb, GISTNodeBuffer *nodeBuffer)
-{	StackTrace("gistLoadNodeBuffer");
+{
 	/* Check if we really should load something */
 	if (!nodeBuffer->pageBuffer && nodeBuffer->blocksCount > 0)
 	{
@@ -248,7 +248,7 @@ gistLoadNodeBuffer(GISTBuildBuffers *gfbb, GISTNodeBuffer *nodeBuffer)
  */
 static void
 gistUnloadNodeBuffer(GISTBuildBuffers *gfbb, GISTNodeBuffer *nodeBuffer)
-{	StackTrace("gistUnloadNodeBuffer");
+{
 	/* Check if we have something to write */
 	if (nodeBuffer->pageBuffer)
 	{
@@ -274,7 +274,7 @@ gistUnloadNodeBuffer(GISTBuildBuffers *gfbb, GISTNodeBuffer *nodeBuffer)
  */
 void
 gistUnloadNodeBuffers(GISTBuildBuffers *gfbb)
-{	StackTrace("gistUnloadNodeBuffers");
+{
 	int			i;
 
 	/* Unload all the buffers that have a page loaded in memory. */
@@ -290,7 +290,7 @@ gistUnloadNodeBuffers(GISTBuildBuffers *gfbb)
  */
 static void
 gistPlaceItupToPage(GISTNodeBufferPage *pageBuffer, IndexTuple itup)
-{	StackTrace("gistPlaceItupToPage");
+{
 	Size		itupsz = IndexTupleSize(itup);
 	char	   *ptr;
 
@@ -313,7 +313,7 @@ gistPlaceItupToPage(GISTNodeBufferPage *pageBuffer, IndexTuple itup)
  */
 static void
 gistGetItupFromPage(GISTNodeBufferPage *pageBuffer, IndexTuple *itup)
-{	StackTrace("gistGetItupFromPage");
+{
 	IndexTuple	ptr;
 	Size		itupsz;
 
@@ -339,7 +339,7 @@ gistGetItupFromPage(GISTNodeBufferPage *pageBuffer, IndexTuple *itup)
 void
 gistPushItupToNodeBuffer(GISTBuildBuffers *gfbb, GISTNodeBuffer *nodeBuffer,
 						 IndexTuple itup)
-{	StackTrace("gistPushItupToNodeBuffer");
+{
 	/*
 	 * Most part of memory operations will be in buffering build persistent
 	 * context. So, let's switch to it.
@@ -409,7 +409,7 @@ gistPushItupToNodeBuffer(GISTBuildBuffers *gfbb, GISTNodeBuffer *nodeBuffer,
 bool
 gistPopItupFromNodeBuffer(GISTBuildBuffers *gfbb, GISTNodeBuffer *nodeBuffer,
 						  IndexTuple *itup)
-{	StackTrace("gistPopItupFromNodeBuffer");
+{
 	/*
 	 * If node buffer is empty then return false.
 	 */
@@ -470,7 +470,7 @@ gistPopItupFromNodeBuffer(GISTBuildBuffers *gfbb, GISTNodeBuffer *nodeBuffer,
  */
 static long
 gistBuffersGetFreeBlock(GISTBuildBuffers *gfbb)
-{	StackTrace("gistBuffersGetFreeBlock");
+{
 	/*
 	 * If there are multiple free blocks, we select the one appearing last in
 	 * freeBlocks[].  If there are none, assign the next block at the end of
@@ -487,7 +487,7 @@ gistBuffersGetFreeBlock(GISTBuildBuffers *gfbb)
  */
 static void
 gistBuffersReleaseBlock(GISTBuildBuffers *gfbb, long blocknum)
-{	StackTrace("gistBuffersReleaseBlock");
+{
 	int			ndx;
 
 	/* Enlarge freeBlocks array if full. */
@@ -509,7 +509,7 @@ gistBuffersReleaseBlock(GISTBuildBuffers *gfbb, long blocknum)
  */
 void
 gistFreeBuildBuffers(GISTBuildBuffers *gfbb)
-{	StackTrace("gistFreeBuildBuffers");
+{
 	/* Close buffers file. */
 	BufFileClose(gfbb->pfile);
 
@@ -537,7 +537,7 @@ void
 gistRelocateBuildBuffersOnSplit(GISTBuildBuffers *gfbb, GISTSTATE *giststate,
 								Relation r, int level,
 								Buffer buffer, List *splitinfo)
-{	StackTrace("gistRelocateBuildBuffersOnSplit");
+{
 	RelocationBufferInfo *relocationBuffersInfos;
 	bool		found;
 	GISTNodeBuffer *nodeBuffer;
@@ -755,7 +755,7 @@ gistRelocateBuildBuffersOnSplit(GISTBuildBuffers *gfbb, GISTSTATE *giststate,
 
 static void
 ReadTempFileBlock(BufFile *file, long blknum, void *ptr)
-{	StackTrace("ReadTempFileBlock");
+{
 	if (BufFileSeekBlock(file, blknum) != 0)
 		elog(ERROR, "could not seek temporary file: %m");
 	if (BufFileRead(file, ptr, BLCKSZ) != BLCKSZ)
@@ -764,7 +764,7 @@ ReadTempFileBlock(BufFile *file, long blknum, void *ptr)
 
 static void
 WriteTempFileBlock(BufFile *file, long blknum, void *ptr)
-{	StackTrace("WriteTempFileBlock");
+{
 	if (BufFileSeekBlock(file, blknum) != 0)
 		elog(ERROR, "could not seek temporary file: %m");
 	if (BufFileWrite(file, ptr, BLCKSZ) != BLCKSZ)

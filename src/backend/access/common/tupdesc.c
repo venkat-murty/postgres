@@ -38,7 +38,7 @@
  */
 TupleDesc
 CreateTemplateTupleDesc(int natts, bool hasoid)
-{	StackTrace("CreateTemplateTupleDesc");
+{
 	TupleDesc	desc;
 	char	   *stg;
 	int			attroffset;
@@ -109,7 +109,7 @@ CreateTemplateTupleDesc(int natts, bool hasoid)
  */
 TupleDesc
 CreateTupleDesc(int natts, bool hasoid, Form_pg_attribute *attrs)
-{	StackTrace("CreateTupleDesc");
+{
 	TupleDesc	desc;
 
 	/*
@@ -138,7 +138,7 @@ CreateTupleDesc(int natts, bool hasoid, Form_pg_attribute *attrs)
  */
 TupleDesc
 CreateTupleDescCopy(TupleDesc tupdesc)
-{	StackTrace("CreateTupleDescCopy");
+{
 	TupleDesc	desc;
 	int			i;
 
@@ -164,7 +164,7 @@ CreateTupleDescCopy(TupleDesc tupdesc)
  */
 TupleDesc
 CreateTupleDescCopyConstr(TupleDesc tupdesc)
-{	StackTrace("CreateTupleDescCopyConstr");
+{
 	TupleDesc	desc;
 	TupleConstr *constr = tupdesc->constr;
 	int			i;
@@ -227,7 +227,7 @@ CreateTupleDescCopyConstr(TupleDesc tupdesc)
 void
 TupleDescCopyEntry(TupleDesc dst, AttrNumber dstAttno,
 				   TupleDesc src, AttrNumber srcAttno)
-{	StackTrace("TupleDescCopyEntry");
+{
 	/*
 	 * sanity checks
 	 */
@@ -263,7 +263,7 @@ TupleDescCopyEntry(TupleDesc dst, AttrNumber dstAttno,
  */
 void
 FreeTupleDesc(TupleDesc tupdesc)
-{	StackTrace("FreeTupleDesc");
+{
 	int			i;
 
 	/*
@@ -313,7 +313,7 @@ FreeTupleDesc(TupleDesc tupdesc)
  */
 void
 IncrTupleDescRefCount(TupleDesc tupdesc)
-{	StackTrace("IncrTupleDescRefCount");
+{
 	Assert(tupdesc->tdrefcount >= 0);
 
 	ResourceOwnerEnlargeTupleDescs(CurrentResourceOwner);
@@ -331,7 +331,7 @@ IncrTupleDescRefCount(TupleDesc tupdesc)
  */
 void
 DecrTupleDescRefCount(TupleDesc tupdesc)
-{	StackTrace("DecrTupleDescRefCount");
+{
 	Assert(tupdesc->tdrefcount > 0);
 
 	ResourceOwnerForgetTupleDesc(CurrentResourceOwner, tupdesc);
@@ -349,7 +349,7 @@ DecrTupleDescRefCount(TupleDesc tupdesc)
  */
 bool
 equalTupleDescs(TupleDesc tupdesc1, TupleDesc tupdesc2)
-{	StackTrace("equalTupleDescs");
+{
 	int			i,
 				j,
 				n;
@@ -495,7 +495,7 @@ TupleDescInitEntry(TupleDesc desc,
 				   Oid oidtypeid,
 				   int32 typmod,
 				   int attdim)
-{	StackTrace("TupleDescInitEntry");
+{
 	HeapTuple	tuple;
 	Form_pg_type typeForm;
 	Form_pg_attribute att;
@@ -563,7 +563,7 @@ void
 TupleDescInitEntryCollation(TupleDesc desc,
 							AttrNumber attributeNumber,
 							Oid collationid)
-{	StackTrace("TupleDescInitEntryCollation");
+{
 	/*
 	 * sanity checks
 	 */
@@ -586,7 +586,7 @@ TupleDescInitEntryCollation(TupleDesc desc,
  */
 TupleDesc
 BuildDescForRelation(List *schema)
-{	StackTrace("BuildDescForRelation");
+{
 	int			natts;
 	AttrNumber	attnum;
 	ListCell   *l;
@@ -682,7 +682,7 @@ BuildDescForRelation(List *schema)
  */
 TupleDesc
 BuildDescFromLists(List *names, List *types, List *typmods, List *collations)
-{	StackTrace("BuildDescFromLists");
+{
 	int			natts;
 	AttrNumber	attnum;
 	ListCell   *l1;

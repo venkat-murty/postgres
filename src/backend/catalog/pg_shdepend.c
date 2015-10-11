@@ -109,7 +109,7 @@ void
 recordSharedDependencyOn(ObjectAddress *depender,
 						 ObjectAddress *referenced,
 						 SharedDependencyType deptype)
-{	StackTrace("recordSharedDependencyOn");
+{
 	Relation	sdepRel;
 
 	/*
@@ -151,7 +151,7 @@ recordSharedDependencyOn(ObjectAddress *depender,
  */
 void
 recordDependencyOnOwner(Oid classId, Oid objectId, Oid owner)
-{	StackTrace("recordDependencyOnOwner");
+{
 	ObjectAddress myself,
 				referenced;
 
@@ -189,7 +189,7 @@ shdepChangeDep(Relation sdepRel,
 			   Oid classid, Oid objid, int32 objsubid,
 			   Oid refclassid, Oid refobjid,
 			   SharedDependencyType deptype)
-{	StackTrace("shdepChangeDep");
+{
 	Oid			dbid = classIdGetDbId(classid);
 	HeapTuple	oldtup = NULL;
 	HeapTuple	scantup;
@@ -302,7 +302,7 @@ shdepChangeDep(Relation sdepRel,
  */
 void
 changeDependencyOnOwner(Oid classId, Oid objectId, Oid newOwnerId)
-{	StackTrace("changeDependencyOnOwner");
+{
 	Relation	sdepRel;
 
 	sdepRel = heap_open(SharedDependRelationId, RowExclusiveLock);
@@ -349,7 +349,7 @@ changeDependencyOnOwner(Oid classId, Oid objectId, Oid newOwnerId)
  */
 static void
 getOidListDiff(Oid *list1, int *nlist1, Oid *list2, int *nlist2)
-{	StackTrace("getOidListDiff");
+{
 	int			in1,
 				in2,
 				out1,
@@ -422,7 +422,7 @@ updateAclDependencies(Oid classId, Oid objectId, int32 objsubId,
 					  Oid ownerId,
 					  int noldmembers, Oid *oldmembers,
 					  int nnewmembers, Oid *newmembers)
-{	StackTrace("updateAclDependencies");
+{
 	Relation	sdepRel;
 	int			i;
 
@@ -521,7 +521,7 @@ typedef struct
 bool
 checkSharedDependencies(Oid classId, Oid objectId,
 						char **detail_msg, char **detail_log_msg)
-{	StackTrace("checkSharedDependencies");
+{
 	Relation	sdepRel;
 	ScanKeyData key[2];
 	SysScanDesc scan;
@@ -709,7 +709,7 @@ checkSharedDependencies(Oid classId, Oid objectId,
  */
 void
 copyTemplateDependencies(Oid templateDbId, Oid newDbId)
-{	StackTrace("copyTemplateDependencies");
+{
 	Relation	sdepRel;
 	TupleDesc	sdepDesc;
 	ScanKeyData key[1];
@@ -776,7 +776,7 @@ copyTemplateDependencies(Oid templateDbId, Oid newDbId)
  */
 void
 dropDatabaseDependencies(Oid databaseId)
-{	StackTrace("dropDatabaseDependencies");
+{
 	Relation	sdepRel;
 	ScanKeyData key[1];
 	SysScanDesc scan;
@@ -824,7 +824,7 @@ dropDatabaseDependencies(Oid databaseId)
  */
 void
 deleteSharedDependencyRecordsFor(Oid classId, Oid objectId, int32 objectSubId)
-{	StackTrace("deleteSharedDependencyRecordsFor");
+{
 	Relation	sdepRel;
 
 	sdepRel = heap_open(SharedDependRelationId, RowExclusiveLock);
@@ -849,7 +849,7 @@ shdepAddDependency(Relation sdepRel,
 				   Oid classId, Oid objectId, int32 objsubId,
 				   Oid refclassId, Oid refobjId,
 				   SharedDependencyType deptype)
-{	StackTrace("shdepAddDependency");
+{
 	HeapTuple	tup;
 	Datum		values[Natts_pg_shdepend];
 	bool		nulls[Natts_pg_shdepend];
@@ -908,7 +908,7 @@ shdepDropDependency(Relation sdepRel,
 					bool drop_subobjects,
 					Oid refclassId, Oid refobjId,
 					SharedDependencyType deptype)
-{	StackTrace("shdepDropDependency");
+{
 	ScanKeyData key[4];
 	int			nkeys;
 	SysScanDesc scan;
@@ -970,7 +970,7 @@ shdepDropDependency(Relation sdepRel,
  */
 static Oid
 classIdGetDbId(Oid classId)
-{	StackTrace("classIdGetDbId");
+{
 	Oid			dbId;
 
 	if (IsSharedRelation(classId))
@@ -991,7 +991,7 @@ classIdGetDbId(Oid classId)
  */
 void
 shdepLockAndCheckObject(Oid classId, Oid objectId)
-{	StackTrace("shdepLockAndCheckObject");
+{
 	/* AccessShareLock should be OK, since we are not modifying the object */
 	LockSharedObject(classId, objectId, 0, AccessShareLock);
 
@@ -1068,7 +1068,7 @@ storeObjectDescription(StringInfo descs,
 					   ObjectAddress *object,
 					   SharedDependencyType deptype,
 					   int count)
-{	StackTrace("storeObjectDescription");
+{
 	char	   *objdesc = getObjectDescription(object);
 
 	/* separate entries with a newline */
@@ -1113,7 +1113,7 @@ storeObjectDescription(StringInfo descs,
  */
 static bool
 isSharedObjectPinned(Oid classId, Oid objectId, Relation sdepRel)
-{	StackTrace("isSharedObjectPinned");
+{
 	bool		result = false;
 	ScanKeyData key[2];
 	SysScanDesc scan;
@@ -1165,7 +1165,7 @@ isSharedObjectPinned(Oid classId, Oid objectId, Relation sdepRel)
  */
 void
 shdepDropOwned(List *roleids, DropBehavior behavior)
-{	StackTrace("shdepDropOwned");
+{
 	Relation	sdepRel;
 	ListCell   *cell;
 	ObjectAddresses *deleteobjs;
@@ -1275,7 +1275,7 @@ shdepDropOwned(List *roleids, DropBehavior behavior)
  */
 void
 shdepReassignOwned(List *roleids, Oid newrole)
-{	StackTrace("shdepReassignOwned");
+{
 	Relation	sdepRel;
 	ListCell   *cell;
 

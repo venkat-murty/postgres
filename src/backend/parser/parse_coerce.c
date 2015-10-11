@@ -78,7 +78,7 @@ coerce_to_target_type(ParseState *pstate, Node *expr, Oid exprtype,
 					  CoercionContext ccontext,
 					  CoercionForm cformat,
 					  int location)
-{	StackTrace("coerce_to_target_type");
+{
 	Node	   *result;
 	Node	   *origexpr;
 
@@ -155,7 +155,7 @@ Node *
 coerce_type(ParseState *pstate, Node *node,
 			Oid inputTypeId, Oid targetTypeId, int32 targetTypeMod,
 			CoercionContext ccontext, CoercionForm cformat, int location)
-{	StackTrace("coerce_type");
+{
 	Node	   *result;
 	CoercionPathType pathtype;
 	Oid			funcId;
@@ -488,7 +488,7 @@ coerce_type(ParseState *pstate, Node *node,
 bool
 can_coerce_type(int nargs, Oid *input_typeids, Oid *target_typeids,
 				CoercionContext ccontext)
-{	StackTrace("can_coerce_type");
+{
 	bool		have_generics = false;
 	int			i;
 
@@ -611,7 +611,7 @@ coerce_to_domain(Node *arg, Oid baseTypeId, int32 baseTypeMod, Oid typeId,
 				 CoercionForm cformat, int location,
 				 bool hideInputCoercion,
 				 bool lengthCoercionDone)
-{	StackTrace("coerce_to_domain");
+{
 	CoerceToDomain *result;
 
 	/* Get the base type if it hasn't been supplied */
@@ -690,7 +690,7 @@ static Node *
 coerce_type_typmod(Node *node, Oid targetTypeId, int32 targetTypMod,
 				   CoercionForm cformat, int location,
 				   bool isExplicit, bool hideInputCoercion)
-{	StackTrace("coerce_type_typmod");
+{
 	CoercionPathType pathtype;
 	Oid			funcId;
 
@@ -730,7 +730,7 @@ coerce_type_typmod(Node *node, Oid targetTypeId, int32 targetTypMod,
  */
 static void
 hide_coercion_node(Node *node)
-{	StackTrace("hide_coercion_node");
+{
 	if (IsA(node, FuncExpr))
 		((FuncExpr *) node)->funcformat = COERCE_IMPLICIT_CAST;
 	else if (IsA(node, RelabelType))
@@ -763,7 +763,7 @@ build_coercion_expression(Node *node,
 						  Oid targetTypeId, int32 targetTypMod,
 						  CoercionForm cformat, int location,
 						  bool isExplicit)
-{	StackTrace("build_coercion_expression");
+{
 	int			nargs = 0;
 
 	if (OidIsValid(funcId))
@@ -898,7 +898,7 @@ coerce_record_to_complex(ParseState *pstate, Node *node,
 						 CoercionContext ccontext,
 						 CoercionForm cformat,
 						 int location)
-{	StackTrace("coerce_record_to_complex");
+{
 	RowExpr    *rowexpr;
 	TupleDesc	tupdesc;
 	List	   *args = NIL;
@@ -1023,7 +1023,7 @@ coerce_record_to_complex(ParseState *pstate, Node *node,
 Node *
 coerce_to_boolean(ParseState *pstate, Node *node,
 				  const char *constructName)
-{	StackTrace("coerce_to_boolean");
+{
 	Oid			inputTypeId = exprType(node);
 
 	if (inputTypeId != BOOLOID)
@@ -1070,7 +1070,7 @@ Node *
 coerce_to_specific_type(ParseState *pstate, Node *node,
 						Oid targetTypeId,
 						const char *constructName)
-{	StackTrace("coerce_to_specific_type");
+{
 	Oid			inputTypeId = exprType(node);
 
 	if (inputTypeId != targetTypeId)
@@ -1120,7 +1120,7 @@ int
 parser_coercion_errposition(ParseState *pstate,
 							int coerce_location,
 							Node *input_expr)
-{	StackTrace("parser_coercion_errposition");
+{
 	if (coerce_location >= 0)
 		return parser_errposition(pstate, coerce_location);
 	else
@@ -1145,7 +1145,7 @@ parser_coercion_errposition(ParseState *pstate,
 Oid
 select_common_type(ParseState *pstate, List *exprs, const char *context,
 				   Node **which_expr)
-{	StackTrace("select_common_type");
+{
 	Node	   *pexpr;
 	Oid			ptype;
 	TYPCATEGORY pcategory;
@@ -1274,7 +1274,7 @@ select_common_type(ParseState *pstate, List *exprs, const char *context,
 Node *
 coerce_to_common_type(ParseState *pstate, Node *node,
 					  Oid targetTypeId, const char *context)
-{	StackTrace("coerce_to_common_type");
+{
 	Oid			inputTypeId = exprType(node);
 
 	if (inputTypeId == targetTypeId)
@@ -1346,7 +1346,7 @@ bool
 check_generic_type_consistency(Oid *actual_arg_types,
 							   Oid *declared_arg_types,
 							   int nargs)
-{	StackTrace("check_generic_type_consistency");
+{
 	int			j;
 	Oid			elem_typeid = InvalidOid;
 	Oid			array_typeid = InvalidOid;
@@ -1545,7 +1545,7 @@ enforce_generic_type_consistency(Oid *actual_arg_types,
 								 int nargs,
 								 Oid rettype,
 								 bool allow_poly)
-{	StackTrace("enforce_generic_type_consistency");
+{
 	int			j;
 	bool		have_generics = false;
 	bool		have_unknowns = false;
@@ -1853,7 +1853,7 @@ Oid
 resolve_generic_type(Oid declared_type,
 					 Oid context_actual_type,
 					 Oid context_declared_type)
-{	StackTrace("resolve_generic_type");
+{
 	if (declared_type == ANYARRAYOID)
 	{
 		if (context_declared_type == ANYARRAYOID)
@@ -1946,7 +1946,7 @@ resolve_generic_type(Oid declared_type,
  */
 TYPCATEGORY
 TypeCategory(Oid type)
-{	StackTrace("TypeCategory");
+{
 	char		typcategory;
 	bool		typispreferred;
 
@@ -1965,7 +1965,7 @@ TypeCategory(Oid type)
  */
 bool
 IsPreferredType(TYPCATEGORY category, Oid type)
-{	StackTrace("IsPreferredType");
+{
 	char		typcategory;
 	bool		typispreferred;
 
@@ -2000,7 +2000,7 @@ IsPreferredType(TYPCATEGORY category, Oid type)
  */
 bool
 IsBinaryCoercible(Oid srctype, Oid targettype)
-{	StackTrace("IsBinaryCoercible");
+{
 	HeapTuple	tuple;
 	Form_pg_cast castForm;
 	bool		result;
@@ -2099,7 +2099,7 @@ CoercionPathType
 find_coercion_pathway(Oid targetTypeId, Oid sourceTypeId,
 					  CoercionContext ccontext,
 					  Oid *funcid)
-{	StackTrace("find_coercion_pathway");
+{
 	CoercionPathType result = COERCION_PATH_NONE;
 	HeapTuple	tuple;
 
@@ -2259,7 +2259,7 @@ find_coercion_pathway(Oid targetTypeId, Oid sourceTypeId,
 CoercionPathType
 find_typmod_coercion_function(Oid typeId,
 							  Oid *funcid)
-{	StackTrace("find_typmod_coercion_function");
+{
 	CoercionPathType result;
 	Type		targetType;
 	Form_pg_type typeForm;
@@ -2308,7 +2308,7 @@ find_typmod_coercion_function(Oid typeId,
  */
 static bool
 is_complex_array(Oid typid)
-{	StackTrace("is_complex_array");
+{
 	Oid			elemtype = get_element_type(typid);
 
 	return (OidIsValid(elemtype) && ISCOMPLEX(elemtype));
@@ -2322,7 +2322,7 @@ is_complex_array(Oid typid)
  */
 static bool
 typeIsOfTypedTable(Oid reltypeId, Oid reloftypeId)
-{	StackTrace("typeIsOfTypedTable");
+{
 	Oid			relid = typeidTypeRelid(reltypeId);
 	bool		result = false;
 

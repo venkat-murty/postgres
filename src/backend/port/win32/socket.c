@@ -44,7 +44,7 @@ int			pgwin32_noblock = 0;
  */
 static void
 TranslateSocketError(void)
-{	StackTrace("TranslateSocketError");
+{
 	switch (WSAGetLastError())
 	{
 		case WSANOTINITIALISED:
@@ -106,7 +106,7 @@ TranslateSocketError(void)
 
 static int
 pgwin32_poll_signals(void)
-{	StackTrace("pgwin32_poll_signals");
+{
 	if (UNBLOCKED_SIGNAL_QUEUE())
 	{
 		pgwin32_dispatch_queued_signals();
@@ -118,7 +118,7 @@ pgwin32_poll_signals(void)
 
 static int
 isDataGram(SOCKET s)
-{	StackTrace("isDataGram");
+{
 	int			type;
 	int			typelen = sizeof(type);
 
@@ -130,7 +130,7 @@ isDataGram(SOCKET s)
 
 int
 pgwin32_waitforsinglesocket(SOCKET s, int what, int timeout)
-{	StackTrace("pgwin32_waitforsinglesocket");
+{
 	static HANDLE waitevent = INVALID_HANDLE_VALUE;
 	static SOCKET current_socket = INVALID_SOCKET;
 	static int	isUDP = 0;
@@ -240,7 +240,7 @@ pgwin32_waitforsinglesocket(SOCKET s, int what, int timeout)
  */
 SOCKET
 pgwin32_socket(int af, int type, int protocol)
-{	StackTrace("pgwin32_socket");
+{
 	SOCKET		s;
 	unsigned long on = 1;
 
@@ -264,7 +264,7 @@ pgwin32_socket(int af, int type, int protocol)
 
 SOCKET
 pgwin32_accept(SOCKET s, struct sockaddr * addr, int *addrlen)
-{	StackTrace("pgwin32_accept");
+{
 	SOCKET		rs;
 
 	/*
@@ -286,7 +286,7 @@ pgwin32_accept(SOCKET s, struct sockaddr * addr, int *addrlen)
 /* No signal delivery during connect. */
 int
 pgwin32_connect(SOCKET s, const struct sockaddr * addr, int addrlen)
-{	StackTrace("pgwin32_connect");
+{
 	int			r;
 
 	r = WSAConnect(s, addr, addrlen, NULL, NULL, NULL, NULL);
@@ -309,7 +309,7 @@ pgwin32_connect(SOCKET s, const struct sockaddr * addr, int addrlen)
 
 int
 pgwin32_recv(SOCKET s, char *buf, int len, int f)
-{	StackTrace("pgwin32_recv");
+{
 	WSABUF		wbuf;
 	int			r;
 	DWORD		b;
@@ -391,7 +391,7 @@ pgwin32_recv(SOCKET s, char *buf, int len, int f)
 
 int
 pgwin32_send(SOCKET s, const void *buf, int len, int flags)
-{	StackTrace("pgwin32_send");
+{
 	WSABUF		wbuf;
 	int			r;
 	DWORD		b;
@@ -449,7 +449,7 @@ pgwin32_send(SOCKET s, const void *buf, int len, int flags)
  */
 int
 pgwin32_select(int nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds, const struct timeval * timeout)
-{	StackTrace("pgwin32_select");
+{
 	WSAEVENT	events[FD_SETSIZE * 2]; /* worst case is readfds totally
 										 * different from writefds, so
 										 * 2*FD_SETSIZE sockets */
@@ -651,7 +651,7 @@ pgwin32_select(int nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds, c
 static char wserrbuf[256];
 const char *
 pgwin32_socket_strerror(int err)
-{	StackTrace("pgwin32_socket_strerror");
+{
 	static HANDLE handleDLL = INVALID_HANDLE_VALUE;
 
 	if (handleDLL == INVALID_HANDLE_VALUE)

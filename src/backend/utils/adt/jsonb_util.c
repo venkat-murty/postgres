@@ -76,7 +76,7 @@ static JsonbValue *pushJsonbValueScalar(JsonbParseState **pstate,
  */
 Jsonb *
 JsonbValueToJsonb(JsonbValue *val)
-{	StackTrace("JsonbValueToJsonb");
+{
 	Jsonb	   *out;
 
 	if (IsAJsonbScalar(val))
@@ -118,7 +118,7 @@ JsonbValueToJsonb(JsonbValue *val)
  */
 uint32
 getJsonbOffset(const JsonbContainer *jc, int index)
-{	StackTrace("getJsonbOffset");
+{
 	uint32		offset = 0;
 	int			i;
 
@@ -143,7 +143,7 @@ getJsonbOffset(const JsonbContainer *jc, int index)
  */
 uint32
 getJsonbLength(const JsonbContainer *jc, int index)
-{	StackTrace("getJsonbLength");
+{
 	uint32		off;
 	uint32		len;
 
@@ -175,7 +175,7 @@ getJsonbLength(const JsonbContainer *jc, int index)
  */
 int
 compareJsonbContainers(JsonbContainer *a, JsonbContainer *b)
-{	StackTrace("compareJsonbContainers");
+{
 	JsonbIterator *ita,
 			   *itb;
 	int			res = 0;
@@ -325,7 +325,7 @@ compareJsonbContainers(JsonbContainer *a, JsonbContainer *b)
 JsonbValue *
 findJsonbValueFromContainer(JsonbContainer *container, uint32 flags,
 							JsonbValue *key)
-{	StackTrace("findJsonbValueFromContainer");
+{
 	JEntry	   *children = container->children;
 	int			count = (container->header & JB_CMASK);
 	JsonbValue *result;
@@ -416,7 +416,7 @@ findJsonbValueFromContainer(JsonbContainer *container, uint32 flags,
  */
 JsonbValue *
 getIthJsonbValueFromContainer(JsonbContainer *container, uint32 i)
-{	StackTrace("getIthJsonbValueFromContainer");
+{
 	JsonbValue *result;
 	char	   *base_addr;
 	uint32		nelements;
@@ -455,7 +455,7 @@ static void
 fillJsonbValue(JsonbContainer *container, int index,
 			   char *base_addr, uint32 offset,
 			   JsonbValue *result)
-{	StackTrace("fillJsonbValue");
+{
 	JEntry		entry = container->children[index];
 
 	if (JBE_ISNULL(entry))
@@ -515,7 +515,7 @@ fillJsonbValue(JsonbContainer *container, int index,
 JsonbValue *
 pushJsonbValue(JsonbParseState **pstate, JsonbIteratorToken seq,
 			   JsonbValue *jbval)
-{	StackTrace("pushJsonbValue");
+{
 	JsonbIterator *it;
 	JsonbValue *res = NULL;
 	JsonbValue	v;
@@ -544,7 +544,7 @@ pushJsonbValue(JsonbParseState **pstate, JsonbIteratorToken seq,
 static JsonbValue *
 pushJsonbValueScalar(JsonbParseState **pstate, JsonbIteratorToken seq,
 					 JsonbValue *scalarVal)
-{	StackTrace("pushJsonbValueScalar");
+{
 	JsonbValue *result = NULL;
 
 	switch (seq)
@@ -632,7 +632,7 @@ pushJsonbValueScalar(JsonbParseState **pstate, JsonbIteratorToken seq,
  */
 static JsonbParseState *
 pushState(JsonbParseState **pstate)
-{	StackTrace("pushState");
+{
 	JsonbParseState *ns = palloc(sizeof(JsonbParseState));
 
 	ns->next = *pstate;
@@ -644,7 +644,7 @@ pushState(JsonbParseState **pstate)
  */
 static void
 appendKey(JsonbParseState *pstate, JsonbValue *string)
-{	StackTrace("appendKey");
+{
 	JsonbValue *object = &pstate->contVal;
 
 	Assert(object->type == jbvObject);
@@ -673,7 +673,7 @@ appendKey(JsonbParseState *pstate, JsonbValue *string)
  */
 static void
 appendValue(JsonbParseState *pstate, JsonbValue *scalarVal)
-{	StackTrace("appendValue");
+{
 	JsonbValue *object = &pstate->contVal;
 
 	Assert(object->type == jbvObject);
@@ -686,7 +686,7 @@ appendValue(JsonbParseState *pstate, JsonbValue *scalarVal)
  */
 static void
 appendElement(JsonbParseState *pstate, JsonbValue *scalarVal)
-{	StackTrace("appendElement");
+{
 	JsonbValue *array = &pstate->contVal;
 
 	Assert(array->type == jbvArray);
@@ -715,7 +715,7 @@ appendElement(JsonbParseState *pstate, JsonbValue *scalarVal)
  */
 JsonbIterator *
 JsonbIteratorInit(JsonbContainer *container)
-{	StackTrace("JsonbIteratorInit");
+{
 	return iteratorFromContainer(container, NULL);
 }
 
@@ -751,7 +751,7 @@ JsonbIteratorInit(JsonbContainer *container)
  */
 JsonbIteratorToken
 JsonbIteratorNext(JsonbIterator **it, JsonbValue *val, bool skipNested)
-{	StackTrace("JsonbIteratorNext");
+{
 	if (*it == NULL)
 		return WJB_DONE;
 
@@ -897,7 +897,7 @@ recurse:
  */
 static JsonbIterator *
 iteratorFromContainer(JsonbContainer *container, JsonbIterator *parent)
-{	StackTrace("iteratorFromContainer");
+{
 	JsonbIterator *it;
 
 	it = palloc(sizeof(JsonbIterator));
@@ -939,7 +939,7 @@ iteratorFromContainer(JsonbContainer *container, JsonbIterator *parent)
  */
 static JsonbIterator *
 freeAndGetParent(JsonbIterator *it)
-{	StackTrace("freeAndGetParent");
+{
 	JsonbIterator *v = it->parent;
 
 	pfree(it);
@@ -960,7 +960,7 @@ freeAndGetParent(JsonbIterator *it)
  */
 bool
 JsonbDeepContains(JsonbIterator **val, JsonbIterator **mContained)
-{	StackTrace("JsonbDeepContains");
+{
 	uint32		rval,
 				rcont;
 	JsonbValue	vval,
@@ -1211,7 +1211,7 @@ JsonbDeepContains(JsonbIterator **val, JsonbIterator **mContained)
  */
 void
 JsonbHashScalarValue(const JsonbValue *scalarVal, uint32 *hash)
-{	StackTrace("JsonbHashScalarValue");
+{
 	uint32		tmp;
 
 	/* Compute hash value for scalarVal */
@@ -1253,7 +1253,7 @@ JsonbHashScalarValue(const JsonbValue *scalarVal, uint32 *hash)
  */
 static bool
 equalsJsonbScalarValue(JsonbValue *aScalar, JsonbValue *bScalar)
-{	StackTrace("equalsJsonbScalarValue");
+{
 	if (aScalar->type == bScalar->type)
 	{
 		switch (aScalar->type)
@@ -1285,7 +1285,7 @@ equalsJsonbScalarValue(JsonbValue *aScalar, JsonbValue *bScalar)
  */
 static int
 compareJsonbScalarValue(JsonbValue *aScalar, JsonbValue *bScalar)
-{	StackTrace("compareJsonbScalarValue");
+{
 	if (aScalar->type == bScalar->type)
 	{
 		switch (aScalar->type)
@@ -1330,7 +1330,7 @@ compareJsonbScalarValue(JsonbValue *aScalar, JsonbValue *bScalar)
  */
 static int
 reserveFromBuffer(StringInfo buffer, int len)
-{	StackTrace("reserveFromBuffer");
+{
 	int			offset;
 
 	/* Make more room if needed */
@@ -1356,7 +1356,7 @@ reserveFromBuffer(StringInfo buffer, int len)
  */
 static void
 copyToBuffer(StringInfo buffer, int offset, const char *data, int len)
-{	StackTrace("copyToBuffer");
+{
 	memcpy(buffer->data + offset, data, len);
 }
 
@@ -1365,7 +1365,7 @@ copyToBuffer(StringInfo buffer, int offset, const char *data, int len)
  */
 static void
 appendToBuffer(StringInfo buffer, const char *data, int len)
-{	StackTrace("appendToBuffer");
+{
 	int			offset;
 
 	offset = reserveFromBuffer(buffer, len);
@@ -1379,7 +1379,7 @@ appendToBuffer(StringInfo buffer, const char *data, int len)
  */
 static short
 padBufferToInt(StringInfo buffer)
-{	StackTrace("padBufferToInt");
+{
 	int			padlen,
 				p,
 				offset;
@@ -1400,7 +1400,7 @@ padBufferToInt(StringInfo buffer)
  */
 static Jsonb *
 convertToJsonb(JsonbValue *val)
-{	StackTrace("convertToJsonb");
+{
 	StringInfoData buffer;
 	JEntry		jentry;
 	Jsonb	   *res;
@@ -1442,7 +1442,7 @@ convertToJsonb(JsonbValue *val)
  */
 static void
 convertJsonbValue(StringInfo buffer, JEntry *header, JsonbValue *val, int level)
-{	StackTrace("convertJsonbValue");
+{
 	check_stack_depth();
 
 	if (!val)
@@ -1467,7 +1467,7 @@ convertJsonbValue(StringInfo buffer, JEntry *header, JsonbValue *val, int level)
 
 static void
 convertJsonbArray(StringInfo buffer, JEntry *pheader, JsonbValue *val, int level)
-{	StackTrace("convertJsonbArray");
+{
 	int			base_offset;
 	int			jentry_offset;
 	int			i;
@@ -1551,7 +1551,7 @@ convertJsonbArray(StringInfo buffer, JEntry *pheader, JsonbValue *val, int level
 
 static void
 convertJsonbObject(StringInfo buffer, JEntry *pheader, JsonbValue *val, int level)
-{	StackTrace("convertJsonbObject");
+{
 	int			base_offset;
 	int			jentry_offset;
 	int			i;
@@ -1667,7 +1667,7 @@ convertJsonbObject(StringInfo buffer, JEntry *pheader, JsonbValue *val, int leve
 
 static void
 convertJsonbScalar(StringInfo buffer, JEntry *jentry, JsonbValue *scalarVal)
-{	StackTrace("convertJsonbScalar");
+{
 	int			numlen;
 	short		padlen;
 
@@ -1716,7 +1716,7 @@ convertJsonbScalar(StringInfo buffer, JEntry *jentry, JsonbValue *scalarVal)
  */
 static int
 lengthCompareJsonbStringValue(const void *a, const void *b)
-{	StackTrace("lengthCompareJsonbStringValue");
+{
 	const JsonbValue *va = (const JsonbValue *) a;
 	const JsonbValue *vb = (const JsonbValue *) b;
 	int			res;
@@ -1749,7 +1749,7 @@ lengthCompareJsonbStringValue(const void *a, const void *b)
  */
 static int
 lengthCompareJsonbPair(const void *a, const void *b, void *binequal)
-{	StackTrace("lengthCompareJsonbPair");
+{
 	const JsonbPair *pa = (const JsonbPair *) a;
 	const JsonbPair *pb = (const JsonbPair *) b;
 	int			res;
@@ -1773,7 +1773,7 @@ lengthCompareJsonbPair(const void *a, const void *b, void *binequal)
  */
 static void
 uniqueifyJsonbObject(JsonbValue *object)
-{	StackTrace("uniqueifyJsonbObject");
+{
 	bool		hasNonUniq = false;
 
 	Assert(object->type == jbvObject);

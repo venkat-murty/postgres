@@ -44,7 +44,7 @@
  */
 TupleTableSlot *				/* return: a tuple or NULL */
 ExecUnique(UniqueState *node)
-{	StackTrace("ExecUnique");
+{
 	Unique	   *plannode = (Unique *) node->ps.plan;
 	TupleTableSlot *resultTupleSlot;
 	TupleTableSlot *slot;
@@ -110,7 +110,7 @@ ExecUnique(UniqueState *node)
  */
 UniqueState *
 ExecInitUnique(Unique *node, EState *estate, int eflags)
-{	StackTrace("ExecInitUnique");
+{
 	UniqueState *uniquestate;
 
 	/* check for unsupported flags */
@@ -173,7 +173,7 @@ ExecInitUnique(Unique *node, EState *estate, int eflags)
  */
 void
 ExecEndUnique(UniqueState *node)
-{	StackTrace("ExecEndUnique");
+{
 	/* clean up tuple table */
 	ExecClearTuple(node->ps.ps_ResultTupleSlot);
 
@@ -185,7 +185,7 @@ ExecEndUnique(UniqueState *node)
 
 void
 ExecReScanUnique(UniqueState *node)
-{	StackTrace("ExecReScanUnique");
+{
 	/* must clear result tuple so first input tuple is returned */
 	ExecClearTuple(node->ps.ps_ResultTupleSlot);
 

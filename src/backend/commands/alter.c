@@ -71,7 +71,7 @@ static Oid	AlterObjectNamespace_internal(Relation rel, Oid objid, Oid nspOid);
  */
 static void
 report_name_conflict(Oid classId, const char *name)
-{	StackTrace("report_name_conflict");
+{
 	char	   *msgfmt;
 
 	switch (classId)
@@ -100,7 +100,7 @@ report_name_conflict(Oid classId, const char *name)
 
 static void
 report_namespace_conflict(Oid classId, const char *name, Oid nspOid)
-{	StackTrace("report_namespace_conflict");
+{
 	char	   *msgfmt;
 
 	Assert(OidIsValid(nspOid));
@@ -150,7 +150,7 @@ report_namespace_conflict(Oid classId, const char *name, Oid nspOid)
  */
 static void
 AlterObjectRename_internal(Relation rel, Oid objectId, const char *new_name)
-{	StackTrace("AlterObjectRename_internal");
+{
 	Oid			classId = RelationGetRelid(rel);
 	int			oidCacheId = get_object_catcache_oid(classId);
 	int			nameCacheId = get_object_catcache_name(classId);
@@ -304,7 +304,7 @@ AlterObjectRename_internal(Relation rel, Oid objectId, const char *new_name)
  */
 ObjectAddress
 ExecRenameStmt(RenameStmt *stmt)
-{	StackTrace("ExecRenameStmt");
+{
 	switch (stmt->renameType)
 	{
 		case OBJECT_TABCONSTRAINT:
@@ -402,7 +402,7 @@ ExecRenameStmt(RenameStmt *stmt)
 ObjectAddress
 ExecAlterObjectSchemaStmt(AlterObjectSchemaStmt *stmt,
 						  ObjectAddress *oldSchemaAddr)
-{	StackTrace("ExecAlterObjectSchemaStmt");
+{
 	ObjectAddress address;
 	Oid			oldNspOid;
 
@@ -493,7 +493,7 @@ ExecAlterObjectSchemaStmt(AlterObjectSchemaStmt *stmt,
 Oid
 AlterObjectNamespace_oid(Oid classId, Oid objid, Oid nspOid,
 						 ObjectAddresses *objsMoved)
-{	StackTrace("AlterObjectNamespace_oid");
+{
 	Oid			oldNspOid = InvalidOid;
 	ObjectAddress dep;
 
@@ -562,7 +562,7 @@ AlterObjectNamespace_oid(Oid classId, Oid objid, Oid nspOid,
  */
 static Oid
 AlterObjectNamespace_internal(Relation rel, Oid objid, Oid nspOid)
-{	StackTrace("AlterObjectNamespace_internal");
+{
 	Oid			classId = RelationGetRelid(rel);
 	int			oidCacheId = get_object_catcache_oid(classId);
 	int			nameCacheId = get_object_catcache_name(classId);
@@ -697,7 +697,7 @@ AlterObjectNamespace_internal(Relation rel, Oid objid, Oid nspOid)
  */
 ObjectAddress
 ExecAlterOwnerStmt(AlterOwnerStmt *stmt)
-{	StackTrace("ExecAlterOwnerStmt");
+{
 	Oid			newowner = get_rolespec_oid(stmt->newowner, false);
 
 	switch (stmt->objectType)
@@ -788,7 +788,7 @@ ExecAlterOwnerStmt(AlterOwnerStmt *stmt)
  */
 void
 AlterObjectOwner_internal(Relation rel, Oid objectId, Oid new_ownerId)
-{	StackTrace("AlterObjectOwner_internal");
+{
 	Oid			classId = RelationGetRelid(rel);
 	AttrNumber	Anum_owner = get_object_attnum_owner(classId);
 	AttrNumber	Anum_namespace = get_object_attnum_namespace(classId);

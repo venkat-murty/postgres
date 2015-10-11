@@ -31,7 +31,7 @@ static int	spins_per_delay = DEFAULT_SPINS_PER_DELAY;
  */
 static void
 s_lock_stuck(volatile slock_t *lock, const char *file, int line)
-{	StackTrace("s_lock_stuck");
+{
 #if defined(S_LOCK_TEST)
 	fprintf(stderr,
 			"\nStuck spinlock (%p) detected at %s:%d.\n",
@@ -49,7 +49,7 @@ s_lock_stuck(volatile slock_t *lock, const char *file, int line)
  */
 int
 s_lock(volatile slock_t *lock, const char *file, int line)
-{	StackTrace("s_lock");
+{
 	/*
 	 * We loop tightly for awhile, then delay using pg_usleep() and try again.
 	 * Preferably, "awhile" should be a small multiple of the maximum time we
@@ -157,7 +157,7 @@ s_lock(volatile slock_t *lock, const char *file, int line)
 #ifdef USE_DEFAULT_S_UNLOCK
 void
 s_unlock(volatile slock_t *lock)
-{	StackTrace("s_unlock");
+{
 #ifdef TAS_ACTIVE_WORD
 	/* HP's PA-RISC */
 	*TAS_ACTIVE_WORD(lock) = -1;
@@ -174,7 +174,7 @@ s_unlock(volatile slock_t *lock)
  */
 void
 set_spins_per_delay(int shared_spins_per_delay)
-{	StackTrace("set_spins_per_delay");
+{
 	spins_per_delay = shared_spins_per_delay;
 }
 
@@ -185,7 +185,7 @@ set_spins_per_delay(int shared_spins_per_delay)
  */
 int
 update_spins_per_delay(int shared_spins_per_delay)
-{	StackTrace("update_spins_per_delay");
+{
 	/*
 	 * We use an exponential moving average with a relatively slow adaption
 	 * rate, so that noise in any one backend's result won't affect the shared
@@ -229,7 +229,7 @@ update_spins_per_delay(int shared_spins_per_delay)
 /* really means: extern int tas(slock_t* **lock); */
 static void
 tas_dummy()
-{	StackTrace("tas_dummy");
+{
 	__asm__		__volatile__(
 #if defined(__NetBSD__) && defined(__ELF__)
 /* no underscore for label and % for registers */
@@ -283,7 +283,7 @@ volatile struct test_lock_struct test_lock;
 
 int
 main()
-{	StackTrace("main");
+{
 	srandom((unsigned int) time(NULL));
 
 	test_lock.pad1 = test_lock.pad2 = 0x44;

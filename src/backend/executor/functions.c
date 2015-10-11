@@ -184,7 +184,7 @@ SQLFunctionParseInfoPtr
 prepare_sql_fn_parse_info(HeapTuple procedureTuple,
 						  Node *call_expr,
 						  Oid inputCollation)
-{	StackTrace("prepare_sql_fn_parse_info");
+{
 	SQLFunctionParseInfoPtr pinfo;
 	Form_pg_proc procedureStruct = (Form_pg_proc) GETSTRUCT(procedureTuple);
 	int			nargs;
@@ -271,7 +271,7 @@ prepare_sql_fn_parse_info(HeapTuple procedureTuple,
  */
 void
 sql_fn_parser_setup(struct ParseState *pstate, SQLFunctionParseInfoPtr pinfo)
-{	StackTrace("sql_fn_parser_setup");
+{
 	pstate->p_pre_columnref_hook = NULL;
 	pstate->p_post_columnref_hook = sql_fn_post_column_ref;
 	pstate->p_paramref_hook = sql_fn_param_ref;
@@ -284,7 +284,7 @@ sql_fn_parser_setup(struct ParseState *pstate, SQLFunctionParseInfoPtr pinfo)
  */
 static Node *
 sql_fn_post_column_ref(ParseState *pstate, ColumnRef *cref, Node *var)
-{	StackTrace("sql_fn_post_column_ref");
+{
 	SQLFunctionParseInfoPtr pinfo = (SQLFunctionParseInfoPtr) pstate->p_ref_hook_state;
 	int			nnames;
 	Node	   *field1;
@@ -400,7 +400,7 @@ sql_fn_post_column_ref(ParseState *pstate, ColumnRef *cref, Node *var)
  */
 static Node *
 sql_fn_param_ref(ParseState *pstate, ParamRef *pref)
-{	StackTrace("sql_fn_param_ref");
+{
 	SQLFunctionParseInfoPtr pinfo = (SQLFunctionParseInfoPtr) pstate->p_ref_hook_state;
 	int			paramno = pref->number;
 
@@ -417,7 +417,7 @@ sql_fn_param_ref(ParseState *pstate, ParamRef *pref)
 static Node *
 sql_fn_make_param(SQLFunctionParseInfoPtr pinfo,
 				  int paramno, int location)
-{	StackTrace("sql_fn_make_param");
+{
 	Param	   *param;
 
 	param = makeNode(Param);
@@ -447,7 +447,7 @@ sql_fn_make_param(SQLFunctionParseInfoPtr pinfo,
 static Node *
 sql_fn_resolve_param_name(SQLFunctionParseInfoPtr pinfo,
 						  const char *paramname, int location)
-{	StackTrace("sql_fn_resolve_param_name");
+{
 	int			i;
 
 	if (pinfo->argnames == NULL)
@@ -472,7 +472,7 @@ static List *
 init_execution_state(List *queryTree_list,
 					 SQLFunctionCachePtr fcache,
 					 bool lazyEvalOK)
-{	StackTrace("init_execution_state");
+{
 	List	   *eslist = NIL;
 	execution_state *lasttages = NULL;
 	ListCell   *lc1;
@@ -577,7 +577,7 @@ init_execution_state(List *queryTree_list,
  */
 static void
 init_sql_fcache(FmgrInfo *finfo, Oid collation, bool lazyEvalOK)
-{	StackTrace("init_sql_fcache");
+{
 	Oid			foid = finfo->fn_oid;
 	MemoryContext fcontext;
 	MemoryContext oldcontext;
@@ -765,7 +765,7 @@ init_sql_fcache(FmgrInfo *finfo, Oid collation, bool lazyEvalOK)
 /* Start up execution of one execution_state node */
 static void
 postquel_start(execution_state *es, SQLFunctionCachePtr fcache)
-{	StackTrace("postquel_start");
+{
 	DestReceiver *dest;
 
 	Assert(es->qd == NULL);
@@ -832,7 +832,7 @@ postquel_start(execution_state *es, SQLFunctionCachePtr fcache)
 /* Returns true if we ran to completion */
 static bool
 postquel_getnext(execution_state *es, SQLFunctionCachePtr fcache)
-{	StackTrace("postquel_getnext");
+{
 	bool		result;
 
 	if (es->qd->utilitystmt)
@@ -868,7 +868,7 @@ postquel_getnext(execution_state *es, SQLFunctionCachePtr fcache)
 /* Shut down execution of one execution_state node */
 static void
 postquel_end(execution_state *es)
-{	StackTrace("postquel_end");
+{
 	/* mark status done to ensure we don't do ExecutorEnd twice */
 	es->status = F_EXEC_DONE;
 
@@ -889,7 +889,7 @@ postquel_end(execution_state *es)
 static void
 postquel_sub_params(SQLFunctionCachePtr fcache,
 					FunctionCallInfo fcinfo)
-{	StackTrace("postquel_sub_params");
+{
 	int			nargs = fcinfo->nargs;
 
 	if (nargs > 0)
@@ -940,7 +940,7 @@ postquel_get_single_result(TupleTableSlot *slot,
 						   FunctionCallInfo fcinfo,
 						   SQLFunctionCachePtr fcache,
 						   MemoryContext resultcontext)
-{	StackTrace("postquel_get_single_result");
+{
 	Datum		value;
 	MemoryContext oldcontext;
 
@@ -980,7 +980,7 @@ postquel_get_single_result(TupleTableSlot *slot,
  */
 Datum
 fmgr_sql(PG_FUNCTION_ARGS)
-{	StackTrace("fmgr_sql");
+{
 	SQLFunctionCachePtr fcache;
 	ErrorContextCallback sqlerrcontext;
 	MemoryContext oldcontext;
@@ -1357,7 +1357,7 @@ fmgr_sql(PG_FUNCTION_ARGS)
  */
 static void
 sql_exec_error_callback(void *arg)
-{	StackTrace("sql_exec_error_callback");
+{
 	FmgrInfo   *flinfo = (FmgrInfo *) arg;
 	SQLFunctionCachePtr fcache = (SQLFunctionCachePtr) flinfo->fn_extra;
 	int			syntaxerrposition;
@@ -1439,7 +1439,7 @@ sql_exec_error_callback(void *arg)
  */
 static void
 ShutdownSQLFunction(Datum arg)
-{	StackTrace("ShutdownSQLFunction");
+{
 	SQLFunctionCachePtr fcache = (SQLFunctionCachePtr) DatumGetPointer(arg);
 	execution_state *es;
 	ListCell   *lc;
@@ -1524,7 +1524,7 @@ bool
 check_sql_fn_retval(Oid func_id, Oid rettype, List *queryTreeList,
 					bool *modifyTargetList,
 					JunkFilter **junkFilter)
-{	StackTrace("check_sql_fn_retval");
+{
 	Query	   *parse;
 	List	  **tlist_ptr;
 	List	   *tlist;
@@ -1875,7 +1875,7 @@ check_sql_fn_retval(Oid func_id, Oid rettype, List *queryTreeList,
  */
 DestReceiver *
 CreateSQLFunctionDestReceiver(void)
-{	StackTrace("CreateSQLFunctionDestReceiver");
+{
 	DR_sqlfunction *self = (DR_sqlfunction *) palloc0(sizeof(DR_sqlfunction));
 
 	self->pub.receiveSlot = sqlfunction_receive;
@@ -1894,7 +1894,7 @@ CreateSQLFunctionDestReceiver(void)
  */
 static void
 sqlfunction_startup(DestReceiver *self, int operation, TupleDesc typeinfo)
-{	StackTrace("sqlfunction_startup");
+{
 	/* no-op */
 }
 
@@ -1903,7 +1903,7 @@ sqlfunction_startup(DestReceiver *self, int operation, TupleDesc typeinfo)
  */
 static void
 sqlfunction_receive(TupleTableSlot *slot, DestReceiver *self)
-{	StackTrace("sqlfunction_receive");
+{
 	DR_sqlfunction *myState = (DR_sqlfunction *) self;
 
 	/* Filter tuple as needed */
@@ -1918,7 +1918,7 @@ sqlfunction_receive(TupleTableSlot *slot, DestReceiver *self)
  */
 static void
 sqlfunction_shutdown(DestReceiver *self)
-{	StackTrace("sqlfunction_shutdown");
+{
 	/* no-op */
 }
 
@@ -1927,6 +1927,6 @@ sqlfunction_shutdown(DestReceiver *self)
  */
 static void
 sqlfunction_destroy(DestReceiver *self)
-{	StackTrace("sqlfunction_destroy");
+{
 	pfree(self);
 }

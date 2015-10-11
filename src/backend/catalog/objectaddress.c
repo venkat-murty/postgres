@@ -717,7 +717,7 @@ static void getRelationIdentity(StringInfo buffer, Oid relid, List **objname);
 ObjectAddress
 get_object_address(ObjectType objtype, List *objname, List *objargs,
 				   Relation *relp, LOCKMODE lockmode, bool missing_ok)
-{	StackTrace("get_object_address");
+{
 	ObjectAddress address;
 	ObjectAddress old_address = {InvalidOid, InvalidOid, 0};
 	Relation	relation = NULL;
@@ -1003,7 +1003,7 @@ get_object_address(ObjectType objtype, List *objname, List *objargs,
 static ObjectAddress
 get_object_address_unqualified(ObjectType objtype,
 							   List *qualname, bool missing_ok)
-{	StackTrace("get_object_address_unqualified");
+{
 	const char *name;
 	ObjectAddress address;
 
@@ -1122,7 +1122,7 @@ static ObjectAddress
 get_relation_by_qualified_name(ObjectType objtype, List *objname,
 							   Relation *relp, LOCKMODE lockmode,
 							   bool missing_ok)
-{	StackTrace("get_relation_by_qualified_name");
+{
 	Relation	relation;
 	ObjectAddress address;
 
@@ -1201,7 +1201,7 @@ get_relation_by_qualified_name(ObjectType objtype, List *objname,
 static ObjectAddress
 get_object_address_relobject(ObjectType objtype, List *objname,
 							 Relation *relp, bool missing_ok)
-{	StackTrace("get_object_address_relobject");
+{
 	ObjectAddress address;
 	Relation	relation = NULL;
 	int			nnames;
@@ -1309,7 +1309,7 @@ static ObjectAddress
 get_object_address_attribute(ObjectType objtype, List *objname,
 							 Relation *relp, LOCKMODE lockmode,
 							 bool missing_ok)
-{	StackTrace("get_object_address_attribute");
+{
 	ObjectAddress address;
 	List	   *relname;
 	Oid			reloid;
@@ -1360,7 +1360,7 @@ static ObjectAddress
 get_object_address_attrdef(ObjectType objtype, List *objname,
 						   Relation *relp, LOCKMODE lockmode,
 						   bool missing_ok)
-{	StackTrace("get_object_address_attrdef");
+{
 	ObjectAddress address;
 	List	   *relname;
 	Oid			reloid;
@@ -1440,7 +1440,7 @@ get_object_address_attrdef(ObjectType objtype, List *objname,
  */
 static ObjectAddress
 get_object_address_type(ObjectType objtype, ListCell *typecell, bool missing_ok)
-{	StackTrace("get_object_address_type");
+{
 	ObjectAddress address;
 	TypeName   *typename;
 	Type		tup;
@@ -1482,7 +1482,7 @@ get_object_address_type(ObjectType objtype, ListCell *typecell, bool missing_ok)
  */
 static ObjectAddress
 get_object_address_opcf(ObjectType objtype, List *objname, bool missing_ok)
-{	StackTrace("get_object_address_opcf");
+{
 	Oid			amoid;
 	ObjectAddress address;
 
@@ -1521,7 +1521,7 @@ get_object_address_opcf(ObjectType objtype, List *objname, bool missing_ok)
 static ObjectAddress
 get_object_address_opf_member(ObjectType objtype,
 							  List *objname, List *objargs, bool missing_ok)
-{	StackTrace("get_object_address_opf_member");
+{
 	ObjectAddress famaddr;
 	ObjectAddress address;
 	ListCell   *cell;
@@ -1626,7 +1626,7 @@ get_object_address_opf_member(ObjectType objtype,
  */
 static ObjectAddress
 get_object_address_usermapping(List *objname, List *objargs, bool missing_ok)
-{	StackTrace("get_object_address_usermapping");
+{
 	ObjectAddress address;
 	Oid			userid;
 	char	   *username;
@@ -1695,7 +1695,7 @@ get_object_address_usermapping(List *objname, List *objargs, bool missing_ok)
  */
 static ObjectAddress
 get_object_address_defacl(List *objname, List *objargs, bool missing_ok)
-{	StackTrace("get_object_address_defacl");
+{
 	HeapTuple	tp;
 	Oid			userid;
 	Oid			schemaid;
@@ -1803,7 +1803,7 @@ not_found:
  */
 static List *
 textarray_to_strvaluelist(ArrayType *arr)
-{	StackTrace("textarray_to_strvaluelist");
+{
 	Datum	   *elems;
 	bool	   *nulls;
 	int			nelems;
@@ -1830,7 +1830,7 @@ textarray_to_strvaluelist(ArrayType *arr)
  */
 Datum
 pg_get_object_address(PG_FUNCTION_ARGS)
-{	StackTrace("pg_get_object_address");
+{
 	char	   *ttype = TextDatumGetCString(PG_GETARG_TEXT_P(0));
 	ArrayType  *namearr = PG_GETARG_ARRAYTYPE_P(1);
 	ArrayType  *argsarr = PG_GETARG_ARRAYTYPE_P(2);
@@ -2014,7 +2014,7 @@ pg_get_object_address(PG_FUNCTION_ARGS)
 void
 check_object_ownership(Oid roleid, ObjectType objtype, ObjectAddress address,
 					   List *objname, List *objargs, Relation relation)
-{	StackTrace("check_object_ownership");
+{
 	switch (objtype)
 	{
 		case OBJECT_INDEX:
@@ -2197,7 +2197,7 @@ check_object_ownership(Oid roleid, ObjectType objtype, ObjectAddress address,
  */
 Oid
 get_object_namespace(const ObjectAddress *address)
-{	StackTrace("get_object_namespace");
+{
 	int			cache;
 	HeapTuple	tuple;
 	bool		isnull;
@@ -2236,7 +2236,7 @@ get_object_namespace(const ObjectAddress *address)
  */
 int
 read_objtype_from_string(const char *objtype)
-{	StackTrace("read_objtype_from_string");
+{
 	ObjectType	type;
 	int			i;
 
@@ -2261,7 +2261,7 @@ read_objtype_from_string(const char *objtype)
  */
 Oid
 get_object_oid_index(Oid class_id)
-{	StackTrace("get_object_oid_index");
+{
 	const ObjectPropertyType *prop = get_object_property_data(class_id);
 
 	return prop->oid_index_oid;
@@ -2269,7 +2269,7 @@ get_object_oid_index(Oid class_id)
 
 int
 get_object_catcache_oid(Oid class_id)
-{	StackTrace("get_object_catcache_oid");
+{
 	const ObjectPropertyType *prop = get_object_property_data(class_id);
 
 	return prop->oid_catcache_id;
@@ -2277,7 +2277,7 @@ get_object_catcache_oid(Oid class_id)
 
 int
 get_object_catcache_name(Oid class_id)
-{	StackTrace("get_object_catcache_name");
+{
 	const ObjectPropertyType *prop = get_object_property_data(class_id);
 
 	return prop->name_catcache_id;
@@ -2285,7 +2285,7 @@ get_object_catcache_name(Oid class_id)
 
 AttrNumber
 get_object_attnum_name(Oid class_id)
-{	StackTrace("get_object_attnum_name");
+{
 	const ObjectPropertyType *prop = get_object_property_data(class_id);
 
 	return prop->attnum_name;
@@ -2293,7 +2293,7 @@ get_object_attnum_name(Oid class_id)
 
 AttrNumber
 get_object_attnum_namespace(Oid class_id)
-{	StackTrace("get_object_attnum_namespace");
+{
 	const ObjectPropertyType *prop = get_object_property_data(class_id);
 
 	return prop->attnum_namespace;
@@ -2301,7 +2301,7 @@ get_object_attnum_namespace(Oid class_id)
 
 AttrNumber
 get_object_attnum_owner(Oid class_id)
-{	StackTrace("get_object_attnum_owner");
+{
 	const ObjectPropertyType *prop = get_object_property_data(class_id);
 
 	return prop->attnum_owner;
@@ -2309,7 +2309,7 @@ get_object_attnum_owner(Oid class_id)
 
 AttrNumber
 get_object_attnum_acl(Oid class_id)
-{	StackTrace("get_object_attnum_acl");
+{
 	const ObjectPropertyType *prop = get_object_property_data(class_id);
 
 	return prop->attnum_acl;
@@ -2317,7 +2317,7 @@ get_object_attnum_acl(Oid class_id)
 
 AclObjectKind
 get_object_aclkind(Oid class_id)
-{	StackTrace("get_object_aclkind");
+{
 	const ObjectPropertyType *prop = get_object_property_data(class_id);
 
 	return prop->acl_kind;
@@ -2325,7 +2325,7 @@ get_object_aclkind(Oid class_id)
 
 bool
 get_object_namensp_unique(Oid class_id)
-{	StackTrace("get_object_namensp_unique");
+{
 	const ObjectPropertyType *prop = get_object_property_data(class_id);
 
 	return prop->is_nsp_name_unique;
@@ -2337,7 +2337,7 @@ get_object_namensp_unique(Oid class_id)
  */
 bool
 is_objectclass_supported(Oid class_id)
-{	StackTrace("is_objectclass_supported");
+{
 	int			index;
 
 	for (index = 0; index < lengthof(ObjectProperty); index++)
@@ -2354,7 +2354,7 @@ is_objectclass_supported(Oid class_id)
  */
 static const ObjectPropertyType *
 get_object_property_data(Oid class_id)
-{	StackTrace("get_object_property_data");
+{
 	static const ObjectPropertyType *prop_last = NULL;
 	int			index;
 
@@ -2389,7 +2389,7 @@ get_object_property_data(Oid class_id)
  */
 HeapTuple
 get_catalog_object_by_oid(Relation catalog, Oid objectId)
-{	StackTrace("get_catalog_object_by_oid");
+{
 	HeapTuple	tuple;
 	Oid			classId = RelationGetRelid(catalog);
 	int			oidCacheId = get_object_catcache_oid(classId);
@@ -2436,7 +2436,7 @@ get_catalog_object_by_oid(Relation catalog, Oid objectId)
  */
 char *
 getObjectDescription(const ObjectAddress *object)
-{	StackTrace("getObjectDescription");
+{
 	StringInfoData buffer;
 
 	initStringInfo(&buffer);
@@ -3143,7 +3143,7 @@ getObjectDescription(const ObjectAddress *object)
  */
 char *
 getObjectDescriptionOids(Oid classid, Oid objid)
-{	StackTrace("getObjectDescriptionOids");
+{
 	ObjectAddress address;
 
 	address.classId = classid;
@@ -3158,7 +3158,7 @@ getObjectDescriptionOids(Oid classid, Oid objid)
  */
 static void
 getRelationDescription(StringInfo buffer, Oid relid)
-{	StackTrace("getRelationDescription");
+{
 	HeapTuple	relTup;
 	Form_pg_class relForm;
 	char	   *nspname;
@@ -3227,7 +3227,7 @@ getRelationDescription(StringInfo buffer, Oid relid)
  */
 static void
 getOpFamilyDescription(StringInfo buffer, Oid opfid)
-{	StackTrace("getOpFamilyDescription");
+{
 	HeapTuple	opfTup;
 	Form_pg_opfamily opfForm;
 	HeapTuple	amTup;
@@ -3265,7 +3265,7 @@ getOpFamilyDescription(StringInfo buffer, Oid opfid)
  */
 Datum
 pg_describe_object(PG_FUNCTION_ARGS)
-{	StackTrace("pg_describe_object");
+{
 	Oid			classid = PG_GETARG_OID(0);
 	Oid			objid = PG_GETARG_OID(1);
 	int32		subobjid = PG_GETARG_INT32(2);
@@ -3289,7 +3289,7 @@ pg_describe_object(PG_FUNCTION_ARGS)
  */
 Datum
 pg_identify_object(PG_FUNCTION_ARGS)
-{	StackTrace("pg_identify_object");
+{
 	Oid			classid = PG_GETARG_OID(0);
 	Oid			objid = PG_GETARG_OID(1);
 	int32		subobjid = PG_GETARG_INT32(2);
@@ -3405,7 +3405,7 @@ pg_identify_object(PG_FUNCTION_ARGS)
  */
 Datum
 pg_identify_object_as_address(PG_FUNCTION_ARGS)
-{	StackTrace("pg_identify_object_as_address");
+{
 	Oid			classid = PG_GETARG_OID(0);
 	Oid			objid = PG_GETARG_OID(1);
 	int32		subobjid = PG_GETARG_INT32(2);
@@ -3468,7 +3468,7 @@ pg_identify_object_as_address(PG_FUNCTION_ARGS)
  */
 char *
 getObjectTypeDescription(const ObjectAddress *object)
-{	StackTrace("getObjectTypeDescription");
+{
 	StringInfoData buffer;
 
 	initStringInfo(&buffer);
@@ -3621,7 +3621,7 @@ getObjectTypeDescription(const ObjectAddress *object)
  */
 static void
 getRelationTypeDescription(StringInfo buffer, Oid relid, int32 objectSubId)
-{	StackTrace("getRelationTypeDescription");
+{
 	HeapTuple	relTup;
 	Form_pg_class relForm;
 
@@ -3674,7 +3674,7 @@ getRelationTypeDescription(StringInfo buffer, Oid relid, int32 objectSubId)
  */
 static void
 getConstraintTypeDescription(StringInfo buffer, Oid constroid)
-{	StackTrace("getConstraintTypeDescription");
+{
 	Relation	constrRel;
 	HeapTuple	constrTup;
 	Form_pg_constraint constrForm;
@@ -3701,7 +3701,7 @@ getConstraintTypeDescription(StringInfo buffer, Oid constroid)
  */
 static void
 getProcedureTypeDescription(StringInfo buffer, Oid procid)
-{	StackTrace("getProcedureTypeDescription");
+{
 	HeapTuple	procTup;
 	Form_pg_proc procForm;
 
@@ -3727,7 +3727,7 @@ getProcedureTypeDescription(StringInfo buffer, Oid procid)
  */
 char *
 getObjectIdentity(const ObjectAddress *object)
-{	StackTrace("getObjectIdentity");
+{
 	return getObjectIdentityParts(object, NULL, NULL);
 }
 
@@ -3742,7 +3742,7 @@ getObjectIdentity(const ObjectAddress *object)
 char *
 getObjectIdentityParts(const ObjectAddress *object,
 					   List **objname, List **objargs)
-{	StackTrace("getObjectIdentityParts");
+{
 	StringInfoData buffer;
 
 	initStringInfo(&buffer);
@@ -4586,7 +4586,7 @@ getObjectIdentityParts(const ObjectAddress *object,
 
 static void
 getOpFamilyIdentity(StringInfo buffer, Oid opfid, List **objname)
-{	StackTrace("getOpFamilyIdentity");
+{
 	HeapTuple	opfTup;
 	Form_pg_opfamily opfForm;
 	HeapTuple	amTup;
@@ -4625,7 +4625,7 @@ getOpFamilyIdentity(StringInfo buffer, Oid opfid, List **objname)
  */
 static void
 getRelationIdentity(StringInfo buffer, Oid relid, List **objname)
-{	StackTrace("getRelationIdentity");
+{
 	HeapTuple	relTup;
 	Form_pg_class relForm;
 	char	   *schema;
@@ -4651,7 +4651,7 @@ getRelationIdentity(StringInfo buffer, Oid relid, List **objname)
  */
 ArrayType *
 strlist_to_textarray(List *list)
-{	StackTrace("strlist_to_textarray");
+{
 	ArrayType  *arr;
 	Datum	   *datums;
 	int			j = 0;

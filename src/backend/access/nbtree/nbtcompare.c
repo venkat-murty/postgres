@@ -54,7 +54,7 @@
 
 Datum
 btboolcmp(PG_FUNCTION_ARGS)
-{	StackTrace("btboolcmp");
+{
 	bool		a = PG_GETARG_BOOL(0);
 	bool		b = PG_GETARG_BOOL(1);
 
@@ -63,7 +63,7 @@ btboolcmp(PG_FUNCTION_ARGS)
 
 Datum
 btint2cmp(PG_FUNCTION_ARGS)
-{	StackTrace("btint2cmp");
+{
 	int16		a = PG_GETARG_INT16(0);
 	int16		b = PG_GETARG_INT16(1);
 
@@ -72,7 +72,7 @@ btint2cmp(PG_FUNCTION_ARGS)
 
 static int
 btint2fastcmp(Datum x, Datum y, SortSupport ssup)
-{	StackTrace("btint2fastcmp");
+{
 	int16		a = DatumGetInt16(x);
 	int16		b = DatumGetInt16(y);
 
@@ -81,7 +81,7 @@ btint2fastcmp(Datum x, Datum y, SortSupport ssup)
 
 Datum
 btint2sortsupport(PG_FUNCTION_ARGS)
-{	StackTrace("btint2sortsupport");
+{
 	SortSupport ssup = (SortSupport) PG_GETARG_POINTER(0);
 
 	ssup->comparator = btint2fastcmp;
@@ -90,7 +90,7 @@ btint2sortsupport(PG_FUNCTION_ARGS)
 
 Datum
 btint4cmp(PG_FUNCTION_ARGS)
-{	StackTrace("btint4cmp");
+{
 	int32		a = PG_GETARG_INT32(0);
 	int32		b = PG_GETARG_INT32(1);
 
@@ -104,7 +104,7 @@ btint4cmp(PG_FUNCTION_ARGS)
 
 static int
 btint4fastcmp(Datum x, Datum y, SortSupport ssup)
-{	StackTrace("btint4fastcmp");
+{
 	int32		a = DatumGetInt32(x);
 	int32		b = DatumGetInt32(y);
 
@@ -118,7 +118,7 @@ btint4fastcmp(Datum x, Datum y, SortSupport ssup)
 
 Datum
 btint4sortsupport(PG_FUNCTION_ARGS)
-{	StackTrace("btint4sortsupport");
+{
 	SortSupport ssup = (SortSupport) PG_GETARG_POINTER(0);
 
 	ssup->comparator = btint4fastcmp;
@@ -127,7 +127,7 @@ btint4sortsupport(PG_FUNCTION_ARGS)
 
 Datum
 btint8cmp(PG_FUNCTION_ARGS)
-{	StackTrace("btint8cmp");
+{
 	int64		a = PG_GETARG_INT64(0);
 	int64		b = PG_GETARG_INT64(1);
 
@@ -141,7 +141,7 @@ btint8cmp(PG_FUNCTION_ARGS)
 
 static int
 btint8fastcmp(Datum x, Datum y, SortSupport ssup)
-{	StackTrace("btint8fastcmp");
+{
 	int64		a = DatumGetInt64(x);
 	int64		b = DatumGetInt64(y);
 
@@ -155,7 +155,7 @@ btint8fastcmp(Datum x, Datum y, SortSupport ssup)
 
 Datum
 btint8sortsupport(PG_FUNCTION_ARGS)
-{	StackTrace("btint8sortsupport");
+{
 	SortSupport ssup = (SortSupport) PG_GETARG_POINTER(0);
 
 	ssup->comparator = btint8fastcmp;
@@ -164,7 +164,7 @@ btint8sortsupport(PG_FUNCTION_ARGS)
 
 Datum
 btint48cmp(PG_FUNCTION_ARGS)
-{	StackTrace("btint48cmp");
+{
 	int32		a = PG_GETARG_INT32(0);
 	int64		b = PG_GETARG_INT64(1);
 
@@ -178,7 +178,7 @@ btint48cmp(PG_FUNCTION_ARGS)
 
 Datum
 btint84cmp(PG_FUNCTION_ARGS)
-{	StackTrace("btint84cmp");
+{
 	int64		a = PG_GETARG_INT64(0);
 	int32		b = PG_GETARG_INT32(1);
 
@@ -192,7 +192,7 @@ btint84cmp(PG_FUNCTION_ARGS)
 
 Datum
 btint24cmp(PG_FUNCTION_ARGS)
-{	StackTrace("btint24cmp");
+{
 	int16		a = PG_GETARG_INT16(0);
 	int32		b = PG_GETARG_INT32(1);
 
@@ -206,7 +206,7 @@ btint24cmp(PG_FUNCTION_ARGS)
 
 Datum
 btint42cmp(PG_FUNCTION_ARGS)
-{	StackTrace("btint42cmp");
+{
 	int32		a = PG_GETARG_INT32(0);
 	int16		b = PG_GETARG_INT16(1);
 
@@ -220,7 +220,7 @@ btint42cmp(PG_FUNCTION_ARGS)
 
 Datum
 btint28cmp(PG_FUNCTION_ARGS)
-{	StackTrace("btint28cmp");
+{
 	int16		a = PG_GETARG_INT16(0);
 	int64		b = PG_GETARG_INT64(1);
 
@@ -234,7 +234,7 @@ btint28cmp(PG_FUNCTION_ARGS)
 
 Datum
 btint82cmp(PG_FUNCTION_ARGS)
-{	StackTrace("btint82cmp");
+{
 	int64		a = PG_GETARG_INT64(0);
 	int16		b = PG_GETARG_INT16(1);
 
@@ -248,7 +248,7 @@ btint82cmp(PG_FUNCTION_ARGS)
 
 Datum
 btoidcmp(PG_FUNCTION_ARGS)
-{	StackTrace("btoidcmp");
+{
 	Oid			a = PG_GETARG_OID(0);
 	Oid			b = PG_GETARG_OID(1);
 
@@ -262,7 +262,7 @@ btoidcmp(PG_FUNCTION_ARGS)
 
 static int
 btoidfastcmp(Datum x, Datum y, SortSupport ssup)
-{	StackTrace("btoidfastcmp");
+{
 	Oid			a = DatumGetObjectId(x);
 	Oid			b = DatumGetObjectId(y);
 
@@ -276,7 +276,7 @@ btoidfastcmp(Datum x, Datum y, SortSupport ssup)
 
 Datum
 btoidsortsupport(PG_FUNCTION_ARGS)
-{	StackTrace("btoidsortsupport");
+{
 	SortSupport ssup = (SortSupport) PG_GETARG_POINTER(0);
 
 	ssup->comparator = btoidfastcmp;
@@ -285,7 +285,7 @@ btoidsortsupport(PG_FUNCTION_ARGS)
 
 Datum
 btoidvectorcmp(PG_FUNCTION_ARGS)
-{	StackTrace("btoidvectorcmp");
+{
 	oidvector  *a = (oidvector *) PG_GETARG_POINTER(0);
 	oidvector  *b = (oidvector *) PG_GETARG_POINTER(1);
 	int			i;
@@ -309,7 +309,7 @@ btoidvectorcmp(PG_FUNCTION_ARGS)
 
 Datum
 btcharcmp(PG_FUNCTION_ARGS)
-{	StackTrace("btcharcmp");
+{
 	char		a = PG_GETARG_CHAR(0);
 	char		b = PG_GETARG_CHAR(1);
 
@@ -319,7 +319,7 @@ btcharcmp(PG_FUNCTION_ARGS)
 
 Datum
 btnamecmp(PG_FUNCTION_ARGS)
-{	StackTrace("btnamecmp");
+{
 	Name		a = PG_GETARG_NAME(0);
 	Name		b = PG_GETARG_NAME(1);
 
@@ -328,7 +328,7 @@ btnamecmp(PG_FUNCTION_ARGS)
 
 static int
 btnamefastcmp(Datum x, Datum y, SortSupport ssup)
-{	StackTrace("btnamefastcmp");
+{
 	Name		a = DatumGetName(x);
 	Name		b = DatumGetName(y);
 
@@ -337,7 +337,7 @@ btnamefastcmp(Datum x, Datum y, SortSupport ssup)
 
 Datum
 btnamesortsupport(PG_FUNCTION_ARGS)
-{	StackTrace("btnamesortsupport");
+{
 	SortSupport ssup = (SortSupport) PG_GETARG_POINTER(0);
 
 	ssup->comparator = btnamefastcmp;

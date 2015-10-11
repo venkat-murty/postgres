@@ -65,7 +65,7 @@ static int	gimme_number_generations(int pool_size);
 
 RelOptInfo *
 geqo(PlannerInfo *root, int number_of_rels, List *initial_rels)
-{	StackTrace("geqo");
+{
 	GeqoPrivateData private;
 	int			generation;
 	Chromosome *momma;
@@ -308,7 +308,7 @@ geqo(PlannerInfo *root, int number_of_rels, List *initial_rels)
  */
 static int
 gimme_pool_size(int nr_rel)
-{	StackTrace("gimme_pool_size");
+{
 	double		size;
 	int			minsize;
 	int			maxsize;
@@ -340,7 +340,7 @@ gimme_pool_size(int nr_rel)
  */
 static int
 gimme_number_generations(int pool_size)
-{	StackTrace("gimme_number_generations");
+{
 	if (Geqo_generations > 0)
 		return Geqo_generations;
 

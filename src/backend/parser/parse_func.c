@@ -69,7 +69,7 @@ static Node *ParseComplexProjection(ParseState *pstate, char *funcname,
 Node *
 ParseFuncOrColumn(ParseState *pstate, List *funcname, List *fargs,
 				  FuncCall *fn, int location)
-{	StackTrace("ParseFuncOrColumn");
+{
 	bool		is_column = (fn == NULL);
 	List	   *agg_order = (fn ? fn->agg_order : NIL);
 	Expr	   *agg_filter = NULL;
@@ -777,7 +777,7 @@ ParseFuncOrColumn(ParseState *pstate, List *funcname, List *fargs,
 TableSampleClause *
 ParseTableSample(ParseState *pstate, char *samplemethod, Node *repeatable,
 				 List *sampleargs, int location)
-{	StackTrace("ParseTableSample");
+{
 	HeapTuple	tuple;
 	Form_pg_tablesample_method tsm;
 	Form_pg_proc procform;
@@ -1013,7 +1013,7 @@ FuncCandidateList
 func_select_candidate(int nargs,
 					  Oid *input_typeids,
 					  FuncCandidateList candidates)
-{	StackTrace("func_select_candidate");
+{
 	FuncCandidateList current_candidate,
 				first_candidate,
 				last_candidate;
@@ -1737,7 +1737,7 @@ unify_hypothetical_args(ParseState *pstate,
 						int numAggregatedArgs,
 						Oid *actual_arg_types,
 						Oid *declared_arg_types)
-{	StackTrace("unify_hypothetical_args");
+{
 	Node	   *args[FUNC_MAX_ARGS];
 	int			numDirectArgs,
 				numNonHypotheticalArgs;
@@ -1830,7 +1830,7 @@ make_fn_arguments(ParseState *pstate,
 				  List *fargs,
 				  Oid *actual_arg_types,
 				  Oid *declared_arg_types)
-{	StackTrace("make_fn_arguments");
+{
 	ListCell   *current_fargs;
 	int			i = 0;
 
@@ -1883,7 +1883,7 @@ make_fn_arguments(ParseState *pstate,
  */
 static Oid
 FuncNameAsType(List *funcname)
-{	StackTrace("FuncNameAsType");
+{
 	Oid			result;
 	Type		typtup;
 
@@ -1910,7 +1910,7 @@ FuncNameAsType(List *funcname)
 static Node *
 ParseComplexProjection(ParseState *pstate, char *funcname, Node *first_arg,
 					   int location)
-{	StackTrace("ParseComplexProjection");
+{
 	TupleDesc	tupdesc;
 	int			i;
 
@@ -1988,7 +1988,7 @@ ParseComplexProjection(ParseState *pstate, char *funcname, Node *first_arg,
 const char *
 funcname_signature_string(const char *funcname, int nargs,
 						  List *argnames, const Oid *argtypes)
-{	StackTrace("funcname_signature_string");
+{
 	StringInfoData argbuf;
 	int			numposargs;
 	ListCell   *lc;
@@ -2025,7 +2025,7 @@ funcname_signature_string(const char *funcname, int nargs,
 const char *
 func_signature_string(List *funcname, int nargs,
 					  List *argnames, const Oid *argtypes)
-{	StackTrace("func_signature_string");
+{
 	return funcname_signature_string(NameListToString(funcname),
 									 nargs, argnames, argtypes);
 }
@@ -2043,7 +2043,7 @@ func_signature_string(List *funcname, int nargs,
  */
 Oid
 LookupFuncName(List *funcname, int nargs, const Oid *argtypes, bool noError)
-{	StackTrace("LookupFuncName");
+{
 	FuncCandidateList clist;
 
 	/* Passing NULL for argtypes is no longer allowed */
@@ -2075,7 +2075,7 @@ LookupFuncName(List *funcname, int nargs, const Oid *argtypes, bool noError)
  */
 Oid
 LookupFuncNameTypeNames(List *funcname, List *argtypes, bool noError)
-{	StackTrace("LookupFuncNameTypeNames");
+{
 	Oid			argoids[FUNC_MAX_ARGS];
 	int			argcount;
 	int			i;
@@ -2112,7 +2112,7 @@ LookupFuncNameTypeNames(List *funcname, List *argtypes, bool noError)
  */
 Oid
 LookupAggNameTypeNames(List *aggname, List *argtypes, bool noError)
-{	StackTrace("LookupAggNameTypeNames");
+{
 	Oid			argoids[FUNC_MAX_ARGS];
 	int			argcount;
 	int			i;

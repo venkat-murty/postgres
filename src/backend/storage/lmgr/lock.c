@@ -287,7 +287,7 @@ bool		Debug_deadlocks = false;
 
 inline static bool
 LOCK_DEBUG_ENABLED(const LOCKTAG *tag)
-{	StackTrace("LOCK_DEBUG_ENABLED");
+{
 	return
 		(*(LockMethods[tag->locktag_lockmethodid]->trace_flag) &&
 		 ((Oid) tag->locktag_field2 >= (Oid) Trace_lock_oidmin))
@@ -298,7 +298,7 @@ LOCK_DEBUG_ENABLED(const LOCKTAG *tag)
 
 inline static void
 LOCK_PRINT(const char *where, const LOCK *lock, LOCKMODE type)
-{	StackTrace("LOCK_PRINT");
+{
 	if (LOCK_DEBUG_ENABLED(&lock->tag))
 		elog(LOG,
 			 "%s: lock(%p) id(%u,%u,%u,%u,%u,%u) grantMask(%x) "
@@ -322,7 +322,7 @@ LOCK_PRINT(const char *where, const LOCK *lock, LOCKMODE type)
 
 inline static void
 PROCLOCK_PRINT(const char *where, const PROCLOCK *proclockP)
-{	StackTrace("PROCLOCK_PRINT");
+{
 	if (LOCK_DEBUG_ENABLED(&proclockP->tag.myLock->tag))
 		elog(LOG,
 			 "%s: proclock(%p) lock(%p) method(%u) proc(%p) hold(%x)",
@@ -371,7 +371,7 @@ static void LockRefindAndRelease(LockMethod lockMethodTable, PGPROC *proc,
  */
 void
 InitLocks(void)
-{	StackTrace("InitLocks");
+{
 	HASHCTL		info;
 	long		init_table_size,
 				max_table_size;
@@ -454,7 +454,7 @@ InitLocks(void)
  */
 LockMethod
 GetLocksMethodTable(const LOCK *lock)
-{	StackTrace("GetLocksMethodTable");
+{
 	LOCKMETHODID lockmethodid = LOCK_LOCKMETHOD(*lock);
 
 	Assert(0 < lockmethodid && lockmethodid < lengthof(LockMethods));
@@ -472,7 +472,7 @@ GetLocksMethodTable(const LOCK *lock)
  */
 uint32
 LockTagHashCode(const LOCKTAG *locktag)
-{	StackTrace("LockTagHashCode");
+{
 	return get_hash_value(LockMethodLockHash, (const void *) locktag);
 }
 
@@ -489,7 +489,7 @@ LockTagHashCode(const LOCKTAG *locktag)
  */
 static uint32
 proclock_hash(const void *key, Size keysize)
-{	StackTrace("proclock_hash");
+{
 	const PROCLOCKTAG *proclocktag = (const PROCLOCKTAG *) key;
 	uint32		lockhash;
 	Datum		procptr;
@@ -520,7 +520,7 @@ proclock_hash(const void *key, Size keysize)
  */
 static inline uint32
 ProcLockHashCode(const PROCLOCKTAG *proclocktag, uint32 hashcode)
-{	StackTrace("ProcLockHashCode");
+{
 	uint32		lockhash = hashcode;
 	Datum		procptr;
 
@@ -538,7 +538,7 @@ ProcLockHashCode(const PROCLOCKTAG *proclocktag, uint32 hashcode)
  */
 bool
 DoLockModesConflict(LOCKMODE mode1, LOCKMODE mode2)
-{	StackTrace("DoLockModesConflict");
+{
 	LockMethod	lockMethodTable = LockMethods[DEFAULT_LOCKMETHOD];
 
 	if (lockMethodTable->conflictTab[mode1] & LOCKBIT_ON(mode2))
@@ -553,7 +553,7 @@ DoLockModesConflict(LOCKMODE mode1, LOCKMODE mode2)
  */
 bool
 LockHasWaiters(const LOCKTAG *locktag, LOCKMODE lockmode, bool sessionLock)
-{	StackTrace("LockHasWaiters");
+{
 	LOCKMETHODID lockmethodid = locktag->locktag_lockmethodid;
 	LockMethod	lockMethodTable;
 	LOCALLOCKTAG localtag;
@@ -668,7 +668,7 @@ LockAcquire(const LOCKTAG *locktag,
 			LOCKMODE lockmode,
 			bool sessionLock,
 			bool dontWait)
-{	StackTrace("LockAcquire");
+{
 	return LockAcquireExtended(locktag, lockmode, sessionLock, dontWait, true);
 }
 
@@ -687,7 +687,7 @@ LockAcquireExtended(const LOCKTAG *locktag,
 					bool sessionLock,
 					bool dontWait,
 					bool reportMemoryError)
-{	StackTrace("LockAcquireExtended");
+{
 	LOCKMETHODID lockmethodid = locktag->locktag_lockmethodid;
 	LockMethod	lockMethodTable;
 	LOCALLOCKTAG localtag;
@@ -1050,7 +1050,7 @@ LockAcquireExtended(const LOCKTAG *locktag,
 static PROCLOCK *
 SetupLockInTable(LockMethod lockMethodTable, PGPROC *proc,
 				 const LOCKTAG *locktag, uint32 hashcode, LOCKMODE lockmode)
-{	StackTrace("SetupLockInTable");
+{
 	LOCK	   *lock;
 	PROCLOCK   *proclock;
 	PROCLOCKTAG proclocktag;
@@ -1214,7 +1214,7 @@ SetupLockInTable(LockMethod lockMethodTable, PGPROC *proc,
  */
 static void
 RemoveLocalLock(LOCALLOCK *locallock)
-{	StackTrace("RemoveLocalLock");
+{
 	int			i;
 
 	for (i = locallock->numLockOwners - 1; i >= 0; i--)
@@ -1262,7 +1262,7 @@ LockCheckConflicts(LockMethod lockMethodTable,
 				   LOCKMODE lockmode,
 				   LOCK *lock,
 				   PROCLOCK *proclock)
-{	StackTrace("LockCheckConflicts");
+{
 	int			numLockModes = lockMethodTable->numLockModes;
 	LOCKMASK	myLocks;
 	LOCKMASK	otherLocks;
@@ -1327,7 +1327,7 @@ LockCheckConflicts(LockMethod lockMethodTable,
  */
 void
 GrantLock(LOCK *lock, PROCLOCK *proclock, LOCKMODE lockmode)
-{	StackTrace("GrantLock");
+{
 	lock->nGranted++;
 	lock->granted[lockmode]++;
 	lock->grantMask |= LOCKBIT_ON(lockmode);
@@ -1351,7 +1351,7 @@ GrantLock(LOCK *lock, PROCLOCK *proclock, LOCKMODE lockmode)
 static bool
 UnGrantLock(LOCK *lock, LOCKMODE lockmode,
 			PROCLOCK *proclock, LockMethod lockMethodTable)
-{	StackTrace("UnGrantLock");
+{
 	bool		wakeupNeeded = false;
 
 	Assert((lock->nRequested > 0) && (lock->requested[lockmode] > 0));
@@ -1409,7 +1409,7 @@ static void
 CleanUpLock(LOCK *lock, PROCLOCK *proclock,
 			LockMethod lockMethodTable, uint32 hashcode,
 			bool wakeupNeeded)
-{	StackTrace("CleanUpLock");
+{
 	/*
 	 * If this was my last hold on this lock, delete my entry in the proclock
 	 * table.
@@ -1461,7 +1461,7 @@ CleanUpLock(LOCK *lock, PROCLOCK *proclock,
  */
 static void
 GrantLockLocal(LOCALLOCK *locallock, ResourceOwner owner)
-{	StackTrace("GrantLockLocal");
+{
 	LOCALLOCKOWNER *lockOwners = locallock->lockOwners;
 	int			i;
 
@@ -1490,7 +1490,7 @@ GrantLockLocal(LOCALLOCK *locallock, ResourceOwner owner)
  */
 static void
 BeginStrongLockAcquire(LOCALLOCK *locallock, uint32 fasthashcode)
-{	StackTrace("BeginStrongLockAcquire");
+{
 	Assert(StrongLockInProgress == NULL);
 	Assert(locallock->holdsStrongLockCount == FALSE);
 
@@ -1516,7 +1516,7 @@ BeginStrongLockAcquire(LOCALLOCK *locallock, uint32 fasthashcode)
  */
 static void
 FinishStrongLockAcquire(void)
-{	StackTrace("FinishStrongLockAcquire");
+{
 	StrongLockInProgress = NULL;
 }
 
@@ -1526,7 +1526,7 @@ FinishStrongLockAcquire(void)
  */
 void
 AbortStrongLockAcquire(void)
-{	StackTrace("AbortStrongLockAcquire");
+{
 	uint32		fasthashcode;
 	LOCALLOCK  *locallock = StrongLockInProgress;
 
@@ -1555,7 +1555,7 @@ AbortStrongLockAcquire(void)
  */
 void
 GrantAwaitedLock(void)
-{	StackTrace("GrantAwaitedLock");
+{
 	GrantLockLocal(awaitedLock, awaitedOwner);
 }
 
@@ -1569,7 +1569,7 @@ GrantAwaitedLock(void)
  */
 static void
 WaitOnLock(LOCALLOCK *locallock, ResourceOwner owner)
-{	StackTrace("WaitOnLock");
+{
 	LOCKMETHODID lockmethodid = LOCALLOCK_LOCKMETHOD(*locallock);
 	LockMethod	lockMethodTable = LockMethods[lockmethodid];
 	char	   *volatile new_status = NULL;
@@ -1676,7 +1676,7 @@ WaitOnLock(LOCALLOCK *locallock, ResourceOwner owner)
  */
 void
 RemoveFromWaitQueue(PGPROC *proc, uint32 hashcode)
-{	StackTrace("RemoveFromWaitQueue");
+{
 	LOCK	   *waitLock = proc->waitLock;
 	PROCLOCK   *proclock = proc->waitProcLock;
 	LOCKMODE	lockmode = proc->waitLockMode;
@@ -1733,7 +1733,7 @@ RemoveFromWaitQueue(PGPROC *proc, uint32 hashcode)
  */
 bool
 LockRelease(const LOCKTAG *locktag, LOCKMODE lockmode, bool sessionLock)
-{	StackTrace("LockRelease");
+{
 	LOCKMETHODID lockmethodid = locktag->locktag_lockmethodid;
 	LockMethod	lockMethodTable;
 	LOCALLOCKTAG localtag;
@@ -1929,7 +1929,7 @@ LockRelease(const LOCKTAG *locktag, LOCKMODE lockmode, bool sessionLock)
  */
 void
 LockReleaseAll(LOCKMETHODID lockmethodid, bool allLocks)
-{	StackTrace("LockReleaseAll");
+{
 	HASH_SEQ_STATUS status;
 	LockMethod	lockMethodTable;
 	int			i,
@@ -2203,7 +2203,7 @@ LockReleaseAll(LOCKMETHODID lockmethodid, bool allLocks)
  */
 void
 LockReleaseSession(LOCKMETHODID lockmethodid)
-{	StackTrace("LockReleaseSession");
+{
 	HASH_SEQ_STATUS status;
 	LOCALLOCK  *locallock;
 
@@ -2233,7 +2233,7 @@ LockReleaseSession(LOCKMETHODID lockmethodid)
  */
 void
 LockReleaseCurrentOwner(LOCALLOCK **locallocks, int nlocks)
-{	StackTrace("LockReleaseCurrentOwner");
+{
 	if (locallocks == NULL)
 	{
 		HASH_SEQ_STATUS status;
@@ -2268,7 +2268,7 @@ LockReleaseCurrentOwner(LOCALLOCK **locallocks, int nlocks)
  */
 static void
 ReleaseLockIfHeld(LOCALLOCK *locallock, bool sessionLock)
-{	StackTrace("ReleaseLockIfHeld");
+{
 	ResourceOwner owner;
 	LOCALLOCKOWNER *lockOwners;
 	int			i;
@@ -2328,7 +2328,7 @@ ReleaseLockIfHeld(LOCALLOCK *locallock, bool sessionLock)
  */
 void
 LockReassignCurrentOwner(LOCALLOCK **locallocks, int nlocks)
-{	StackTrace("LockReassignCurrentOwner");
+{
 	ResourceOwner parent = ResourceOwnerGetParent(CurrentResourceOwner);
 
 	Assert(parent != NULL);
@@ -2358,7 +2358,7 @@ LockReassignCurrentOwner(LOCALLOCK **locallocks, int nlocks)
  */
 static void
 LockReassignOwner(LOCALLOCK *locallock, ResourceOwner parent)
-{	StackTrace("LockReassignOwner");
+{
 	LOCALLOCKOWNER *lockOwners;
 	int			i;
 	int			ic = -1;
@@ -2404,7 +2404,7 @@ LockReassignOwner(LOCALLOCK *locallock, ResourceOwner parent)
  */
 static bool
 FastPathGrantRelationLock(Oid relid, LOCKMODE lockmode)
-{	StackTrace("FastPathGrantRelationLock");
+{
 	uint32		f;
 	uint32		unused_slot = FP_LOCK_SLOTS_PER_BACKEND;
 
@@ -2441,7 +2441,7 @@ FastPathGrantRelationLock(Oid relid, LOCKMODE lockmode)
  */
 static bool
 FastPathUnGrantRelationLock(Oid relid, LOCKMODE lockmode)
-{	StackTrace("FastPathUnGrantRelationLock");
+{
 	uint32		f;
 	bool		result = false;
 
@@ -2472,7 +2472,7 @@ FastPathUnGrantRelationLock(Oid relid, LOCKMODE lockmode)
 static bool
 FastPathTransferRelationLocks(LockMethod lockMethodTable, const LOCKTAG *locktag,
 							  uint32 hashcode)
-{	StackTrace("FastPathTransferRelationLocks");
+{
 	LWLock	   *partitionLock = LockHashPartitionLock(hashcode);
 	Oid			relid = locktag->locktag_field2;
 	uint32		i;
@@ -2559,7 +2559,7 @@ FastPathTransferRelationLocks(LockMethod lockMethodTable, const LOCKTAG *locktag
  */
 static PROCLOCK *
 FastPathGetRelationLockEntry(LOCALLOCK *locallock)
-{	StackTrace("FastPathGetRelationLockEntry");
+{
 	LockMethod	lockMethodTable = LockMethods[DEFAULT_LOCKMETHOD];
 	LOCKTAG    *locktag = &locallock->tag.lock;
 	PROCLOCK   *proclock = NULL;
@@ -2660,7 +2660,7 @@ FastPathGetRelationLockEntry(LOCALLOCK *locallock)
  */
 VirtualTransactionId *
 GetLockConflicts(const LOCKTAG *locktag, LOCKMODE lockmode)
-{	StackTrace("GetLockConflicts");
+{
 	static VirtualTransactionId *vxids;
 	LOCKMETHODID lockmethodid = locktag->locktag_lockmethodid;
 	LockMethod	lockMethodTable;
@@ -2879,7 +2879,7 @@ static void
 LockRefindAndRelease(LockMethod lockMethodTable, PGPROC *proc,
 					 LOCKTAG *locktag, LOCKMODE lockmode,
 					 bool decrement_strong_lock_count)
-{	StackTrace("LockRefindAndRelease");
+{
 	LOCK	   *lock;
 	PROCLOCK   *proclock;
 	PROCLOCKTAG proclocktag;
@@ -2974,7 +2974,7 @@ LockRefindAndRelease(LockMethod lockMethodTable, PGPROC *proc,
  */
 void
 AtPrepare_Locks(void)
-{	StackTrace("AtPrepare_Locks");
+{
 	HASH_SEQ_STATUS status;
 	LOCALLOCK  *locallock;
 
@@ -3084,7 +3084,7 @@ AtPrepare_Locks(void)
  */
 void
 PostPrepare_Locks(TransactionId xid)
-{	StackTrace("PostPrepare_Locks");
+{
 	PGPROC	   *newproc = TwoPhaseGetDummyProc(xid);
 	HASH_SEQ_STATUS status;
 	LOCALLOCK  *locallock;
@@ -3265,7 +3265,7 @@ PostPrepare_Locks(TransactionId xid)
  */
 Size
 LockShmemSize(void)
-{	StackTrace("LockShmemSize");
+{
 	Size		size = 0;
 	long		max_table_size;
 
@@ -3301,7 +3301,7 @@ LockShmemSize(void)
  */
 LockData *
 GetLockStatusData(void)
-{	StackTrace("GetLockStatusData");
+{
 	LockData   *data;
 	PROCLOCK   *proclock;
 	HASH_SEQ_STATUS seqstat;
@@ -3468,7 +3468,7 @@ GetLockStatusData(void)
  */
 xl_standby_lock *
 GetRunningTransactionLocks(int *nlocks)
-{	StackTrace("GetRunningTransactionLocks");
+{
 	xl_standby_lock *accessExclusiveLocks;
 	PROCLOCK   *proclock;
 	HASH_SEQ_STATUS seqstat;
@@ -3551,7 +3551,7 @@ GetRunningTransactionLocks(int *nlocks)
 /* Provide the textual name of any lock mode */
 const char *
 GetLockmodeName(LOCKMETHODID lockmethodid, LOCKMODE mode)
-{	StackTrace("GetLockmodeName");
+{
 	Assert(lockmethodid > 0 && lockmethodid < lengthof(LockMethods));
 	Assert(mode > 0 && mode <= LockMethods[lockmethodid]->numLockModes);
 	return LockMethods[lockmethodid]->lockModeNames[mode];
@@ -3565,7 +3565,7 @@ GetLockmodeName(LOCKMETHODID lockmethodid, LOCKMODE mode)
  */
 void
 DumpLocks(PGPROC *proc)
-{	StackTrace("DumpLocks");
+{
 	SHM_QUEUE  *procLocks;
 	PROCLOCK   *proclock;
 	LOCK	   *lock;
@@ -3607,7 +3607,7 @@ DumpLocks(PGPROC *proc)
  */
 void
 DumpAllLocks(void)
-{	StackTrace("DumpAllLocks");
+{
 	PGPROC	   *proc;
 	PROCLOCK   *proclock;
 	LOCK	   *lock;
@@ -3665,7 +3665,7 @@ DumpAllLocks(void)
 void
 lock_twophase_recover(TransactionId xid, uint16 info,
 					  void *recdata, uint32 len)
-{	StackTrace("lock_twophase_recover");
+{
 	TwoPhaseLockRecord *rec = (TwoPhaseLockRecord *) recdata;
 	PGPROC	   *proc = TwoPhaseGetDummyProc(xid);
 	LOCKTAG    *locktag;
@@ -3844,7 +3844,7 @@ lock_twophase_recover(TransactionId xid, uint16 info,
 void
 lock_twophase_standby_recover(TransactionId xid, uint16 info,
 							  void *recdata, uint32 len)
-{	StackTrace("lock_twophase_standby_recover");
+{
 	TwoPhaseLockRecord *rec = (TwoPhaseLockRecord *) recdata;
 	LOCKTAG    *locktag;
 	LOCKMODE	lockmode;
@@ -3876,7 +3876,7 @@ lock_twophase_standby_recover(TransactionId xid, uint16 info,
 void
 lock_twophase_postcommit(TransactionId xid, uint16 info,
 						 void *recdata, uint32 len)
-{	StackTrace("lock_twophase_postcommit");
+{
 	TwoPhaseLockRecord *rec = (TwoPhaseLockRecord *) recdata;
 	PGPROC	   *proc = TwoPhaseGetDummyProc(xid);
 	LOCKTAG    *locktag;
@@ -3902,7 +3902,7 @@ lock_twophase_postcommit(TransactionId xid, uint16 info,
 void
 lock_twophase_postabort(TransactionId xid, uint16 info,
 						void *recdata, uint32 len)
-{	StackTrace("lock_twophase_postabort");
+{
 	lock_twophase_postcommit(xid, info, recdata, len);
 }
 
@@ -3925,7 +3925,7 @@ lock_twophase_postabort(TransactionId xid, uint16 info,
  */
 void
 VirtualXactLockTableInsert(VirtualTransactionId vxid)
-{	StackTrace("VirtualXactLockTableInsert");
+{
 	Assert(VirtualTransactionIdIsValid(vxid));
 
 	LWLockAcquire(MyProc->backendLock, LW_EXCLUSIVE);
@@ -3948,7 +3948,7 @@ VirtualXactLockTableInsert(VirtualTransactionId vxid)
  */
 void
 VirtualXactLockTableCleanup(void)
-{	StackTrace("VirtualXactLockTableCleanup");
+{
 	bool		fastpath;
 	LocalTransactionId lxid;
 
@@ -3995,7 +3995,7 @@ VirtualXactLockTableCleanup(void)
  */
 bool
 VirtualXactLock(VirtualTransactionId vxid, bool wait)
-{	StackTrace("VirtualXactLock");
+{
 	LOCKTAG		tag;
 	PGPROC	   *proc;
 

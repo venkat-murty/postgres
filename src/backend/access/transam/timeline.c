@@ -47,7 +47,7 @@
  */
 void
 restoreTimeLineHistoryFiles(TimeLineID begin, TimeLineID end)
-{	StackTrace("restoreTimeLineHistoryFiles");
+{
 	char		path[MAXPGPATH];
 	char		histfname[MAXFNAMELEN];
 	TimeLineID	tli;
@@ -73,7 +73,7 @@ restoreTimeLineHistoryFiles(TimeLineID begin, TimeLineID end)
  */
 List *
 readTimeLineHistory(TimeLineID targetTLI)
-{	StackTrace("readTimeLineHistory");
+{
 	List	   *result;
 	char		path[MAXPGPATH];
 	char		histfname[MAXFNAMELEN];
@@ -205,7 +205,7 @@ readTimeLineHistory(TimeLineID targetTLI)
  */
 bool
 existsTimeLineHistory(TimeLineID probeTLI)
-{	StackTrace("existsTimeLineHistory");
+{
 	char		path[MAXPGPATH];
 	char		histfname[MAXFNAMELEN];
 	FILE	   *fd;
@@ -247,7 +247,7 @@ existsTimeLineHistory(TimeLineID probeTLI)
  */
 TimeLineID
 findNewestTimeLine(TimeLineID startTLI)
-{	StackTrace("findNewestTimeLine");
+{
 	TimeLineID	newestTLI;
 	TimeLineID	probeTLI;
 
@@ -288,7 +288,7 @@ findNewestTimeLine(TimeLineID startTLI)
 void
 writeTimeLineHistory(TimeLineID newTLI, TimeLineID parentTLI,
 					 XLogRecPtr switchpoint, char *reason)
-{	StackTrace("writeTimeLineHistory");
+{
 	char		path[MAXPGPATH];
 	char		tmppath[MAXPGPATH];
 	char		histfname[MAXFNAMELEN];
@@ -454,7 +454,7 @@ writeTimeLineHistory(TimeLineID newTLI, TimeLineID parentTLI,
  */
 void
 writeTimeLineHistoryFile(TimeLineID tli, char *content, int size)
-{	StackTrace("writeTimeLineHistoryFile");
+{
 	char		path[MAXPGPATH];
 	char		tmppath[MAXPGPATH];
 	int			fd;
@@ -533,7 +533,7 @@ writeTimeLineHistoryFile(TimeLineID tli, char *content, int size)
  */
 bool
 tliInHistory(TimeLineID tli, List *expectedTLEs)
-{	StackTrace("tliInHistory");
+{
 	ListCell   *cell;
 
 	foreach(cell, expectedTLEs)
@@ -551,7 +551,7 @@ tliInHistory(TimeLineID tli, List *expectedTLEs)
  */
 TimeLineID
 tliOfPointInHistory(XLogRecPtr ptr, List *history)
-{	StackTrace("tliOfPointInHistory");
+{
 	ListCell   *cell;
 
 	foreach(cell, history)
@@ -579,7 +579,7 @@ tliOfPointInHistory(XLogRecPtr ptr, List *history)
  */
 XLogRecPtr
 tliSwitchPoint(TimeLineID tli, List *history, TimeLineID *nextTLI)
-{	StackTrace("tliSwitchPoint");
+{
 	ListCell   *cell;
 
 	if (nextTLI)

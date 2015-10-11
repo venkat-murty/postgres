@@ -65,7 +65,7 @@ static void _hash_splitbucket(Relation rel, Buffer metabuf,
  */
 void
 _hash_getlock(Relation rel, BlockNumber whichlock, int access)
-{	StackTrace("_hash_getlock");
+{
 	if (USELOCKING(rel))
 		LockPage(rel, whichlock, access);
 }
@@ -77,7 +77,7 @@ _hash_getlock(Relation rel, BlockNumber whichlock, int access)
  */
 bool
 _hash_try_getlock(Relation rel, BlockNumber whichlock, int access)
-{	StackTrace("_hash_try_getlock");
+{
 	if (USELOCKING(rel))
 		return ConditionalLockPage(rel, whichlock, access);
 	else
@@ -89,7 +89,7 @@ _hash_try_getlock(Relation rel, BlockNumber whichlock, int access)
  */
 void
 _hash_droplock(Relation rel, BlockNumber whichlock, int access)
-{	StackTrace("_hash_droplock");
+{
 	if (USELOCKING(rel))
 		UnlockPage(rel, whichlock, access);
 }
@@ -113,7 +113,7 @@ _hash_droplock(Relation rel, BlockNumber whichlock, int access)
  */
 Buffer
 _hash_getbuf(Relation rel, BlockNumber blkno, int access, int flags)
-{	StackTrace("_hash_getbuf");
+{
 	Buffer		buf;
 
 	if (blkno == P_NEW)
@@ -149,7 +149,7 @@ _hash_getbuf(Relation rel, BlockNumber blkno, int access, int flags)
  */
 Buffer
 _hash_getinitbuf(Relation rel, BlockNumber blkno)
-{	StackTrace("_hash_getinitbuf");
+{
 	Buffer		buf;
 
 	if (blkno == P_NEW)
@@ -182,7 +182,7 @@ _hash_getinitbuf(Relation rel, BlockNumber blkno)
  */
 Buffer
 _hash_getnewbuf(Relation rel, BlockNumber blkno, ForkNumber forkNum)
-{	StackTrace("_hash_getnewbuf");
+{
 	BlockNumber nblocks = RelationGetNumberOfBlocksInFork(rel, forkNum);
 	Buffer		buf;
 
@@ -225,7 +225,7 @@ Buffer
 _hash_getbuf_with_strategy(Relation rel, BlockNumber blkno,
 						   int access, int flags,
 						   BufferAccessStrategy bstrategy)
-{	StackTrace("_hash_getbuf_with_strategy");
+{
 	Buffer		buf;
 
 	if (blkno == P_NEW)
@@ -250,7 +250,7 @@ _hash_getbuf_with_strategy(Relation rel, BlockNumber blkno,
  */
 void
 _hash_relbuf(Relation rel, Buffer buf)
-{	StackTrace("_hash_relbuf");
+{
 	UnlockReleaseBuffer(buf);
 }
 
@@ -261,7 +261,7 @@ _hash_relbuf(Relation rel, Buffer buf)
  */
 void
 _hash_dropbuf(Relation rel, Buffer buf)
-{	StackTrace("_hash_dropbuf");
+{
 	ReleaseBuffer(buf);
 }
 
@@ -279,7 +279,7 @@ _hash_dropbuf(Relation rel, Buffer buf)
  */
 void
 _hash_wrtbuf(Relation rel, Buffer buf)
-{	StackTrace("_hash_wrtbuf");
+{
 	MarkBufferDirty(buf);
 	UnlockReleaseBuffer(buf);
 }
@@ -301,7 +301,7 @@ _hash_chgbufaccess(Relation rel,
 				   Buffer buf,
 				   int from_access,
 				   int to_access)
-{	StackTrace("_hash_chgbufaccess");
+{
 	if (from_access == HASH_WRITE)
 		MarkBufferDirty(buf);
 	if (from_access != HASH_NOLOCK)
@@ -325,7 +325,7 @@ _hash_chgbufaccess(Relation rel,
  */
 uint32
 _hash_metapinit(Relation rel, double num_tuples, ForkNumber forkNum)
-{	StackTrace("_hash_metapinit");
+{
 	HashMetaPage metap;
 	HashPageOpaque pageopaque;
 	Buffer		metabuf;
@@ -481,7 +481,7 @@ _hash_metapinit(Relation rel, double num_tuples, ForkNumber forkNum)
  */
 void
 _hash_pageinit(Page page, Size size)
-{	StackTrace("_hash_pageinit");
+{
 	Assert(PageIsNew(page));
 	PageInit(page, size, sizeof(HashPageOpaqueData));
 }
@@ -498,7 +498,7 @@ _hash_pageinit(Page page, Size size)
  */
 void
 _hash_expandtable(Relation rel, Buffer metabuf)
-{	StackTrace("_hash_expandtable");
+{
 	HashMetaPage metap;
 	Bucket		old_bucket;
 	Bucket		new_bucket;
@@ -708,7 +708,7 @@ fail:
  */
 static bool
 _hash_alloc_buckets(Relation rel, BlockNumber firstblock, uint32 nblocks)
-{	StackTrace("_hash_alloc_buckets");
+{
 	BlockNumber lastblock;
 	char		zerobuf[BLCKSZ];
 
@@ -761,7 +761,7 @@ _hash_splitbucket(Relation rel,
 				  uint32 maxbucket,
 				  uint32 highmask,
 				  uint32 lowmask)
-{	StackTrace("_hash_splitbucket");
+{
 	Buffer		obuf;
 	Page		opage;
 	Page		npage;

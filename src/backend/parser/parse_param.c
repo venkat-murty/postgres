@@ -66,7 +66,7 @@ static bool query_contains_extern_params_walker(Node *node, void *context);
 void
 parse_fixed_parameters(ParseState *pstate,
 					   Oid *paramTypes, int numParams)
-{	StackTrace("parse_fixed_parameters");
+{
 	FixedParamState *parstate = palloc(sizeof(FixedParamState));
 
 	parstate->paramTypes = paramTypes;
@@ -82,7 +82,7 @@ parse_fixed_parameters(ParseState *pstate,
 void
 parse_variable_parameters(ParseState *pstate,
 						  Oid **paramTypes, int *numParams)
-{	StackTrace("parse_variable_parameters");
+{
 	VarParamState *parstate = palloc(sizeof(VarParamState));
 
 	parstate->paramTypes = paramTypes;
@@ -97,7 +97,7 @@ parse_variable_parameters(ParseState *pstate,
  */
 static Node *
 fixed_paramref_hook(ParseState *pstate, ParamRef *pref)
-{	StackTrace("fixed_paramref_hook");
+{
 	FixedParamState *parstate = (FixedParamState *) pstate->p_ref_hook_state;
 	int			paramno = pref->number;
 	Param	   *param;
@@ -129,7 +129,7 @@ fixed_paramref_hook(ParseState *pstate, ParamRef *pref)
  */
 static Node *
 variable_paramref_hook(ParseState *pstate, ParamRef *pref)
-{	StackTrace("variable_paramref_hook");
+{
 	VarParamState *parstate = (VarParamState *) pstate->p_ref_hook_state;
 	int			paramno = pref->number;
 	Oid		   *pptype;
@@ -181,7 +181,7 @@ static Node *
 variable_coerce_param_hook(ParseState *pstate, Param *param,
 						   Oid targetTypeId, int32 targetTypeMod,
 						   int location)
-{	StackTrace("variable_coerce_param_hook");
+{
 	if (param->paramkind == PARAM_EXTERN && param->paramtype == UNKNOWNOID)
 	{
 		/*
@@ -261,7 +261,7 @@ variable_coerce_param_hook(ParseState *pstate, Param *param,
  */
 void
 check_variable_parameters(ParseState *pstate, Query *query)
-{	StackTrace("check_variable_parameters");
+{
 	VarParamState *parstate = (VarParamState *) pstate->p_ref_hook_state;
 
 	/* If numParams is zero then no Params were generated, so no work */
@@ -279,7 +279,7 @@ check_variable_parameters(ParseState *pstate, Query *query)
  */
 static bool
 check_parameter_resolution_walker(Node *node, ParseState *pstate)
-{	StackTrace("check_parameter_resolution_walker");
+{
 	if (node == NULL)
 		return false;
 	if (IsA(node, Param))
@@ -323,7 +323,7 @@ check_parameter_resolution_walker(Node *node, ParseState *pstate)
  */
 bool
 query_contains_extern_params(Query *query)
-{	StackTrace("query_contains_extern_params");
+{
 	return query_tree_walker(query,
 							 query_contains_extern_params_walker,
 							 NULL, 0);
@@ -331,7 +331,7 @@ query_contains_extern_params(Query *query)
 
 static bool
 query_contains_extern_params_walker(Node *node, void *context)
-{	StackTrace("query_contains_extern_params_walker");
+{
 	if (node == NULL)
 		return false;
 	if (IsA(node, Param))

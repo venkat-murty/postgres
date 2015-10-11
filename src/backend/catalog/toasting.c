@@ -56,25 +56,25 @@ static bool needs_toast_table(Relation rel);
  */
 void
 AlterTableCreateToastTable(Oid relOid, Datum reloptions, LOCKMODE lockmode)
-{	StackTrace("AlterTableCreateToastTable");
+{
 	CheckAndCreateToastTable(relOid, reloptions, lockmode, true);
 }
 
 void
 NewHeapCreateToastTable(Oid relOid, Datum reloptions, LOCKMODE lockmode)
-{	StackTrace("NewHeapCreateToastTable");
+{
 	CheckAndCreateToastTable(relOid, reloptions, lockmode, false);
 }
 
 void
 NewRelationCreateToastTable(Oid relOid, Datum reloptions)
-{	StackTrace("NewRelationCreateToastTable");
+{
 	CheckAndCreateToastTable(relOid, reloptions, AccessExclusiveLock, false);
 }
 
 static void
 CheckAndCreateToastTable(Oid relOid, Datum reloptions, LOCKMODE lockmode, bool check)
-{	StackTrace("CheckAndCreateToastTable");
+{
 	Relation	rel;
 
 	rel = heap_open(relOid, lockmode);
@@ -92,7 +92,7 @@ CheckAndCreateToastTable(Oid relOid, Datum reloptions, LOCKMODE lockmode, bool c
  */
 void
 BootstrapToastTable(char *relName, Oid toastOid, Oid toastIndexOid)
-{	StackTrace("BootstrapToastTable");
+{
 	Relation	rel;
 
 	rel = heap_openrv(makeRangeVar(NULL, relName, -1), AccessExclusiveLock);
@@ -124,7 +124,7 @@ BootstrapToastTable(char *relName, Oid toastOid, Oid toastIndexOid)
 static bool
 create_toast_table(Relation rel, Oid toastOid, Oid toastIndexOid,
 				   Datum reloptions, LOCKMODE lockmode, bool check)
-{	StackTrace("create_toast_table");
+{
 	Oid			relOid = RelationGetRelid(rel);
 	HeapTuple	reltup;
 	TupleDesc	tupdesc;
@@ -409,7 +409,7 @@ create_toast_table(Relation rel, Oid toastOid, Oid toastIndexOid,
  */
 static bool
 needs_toast_table(Relation rel)
-{	StackTrace("needs_toast_table");
+{
 	int32		data_length = 0;
 	bool		maxlength_unknown = false;
 	bool		has_toastable_attrs = false;

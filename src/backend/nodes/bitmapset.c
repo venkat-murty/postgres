@@ -108,7 +108,7 @@ static const uint8 number_of_ones[256] = {
  */
 Bitmapset *
 bms_copy(const Bitmapset *a)
-{	StackTrace("bms_copy");
+{
 	Bitmapset  *result;
 	size_t		size;
 
@@ -128,7 +128,7 @@ bms_copy(const Bitmapset *a)
  */
 bool
 bms_equal(const Bitmapset *a, const Bitmapset *b)
-{	StackTrace("bms_equal");
+{
 	const Bitmapset *shorter;
 	const Bitmapset *longer;
 	int			shortlen;
@@ -176,7 +176,7 @@ bms_equal(const Bitmapset *a, const Bitmapset *b)
  */
 Bitmapset *
 bms_make_singleton(int x)
-{	StackTrace("bms_make_singleton");
+{
 	Bitmapset  *result;
 	int			wordnum,
 				bitnum;
@@ -198,7 +198,7 @@ bms_make_singleton(int x)
  */
 void
 bms_free(Bitmapset *a)
-{	StackTrace("bms_free");
+{
 	if (a)
 		pfree(a);
 }
@@ -215,7 +215,7 @@ bms_free(Bitmapset *a)
  */
 Bitmapset *
 bms_union(const Bitmapset *a, const Bitmapset *b)
-{	StackTrace("bms_union");
+{
 	Bitmapset  *result;
 	const Bitmapset *other;
 	int			otherlen;
@@ -249,7 +249,7 @@ bms_union(const Bitmapset *a, const Bitmapset *b)
  */
 Bitmapset *
 bms_intersect(const Bitmapset *a, const Bitmapset *b)
-{	StackTrace("bms_intersect");
+{
 	Bitmapset  *result;
 	const Bitmapset *other;
 	int			resultlen;
@@ -281,7 +281,7 @@ bms_intersect(const Bitmapset *a, const Bitmapset *b)
  */
 Bitmapset *
 bms_difference(const Bitmapset *a, const Bitmapset *b)
-{	StackTrace("bms_difference");
+{
 	Bitmapset  *result;
 	int			shortlen;
 	int			i;
@@ -305,7 +305,7 @@ bms_difference(const Bitmapset *a, const Bitmapset *b)
  */
 bool
 bms_is_subset(const Bitmapset *a, const Bitmapset *b)
-{	StackTrace("bms_is_subset");
+{
 	int			shortlen;
 	int			longlen;
 	int			i;
@@ -342,7 +342,7 @@ bms_is_subset(const Bitmapset *a, const Bitmapset *b)
  */
 BMS_Comparison
 bms_subset_compare(const Bitmapset *a, const Bitmapset *b)
-{	StackTrace("bms_subset_compare");
+{
 	BMS_Comparison result;
 	int			shortlen;
 	int			longlen;
@@ -417,7 +417,7 @@ bms_subset_compare(const Bitmapset *a, const Bitmapset *b)
  */
 bool
 bms_is_member(int x, const Bitmapset *a)
-{	StackTrace("bms_is_member");
+{
 	int			wordnum,
 				bitnum;
 
@@ -440,7 +440,7 @@ bms_is_member(int x, const Bitmapset *a)
  */
 bool
 bms_overlap(const Bitmapset *a, const Bitmapset *b)
-{	StackTrace("bms_overlap");
+{
 	int			shortlen;
 	int			i;
 
@@ -462,7 +462,7 @@ bms_overlap(const Bitmapset *a, const Bitmapset *b)
  */
 bool
 bms_nonempty_difference(const Bitmapset *a, const Bitmapset *b)
-{	StackTrace("bms_nonempty_difference");
+{
 	int			shortlen;
 	int			i;
 
@@ -494,7 +494,7 @@ bms_nonempty_difference(const Bitmapset *a, const Bitmapset *b)
  */
 int
 bms_singleton_member(const Bitmapset *a)
-{	StackTrace("bms_singleton_member");
+{
 	int			result = -1;
 	int			nwords;
 	int			wordnum;
@@ -537,7 +537,7 @@ bms_singleton_member(const Bitmapset *a)
  */
 bool
 bms_get_singleton_member(const Bitmapset *a, int *member)
-{	StackTrace("bms_get_singleton_member");
+{
 	int			result = -1;
 	int			nwords;
 	int			wordnum;
@@ -573,7 +573,7 @@ bms_get_singleton_member(const Bitmapset *a, int *member)
  */
 int
 bms_num_members(const Bitmapset *a)
-{	StackTrace("bms_num_members");
+{
 	int			result = 0;
 	int			nwords;
 	int			wordnum;
@@ -602,7 +602,7 @@ bms_num_members(const Bitmapset *a)
  */
 BMS_Membership
 bms_membership(const Bitmapset *a)
-{	StackTrace("bms_membership");
+{
 	BMS_Membership result = BMS_EMPTY_SET;
 	int			nwords;
 	int			wordnum;
@@ -631,7 +631,7 @@ bms_membership(const Bitmapset *a)
  */
 bool
 bms_is_empty(const Bitmapset *a)
-{	StackTrace("bms_is_empty");
+{
 	int			nwords;
 	int			wordnum;
 
@@ -666,7 +666,7 @@ bms_is_empty(const Bitmapset *a)
  */
 Bitmapset *
 bms_add_member(Bitmapset *a, int x)
-{	StackTrace("bms_add_member");
+{
 	int			wordnum,
 				bitnum;
 
@@ -703,7 +703,7 @@ bms_add_member(Bitmapset *a, int x)
  */
 Bitmapset *
 bms_del_member(Bitmapset *a, int x)
-{	StackTrace("bms_del_member");
+{
 	int			wordnum,
 				bitnum;
 
@@ -723,7 +723,7 @@ bms_del_member(Bitmapset *a, int x)
  */
 Bitmapset *
 bms_add_members(Bitmapset *a, const Bitmapset *b)
-{	StackTrace("bms_add_members");
+{
 	Bitmapset  *result;
 	const Bitmapset *other;
 	int			otherlen;
@@ -759,7 +759,7 @@ bms_add_members(Bitmapset *a, const Bitmapset *b)
  */
 Bitmapset *
 bms_int_members(Bitmapset *a, const Bitmapset *b)
-{	StackTrace("bms_int_members");
+{
 	int			shortlen;
 	int			i;
 
@@ -785,7 +785,7 @@ bms_int_members(Bitmapset *a, const Bitmapset *b)
  */
 Bitmapset *
 bms_del_members(Bitmapset *a, const Bitmapset *b)
-{	StackTrace("bms_del_members");
+{
 	int			shortlen;
 	int			i;
 
@@ -806,7 +806,7 @@ bms_del_members(Bitmapset *a, const Bitmapset *b)
  */
 Bitmapset *
 bms_join(Bitmapset *a, Bitmapset *b)
-{	StackTrace("bms_join");
+{
 	Bitmapset  *result;
 	Bitmapset  *other;
 	int			otherlen;
@@ -853,7 +853,7 @@ bms_join(Bitmapset *a, Bitmapset *b)
  */
 int
 bms_first_member(Bitmapset *a)
-{	StackTrace("bms_first_member");
+{
 	int			nwords;
 	int			wordnum;
 
@@ -905,7 +905,7 @@ bms_first_member(Bitmapset *a)
  */
 int
 bms_next_member(const Bitmapset *a, int prevbit)
-{	StackTrace("bms_next_member");
+{
 	int			nwords;
 	int			wordnum;
 	bitmapword	mask;
@@ -952,7 +952,7 @@ bms_next_member(const Bitmapset *a, int prevbit)
  */
 uint32
 bms_hash_value(const Bitmapset *a)
-{	StackTrace("bms_hash_value");
+{
 	int			lastword;
 
 	if (a == NULL)

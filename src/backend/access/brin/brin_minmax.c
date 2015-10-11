@@ -38,7 +38,7 @@ static FmgrInfo *minmax_get_strategy_procinfo(BrinDesc *bdesc, uint16 attno,
 
 Datum
 brin_minmax_opcinfo(PG_FUNCTION_ARGS)
-{	StackTrace("brin_minmax_opcinfo");
+{
 	Oid			typoid = PG_GETARG_OID(0);
 	BrinOpcInfo *result;
 
@@ -67,7 +67,7 @@ brin_minmax_opcinfo(PG_FUNCTION_ARGS)
  */
 Datum
 brin_minmax_add_value(PG_FUNCTION_ARGS)
-{	StackTrace("brin_minmax_add_value");
+{
 	BrinDesc   *bdesc = (BrinDesc *) PG_GETARG_POINTER(0);
 	BrinValues *column = (BrinValues *) PG_GETARG_POINTER(1);
 	Datum		newval = PG_GETARG_DATUM(2);
@@ -147,7 +147,7 @@ brin_minmax_add_value(PG_FUNCTION_ARGS)
  */
 Datum
 brin_minmax_consistent(PG_FUNCTION_ARGS)
-{	StackTrace("brin_minmax_consistent");
+{
 	BrinDesc   *bdesc = (BrinDesc *) PG_GETARG_POINTER(0);
 	BrinValues *column = (BrinValues *) PG_GETARG_POINTER(1);
 	ScanKey		key = (ScanKey) PG_GETARG_POINTER(2);
@@ -236,7 +236,7 @@ brin_minmax_consistent(PG_FUNCTION_ARGS)
  */
 Datum
 brin_minmax_union(PG_FUNCTION_ARGS)
-{	StackTrace("brin_minmax_union");
+{
 	BrinDesc   *bdesc = (BrinDesc *) PG_GETARG_POINTER(0);
 	BrinValues *col_a = (BrinValues *) PG_GETARG_POINTER(1);
 	BrinValues *col_b = (BrinValues *) PG_GETARG_POINTER(2);
@@ -313,7 +313,7 @@ brin_minmax_union(PG_FUNCTION_ARGS)
 static FmgrInfo *
 minmax_get_strategy_procinfo(BrinDesc *bdesc, uint16 attno, Oid subtype,
 							 uint16 strategynum)
-{	StackTrace("minmax_get_strategy_procinfo");
+{
 	MinmaxOpaque *opaque;
 
 	Assert(strategynum >= 1 &&

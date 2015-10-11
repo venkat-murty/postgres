@@ -41,7 +41,7 @@ static text *dotrim(const char *string, int stringlen,
 
 Datum
 lower(PG_FUNCTION_ARGS)
-{	StackTrace("lower");
+{
 	text	   *in_string = PG_GETARG_TEXT_PP(0);
 	char	   *out_string;
 	text	   *result;
@@ -72,7 +72,7 @@ lower(PG_FUNCTION_ARGS)
 
 Datum
 upper(PG_FUNCTION_ARGS)
-{	StackTrace("upper");
+{
 	text	   *in_string = PG_GETARG_TEXT_PP(0);
 	char	   *out_string;
 	text	   *result;
@@ -106,7 +106,7 @@ upper(PG_FUNCTION_ARGS)
 
 Datum
 initcap(PG_FUNCTION_ARGS)
-{	StackTrace("initcap");
+{
 	text	   *in_string = PG_GETARG_TEXT_PP(0);
 	char	   *out_string;
 	text	   *result;
@@ -139,7 +139,7 @@ initcap(PG_FUNCTION_ARGS)
 
 Datum
 lpad(PG_FUNCTION_ARGS)
-{	StackTrace("lpad");
+{
 	text	   *string1 = PG_GETARG_TEXT_PP(0);
 	int32		len = PG_GETARG_INT32(1);
 	text	   *string2 = PG_GETARG_TEXT_PP(2);
@@ -237,7 +237,7 @@ lpad(PG_FUNCTION_ARGS)
 
 Datum
 rpad(PG_FUNCTION_ARGS)
-{	StackTrace("rpad");
+{
 	text	   *string1 = PG_GETARG_TEXT_PP(0);
 	int32		len = PG_GETARG_INT32(1);
 	text	   *string2 = PG_GETARG_TEXT_PP(2);
@@ -333,7 +333,7 @@ rpad(PG_FUNCTION_ARGS)
 
 Datum
 btrim(PG_FUNCTION_ARGS)
-{	StackTrace("btrim");
+{
 	text	   *string = PG_GETARG_TEXT_PP(0);
 	text	   *set = PG_GETARG_TEXT_PP(1);
 	text	   *ret;
@@ -353,7 +353,7 @@ btrim(PG_FUNCTION_ARGS)
 
 Datum
 btrim1(PG_FUNCTION_ARGS)
-{	StackTrace("btrim1");
+{
 	text	   *string = PG_GETARG_TEXT_PP(0);
 	text	   *ret;
 
@@ -371,7 +371,7 @@ static text *
 dotrim(const char *string, int stringlen,
 	   const char *set, int setlen,
 	   bool doltrim, bool dortrim)
-{	StackTrace("dotrim");
+{
 	int			i;
 
 	/* Nothing to do if either string or set is empty */
@@ -538,7 +538,7 @@ dotrim(const char *string, int stringlen,
 
 Datum
 byteatrim(PG_FUNCTION_ARGS)
-{	StackTrace("byteatrim");
+{
 	bytea	   *string = PG_GETARG_BYTEA_PP(0);
 	bytea	   *set = PG_GETARG_BYTEA_PP(1);
 	bytea	   *ret;
@@ -617,7 +617,7 @@ byteatrim(PG_FUNCTION_ARGS)
 
 Datum
 ltrim(PG_FUNCTION_ARGS)
-{	StackTrace("ltrim");
+{
 	text	   *string = PG_GETARG_TEXT_PP(0);
 	text	   *set = PG_GETARG_TEXT_PP(1);
 	text	   *ret;
@@ -637,7 +637,7 @@ ltrim(PG_FUNCTION_ARGS)
 
 Datum
 ltrim1(PG_FUNCTION_ARGS)
-{	StackTrace("ltrim1");
+{
 	text	   *string = PG_GETARG_TEXT_PP(0);
 	text	   *ret;
 
@@ -665,7 +665,7 @@ ltrim1(PG_FUNCTION_ARGS)
 
 Datum
 rtrim(PG_FUNCTION_ARGS)
-{	StackTrace("rtrim");
+{
 	text	   *string = PG_GETARG_TEXT_PP(0);
 	text	   *set = PG_GETARG_TEXT_PP(1);
 	text	   *ret;
@@ -685,7 +685,7 @@ rtrim(PG_FUNCTION_ARGS)
 
 Datum
 rtrim1(PG_FUNCTION_ARGS)
-{	StackTrace("rtrim1");
+{
 	text	   *string = PG_GETARG_TEXT_PP(0);
 	text	   *ret;
 
@@ -716,7 +716,7 @@ rtrim1(PG_FUNCTION_ARGS)
 
 Datum
 translate(PG_FUNCTION_ARGS)
-{	StackTrace("translate");
+{
 	text	   *string = PG_GETARG_TEXT_PP(0);
 	text	   *from = PG_GETARG_TEXT_PP(1);
 	text	   *to = PG_GETARG_TEXT_PP(2);
@@ -842,7 +842,7 @@ translate(PG_FUNCTION_ARGS)
 
 Datum
 ascii(PG_FUNCTION_ARGS)
-{	StackTrace("ascii");
+{
 	text	   *string = PG_GETARG_TEXT_PP(0);
 	int			encoding = GetDatabaseEncoding();
 	unsigned char *data;
@@ -923,7 +923,7 @@ ascii(PG_FUNCTION_ARGS)
 
 Datum
 chr			(PG_FUNCTION_ARGS)
-{	StackTrace("chr");
+{
 	uint32		cvalue = PG_GETARG_UINT32(0);
 	text	   *result;
 	int			encoding = GetDatabaseEncoding();
@@ -1031,7 +1031,7 @@ chr			(PG_FUNCTION_ARGS)
 
 Datum
 repeat(PG_FUNCTION_ARGS)
-{	StackTrace("repeat");
+{
 	text	   *string = PG_GETARG_TEXT_PP(0);
 	int32		count = PG_GETARG_INT32(1);
 	text	   *result;

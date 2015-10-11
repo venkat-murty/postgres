@@ -55,7 +55,7 @@ static bool desirable_join(PlannerInfo *root,
  */
 Cost
 geqo_eval(PlannerInfo *root, Gene *tour, int num_gene)
-{	StackTrace("geqo_eval");
+{
 	MemoryContext mycontext;
 	MemoryContext oldcxt;
 	RelOptInfo *joinrel;
@@ -163,7 +163,7 @@ geqo_eval(PlannerInfo *root, Gene *tour, int num_gene)
  */
 RelOptInfo *
 gimme_tree(PlannerInfo *root, Gene *tour, int num_gene)
-{	StackTrace("gimme_tree");
+{
 	GeqoPrivateData *private = (GeqoPrivateData *) root->join_search_private;
 	List	   *clumps;
 	int			rel_count;
@@ -238,7 +238,7 @@ gimme_tree(PlannerInfo *root, Gene *tour, int num_gene)
  */
 static List *
 merge_clump(PlannerInfo *root, List *clumps, Clump *new_clump, bool force)
-{	StackTrace("merge_clump");
+{
 	ListCell   *prev;
 	ListCell   *lc;
 
@@ -321,7 +321,7 @@ merge_clump(PlannerInfo *root, List *clumps, Clump *new_clump, bool force)
 static bool
 desirable_join(PlannerInfo *root,
 			   RelOptInfo *outer_rel, RelOptInfo *inner_rel)
-{	StackTrace("desirable_join");
+{
 	/*
 	 * Join if there is an applicable join clause, or if there is a join order
 	 * restriction forcing these rels to be joined.

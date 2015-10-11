@@ -42,7 +42,7 @@ CollationCreate(const char *collname, Oid collnamespace,
 				Oid collowner,
 				int32 collencoding,
 				const char *collcollate, const char *collctype)
-{	StackTrace("CollationCreate");
+{
 	Relation	rel;
 	TupleDesc	tupDesc;
 	HeapTuple	tup;
@@ -152,7 +152,7 @@ CollationCreate(const char *collname, Oid collnamespace,
  */
 void
 RemoveCollationById(Oid collationOid)
-{	StackTrace("RemoveCollationById");
+{
 	Relation	rel;
 	ScanKeyData scanKeyData;
 	SysScanDesc scandesc;

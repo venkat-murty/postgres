@@ -78,7 +78,7 @@ static TimestampTz timestamp2timestamptz(Timestamp timestamp);
 /* common code for timestamptypmodin and timestamptztypmodin */
 static int32
 anytimestamp_typmodin(bool istz, ArrayType *ta)
-{	StackTrace("anytimestamp_typmodin");
+{
 	int32		typmod;
 	int32	   *tl;
 	int			n;
@@ -117,7 +117,7 @@ anytimestamp_typmodin(bool istz, ArrayType *ta)
 /* common code for timestamptypmodout and timestamptztypmodout */
 static char *
 anytimestamp_typmodout(bool istz, int32 typmod)
-{	StackTrace("anytimestamp_typmodout");
+{
 	const char *tz = istz ? " with time zone" : " without time zone";
 
 	if (typmod >= 0)
@@ -136,7 +136,7 @@ anytimestamp_typmodout(bool istz, int32 typmod)
  */
 Datum
 timestamp_in(PG_FUNCTION_ARGS)
-{	StackTrace("timestamp_in");
+{
 	char	   *str = PG_GETARG_CSTRING(0);
 
 #ifdef NOT_USED
@@ -207,7 +207,7 @@ timestamp_in(PG_FUNCTION_ARGS)
  */
 Datum
 timestamp_out(PG_FUNCTION_ARGS)
-{	StackTrace("timestamp_out");
+{
 	Timestamp	timestamp = PG_GETARG_TIMESTAMP(0);
 	char	   *result;
 	struct pg_tm tt,
@@ -236,7 +236,7 @@ timestamp_out(PG_FUNCTION_ARGS)
  */
 Datum
 timestamp_recv(PG_FUNCTION_ARGS)
-{	StackTrace("timestamp_recv");
+{
 	StringInfo	buf = (StringInfo) PG_GETARG_POINTER(0);
 
 #ifdef NOT_USED
@@ -277,7 +277,7 @@ timestamp_recv(PG_FUNCTION_ARGS)
  */
 Datum
 timestamp_send(PG_FUNCTION_ARGS)
-{	StackTrace("timestamp_send");
+{
 	Timestamp	timestamp = PG_GETARG_TIMESTAMP(0);
 	StringInfoData buf;
 
@@ -292,7 +292,7 @@ timestamp_send(PG_FUNCTION_ARGS)
 
 Datum
 timestamptypmodin(PG_FUNCTION_ARGS)
-{	StackTrace("timestamptypmodin");
+{
 	ArrayType  *ta = PG_GETARG_ARRAYTYPE_P(0);
 
 	PG_RETURN_INT32(anytimestamp_typmodin(false, ta));
@@ -300,7 +300,7 @@ timestamptypmodin(PG_FUNCTION_ARGS)
 
 Datum
 timestamptypmodout(PG_FUNCTION_ARGS)
-{	StackTrace("timestamptypmodout");
+{
 	int32		typmod = PG_GETARG_INT32(0);
 
 	PG_RETURN_CSTRING(anytimestamp_typmodout(false, typmod));
@@ -313,7 +313,7 @@ timestamptypmodout(PG_FUNCTION_ARGS)
  */
 Datum
 timestamp_transform(PG_FUNCTION_ARGS)
-{	StackTrace("timestamp_transform");
+{
 	PG_RETURN_POINTER(TemporalTransform(MAX_TIMESTAMP_PRECISION,
 										(Node *) PG_GETARG_POINTER(0)));
 }
@@ -324,7 +324,7 @@ timestamp_transform(PG_FUNCTION_ARGS)
  */
 Datum
 timestamp_scale(PG_FUNCTION_ARGS)
-{	StackTrace("timestamp_scale");
+{
 	Timestamp	timestamp = PG_GETARG_TIMESTAMP(0);
 	int32		typmod = PG_GETARG_INT32(1);
 	Timestamp	result;
@@ -338,7 +338,7 @@ timestamp_scale(PG_FUNCTION_ARGS)
 
 static void
 AdjustTimestampForTypmod(Timestamp *time, int32 typmod)
-{	StackTrace("AdjustTimestampForTypmod");
+{
 #ifdef HAVE_INT64_TIMESTAMP
 	static const int64 TimestampScales[MAX_TIMESTAMP_PRECISION + 1] = {
 		INT64CONST(1000000),
@@ -410,7 +410,7 @@ AdjustTimestampForTypmod(Timestamp *time, int32 typmod)
  */
 Datum
 timestamptz_in(PG_FUNCTION_ARGS)
-{	StackTrace("timestamptz_in");
+{
 	char	   *str = PG_GETARG_CSTRING(0);
 
 #ifdef NOT_USED
@@ -485,7 +485,7 @@ timestamptz_in(PG_FUNCTION_ARGS)
  */
 static int
 parse_sane_timezone(struct pg_tm * tm, text *zone)
-{	StackTrace("parse_sane_timezone");
+{
 	char		tzname[TZ_STRLEN_MAX + 1];
 	int			rt;
 	int			tz;
@@ -570,7 +570,7 @@ parse_sane_timezone(struct pg_tm * tm, text *zone)
 static Timestamp
 make_timestamp_internal(int year, int month, int day,
 						int hour, int min, double sec)
-{	StackTrace("make_timestamp_internal");
+{
 	struct pg_tm tm;
 	TimeOffset	date;
 	TimeOffset	time;
@@ -654,7 +654,7 @@ make_timestamp_internal(int year, int month, int day,
  */
 Datum
 make_timestamp(PG_FUNCTION_ARGS)
-{	StackTrace("make_timestamp");
+{
 	int32		year = PG_GETARG_INT32(0);
 	int32		month = PG_GETARG_INT32(1);
 	int32		mday = PG_GETARG_INT32(2);
@@ -674,7 +674,7 @@ make_timestamp(PG_FUNCTION_ARGS)
  */
 Datum
 make_timestamptz(PG_FUNCTION_ARGS)
-{	StackTrace("make_timestamptz");
+{
 	int32		year = PG_GETARG_INT32(0);
 	int32		month = PG_GETARG_INT32(1);
 	int32		mday = PG_GETARG_INT32(2);
@@ -695,7 +695,7 @@ make_timestamptz(PG_FUNCTION_ARGS)
  */
 Datum
 make_timestamptz_at_timezone(PG_FUNCTION_ARGS)
-{	StackTrace("make_timestamptz_at_timezone");
+{
 	int32		year = PG_GETARG_INT32(0);
 	int32		month = PG_GETARG_INT32(1);
 	int32		mday = PG_GETARG_INT32(2);
@@ -726,7 +726,7 @@ make_timestamptz_at_timezone(PG_FUNCTION_ARGS)
  */
 Datum
 timestamptz_out(PG_FUNCTION_ARGS)
-{	StackTrace("timestamptz_out");
+{
 	TimestampTz dt = PG_GETARG_TIMESTAMPTZ(0);
 	char	   *result;
 	int			tz;
@@ -757,7 +757,7 @@ timestamptz_out(PG_FUNCTION_ARGS)
  */
 Datum
 timestamptz_recv(PG_FUNCTION_ARGS)
-{	StackTrace("timestamptz_recv");
+{
 	StringInfo	buf = (StringInfo) PG_GETARG_POINTER(0);
 
 #ifdef NOT_USED
@@ -794,7 +794,7 @@ timestamptz_recv(PG_FUNCTION_ARGS)
  */
 Datum
 timestamptz_send(PG_FUNCTION_ARGS)
-{	StackTrace("timestamptz_send");
+{
 	TimestampTz timestamp = PG_GETARG_TIMESTAMPTZ(0);
 	StringInfoData buf;
 
@@ -809,7 +809,7 @@ timestamptz_send(PG_FUNCTION_ARGS)
 
 Datum
 timestamptztypmodin(PG_FUNCTION_ARGS)
-{	StackTrace("timestamptztypmodin");
+{
 	ArrayType  *ta = PG_GETARG_ARRAYTYPE_P(0);
 
 	PG_RETURN_INT32(anytimestamp_typmodin(true, ta));
@@ -817,7 +817,7 @@ timestamptztypmodin(PG_FUNCTION_ARGS)
 
 Datum
 timestamptztypmodout(PG_FUNCTION_ARGS)
-{	StackTrace("timestamptztypmodout");
+{
 	int32		typmod = PG_GETARG_INT32(0);
 
 	PG_RETURN_CSTRING(anytimestamp_typmodout(true, typmod));
@@ -830,7 +830,7 @@ timestamptztypmodout(PG_FUNCTION_ARGS)
  */
 Datum
 timestamptz_scale(PG_FUNCTION_ARGS)
-{	StackTrace("timestamptz_scale");
+{
 	TimestampTz timestamp = PG_GETARG_TIMESTAMPTZ(0);
 	int32		typmod = PG_GETARG_INT32(1);
 	TimestampTz result;
@@ -851,7 +851,7 @@ timestamptz_scale(PG_FUNCTION_ARGS)
  */
 Datum
 interval_in(PG_FUNCTION_ARGS)
-{	StackTrace("interval_in");
+{
 	char	   *str = PG_GETARG_CSTRING(0);
 
 #ifdef NOT_USED
@@ -933,7 +933,7 @@ interval_in(PG_FUNCTION_ARGS)
  */
 Datum
 interval_out(PG_FUNCTION_ARGS)
-{	StackTrace("interval_out");
+{
 	Interval   *span = PG_GETARG_INTERVAL_P(0);
 	char	   *result;
 	struct pg_tm tt,
@@ -955,7 +955,7 @@ interval_out(PG_FUNCTION_ARGS)
  */
 Datum
 interval_recv(PG_FUNCTION_ARGS)
-{	StackTrace("interval_recv");
+{
 	StringInfo	buf = (StringInfo) PG_GETARG_POINTER(0);
 
 #ifdef NOT_USED
@@ -984,7 +984,7 @@ interval_recv(PG_FUNCTION_ARGS)
  */
 Datum
 interval_send(PG_FUNCTION_ARGS)
-{	StackTrace("interval_send");
+{
 	Interval   *interval = PG_GETARG_INTERVAL_P(0);
 	StringInfoData buf;
 
@@ -1013,7 +1013,7 @@ interval_send(PG_FUNCTION_ARGS)
  */
 Datum
 intervaltypmodin(PG_FUNCTION_ARGS)
-{	StackTrace("intervaltypmodin");
+{
 	ArrayType  *ta = PG_GETARG_ARRAYTYPE_P(0);
 	int32	   *tl;
 	int			n;
@@ -1092,7 +1092,7 @@ intervaltypmodin(PG_FUNCTION_ARGS)
 
 Datum
 intervaltypmodout(PG_FUNCTION_ARGS)
-{	StackTrace("intervaltypmodout");
+{
 	int32		typmod = PG_GETARG_INT32(0);
 	char	   *res = (char *) palloc(64);
 	int			fields;
@@ -1174,7 +1174,7 @@ intervaltypmodout(PG_FUNCTION_ARGS)
  */
 Datum
 interval_transform(PG_FUNCTION_ARGS)
-{	StackTrace("interval_transform");
+{
 	FuncExpr   *expr = (FuncExpr *) PG_GETARG_POINTER(0);
 	Node	   *ret = NULL;
 	Node	   *typmod;
@@ -1232,7 +1232,7 @@ interval_transform(PG_FUNCTION_ARGS)
  */
 Datum
 interval_scale(PG_FUNCTION_ARGS)
-{	StackTrace("interval_scale");
+{
 	Interval   *interval = PG_GETARG_INTERVAL_P(0);
 	int32		typmod = PG_GETARG_INT32(1);
 	Interval   *result;
@@ -1251,7 +1251,7 @@ interval_scale(PG_FUNCTION_ARGS)
  */
 static void
 AdjustIntervalForTypmod(Interval *interval, int32 typmod)
-{	StackTrace("AdjustIntervalForTypmod");
+{
 #ifdef HAVE_INT64_TIMESTAMP
 	static const int64 IntervalScales[MAX_INTERVAL_PRECISION + 1] = {
 		INT64CONST(1000000),
@@ -1463,7 +1463,7 @@ AdjustIntervalForTypmod(Interval *interval, int32 typmod)
  */
 Datum
 make_interval(PG_FUNCTION_ARGS)
-{	StackTrace("make_interval");
+{
 	int32		years = PG_GETARG_INT32(0);
 	int32		months = PG_GETARG_INT32(1);
 	int32		weeks = PG_GETARG_INT32(2);
@@ -1502,7 +1502,7 @@ make_interval(PG_FUNCTION_ARGS)
  */
 static void
 EncodeSpecialTimestamp(Timestamp dt, char *str)
-{	StackTrace("EncodeSpecialTimestamp");
+{
 	if (TIMESTAMP_IS_NOBEGIN(dt))
 		strcpy(str, EARLY);
 	else if (TIMESTAMP_IS_NOEND(dt))
@@ -1513,31 +1513,31 @@ EncodeSpecialTimestamp(Timestamp dt, char *str)
 
 Datum
 now(PG_FUNCTION_ARGS)
-{	StackTrace("now");
+{
 	PG_RETURN_TIMESTAMPTZ(GetCurrentTransactionStartTimestamp());
 }
 
 Datum
 statement_timestamp(PG_FUNCTION_ARGS)
-{	StackTrace("statement_timestamp");
+{
 	PG_RETURN_TIMESTAMPTZ(GetCurrentStatementStartTimestamp());
 }
 
 Datum
 clock_timestamp(PG_FUNCTION_ARGS)
-{	StackTrace("clock_timestamp");
+{
 	PG_RETURN_TIMESTAMPTZ(GetCurrentTimestamp());
 }
 
 Datum
 pg_postmaster_start_time(PG_FUNCTION_ARGS)
-{	StackTrace("pg_postmaster_start_time");
+{
 	PG_RETURN_TIMESTAMPTZ(PgStartTime);
 }
 
 Datum
 pg_conf_load_time(PG_FUNCTION_ARGS)
-{	StackTrace("pg_conf_load_time");
+{
 	PG_RETURN_TIMESTAMPTZ(PgReloadTime);
 }
 
@@ -1549,7 +1549,7 @@ pg_conf_load_time(PG_FUNCTION_ARGS)
  */
 TimestampTz
 GetCurrentTimestamp(void)
-{	StackTrace("GetCurrentTimestamp");
+{
 	TimestampTz result;
 	struct timeval tp;
 
@@ -1577,7 +1577,7 @@ GetCurrentTimestamp(void)
 #ifndef HAVE_INT64_TIMESTAMP
 int64
 GetCurrentIntegerTimestamp(void)
-{	StackTrace("GetCurrentIntegerTimestamp");
+{
 	int64		result;
 	struct timeval tp;
 
@@ -1601,7 +1601,7 @@ GetCurrentIntegerTimestamp(void)
 #ifndef HAVE_INT64_TIMESTAMP
 TimestampTz
 IntegerTimestampToTimestampTz(int64 timestamp)
-{	StackTrace("IntegerTimestampToTimestampTz");
+{
 	TimestampTz result;
 
 	result = timestamp / USECS_PER_SEC;
@@ -1625,7 +1625,7 @@ IntegerTimestampToTimestampTz(int64 timestamp)
 void
 TimestampDifference(TimestampTz start_time, TimestampTz stop_time,
 					long *secs, int *microsecs)
-{	StackTrace("TimestampDifference");
+{
 	TimestampTz diff = stop_time - start_time;
 
 	if (diff <= 0)
@@ -1656,7 +1656,7 @@ bool
 TimestampDifferenceExceeds(TimestampTz start_time,
 						   TimestampTz stop_time,
 						   int msec)
-{	StackTrace("TimestampDifferenceExceeds");
+{
 	TimestampTz diff = stop_time - start_time;
 
 #ifdef HAVE_INT64_TIMESTAMP
@@ -1679,7 +1679,7 @@ TimestampDifferenceExceeds(TimestampTz start_time,
  */
 TimestampTz
 time_t_to_timestamptz(pg_time_t tm)
-{	StackTrace("time_t_to_timestamptz");
+{
 	TimestampTz result;
 
 	result = (TimestampTz) tm -
@@ -1704,7 +1704,7 @@ time_t_to_timestamptz(pg_time_t tm)
  */
 pg_time_t
 timestamptz_to_time_t(TimestampTz t)
-{	StackTrace("timestamptz_to_time_t");
+{
 	pg_time_t	result;
 
 #ifdef HAVE_INT64_TIMESTAMP
@@ -1727,7 +1727,7 @@ timestamptz_to_time_t(TimestampTz t)
  */
 const char *
 timestamptz_to_str(TimestampTz t)
-{	StackTrace("timestamptz_to_str");
+{
 	static char buf[MAXDATELEN + 1];
 	int			tz;
 	struct pg_tm tt,
@@ -1748,7 +1748,7 @@ timestamptz_to_str(TimestampTz t)
 
 void
 dt2time(Timestamp jd, int *hour, int *min, int *sec, fsec_t *fsec)
-{	StackTrace("dt2time");
+{
 	TimeOffset	time;
 
 	time = jd;
@@ -1784,7 +1784,7 @@ dt2time(Timestamp jd, int *hour, int *min, int *sec, fsec_t *fsec)
  */
 int
 timestamp2tm(Timestamp dt, int *tzp, struct pg_tm * tm, fsec_t *fsec, const char **tzn, pg_tz *attimezone)
-{	StackTrace("timestamp2tm");
+{
 	Timestamp	date;
 	Timestamp	time;
 	pg_time_t	utime;
@@ -1922,7 +1922,7 @@ recalc_t:
  */
 int
 tm2timestamp(struct pg_tm * tm, fsec_t fsec, int *tzp, Timestamp *result)
-{	StackTrace("tm2timestamp");
+{
 	TimeOffset	date;
 	TimeOffset	time;
 
@@ -1967,7 +1967,7 @@ tm2timestamp(struct pg_tm * tm, fsec_t fsec, int *tzp, Timestamp *result)
  */
 int
 interval2tm(Interval span, struct pg_tm * tm, fsec_t *fsec)
-{	StackTrace("interval2tm");
+{
 	TimeOffset	time;
 	TimeOffset	tfrac;
 
@@ -2013,7 +2013,7 @@ recalc:
 
 int
 tm2interval(struct pg_tm * tm, fsec_t fsec, Interval *span)
-{	StackTrace("tm2interval");
+{
 	double		total_months = (double) tm->tm_year * MONTHS_PER_YEAR + tm->tm_mon;
 
 	if (total_months > INT_MAX || total_months < INT_MIN)
@@ -2035,7 +2035,7 @@ tm2interval(struct pg_tm * tm, fsec_t fsec, Interval *span)
 
 static TimeOffset
 time2t(const int hour, const int min, const int sec, const fsec_t fsec)
-{	StackTrace("time2t");
+{
 #ifdef HAVE_INT64_TIMESTAMP
 	return (((((hour * MINS_PER_HOUR) + min) * SECS_PER_MINUTE) + sec) * USECS_PER_SEC) + fsec;
 #else
@@ -2045,7 +2045,7 @@ time2t(const int hour, const int min, const int sec, const fsec_t fsec)
 
 static Timestamp
 dt2local(Timestamp dt, int tz)
-{	StackTrace("dt2local");
+{
 #ifdef HAVE_INT64_TIMESTAMP
 	dt -= (tz * USECS_PER_SEC);
 #else
@@ -2062,7 +2062,7 @@ dt2local(Timestamp dt, int tz)
 
 Datum
 timestamp_finite(PG_FUNCTION_ARGS)
-{	StackTrace("timestamp_finite");
+{
 	Timestamp	timestamp = PG_GETARG_TIMESTAMP(0);
 
 	PG_RETURN_BOOL(!TIMESTAMP_NOT_FINITE(timestamp));
@@ -2070,7 +2070,7 @@ timestamp_finite(PG_FUNCTION_ARGS)
 
 Datum
 interval_finite(PG_FUNCTION_ARGS)
-{	StackTrace("interval_finite");
+{
 	PG_RETURN_BOOL(true);
 }
 
@@ -2081,7 +2081,7 @@ interval_finite(PG_FUNCTION_ARGS)
 
 void
 GetEpochTime(struct pg_tm * tm)
-{	StackTrace("GetEpochTime");
+{
 	struct pg_tm *t0;
 	pg_time_t	epoch = 0;
 
@@ -2100,7 +2100,7 @@ GetEpochTime(struct pg_tm * tm)
 
 Timestamp
 SetEpochTimestamp(void)
-{	StackTrace("SetEpochTimestamp");
+{
 	Timestamp	dt;
 	struct pg_tm tt,
 			   *tm = &tt;
@@ -2122,7 +2122,7 @@ SetEpochTimestamp(void)
  */
 int
 timestamp_cmp_internal(Timestamp dt1, Timestamp dt2)
-{	StackTrace("timestamp_cmp_internal");
+{
 #ifdef HAVE_INT64_TIMESTAMP
 	return (dt1 < dt2) ? -1 : ((dt1 > dt2) ? 1 : 0);
 #else
@@ -2159,7 +2159,7 @@ timestamp_cmp_internal(Timestamp dt1, Timestamp dt2)
 
 Datum
 timestamp_eq(PG_FUNCTION_ARGS)
-{	StackTrace("timestamp_eq");
+{
 	Timestamp	dt1 = PG_GETARG_TIMESTAMP(0);
 	Timestamp	dt2 = PG_GETARG_TIMESTAMP(1);
 
@@ -2168,7 +2168,7 @@ timestamp_eq(PG_FUNCTION_ARGS)
 
 Datum
 timestamp_ne(PG_FUNCTION_ARGS)
-{	StackTrace("timestamp_ne");
+{
 	Timestamp	dt1 = PG_GETARG_TIMESTAMP(0);
 	Timestamp	dt2 = PG_GETARG_TIMESTAMP(1);
 
@@ -2177,7 +2177,7 @@ timestamp_ne(PG_FUNCTION_ARGS)
 
 Datum
 timestamp_lt(PG_FUNCTION_ARGS)
-{	StackTrace("timestamp_lt");
+{
 	Timestamp	dt1 = PG_GETARG_TIMESTAMP(0);
 	Timestamp	dt2 = PG_GETARG_TIMESTAMP(1);
 
@@ -2186,7 +2186,7 @@ timestamp_lt(PG_FUNCTION_ARGS)
 
 Datum
 timestamp_gt(PG_FUNCTION_ARGS)
-{	StackTrace("timestamp_gt");
+{
 	Timestamp	dt1 = PG_GETARG_TIMESTAMP(0);
 	Timestamp	dt2 = PG_GETARG_TIMESTAMP(1);
 
@@ -2195,7 +2195,7 @@ timestamp_gt(PG_FUNCTION_ARGS)
 
 Datum
 timestamp_le(PG_FUNCTION_ARGS)
-{	StackTrace("timestamp_le");
+{
 	Timestamp	dt1 = PG_GETARG_TIMESTAMP(0);
 	Timestamp	dt2 = PG_GETARG_TIMESTAMP(1);
 
@@ -2204,7 +2204,7 @@ timestamp_le(PG_FUNCTION_ARGS)
 
 Datum
 timestamp_ge(PG_FUNCTION_ARGS)
-{	StackTrace("timestamp_ge");
+{
 	Timestamp	dt1 = PG_GETARG_TIMESTAMP(0);
 	Timestamp	dt2 = PG_GETARG_TIMESTAMP(1);
 
@@ -2213,7 +2213,7 @@ timestamp_ge(PG_FUNCTION_ARGS)
 
 Datum
 timestamp_cmp(PG_FUNCTION_ARGS)
-{	StackTrace("timestamp_cmp");
+{
 	Timestamp	dt1 = PG_GETARG_TIMESTAMP(0);
 	Timestamp	dt2 = PG_GETARG_TIMESTAMP(1);
 
@@ -2223,7 +2223,7 @@ timestamp_cmp(PG_FUNCTION_ARGS)
 /* note: this is used for timestamptz also */
 static int
 timestamp_fastcmp(Datum x, Datum y, SortSupport ssup)
-{	StackTrace("timestamp_fastcmp");
+{
 	Timestamp	a = DatumGetTimestamp(x);
 	Timestamp	b = DatumGetTimestamp(y);
 
@@ -2232,7 +2232,7 @@ timestamp_fastcmp(Datum x, Datum y, SortSupport ssup)
 
 Datum
 timestamp_sortsupport(PG_FUNCTION_ARGS)
-{	StackTrace("timestamp_sortsupport");
+{
 	SortSupport ssup = (SortSupport) PG_GETARG_POINTER(0);
 
 	ssup->comparator = timestamp_fastcmp;
@@ -2241,7 +2241,7 @@ timestamp_sortsupport(PG_FUNCTION_ARGS)
 
 Datum
 timestamp_hash(PG_FUNCTION_ARGS)
-{	StackTrace("timestamp_hash");
+{
 	/* We can use either hashint8 or hashfloat8 directly */
 #ifdef HAVE_INT64_TIMESTAMP
 	return hashint8(fcinfo);
@@ -2257,7 +2257,7 @@ timestamp_hash(PG_FUNCTION_ARGS)
 
 Datum
 timestamp_eq_timestamptz(PG_FUNCTION_ARGS)
-{	StackTrace("timestamp_eq_timestamptz");
+{
 	Timestamp	timestampVal = PG_GETARG_TIMESTAMP(0);
 	TimestampTz dt2 = PG_GETARG_TIMESTAMPTZ(1);
 	TimestampTz dt1;
@@ -2269,7 +2269,7 @@ timestamp_eq_timestamptz(PG_FUNCTION_ARGS)
 
 Datum
 timestamp_ne_timestamptz(PG_FUNCTION_ARGS)
-{	StackTrace("timestamp_ne_timestamptz");
+{
 	Timestamp	timestampVal = PG_GETARG_TIMESTAMP(0);
 	TimestampTz dt2 = PG_GETARG_TIMESTAMPTZ(1);
 	TimestampTz dt1;
@@ -2281,7 +2281,7 @@ timestamp_ne_timestamptz(PG_FUNCTION_ARGS)
 
 Datum
 timestamp_lt_timestamptz(PG_FUNCTION_ARGS)
-{	StackTrace("timestamp_lt_timestamptz");
+{
 	Timestamp	timestampVal = PG_GETARG_TIMESTAMP(0);
 	TimestampTz dt2 = PG_GETARG_TIMESTAMPTZ(1);
 	TimestampTz dt1;
@@ -2293,7 +2293,7 @@ timestamp_lt_timestamptz(PG_FUNCTION_ARGS)
 
 Datum
 timestamp_gt_timestamptz(PG_FUNCTION_ARGS)
-{	StackTrace("timestamp_gt_timestamptz");
+{
 	Timestamp	timestampVal = PG_GETARG_TIMESTAMP(0);
 	TimestampTz dt2 = PG_GETARG_TIMESTAMPTZ(1);
 	TimestampTz dt1;
@@ -2305,7 +2305,7 @@ timestamp_gt_timestamptz(PG_FUNCTION_ARGS)
 
 Datum
 timestamp_le_timestamptz(PG_FUNCTION_ARGS)
-{	StackTrace("timestamp_le_timestamptz");
+{
 	Timestamp	timestampVal = PG_GETARG_TIMESTAMP(0);
 	TimestampTz dt2 = PG_GETARG_TIMESTAMPTZ(1);
 	TimestampTz dt1;
@@ -2317,7 +2317,7 @@ timestamp_le_timestamptz(PG_FUNCTION_ARGS)
 
 Datum
 timestamp_ge_timestamptz(PG_FUNCTION_ARGS)
-{	StackTrace("timestamp_ge_timestamptz");
+{
 	Timestamp	timestampVal = PG_GETARG_TIMESTAMP(0);
 	TimestampTz dt2 = PG_GETARG_TIMESTAMPTZ(1);
 	TimestampTz dt1;
@@ -2329,7 +2329,7 @@ timestamp_ge_timestamptz(PG_FUNCTION_ARGS)
 
 Datum
 timestamp_cmp_timestamptz(PG_FUNCTION_ARGS)
-{	StackTrace("timestamp_cmp_timestamptz");
+{
 	Timestamp	timestampVal = PG_GETARG_TIMESTAMP(0);
 	TimestampTz dt2 = PG_GETARG_TIMESTAMPTZ(1);
 	TimestampTz dt1;
@@ -2341,7 +2341,7 @@ timestamp_cmp_timestamptz(PG_FUNCTION_ARGS)
 
 Datum
 timestamptz_eq_timestamp(PG_FUNCTION_ARGS)
-{	StackTrace("timestamptz_eq_timestamp");
+{
 	TimestampTz dt1 = PG_GETARG_TIMESTAMPTZ(0);
 	Timestamp	timestampVal = PG_GETARG_TIMESTAMP(1);
 	TimestampTz dt2;
@@ -2353,7 +2353,7 @@ timestamptz_eq_timestamp(PG_FUNCTION_ARGS)
 
 Datum
 timestamptz_ne_timestamp(PG_FUNCTION_ARGS)
-{	StackTrace("timestamptz_ne_timestamp");
+{
 	TimestampTz dt1 = PG_GETARG_TIMESTAMPTZ(0);
 	Timestamp	timestampVal = PG_GETARG_TIMESTAMP(1);
 	TimestampTz dt2;
@@ -2365,7 +2365,7 @@ timestamptz_ne_timestamp(PG_FUNCTION_ARGS)
 
 Datum
 timestamptz_lt_timestamp(PG_FUNCTION_ARGS)
-{	StackTrace("timestamptz_lt_timestamp");
+{
 	TimestampTz dt1 = PG_GETARG_TIMESTAMPTZ(0);
 	Timestamp	timestampVal = PG_GETARG_TIMESTAMP(1);
 	TimestampTz dt2;
@@ -2377,7 +2377,7 @@ timestamptz_lt_timestamp(PG_FUNCTION_ARGS)
 
 Datum
 timestamptz_gt_timestamp(PG_FUNCTION_ARGS)
-{	StackTrace("timestamptz_gt_timestamp");
+{
 	TimestampTz dt1 = PG_GETARG_TIMESTAMPTZ(0);
 	Timestamp	timestampVal = PG_GETARG_TIMESTAMP(1);
 	TimestampTz dt2;
@@ -2389,7 +2389,7 @@ timestamptz_gt_timestamp(PG_FUNCTION_ARGS)
 
 Datum
 timestamptz_le_timestamp(PG_FUNCTION_ARGS)
-{	StackTrace("timestamptz_le_timestamp");
+{
 	TimestampTz dt1 = PG_GETARG_TIMESTAMPTZ(0);
 	Timestamp	timestampVal = PG_GETARG_TIMESTAMP(1);
 	TimestampTz dt2;
@@ -2401,7 +2401,7 @@ timestamptz_le_timestamp(PG_FUNCTION_ARGS)
 
 Datum
 timestamptz_ge_timestamp(PG_FUNCTION_ARGS)
-{	StackTrace("timestamptz_ge_timestamp");
+{
 	TimestampTz dt1 = PG_GETARG_TIMESTAMPTZ(0);
 	Timestamp	timestampVal = PG_GETARG_TIMESTAMP(1);
 	TimestampTz dt2;
@@ -2413,7 +2413,7 @@ timestamptz_ge_timestamp(PG_FUNCTION_ARGS)
 
 Datum
 timestamptz_cmp_timestamp(PG_FUNCTION_ARGS)
-{	StackTrace("timestamptz_cmp_timestamp");
+{
 	TimestampTz dt1 = PG_GETARG_TIMESTAMPTZ(0);
 	Timestamp	timestampVal = PG_GETARG_TIMESTAMP(1);
 	TimestampTz dt2;
@@ -2431,7 +2431,7 @@ timestamptz_cmp_timestamp(PG_FUNCTION_ARGS)
  */
 static inline TimeOffset
 interval_cmp_value(const Interval *interval)
-{	StackTrace("interval_cmp_value");
+{
 	TimeOffset	span;
 
 	span = interval->time;
@@ -2449,7 +2449,7 @@ interval_cmp_value(const Interval *interval)
 
 static int
 interval_cmp_internal(Interval *interval1, Interval *interval2)
-{	StackTrace("interval_cmp_internal");
+{
 	TimeOffset	span1 = interval_cmp_value(interval1);
 	TimeOffset	span2 = interval_cmp_value(interval2);
 
@@ -2458,7 +2458,7 @@ interval_cmp_internal(Interval *interval1, Interval *interval2)
 
 Datum
 interval_eq(PG_FUNCTION_ARGS)
-{	StackTrace("interval_eq");
+{
 	Interval   *interval1 = PG_GETARG_INTERVAL_P(0);
 	Interval   *interval2 = PG_GETARG_INTERVAL_P(1);
 
@@ -2467,7 +2467,7 @@ interval_eq(PG_FUNCTION_ARGS)
 
 Datum
 interval_ne(PG_FUNCTION_ARGS)
-{	StackTrace("interval_ne");
+{
 	Interval   *interval1 = PG_GETARG_INTERVAL_P(0);
 	Interval   *interval2 = PG_GETARG_INTERVAL_P(1);
 
@@ -2476,7 +2476,7 @@ interval_ne(PG_FUNCTION_ARGS)
 
 Datum
 interval_lt(PG_FUNCTION_ARGS)
-{	StackTrace("interval_lt");
+{
 	Interval   *interval1 = PG_GETARG_INTERVAL_P(0);
 	Interval   *interval2 = PG_GETARG_INTERVAL_P(1);
 
@@ -2485,7 +2485,7 @@ interval_lt(PG_FUNCTION_ARGS)
 
 Datum
 interval_gt(PG_FUNCTION_ARGS)
-{	StackTrace("interval_gt");
+{
 	Interval   *interval1 = PG_GETARG_INTERVAL_P(0);
 	Interval   *interval2 = PG_GETARG_INTERVAL_P(1);
 
@@ -2494,7 +2494,7 @@ interval_gt(PG_FUNCTION_ARGS)
 
 Datum
 interval_le(PG_FUNCTION_ARGS)
-{	StackTrace("interval_le");
+{
 	Interval   *interval1 = PG_GETARG_INTERVAL_P(0);
 	Interval   *interval2 = PG_GETARG_INTERVAL_P(1);
 
@@ -2503,7 +2503,7 @@ interval_le(PG_FUNCTION_ARGS)
 
 Datum
 interval_ge(PG_FUNCTION_ARGS)
-{	StackTrace("interval_ge");
+{
 	Interval   *interval1 = PG_GETARG_INTERVAL_P(0);
 	Interval   *interval2 = PG_GETARG_INTERVAL_P(1);
 
@@ -2512,7 +2512,7 @@ interval_ge(PG_FUNCTION_ARGS)
 
 Datum
 interval_cmp(PG_FUNCTION_ARGS)
-{	StackTrace("interval_cmp");
+{
 	Interval   *interval1 = PG_GETARG_INTERVAL_P(0);
 	Interval   *interval2 = PG_GETARG_INTERVAL_P(1);
 
@@ -2528,7 +2528,7 @@ interval_cmp(PG_FUNCTION_ARGS)
  */
 Datum
 interval_hash(PG_FUNCTION_ARGS)
-{	StackTrace("interval_hash");
+{
 	Interval   *interval = PG_GETARG_INTERVAL_P(0);
 	TimeOffset	span = interval_cmp_value(interval);
 
@@ -2547,7 +2547,7 @@ interval_hash(PG_FUNCTION_ARGS)
  */
 Datum
 overlaps_timestamp(PG_FUNCTION_ARGS)
-{	StackTrace("overlaps_timestamp");
+{
 	/*
 	 * The arguments are Timestamps, but we leave them as generic Datums to
 	 * avoid unnecessary conversions between value and reference forms --- not
@@ -2672,7 +2672,7 @@ overlaps_timestamp(PG_FUNCTION_ARGS)
 
 Datum
 timestamp_smaller(PG_FUNCTION_ARGS)
-{	StackTrace("timestamp_smaller");
+{
 	Timestamp	dt1 = PG_GETARG_TIMESTAMP(0);
 	Timestamp	dt2 = PG_GETARG_TIMESTAMP(1);
 	Timestamp	result;
@@ -2687,7 +2687,7 @@ timestamp_smaller(PG_FUNCTION_ARGS)
 
 Datum
 timestamp_larger(PG_FUNCTION_ARGS)
-{	StackTrace("timestamp_larger");
+{
 	Timestamp	dt1 = PG_GETARG_TIMESTAMP(0);
 	Timestamp	dt2 = PG_GETARG_TIMESTAMP(1);
 	Timestamp	result;
@@ -2702,7 +2702,7 @@ timestamp_larger(PG_FUNCTION_ARGS)
 
 Datum
 timestamp_mi(PG_FUNCTION_ARGS)
-{	StackTrace("timestamp_mi");
+{
 	Timestamp	dt1 = PG_GETARG_TIMESTAMP(0);
 	Timestamp	dt2 = PG_GETARG_TIMESTAMP(1);
 	Interval   *result;
@@ -2764,7 +2764,7 @@ timestamp_mi(PG_FUNCTION_ARGS)
  */
 Datum
 interval_justify_interval(PG_FUNCTION_ARGS)
-{	StackTrace("interval_justify_interval");
+{
 	Interval   *span = PG_GETARG_INTERVAL_P(0);
 	Interval   *result;
 	TimeOffset	wholeday;
@@ -2831,7 +2831,7 @@ interval_justify_interval(PG_FUNCTION_ARGS)
  */
 Datum
 interval_justify_hours(PG_FUNCTION_ARGS)
-{	StackTrace("interval_justify_hours");
+{
 	Interval   *span = PG_GETARG_INTERVAL_P(0);
 	Interval   *result;
 	TimeOffset	wholeday;
@@ -2878,7 +2878,7 @@ interval_justify_hours(PG_FUNCTION_ARGS)
  */
 Datum
 interval_justify_days(PG_FUNCTION_ARGS)
-{	StackTrace("interval_justify_days");
+{
 	Interval   *span = PG_GETARG_INTERVAL_P(0);
 	Interval   *result;
 	int32		wholemonth;
@@ -2918,7 +2918,7 @@ interval_justify_days(PG_FUNCTION_ARGS)
  */
 Datum
 timestamp_pl_interval(PG_FUNCTION_ARGS)
-{	StackTrace("timestamp_pl_interval");
+{
 	Timestamp	timestamp = PG_GETARG_TIMESTAMP(0);
 	Interval   *span = PG_GETARG_INTERVAL_P(1);
 	Timestamp	result;
@@ -2991,7 +2991,7 @@ timestamp_pl_interval(PG_FUNCTION_ARGS)
 
 Datum
 timestamp_mi_interval(PG_FUNCTION_ARGS)
-{	StackTrace("timestamp_mi_interval");
+{
 	Timestamp	timestamp = PG_GETARG_TIMESTAMP(0);
 	Interval   *span = PG_GETARG_INTERVAL_P(1);
 	Interval	tspan;
@@ -3017,7 +3017,7 @@ timestamp_mi_interval(PG_FUNCTION_ARGS)
  */
 Datum
 timestamptz_pl_interval(PG_FUNCTION_ARGS)
-{	StackTrace("timestamptz_pl_interval");
+{
 	TimestampTz timestamp = PG_GETARG_TIMESTAMPTZ(0);
 	Interval   *span = PG_GETARG_INTERVAL_P(1);
 	TimestampTz result;
@@ -3095,7 +3095,7 @@ timestamptz_pl_interval(PG_FUNCTION_ARGS)
 
 Datum
 timestamptz_mi_interval(PG_FUNCTION_ARGS)
-{	StackTrace("timestamptz_mi_interval");
+{
 	TimestampTz timestamp = PG_GETARG_TIMESTAMPTZ(0);
 	Interval   *span = PG_GETARG_INTERVAL_P(1);
 	Interval	tspan;
@@ -3112,7 +3112,7 @@ timestamptz_mi_interval(PG_FUNCTION_ARGS)
 
 Datum
 interval_um(PG_FUNCTION_ARGS)
-{	StackTrace("interval_um");
+{
 	Interval   *interval = PG_GETARG_INTERVAL_P(0);
 	Interval   *result;
 
@@ -3141,7 +3141,7 @@ interval_um(PG_FUNCTION_ARGS)
 
 Datum
 interval_smaller(PG_FUNCTION_ARGS)
-{	StackTrace("interval_smaller");
+{
 	Interval   *interval1 = PG_GETARG_INTERVAL_P(0);
 	Interval   *interval2 = PG_GETARG_INTERVAL_P(1);
 	Interval   *result;
@@ -3156,7 +3156,7 @@ interval_smaller(PG_FUNCTION_ARGS)
 
 Datum
 interval_larger(PG_FUNCTION_ARGS)
-{	StackTrace("interval_larger");
+{
 	Interval   *interval1 = PG_GETARG_INTERVAL_P(0);
 	Interval   *interval2 = PG_GETARG_INTERVAL_P(1);
 	Interval   *result;
@@ -3170,7 +3170,7 @@ interval_larger(PG_FUNCTION_ARGS)
 
 Datum
 interval_pl(PG_FUNCTION_ARGS)
-{	StackTrace("interval_pl");
+{
 	Interval   *span1 = PG_GETARG_INTERVAL_P(0);
 	Interval   *span2 = PG_GETARG_INTERVAL_P(1);
 	Interval   *result;
@@ -3204,7 +3204,7 @@ interval_pl(PG_FUNCTION_ARGS)
 
 Datum
 interval_mi(PG_FUNCTION_ARGS)
-{	StackTrace("interval_mi");
+{
 	Interval   *span1 = PG_GETARG_INTERVAL_P(0);
 	Interval   *span2 = PG_GETARG_INTERVAL_P(1);
 	Interval   *result;
@@ -3244,7 +3244,7 @@ interval_mi(PG_FUNCTION_ARGS)
 
 Datum
 interval_mul(PG_FUNCTION_ARGS)
-{	StackTrace("interval_mul");
+{
 	Interval   *span = PG_GETARG_INTERVAL_P(0);
 	float8		factor = PG_GETARG_FLOAT8(1);
 	double		month_remainder_days,
@@ -3323,7 +3323,7 @@ interval_mul(PG_FUNCTION_ARGS)
 
 Datum
 mul_d_interval(PG_FUNCTION_ARGS)
-{	StackTrace("mul_d_interval");
+{
 	/* Args are float8 and Interval *, but leave them as generic Datum */
 	Datum		factor = PG_GETARG_DATUM(0);
 	Datum		span = PG_GETARG_DATUM(1);
@@ -3333,7 +3333,7 @@ mul_d_interval(PG_FUNCTION_ARGS)
 
 Datum
 interval_div(PG_FUNCTION_ARGS)
-{	StackTrace("interval_div");
+{
 	Interval   *span = PG_GETARG_INTERVAL_P(0);
 	float8		factor = PG_GETARG_FLOAT8(1);
 	double		month_remainder_days,
@@ -3395,7 +3395,7 @@ interval_div(PG_FUNCTION_ARGS)
 
 Datum
 interval_accum(PG_FUNCTION_ARGS)
-{	StackTrace("interval_accum");
+{
 	ArrayType  *transarray = PG_GETARG_ARRAYTYPE_P(0);
 	Interval   *newval = PG_GETARG_INTERVAL_P(1);
 	Datum	   *transdatums;
@@ -3430,7 +3430,7 @@ interval_accum(PG_FUNCTION_ARGS)
 
 Datum
 interval_accum_inv(PG_FUNCTION_ARGS)
-{	StackTrace("interval_accum_inv");
+{
 	ArrayType  *transarray = PG_GETARG_ARRAYTYPE_P(0);
 	Interval   *newval = PG_GETARG_INTERVAL_P(1);
 	Datum	   *transdatums;
@@ -3465,7 +3465,7 @@ interval_accum_inv(PG_FUNCTION_ARGS)
 
 Datum
 interval_avg(PG_FUNCTION_ARGS)
-{	StackTrace("interval_avg");
+{
 	ArrayType  *transarray = PG_GETARG_ARRAYTYPE_P(0);
 	Datum	   *transdatums;
 	int			ndatums;
@@ -3499,7 +3499,7 @@ interval_avg(PG_FUNCTION_ARGS)
  */
 Datum
 timestamp_age(PG_FUNCTION_ARGS)
-{	StackTrace("timestamp_age");
+{
 	Timestamp	dt1 = PG_GETARG_TIMESTAMP(0);
 	Timestamp	dt2 = PG_GETARG_TIMESTAMP(1);
 	Interval   *result;
@@ -3622,7 +3622,7 @@ timestamp_age(PG_FUNCTION_ARGS)
  */
 Datum
 timestamptz_age(PG_FUNCTION_ARGS)
-{	StackTrace("timestamptz_age");
+{
 	TimestampTz dt1 = PG_GETARG_TIMESTAMPTZ(0);
 	TimestampTz dt2 = PG_GETARG_TIMESTAMPTZ(1);
 	Interval   *result;
@@ -3753,7 +3753,7 @@ timestamptz_age(PG_FUNCTION_ARGS)
  */
 Datum
 timestamp_trunc(PG_FUNCTION_ARGS)
-{	StackTrace("timestamp_trunc");
+{
 	text	   *units = PG_GETARG_TEXT_PP(0);
 	Timestamp	timestamp = PG_GETARG_TIMESTAMP(1);
 	Timestamp	result;
@@ -3885,7 +3885,7 @@ timestamp_trunc(PG_FUNCTION_ARGS)
  */
 Datum
 timestamptz_trunc(PG_FUNCTION_ARGS)
-{	StackTrace("timestamptz_trunc");
+{
 	text	   *units = PG_GETARG_TEXT_PP(0);
 	TimestampTz timestamp = PG_GETARG_TIMESTAMPTZ(1);
 	TimestampTz result;
@@ -4042,7 +4042,7 @@ timestamptz_trunc(PG_FUNCTION_ARGS)
  */
 Datum
 interval_trunc(PG_FUNCTION_ARGS)
-{	StackTrace("interval_trunc");
+{
 	text	   *units = PG_GETARG_TEXT_PP(0);
 	Interval   *interval = PG_GETARG_INTERVAL_P(1);
 	Interval   *result;
@@ -4146,7 +4146,7 @@ interval_trunc(PG_FUNCTION_ARGS)
  */
 int
 isoweek2j(int year, int week)
-{	StackTrace("isoweek2j");
+{
 	int			day0,
 				day4;
 
@@ -4166,7 +4166,7 @@ isoweek2j(int year, int week)
  */
 void
 isoweek2date(int woy, int *year, int *mon, int *mday)
-{	StackTrace("isoweek2date");
+{
 	j2date(isoweek2j(*year, woy), year, mon, mday);
 }
 
@@ -4179,7 +4179,7 @@ isoweek2date(int woy, int *year, int *mon, int *mday)
  */
 void
 isoweekdate2date(int isoweek, int wday, int *year, int *mon, int *mday)
-{	StackTrace("isoweekdate2date");
+{
 	int			jday;
 
 	jday = isoweek2j(*year, isoweek);
@@ -4197,7 +4197,7 @@ isoweekdate2date(int isoweek, int wday, int *year, int *mon, int *mday)
  */
 int
 date2isoweek(int year, int mon, int mday)
-{	StackTrace("date2isoweek");
+{
 	float8		result;
 	int			day0,
 				day4,
@@ -4251,7 +4251,7 @@ date2isoweek(int year, int mon, int mday)
  */
 int
 date2isoyear(int year, int mon, int mday)
-{	StackTrace("date2isoyear");
+{
 	float8		result;
 	int			day0,
 				day4,
@@ -4308,7 +4308,7 @@ date2isoyear(int year, int mon, int mday)
  */
 int
 date2isoyearday(int year, int mon, int mday)
-{	StackTrace("date2isoyearday");
+{
 	return date2j(year, mon, mday) - isoweek2j(date2isoyear(year, mon, mday), 1) + 1;
 }
 
@@ -4317,7 +4317,7 @@ date2isoyearday(int year, int mon, int mday)
  */
 Datum
 timestamp_part(PG_FUNCTION_ARGS)
-{	StackTrace("timestamp_part");
+{
 	text	   *units = PG_GETARG_TEXT_PP(0);
 	Timestamp	timestamp = PG_GETARG_TIMESTAMP(1);
 	float8		result;
@@ -4526,7 +4526,7 @@ timestamp_part(PG_FUNCTION_ARGS)
  */
 Datum
 timestamptz_part(PG_FUNCTION_ARGS)
-{	StackTrace("timestamptz_part");
+{
 	text	   *units = PG_GETARG_TEXT_PP(0);
 	TimestampTz timestamp = PG_GETARG_TIMESTAMPTZ(1);
 	float8		result;
@@ -4740,7 +4740,7 @@ timestamptz_part(PG_FUNCTION_ARGS)
  */
 Datum
 interval_part(PG_FUNCTION_ARGS)
-{	StackTrace("interval_part");
+{
 	text	   *units = PG_GETARG_TEXT_PP(0);
 	Interval   *interval = PG_GETARG_INTERVAL_P(1);
 	float8		result;
@@ -4876,7 +4876,7 @@ interval_part(PG_FUNCTION_ARGS)
  */
 Datum
 timestamp_zone_transform(PG_FUNCTION_ARGS)
-{	StackTrace("timestamp_zone_transform");
+{
 	Node	   *func_node = (Node *) PG_GETARG_POINTER(0);
 	FuncExpr   *expr = (FuncExpr *) func_node;
 	Node	   *ret = NULL;
@@ -4958,7 +4958,7 @@ timestamp_zone_transform(PG_FUNCTION_ARGS)
  */
 Datum
 timestamp_zone(PG_FUNCTION_ARGS)
-{	StackTrace("timestamp_zone");
+{
 	text	   *zone = PG_GETARG_TEXT_PP(0);
 	Timestamp	timestamp = PG_GETARG_TIMESTAMP(1);
 	TimestampTz result;
@@ -5044,7 +5044,7 @@ timestamp_zone(PG_FUNCTION_ARGS)
  */
 Datum
 timestamp_izone_transform(PG_FUNCTION_ARGS)
-{	StackTrace("timestamp_izone_transform");
+{
 	Node	   *func_node = (Node *) PG_GETARG_POINTER(0);
 	FuncExpr   *expr = (FuncExpr *) func_node;
 	Node	   *ret = NULL;
@@ -5088,7 +5088,7 @@ timestamp_izone_transform(PG_FUNCTION_ARGS)
  */
 Datum
 timestamp_izone(PG_FUNCTION_ARGS)
-{	StackTrace("timestamp_izone");
+{
 	Interval   *zone = PG_GETARG_INTERVAL_P(0);
 	Timestamp	timestamp = PG_GETARG_TIMESTAMP(1);
 	TimestampTz result;
@@ -5120,7 +5120,7 @@ timestamp_izone(PG_FUNCTION_ARGS)
  */
 Datum
 timestamp_timestamptz(PG_FUNCTION_ARGS)
-{	StackTrace("timestamp_timestamptz");
+{
 	Timestamp	timestamp = PG_GETARG_TIMESTAMP(0);
 
 	PG_RETURN_TIMESTAMPTZ(timestamp2timestamptz(timestamp));
@@ -5128,7 +5128,7 @@ timestamp_timestamptz(PG_FUNCTION_ARGS)
 
 static TimestampTz
 timestamp2timestamptz(Timestamp timestamp)
-{	StackTrace("timestamp2timestamptz");
+{
 	TimestampTz result;
 	struct pg_tm tt,
 			   *tm = &tt;
@@ -5160,7 +5160,7 @@ timestamp2timestamptz(Timestamp timestamp)
  */
 Datum
 timestamptz_timestamp(PG_FUNCTION_ARGS)
-{	StackTrace("timestamptz_timestamp");
+{
 	TimestampTz timestamp = PG_GETARG_TIMESTAMPTZ(0);
 	Timestamp	result;
 	struct pg_tm tt,
@@ -5190,7 +5190,7 @@ timestamptz_timestamp(PG_FUNCTION_ARGS)
  */
 Datum
 timestamptz_zone(PG_FUNCTION_ARGS)
-{	StackTrace("timestamptz_zone");
+{
 	text	   *zone = PG_GETARG_TEXT_PP(0);
 	TimestampTz timestamp = PG_GETARG_TIMESTAMPTZ(1);
 	Timestamp	result;
@@ -5273,7 +5273,7 @@ timestamptz_zone(PG_FUNCTION_ARGS)
  */
 Datum
 timestamptz_izone(PG_FUNCTION_ARGS)
-{	StackTrace("timestamptz_izone");
+{
 	Interval   *zone = PG_GETARG_INTERVAL_P(0);
 	TimestampTz timestamp = PG_GETARG_TIMESTAMPTZ(1);
 	Timestamp	result;
@@ -5305,7 +5305,7 @@ timestamptz_izone(PG_FUNCTION_ARGS)
  */
 Datum
 generate_series_timestamp(PG_FUNCTION_ARGS)
-{	StackTrace("generate_series_timestamp");
+{
 	FuncCallContext *funcctx;
 	generate_series_timestamp_fctx *fctx;
 	Timestamp	result;
@@ -5386,7 +5386,7 @@ generate_series_timestamp(PG_FUNCTION_ARGS)
  */
 Datum
 generate_series_timestamptz(PG_FUNCTION_ARGS)
-{	StackTrace("generate_series_timestamptz");
+{
 	FuncCallContext *funcctx;
 	generate_series_timestamptz_fctx *fctx;
 	TimestampTz result;

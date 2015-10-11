@@ -100,7 +100,7 @@ static MemoryContext PortalMemory = NULL;
  */
 void
 EnablePortalManager(void)
-{	StackTrace("EnablePortalManager");
+{
 	HASHCTL		ctl;
 
 	Assert(PortalMemory == NULL);
@@ -128,7 +128,7 @@ EnablePortalManager(void)
  */
 Portal
 GetPortalByName(const char *name)
-{	StackTrace("GetPortalByName");
+{
 	Portal		portal;
 
 	if (PointerIsValid(name))
@@ -156,7 +156,7 @@ GetPortalByName(const char *name)
  */
 Node *
 PortalListGetPrimaryStmt(List *stmts)
-{	StackTrace("PortalListGetPrimaryStmt");
+{
 	ListCell   *lc;
 
 	foreach(lc, stmts)
@@ -194,7 +194,7 @@ PortalListGetPrimaryStmt(List *stmts)
  */
 Portal
 CreatePortal(const char *name, bool allowDup, bool dupSilent)
-{	StackTrace("CreatePortal");
+{
 	Portal		portal;
 
 	AssertArg(PointerIsValid(name));
@@ -251,7 +251,7 @@ CreatePortal(const char *name, bool allowDup, bool dupSilent)
  */
 Portal
 CreateNewPortal(void)
-{	StackTrace("CreateNewPortal");
+{
 	static unsigned int unnamed_portal_count = 0;
 
 	char		portalname[MAX_PORTALNAME_LEN];
@@ -303,7 +303,7 @@ PortalDefineQuery(Portal portal,
 				  const char *commandTag,
 				  List *stmts,
 				  CachedPlan *cplan)
-{	StackTrace("PortalDefineQuery");
+{
 	AssertArg(PortalIsValid(portal));
 	AssertState(portal->status == PORTAL_NEW);
 
@@ -324,7 +324,7 @@ PortalDefineQuery(Portal portal,
  */
 static void
 PortalReleaseCachedPlan(Portal portal)
-{	StackTrace("PortalReleaseCachedPlan");
+{
 	if (portal->cplan)
 	{
 		ReleaseCachedPlan(portal->cplan, false);
@@ -345,7 +345,7 @@ PortalReleaseCachedPlan(Portal portal)
  */
 void
 PortalCreateHoldStore(Portal portal)
-{	StackTrace("PortalCreateHoldStore");
+{
 	MemoryContext oldcxt;
 
 	Assert(portal->holdContext == NULL);
@@ -386,7 +386,7 @@ PortalCreateHoldStore(Portal portal)
  */
 void
 PinPortal(Portal portal)
-{	StackTrace("PinPortal");
+{
 	if (portal->portalPinned)
 		elog(ERROR, "portal already pinned");
 
@@ -395,7 +395,7 @@ PinPortal(Portal portal)
 
 void
 UnpinPortal(Portal portal)
-{	StackTrace("UnpinPortal");
+{
 	if (!portal->portalPinned)
 		elog(ERROR, "portal not pinned");
 
@@ -410,7 +410,7 @@ UnpinPortal(Portal portal)
  */
 void
 MarkPortalDone(Portal portal)
-{	StackTrace("MarkPortalDone");
+{
 	/* Perform the state transition */
 	Assert(portal->status == PORTAL_ACTIVE);
 	portal->status = PORTAL_DONE;
@@ -438,7 +438,7 @@ MarkPortalDone(Portal portal)
  */
 void
 MarkPortalFailed(Portal portal)
-{	StackTrace("MarkPortalFailed");
+{
 	/* Perform the state transition */
 	Assert(portal->status != PORTAL_DONE);
 	portal->status = PORTAL_FAILED;
@@ -464,7 +464,7 @@ MarkPortalFailed(Portal portal)
  */
 void
 PortalDrop(Portal portal, bool isTopCommit)
-{	StackTrace("PortalDrop");
+{
 	AssertArg(PortalIsValid(portal));
 
 	/*
@@ -580,7 +580,7 @@ PortalDrop(Portal portal, bool isTopCommit)
  */
 void
 PortalHashTableDeleteAll(void)
-{	StackTrace("PortalHashTableDeleteAll");
+{
 	HASH_SEQ_STATUS status;
 	PortalHashEnt *hentry;
 
@@ -619,7 +619,7 @@ PortalHashTableDeleteAll(void)
  */
 bool
 PreCommit_Portals(bool isPrepare)
-{	StackTrace("PreCommit_Portals");
+{
 	bool		result = false;
 	HASH_SEQ_STATUS status;
 	PortalHashEnt *hentry;
@@ -734,7 +734,7 @@ PreCommit_Portals(bool isPrepare)
  */
 void
 AtAbort_Portals(void)
-{	StackTrace("AtAbort_Portals");
+{
 	HASH_SEQ_STATUS status;
 	PortalHashEnt *hentry;
 
@@ -799,7 +799,7 @@ AtAbort_Portals(void)
  * Delete all portals not held over from prior transactions.  */
 void
 AtCleanup_Portals(void)
-{	StackTrace("AtCleanup_Portals");
+{
 	HASH_SEQ_STATUS status;
 	PortalHashEnt *hentry;
 
@@ -843,7 +843,7 @@ void
 AtSubCommit_Portals(SubTransactionId mySubid,
 					SubTransactionId parentSubid,
 					ResourceOwner parentXactOwner)
-{	StackTrace("AtSubCommit_Portals");
+{
 	HASH_SEQ_STATUS status;
 	PortalHashEnt *hentry;
 
@@ -875,7 +875,7 @@ void
 AtSubAbort_Portals(SubTransactionId mySubid,
 				   SubTransactionId parentSubid,
 				   ResourceOwner parentXactOwner)
-{	StackTrace("AtSubAbort_Portals");
+{
 	HASH_SEQ_STATUS status;
 	PortalHashEnt *hentry;
 
@@ -938,7 +938,7 @@ AtSubAbort_Portals(SubTransactionId mySubid,
  */
 void
 AtSubCleanup_Portals(SubTransactionId mySubid)
-{	StackTrace("AtSubCleanup_Portals");
+{
 	HASH_SEQ_STATUS status;
 	PortalHashEnt *hentry;
 
@@ -970,7 +970,7 @@ AtSubCleanup_Portals(SubTransactionId mySubid)
 /* Find all available cursors */
 Datum
 pg_cursor(PG_FUNCTION_ARGS)
-{	StackTrace("pg_cursor");
+{
 	ReturnSetInfo *rsinfo = (ReturnSetInfo *) fcinfo->resultinfo;
 	TupleDesc	tupdesc;
 	Tuplestorestate *tupstore;
@@ -1058,7 +1058,7 @@ pg_cursor(PG_FUNCTION_ARGS)
 
 bool
 ThereAreNoReadyPortals(void)
-{	StackTrace("ThereAreNoReadyPortals");
+{
 	HASH_SEQ_STATUS status;
 	PortalHashEnt *hentry;
 

@@ -51,7 +51,7 @@ typedef struct
  */
 static void
 InvalidateTableSpaceCacheCallback(Datum arg, int cacheid, uint32 hashvalue)
-{	StackTrace("InvalidateTableSpaceCacheCallback");
+{
 	HASH_SEQ_STATUS status;
 	TableSpaceCacheEntry *spc;
 
@@ -74,7 +74,7 @@ InvalidateTableSpaceCacheCallback(Datum arg, int cacheid, uint32 hashvalue)
  */
 static void
 InitializeTableSpaceCache(void)
-{	StackTrace("InitializeTableSpaceCache");
+{
 	HASHCTL		ctl;
 
 	/* Initialize the hash table. */
@@ -104,7 +104,7 @@ InitializeTableSpaceCache(void)
  */
 static TableSpaceCacheEntry *
 get_tablespace(Oid spcid)
-{	StackTrace("get_tablespace");
+{
 	TableSpaceCacheEntry *spc;
 	HeapTuple	tp;
 	TableSpaceOpts *opts;
@@ -177,7 +177,7 @@ void
 get_tablespace_page_costs(Oid spcid,
 						  double *spc_random_page_cost,
 						  double *spc_seq_page_cost)
-{	StackTrace("get_tablespace_page_costs");
+{
 	TableSpaceCacheEntry *spc = get_tablespace(spcid);
 
 	Assert(spc != NULL);

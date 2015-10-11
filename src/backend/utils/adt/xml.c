@@ -183,7 +183,7 @@ static void SPI_sql_row_to_xmlelement(int rownum, StringInfo result,
 
 static int
 xmlChar_to_encoding(const xmlChar *encoding_name)
-{	StackTrace("xmlChar_to_encoding");
+{
 	int			encoding = pg_char_to_encoding((const char *) encoding_name);
 
 	if (encoding < 0)
@@ -205,7 +205,7 @@ xmlChar_to_encoding(const xmlChar *encoding_name)
  */
 Datum
 xml_in(PG_FUNCTION_ARGS)
-{	StackTrace("xml_in");
+{
 #ifdef USE_LIBXML
 	char	   *s = PG_GETARG_CSTRING(0);
 	xmltype    *vardata;
@@ -240,7 +240,7 @@ xml_in(PG_FUNCTION_ARGS)
  */
 static char *
 xml_out_internal(xmltype *x, pg_enc target_encoding)
-{	StackTrace("xml_out_internal");
+{
 	char	   *str = text_to_cstring((text *) x);
 
 #ifdef USE_LIBXML
@@ -283,7 +283,7 @@ xml_out_internal(xmltype *x, pg_enc target_encoding)
 
 Datum
 xml_out(PG_FUNCTION_ARGS)
-{	StackTrace("xml_out");
+{
 	xmltype    *x = PG_GETARG_XML_P(0);
 
 	/*
@@ -298,7 +298,7 @@ xml_out(PG_FUNCTION_ARGS)
 
 Datum
 xml_recv(PG_FUNCTION_ARGS)
-{	StackTrace("xml_recv");
+{
 #ifdef USE_LIBXML
 	StringInfo	buf = (StringInfo) PG_GETARG_POINTER(0);
 	xmltype    *result;
@@ -365,7 +365,7 @@ xml_recv(PG_FUNCTION_ARGS)
 
 Datum
 xml_send(PG_FUNCTION_ARGS)
-{	StackTrace("xml_send");
+{
 	xmltype    *x = PG_GETARG_XML_P(0);
 	char	   *outval;
 	StringInfoData buf;
@@ -386,7 +386,7 @@ xml_send(PG_FUNCTION_ARGS)
 #ifdef USE_LIBXML
 static void
 appendStringInfoText(StringInfo str, const text *t)
-{	StackTrace("appendStringInfoText");
+{
 	appendBinaryStringInfo(str, VARDATA(t), VARSIZE(t) - VARHDRSZ);
 }
 #endif
@@ -394,14 +394,14 @@ appendStringInfoText(StringInfo str, const text *t)
 
 static xmltype *
 stringinfo_to_xmltype(StringInfo buf)
-{	StackTrace("stringinfo_to_xmltype");
+{
 	return (xmltype *) cstring_to_text_with_len(buf->data, buf->len);
 }
 
 
 static xmltype *
 cstring_to_xmltype(const char *string)
-{	StackTrace("cstring_to_xmltype");
+{
 	return (xmltype *) cstring_to_text(string);
 }
 
@@ -409,7 +409,7 @@ cstring_to_xmltype(const char *string)
 #ifdef USE_LIBXML
 static xmltype *
 xmlBuffer_to_xmltype(xmlBufferPtr buf)
-{	StackTrace("xmlBuffer_to_xmltype");
+{
 	return (xmltype *) cstring_to_text_with_len((const char *) xmlBufferContent(buf),
 												xmlBufferLength(buf));
 }
@@ -418,7 +418,7 @@ xmlBuffer_to_xmltype(xmlBufferPtr buf)
 
 Datum
 xmlcomment(PG_FUNCTION_ARGS)
-{	StackTrace("xmlcomment");
+{
 #ifdef USE_LIBXML
 	text	   *arg = PG_GETARG_TEXT_P(0);
 	char	   *argdata = VARDATA(arg);
@@ -459,7 +459,7 @@ xmlcomment(PG_FUNCTION_ARGS)
  */
 xmltype *
 xmlconcat(List *args)
-{	StackTrace("xmlconcat");
+{
 #ifdef USE_LIBXML
 	int			global_standalone = 1;
 	xmlChar    *global_version = NULL;
@@ -525,7 +525,7 @@ xmlconcat(List *args)
  */
 Datum
 xmlconcat2(PG_FUNCTION_ARGS)
-{	StackTrace("xmlconcat2");
+{
 	if (PG_ARGISNULL(0))
 	{
 		if (PG_ARGISNULL(1))
@@ -543,7 +543,7 @@ xmlconcat2(PG_FUNCTION_ARGS)
 
 Datum
 texttoxml(PG_FUNCTION_ARGS)
-{	StackTrace("texttoxml");
+{
 	text	   *data = PG_GETARG_TEXT_P(0);
 
 	PG_RETURN_XML_P(xmlparse(data, xmloption, true));
@@ -552,7 +552,7 @@ texttoxml(PG_FUNCTION_ARGS)
 
 Datum
 xmltotext(PG_FUNCTION_ARGS)
-{	StackTrace("xmltotext");
+{
 	xmltype    *data = PG_GETARG_XML_P(0);
 
 	/* It's actually binary compatible. */
@@ -562,7 +562,7 @@ xmltotext(PG_FUNCTION_ARGS)
 
 text *
 xmltotext_with_xmloption(xmltype *data, XmlOptionType xmloption_arg)
-{	StackTrace("xmltotext_with_xmloption");
+{
 	if (xmloption_arg == XMLOPTION_DOCUMENT && !xml_is_document(data))
 		ereport(ERROR,
 				(errcode(ERRCODE_NOT_AN_XML_DOCUMENT),
@@ -575,7 +575,7 @@ xmltotext_with_xmloption(xmltype *data, XmlOptionType xmloption_arg)
 
 xmltype *
 xmlelement(XmlExprState *xmlExpr, ExprContext *econtext)
-{	StackTrace("xmlelement");
+{
 #ifdef USE_LIBXML
 	XmlExpr    *xexpr = (XmlExpr *) xmlExpr->xprstate.expr;
 	xmltype    *result;
@@ -699,7 +699,7 @@ xmlelement(XmlExprState *xmlExpr, ExprContext *econtext)
 
 xmltype *
 xmlparse(text *data, XmlOptionType xmloption_arg, bool preserve_whitespace)
-{	StackTrace("xmlparse");
+{
 #ifdef USE_LIBXML
 	xmlDocPtr	doc;
 
@@ -717,7 +717,7 @@ xmlparse(text *data, XmlOptionType xmloption_arg, bool preserve_whitespace)
 
 xmltype *
 xmlpi(char *target, text *arg, bool arg_is_null, bool *result_is_null)
-{	StackTrace("xmlpi");
+{
 #ifdef USE_LIBXML
 	xmltype    *result;
 	StringInfoData buf;
@@ -769,7 +769,7 @@ xmlpi(char *target, text *arg, bool arg_is_null, bool *result_is_null)
 
 xmltype *
 xmlroot(xmltype *data, text *version, int standalone)
-{	StackTrace("xmlroot");
+{
 #ifdef USE_LIBXML
 	char	   *str;
 	size_t		len;
@@ -825,7 +825,7 @@ xmlroot(xmltype *data, text *version, int standalone)
  */
 Datum
 xmlvalidate(PG_FUNCTION_ARGS)
-{	StackTrace("xmlvalidate");
+{
 	ereport(ERROR,
 			(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
 			 errmsg("xmlvalidate is not implemented")));
@@ -835,7 +835,7 @@ xmlvalidate(PG_FUNCTION_ARGS)
 
 bool
 xml_is_document(xmltype *arg)
-{	StackTrace("xml_is_document");
+{
 #ifdef USE_LIBXML
 	bool		result;
 	volatile xmlDocPtr doc = NULL;
@@ -894,7 +894,7 @@ xml_is_document(xmltype *arg)
  */
 void
 pg_xml_init_library(void)
-{	StackTrace("pg_xml_init_library");
+{
 	static bool first_time = true;
 
 	if (first_time)
@@ -940,7 +940,7 @@ pg_xml_init_library(void)
  */
 PgXmlErrorContext *
 pg_xml_init(PgXmlStrictness strictness)
-{	StackTrace("pg_xml_init");
+{
 	PgXmlErrorContext *errcxt;
 	void	   *new_errcxt;
 
@@ -1021,7 +1021,7 @@ pg_xml_init(PgXmlStrictness strictness)
  */
 void
 pg_xml_done(PgXmlErrorContext *errcxt, bool isError)
-{	StackTrace("pg_xml_done");
+{
 	void	   *cur_errcxt;
 
 	/* An assert seems like enough protection here */
@@ -1069,7 +1069,7 @@ pg_xml_done(PgXmlErrorContext *errcxt, bool isError)
  */
 bool
 pg_xml_error_occurred(PgXmlErrorContext *errcxt)
-{	StackTrace("pg_xml_error_occurred");
+{
 	return errcxt->err_occurred;
 }
 
@@ -1104,7 +1104,7 @@ pg_xml_error_occurred(PgXmlErrorContext *errcxt)
 /* pnstrdup, but deal with xmlChar not char; len is measured in xmlChars */
 static xmlChar *
 xml_pnstrdup(const xmlChar *str, size_t len)
-{	StackTrace("xml_pnstrdup");
+{
 	xmlChar    *result;
 
 	result = (xmlChar *) palloc((len + 1) * sizeof(xmlChar));
@@ -1122,7 +1122,7 @@ xml_pnstrdup(const xmlChar *str, size_t len)
 static int
 parse_xml_decl(const xmlChar *str, size_t *lenp,
 			   xmlChar **version, xmlChar **encoding, int *standalone)
-{	StackTrace("parse_xml_decl");
+{
 	const xmlChar *p;
 	const xmlChar *save_p;
 	size_t		len;
@@ -1288,7 +1288,7 @@ finished:
 static bool
 print_xml_decl(StringInfo buf, const xmlChar *version,
 			   pg_enc encoding, int standalone)
-{	StackTrace("print_xml_decl");
+{
 	if ((version && strcmp((const char *) version, PG_XML_DEFAULT_VERSION) != 0)
 		|| (encoding && encoding != PG_UTF8)
 		|| standalone != -1)
@@ -1335,7 +1335,7 @@ print_xml_decl(StringInfo buf, const xmlChar *version,
 static xmlDocPtr
 xml_parse(text *data, XmlOptionType xmloption_arg, bool preserve_whitespace,
 		  int encoding)
-{	StackTrace("xml_parse");
+{
 	int32		len;
 	xmlChar    *string;
 	xmlChar    *utf8string;
@@ -1438,7 +1438,7 @@ xml_parse(text *data, XmlOptionType xmloption_arg, bool preserve_whitespace,
  */
 static xmlChar *
 xml_text2xmlChar(text *in)
-{	StackTrace("xml_text2xmlChar");
+{
 	return (xmlChar *) text_to_cstring(in);
 }
 
@@ -1451,7 +1451,7 @@ xml_text2xmlChar(text *in)
  */
 static void
 xml_memory_init(void)
-{	StackTrace("xml_memory_init");
+{
 	/* Create memory context if not there already */
 	if (LibxmlContext == NULL)
 		LibxmlContext = AllocSetContextCreate(TopMemoryContext,
@@ -1469,21 +1469,21 @@ xml_memory_init(void)
  */
 static void *
 xml_palloc(size_t size)
-{	StackTrace("xml_palloc");
+{
 	return MemoryContextAlloc(LibxmlContext, size);
 }
 
 
 static void *
 xml_repalloc(void *ptr, size_t size)
-{	StackTrace("xml_repalloc");
+{
 	return repalloc(ptr, size);
 }
 
 
 static void
 xml_pfree(void *ptr)
-{	StackTrace("xml_pfree");
+{
 	/* At least some parts of libxml assume xmlFree(NULL) is allowed */
 	if (ptr)
 		pfree(ptr);
@@ -1492,7 +1492,7 @@ xml_pfree(void *ptr)
 
 static char *
 xml_pstrdup(const char *string)
-{	StackTrace("xml_pstrdup");
+{
 	return MemoryContextStrdup(LibxmlContext, string);
 }
 #endif   /* USE_LIBXMLCONTEXT */
@@ -1512,7 +1512,7 @@ xml_pstrdup(const char *string)
 static xmlParserInputPtr
 xmlPgEntityLoader(const char *URL, const char *ID,
 				  xmlParserCtxtPtr ctxt)
-{	StackTrace("xmlPgEntityLoader");
+{
 	return xmlNewStringInputStream(ctxt, (const xmlChar *) "");
 }
 
@@ -1529,7 +1529,7 @@ xmlPgEntityLoader(const char *URL, const char *ID,
  */
 void
 xml_ereport(PgXmlErrorContext *errcxt, int level, int sqlcode, const char *msg)
-{	StackTrace("xml_ereport");
+{
 	char	   *detail;
 
 	/* Defend against someone passing us a bogus context struct */
@@ -1557,7 +1557,7 @@ xml_ereport(PgXmlErrorContext *errcxt, int level, int sqlcode, const char *msg)
  */
 static void
 xml_errorHandler(void *data, xmlErrorPtr error)
-{	StackTrace("xml_errorHandler");
+{
 	PgXmlErrorContext *xmlerrcxt = (PgXmlErrorContext *) data;
 	xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) error->ctxt;
 	xmlParserInputPtr input = (ctxt != NULL) ? ctxt->input : NULL;
@@ -1728,7 +1728,7 @@ xml_errorHandler(void *data, xmlErrorPtr error)
 static void
 xml_ereport_by_code(int level, int sqlcode,
 					const char *msg, int code)
-{	StackTrace("xml_ereport_by_code");
+{
 	const char *det;
 
 	switch (code)
@@ -1768,7 +1768,7 @@ xml_ereport_by_code(int level, int sqlcode,
  */
 static void
 chopStringInfoNewlines(StringInfo str)
-{	StackTrace("chopStringInfoNewlines");
+{
 	while (str->len > 0 && str->data[str->len - 1] == '\n')
 		str->data[--str->len] = '\0';
 }
@@ -1779,7 +1779,7 @@ chopStringInfoNewlines(StringInfo str)
  */
 static void
 appendStringInfoLineSeparator(StringInfo str)
-{	StackTrace("appendStringInfoLineSeparator");
+{
 	chopStringInfoNewlines(str);
 	if (str->len > 0)
 		appendStringInfoChar(str, '\n');
@@ -1791,7 +1791,7 @@ appendStringInfoLineSeparator(StringInfo str)
  */
 static pg_wchar
 sqlchar_to_unicode(char *s)
-{	StackTrace("sqlchar_to_unicode");
+{
 	char	   *utf8string;
 	pg_wchar	ret[2];			/* need space for trailing zero */
 
@@ -1810,7 +1810,7 @@ sqlchar_to_unicode(char *s)
 
 static bool
 is_valid_xml_namefirst(pg_wchar c)
-{	StackTrace("is_valid_xml_namefirst");
+{
 	/* (Letter | '_' | ':') */
 	return (xmlIsBaseCharQ(c) || xmlIsIdeographicQ(c)
 			|| c == '_' || c == ':');
@@ -1819,7 +1819,7 @@ is_valid_xml_namefirst(pg_wchar c)
 
 static bool
 is_valid_xml_namechar(pg_wchar c)
-{	StackTrace("is_valid_xml_namechar");
+{
 	/* Letter | Digit | '.' | '-' | '_' | ':' | CombiningChar | Extender */
 	return (xmlIsBaseCharQ(c) || xmlIsIdeographicQ(c)
 			|| xmlIsDigitQ(c)
@@ -1836,7 +1836,7 @@ is_valid_xml_namechar(pg_wchar c)
 char *
 map_sql_identifier_to_xml_name(char *ident, bool fully_escaped,
 							   bool escape_period)
-{	StackTrace("map_sql_identifier_to_xml_name");
+{
 #ifdef USE_LIBXML
 	StringInfoData buf;
 	char	   *p;
@@ -1891,7 +1891,7 @@ map_sql_identifier_to_xml_name(char *ident, bool fully_escaped,
  */
 static char *
 unicode_to_sqlchar(pg_wchar c)
-{	StackTrace("unicode_to_sqlchar");
+{
 	char		utf8string[8];	/* need room for trailing zero */
 	char	   *result;
 
@@ -1911,7 +1911,7 @@ unicode_to_sqlchar(pg_wchar c)
  */
 char *
 map_xml_name_to_sql_identifier(char *name)
-{	StackTrace("map_xml_name_to_sql_identifier");
+{
 	StringInfoData buf;
 	char	   *p;
 
@@ -1951,7 +1951,7 @@ map_xml_name_to_sql_identifier(char *name)
  */
 char *
 map_sql_value_to_xml_value(Datum value, Oid type, bool xml_escape_strings)
-{	StackTrace("map_sql_value_to_xml_value");
+{
 	if (type_is_array_domain(type))
 	{
 		ArrayType  *array;
@@ -2170,7 +2170,7 @@ map_sql_value_to_xml_value(Datum value, Oid type, bool xml_escape_strings)
  */
 char *
 escape_xml(const char *str)
-{	StackTrace("escape_xml");
+{
 	StringInfoData buf;
 	const char *p;
 
@@ -2202,7 +2202,7 @@ escape_xml(const char *str)
 
 static char *
 _SPI_strdup(const char *s)
-{	StackTrace("_SPI_strdup");
+{
 	size_t		len = strlen(s) + 1;
 	char	   *ret = SPI_palloc(len);
 
@@ -2259,7 +2259,7 @@ _SPI_strdup(const char *s)
  */
 static List *
 query_to_oid_list(const char *query)
-{	StackTrace("query_to_oid_list");
+{
 	int			i;
 	List	   *list = NIL;
 
@@ -2284,7 +2284,7 @@ query_to_oid_list(const char *query)
 
 static List *
 schema_get_xml_visible_tables(Oid nspid)
-{	StackTrace("schema_get_xml_visible_tables");
+{
 	StringInfoData query;
 
 	initStringInfo(&query);
@@ -2305,14 +2305,14 @@ schema_get_xml_visible_tables(Oid nspid)
 
 static List *
 database_get_xml_visible_schemas(void)
-{	StackTrace("database_get_xml_visible_schemas");
+{
 	return query_to_oid_list(XML_VISIBLE_SCHEMAS " ORDER BY nspname;");
 }
 
 
 static List *
 database_get_xml_visible_tables(void)
-{	StackTrace("database_get_xml_visible_tables");
+{
 	/* At the moment there is no order required here. */
 	return query_to_oid_list("SELECT oid FROM pg_catalog.pg_class WHERE relkind IN ('r', 'm', 'v') AND pg_catalog.has_table_privilege (pg_class.oid, 'SELECT') AND relnamespace IN (" XML_VISIBLE_SCHEMAS ");");
 }
@@ -2327,7 +2327,7 @@ static StringInfo
 table_to_xml_internal(Oid relid,
 					  const char *xmlschema, bool nulls, bool tableforest,
 					  const char *targetns, bool top_level)
-{	StackTrace("table_to_xml_internal");
+{
 	StringInfoData query;
 
 	initStringInfo(&query);
@@ -2342,7 +2342,7 @@ table_to_xml_internal(Oid relid,
 
 Datum
 table_to_xml(PG_FUNCTION_ARGS)
-{	StackTrace("table_to_xml");
+{
 	Oid			relid = PG_GETARG_OID(0);
 	bool		nulls = PG_GETARG_BOOL(1);
 	bool		tableforest = PG_GETARG_BOOL(2);
@@ -2356,7 +2356,7 @@ table_to_xml(PG_FUNCTION_ARGS)
 
 Datum
 query_to_xml(PG_FUNCTION_ARGS)
-{	StackTrace("query_to_xml");
+{
 	char	   *query = text_to_cstring(PG_GETARG_TEXT_PP(0));
 	bool		nulls = PG_GETARG_BOOL(1);
 	bool		tableforest = PG_GETARG_BOOL(2);
@@ -2370,7 +2370,7 @@ query_to_xml(PG_FUNCTION_ARGS)
 
 Datum
 cursor_to_xml(PG_FUNCTION_ARGS)
-{	StackTrace("cursor_to_xml");
+{
 	char	   *name = text_to_cstring(PG_GETARG_TEXT_PP(0));
 	int32		count = PG_GETARG_INT32(1);
 	bool		nulls = PG_GETARG_BOOL(2);
@@ -2417,7 +2417,7 @@ static void
 xmldata_root_element_start(StringInfo result, const char *eltname,
 						   const char *xmlschema, const char *targetns,
 						   bool top_level)
-{	StackTrace("xmldata_root_element_start");
+{
 	/* This isn't really wrong but currently makes no sense. */
 	Assert(top_level || !xmlschema);
 
@@ -2442,7 +2442,7 @@ xmldata_root_element_start(StringInfo result, const char *eltname,
 
 static void
 xmldata_root_element_end(StringInfo result, const char *eltname)
-{	StackTrace("xmldata_root_element_end");
+{
 	appendStringInfo(result, "</%s>\n", eltname);
 }
 
@@ -2451,7 +2451,7 @@ static StringInfo
 query_to_xml_internal(const char *query, char *tablename,
 					  const char *xmlschema, bool nulls, bool tableforest,
 					  const char *targetns, bool top_level)
-{	StackTrace("query_to_xml_internal");
+{
 	StringInfo	result;
 	char	   *xmltn;
 	int			i;
@@ -2494,7 +2494,7 @@ query_to_xml_internal(const char *query, char *tablename,
 
 Datum
 table_to_xmlschema(PG_FUNCTION_ARGS)
-{	StackTrace("table_to_xmlschema");
+{
 	Oid			relid = PG_GETARG_OID(0);
 	bool		nulls = PG_GETARG_BOOL(1);
 	bool		tableforest = PG_GETARG_BOOL(2);
@@ -2513,7 +2513,7 @@ table_to_xmlschema(PG_FUNCTION_ARGS)
 
 Datum
 query_to_xmlschema(PG_FUNCTION_ARGS)
-{	StackTrace("query_to_xmlschema");
+{
 	char	   *query = text_to_cstring(PG_GETARG_TEXT_PP(0));
 	bool		nulls = PG_GETARG_BOOL(1);
 	bool		tableforest = PG_GETARG_BOOL(2);
@@ -2542,7 +2542,7 @@ query_to_xmlschema(PG_FUNCTION_ARGS)
 
 Datum
 cursor_to_xmlschema(PG_FUNCTION_ARGS)
-{	StackTrace("cursor_to_xmlschema");
+{
 	char	   *name = text_to_cstring(PG_GETARG_TEXT_PP(0));
 	bool		nulls = PG_GETARG_BOOL(1);
 	bool		tableforest = PG_GETARG_BOOL(2);
@@ -2568,7 +2568,7 @@ cursor_to_xmlschema(PG_FUNCTION_ARGS)
 
 Datum
 table_to_xml_and_xmlschema(PG_FUNCTION_ARGS)
-{	StackTrace("table_to_xml_and_xmlschema");
+{
 	Oid			relid = PG_GETARG_OID(0);
 	bool		nulls = PG_GETARG_BOOL(1);
 	bool		tableforest = PG_GETARG_BOOL(2);
@@ -2589,7 +2589,7 @@ table_to_xml_and_xmlschema(PG_FUNCTION_ARGS)
 
 Datum
 query_to_xml_and_xmlschema(PG_FUNCTION_ARGS)
-{	StackTrace("query_to_xml_and_xmlschema");
+{
 	char	   *query = text_to_cstring(PG_GETARG_TEXT_PP(0));
 	bool		nulls = PG_GETARG_BOOL(1);
 	bool		tableforest = PG_GETARG_BOOL(2);
@@ -2626,7 +2626,7 @@ query_to_xml_and_xmlschema(PG_FUNCTION_ARGS)
 static StringInfo
 schema_to_xml_internal(Oid nspid, const char *xmlschema, bool nulls,
 					   bool tableforest, const char *targetns, bool top_level)
-{	StackTrace("schema_to_xml_internal");
+{
 	StringInfo	result;
 	char	   *xmlsn;
 	List	   *relid_list;
@@ -2671,7 +2671,7 @@ schema_to_xml_internal(Oid nspid, const char *xmlschema, bool nulls,
 
 Datum
 schema_to_xml(PG_FUNCTION_ARGS)
-{	StackTrace("schema_to_xml");
+{
 	Name		name = PG_GETARG_NAME(0);
 	bool		nulls = PG_GETARG_BOOL(1);
 	bool		tableforest = PG_GETARG_BOOL(2);
@@ -2693,7 +2693,7 @@ schema_to_xml(PG_FUNCTION_ARGS)
  */
 static void
 xsd_schema_element_start(StringInfo result, const char *targetns)
-{	StackTrace("xsd_schema_element_start");
+{
 	appendStringInfoString(result,
 						   "<xsd:schema\n"
 						   "    xmlns:xsd=\"" NAMESPACE_XSD "\"");
@@ -2710,7 +2710,7 @@ xsd_schema_element_start(StringInfo result, const char *targetns)
 
 static void
 xsd_schema_element_end(StringInfo result)
-{	StackTrace("xsd_schema_element_end");
+{
 	appendStringInfoString(result, "</xsd:schema>");
 }
 
@@ -2718,7 +2718,7 @@ xsd_schema_element_end(StringInfo result)
 static StringInfo
 schema_to_xmlschema_internal(const char *schemaname, bool nulls,
 							 bool tableforest, const char *targetns)
-{	StackTrace("schema_to_xmlschema_internal");
+{
 	Oid			nspid;
 	List	   *relid_list;
 	List	   *tupdesc_list;
@@ -2762,7 +2762,7 @@ schema_to_xmlschema_internal(const char *schemaname, bool nulls,
 
 Datum
 schema_to_xmlschema(PG_FUNCTION_ARGS)
-{	StackTrace("schema_to_xmlschema");
+{
 	Name		name = PG_GETARG_NAME(0);
 	bool		nulls = PG_GETARG_BOOL(1);
 	bool		tableforest = PG_GETARG_BOOL(2);
@@ -2775,7 +2775,7 @@ schema_to_xmlschema(PG_FUNCTION_ARGS)
 
 Datum
 schema_to_xml_and_xmlschema(PG_FUNCTION_ARGS)
-{	StackTrace("schema_to_xml_and_xmlschema");
+{
 	Name		name = PG_GETARG_NAME(0);
 	bool		nulls = PG_GETARG_BOOL(1);
 	bool		tableforest = PG_GETARG_BOOL(2);
@@ -2804,7 +2804,7 @@ schema_to_xml_and_xmlschema(PG_FUNCTION_ARGS)
 static StringInfo
 database_to_xml_internal(const char *xmlschema, bool nulls,
 						 bool tableforest, const char *targetns)
-{	StackTrace("database_to_xml_internal");
+{
 	StringInfo	result;
 	List	   *nspid_list;
 	ListCell   *cell;
@@ -2849,7 +2849,7 @@ database_to_xml_internal(const char *xmlschema, bool nulls,
 
 Datum
 database_to_xml(PG_FUNCTION_ARGS)
-{	StackTrace("database_to_xml");
+{
 	bool		nulls = PG_GETARG_BOOL(0);
 	bool		tableforest = PG_GETARG_BOOL(1);
 	const char *targetns = text_to_cstring(PG_GETARG_TEXT_PP(2));
@@ -2862,7 +2862,7 @@ database_to_xml(PG_FUNCTION_ARGS)
 static StringInfo
 database_to_xmlschema_internal(bool nulls, bool tableforest,
 							   const char *targetns)
-{	StackTrace("database_to_xmlschema_internal");
+{
 	List	   *relid_list;
 	List	   *nspid_list;
 	List	   *tupdesc_list;
@@ -2904,7 +2904,7 @@ database_to_xmlschema_internal(bool nulls, bool tableforest,
 
 Datum
 database_to_xmlschema(PG_FUNCTION_ARGS)
-{	StackTrace("database_to_xmlschema");
+{
 	bool		nulls = PG_GETARG_BOOL(0);
 	bool		tableforest = PG_GETARG_BOOL(1);
 	const char *targetns = text_to_cstring(PG_GETARG_TEXT_PP(2));
@@ -2916,7 +2916,7 @@ database_to_xmlschema(PG_FUNCTION_ARGS)
 
 Datum
 database_to_xml_and_xmlschema(PG_FUNCTION_ARGS)
-{	StackTrace("database_to_xml_and_xmlschema");
+{
 	bool		nulls = PG_GETARG_BOOL(0);
 	bool		tableforest = PG_GETARG_BOOL(1);
 	const char *targetns = text_to_cstring(PG_GETARG_TEXT_PP(2));
@@ -2935,7 +2935,7 @@ database_to_xml_and_xmlschema(PG_FUNCTION_ARGS)
  */
 static char *
 map_multipart_sql_identifier_to_xml_name(char *a, char *b, char *c, char *d)
-{	StackTrace("map_multipart_sql_identifier_to_xml_name");
+{
 	StringInfoData result;
 
 	initStringInfo(&result);
@@ -2967,7 +2967,7 @@ map_multipart_sql_identifier_to_xml_name(char *a, char *b, char *c, char *d)
 static const char *
 map_sql_table_to_xmlschema(TupleDesc tupdesc, Oid relid, bool nulls,
 						   bool tableforest, const char *targetns)
-{	StackTrace("map_sql_table_to_xmlschema");
+{
 	int			i;
 	char	   *xmltn;
 	char	   *tabletypename;
@@ -3070,7 +3070,7 @@ map_sql_table_to_xmlschema(TupleDesc tupdesc, Oid relid, bool nulls,
 static const char *
 map_sql_schema_to_xmlschema_types(Oid nspid, List *relid_list, bool nulls,
 								  bool tableforest, const char *targetns)
-{	StackTrace("map_sql_schema_to_xmlschema_types");
+{
 	char	   *dbname;
 	char	   *nspname;
 	char	   *xmlsn;
@@ -3143,7 +3143,7 @@ map_sql_schema_to_xmlschema_types(Oid nspid, List *relid_list, bool nulls,
 static const char *
 map_sql_catalog_to_xmlschema_types(List *nspid_list, bool nulls,
 								   bool tableforest, const char *targetns)
-{	StackTrace("map_sql_catalog_to_xmlschema_types");
+{
 	char	   *dbname;
 	char	   *xmlcn;
 	char	   *catalogtypename;
@@ -3199,7 +3199,7 @@ map_sql_catalog_to_xmlschema_types(List *nspid_list, bool nulls,
  */
 static const char *
 map_sql_type_to_xml_name(Oid typeoid, int typmod)
-{	StackTrace("map_sql_type_to_xml_name");
+{
 	StringInfoData result;
 
 	initStringInfo(&result);
@@ -3304,7 +3304,7 @@ map_sql_type_to_xml_name(Oid typeoid, int typmod)
  */
 static const char *
 map_sql_typecoll_to_xmlschema_types(List *tupdesc_list)
-{	StackTrace("map_sql_typecoll_to_xmlschema_types");
+{
 	List	   *uniquetypes = NIL;
 	int			i;
 	StringInfoData result;
@@ -3358,7 +3358,7 @@ map_sql_typecoll_to_xmlschema_types(List *tupdesc_list)
  */
 static const char *
 map_sql_type_to_xmlschema_type(Oid typeoid, int typmod)
-{	StackTrace("map_sql_type_to_xmlschema_type");
+{
 	StringInfoData result;
 	const char *typename = map_sql_type_to_xml_name(typeoid, typmod);
 
@@ -3535,7 +3535,7 @@ static void
 SPI_sql_row_to_xmlelement(int rownum, StringInfo result, char *tablename,
 						  bool nulls, bool tableforest,
 						  const char *targetns, bool top_level)
-{	StackTrace("SPI_sql_row_to_xmlelement");
+{
 	int			i;
 	char	   *xmltn;
 
@@ -3601,7 +3601,7 @@ SPI_sql_row_to_xmlelement(int rownum, StringInfo result, char *tablename,
  */
 static text *
 xml_xmlnodetoxmltype(xmlNodePtr cur, PgXmlErrorContext *xmlerrcxt)
-{	StackTrace("xml_xmlnodetoxmltype");
+{
 	xmltype    *result;
 
 	if (cur->type == XML_ELEMENT_NODE)
@@ -3678,7 +3678,7 @@ static int
 xml_xpathobjtoxmlarray(xmlXPathObjectPtr xpathobj,
 					   ArrayBuildState *astate,
 					   PgXmlErrorContext *xmlerrcxt)
-{	StackTrace("xml_xpathobjtoxmlarray");
+{
 	int			result = 0;
 	Datum		datum;
 	Oid			datumtype;
@@ -3755,7 +3755,7 @@ xml_xpathobjtoxmlarray(xmlXPathObjectPtr xpathobj,
 static void
 xpath_internal(text *xpath_expr_text, xmltype *data, ArrayType *namespaces,
 			   int *res_nitems, ArrayBuildState *astate)
-{	StackTrace("xpath_internal");
+{
 	PgXmlErrorContext *xmlerrcxt;
 	volatile xmlParserCtxtPtr ctxt = NULL;
 	volatile xmlDocPtr doc = NULL;
@@ -3941,7 +3941,7 @@ xpath_internal(text *xpath_expr_text, xmltype *data, ArrayType *namespaces,
  */
 Datum
 xpath(PG_FUNCTION_ARGS)
-{	StackTrace("xpath");
+{
 #ifdef USE_LIBXML
 	text	   *xpath_expr_text = PG_GETARG_TEXT_P(0);
 	xmltype    *data = PG_GETARG_XML_P(1);
@@ -3964,7 +3964,7 @@ xpath(PG_FUNCTION_ARGS)
  */
 Datum
 xmlexists(PG_FUNCTION_ARGS)
-{	StackTrace("xmlexists");
+{
 #ifdef USE_LIBXML
 	text	   *xpath_expr_text = PG_GETARG_TEXT_P(0);
 	xmltype    *data = PG_GETARG_XML_P(1);
@@ -3987,7 +3987,7 @@ xmlexists(PG_FUNCTION_ARGS)
  */
 Datum
 xpath_exists(PG_FUNCTION_ARGS)
-{	StackTrace("xpath_exists");
+{
 #ifdef USE_LIBXML
 	text	   *xpath_expr_text = PG_GETARG_TEXT_P(0);
 	xmltype    *data = PG_GETARG_XML_P(1);
@@ -4011,7 +4011,7 @@ xpath_exists(PG_FUNCTION_ARGS)
 #ifdef USE_LIBXML
 static bool
 wellformed_xml(text *data, XmlOptionType xmloption_arg)
-{	StackTrace("wellformed_xml");
+{
 	bool		result;
 	volatile xmlDocPtr doc = NULL;
 
@@ -4037,7 +4037,7 @@ wellformed_xml(text *data, XmlOptionType xmloption_arg)
 
 Datum
 xml_is_well_formed(PG_FUNCTION_ARGS)
-{	StackTrace("xml_is_well_formed");
+{
 #ifdef USE_LIBXML
 	text	   *data = PG_GETARG_TEXT_P(0);
 
@@ -4050,7 +4050,7 @@ xml_is_well_formed(PG_FUNCTION_ARGS)
 
 Datum
 xml_is_well_formed_document(PG_FUNCTION_ARGS)
-{	StackTrace("xml_is_well_formed_document");
+{
 #ifdef USE_LIBXML
 	text	   *data = PG_GETARG_TEXT_P(0);
 
@@ -4063,7 +4063,7 @@ xml_is_well_formed_document(PG_FUNCTION_ARGS)
 
 Datum
 xml_is_well_formed_content(PG_FUNCTION_ARGS)
-{	StackTrace("xml_is_well_formed_content");
+{
 #ifdef USE_LIBXML
 	text	   *data = PG_GETARG_TEXT_P(0);
 

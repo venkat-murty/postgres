@@ -128,7 +128,7 @@ extern PgStat_MsgBgWriter bgwriterStats;
 
 Datum
 pg_stat_get_numscans(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_numscans");
+{
 	Oid			relid = PG_GETARG_OID(0);
 	int64		result;
 	PgStat_StatTabEntry *tabentry;
@@ -144,7 +144,7 @@ pg_stat_get_numscans(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_tuples_returned(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_tuples_returned");
+{
 	Oid			relid = PG_GETARG_OID(0);
 	int64		result;
 	PgStat_StatTabEntry *tabentry;
@@ -160,7 +160,7 @@ pg_stat_get_tuples_returned(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_tuples_fetched(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_tuples_fetched");
+{
 	Oid			relid = PG_GETARG_OID(0);
 	int64		result;
 	PgStat_StatTabEntry *tabentry;
@@ -176,7 +176,7 @@ pg_stat_get_tuples_fetched(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_tuples_inserted(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_tuples_inserted");
+{
 	Oid			relid = PG_GETARG_OID(0);
 	int64		result;
 	PgStat_StatTabEntry *tabentry;
@@ -192,7 +192,7 @@ pg_stat_get_tuples_inserted(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_tuples_updated(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_tuples_updated");
+{
 	Oid			relid = PG_GETARG_OID(0);
 	int64		result;
 	PgStat_StatTabEntry *tabentry;
@@ -208,7 +208,7 @@ pg_stat_get_tuples_updated(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_tuples_deleted(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_tuples_deleted");
+{
 	Oid			relid = PG_GETARG_OID(0);
 	int64		result;
 	PgStat_StatTabEntry *tabentry;
@@ -224,7 +224,7 @@ pg_stat_get_tuples_deleted(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_tuples_hot_updated(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_tuples_hot_updated");
+{
 	Oid			relid = PG_GETARG_OID(0);
 	int64		result;
 	PgStat_StatTabEntry *tabentry;
@@ -240,7 +240,7 @@ pg_stat_get_tuples_hot_updated(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_live_tuples(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_live_tuples");
+{
 	Oid			relid = PG_GETARG_OID(0);
 	int64		result;
 	PgStat_StatTabEntry *tabentry;
@@ -256,7 +256,7 @@ pg_stat_get_live_tuples(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_dead_tuples(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_dead_tuples");
+{
 	Oid			relid = PG_GETARG_OID(0);
 	int64		result;
 	PgStat_StatTabEntry *tabentry;
@@ -272,7 +272,7 @@ pg_stat_get_dead_tuples(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_mod_since_analyze(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_mod_since_analyze");
+{
 	Oid			relid = PG_GETARG_OID(0);
 	int64		result;
 	PgStat_StatTabEntry *tabentry;
@@ -288,7 +288,7 @@ pg_stat_get_mod_since_analyze(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_blocks_fetched(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_blocks_fetched");
+{
 	Oid			relid = PG_GETARG_OID(0);
 	int64		result;
 	PgStat_StatTabEntry *tabentry;
@@ -304,7 +304,7 @@ pg_stat_get_blocks_fetched(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_blocks_hit(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_blocks_hit");
+{
 	Oid			relid = PG_GETARG_OID(0);
 	int64		result;
 	PgStat_StatTabEntry *tabentry;
@@ -319,7 +319,7 @@ pg_stat_get_blocks_hit(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_last_vacuum_time(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_last_vacuum_time");
+{
 	Oid			relid = PG_GETARG_OID(0);
 	TimestampTz result;
 	PgStat_StatTabEntry *tabentry;
@@ -355,7 +355,7 @@ pg_stat_get_last_autovacuum_time(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_last_analyze_time(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_last_analyze_time");
+{
 	Oid			relid = PG_GETARG_OID(0);
 	TimestampTz result;
 	PgStat_StatTabEntry *tabentry;
@@ -373,7 +373,7 @@ pg_stat_get_last_analyze_time(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_last_autoanalyze_time(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_last_autoanalyze_time");
+{
 	Oid			relid = PG_GETARG_OID(0);
 	TimestampTz result;
 	PgStat_StatTabEntry *tabentry;
@@ -391,7 +391,7 @@ pg_stat_get_last_autoanalyze_time(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_vacuum_count(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_vacuum_count");
+{
 	Oid			relid = PG_GETARG_OID(0);
 	int64		result;
 	PgStat_StatTabEntry *tabentry;
@@ -406,7 +406,7 @@ pg_stat_get_vacuum_count(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_autovacuum_count(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_autovacuum_count");
+{
 	Oid			relid = PG_GETARG_OID(0);
 	int64		result;
 	PgStat_StatTabEntry *tabentry;
@@ -421,7 +421,7 @@ pg_stat_get_autovacuum_count(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_analyze_count(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_analyze_count");
+{
 	Oid			relid = PG_GETARG_OID(0);
 	int64		result;
 	PgStat_StatTabEntry *tabentry;
@@ -436,7 +436,7 @@ pg_stat_get_analyze_count(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_autoanalyze_count(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_autoanalyze_count");
+{
 	Oid			relid = PG_GETARG_OID(0);
 	int64		result;
 	PgStat_StatTabEntry *tabentry;
@@ -451,7 +451,7 @@ pg_stat_get_autoanalyze_count(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_function_calls(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_function_calls");
+{
 	Oid			funcid = PG_GETARG_OID(0);
 	PgStat_StatFuncEntry *funcentry;
 
@@ -462,7 +462,7 @@ pg_stat_get_function_calls(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_function_total_time(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_function_total_time");
+{
 	Oid			funcid = PG_GETARG_OID(0);
 	PgStat_StatFuncEntry *funcentry;
 
@@ -474,7 +474,7 @@ pg_stat_get_function_total_time(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_function_self_time(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_function_self_time");
+{
 	Oid			funcid = PG_GETARG_OID(0);
 	PgStat_StatFuncEntry *funcentry;
 
@@ -486,7 +486,7 @@ pg_stat_get_function_self_time(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_backend_idset(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_backend_idset");
+{
 	FuncCallContext *funcctx;
 	int		   *fctx;
 	int32		result;
@@ -529,7 +529,7 @@ pg_stat_get_backend_idset(PG_FUNCTION_ARGS)
  */
 Datum
 pg_stat_get_activity(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_activity");
+{
 #define PG_STAT_GET_ACTIVITY_COLS	22
 	int			num_backends = pgstat_fetch_stat_numbackends();
 	int			curr_backend;
@@ -793,14 +793,14 @@ pg_stat_get_activity(PG_FUNCTION_ARGS)
 
 Datum
 pg_backend_pid(PG_FUNCTION_ARGS)
-{	StackTrace("pg_backend_pid");
+{
 	PG_RETURN_INT32(MyProcPid);
 }
 
 
 Datum
 pg_stat_get_backend_pid(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_backend_pid");
+{
 	int32		beid = PG_GETARG_INT32(0);
 	PgBackendStatus *beentry;
 
@@ -813,7 +813,7 @@ pg_stat_get_backend_pid(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_backend_dbid(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_backend_dbid");
+{
 	int32		beid = PG_GETARG_INT32(0);
 	PgBackendStatus *beentry;
 
@@ -826,7 +826,7 @@ pg_stat_get_backend_dbid(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_backend_userid(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_backend_userid");
+{
 	int32		beid = PG_GETARG_INT32(0);
 	PgBackendStatus *beentry;
 
@@ -839,7 +839,7 @@ pg_stat_get_backend_userid(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_backend_activity(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_backend_activity");
+{
 	int32		beid = PG_GETARG_INT32(0);
 	PgBackendStatus *beentry;
 	const char *activity;
@@ -859,7 +859,7 @@ pg_stat_get_backend_activity(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_backend_waiting(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_backend_waiting");
+{
 	int32		beid = PG_GETARG_INT32(0);
 	bool		result;
 	PgBackendStatus *beentry;
@@ -878,7 +878,7 @@ pg_stat_get_backend_waiting(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_backend_activity_start(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_backend_activity_start");
+{
 	int32		beid = PG_GETARG_INT32(0);
 	TimestampTz result;
 	PgBackendStatus *beentry;
@@ -904,7 +904,7 @@ pg_stat_get_backend_activity_start(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_backend_xact_start(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_backend_xact_start");
+{
 	int32		beid = PG_GETARG_INT32(0);
 	TimestampTz result;
 	PgBackendStatus *beentry;
@@ -926,7 +926,7 @@ pg_stat_get_backend_xact_start(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_backend_start(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_backend_start");
+{
 	int32		beid = PG_GETARG_INT32(0);
 	TimestampTz result;
 	PgBackendStatus *beentry;
@@ -948,7 +948,7 @@ pg_stat_get_backend_start(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_backend_client_addr(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_backend_client_addr");
+{
 	int32		beid = PG_GETARG_INT32(0);
 	PgBackendStatus *beentry;
 	SockAddr	zero_clientaddr;
@@ -995,7 +995,7 @@ pg_stat_get_backend_client_addr(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_backend_client_port(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_backend_client_port");
+{
 	int32		beid = PG_GETARG_INT32(0);
 	PgBackendStatus *beentry;
 	SockAddr	zero_clientaddr;
@@ -1043,7 +1043,7 @@ pg_stat_get_backend_client_port(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_db_numbackends(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_db_numbackends");
+{
 	Oid			dbid = PG_GETARG_OID(0);
 	int32		result;
 	int			tot_backends = pgstat_fetch_stat_numbackends();
@@ -1064,7 +1064,7 @@ pg_stat_get_db_numbackends(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_db_xact_commit(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_db_xact_commit");
+{
 	Oid			dbid = PG_GETARG_OID(0);
 	int64		result;
 	PgStat_StatDBEntry *dbentry;
@@ -1080,7 +1080,7 @@ pg_stat_get_db_xact_commit(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_db_xact_rollback(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_db_xact_rollback");
+{
 	Oid			dbid = PG_GETARG_OID(0);
 	int64		result;
 	PgStat_StatDBEntry *dbentry;
@@ -1096,7 +1096,7 @@ pg_stat_get_db_xact_rollback(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_db_blocks_fetched(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_db_blocks_fetched");
+{
 	Oid			dbid = PG_GETARG_OID(0);
 	int64		result;
 	PgStat_StatDBEntry *dbentry;
@@ -1112,7 +1112,7 @@ pg_stat_get_db_blocks_fetched(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_db_blocks_hit(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_db_blocks_hit");
+{
 	Oid			dbid = PG_GETARG_OID(0);
 	int64		result;
 	PgStat_StatDBEntry *dbentry;
@@ -1128,7 +1128,7 @@ pg_stat_get_db_blocks_hit(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_db_tuples_returned(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_db_tuples_returned");
+{
 	Oid			dbid = PG_GETARG_OID(0);
 	int64		result;
 	PgStat_StatDBEntry *dbentry;
@@ -1144,7 +1144,7 @@ pg_stat_get_db_tuples_returned(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_db_tuples_fetched(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_db_tuples_fetched");
+{
 	Oid			dbid = PG_GETARG_OID(0);
 	int64		result;
 	PgStat_StatDBEntry *dbentry;
@@ -1160,7 +1160,7 @@ pg_stat_get_db_tuples_fetched(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_db_tuples_inserted(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_db_tuples_inserted");
+{
 	Oid			dbid = PG_GETARG_OID(0);
 	int64		result;
 	PgStat_StatDBEntry *dbentry;
@@ -1176,7 +1176,7 @@ pg_stat_get_db_tuples_inserted(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_db_tuples_updated(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_db_tuples_updated");
+{
 	Oid			dbid = PG_GETARG_OID(0);
 	int64		result;
 	PgStat_StatDBEntry *dbentry;
@@ -1192,7 +1192,7 @@ pg_stat_get_db_tuples_updated(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_db_tuples_deleted(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_db_tuples_deleted");
+{
 	Oid			dbid = PG_GETARG_OID(0);
 	int64		result;
 	PgStat_StatDBEntry *dbentry;
@@ -1207,7 +1207,7 @@ pg_stat_get_db_tuples_deleted(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_db_stat_reset_time(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_db_stat_reset_time");
+{
 	Oid			dbid = PG_GETARG_OID(0);
 	TimestampTz result;
 	PgStat_StatDBEntry *dbentry;
@@ -1225,7 +1225,7 @@ pg_stat_get_db_stat_reset_time(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_db_temp_files(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_db_temp_files");
+{
 	Oid			dbid = PG_GETARG_OID(0);
 	int64		result;
 	PgStat_StatDBEntry *dbentry;
@@ -1241,7 +1241,7 @@ pg_stat_get_db_temp_files(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_db_temp_bytes(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_db_temp_bytes");
+{
 	Oid			dbid = PG_GETARG_OID(0);
 	int64		result;
 	PgStat_StatDBEntry *dbentry;
@@ -1256,7 +1256,7 @@ pg_stat_get_db_temp_bytes(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_db_conflict_tablespace(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_db_conflict_tablespace");
+{
 	Oid			dbid = PG_GETARG_OID(0);
 	int64		result;
 	PgStat_StatDBEntry *dbentry;
@@ -1271,7 +1271,7 @@ pg_stat_get_db_conflict_tablespace(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_db_conflict_lock(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_db_conflict_lock");
+{
 	Oid			dbid = PG_GETARG_OID(0);
 	int64		result;
 	PgStat_StatDBEntry *dbentry;
@@ -1286,7 +1286,7 @@ pg_stat_get_db_conflict_lock(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_db_conflict_snapshot(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_db_conflict_snapshot");
+{
 	Oid			dbid = PG_GETARG_OID(0);
 	int64		result;
 	PgStat_StatDBEntry *dbentry;
@@ -1301,7 +1301,7 @@ pg_stat_get_db_conflict_snapshot(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_db_conflict_bufferpin(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_db_conflict_bufferpin");
+{
 	Oid			dbid = PG_GETARG_OID(0);
 	int64		result;
 	PgStat_StatDBEntry *dbentry;
@@ -1316,7 +1316,7 @@ pg_stat_get_db_conflict_bufferpin(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_db_conflict_startup_deadlock(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_db_conflict_startup_deadlock");
+{
 	Oid			dbid = PG_GETARG_OID(0);
 	int64		result;
 	PgStat_StatDBEntry *dbentry;
@@ -1331,7 +1331,7 @@ pg_stat_get_db_conflict_startup_deadlock(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_db_conflict_all(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_db_conflict_all");
+{
 	Oid			dbid = PG_GETARG_OID(0);
 	int64		result;
 	PgStat_StatDBEntry *dbentry;
@@ -1351,7 +1351,7 @@ pg_stat_get_db_conflict_all(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_db_deadlocks(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_db_deadlocks");
+{
 	Oid			dbid = PG_GETARG_OID(0);
 	int64		result;
 	PgStat_StatDBEntry *dbentry;
@@ -1366,7 +1366,7 @@ pg_stat_get_db_deadlocks(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_db_blk_read_time(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_db_blk_read_time");
+{
 	Oid			dbid = PG_GETARG_OID(0);
 	double		result;
 	PgStat_StatDBEntry *dbentry;
@@ -1382,7 +1382,7 @@ pg_stat_get_db_blk_read_time(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_db_blk_write_time(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_db_blk_write_time");
+{
 	Oid			dbid = PG_GETARG_OID(0);
 	double		result;
 	PgStat_StatDBEntry *dbentry;
@@ -1398,75 +1398,75 @@ pg_stat_get_db_blk_write_time(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_bgwriter_timed_checkpoints(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_bgwriter_timed_checkpoints");
+{
 	PG_RETURN_INT64(pgstat_fetch_global()->timed_checkpoints);
 }
 
 Datum
 pg_stat_get_bgwriter_requested_checkpoints(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_bgwriter_requested_checkpoints");
+{
 	PG_RETURN_INT64(pgstat_fetch_global()->requested_checkpoints);
 }
 
 Datum
 pg_stat_get_bgwriter_buf_written_checkpoints(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_bgwriter_buf_written_checkpoints");
+{
 	PG_RETURN_INT64(pgstat_fetch_global()->buf_written_checkpoints);
 }
 
 Datum
 pg_stat_get_bgwriter_buf_written_clean(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_bgwriter_buf_written_clean");
+{
 	PG_RETURN_INT64(pgstat_fetch_global()->buf_written_clean);
 }
 
 Datum
 pg_stat_get_bgwriter_maxwritten_clean(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_bgwriter_maxwritten_clean");
+{
 	PG_RETURN_INT64(pgstat_fetch_global()->maxwritten_clean);
 }
 
 Datum
 pg_stat_get_checkpoint_write_time(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_checkpoint_write_time");
+{
 	/* time is already in msec, just convert to double for presentation */
 	PG_RETURN_FLOAT8((double) pgstat_fetch_global()->checkpoint_write_time);
 }
 
 Datum
 pg_stat_get_checkpoint_sync_time(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_checkpoint_sync_time");
+{
 	/* time is already in msec, just convert to double for presentation */
 	PG_RETURN_FLOAT8((double) pgstat_fetch_global()->checkpoint_sync_time);
 }
 
 Datum
 pg_stat_get_bgwriter_stat_reset_time(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_bgwriter_stat_reset_time");
+{
 	PG_RETURN_TIMESTAMPTZ(pgstat_fetch_global()->stat_reset_timestamp);
 }
 
 Datum
 pg_stat_get_buf_written_backend(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_buf_written_backend");
+{
 	PG_RETURN_INT64(pgstat_fetch_global()->buf_written_backend);
 }
 
 Datum
 pg_stat_get_buf_fsync_backend(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_buf_fsync_backend");
+{
 	PG_RETURN_INT64(pgstat_fetch_global()->buf_fsync_backend);
 }
 
 Datum
 pg_stat_get_buf_alloc(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_buf_alloc");
+{
 	PG_RETURN_INT64(pgstat_fetch_global()->buf_alloc);
 }
 
 Datum
 pg_stat_get_xact_numscans(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_xact_numscans");
+{
 	Oid			relid = PG_GETARG_OID(0);
 	int64		result;
 	PgStat_TableStatus *tabentry;
@@ -1481,7 +1481,7 @@ pg_stat_get_xact_numscans(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_xact_tuples_returned(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_xact_tuples_returned");
+{
 	Oid			relid = PG_GETARG_OID(0);
 	int64		result;
 	PgStat_TableStatus *tabentry;
@@ -1496,7 +1496,7 @@ pg_stat_get_xact_tuples_returned(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_xact_tuples_fetched(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_xact_tuples_fetched");
+{
 	Oid			relid = PG_GETARG_OID(0);
 	int64		result;
 	PgStat_TableStatus *tabentry;
@@ -1511,7 +1511,7 @@ pg_stat_get_xact_tuples_fetched(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_xact_tuples_inserted(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_xact_tuples_inserted");
+{
 	Oid			relid = PG_GETARG_OID(0);
 	int64		result;
 	PgStat_TableStatus *tabentry;
@@ -1532,7 +1532,7 @@ pg_stat_get_xact_tuples_inserted(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_xact_tuples_updated(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_xact_tuples_updated");
+{
 	Oid			relid = PG_GETARG_OID(0);
 	int64		result;
 	PgStat_TableStatus *tabentry;
@@ -1553,7 +1553,7 @@ pg_stat_get_xact_tuples_updated(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_xact_tuples_deleted(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_xact_tuples_deleted");
+{
 	Oid			relid = PG_GETARG_OID(0);
 	int64		result;
 	PgStat_TableStatus *tabentry;
@@ -1574,7 +1574,7 @@ pg_stat_get_xact_tuples_deleted(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_xact_tuples_hot_updated(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_xact_tuples_hot_updated");
+{
 	Oid			relid = PG_GETARG_OID(0);
 	int64		result;
 	PgStat_TableStatus *tabentry;
@@ -1589,7 +1589,7 @@ pg_stat_get_xact_tuples_hot_updated(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_xact_blocks_fetched(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_xact_blocks_fetched");
+{
 	Oid			relid = PG_GETARG_OID(0);
 	int64		result;
 	PgStat_TableStatus *tabentry;
@@ -1604,7 +1604,7 @@ pg_stat_get_xact_blocks_fetched(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_xact_blocks_hit(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_xact_blocks_hit");
+{
 	Oid			relid = PG_GETARG_OID(0);
 	int64		result;
 	PgStat_TableStatus *tabentry;
@@ -1619,7 +1619,7 @@ pg_stat_get_xact_blocks_hit(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_xact_function_calls(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_xact_function_calls");
+{
 	Oid			funcid = PG_GETARG_OID(0);
 	PgStat_BackendFunctionEntry *funcentry;
 
@@ -1630,7 +1630,7 @@ pg_stat_get_xact_function_calls(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_xact_function_total_time(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_xact_function_total_time");
+{
 	Oid			funcid = PG_GETARG_OID(0);
 	PgStat_BackendFunctionEntry *funcentry;
 
@@ -1641,7 +1641,7 @@ pg_stat_get_xact_function_total_time(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_xact_function_self_time(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_xact_function_self_time");
+{
 	Oid			funcid = PG_GETARG_OID(0);
 	PgStat_BackendFunctionEntry *funcentry;
 
@@ -1654,14 +1654,14 @@ pg_stat_get_xact_function_self_time(PG_FUNCTION_ARGS)
 /* Get the timestamp of the current statistics snapshot */
 Datum
 pg_stat_get_snapshot_timestamp(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_snapshot_timestamp");
+{
 	PG_RETURN_TIMESTAMPTZ(pgstat_fetch_global()->stats_timestamp);
 }
 
 /* Discard the active statistics snapshot */
 Datum
 pg_stat_clear_snapshot(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_clear_snapshot");
+{
 	pgstat_clear_snapshot();
 
 	PG_RETURN_VOID();
@@ -1671,7 +1671,7 @@ pg_stat_clear_snapshot(PG_FUNCTION_ARGS)
 /* Reset all counters for the current database */
 Datum
 pg_stat_reset(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_reset");
+{
 	pgstat_reset_counters();
 
 	PG_RETURN_VOID();
@@ -1680,7 +1680,7 @@ pg_stat_reset(PG_FUNCTION_ARGS)
 /* Reset some shared cluster-wide counters */
 Datum
 pg_stat_reset_shared(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_reset_shared");
+{
 	char	   *target = text_to_cstring(PG_GETARG_TEXT_PP(0));
 
 	pgstat_reset_shared_counters(target);
@@ -1691,7 +1691,7 @@ pg_stat_reset_shared(PG_FUNCTION_ARGS)
 /* Reset a single counter in the current database */
 Datum
 pg_stat_reset_single_table_counters(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_reset_single_table_counters");
+{
 	Oid			taboid = PG_GETARG_OID(0);
 
 	pgstat_reset_single_counter(taboid, RESET_TABLE);
@@ -1701,7 +1701,7 @@ pg_stat_reset_single_table_counters(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_reset_single_function_counters(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_reset_single_function_counters");
+{
 	Oid			funcoid = PG_GETARG_OID(0);
 
 	pgstat_reset_single_counter(funcoid, RESET_FUNCTION);
@@ -1711,7 +1711,7 @@ pg_stat_reset_single_function_counters(PG_FUNCTION_ARGS)
 
 Datum
 pg_stat_get_archiver(PG_FUNCTION_ARGS)
-{	StackTrace("pg_stat_get_archiver");
+{
 	TupleDesc	tupdesc;
 	Datum		values[7];
 	bool		nulls[7];

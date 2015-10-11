@@ -178,7 +178,7 @@ MJExamineQuals(List *mergeclauses,
 			   int *mergestrategies,
 			   bool *mergenullsfirst,
 			   PlanState *parent)
-{	StackTrace("MJExamineQuals");
+{
 	MergeJoinClause clauses;
 	int			nClauses = list_length(mergeclauses);
 	int			iClause;
@@ -292,7 +292,7 @@ MJExamineQuals(List *mergeclauses,
  */
 static MJEvalResult
 MJEvalOuterValues(MergeJoinState *mergestate)
-{	StackTrace("MJEvalOuterValues");
+{
 	ExprContext *econtext = mergestate->mj_OuterEContext;
 	MJEvalResult result = MJEVAL_MATCHABLE;
 	int			i;
@@ -339,7 +339,7 @@ MJEvalOuterValues(MergeJoinState *mergestate)
  */
 static MJEvalResult
 MJEvalInnerValues(MergeJoinState *mergestate, TupleTableSlot *innerslot)
-{	StackTrace("MJEvalInnerValues");
+{
 	ExprContext *econtext = mergestate->mj_InnerEContext;
 	MJEvalResult result = MJEVAL_MATCHABLE;
 	int			i;
@@ -389,7 +389,7 @@ MJEvalInnerValues(MergeJoinState *mergestate, TupleTableSlot *innerslot)
  */
 static int
 MJCompare(MergeJoinState *mergestate)
-{	StackTrace("MJCompare");
+{
 	int			result = 0;
 	bool		nulleqnull = false;
 	ExprContext *econtext = mergestate->js.ps.ps_ExprContext;
@@ -450,7 +450,7 @@ MJCompare(MergeJoinState *mergestate)
  */
 static TupleTableSlot *
 MJFillOuter(MergeJoinState *node)
-{	StackTrace("MJFillOuter");
+{
 	ExprContext *econtext = node->js.ps.ps_ExprContext;
 	List	   *otherqual = node->js.ps.qual;
 
@@ -491,7 +491,7 @@ MJFillOuter(MergeJoinState *node)
  */
 static TupleTableSlot *
 MJFillInner(MergeJoinState *node)
-{	StackTrace("MJFillInner");
+{
 	ExprContext *econtext = node->js.ps.ps_ExprContext;
 	List	   *otherqual = node->js.ps.qual;
 
@@ -537,7 +537,7 @@ MJFillInner(MergeJoinState *node)
  */
 static bool
 check_constant_qual(List *qual, bool *is_const_false)
-{	StackTrace("check_constant_qual");
+{
 	ListCell   *lc;
 
 	foreach(lc, qual)
@@ -564,7 +564,7 @@ check_constant_qual(List *qual, bool *is_const_false)
 
 static void
 ExecMergeTupleDumpOuter(MergeJoinState *mergestate)
-{	StackTrace("ExecMergeTupleDumpOuter");
+{
 	TupleTableSlot *outerSlot = mergestate->mj_OuterTupleSlot;
 
 	printf("==== outer tuple ====\n");
@@ -576,7 +576,7 @@ ExecMergeTupleDumpOuter(MergeJoinState *mergestate)
 
 static void
 ExecMergeTupleDumpInner(MergeJoinState *mergestate)
-{	StackTrace("ExecMergeTupleDumpInner");
+{
 	TupleTableSlot *innerSlot = mergestate->mj_InnerTupleSlot;
 
 	printf("==== inner tuple ====\n");
@@ -588,7 +588,7 @@ ExecMergeTupleDumpInner(MergeJoinState *mergestate)
 
 static void
 ExecMergeTupleDumpMarked(MergeJoinState *mergestate)
-{	StackTrace("ExecMergeTupleDumpMarked");
+{
 	TupleTableSlot *markedSlot = mergestate->mj_MarkedTupleSlot;
 
 	printf("==== marked tuple ====\n");
@@ -600,7 +600,7 @@ ExecMergeTupleDumpMarked(MergeJoinState *mergestate)
 
 static void
 ExecMergeTupleDump(MergeJoinState *mergestate)
-{	StackTrace("ExecMergeTupleDump");
+{
 	printf("******** ExecMergeTupleDump ********\n");
 
 	ExecMergeTupleDumpOuter(mergestate);
@@ -617,7 +617,7 @@ ExecMergeTupleDump(MergeJoinState *mergestate)
  */
 TupleTableSlot *
 ExecMergeJoin(MergeJoinState *node)
-{	StackTrace("ExecMergeJoin");
+{
 	List	   *joinqual;
 	List	   *otherqual;
 	bool		qualResult;
@@ -1470,7 +1470,7 @@ ExecMergeJoin(MergeJoinState *node)
  */
 MergeJoinState *
 ExecInitMergeJoin(MergeJoin *node, EState *estate, int eflags)
-{	StackTrace("ExecInitMergeJoin");
+{
 	MergeJoinState *mergestate;
 
 	/* check for unsupported flags */
@@ -1653,7 +1653,7 @@ ExecInitMergeJoin(MergeJoin *node, EState *estate, int eflags)
  */
 void
 ExecEndMergeJoin(MergeJoinState *node)
-{	StackTrace("ExecEndMergeJoin");
+{
 	MJ1_printf("ExecEndMergeJoin: %s\n",
 			   "ending node processing");
 
@@ -1680,7 +1680,7 @@ ExecEndMergeJoin(MergeJoinState *node)
 
 void
 ExecReScanMergeJoin(MergeJoinState *node)
-{	StackTrace("ExecReScanMergeJoin");
+{
 	ExecClearTuple(node->mj_MarkedTupleSlot);
 
 	node->mj_JoinState = EXEC_MJ_INITIALIZE_OUTER;

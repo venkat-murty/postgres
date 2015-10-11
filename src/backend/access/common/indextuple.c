@@ -37,7 +37,7 @@ IndexTuple
 index_form_tuple(TupleDesc tupleDescriptor,
 				 Datum *values,
 				 bool *isnull)
-{	StackTrace("index_form_tuple");
+{
 	char	   *tp;				/* tuple pointer */
 	IndexTuple	tuple;			/* return tuple */
 	Size		size,
@@ -208,7 +208,7 @@ Datum
 nocache_index_getattr(IndexTuple tup,
 					  int attnum,
 					  TupleDesc tupleDesc)
-{	StackTrace("nocache_index_getattr");
+{
 	Form_pg_attribute *att = tupleDesc->attrs;
 	char	   *tp;				/* ptr to data part of tuple */
 	bits8	   *bp = NULL;		/* ptr to null bitmap in tuple */
@@ -415,7 +415,7 @@ nocache_index_getattr(IndexTuple tup,
 void
 index_deform_tuple(IndexTuple tup, TupleDesc tupleDescriptor,
 				   Datum *values, bool *isnull)
-{	StackTrace("index_deform_tuple");
+{
 	int			i;
 
 	/* Assert to protect callers who allocate fixed-size arrays */
@@ -432,7 +432,7 @@ index_deform_tuple(IndexTuple tup, TupleDesc tupleDescriptor,
  */
 IndexTuple
 CopyIndexTuple(IndexTuple source)
-{	StackTrace("CopyIndexTuple");
+{
 	IndexTuple	result;
 	Size		size;
 

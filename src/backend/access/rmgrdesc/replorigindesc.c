@@ -17,7 +17,7 @@
 
 void
 replorigin_desc(StringInfo buf, XLogReaderState *record)
-{	StackTrace("replorigin_desc");
+{
 	char	   *rec = XLogRecGetData(record);
 	uint8		info = XLogRecGetInfo(record) & ~XLR_INFO_MASK;
 
@@ -50,7 +50,7 @@ replorigin_desc(StringInfo buf, XLogReaderState *record)
 
 const char *
 replorigin_identify(uint8 info)
-{	StackTrace("replorigin_identify");
+{
 	switch (info)
 	{
 		case XLOG_REPLORIGIN_SET:

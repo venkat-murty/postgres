@@ -66,7 +66,7 @@ CreateQueryDesc(PlannedStmt *plannedstmt,
 				DestReceiver *dest,
 				ParamListInfo params,
 				int instrument_options)
-{	StackTrace("CreateQueryDesc");
+{
 	QueryDesc  *qd = (QueryDesc *) palloc(sizeof(QueryDesc));
 
 	qd->operation = plannedstmt->commandType;	/* operation */
@@ -99,7 +99,7 @@ CreateUtilityQueryDesc(Node *utilitystmt,
 					   Snapshot snapshot,
 					   DestReceiver *dest,
 					   ParamListInfo params)
-{	StackTrace("CreateUtilityQueryDesc");
+{
 	QueryDesc  *qd = (QueryDesc *) palloc(sizeof(QueryDesc));
 
 	qd->operation = CMD_UTILITY;	/* operation */
@@ -126,7 +126,7 @@ CreateUtilityQueryDesc(Node *utilitystmt,
  */
 void
 FreeQueryDesc(QueryDesc *qdesc)
-{	StackTrace("FreeQueryDesc");
+{
 	/* Can't be a live query */
 	Assert(qdesc->estate == NULL);
 
@@ -162,7 +162,7 @@ ProcessQuery(PlannedStmt *plan,
 			 ParamListInfo params,
 			 DestReceiver *dest,
 			 char *completionTag)
-{	StackTrace("ProcessQuery");
+{
 	QueryDesc  *queryDesc;
 
 	elog(DEBUG3, "ProcessQuery");
@@ -239,7 +239,7 @@ ProcessQuery(PlannedStmt *plan,
  */
 PortalStrategy
 ChoosePortalStrategy(List *stmts)
-{	StackTrace("ChoosePortalStrategy");
+{
 	int			nSetTag;
 	ListCell   *lc;
 
@@ -355,7 +355,7 @@ ChoosePortalStrategy(List *stmts)
  */
 List *
 FetchPortalTargetList(Portal portal)
-{	StackTrace("FetchPortalTargetList");
+{
 	/* no point in looking if we determined it doesn't return tuples */
 	if (portal->strategy == PORTAL_MULTI_QUERY)
 		return NIL;
@@ -377,7 +377,7 @@ FetchPortalTargetList(Portal portal)
  */
 List *
 FetchStatementTargetList(Node *stmt)
-{	StackTrace("FetchStatementTargetList");
+{
 	if (stmt == NULL)
 		return NIL;
 	if (IsA(stmt, Query))
@@ -458,7 +458,7 @@ FetchStatementTargetList(Node *stmt)
 void
 PortalStart(Portal portal, ParamListInfo params,
 			int eflags, Snapshot snapshot)
-{	StackTrace("PortalStart");
+{
 	Portal		saveActivePortal;
 	ResourceOwner saveResourceOwner;
 	MemoryContext savePortalContext;
@@ -642,7 +642,7 @@ PortalStart(Portal portal, ParamListInfo params,
  */
 void
 PortalSetResultFormat(Portal portal, int nFormats, int16 *formats)
-{	StackTrace("PortalSetResultFormat");
+{
 	int			natts;
 	int			i;
 
@@ -706,7 +706,7 @@ bool
 PortalRun(Portal portal, long count, bool isTopLevel,
 		  DestReceiver *dest, DestReceiver *altdest,
 		  char *completionTag)
-{	StackTrace("PortalRun");
+{
 	bool		result;
 	uint32		nprocessed;
 	ResourceOwner saveTopTransactionResourceOwner;
@@ -893,7 +893,7 @@ PortalRunSelect(Portal portal,
 				bool forward,
 				long count,
 				DestReceiver *dest)
-{	StackTrace("PortalRunSelect");
+{
 	QueryDesc  *queryDesc;
 	ScanDirection direction;
 	uint32		nprocessed;
@@ -1030,7 +1030,7 @@ PortalRunSelect(Portal portal,
  */
 static void
 FillPortalStore(Portal portal, bool isTopLevel)
-{	StackTrace("FillPortalStore");
+{
 	DestReceiver *treceiver;
 	char		completionTag[COMPLETION_TAG_BUFSIZE];
 
@@ -1090,7 +1090,7 @@ FillPortalStore(Portal portal, bool isTopLevel)
 static uint32
 RunFromStore(Portal portal, ScanDirection direction, long count,
 			 DestReceiver *dest)
-{	StackTrace("RunFromStore");
+{
 	long		current_tuple_count = 0;
 	TupleTableSlot *slot;
 
@@ -1150,7 +1150,7 @@ RunFromStore(Portal portal, ScanDirection direction, long count,
 static void
 PortalRunUtility(Portal portal, Node *utilityStmt, bool isTopLevel,
 				 DestReceiver *dest, char *completionTag)
-{	StackTrace("PortalRunUtility");
+{
 	bool		active_snapshot_set;
 
 	elog(DEBUG3, "ProcessUtility");
@@ -1214,7 +1214,7 @@ static void
 PortalRunMulti(Portal portal, bool isTopLevel,
 			   DestReceiver *dest, DestReceiver *altdest,
 			   char *completionTag)
-{	StackTrace("PortalRunMulti");
+{
 	bool		active_snapshot_set = false;
 	ListCell   *stmtlist_item;
 
@@ -1386,7 +1386,7 @@ PortalRunFetch(Portal portal,
 			   FetchDirection fdirection,
 			   long count,
 			   DestReceiver *dest)
-{	StackTrace("PortalRunFetch");
+{
 	long		result;
 	Portal		saveActivePortal;
 	ResourceOwner saveResourceOwner;
@@ -1485,7 +1485,7 @@ DoPortalRunFetch(Portal portal,
 				 FetchDirection fdirection,
 				 long count,
 				 DestReceiver *dest)
-{	StackTrace("DoPortalRunFetch");
+{
 	bool		forward;
 
 	Assert(portal->strategy == PORTAL_ONE_SELECT ||
@@ -1660,7 +1660,7 @@ DoPortalRunFetch(Portal portal,
  */
 static void
 DoPortalRewind(Portal portal)
-{	StackTrace("DoPortalRewind");
+{
 	QueryDesc  *queryDesc;
 
 	/* Rewind holdStore, if we have one */

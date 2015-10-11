@@ -25,7 +25,7 @@
  */
 void
 pg_rusage_init(PGRUsage *ru0)
-{	StackTrace("pg_rusage_init");
+{
 	getrusage(RUSAGE_SELF, &ru0->ru);
 	gettimeofday(&ru0->tv, NULL);
 }
@@ -38,7 +38,7 @@ pg_rusage_init(PGRUsage *ru0)
  */
 const char *
 pg_rusage_show(const PGRUsage *ru0)
-{	StackTrace("pg_rusage_show");
+{
 	static char result[100];
 	PGRUsage	ru1;
 

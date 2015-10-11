@@ -27,7 +27,7 @@
 
 void *
 pg_dlopen(char *filename)
-{	StackTrace("pg_dlopen");
+{
 	/*
 	 * Use BIND_IMMEDIATE so that undefined symbols cause a failure return
 	 * from shl_load(), rather than an abort() later on when we attempt to
@@ -42,7 +42,7 @@ pg_dlopen(char *filename)
 
 PGFunction
 pg_dlsym(void *handle, char *funcname)
-{	StackTrace("pg_dlsym");
+{
 	PGFunction	f;
 
 	if (shl_findsym((shl_t *) & handle, funcname, TYPE_PROCEDURE, &f) == -1)
@@ -52,13 +52,13 @@ pg_dlsym(void *handle, char *funcname)
 
 void
 pg_dlclose(void *handle)
-{	StackTrace("pg_dlclose");
+{
 	shl_unload((shl_t) handle);
 }
 
 char *
 pg_dlerror(void)
-{	StackTrace("pg_dlerror");
+{
 	static char errmsg[] = "shl_load failed";
 
 	if (errno)

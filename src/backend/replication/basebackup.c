@@ -100,7 +100,7 @@ static int64 throttled_last;
  */
 static void
 base_backup_cleanup(int code, Datum arg)
-{	StackTrace("base_backup_cleanup");
+{
 	do_pg_abort_backup();
 }
 
@@ -112,7 +112,7 @@ base_backup_cleanup(int code, Datum arg)
  */
 static void
 perform_base_backup(basebackup_options *opt, DIR *tblspcdir)
-{	StackTrace("perform_base_backup");
+{
 	XLogRecPtr	startptr;
 	TimeLineID	starttli;
 	XLogRecPtr	endptr;
@@ -490,7 +490,7 @@ perform_base_backup(basebackup_options *opt, DIR *tblspcdir)
  */
 static int
 compareWalFileNames(const void *a, const void *b)
-{	StackTrace("compareWalFileNames");
+{
 	char	   *fna = *((char **) a);
 	char	   *fnb = *((char **) b);
 
@@ -502,7 +502,7 @@ compareWalFileNames(const void *a, const void *b)
  */
 static void
 parse_basebackup_options(List *options, basebackup_options *opt)
-{	StackTrace("parse_basebackup_options");
+{
 	ListCell   *lopt;
 	bool		o_label = false;
 	bool		o_progress = false;
@@ -608,7 +608,7 @@ parse_basebackup_options(List *options, basebackup_options *opt)
  */
 void
 SendBaseBackup(BaseBackupCmd *cmd)
-{	StackTrace("SendBaseBackup");
+{
 	DIR		   *dir;
 	basebackup_options opt;
 
@@ -638,7 +638,7 @@ SendBaseBackup(BaseBackupCmd *cmd)
 
 static void
 send_int8_string(StringInfoData *buf, int64 intval)
-{	StackTrace("send_int8_string");
+{
 	char		is[32];
 
 	sprintf(is, INT64_FORMAT, intval);
@@ -648,7 +648,7 @@ send_int8_string(StringInfoData *buf, int64 intval)
 
 static void
 SendBackupHeader(List *tablespaces)
-{	StackTrace("SendBackupHeader");
+{
 	StringInfoData buf;
 	ListCell   *lc;
 
@@ -721,7 +721,7 @@ SendBackupHeader(List *tablespaces)
  */
 static void
 SendXlogRecPtrResult(XLogRecPtr ptr, TimeLineID tli)
-{	StackTrace("SendXlogRecPtrResult");
+{
 	StringInfoData buf;
 	char		str[MAXFNAMELEN];
 
@@ -773,7 +773,7 @@ SendXlogRecPtrResult(XLogRecPtr ptr, TimeLineID tli)
  */
 static void
 sendFileWithContent(const char *filename, const char *content)
-{	StackTrace("sendFileWithContent");
+{
 	struct stat statbuf;
 	int			pad,
 				len;
@@ -820,7 +820,7 @@ sendFileWithContent(const char *filename, const char *content)
  */
 int64
 sendTablespace(char *path, bool sizeonly)
-{	StackTrace("sendTablespace");
+{
 	int64		size;
 	char		pathbuf[MAXPGPATH];
 	struct stat statbuf;
@@ -872,7 +872,7 @@ sendTablespace(char *path, bool sizeonly)
 static int64
 sendDir(char *path, int basepathlen, bool sizeonly, List *tablespaces,
 		bool sendtblspclinks)
-{	StackTrace("sendDir");
+{
 	DIR		   *dir;
 	struct dirent *de;
 	char		pathbuf[MAXPGPATH];
@@ -1141,7 +1141,7 @@ sendDir(char *path, int basepathlen, bool sizeonly, List *tablespaces,
 static bool
 sendFile(char *readfilename, char *tarfilename, struct stat * statbuf,
 		 bool missing_ok)
-{	StackTrace("sendFile");
+{
 	FILE	   *fp;
 	char		buf[TAR_SEND_SIZE];
 	size_t		cnt;
@@ -1223,7 +1223,7 @@ sendFile(char *readfilename, char *tarfilename, struct stat * statbuf,
 static void
 _tarWriteHeader(const char *filename, const char *linktarget,
 				struct stat * statbuf)
-{	StackTrace("_tarWriteHeader");
+{
 	char		h[512];
 	enum tarError rc;
 
@@ -1259,7 +1259,7 @@ _tarWriteHeader(const char *filename, const char *linktarget,
  */
 static void
 throttle(size_t increment)
-{	StackTrace("throttle");
+{
 	int64		elapsed,
 				elapsed_min,
 				sleep;

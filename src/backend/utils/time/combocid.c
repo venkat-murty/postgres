@@ -103,7 +103,7 @@ static CommandId GetRealCmax(CommandId combocid);
 
 CommandId
 HeapTupleHeaderGetCmin(HeapTupleHeader tup)
-{	StackTrace("HeapTupleHeaderGetCmin");
+{
 	CommandId	cid = HeapTupleHeaderGetRawCommandId(tup);
 
 	Assert(!(tup->t_infomask & HEAP_MOVED));
@@ -117,7 +117,7 @@ HeapTupleHeaderGetCmin(HeapTupleHeader tup)
 
 CommandId
 HeapTupleHeaderGetCmax(HeapTupleHeader tup)
-{	StackTrace("HeapTupleHeaderGetCmax");
+{
 	CommandId	cid = HeapTupleHeaderGetRawCommandId(tup);
 
 	Assert(!(tup->t_infomask & HEAP_MOVED));
@@ -154,7 +154,7 @@ void
 HeapTupleHeaderAdjustCmax(HeapTupleHeader tup,
 						  CommandId *cmax,
 						  bool *iscombo)
-{	StackTrace("HeapTupleHeaderAdjustCmax");
+{
 	/*
 	 * If we're marking a tuple deleted that was inserted by (any
 	 * subtransaction of) our transaction, we need to use a combo command id.
@@ -181,7 +181,7 @@ HeapTupleHeaderAdjustCmax(HeapTupleHeader tup,
  */
 void
 AtEOXact_ComboCid(void)
-{	StackTrace("AtEOXact_ComboCid");
+{
 	/*
 	 * Don't bother to pfree. These are allocated in TopTransactionContext, so
 	 * they're going to go away at the end of transaction anyway.
@@ -203,7 +203,7 @@ AtEOXact_ComboCid(void)
  */
 static CommandId
 GetComboCommandId(CommandId cmin, CommandId cmax)
-{	StackTrace("GetComboCommandId");
+{
 	CommandId	combocid;
 	ComboCidKeyData key;
 	ComboCidEntry entry;
@@ -277,14 +277,14 @@ GetComboCommandId(CommandId cmin, CommandId cmax)
 
 static CommandId
 GetRealCmin(CommandId combocid)
-{	StackTrace("GetRealCmin");
+{
 	Assert(combocid < usedComboCids);
 	return comboCids[combocid].cmin;
 }
 
 static CommandId
 GetRealCmax(CommandId combocid)
-{	StackTrace("GetRealCmax");
+{
 	Assert(combocid < usedComboCids);
 	return comboCids[combocid].cmax;
 }
@@ -295,7 +295,7 @@ GetRealCmax(CommandId combocid)
  */
 Size
 EstimateComboCIDStateSpace(void)
-{	StackTrace("EstimateComboCIDStateSpace");
+{
 	Size		size;
 
 	/* Add space required for saving usedComboCids */
@@ -314,7 +314,7 @@ EstimateComboCIDStateSpace(void)
  */
 void
 SerializeComboCIDState(Size maxsize, char *start_address)
-{	StackTrace("SerializeComboCIDState");
+{
 	char	   *endptr;
 
 	/* First, we store the number of currently-existing ComboCIDs. */
@@ -339,7 +339,7 @@ SerializeComboCIDState(Size maxsize, char *start_address)
  */
 void
 RestoreComboCIDState(char *comboCIDstate)
-{	StackTrace("RestoreComboCIDState");
+{
 	int			num_elements;
 	ComboCidKeyData *keydata;
 	int			i;

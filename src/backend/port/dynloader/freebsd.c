@@ -46,7 +46,7 @@ static char error_message[BUFSIZ];
 
 char *
 BSD44_derived_dlerror(void)
-{	StackTrace("BSD44_derived_dlerror");
+{
 	static char ret[BUFSIZ];
 
 	strcpy(ret, error_message);
@@ -56,7 +56,7 @@ BSD44_derived_dlerror(void)
 
 void *
 BSD44_derived_dlopen(const char *file, int num)
-{	StackTrace("BSD44_derived_dlopen");
+{
 #if !defined(HAVE_DLOPEN)
 	snprintf(error_message, sizeof(error_message),
 			 "dlopen (%s) not supported", file);
@@ -73,7 +73,7 @@ BSD44_derived_dlopen(const char *file, int num)
 
 void *
 BSD44_derived_dlsym(void *handle, const char *name)
-{	StackTrace("BSD44_derived_dlsym");
+{
 #if !defined(HAVE_DLOPEN)
 	snprintf(error_message, sizeof(error_message),
 			 "dlsym (%s) failed", name);
@@ -99,7 +99,7 @@ BSD44_derived_dlsym(void *handle, const char *name)
 
 void
 BSD44_derived_dlclose(void *handle)
-{	StackTrace("BSD44_derived_dlclose");
+{
 #if defined(HAVE_DLOPEN)
 	dlclose(handle);
 #endif

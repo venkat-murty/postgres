@@ -251,7 +251,7 @@ shortest(struct vars * v,
 static chr *					/* endpoint, or NULL */
 lastcold(struct vars * v,
 		 struct dfa * d)
-{	StackTrace("lastcold");
+{
 	struct sset *ss;
 	chr		   *nopr;
 	int			i;
@@ -350,7 +350,7 @@ newdfa(struct vars * v,
  */
 static void
 freedfa(struct dfa * d)
-{	StackTrace("freedfa");
+{
 	if (d->cptsmalloced)
 	{
 		if (d->ssets != NULL)
@@ -375,7 +375,7 @@ freedfa(struct dfa * d)
 static unsigned
 hash(unsigned *uv,
 	 int n)
-{	StackTrace("hash");
+{
 	int			i;
 	unsigned	h;
 
@@ -392,7 +392,7 @@ static struct sset *
 initialize(struct vars * v,		/* used only for debug flags */
 		   struct dfa * d,
 		   chr *start)
-{	StackTrace("initialize");
+{
 	struct sset *ss;
 	int			i;
 
@@ -570,7 +570,7 @@ getvacant(struct vars * v,		/* used only for debug flags */
 		  struct dfa * d,
 		  chr *cp,
 		  chr *start)
-{	StackTrace("getvacant");
+{
 	int			i;
 	struct sset *ss;
 	struct sset *p;
@@ -639,7 +639,7 @@ pickss(struct vars * v,			/* used only for debug flags */
 	   struct dfa * d,
 	   chr *cp,
 	   chr *start)
-{	StackTrace("pickss");
+{
 	int			i;
 	struct sset *ss;
 	struct sset *end;

@@ -118,7 +118,7 @@ static bool XLogCompressBackupBlock(char *page, uint16 hole_offset,
  */
 void
 XLogBeginInsert(void)
-{	StackTrace("XLogBeginInsert");
+{
 	Assert(max_registered_block_id == 0);
 	Assert(mainrdata_last == (XLogRecData *) &mainrdata_head);
 	Assert(mainrdata_len == 0);
@@ -144,7 +144,7 @@ XLogBeginInsert(void)
  */
 void
 XLogEnsureRecordSpace(int max_block_id, int ndatas)
-{	StackTrace("XLogEnsureRecordSpace");
+{
 	int			nbuffers;
 
 	/*
@@ -191,7 +191,7 @@ XLogEnsureRecordSpace(int max_block_id, int ndatas)
  */
 void
 XLogResetInsertion(void)
-{	StackTrace("XLogResetInsertion");
+{
 	int			i;
 
 	for (i = 0; i < max_registered_block_id; i++)
@@ -211,7 +211,7 @@ XLogResetInsertion(void)
  */
 void
 XLogRegisterBuffer(uint8 block_id, Buffer buffer, uint8 flags)
-{	StackTrace("XLogRegisterBuffer");
+{
 	registered_buffer *regbuf;
 
 	/* NO_IMAGE doesn't make sense with FORCE_IMAGE */
@@ -265,7 +265,7 @@ XLogRegisterBuffer(uint8 block_id, Buffer buffer, uint8 flags)
 void
 XLogRegisterBlock(uint8 block_id, RelFileNode *rnode, ForkNumber forknum,
 				  BlockNumber blknum, Page page, uint8 flags)
-{	StackTrace("XLogRegisterBlock");
+{
 	registered_buffer *regbuf;
 
 	/* This is currently only used to WAL-log a full-page image of a page */
@@ -321,7 +321,7 @@ XLogRegisterBlock(uint8 block_id, RelFileNode *rnode, ForkNumber forknum,
  */
 void
 XLogRegisterData(char *data, int len)
-{	StackTrace("XLogRegisterData");
+{
 	XLogRecData *rdata;
 
 	Assert(begininsert_called);
@@ -359,7 +359,7 @@ XLogRegisterData(char *data, int len)
  */
 void
 XLogRegisterBufData(uint8 block_id, char *data, int len)
-{	StackTrace("XLogRegisterBufData");
+{
 	registered_buffer *regbuf;
 	XLogRecData *rdata;
 
@@ -388,7 +388,7 @@ XLogRegisterBufData(uint8 block_id, char *data, int len)
  */
 void
 XLogIncludeOrigin(void)
-{	StackTrace("XLogIncludeOrigin");
+{
 	Assert(begininsert_called);
 	include_origin = true;
 }
@@ -406,7 +406,7 @@ XLogIncludeOrigin(void)
  */
 XLogRecPtr
 XLogInsert(RmgrId rmid, uint8 info)
-{	StackTrace("XLogInsert");
+{
 	XLogRecPtr	EndPos;
 
 	/* XLogBeginInsert() must have been called. */
@@ -474,7 +474,7 @@ static XLogRecData *
 XLogRecordAssemble(RmgrId rmid, uint8 info,
 				   XLogRecPtr RedoRecPtr, bool doPageWrites,
 				   XLogRecPtr *fpw_lsn)
-{	StackTrace("XLogRecordAssemble");
+{
 	XLogRecData *rdt;
 	uint32		total_len = 0;
 	int			block_id;
@@ -818,7 +818,7 @@ XLogCompressBackupBlock(char *page, uint16 hole_offset, uint16 hole_length,
  */
 bool
 XLogCheckBufferNeedsBackup(Buffer buffer)
-{	StackTrace("XLogCheckBufferNeedsBackup");
+{
 	XLogRecPtr	RedoRecPtr;
 	bool		doPageWrites;
 	Page		page;
@@ -856,7 +856,7 @@ XLogCheckBufferNeedsBackup(Buffer buffer)
  */
 XLogRecPtr
 XLogSaveBufferForHint(Buffer buffer, bool buffer_std)
-{	StackTrace("XLogSaveBufferForHint");
+{
 	XLogRecPtr	recptr = InvalidXLogRecPtr;
 	XLogRecPtr	lsn;
 	XLogRecPtr	RedoRecPtr;
@@ -936,7 +936,7 @@ XLogSaveBufferForHint(Buffer buffer, bool buffer_std)
 XLogRecPtr
 log_newpage(RelFileNode *rnode, ForkNumber forkNum, BlockNumber blkno,
 			Page page, bool page_std)
-{	StackTrace("log_newpage");
+{
 	int			flags;
 	XLogRecPtr	recptr;
 
@@ -972,7 +972,7 @@ log_newpage(RelFileNode *rnode, ForkNumber forkNum, BlockNumber blkno,
  */
 XLogRecPtr
 log_newpage_buffer(Buffer buffer, bool page_std)
-{	StackTrace("log_newpage_buffer");
+{
 	Page		page = BufferGetPage(buffer);
 	RelFileNode rnode;
 	ForkNumber	forkNum;
@@ -991,7 +991,7 @@ log_newpage_buffer(Buffer buffer, bool page_std)
  */
 void
 InitXLogInsert(void)
-{	StackTrace("InitXLogInsert");
+{
 	/* Initialize the working areas */
 	if (xloginsert_cxt == NULL)
 	{

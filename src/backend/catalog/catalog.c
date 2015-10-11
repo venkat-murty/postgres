@@ -59,7 +59,7 @@
  */
 bool
 IsSystemRelation(Relation relation)
-{	StackTrace("IsSystemRelation");
+{
 	return IsSystemClass(RelationGetRelid(relation), relation->rd_rel);
 }
 
@@ -71,7 +71,7 @@ IsSystemRelation(Relation relation)
  */
 bool
 IsSystemClass(Oid relid, Form_pg_class reltuple)
-{	StackTrace("IsSystemClass");
+{
 	return IsToastClass(reltuple) || IsCatalogClass(relid, reltuple);
 }
 
@@ -88,7 +88,7 @@ IsSystemClass(Oid relid, Form_pg_class reltuple)
  */
 bool
 IsCatalogRelation(Relation relation)
-{	StackTrace("IsCatalogRelation");
+{
 	return IsCatalogClass(RelationGetRelid(relation), relation->rd_rel);
 }
 
@@ -100,7 +100,7 @@ IsCatalogRelation(Relation relation)
  */
 bool
 IsCatalogClass(Oid relid, Form_pg_class reltuple)
-{	StackTrace("IsCatalogClass");
+{
 	Oid			relnamespace = reltuple->relnamespace;
 
 	/*
@@ -132,7 +132,7 @@ IsCatalogClass(Oid relid, Form_pg_class reltuple)
  */
 bool
 IsToastRelation(Relation relation)
-{	StackTrace("IsToastRelation");
+{
 	return IsToastNamespace(RelationGetNamespace(relation));
 }
 
@@ -144,7 +144,7 @@ IsToastRelation(Relation relation)
  */
 bool
 IsToastClass(Form_pg_class reltuple)
-{	StackTrace("IsToastClass");
+{
 	Oid			relnamespace = reltuple->relnamespace;
 
 	return IsToastNamespace(relnamespace);
@@ -159,7 +159,7 @@ IsToastClass(Form_pg_class reltuple)
  */
 bool
 IsSystemNamespace(Oid namespaceId)
-{	StackTrace("IsSystemNamespace");
+{
 	return namespaceId == PG_CATALOG_NAMESPACE;
 }
 
@@ -173,7 +173,7 @@ IsSystemNamespace(Oid namespaceId)
  */
 bool
 IsToastNamespace(Oid namespaceId)
-{	StackTrace("IsToastNamespace");
+{
 	return (namespaceId == PG_TOAST_NAMESPACE) ||
 		isTempToastNamespace(namespaceId);
 }
@@ -189,7 +189,7 @@ IsToastNamespace(Oid namespaceId)
  */
 bool
 IsReservedName(const char *name)
-{	StackTrace("IsReservedName");
+{
 	/* ugly coding for speed */
 	return (name[0] == 'p' &&
 			name[1] == 'g' &&
@@ -215,7 +215,7 @@ IsReservedName(const char *name)
  */
 bool
 IsSharedRelation(Oid relationId)
-{	StackTrace("IsSharedRelation");
+{
 	/* These are the shared catalogs (look for BKI_SHARED_RELATION) */
 	if (relationId == AuthIdRelationId ||
 		relationId == AuthMemRelationId ||
@@ -281,7 +281,7 @@ IsSharedRelation(Oid relationId)
  */
 Oid
 GetNewOid(Relation relation)
-{	StackTrace("GetNewOid");
+{
 	Oid			oidIndex;
 
 	/* If relation doesn't have OIDs at all, caller is confused */
@@ -328,7 +328,7 @@ GetNewOid(Relation relation)
  */
 Oid
 GetNewOidWithIndex(Relation relation, Oid indexId, AttrNumber oidcolumn)
-{	StackTrace("GetNewOidWithIndex");
+{
 	Oid			newOid;
 	SnapshotData SnapshotDirty;
 	SysScanDesc scan;
@@ -379,7 +379,7 @@ GetNewOidWithIndex(Relation relation, Oid indexId, AttrNumber oidcolumn)
  */
 Oid
 GetNewRelFileNode(Oid reltablespace, Relation pg_class, char relpersistence)
-{	StackTrace("GetNewRelFileNode");
+{
 	RelFileNodeBackend rnode;
 	char	   *rpath;
 	int			fd;

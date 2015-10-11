@@ -32,7 +32,7 @@
 
 void
 ParseCommitRecord(uint8 info, xl_xact_commit *xlrec, xl_xact_parsed_commit *parsed)
-{	StackTrace("ParseCommitRecord");
+{
 	char	   *data = ((char *) xlrec) + MinSizeOfXactCommit;
 
 	memset(parsed, 0, sizeof(*parsed));
@@ -119,7 +119,7 @@ ParseCommitRecord(uint8 info, xl_xact_commit *xlrec, xl_xact_parsed_commit *pars
 
 void
 ParseAbortRecord(uint8 info, xl_xact_abort *xlrec, xl_xact_parsed_abort *parsed)
-{	StackTrace("ParseAbortRecord");
+{
 	char	   *data = ((char *) xlrec) + MinSizeOfXactAbort;
 
 	memset(parsed, 0, sizeof(*parsed));
@@ -172,7 +172,7 @@ ParseAbortRecord(uint8 info, xl_xact_abort *xlrec, xl_xact_parsed_abort *parsed)
 
 static void
 xact_desc_commit(StringInfo buf, uint8 info, xl_xact_commit *xlrec, RepOriginId origin_id)
-{	StackTrace("xact_desc_commit");
+{
 	xl_xact_parsed_commit parsed;
 	int			i;
 
@@ -246,7 +246,7 @@ xact_desc_commit(StringInfo buf, uint8 info, xl_xact_commit *xlrec, RepOriginId 
 
 static void
 xact_desc_abort(StringInfo buf, uint8 info, xl_xact_abort *xlrec)
-{	StackTrace("xact_desc_abort");
+{
 	xl_xact_parsed_abort parsed;
 	int			i;
 
@@ -279,7 +279,7 @@ xact_desc_abort(StringInfo buf, uint8 info, xl_xact_abort *xlrec)
 
 static void
 xact_desc_assignment(StringInfo buf, xl_xact_assignment *xlrec)
-{	StackTrace("xact_desc_assignment");
+{
 	int			i;
 
 	appendStringInfoString(buf, "subxacts:");
@@ -290,7 +290,7 @@ xact_desc_assignment(StringInfo buf, xl_xact_assignment *xlrec)
 
 void
 xact_desc(StringInfo buf, XLogReaderState *record)
-{	StackTrace("xact_desc");
+{
 	char	   *rec = XLogRecGetData(record);
 	uint8		info = XLogRecGetInfo(record) & XLOG_XACT_OPMASK;
 
@@ -323,7 +323,7 @@ xact_desc(StringInfo buf, XLogReaderState *record)
 
 const char *
 xact_identify(uint8 info)
-{	StackTrace("xact_identify");
+{
 	const char *id = NULL;
 
 	switch (info & XLOG_XACT_OPMASK)

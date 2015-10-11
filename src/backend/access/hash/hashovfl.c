@@ -31,7 +31,7 @@ static uint32 _hash_firstfreebit(uint32 map);
  */
 static BlockNumber
 bitno_to_blkno(HashMetaPage metap, uint32 ovflbitnum)
-{	StackTrace("bitno_to_blkno");
+{
 	uint32		splitnum = metap->hashm_ovflpoint;
 	uint32		i;
 
@@ -56,7 +56,7 @@ bitno_to_blkno(HashMetaPage metap, uint32 ovflbitnum)
  */
 static uint32
 blkno_to_bitno(HashMetaPage metap, BlockNumber ovflblkno)
-{	StackTrace("blkno_to_bitno");
+{
 	uint32		splitnum = metap->hashm_ovflpoint;
 	uint32		i;
 	uint32		bitnum;
@@ -99,7 +99,7 @@ blkno_to_bitno(HashMetaPage metap, BlockNumber ovflblkno)
  */
 Buffer
 _hash_addovflpage(Relation rel, Buffer metabuf, Buffer buf)
-{	StackTrace("_hash_addovflpage");
+{
 	Buffer		ovflbuf;
 	Page		page;
 	Page		ovflpage;
@@ -166,7 +166,7 @@ _hash_addovflpage(Relation rel, Buffer metabuf, Buffer buf)
  */
 static Buffer
 _hash_getovflpage(Relation rel, Buffer metabuf)
-{	StackTrace("_hash_getovflpage");
+{
 	HashMetaPage metap;
 	Buffer		mapbuf = 0;
 	Buffer		newbuf;
@@ -340,7 +340,7 @@ found:
  */
 static uint32
 _hash_firstfreebit(uint32 map)
-{	StackTrace("_hash_firstfreebit");
+{
 	uint32		i,
 				mask;
 
@@ -376,7 +376,7 @@ _hash_firstfreebit(uint32 map)
 BlockNumber
 _hash_freeovflpage(Relation rel, Buffer ovflbuf,
 				   BufferAccessStrategy bstrategy)
-{	StackTrace("_hash_freeovflpage");
+{
 	HashMetaPage metap;
 	Buffer		metabuf;
 	Buffer		mapbuf;
@@ -504,7 +504,7 @@ _hash_freeovflpage(Relation rel, Buffer ovflbuf,
 void
 _hash_initbitmap(Relation rel, HashMetaPage metap, BlockNumber blkno,
 				 ForkNumber forkNum)
-{	StackTrace("_hash_initbitmap");
+{
 	Buffer		buf;
 	Page		pg;
 	HashPageOpaque op;
@@ -581,7 +581,7 @@ _hash_squeezebucket(Relation rel,
 					Bucket bucket,
 					BlockNumber bucket_blkno,
 					BufferAccessStrategy bstrategy)
-{	StackTrace("_hash_squeezebucket");
+{
 	BlockNumber wblkno;
 	BlockNumber rblkno;
 	Buffer		wbuf;

@@ -39,7 +39,7 @@ static bool ForeignRecheck(ForeignScanState *node, TupleTableSlot *slot);
  */
 static TupleTableSlot *
 ForeignNext(ForeignScanState *node)
-{	StackTrace("ForeignNext");
+{
 	TupleTableSlot *slot;
 	ForeignScan *plan = (ForeignScan *) node->ss.ps.plan;
 	ExprContext *econtext = node->ss.ps.ps_ExprContext;
@@ -71,7 +71,7 @@ ForeignNext(ForeignScanState *node)
  */
 static bool
 ForeignRecheck(ForeignScanState *node, TupleTableSlot *slot)
-{	StackTrace("ForeignRecheck");
+{
 	/* There are no access-method-specific conditions to recheck. */
 	return true;
 }
@@ -87,7 +87,7 @@ ForeignRecheck(ForeignScanState *node, TupleTableSlot *slot)
  */
 TupleTableSlot *
 ExecForeignScan(ForeignScanState *node)
-{	StackTrace("ExecForeignScan");
+{
 	return ExecScan((ScanState *) node,
 					(ExecScanAccessMtd) ForeignNext,
 					(ExecScanRecheckMtd) ForeignRecheck);
@@ -100,7 +100,7 @@ ExecForeignScan(ForeignScanState *node)
  */
 ForeignScanState *
 ExecInitForeignScan(ForeignScan *node, EState *estate, int eflags)
-{	StackTrace("ExecInitForeignScan");
+{
 	ForeignScanState *scanstate;
 	Relation	currentRelation = NULL;
 	Index		scanrelid = node->scan.scanrelid;
@@ -206,7 +206,7 @@ ExecInitForeignScan(ForeignScan *node, EState *estate, int eflags)
  */
 void
 ExecEndForeignScan(ForeignScanState *node)
-{	StackTrace("ExecEndForeignScan");
+{
 	/* Let the FDW shut down */
 	node->fdwroutine->EndForeignScan(node);
 
@@ -230,7 +230,7 @@ ExecEndForeignScan(ForeignScanState *node)
  */
 void
 ExecReScanForeignScan(ForeignScanState *node)
-{	StackTrace("ExecReScanForeignScan");
+{
 	node->fdwroutine->ReScanForeignScan(node);
 
 	ExecScanReScan(&node->ss);

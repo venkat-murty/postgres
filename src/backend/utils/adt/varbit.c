@@ -35,7 +35,7 @@ static VarBit *bit_overlay(VarBit *t1, VarBit *t2, int sp, int sl);
  */
 static int32
 anybit_typmodin(ArrayType *ta, const char *typename)
-{	StackTrace("anybit_typmodin");
+{
 	int32		typmod;
 	int32	   *tl;
 	int			n;
@@ -72,7 +72,7 @@ anybit_typmodin(ArrayType *ta, const char *typename)
  */
 static char *
 anybit_typmodout(int32 typmod)
-{	StackTrace("anybit_typmodout");
+{
 	char	   *res = (char *) palloc(64);
 
 	if (typmod >= 0)
@@ -110,7 +110,7 @@ anybit_typmodout(int32 typmod)
  */
 Datum
 bit_in(PG_FUNCTION_ARGS)
-{	StackTrace("bit_in");
+{
 	char	   *input_string = PG_GETARG_CSTRING(0);
 
 #ifdef NOT_USED
@@ -243,7 +243,7 @@ bit_in(PG_FUNCTION_ARGS)
 
 Datum
 bit_out(PG_FUNCTION_ARGS)
-{	StackTrace("bit_out");
+{
 #if 1
 	/* same as varbit output */
 	return varbit_out(fcinfo);
@@ -291,7 +291,7 @@ bit_out(PG_FUNCTION_ARGS)
  */
 Datum
 bit_recv(PG_FUNCTION_ARGS)
-{	StackTrace("bit_recv");
+{
 	StringInfo	buf = (StringInfo) PG_GETARG_POINTER(0);
 
 #ifdef NOT_USED
@@ -343,7 +343,7 @@ bit_recv(PG_FUNCTION_ARGS)
  */
 Datum
 bit_send(PG_FUNCTION_ARGS)
-{	StackTrace("bit_send");
+{
 	/* Exactly the same as varbit_send, so share code */
 	return varbit_send(fcinfo);
 }
@@ -358,7 +358,7 @@ bit_send(PG_FUNCTION_ARGS)
  */
 Datum
 bit(PG_FUNCTION_ARGS)
-{	StackTrace("bit");
+{
 	VarBit	   *arg = PG_GETARG_VARBIT_P(0);
 	int32		len = PG_GETARG_INT32(1);
 	bool		isExplicit = PG_GETARG_BOOL(2);
@@ -403,7 +403,7 @@ bit(PG_FUNCTION_ARGS)
 
 Datum
 bittypmodin(PG_FUNCTION_ARGS)
-{	StackTrace("bittypmodin");
+{
 	ArrayType  *ta = PG_GETARG_ARRAYTYPE_P(0);
 
 	PG_RETURN_INT32(anybit_typmodin(ta, "bit"));
@@ -411,7 +411,7 @@ bittypmodin(PG_FUNCTION_ARGS)
 
 Datum
 bittypmodout(PG_FUNCTION_ARGS)
-{	StackTrace("bittypmodout");
+{
 	int32		typmod = PG_GETARG_INT32(0);
 
 	PG_RETURN_CSTRING(anybit_typmodout(typmod));
@@ -426,7 +426,7 @@ bittypmodout(PG_FUNCTION_ARGS)
  */
 Datum
 varbit_in(PG_FUNCTION_ARGS)
-{	StackTrace("varbit_in");
+{
 	char	   *input_string = PG_GETARG_CSTRING(0);
 
 #ifdef NOT_USED
@@ -561,7 +561,7 @@ varbit_in(PG_FUNCTION_ARGS)
  */
 Datum
 varbit_out(PG_FUNCTION_ARGS)
-{	StackTrace("varbit_out");
+{
 	VarBit	   *s = PG_GETARG_VARBIT_P(0);
 	char	   *result,
 			   *r;
@@ -607,7 +607,7 @@ varbit_out(PG_FUNCTION_ARGS)
  */
 Datum
 varbit_recv(PG_FUNCTION_ARGS)
-{	StackTrace("varbit_recv");
+{
 	StringInfo	buf = (StringInfo) PG_GETARG_POINTER(0);
 
 #ifdef NOT_USED
@@ -659,7 +659,7 @@ varbit_recv(PG_FUNCTION_ARGS)
  */
 Datum
 varbit_send(PG_FUNCTION_ARGS)
-{	StackTrace("varbit_send");
+{
 	VarBit	   *s = PG_GETARG_VARBIT_P(0);
 	StringInfoData buf;
 
@@ -677,7 +677,7 @@ varbit_send(PG_FUNCTION_ARGS)
  */
 Datum
 varbit_transform(PG_FUNCTION_ARGS)
-{	StackTrace("varbit_transform");
+{
 	FuncExpr   *expr = (FuncExpr *) PG_GETARG_POINTER(0);
 	Node	   *ret = NULL;
 	Node	   *typmod;
@@ -712,7 +712,7 @@ varbit_transform(PG_FUNCTION_ARGS)
  */
 Datum
 varbit(PG_FUNCTION_ARGS)
-{	StackTrace("varbit");
+{
 	VarBit	   *arg = PG_GETARG_VARBIT_P(0);
 	int32		len = PG_GETARG_INT32(1);
 	bool		isExplicit = PG_GETARG_BOOL(2);
@@ -751,7 +751,7 @@ varbit(PG_FUNCTION_ARGS)
 
 Datum
 varbittypmodin(PG_FUNCTION_ARGS)
-{	StackTrace("varbittypmodin");
+{
 	ArrayType  *ta = PG_GETARG_ARRAYTYPE_P(0);
 
 	PG_RETURN_INT32(anybit_typmodin(ta, "varbit"));
@@ -759,7 +759,7 @@ varbittypmodin(PG_FUNCTION_ARGS)
 
 Datum
 varbittypmodout(PG_FUNCTION_ARGS)
-{	StackTrace("varbittypmodout");
+{
 	int32		typmod = PG_GETARG_INT32(0);
 
 	PG_RETURN_CSTRING(anybit_typmodout(typmod));
@@ -795,7 +795,7 @@ varbittypmodout(PG_FUNCTION_ARGS)
  */
 static int32
 bit_cmp(VarBit *arg1, VarBit *arg2)
-{	StackTrace("bit_cmp");
+{
 	int			bitlen1,
 				bytelen1,
 				bitlen2,
@@ -818,7 +818,7 @@ bit_cmp(VarBit *arg1, VarBit *arg2)
 
 Datum
 biteq(PG_FUNCTION_ARGS)
-{	StackTrace("biteq");
+{
 	VarBit	   *arg1 = PG_GETARG_VARBIT_P(0);
 	VarBit	   *arg2 = PG_GETARG_VARBIT_P(1);
 	bool		result;
@@ -842,7 +842,7 @@ biteq(PG_FUNCTION_ARGS)
 
 Datum
 bitne(PG_FUNCTION_ARGS)
-{	StackTrace("bitne");
+{
 	VarBit	   *arg1 = PG_GETARG_VARBIT_P(0);
 	VarBit	   *arg2 = PG_GETARG_VARBIT_P(1);
 	bool		result;
@@ -866,7 +866,7 @@ bitne(PG_FUNCTION_ARGS)
 
 Datum
 bitlt(PG_FUNCTION_ARGS)
-{	StackTrace("bitlt");
+{
 	VarBit	   *arg1 = PG_GETARG_VARBIT_P(0);
 	VarBit	   *arg2 = PG_GETARG_VARBIT_P(1);
 	bool		result;
@@ -881,7 +881,7 @@ bitlt(PG_FUNCTION_ARGS)
 
 Datum
 bitle(PG_FUNCTION_ARGS)
-{	StackTrace("bitle");
+{
 	VarBit	   *arg1 = PG_GETARG_VARBIT_P(0);
 	VarBit	   *arg2 = PG_GETARG_VARBIT_P(1);
 	bool		result;
@@ -896,7 +896,7 @@ bitle(PG_FUNCTION_ARGS)
 
 Datum
 bitgt(PG_FUNCTION_ARGS)
-{	StackTrace("bitgt");
+{
 	VarBit	   *arg1 = PG_GETARG_VARBIT_P(0);
 	VarBit	   *arg2 = PG_GETARG_VARBIT_P(1);
 	bool		result;
@@ -911,7 +911,7 @@ bitgt(PG_FUNCTION_ARGS)
 
 Datum
 bitge(PG_FUNCTION_ARGS)
-{	StackTrace("bitge");
+{
 	VarBit	   *arg1 = PG_GETARG_VARBIT_P(0);
 	VarBit	   *arg2 = PG_GETARG_VARBIT_P(1);
 	bool		result;
@@ -926,7 +926,7 @@ bitge(PG_FUNCTION_ARGS)
 
 Datum
 bitcmp(PG_FUNCTION_ARGS)
-{	StackTrace("bitcmp");
+{
 	VarBit	   *arg1 = PG_GETARG_VARBIT_P(0);
 	VarBit	   *arg2 = PG_GETARG_VARBIT_P(1);
 	int32		result;
@@ -945,7 +945,7 @@ bitcmp(PG_FUNCTION_ARGS)
  */
 Datum
 bitcat(PG_FUNCTION_ARGS)
-{	StackTrace("bitcat");
+{
 	VarBit	   *arg1 = PG_GETARG_VARBIT_P(0);
 	VarBit	   *arg2 = PG_GETARG_VARBIT_P(1);
 
@@ -954,7 +954,7 @@ bitcat(PG_FUNCTION_ARGS)
 
 static VarBit *
 bit_catenate(VarBit *arg1, VarBit *arg2)
-{	StackTrace("bit_catenate");
+{
 	VarBit	   *result;
 	int			bitlen1,
 				bitlen2,
@@ -1013,7 +1013,7 @@ bit_catenate(VarBit *arg1, VarBit *arg2)
  */
 Datum
 bitsubstr(PG_FUNCTION_ARGS)
-{	StackTrace("bitsubstr");
+{
 	PG_RETURN_VARBIT_P(bitsubstring(PG_GETARG_VARBIT_P(0),
 									PG_GETARG_INT32(1),
 									PG_GETARG_INT32(2),
@@ -1022,7 +1022,7 @@ bitsubstr(PG_FUNCTION_ARGS)
 
 Datum
 bitsubstr_no_len(PG_FUNCTION_ARGS)
-{	StackTrace("bitsubstr_no_len");
+{
 	PG_RETURN_VARBIT_P(bitsubstring(PG_GETARG_VARBIT_P(0),
 									PG_GETARG_INT32(1),
 									-1, true));
@@ -1030,7 +1030,7 @@ bitsubstr_no_len(PG_FUNCTION_ARGS)
 
 static VarBit *
 bitsubstring(VarBit *arg, int32 s, int32 l, bool length_not_specified)
-{	StackTrace("bitsubstring");
+{
 	VarBit	   *result;
 	int			bitlen,
 				rbitlen,
@@ -1128,7 +1128,7 @@ bitsubstring(VarBit *arg, int32 s, int32 l, bool length_not_specified)
  */
 Datum
 bitoverlay(PG_FUNCTION_ARGS)
-{	StackTrace("bitoverlay");
+{
 	VarBit	   *t1 = PG_GETARG_VARBIT_P(0);
 	VarBit	   *t2 = PG_GETARG_VARBIT_P(1);
 	int			sp = PG_GETARG_INT32(2);		/* substring start position */
@@ -1139,7 +1139,7 @@ bitoverlay(PG_FUNCTION_ARGS)
 
 Datum
 bitoverlay_no_len(PG_FUNCTION_ARGS)
-{	StackTrace("bitoverlay_no_len");
+{
 	VarBit	   *t1 = PG_GETARG_VARBIT_P(0);
 	VarBit	   *t2 = PG_GETARG_VARBIT_P(1);
 	int			sp = PG_GETARG_INT32(2);		/* substring start position */
@@ -1151,7 +1151,7 @@ bitoverlay_no_len(PG_FUNCTION_ARGS)
 
 static VarBit *
 bit_overlay(VarBit *t1, VarBit *t2, int sp, int sl)
-{	StackTrace("bit_overlay");
+{
 	VarBit	   *result;
 	VarBit	   *s1;
 	VarBit	   *s2;
@@ -1186,7 +1186,7 @@ bit_overlay(VarBit *t1, VarBit *t2, int sp, int sl)
  */
 Datum
 bitlength(PG_FUNCTION_ARGS)
-{	StackTrace("bitlength");
+{
 	VarBit	   *arg = PG_GETARG_VARBIT_P(0);
 
 	PG_RETURN_INT32(VARBITLEN(arg));
@@ -1194,7 +1194,7 @@ bitlength(PG_FUNCTION_ARGS)
 
 Datum
 bitoctetlength(PG_FUNCTION_ARGS)
-{	StackTrace("bitoctetlength");
+{
 	VarBit	   *arg = PG_GETARG_VARBIT_P(0);
 
 	PG_RETURN_INT32(VARBITBYTES(arg));
@@ -1206,7 +1206,7 @@ bitoctetlength(PG_FUNCTION_ARGS)
  */
 Datum
 bit_and(PG_FUNCTION_ARGS)
-{	StackTrace("bit_and");
+{
 	VarBit	   *arg1 = PG_GETARG_VARBIT_P(0);
 	VarBit	   *arg2 = PG_GETARG_VARBIT_P(1);
 	VarBit	   *result;
@@ -1247,7 +1247,7 @@ bit_and(PG_FUNCTION_ARGS)
  */
 Datum
 bit_or(PG_FUNCTION_ARGS)
-{	StackTrace("bit_or");
+{
 	VarBit	   *arg1 = PG_GETARG_VARBIT_P(0);
 	VarBit	   *arg2 = PG_GETARG_VARBIT_P(1);
 	VarBit	   *result;
@@ -1294,7 +1294,7 @@ bit_or(PG_FUNCTION_ARGS)
  */
 Datum
 bitxor(PG_FUNCTION_ARGS)
-{	StackTrace("bitxor");
+{
 	VarBit	   *arg1 = PG_GETARG_VARBIT_P(0);
 	VarBit	   *arg2 = PG_GETARG_VARBIT_P(1);
 	VarBit	   *result;
@@ -1342,7 +1342,7 @@ bitxor(PG_FUNCTION_ARGS)
  */
 Datum
 bitnot(PG_FUNCTION_ARGS)
-{	StackTrace("bitnot");
+{
 	VarBit	   *arg = PG_GETARG_VARBIT_P(0);
 	VarBit	   *result;
 	bits8	   *p,
@@ -1375,7 +1375,7 @@ bitnot(PG_FUNCTION_ARGS)
  */
 Datum
 bitshiftleft(PG_FUNCTION_ARGS)
-{	StackTrace("bitshiftleft");
+{
 	VarBit	   *arg = PG_GETARG_VARBIT_P(0);
 	int32		shft = PG_GETARG_INT32(1);
 	VarBit	   *result;
@@ -1435,7 +1435,7 @@ bitshiftleft(PG_FUNCTION_ARGS)
  */
 Datum
 bitshiftright(PG_FUNCTION_ARGS)
-{	StackTrace("bitshiftright");
+{
 	VarBit	   *arg = PG_GETARG_VARBIT_P(0);
 	int32		shft = PG_GETARG_INT32(1);
 	VarBit	   *result;
@@ -1498,7 +1498,7 @@ bitshiftright(PG_FUNCTION_ARGS)
  */
 Datum
 bitfromint4(PG_FUNCTION_ARGS)
-{	StackTrace("bitfromint4");
+{
 	int32		a = PG_GETARG_INT32(0);
 	int32		typmod = PG_GETARG_INT32(1);
 	VarBit	   *result;
@@ -1553,7 +1553,7 @@ bitfromint4(PG_FUNCTION_ARGS)
 
 Datum
 bittoint4(PG_FUNCTION_ARGS)
-{	StackTrace("bittoint4");
+{
 	VarBit	   *arg = PG_GETARG_VARBIT_P(0);
 	uint32		result;
 	bits8	   *r;
@@ -1578,7 +1578,7 @@ bittoint4(PG_FUNCTION_ARGS)
 
 Datum
 bitfromint8(PG_FUNCTION_ARGS)
-{	StackTrace("bitfromint8");
+{
 	int64		a = PG_GETARG_INT64(0);
 	int32		typmod = PG_GETARG_INT32(1);
 	VarBit	   *result;
@@ -1633,7 +1633,7 @@ bitfromint8(PG_FUNCTION_ARGS)
 
 Datum
 bittoint8(PG_FUNCTION_ARGS)
-{	StackTrace("bittoint8");
+{
 	VarBit	   *arg = PG_GETARG_VARBIT_P(0);
 	uint64		result;
 	bits8	   *r;
@@ -1665,7 +1665,7 @@ bittoint8(PG_FUNCTION_ARGS)
  */
 Datum
 bitposition(PG_FUNCTION_ARGS)
-{	StackTrace("bitposition");
+{
 	VarBit	   *str = PG_GETARG_VARBIT_P(0);
 	VarBit	   *substr = PG_GETARG_VARBIT_P(1);
 	int			substr_length,
@@ -1774,7 +1774,7 @@ bitposition(PG_FUNCTION_ARGS)
  */
 Datum
 bitsetbit(PG_FUNCTION_ARGS)
-{	StackTrace("bitsetbit");
+{
 	VarBit	   *arg1 = PG_GETARG_VARBIT_P(0);
 	int32		n = PG_GETARG_INT32(1);
 	int32		newBit = PG_GETARG_INT32(2);
@@ -1836,7 +1836,7 @@ bitsetbit(PG_FUNCTION_ARGS)
  */
 Datum
 bitgetbit(PG_FUNCTION_ARGS)
-{	StackTrace("bitgetbit");
+{
 	VarBit	   *arg1 = PG_GETARG_VARBIT_P(0);
 	int32		n = PG_GETARG_INT32(1);
 	int			bitlen;

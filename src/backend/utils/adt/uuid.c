@@ -32,7 +32,7 @@ static int	uuid_internal_cmp(const pg_uuid_t *arg1, const pg_uuid_t *arg2);
 
 Datum
 uuid_in(PG_FUNCTION_ARGS)
-{	StackTrace("uuid_in");
+{
 	char	   *uuid_str = PG_GETARG_CSTRING(0);
 	pg_uuid_t  *uuid;
 
@@ -43,7 +43,7 @@ uuid_in(PG_FUNCTION_ARGS)
 
 Datum
 uuid_out(PG_FUNCTION_ARGS)
-{	StackTrace("uuid_out");
+{
 	pg_uuid_t  *uuid = PG_GETARG_UUID_P(0);
 	static const char hex_chars[] = "0123456789abcdef";
 	StringInfoData buf;
@@ -81,7 +81,7 @@ uuid_out(PG_FUNCTION_ARGS)
  */
 static void
 string_to_uuid(const char *source, pg_uuid_t *uuid)
-{	StackTrace("string_to_uuid");
+{
 	const char *src = source;
 	bool		braces = false;
 	int			i;
@@ -131,7 +131,7 @@ syntax_error:
 
 Datum
 uuid_recv(PG_FUNCTION_ARGS)
-{	StackTrace("uuid_recv");
+{
 	StringInfo	buffer = (StringInfo) PG_GETARG_POINTER(0);
 	pg_uuid_t  *uuid;
 
@@ -142,7 +142,7 @@ uuid_recv(PG_FUNCTION_ARGS)
 
 Datum
 uuid_send(PG_FUNCTION_ARGS)
-{	StackTrace("uuid_send");
+{
 	pg_uuid_t  *uuid = PG_GETARG_UUID_P(0);
 	StringInfoData buffer;
 
@@ -154,13 +154,13 @@ uuid_send(PG_FUNCTION_ARGS)
 /* internal uuid compare function */
 static int
 uuid_internal_cmp(const pg_uuid_t *arg1, const pg_uuid_t *arg2)
-{	StackTrace("uuid_internal_cmp");
+{
 	return memcmp(arg1->data, arg2->data, UUID_LEN);
 }
 
 Datum
 uuid_lt(PG_FUNCTION_ARGS)
-{	StackTrace("uuid_lt");
+{
 	pg_uuid_t  *arg1 = PG_GETARG_UUID_P(0);
 	pg_uuid_t  *arg2 = PG_GETARG_UUID_P(1);
 
@@ -169,7 +169,7 @@ uuid_lt(PG_FUNCTION_ARGS)
 
 Datum
 uuid_le(PG_FUNCTION_ARGS)
-{	StackTrace("uuid_le");
+{
 	pg_uuid_t  *arg1 = PG_GETARG_UUID_P(0);
 	pg_uuid_t  *arg2 = PG_GETARG_UUID_P(1);
 
@@ -178,7 +178,7 @@ uuid_le(PG_FUNCTION_ARGS)
 
 Datum
 uuid_eq(PG_FUNCTION_ARGS)
-{	StackTrace("uuid_eq");
+{
 	pg_uuid_t  *arg1 = PG_GETARG_UUID_P(0);
 	pg_uuid_t  *arg2 = PG_GETARG_UUID_P(1);
 
@@ -187,7 +187,7 @@ uuid_eq(PG_FUNCTION_ARGS)
 
 Datum
 uuid_ge(PG_FUNCTION_ARGS)
-{	StackTrace("uuid_ge");
+{
 	pg_uuid_t  *arg1 = PG_GETARG_UUID_P(0);
 	pg_uuid_t  *arg2 = PG_GETARG_UUID_P(1);
 
@@ -196,7 +196,7 @@ uuid_ge(PG_FUNCTION_ARGS)
 
 Datum
 uuid_gt(PG_FUNCTION_ARGS)
-{	StackTrace("uuid_gt");
+{
 	pg_uuid_t  *arg1 = PG_GETARG_UUID_P(0);
 	pg_uuid_t  *arg2 = PG_GETARG_UUID_P(1);
 
@@ -205,7 +205,7 @@ uuid_gt(PG_FUNCTION_ARGS)
 
 Datum
 uuid_ne(PG_FUNCTION_ARGS)
-{	StackTrace("uuid_ne");
+{
 	pg_uuid_t  *arg1 = PG_GETARG_UUID_P(0);
 	pg_uuid_t  *arg2 = PG_GETARG_UUID_P(1);
 
@@ -215,7 +215,7 @@ uuid_ne(PG_FUNCTION_ARGS)
 /* handler for btree index operator */
 Datum
 uuid_cmp(PG_FUNCTION_ARGS)
-{	StackTrace("uuid_cmp");
+{
 	pg_uuid_t  *arg1 = PG_GETARG_UUID_P(0);
 	pg_uuid_t  *arg2 = PG_GETARG_UUID_P(1);
 
@@ -225,7 +225,7 @@ uuid_cmp(PG_FUNCTION_ARGS)
 /* hash index support */
 Datum
 uuid_hash(PG_FUNCTION_ARGS)
-{	StackTrace("uuid_hash");
+{
 	pg_uuid_t  *key = PG_GETARG_UUID_P(0);
 
 	return hash_any(key->data, UUID_LEN);

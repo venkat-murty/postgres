@@ -18,7 +18,7 @@
 
 void
 spg_desc(StringInfo buf, XLogReaderState *record)
-{	StackTrace("spg_desc");
+{
 	char	   *rec = XLogRecGetData(record);
 	uint8		info = XLogRecGetInfo(record) & ~XLR_INFO_MASK;
 
@@ -83,7 +83,7 @@ spg_desc(StringInfo buf, XLogReaderState *record)
 
 const char *
 spg_identify(uint8 info)
-{	StackTrace("spg_identify");
+{
 	const char *id = NULL;
 
 	switch (info & ~XLR_INFO_MASK)

@@ -539,7 +539,7 @@ static void free_sort_tuple(Tuplesortstate *state, SortTuple *stup);
 
 static Tuplesortstate *
 tuplesort_begin_common(int workMem, bool randomAccess)
-{	StackTrace("tuplesort_begin_common");
+{
 	Tuplesortstate *state;
 	MemoryContext sortcontext;
 	MemoryContext oldcontext;
@@ -607,7 +607,7 @@ tuplesort_begin_heap(TupleDesc tupDesc,
 					 Oid *sortOperators, Oid *sortCollations,
 					 bool *nullsFirstFlags,
 					 int workMem, bool randomAccess)
-{	StackTrace("tuplesort_begin_heap");
+{
 	Tuplesortstate *state = tuplesort_begin_common(workMem, randomAccess);
 	MemoryContext oldcontext;
 	int			i;
@@ -677,7 +677,7 @@ Tuplesortstate *
 tuplesort_begin_cluster(TupleDesc tupDesc,
 						Relation indexRel,
 						int workMem, bool randomAccess)
-{	StackTrace("tuplesort_begin_cluster");
+{
 	Tuplesortstate *state = tuplesort_begin_common(workMem, randomAccess);
 	ScanKey		indexScanKey;
 	MemoryContext oldcontext;
@@ -770,7 +770,7 @@ tuplesort_begin_index_btree(Relation heapRel,
 							Relation indexRel,
 							bool enforceUnique,
 							int workMem, bool randomAccess)
-{	StackTrace("tuplesort_begin_index_btree");
+{
 	Tuplesortstate *state = tuplesort_begin_common(workMem, randomAccess);
 	ScanKey		indexScanKey;
 	MemoryContext oldcontext;
@@ -845,7 +845,7 @@ tuplesort_begin_index_hash(Relation heapRel,
 						   Relation indexRel,
 						   uint32 hash_mask,
 						   int workMem, bool randomAccess)
-{	StackTrace("tuplesort_begin_index_hash");
+{
 	Tuplesortstate *state = tuplesort_begin_common(workMem, randomAccess);
 	MemoryContext oldcontext;
 
@@ -880,7 +880,7 @@ Tuplesortstate *
 tuplesort_begin_datum(Oid datumType, Oid sortOperator, Oid sortCollation,
 					  bool nullsFirstFlag,
 					  int workMem, bool randomAccess)
-{	StackTrace("tuplesort_begin_datum");
+{
 	Tuplesortstate *state = tuplesort_begin_common(workMem, randomAccess);
 	MemoryContext oldcontext;
 	int16		typlen;
@@ -956,7 +956,7 @@ tuplesort_begin_datum(Oid datumType, Oid sortOperator, Oid sortCollation,
  */
 void
 tuplesort_set_bound(Tuplesortstate *state, int64 bound)
-{	StackTrace("tuplesort_set_bound");
+{
 	/* Assert we're called before loading any tuples */
 	Assert(state->status == TSS_INITIAL);
 	Assert(state->memtupcount == 0);
@@ -1000,7 +1000,7 @@ tuplesort_set_bound(Tuplesortstate *state, int64 bound)
  */
 void
 tuplesort_end(Tuplesortstate *state)
-{	StackTrace("tuplesort_end");
+{
 	/* context swap probably not needed, but let's be safe */
 	MemoryContext oldcontext = MemoryContextSwitchTo(state->sortcontext);
 
@@ -1078,7 +1078,7 @@ tuplesort_end(Tuplesortstate *state)
  */
 static bool
 grow_memtuples(Tuplesortstate *state)
-{	StackTrace("grow_memtuples");
+{
 	int			newmemtupsize;
 	int			memtupsize = state->memtupsize;
 	int64		memNowUsed = state->allowedMem - state->availMem;
@@ -1197,7 +1197,7 @@ noalloc:
  */
 void
 tuplesort_puttupleslot(Tuplesortstate *state, TupleTableSlot *slot)
-{	StackTrace("tuplesort_puttupleslot");
+{
 	MemoryContext oldcontext = MemoryContextSwitchTo(state->sortcontext);
 	SortTuple	stup;
 
@@ -1219,7 +1219,7 @@ tuplesort_puttupleslot(Tuplesortstate *state, TupleTableSlot *slot)
  */
 void
 tuplesort_putheaptuple(Tuplesortstate *state, HeapTuple tup)
-{	StackTrace("tuplesort_putheaptuple");
+{
 	MemoryContext oldcontext = MemoryContextSwitchTo(state->sortcontext);
 	SortTuple	stup;
 
@@ -1242,7 +1242,7 @@ void
 tuplesort_putindextuplevalues(Tuplesortstate *state, Relation rel,
 							  ItemPointer self, Datum *values,
 							  bool *isnull)
-{	StackTrace("tuplesort_putindextuplevalues");
+{
 	MemoryContext oldcontext = MemoryContextSwitchTo(state->sortcontext);
 	SortTuple	stup;
 	Datum		original;
@@ -1314,7 +1314,7 @@ tuplesort_putindextuplevalues(Tuplesortstate *state, Relation rel,
  */
 void
 tuplesort_putdatum(Tuplesortstate *state, Datum val, bool isNull)
-{	StackTrace("tuplesort_putdatum");
+{
 	MemoryContext oldcontext = MemoryContextSwitchTo(state->sortcontext);
 	SortTuple	stup;
 
@@ -1388,7 +1388,7 @@ tuplesort_putdatum(Tuplesortstate *state, Datum val, bool isNull)
  */
 static void
 puttuple_common(Tuplesortstate *state, SortTuple *tuple)
-{	StackTrace("puttuple_common");
+{
 	switch (state->status)
 	{
 		case TSS_INITIAL:
@@ -1510,7 +1510,7 @@ puttuple_common(Tuplesortstate *state, SortTuple *tuple)
 
 static bool
 consider_abort_common(Tuplesortstate *state)
-{	StackTrace("consider_abort_common");
+{
 	Assert(state->sortKeys[0].abbrev_converter != NULL);
 	Assert(state->sortKeys[0].abbrev_abort != NULL);
 	Assert(state->sortKeys[0].abbrev_full_comparator != NULL);
@@ -1554,7 +1554,7 @@ consider_abort_common(Tuplesortstate *state)
  */
 void
 tuplesort_performsort(Tuplesortstate *state)
-{	StackTrace("tuplesort_performsort");
+{
 	MemoryContext oldcontext = MemoryContextSwitchTo(state->sortcontext);
 
 #ifdef TRACE_SORT
@@ -1650,7 +1650,7 @@ tuplesort_performsort(Tuplesortstate *state)
 static bool
 tuplesort_gettuple_common(Tuplesortstate *state, bool forward,
 						  SortTuple *stup, bool *should_free)
-{	StackTrace("tuplesort_gettuple_common");
+{
 	unsigned int tuplen;
 
 	switch (state->status)
@@ -1851,7 +1851,7 @@ tuplesort_gettuple_common(Tuplesortstate *state, bool forward,
 bool
 tuplesort_gettupleslot(Tuplesortstate *state, bool forward,
 					   TupleTableSlot *slot)
-{	StackTrace("tuplesort_gettupleslot");
+{
 	MemoryContext oldcontext = MemoryContextSwitchTo(state->sortcontext);
 	SortTuple	stup;
 	bool		should_free;
@@ -1880,7 +1880,7 @@ tuplesort_gettupleslot(Tuplesortstate *state, bool forward,
  */
 HeapTuple
 tuplesort_getheaptuple(Tuplesortstate *state, bool forward, bool *should_free)
-{	StackTrace("tuplesort_getheaptuple");
+{
 	MemoryContext oldcontext = MemoryContextSwitchTo(state->sortcontext);
 	SortTuple	stup;
 
@@ -1900,7 +1900,7 @@ tuplesort_getheaptuple(Tuplesortstate *state, bool forward, bool *should_free)
 IndexTuple
 tuplesort_getindextuple(Tuplesortstate *state, bool forward,
 						bool *should_free)
-{	StackTrace("tuplesort_getindextuple");
+{
 	MemoryContext oldcontext = MemoryContextSwitchTo(state->sortcontext);
 	SortTuple	stup;
 
@@ -1922,7 +1922,7 @@ tuplesort_getindextuple(Tuplesortstate *state, bool forward,
 bool
 tuplesort_getdatum(Tuplesortstate *state, bool forward,
 				   Datum *val, bool *isNull)
-{	StackTrace("tuplesort_getdatum");
+{
 	MemoryContext oldcontext = MemoryContextSwitchTo(state->sortcontext);
 	SortTuple	stup;
 	bool		should_free;
@@ -1961,7 +1961,7 @@ tuplesort_getdatum(Tuplesortstate *state, bool forward,
  */
 bool
 tuplesort_skiptuples(Tuplesortstate *state, int64 ntuples, bool forward)
-{	StackTrace("tuplesort_skiptuples");
+{
 	MemoryContext oldcontext;
 
 	/*
@@ -2032,7 +2032,7 @@ tuplesort_skiptuples(Tuplesortstate *state, int64 ntuples, bool forward)
  */
 int
 tuplesort_merge_order(int64 allowedMem)
-{	StackTrace("tuplesort_merge_order");
+{
 	int			mOrder;
 
 	/*
@@ -2061,7 +2061,7 @@ tuplesort_merge_order(int64 allowedMem)
  */
 static void
 inittapes(Tuplesortstate *state)
-{	StackTrace("inittapes");
+{
 	int			maxTapes,
 				ntuples,
 				j;
@@ -2169,7 +2169,7 @@ inittapes(Tuplesortstate *state)
  */
 static void
 selectnewtape(Tuplesortstate *state)
-{	StackTrace("selectnewtape");
+{
 	int			j;
 	int			a;
 
@@ -2204,7 +2204,7 @@ selectnewtape(Tuplesortstate *state)
  */
 static void
 mergeruns(Tuplesortstate *state)
-{	StackTrace("mergeruns");
+{
 	int			tapenum,
 				svTape,
 				svRuns,
@@ -2354,7 +2354,7 @@ mergeruns(Tuplesortstate *state)
  */
 static void
 mergeonerun(Tuplesortstate *state)
-{	StackTrace("mergeonerun");
+{
 	int			destTape = state->tp_tapenum[state->tapeRange];
 	int			srcTape;
 	int			tupIndex;
@@ -2428,7 +2428,7 @@ mergeonerun(Tuplesortstate *state)
  */
 static void
 beginmerge(Tuplesortstate *state)
-{	StackTrace("beginmerge");
+{
 	int			activeTapes;
 	int			tapenum;
 	int			srcTape;
@@ -2534,7 +2534,7 @@ beginmerge(Tuplesortstate *state)
  */
 static void
 mergepreread(Tuplesortstate *state)
-{	StackTrace("mergepreread");
+{
 	int			srcTape;
 
 	for (srcTape = 0; srcTape < state->maxTapes; srcTape++)
@@ -2550,7 +2550,7 @@ mergepreread(Tuplesortstate *state)
  */
 static void
 mergeprereadone(Tuplesortstate *state, int srcTape)
-{	StackTrace("mergeprereadone");
+{
 	unsigned int tuplen;
 	SortTuple	stup;
 	int			tupIndex;
@@ -2615,7 +2615,7 @@ mergeprereadone(Tuplesortstate *state, int srcTape)
  */
 static void
 dumptuples(Tuplesortstate *state, bool alltuples)
-{	StackTrace("dumptuples");
+{
 	while (alltuples ||
 		   (LACKMEM(state) && state->memtupcount > 1) ||
 		   state->memtupcount >= state->memtupsize)
@@ -2665,7 +2665,7 @@ dumptuples(Tuplesortstate *state, bool alltuples)
  */
 void
 tuplesort_rescan(Tuplesortstate *state)
-{	StackTrace("tuplesort_rescan");
+{
 	MemoryContext oldcontext = MemoryContextSwitchTo(state->sortcontext);
 
 	Assert(state->randomAccess);
@@ -2700,7 +2700,7 @@ tuplesort_rescan(Tuplesortstate *state)
  */
 void
 tuplesort_markpos(Tuplesortstate *state)
-{	StackTrace("tuplesort_markpos");
+{
 	MemoryContext oldcontext = MemoryContextSwitchTo(state->sortcontext);
 
 	Assert(state->randomAccess);
@@ -2732,7 +2732,7 @@ tuplesort_markpos(Tuplesortstate *state)
  */
 void
 tuplesort_restorepos(Tuplesortstate *state)
-{	StackTrace("tuplesort_restorepos");
+{
 	MemoryContext oldcontext = MemoryContextSwitchTo(state->sortcontext);
 
 	Assert(state->randomAccess);
@@ -2771,7 +2771,7 @@ tuplesort_get_stats(Tuplesortstate *state,
 					const char **sortMethod,
 					const char **spaceType,
 					long *spaceUsed)
-{	StackTrace("tuplesort_get_stats");
+{
 	/*
 	 * Note: it might seem we should provide both memory and disk usage for a
 	 * disk-based sort.  However, the current code doesn't track memory space
@@ -2840,7 +2840,7 @@ tuplesort_get_stats(Tuplesortstate *state,
  */
 static void
 make_bounded_heap(Tuplesortstate *state)
-{	StackTrace("make_bounded_heap");
+{
 	int			tupcount = state->memtupcount;
 	int			i;
 
@@ -2887,7 +2887,7 @@ make_bounded_heap(Tuplesortstate *state)
  */
 static void
 sort_bounded_heap(Tuplesortstate *state)
-{	StackTrace("sort_bounded_heap");
+{
 	int			tupcount = state->memtupcount;
 
 	Assert(state->status == TSS_BOUNDED);
@@ -2932,7 +2932,7 @@ sort_bounded_heap(Tuplesortstate *state)
 static void
 tuplesort_heap_insert(Tuplesortstate *state, SortTuple *tuple,
 					  int tupleindex, bool checkIndex)
-{	StackTrace("tuplesort_heap_insert");
+{
 	SortTuple  *memtuples;
 	int			j;
 
@@ -2972,7 +2972,7 @@ tuplesort_heap_insert(Tuplesortstate *state, SortTuple *tuple,
  */
 static void
 tuplesort_heap_siftup(Tuplesortstate *state, bool checkIndex)
-{	StackTrace("tuplesort_heap_siftup");
+{
 	SortTuple  *memtuples = state->memtuples;
 	SortTuple  *tuple;
 	int			i,
@@ -3010,7 +3010,7 @@ tuplesort_heap_siftup(Tuplesortstate *state, bool checkIndex)
  */
 static void
 reversedirection(Tuplesortstate *state)
-{	StackTrace("reversedirection");
+{
 	SortSupport sortKey = state->sortKeys;
 	int			nkey;
 
@@ -3028,7 +3028,7 @@ reversedirection(Tuplesortstate *state)
 
 static unsigned int
 getlen(Tuplesortstate *state, int tapenum, bool eofOK)
-{	StackTrace("getlen");
+{
 	unsigned int len;
 
 	if (LogicalTapeRead(state->tapeset, tapenum,
@@ -3041,7 +3041,7 @@ getlen(Tuplesortstate *state, int tapenum, bool eofOK)
 
 static void
 markrunend(Tuplesortstate *state, int tapenum)
-{	StackTrace("markrunend");
+{
 	unsigned int len = 0;
 
 	LogicalTapeWrite(state->tapeset, tapenum, (void *) &len, sizeof(len));
@@ -3054,7 +3054,7 @@ markrunend(Tuplesortstate *state, int tapenum)
 
 static int
 comparetup_heap(const SortTuple *a, const SortTuple *b, Tuplesortstate *state)
-{	StackTrace("comparetup_heap");
+{
 	SortSupport sortKey = state->sortKeys;
 	HeapTupleData ltup;
 	HeapTupleData rtup;
@@ -3116,7 +3116,7 @@ comparetup_heap(const SortTuple *a, const SortTuple *b, Tuplesortstate *state)
 
 static void
 copytup_heap(Tuplesortstate *state, SortTuple *stup, void *tup)
-{	StackTrace("copytup_heap");
+{
 	/*
 	 * We expect the passed "tup" to be a TupleTableSlot, and form a
 	 * MinimalTuple using the exported interface for that.
@@ -3189,7 +3189,7 @@ copytup_heap(Tuplesortstate *state, SortTuple *stup, void *tup)
 
 static void
 writetup_heap(Tuplesortstate *state, int tapenum, SortTuple *stup)
-{	StackTrace("writetup_heap");
+{
 	MinimalTuple tuple = (MinimalTuple) stup->tuple;
 
 	/* the part of the MinimalTuple we'll write: */
@@ -3214,7 +3214,7 @@ writetup_heap(Tuplesortstate *state, int tapenum, SortTuple *stup)
 static void
 readtup_heap(Tuplesortstate *state, SortTuple *stup,
 			 int tapenum, unsigned int len)
-{	StackTrace("readtup_heap");
+{
 	unsigned int tupbodylen = len - sizeof(int);
 	unsigned int tuplen = tupbodylen + MINIMAL_TUPLE_DATA_OFFSET;
 	MinimalTuple tuple = (MinimalTuple) palloc(tuplen);
@@ -3247,7 +3247,7 @@ readtup_heap(Tuplesortstate *state, SortTuple *stup,
 static int
 comparetup_cluster(const SortTuple *a, const SortTuple *b,
 				   Tuplesortstate *state)
-{	StackTrace("comparetup_cluster");
+{
 	SortSupport sortKey = state->sortKeys;
 	HeapTuple	ltup;
 	HeapTuple	rtup;
@@ -3357,7 +3357,7 @@ comparetup_cluster(const SortTuple *a, const SortTuple *b,
 
 static void
 copytup_cluster(Tuplesortstate *state, SortTuple *stup, void *tup)
-{	StackTrace("copytup_cluster");
+{
 	HeapTuple	tuple = (HeapTuple) tup;
 	Datum		original;
 
@@ -3425,7 +3425,7 @@ copytup_cluster(Tuplesortstate *state, SortTuple *stup, void *tup)
 
 static void
 writetup_cluster(Tuplesortstate *state, int tapenum, SortTuple *stup)
-{	StackTrace("writetup_cluster");
+{
 	HeapTuple	tuple = (HeapTuple) stup->tuple;
 	unsigned int tuplen = tuple->t_len + sizeof(ItemPointerData) + sizeof(int);
 
@@ -3447,7 +3447,7 @@ writetup_cluster(Tuplesortstate *state, int tapenum, SortTuple *stup)
 static void
 readtup_cluster(Tuplesortstate *state, SortTuple *stup,
 				int tapenum, unsigned int tuplen)
-{	StackTrace("readtup_cluster");
+{
 	unsigned int t_len = tuplen - sizeof(ItemPointerData) - sizeof(int);
 	HeapTuple	tuple = (HeapTuple) palloc(t_len + HEAPTUPLESIZE);
 
@@ -3486,7 +3486,7 @@ readtup_cluster(Tuplesortstate *state, SortTuple *stup,
 static int
 comparetup_index_btree(const SortTuple *a, const SortTuple *b,
 					   Tuplesortstate *state)
-{	StackTrace("comparetup_index_btree");
+{
 	/*
 	 * This is similar to comparetup_heap(), but expects index tuples.  There
 	 * is also special handling for enforcing uniqueness, and special
@@ -3615,7 +3615,7 @@ comparetup_index_btree(const SortTuple *a, const SortTuple *b,
 static int
 comparetup_index_hash(const SortTuple *a, const SortTuple *b,
 					  Tuplesortstate *state)
-{	StackTrace("comparetup_index_hash");
+{
 	uint32		hash1;
 	uint32		hash2;
 	IndexTuple	tuple1;
@@ -3663,7 +3663,7 @@ comparetup_index_hash(const SortTuple *a, const SortTuple *b,
 
 static void
 copytup_index(Tuplesortstate *state, SortTuple *stup, void *tup)
-{	StackTrace("copytup_index");
+{
 	IndexTuple	tuple = (IndexTuple) tup;
 	unsigned int tuplen = IndexTupleSize(tuple);
 	IndexTuple	newtuple;
@@ -3727,7 +3727,7 @@ copytup_index(Tuplesortstate *state, SortTuple *stup, void *tup)
 
 static void
 writetup_index(Tuplesortstate *state, int tapenum, SortTuple *stup)
-{	StackTrace("writetup_index");
+{
 	IndexTuple	tuple = (IndexTuple) stup->tuple;
 	unsigned int tuplen;
 
@@ -3747,7 +3747,7 @@ writetup_index(Tuplesortstate *state, int tapenum, SortTuple *stup)
 static void
 readtup_index(Tuplesortstate *state, SortTuple *stup,
 			  int tapenum, unsigned int len)
-{	StackTrace("readtup_index");
+{
 	unsigned int tuplen = len - sizeof(unsigned int);
 	IndexTuple	tuple = (IndexTuple) palloc(tuplen);
 
@@ -3771,7 +3771,7 @@ readtup_index(Tuplesortstate *state, SortTuple *stup,
 
 static int
 comparetup_datum(const SortTuple *a, const SortTuple *b, Tuplesortstate *state)
-{	StackTrace("comparetup_datum");
+{
 	int			compare;
 
 	compare = ApplySortComparator(a->datum1, a->isnull1,
@@ -3792,14 +3792,14 @@ comparetup_datum(const SortTuple *a, const SortTuple *b, Tuplesortstate *state)
 
 static void
 copytup_datum(Tuplesortstate *state, SortTuple *stup, void *tup)
-{	StackTrace("copytup_datum");
+{
 	/* Not currently needed */
 	elog(ERROR, "copytup_datum() should not be called");
 }
 
 static void
 writetup_datum(Tuplesortstate *state, int tapenum, SortTuple *stup)
-{	StackTrace("writetup_datum");
+{
 	void	   *waddr;
 	unsigned int tuplen;
 	unsigned int writtenlen;
@@ -3841,7 +3841,7 @@ writetup_datum(Tuplesortstate *state, int tapenum, SortTuple *stup)
 static void
 readtup_datum(Tuplesortstate *state, SortTuple *stup,
 			  int tapenum, unsigned int len)
-{	StackTrace("readtup_datum");
+{
 	unsigned int tuplen = len - sizeof(unsigned int);
 
 	if (tuplen == 0)
@@ -3881,7 +3881,7 @@ readtup_datum(Tuplesortstate *state, SortTuple *stup,
  */
 static void
 free_sort_tuple(Tuplesortstate *state, SortTuple *stup)
-{	StackTrace("free_sort_tuple");
+{
 	FREEMEM(state, GetMemoryChunkSpace(stup->tuple));
 	pfree(stup->tuple);
 }

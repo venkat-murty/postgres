@@ -468,7 +468,7 @@ static void OnConflict_CheckForSerializationFailure(const SERIALIZABLEXACT *read
  */
 static inline bool
 PredicateLockingNeededForRelation(Relation relation)
-{	StackTrace("PredicateLockingNeededForRelation");
+{
 	return !(relation->rd_id < FirstBootstrapObjectId ||
 			 RelationUsesLocalBuffers(relation) ||
 			 relation->rd_rel->relkind == RELKIND_MATVIEW);
@@ -487,7 +487,7 @@ PredicateLockingNeededForRelation(Relation relation)
  */
 static inline bool
 SerializationNeededForRead(Relation relation, Snapshot snapshot)
-{	StackTrace("SerializationNeededForRead");
+{
 	/* Nothing to do if this is not a serializable transaction */
 	if (MySerializableXact == InvalidSerializableXact)
 		return false;
@@ -531,7 +531,7 @@ SerializationNeededForRead(Relation relation, Snapshot snapshot)
  */
 static inline bool
 SerializationNeededForWrite(Relation relation)
-{	StackTrace("SerializationNeededForWrite");
+{
 	/* Nothing to do if this is not a serializable transaction */
 	if (MySerializableXact == InvalidSerializableXact)
 		return false;
@@ -553,7 +553,7 @@ SerializationNeededForWrite(Relation relation)
  */
 static SERIALIZABLEXACT *
 CreatePredXact(void)
-{	StackTrace("CreatePredXact");
+{
 	PredXactListElement ptle;
 
 	ptle = (PredXactListElement)
@@ -570,7 +570,7 @@ CreatePredXact(void)
 
 static void
 ReleasePredXact(SERIALIZABLEXACT *sxact)
-{	StackTrace("ReleasePredXact");
+{
 	PredXactListElement ptle;
 
 	Assert(ShmemAddrIsValid(sxact));
@@ -585,7 +585,7 @@ ReleasePredXact(SERIALIZABLEXACT *sxact)
 
 static SERIALIZABLEXACT *
 FirstPredXact(void)
-{	StackTrace("FirstPredXact");
+{
 	PredXactListElement ptle;
 
 	ptle = (PredXactListElement)
@@ -600,7 +600,7 @@ FirstPredXact(void)
 
 static SERIALIZABLEXACT *
 NextPredXact(SERIALIZABLEXACT *sxact)
-{	StackTrace("NextPredXact");
+{
 	PredXactListElement ptle;
 
 	Assert(ShmemAddrIsValid(sxact));
@@ -626,7 +626,7 @@ NextPredXact(SERIALIZABLEXACT *sxact)
  */
 static bool
 RWConflictExists(const SERIALIZABLEXACT *reader, const SERIALIZABLEXACT *writer)
-{	StackTrace("RWConflictExists");
+{
 	RWConflict	conflict;
 
 	Assert(reader != writer);
@@ -659,7 +659,7 @@ RWConflictExists(const SERIALIZABLEXACT *reader, const SERIALIZABLEXACT *writer)
 
 static void
 SetRWConflict(SERIALIZABLEXACT *reader, SERIALIZABLEXACT *writer)
-{	StackTrace("SetRWConflict");
+{
 	RWConflict	conflict;
 
 	Assert(reader != writer);
@@ -686,7 +686,7 @@ SetRWConflict(SERIALIZABLEXACT *reader, SERIALIZABLEXACT *writer)
 static void
 SetPossibleUnsafeConflict(SERIALIZABLEXACT *roXact,
 						  SERIALIZABLEXACT *activeXact)
-{	StackTrace("SetPossibleUnsafeConflict");
+{
 	RWConflict	conflict;
 
 	Assert(roXact != activeXact);
@@ -715,7 +715,7 @@ SetPossibleUnsafeConflict(SERIALIZABLEXACT *roXact,
 
 static void
 ReleaseRWConflict(RWConflict conflict)
-{	StackTrace("ReleaseRWConflict");
+{
 	SHMQueueDelete(&conflict->inLink);
 	SHMQueueDelete(&conflict->outLink);
 	SHMQueueInsertBefore(&RWConflictPool->availableList, &conflict->outLink);
@@ -723,7 +723,7 @@ ReleaseRWConflict(RWConflict conflict)
 
 static void
 FlagSxactUnsafe(SERIALIZABLEXACT *sxact)
-{	StackTrace("FlagSxactUnsafe");
+{
 	RWConflict	conflict,
 				nextConflict;
 
@@ -764,7 +764,7 @@ FlagSxactUnsafe(SERIALIZABLEXACT *sxact)
  */
 static bool
 OldSerXidPagePrecedesLogically(int p, int q)
-{	StackTrace("OldSerXidPagePrecedesLogically");
+{
 	int			diff;
 
 	/*
@@ -787,7 +787,7 @@ OldSerXidPagePrecedesLogically(int p, int q)
  */
 static void
 OldSerXidInit(void)
-{	StackTrace("OldSerXidInit");
+{
 	bool		found;
 
 	/*
@@ -824,7 +824,7 @@ OldSerXidInit(void)
  */
 static void
 OldSerXidAdd(TransactionId xid, SerCommitSeqNo minConflictCommitSeqNo)
-{	StackTrace("OldSerXidAdd");
+{
 	TransactionId tailXid;
 	int			targetPage;
 	int			slotno;
@@ -936,7 +936,7 @@ OldSerXidAdd(TransactionId xid, SerCommitSeqNo minConflictCommitSeqNo)
  */
 static SerCommitSeqNo
 OldSerXidGetMinConflictCommitSeqNo(TransactionId xid)
-{	StackTrace("OldSerXidGetMinConflictCommitSeqNo");
+{
 	TransactionId headXid;
 	TransactionId tailXid;
 	SerCommitSeqNo val;
@@ -977,7 +977,7 @@ OldSerXidGetMinConflictCommitSeqNo(TransactionId xid)
  */
 static void
 OldSerXidSetActiveSerXmin(TransactionId xid)
-{	StackTrace("OldSerXidSetActiveSerXmin");
+{
 	LWLockAcquire(OldSerXidLock, LW_EXCLUSIVE);
 
 	/*
@@ -1028,7 +1028,7 @@ OldSerXidSetActiveSerXmin(TransactionId xid)
  */
 void
 CheckPointPredicate(void)
-{	StackTrace("CheckPointPredicate");
+{
 	int			tailPage;
 
 	LWLockAcquire(OldSerXidLock, LW_EXCLUSIVE);
@@ -1093,7 +1093,7 @@ CheckPointPredicate(void)
  */
 void
 InitPredicateLocks(void)
-{	StackTrace("InitPredicateLocks");
+{
 	HASHCTL		info;
 	long		max_table_size;
 	Size		requestSize;
@@ -1296,7 +1296,7 @@ InitPredicateLocks(void)
  */
 Size
 PredicateLockShmemSize(void)
-{	StackTrace("PredicateLockShmemSize");
+{
 	Size		size = 0;
 	long		max_table_size;
 
@@ -1358,7 +1358,7 @@ PredicateLockShmemSize(void)
  */
 static uint32
 predicatelock_hash(const void *key, Size keysize)
-{	StackTrace("predicatelock_hash");
+{
 	const PREDICATELOCKTAG *predicatelocktag = (const PREDICATELOCKTAG *) key;
 	uint32		targethash;
 
@@ -1384,7 +1384,7 @@ predicatelock_hash(const void *key, Size keysize)
  */
 PredicateLockData *
 GetPredicateLockStatusData(void)
-{	StackTrace("GetPredicateLockStatusData");
+{
 	PredicateLockData *data;
 	int			i;
 	int			els,
@@ -1442,7 +1442,7 @@ GetPredicateLockStatusData(void)
  */
 static void
 SummarizeOldestCommittedSxact(void)
-{	StackTrace("SummarizeOldestCommittedSxact");
+{
 	SERIALIZABLEXACT *sxact;
 
 	LWLockAcquire(SerializableFinishedListLock, LW_EXCLUSIVE);
@@ -1499,7 +1499,7 @@ SummarizeOldestCommittedSxact(void)
  */
 static Snapshot
 GetSafeSnapshot(Snapshot origSnapshot)
-{	StackTrace("GetSafeSnapshot");
+{
 	Snapshot	snapshot;
 
 	Assert(XactReadOnly && XactDeferrable);
@@ -1571,7 +1571,7 @@ GetSafeSnapshot(Snapshot origSnapshot)
  */
 Snapshot
 GetSerializableTransactionSnapshot(Snapshot snapshot)
-{	StackTrace("GetSerializableTransactionSnapshot");
+{
 	Assert(IsolationIsSerializable());
 
 	/*
@@ -1612,7 +1612,7 @@ GetSerializableTransactionSnapshot(Snapshot snapshot)
 void
 SetSerializableTransactionSnapshot(Snapshot snapshot,
 								   TransactionId sourcexid)
-{	StackTrace("SetSerializableTransactionSnapshot");
+{
 	Assert(IsolationIsSerializable());
 
 	/*
@@ -1641,7 +1641,7 @@ SetSerializableTransactionSnapshot(Snapshot snapshot,
 static Snapshot
 GetSerializableTransactionSnapshotInt(Snapshot snapshot,
 									  TransactionId sourcexid)
-{	StackTrace("GetSerializableTransactionSnapshotInt");
+{
 	PGPROC	   *proc;
 	VirtualTransactionId vxid;
 	SERIALIZABLEXACT *sxact,
@@ -1812,7 +1812,7 @@ GetSerializableTransactionSnapshotInt(Snapshot snapshot,
  */
 void
 RegisterPredicateLockingXid(TransactionId xid)
-{	StackTrace("RegisterPredicateLockingXid");
+{
 	SERIALIZABLEXIDTAG sxidtag;
 	SERIALIZABLEXID *sxid;
 	bool		found;
@@ -1861,7 +1861,7 @@ RegisterPredicateLockingXid(TransactionId xid)
  */
 bool
 PageIsPredicateLocked(Relation relation, BlockNumber blkno)
-{	StackTrace("PageIsPredicateLocked");
+{
 	PREDICATELOCKTARGETTAG targettag;
 	uint32		targettaghash;
 	LWLock	   *partitionLock;
@@ -1898,7 +1898,7 @@ PageIsPredicateLocked(Relation relation, BlockNumber blkno)
  */
 static bool
 PredicateLockExists(const PREDICATELOCKTARGETTAG *targettag)
-{	StackTrace("PredicateLockExists");
+{
 	LOCALPREDICATELOCK *lock;
 
 	/* check local hash table */
@@ -1926,7 +1926,7 @@ PredicateLockExists(const PREDICATELOCKTARGETTAG *targettag)
 static bool
 GetParentPredicateLockTag(const PREDICATELOCKTARGETTAG *tag,
 						  PREDICATELOCKTARGETTAG *parent)
-{	StackTrace("GetParentPredicateLockTag");
+{
 	switch (GET_PREDICATELOCKTARGETTAG_TYPE(*tag))
 	{
 		case PREDLOCKTAG_RELATION:
@@ -1964,7 +1964,7 @@ GetParentPredicateLockTag(const PREDICATELOCKTARGETTAG *tag,
  */
 static bool
 CoarserLockCovers(const PREDICATELOCKTARGETTAG *newtargettag)
-{	StackTrace("CoarserLockCovers");
+{
 	PREDICATELOCKTARGETTAG targettag,
 				parenttag;
 
@@ -1993,7 +1993,7 @@ CoarserLockCovers(const PREDICATELOCKTARGETTAG *newtargettag)
  */
 static void
 RemoveScratchTarget(bool lockheld)
-{	StackTrace("RemoveScratchTarget");
+{
 	bool		found;
 
 	Assert(LWLockHeldByMe(SerializablePredicateLockListLock));
@@ -2014,7 +2014,7 @@ RemoveScratchTarget(bool lockheld)
  */
 static void
 RestoreScratchTarget(bool lockheld)
-{	StackTrace("RestoreScratchTarget");
+{
 	bool		found;
 
 	Assert(LWLockHeldByMe(SerializablePredicateLockListLock));
@@ -2036,7 +2036,7 @@ RestoreScratchTarget(bool lockheld)
  */
 static void
 RemoveTargetIfNoLongerUsed(PREDICATELOCKTARGET *target, uint32 targettaghash)
-{	StackTrace("RemoveTargetIfNoLongerUsed");
+{
 	PREDICATELOCKTARGET *rmtarget PG_USED_FOR_ASSERTS_ONLY;
 
 	Assert(LWLockHeldByMe(SerializablePredicateLockListLock));
@@ -2065,7 +2065,7 @@ RemoveTargetIfNoLongerUsed(PREDICATELOCKTARGET *target, uint32 targettaghash)
  */
 static void
 DeleteChildTargetLocks(const PREDICATELOCKTARGETTAG *newtargettag)
-{	StackTrace("DeleteChildTargetLocks");
+{
 	SERIALIZABLEXACT *sxact;
 	PREDICATELOCK *predlock;
 
@@ -2142,7 +2142,7 @@ DeleteChildTargetLocks(const PREDICATELOCKTARGETTAG *newtargettag)
  */
 static int
 PredicateLockPromotionThreshold(const PREDICATELOCKTARGETTAG *tag)
-{	StackTrace("PredicateLockPromotionThreshold");
+{
 	switch (GET_PREDICATELOCKTARGETTAG_TYPE(*tag))
 	{
 		case PREDLOCKTAG_RELATION:
@@ -2176,7 +2176,7 @@ PredicateLockPromotionThreshold(const PREDICATELOCKTARGETTAG *tag)
  */
 static bool
 CheckAndPromotePredicateLockRequest(const PREDICATELOCKTARGETTAG *reqtag)
-{	StackTrace("CheckAndPromotePredicateLockRequest");
+{
 	PREDICATELOCKTARGETTAG targettag,
 				nexttag,
 				promotiontag;
@@ -2241,7 +2241,7 @@ CheckAndPromotePredicateLockRequest(const PREDICATELOCKTARGETTAG *reqtag)
  */
 static void
 DecrementParentLocks(const PREDICATELOCKTARGETTAG *targettag)
-{	StackTrace("DecrementParentLocks");
+{
 	PREDICATELOCKTARGETTAG parenttag,
 				nexttag;
 
@@ -2305,7 +2305,7 @@ static void
 CreatePredicateLock(const PREDICATELOCKTARGETTAG *targettag,
 					uint32 targettaghash,
 					SERIALIZABLEXACT *sxact)
-{	StackTrace("CreatePredicateLock");
+{
 	PREDICATELOCKTARGET *target;
 	PREDICATELOCKTAG locktag;
 	PREDICATELOCK *lock;
@@ -2364,7 +2364,7 @@ CreatePredicateLock(const PREDICATELOCKTARGETTAG *targettag,
  */
 static void
 PredicateLockAcquire(const PREDICATELOCKTARGETTAG *targettag)
-{	StackTrace("PredicateLockAcquire");
+{
 	uint32		targettaghash;
 	bool		found;
 	LOCALPREDICATELOCK *locallock;
@@ -2423,7 +2423,7 @@ PredicateLockAcquire(const PREDICATELOCKTARGETTAG *targettag)
  */
 void
 PredicateLockRelation(Relation relation, Snapshot snapshot)
-{	StackTrace("PredicateLockRelation");
+{
 	PREDICATELOCKTARGETTAG tag;
 
 	if (!SerializationNeededForRead(relation, snapshot))
@@ -2446,7 +2446,7 @@ PredicateLockRelation(Relation relation, Snapshot snapshot)
  */
 void
 PredicateLockPage(Relation relation, BlockNumber blkno, Snapshot snapshot)
-{	StackTrace("PredicateLockPage");
+{
 	PREDICATELOCKTARGETTAG tag;
 
 	if (!SerializationNeededForRead(relation, snapshot))
@@ -2468,7 +2468,7 @@ PredicateLockPage(Relation relation, BlockNumber blkno, Snapshot snapshot)
  */
 void
 PredicateLockTuple(Relation relation, HeapTuple tuple, Snapshot snapshot)
-{	StackTrace("PredicateLockTuple");
+{
 	PREDICATELOCKTARGETTAG tag;
 	ItemPointer tid;
 	TransactionId targetxmin;
@@ -2533,7 +2533,7 @@ PredicateLockTuple(Relation relation, HeapTuple tuple, Snapshot snapshot)
  */
 static void
 DeleteLockTarget(PREDICATELOCKTARGET *target, uint32 targettaghash)
-{	StackTrace("DeleteLockTarget");
+{
 	PREDICATELOCK *predlock;
 	SHM_QUEUE  *predlocktargetlink;
 	PREDICATELOCK *nextpredlock;
@@ -2605,7 +2605,7 @@ static bool
 TransferPredicateLocksToNewTarget(PREDICATELOCKTARGETTAG oldtargettag,
 								  PREDICATELOCKTARGETTAG newtargettag,
 								  bool removeOld)
-{	StackTrace("TransferPredicateLocksToNewTarget");
+{
 	uint32		oldtargettaghash;
 	LWLock	   *oldpartitionLock;
 	PREDICATELOCKTARGET *oldtarget;
@@ -2819,7 +2819,7 @@ exit:
  */
 static void
 DropAllPredicateLocksFromTable(Relation relation, bool transfer)
-{	StackTrace("DropAllPredicateLocksFromTable");
+{
 	HASH_SEQ_STATUS seqstat;
 	PREDICATELOCKTARGET *oldtarget;
 	PREDICATELOCKTARGET *heaptarget;
@@ -3015,7 +3015,7 @@ DropAllPredicateLocksFromTable(Relation relation, bool transfer)
  */
 void
 TransferPredicateLocksToHeapRelation(Relation relation)
-{	StackTrace("TransferPredicateLocksToHeapRelation");
+{
 	DropAllPredicateLocksFromTable(relation, true);
 }
 
@@ -3037,7 +3037,7 @@ TransferPredicateLocksToHeapRelation(Relation relation)
 void
 PredicateLockPageSplit(Relation relation, BlockNumber oldblkno,
 					   BlockNumber newblkno)
-{	StackTrace("PredicateLockPageSplit");
+{
 	PREDICATELOCKTARGETTAG oldtargettag;
 	PREDICATELOCKTARGETTAG newtargettag;
 	bool		success;
@@ -3122,7 +3122,7 @@ PredicateLockPageSplit(Relation relation, BlockNumber oldblkno,
 void
 PredicateLockPageCombine(Relation relation, BlockNumber oldblkno,
 						 BlockNumber newblkno)
-{	StackTrace("PredicateLockPageCombine");
+{
 	/*
 	 * Page combines differ from page splits in that we ought to be able to
 	 * remove the locks on the old page after transferring them to the new
@@ -3143,7 +3143,7 @@ PredicateLockPageCombine(Relation relation, BlockNumber oldblkno,
  */
 static void
 SetNewSxactGlobalXmin(void)
-{	StackTrace("SetNewSxactGlobalXmin");
+{
 	SERIALIZABLEXACT *sxact;
 
 	Assert(LWLockHeldByMe(SerializableXactHashLock));
@@ -3193,7 +3193,7 @@ SetNewSxactGlobalXmin(void)
  */
 void
 ReleasePredicateLocks(bool isCommit)
-{	StackTrace("ReleasePredicateLocks");
+{
 	bool		needToClear;
 	RWConflict	conflict,
 				nextConflict,
@@ -3512,7 +3512,7 @@ ReleasePredicateLocks(bool isCommit)
  */
 static void
 ClearOldPredicateLocks(void)
-{	StackTrace("ClearOldPredicateLocks");
+{
 	SERIALIZABLEXACT *finishedSxact;
 	PREDICATELOCK *predlock;
 
@@ -3670,7 +3670,7 @@ ClearOldPredicateLocks(void)
 static void
 ReleaseOneSerializableXact(SERIALIZABLEXACT *sxact, bool partial,
 						   bool summarize)
-{	StackTrace("ReleaseOneSerializableXact");
+{
 	PREDICATELOCK *predlock;
 	SERIALIZABLEXIDTAG sxidtag;
 	RWConflict	conflict,
@@ -3828,7 +3828,7 @@ ReleaseOneSerializableXact(SERIALIZABLEXACT *sxact, bool partial,
  */
 static bool
 XidIsConcurrent(TransactionId xid)
-{	StackTrace("XidIsConcurrent");
+{
 	Snapshot	snap;
 	uint32		i;
 
@@ -3873,7 +3873,7 @@ void
 CheckForSerializableConflictOut(bool visible, Relation relation,
 								HeapTuple tuple, Buffer buffer,
 								Snapshot snapshot)
-{	StackTrace("CheckForSerializableConflictOut");
+{
 	TransactionId xid;
 	SERIALIZABLEXIDTAG sxidtag;
 	SERIALIZABLEXID *sxid;
@@ -4074,7 +4074,7 @@ CheckForSerializableConflictOut(bool visible, Relation relation,
  */
 static void
 CheckTargetForConflictsIn(PREDICATELOCKTARGETTAG *targettag)
-{	StackTrace("CheckTargetForConflictsIn");
+{
 	uint32		targettaghash;
 	LWLock	   *partitionLock;
 	PREDICATELOCKTARGET *target;
@@ -4253,7 +4253,7 @@ CheckTargetForConflictsIn(PREDICATELOCKTARGETTAG *targettag)
 void
 CheckForSerializableConflictIn(Relation relation, HeapTuple tuple,
 							   Buffer buffer)
-{	StackTrace("CheckForSerializableConflictIn");
+{
 	PREDICATELOCKTARGETTAG targettag;
 
 	if (!SerializationNeededForWrite(relation))
@@ -4336,7 +4336,7 @@ CheckForSerializableConflictIn(Relation relation, HeapTuple tuple,
  */
 void
 CheckTableForSerializableConflictIn(Relation relation)
-{	StackTrace("CheckTableForSerializableConflictIn");
+{
 	HASH_SEQ_STATUS seqstat;
 	PREDICATELOCKTARGET *target;
 	Oid			dbId;
@@ -4428,7 +4428,7 @@ CheckTableForSerializableConflictIn(Relation relation)
  */
 static void
 FlagRWConflict(SERIALIZABLEXACT *reader, SERIALIZABLEXACT *writer)
-{	StackTrace("FlagRWConflict");
+{
 	Assert(reader != writer);
 
 	/* First, see if this conflict causes failure. */
@@ -4464,7 +4464,7 @@ FlagRWConflict(SERIALIZABLEXACT *reader, SERIALIZABLEXACT *writer)
 static void
 OnConflict_CheckForSerializationFailure(const SERIALIZABLEXACT *reader,
 										SERIALIZABLEXACT *writer)
-{	StackTrace("OnConflict_CheckForSerializationFailure");
+{
 	bool		failure;
 	RWConflict	conflict;
 
@@ -4638,7 +4638,7 @@ OnConflict_CheckForSerializationFailure(const SERIALIZABLEXACT *reader,
  */
 void
 PreCommit_CheckForSerializationFailure(void)
-{	StackTrace("PreCommit_CheckForSerializationFailure");
+{
 	RWConflict	nearConflict;
 
 	if (MySerializableXact == InvalidSerializableXact)
@@ -4731,7 +4731,7 @@ PreCommit_CheckForSerializationFailure(void)
  */
 void
 AtPrepare_PredicateLocks(void)
-{	StackTrace("AtPrepare_PredicateLocks");
+{
 	PREDICATELOCK *predlock;
 	SERIALIZABLEXACT *sxact;
 	TwoPhasePredicateRecord record;
@@ -4800,7 +4800,7 @@ AtPrepare_PredicateLocks(void)
  */
 void
 PostPrepare_PredicateLocks(TransactionId xid)
-{	StackTrace("PostPrepare_PredicateLocks");
+{
 	if (MySerializableXact == InvalidSerializableXact)
 		return;
 
@@ -4822,7 +4822,7 @@ PostPrepare_PredicateLocks(TransactionId xid)
  */
 void
 PredicateLockTwoPhaseFinish(TransactionId xid, bool isCommit)
-{	StackTrace("PredicateLockTwoPhaseFinish");
+{
 	SERIALIZABLEXID *sxid;
 	SERIALIZABLEXIDTAG sxidtag;
 
@@ -4850,7 +4850,7 @@ PredicateLockTwoPhaseFinish(TransactionId xid, bool isCommit)
 void
 predicatelock_twophase_recover(TransactionId xid, uint16 info,
 							   void *recdata, uint32 len)
-{	StackTrace("predicatelock_twophase_recover");
+{
 	TwoPhasePredicateRecord *record;
 
 	Assert(len == sizeof(TwoPhasePredicateRecord));

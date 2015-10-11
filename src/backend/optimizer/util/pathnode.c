@@ -59,7 +59,7 @@ static List *translate_sub_tlist(List *tlist, int relid);
  */
 int
 compare_path_costs(Path *path1, Path *path2, CostSelector criterion)
-{	StackTrace("compare_path_costs");
+{
 	if (criterion == STARTUP_COST)
 	{
 		if (path1->startup_cost < path2->startup_cost)
@@ -106,7 +106,7 @@ compare_path_costs(Path *path1, Path *path2, CostSelector criterion)
 int
 compare_fractional_path_costs(Path *path1, Path *path2,
 							  double fraction)
-{	StackTrace("compare_fractional_path_costs");
+{
 	Cost		cost1,
 				cost2;
 
@@ -154,7 +154,7 @@ compare_fractional_path_costs(Path *path1, Path *path2,
  */
 static PathCostComparison
 compare_path_costs_fuzzily(Path *path1, Path *path2, double fuzz_factor)
-{	StackTrace("compare_path_costs_fuzzily");
+{
 #define CONSIDER_PATH_STARTUP_COST(p)  \
 	((p)->param_info == NULL ? (p)->parent->consider_startup : (p)->parent->consider_param_startup)
 
@@ -227,7 +227,7 @@ compare_path_costs_fuzzily(Path *path1, Path *path2, double fuzz_factor)
  */
 void
 set_cheapest(RelOptInfo *parent_rel)
-{	StackTrace("set_cheapest");
+{
 	Path	   *cheapest_startup_path;
 	Path	   *cheapest_total_path;
 	Path	   *best_param_path;
@@ -398,7 +398,7 @@ set_cheapest(RelOptInfo *parent_rel)
  */
 void
 add_path(RelOptInfo *parent_rel, Path *new_path)
-{	StackTrace("add_path");
+{
 	bool		accept_new = true;		/* unless we find a superior old path */
 	ListCell   *insert_after = NULL;	/* where to insert new item */
 	List	   *new_path_pathkeys;
@@ -623,7 +623,7 @@ bool
 add_path_precheck(RelOptInfo *parent_rel,
 				  Cost startup_cost, Cost total_cost,
 				  List *pathkeys, Relids required_outer)
-{	StackTrace("add_path_precheck");
+{
 	List	   *new_path_pathkeys;
 	bool		consider_startup;
 	ListCell   *p1;
@@ -697,7 +697,7 @@ add_path_precheck(RelOptInfo *parent_rel,
  */
 Path *
 create_seqscan_path(PlannerInfo *root, RelOptInfo *rel, Relids required_outer)
-{	StackTrace("create_seqscan_path");
+{
 	Path	   *pathnode = makeNode(Path);
 
 	pathnode->pathtype = T_SeqScan;
@@ -717,7 +717,7 @@ create_seqscan_path(PlannerInfo *root, RelOptInfo *rel, Relids required_outer)
  */
 Path *
 create_samplescan_path(PlannerInfo *root, RelOptInfo *rel, Relids required_outer)
-{	StackTrace("create_samplescan_path");
+{
 	Path	   *pathnode = makeNode(Path);
 
 	pathnode->pathtype = T_SampleScan;
@@ -767,7 +767,7 @@ create_index_path(PlannerInfo *root,
 				  bool indexonly,
 				  Relids required_outer,
 				  double loop_count)
-{	StackTrace("create_index_path");
+{
 	IndexPath  *pathnode = makeNode(IndexPath);
 	RelOptInfo *rel = index->rel;
 	List	   *indexquals,
@@ -815,7 +815,7 @@ create_bitmap_heap_path(PlannerInfo *root,
 						Path *bitmapqual,
 						Relids required_outer,
 						double loop_count)
-{	StackTrace("create_bitmap_heap_path");
+{
 	BitmapHeapPath *pathnode = makeNode(BitmapHeapPath);
 
 	pathnode->path.pathtype = T_BitmapHeapScan;
@@ -841,7 +841,7 @@ BitmapAndPath *
 create_bitmap_and_path(PlannerInfo *root,
 					   RelOptInfo *rel,
 					   List *bitmapquals)
-{	StackTrace("create_bitmap_and_path");
+{
 	BitmapAndPath *pathnode = makeNode(BitmapAndPath);
 
 	pathnode->path.pathtype = T_BitmapAnd;
@@ -865,7 +865,7 @@ BitmapOrPath *
 create_bitmap_or_path(PlannerInfo *root,
 					  RelOptInfo *rel,
 					  List *bitmapquals)
-{	StackTrace("create_bitmap_or_path");
+{
 	BitmapOrPath *pathnode = makeNode(BitmapOrPath);
 
 	pathnode->path.pathtype = T_BitmapOr;
@@ -888,7 +888,7 @@ create_bitmap_or_path(PlannerInfo *root,
 TidPath *
 create_tidscan_path(PlannerInfo *root, RelOptInfo *rel, List *tidquals,
 					Relids required_outer)
-{	StackTrace("create_tidscan_path");
+{
 	TidPath    *pathnode = makeNode(TidPath);
 
 	pathnode->path.pathtype = T_TidScan;
@@ -914,7 +914,7 @@ create_tidscan_path(PlannerInfo *root, RelOptInfo *rel, List *tidquals,
  */
 AppendPath *
 create_append_path(RelOptInfo *rel, List *subpaths, Relids required_outer)
-{	StackTrace("create_append_path");
+{
 	AppendPath *pathnode = makeNode(AppendPath);
 	ListCell   *l;
 
@@ -965,7 +965,7 @@ create_merge_append_path(PlannerInfo *root,
 						 List *subpaths,
 						 List *pathkeys,
 						 Relids required_outer)
-{	StackTrace("create_merge_append_path");
+{
 	MergeAppendPath *pathnode = makeNode(MergeAppendPath);
 	Cost		input_startup_cost;
 	Cost		input_total_cost;
@@ -1043,7 +1043,7 @@ create_merge_append_path(PlannerInfo *root,
  */
 ResultPath *
 create_result_path(List *quals)
-{	StackTrace("create_result_path");
+{
 	ResultPath *pathnode = makeNode(ResultPath);
 
 	pathnode->path.pathtype = T_Result;
@@ -1074,7 +1074,7 @@ create_result_path(List *quals)
  */
 MaterialPath *
 create_material_path(RelOptInfo *rel, Path *subpath)
-{	StackTrace("create_material_path");
+{
 	MaterialPath *pathnode = makeNode(MaterialPath);
 
 	Assert(subpath->parent == rel);
@@ -1109,7 +1109,7 @@ create_material_path(RelOptInfo *rel, Path *subpath)
 UniquePath *
 create_unique_path(PlannerInfo *root, RelOptInfo *rel, Path *subpath,
 				   SpecialJoinInfo *sjinfo)
-{	StackTrace("create_unique_path");
+{
 	UniquePath *pathnode;
 	Path		sort_path;		/* dummy for result of cost_sort */
 	Path		agg_path;		/* dummy for result of cost_agg */
@@ -1320,7 +1320,7 @@ create_unique_path(PlannerInfo *root, RelOptInfo *rel, Path *subpath,
  */
 static List *
 translate_sub_tlist(List *tlist, int relid)
-{	StackTrace("translate_sub_tlist");
+{
 	List	   *result = NIL;
 	ListCell   *l;
 
@@ -1345,7 +1345,7 @@ translate_sub_tlist(List *tlist, int relid)
 Path *
 create_subqueryscan_path(PlannerInfo *root, RelOptInfo *rel,
 						 List *pathkeys, Relids required_outer)
-{	StackTrace("create_subqueryscan_path");
+{
 	Path	   *pathnode = makeNode(Path);
 
 	pathnode->pathtype = T_SubqueryScan;
@@ -1367,7 +1367,7 @@ create_subqueryscan_path(PlannerInfo *root, RelOptInfo *rel,
 Path *
 create_functionscan_path(PlannerInfo *root, RelOptInfo *rel,
 						 List *pathkeys, Relids required_outer)
-{	StackTrace("create_functionscan_path");
+{
 	Path	   *pathnode = makeNode(Path);
 
 	pathnode->pathtype = T_FunctionScan;
@@ -1389,7 +1389,7 @@ create_functionscan_path(PlannerInfo *root, RelOptInfo *rel,
 Path *
 create_valuesscan_path(PlannerInfo *root, RelOptInfo *rel,
 					   Relids required_outer)
-{	StackTrace("create_valuesscan_path");
+{
 	Path	   *pathnode = makeNode(Path);
 
 	pathnode->pathtype = T_ValuesScan;
@@ -1410,7 +1410,7 @@ create_valuesscan_path(PlannerInfo *root, RelOptInfo *rel,
  */
 Path *
 create_ctescan_path(PlannerInfo *root, RelOptInfo *rel, Relids required_outer)
-{	StackTrace("create_ctescan_path");
+{
 	Path	   *pathnode = makeNode(Path);
 
 	pathnode->pathtype = T_CteScan;
@@ -1432,7 +1432,7 @@ create_ctescan_path(PlannerInfo *root, RelOptInfo *rel, Relids required_outer)
 Path *
 create_worktablescan_path(PlannerInfo *root, RelOptInfo *rel,
 						  Relids required_outer)
-{	StackTrace("create_worktablescan_path");
+{
 	Path	   *pathnode = makeNode(Path);
 
 	pathnode->pathtype = T_WorkTableScan;
@@ -1463,7 +1463,7 @@ create_foreignscan_path(PlannerInfo *root, RelOptInfo *rel,
 						List *pathkeys,
 						Relids required_outer,
 						List *fdw_private)
-{	StackTrace("create_foreignscan_path");
+{
 	ForeignPath *pathnode = makeNode(ForeignPath);
 
 	pathnode->path.pathtype = T_ForeignScan;
@@ -1488,7 +1488,7 @@ create_foreignscan_path(PlannerInfo *root, RelOptInfo *rel,
  */
 Relids
 calc_nestloop_required_outer(Path *outer_path, Path *inner_path)
-{	StackTrace("calc_nestloop_required_outer");
+{
 	Relids		outer_paramrels = PATH_REQ_OUTER(outer_path);
 	Relids		inner_paramrels = PATH_REQ_OUTER(inner_path);
 	Relids		required_outer;
@@ -1520,7 +1520,7 @@ calc_nestloop_required_outer(Path *outer_path, Path *inner_path)
  */
 Relids
 calc_non_nestloop_required_outer(Path *outer_path, Path *inner_path)
-{	StackTrace("calc_non_nestloop_required_outer");
+{
 	Relids		outer_paramrels = PATH_REQ_OUTER(outer_path);
 	Relids		inner_paramrels = PATH_REQ_OUTER(inner_path);
 	Relids		required_outer;
@@ -1564,7 +1564,7 @@ create_nestloop_path(PlannerInfo *root,
 					 List *restrict_clauses,
 					 List *pathkeys,
 					 Relids required_outer)
-{	StackTrace("create_nestloop_path");
+{
 	NestPath   *pathnode = makeNode(NestPath);
 	Relids		inner_req_outer = PATH_REQ_OUTER(inner_path);
 
@@ -1648,7 +1648,7 @@ create_mergejoin_path(PlannerInfo *root,
 					  List *mergeclauses,
 					  List *outersortkeys,
 					  List *innersortkeys)
-{	StackTrace("create_mergejoin_path");
+{
 	MergePath  *pathnode = makeNode(MergePath);
 
 	pathnode->jpath.path.pathtype = T_MergeJoin;
@@ -1704,7 +1704,7 @@ create_hashjoin_path(PlannerInfo *root,
 					 List *restrict_clauses,
 					 Relids required_outer,
 					 List *hashclauses)
-{	StackTrace("create_hashjoin_path");
+{
 	HashPath   *pathnode = makeNode(HashPath);
 
 	pathnode->jpath.path.pathtype = T_HashJoin;
@@ -1763,7 +1763,7 @@ Path *
 reparameterize_path(PlannerInfo *root, Path *path,
 					Relids required_outer,
 					double loop_count)
-{	StackTrace("reparameterize_path");
+{
 	RelOptInfo *rel = path->parent;
 
 	/* Can only increase, not decrease, path's parameterization */

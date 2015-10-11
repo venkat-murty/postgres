@@ -70,7 +70,7 @@ typedef struct RecordCompareData
  */
 Datum
 record_in(PG_FUNCTION_ARGS)
-{	StackTrace("record_in");
+{
 	char	   *string = PG_GETARG_CSTRING(0);
 	Oid			tupType = PG_GETARG_OID(1);
 
@@ -298,7 +298,7 @@ record_in(PG_FUNCTION_ARGS)
  */
 Datum
 record_out(PG_FUNCTION_ARGS)
-{	StackTrace("record_out");
+{
 	HeapTupleHeader rec = PG_GETARG_HEAPTUPLEHEADER(0);
 	Oid			tupType;
 	int32		tupTypmod;
@@ -446,7 +446,7 @@ record_out(PG_FUNCTION_ARGS)
  */
 Datum
 record_recv(PG_FUNCTION_ARGS)
-{	StackTrace("record_recv");
+{
 	StringInfo	buf = (StringInfo) PG_GETARG_POINTER(0);
 	Oid			tupType = PG_GETARG_OID(1);
 
@@ -641,7 +641,7 @@ record_recv(PG_FUNCTION_ARGS)
  */
 Datum
 record_send(PG_FUNCTION_ARGS)
-{	StackTrace("record_send");
+{
 	HeapTupleHeader rec = PG_GETARG_HEAPTUPLEHEADER(0);
 	Oid			tupType;
 	int32		tupTypmod;
@@ -774,7 +774,7 @@ record_send(PG_FUNCTION_ARGS)
  */
 static int
 record_cmp(FunctionCallInfo fcinfo)
-{	StackTrace("record_cmp");
+{
 	HeapTupleHeader record1 = PG_GETARG_HEAPTUPLEHEADER(0);
 	HeapTupleHeader record2 = PG_GETARG_HEAPTUPLEHEADER(1);
 	int			result = 0;
@@ -1010,7 +1010,7 @@ record_cmp(FunctionCallInfo fcinfo)
  */
 Datum
 record_eq(PG_FUNCTION_ARGS)
-{	StackTrace("record_eq");
+{
 	HeapTupleHeader record1 = PG_GETARG_HEAPTUPLEHEADER(0);
 	HeapTupleHeader record2 = PG_GETARG_HEAPTUPLEHEADER(1);
 	bool		result = true;
@@ -1221,37 +1221,37 @@ record_eq(PG_FUNCTION_ARGS)
 
 Datum
 record_ne(PG_FUNCTION_ARGS)
-{	StackTrace("record_ne");
+{
 	PG_RETURN_BOOL(!DatumGetBool(record_eq(fcinfo)));
 }
 
 Datum
 record_lt(PG_FUNCTION_ARGS)
-{	StackTrace("record_lt");
+{
 	PG_RETURN_BOOL(record_cmp(fcinfo) < 0);
 }
 
 Datum
 record_gt(PG_FUNCTION_ARGS)
-{	StackTrace("record_gt");
+{
 	PG_RETURN_BOOL(record_cmp(fcinfo) > 0);
 }
 
 Datum
 record_le(PG_FUNCTION_ARGS)
-{	StackTrace("record_le");
+{
 	PG_RETURN_BOOL(record_cmp(fcinfo) <= 0);
 }
 
 Datum
 record_ge(PG_FUNCTION_ARGS)
-{	StackTrace("record_ge");
+{
 	PG_RETURN_BOOL(record_cmp(fcinfo) >= 0);
 }
 
 Datum
 btrecordcmp(PG_FUNCTION_ARGS)
-{	StackTrace("btrecordcmp");
+{
 	PG_RETURN_INT32(record_cmp(fcinfo));
 }
 
@@ -1269,7 +1269,7 @@ btrecordcmp(PG_FUNCTION_ARGS)
  */
 static int
 record_image_cmp(FunctionCallInfo fcinfo)
-{	StackTrace("record_image_cmp");
+{
 	HeapTupleHeader record1 = PG_GETARG_HEAPTUPLEHEADER(0);
 	HeapTupleHeader record2 = PG_GETARG_HEAPTUPLEHEADER(1);
 	int			result = 0;
@@ -1546,7 +1546,7 @@ record_image_cmp(FunctionCallInfo fcinfo)
  */
 Datum
 record_image_eq(PG_FUNCTION_ARGS)
-{	StackTrace("record_image_eq");
+{
 	HeapTupleHeader record1 = PG_GETARG_HEAPTUPLEHEADER(0);
 	HeapTupleHeader record2 = PG_GETARG_HEAPTUPLEHEADER(1);
 	bool		result = true;
@@ -1777,36 +1777,36 @@ record_image_eq(PG_FUNCTION_ARGS)
 
 Datum
 record_image_ne(PG_FUNCTION_ARGS)
-{	StackTrace("record_image_ne");
+{
 	PG_RETURN_BOOL(!DatumGetBool(record_image_eq(fcinfo)));
 }
 
 Datum
 record_image_lt(PG_FUNCTION_ARGS)
-{	StackTrace("record_image_lt");
+{
 	PG_RETURN_BOOL(record_image_cmp(fcinfo) < 0);
 }
 
 Datum
 record_image_gt(PG_FUNCTION_ARGS)
-{	StackTrace("record_image_gt");
+{
 	PG_RETURN_BOOL(record_image_cmp(fcinfo) > 0);
 }
 
 Datum
 record_image_le(PG_FUNCTION_ARGS)
-{	StackTrace("record_image_le");
+{
 	PG_RETURN_BOOL(record_image_cmp(fcinfo) <= 0);
 }
 
 Datum
 record_image_ge(PG_FUNCTION_ARGS)
-{	StackTrace("record_image_ge");
+{
 	PG_RETURN_BOOL(record_image_cmp(fcinfo) >= 0);
 }
 
 Datum
 btrecordimagecmp(PG_FUNCTION_ARGS)
-{	StackTrace("btrecordimagecmp");
+{
 	PG_RETURN_INT32(record_image_cmp(fcinfo));
 }

@@ -19,6 +19,6 @@
 
 Datum
 pgsql_version(PG_FUNCTION_ARGS)
-{	StackTrace("pgsql_version");
+{
 	PG_RETURN_TEXT_P(cstring_to_text(PG_VERSION_STR));
 }

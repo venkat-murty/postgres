@@ -59,7 +59,7 @@ make_restrictinfo(Expr *clause,
 				  Relids required_relids,
 				  Relids outer_relids,
 				  Relids nullable_relids)
-{	StackTrace("make_restrictinfo");
+{
 	/*
 	 * If it's an OR clause, build a modified copy with RestrictInfos inserted
 	 * above each subclause of the top-level AND/OR structure.
@@ -102,7 +102,7 @@ make_restrictinfo(Expr *clause,
 List *
 make_restrictinfos_from_actual_clauses(PlannerInfo *root,
 									   List *clause_list)
-{	StackTrace("make_restrictinfos_from_actual_clauses");
+{
 	List	   *result = NIL;
 	ListCell   *l;
 
@@ -153,7 +153,7 @@ make_restrictinfo_internal(Expr *clause,
 						   Relids required_relids,
 						   Relids outer_relids,
 						   Relids nullable_relids)
-{	StackTrace("make_restrictinfo_internal");
+{
 	RestrictInfo *restrictinfo = makeNode(RestrictInfo);
 
 	restrictinfo->clause = clause;
@@ -264,7 +264,7 @@ make_sub_restrictinfos(Expr *clause,
 					   Relids required_relids,
 					   Relids outer_relids,
 					   Relids nullable_relids)
-{	StackTrace("make_sub_restrictinfos");
+{
 	if (or_clause((Node *) clause))
 	{
 		List	   *orlist = NIL;
@@ -322,7 +322,7 @@ make_sub_restrictinfos(Expr *clause,
  */
 bool
 restriction_is_or_clause(RestrictInfo *restrictinfo)
-{	StackTrace("restriction_is_or_clause");
+{
 	if (restrictinfo->orclause != NULL)
 		return true;
 	else
@@ -339,7 +339,7 @@ restriction_is_or_clause(RestrictInfo *restrictinfo)
  */
 List *
 get_actual_clauses(List *restrictinfo_list)
-{	StackTrace("get_actual_clauses");
+{
 	List	   *result = NIL;
 	ListCell   *l;
 
@@ -366,7 +366,7 @@ get_actual_clauses(List *restrictinfo_list)
  */
 List *
 get_all_actual_clauses(List *restrictinfo_list)
-{	StackTrace("get_all_actual_clauses");
+{
 	List	   *result = NIL;
 	ListCell   *l;
 
@@ -390,7 +390,7 @@ get_all_actual_clauses(List *restrictinfo_list)
 List *
 extract_actual_clauses(List *restrictinfo_list,
 					   bool pseudoconstant)
-{	StackTrace("extract_actual_clauses");
+{
 	List	   *result = NIL;
 	ListCell   *l;
 
@@ -420,7 +420,7 @@ void
 extract_actual_join_clauses(List *restrictinfo_list,
 							List **joinquals,
 							List **otherquals)
-{	StackTrace("extract_actual_join_clauses");
+{
 	ListCell   *l;
 
 	*joinquals = NIL;
@@ -475,7 +475,7 @@ extract_actual_join_clauses(List *restrictinfo_list,
  */
 bool
 join_clause_is_movable_to(RestrictInfo *rinfo, RelOptInfo *baserel)
-{	StackTrace("join_clause_is_movable_to");
+{
 	/* Clause must physically reference target rel */
 	if (!bms_is_member(baserel->relid, rinfo->clause_relids))
 		return false;
@@ -529,7 +529,7 @@ bool
 join_clause_is_movable_into(RestrictInfo *rinfo,
 							Relids currentrelids,
 							Relids current_and_outer)
-{	StackTrace("join_clause_is_movable_into");
+{
 	/* Clause must be evaluatable given available context */
 	if (!bms_is_subset(rinfo->clause_relids, current_and_outer))
 		return false;

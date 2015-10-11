@@ -96,7 +96,7 @@ static double cbrt(double x);
 
 double
 get_float8_infinity(void)
-{	StackTrace("get_float8_infinity");
+{
 #ifdef INFINITY
 	/* C99 standard way */
 	return (double) INFINITY;
@@ -121,7 +121,7 @@ get_float8_infinity(void)
 #endif
 float
 get_float4_infinity(void)
-{	StackTrace("get_float4_infinity");
+{
 #ifdef INFINITY
 	/* C99 standard way */
 	return (float) INFINITY;
@@ -141,7 +141,7 @@ get_float4_infinity(void)
 
 double
 get_float8_nan(void)
-{	StackTrace("get_float8_nan");
+{
 	/* (double) NAN doesn't work on some NetBSD/MIPS releases */
 #if defined(NAN) && !(defined(__NetBSD__) && defined(__mips__))
 	/* C99 standard way */
@@ -154,7 +154,7 @@ get_float8_nan(void)
 
 float
 get_float4_nan(void)
-{	StackTrace("get_float4_nan");
+{
 #ifdef NAN
 	/* C99 standard way */
 	return (float) NAN;
@@ -174,7 +174,7 @@ get_float4_nan(void)
  */
 int
 is_infinite(double val)
-{	StackTrace("is_infinite");
+{
 	int			inf = isinf(val);
 
 	if (inf == 0)
@@ -191,7 +191,7 @@ is_infinite(double val)
  */
 Datum
 float4in(PG_FUNCTION_ARGS)
-{	StackTrace("float4in");
+{
 	char	   *num = PG_GETARG_CSTRING(0);
 	char	   *orig_num;
 	double		val;
@@ -331,7 +331,7 @@ float4in(PG_FUNCTION_ARGS)
  */
 Datum
 float4out(PG_FUNCTION_ARGS)
-{	StackTrace("float4out");
+{
 	float4		num = PG_GETARG_FLOAT4(0);
 	char	   *ascii = (char *) palloc(MAXFLOATWIDTH + 1);
 
@@ -365,7 +365,7 @@ float4out(PG_FUNCTION_ARGS)
  */
 Datum
 float4recv(PG_FUNCTION_ARGS)
-{	StackTrace("float4recv");
+{
 	StringInfo	buf = (StringInfo) PG_GETARG_POINTER(0);
 
 	PG_RETURN_FLOAT4(pq_getmsgfloat4(buf));
@@ -376,7 +376,7 @@ float4recv(PG_FUNCTION_ARGS)
  */
 Datum
 float4send(PG_FUNCTION_ARGS)
-{	StackTrace("float4send");
+{
 	float4		num = PG_GETARG_FLOAT4(0);
 	StringInfoData buf;
 
@@ -390,7 +390,7 @@ float4send(PG_FUNCTION_ARGS)
  */
 Datum
 float8in(PG_FUNCTION_ARGS)
-{	StackTrace("float8in");
+{
 	char	   *num = PG_GETARG_CSTRING(0);
 	char	   *orig_num;
 	double		val;
@@ -526,7 +526,7 @@ float8in(PG_FUNCTION_ARGS)
  */
 Datum
 float8out(PG_FUNCTION_ARGS)
-{	StackTrace("float8out");
+{
 	float8		num = PG_GETARG_FLOAT8(0);
 	char	   *ascii = (char *) palloc(MAXDOUBLEWIDTH + 1);
 
@@ -560,7 +560,7 @@ float8out(PG_FUNCTION_ARGS)
  */
 Datum
 float8recv(PG_FUNCTION_ARGS)
-{	StackTrace("float8recv");
+{
 	StringInfo	buf = (StringInfo) PG_GETARG_POINTER(0);
 
 	PG_RETURN_FLOAT8(pq_getmsgfloat8(buf));
@@ -571,7 +571,7 @@ float8recv(PG_FUNCTION_ARGS)
  */
 Datum
 float8send(PG_FUNCTION_ARGS)
-{	StackTrace("float8send");
+{
 	float8		num = PG_GETARG_FLOAT8(0);
 	StringInfoData buf;
 
@@ -595,7 +595,7 @@ float8send(PG_FUNCTION_ARGS)
  */
 Datum
 float4abs(PG_FUNCTION_ARGS)
-{	StackTrace("float4abs");
+{
 	float4		arg1 = PG_GETARG_FLOAT4(0);
 
 	PG_RETURN_FLOAT4((float4) fabs(arg1));
@@ -606,7 +606,7 @@ float4abs(PG_FUNCTION_ARGS)
  */
 Datum
 float4um(PG_FUNCTION_ARGS)
-{	StackTrace("float4um");
+{
 	float4		arg1 = PG_GETARG_FLOAT4(0);
 	float4		result;
 
@@ -616,7 +616,7 @@ float4um(PG_FUNCTION_ARGS)
 
 Datum
 float4up(PG_FUNCTION_ARGS)
-{	StackTrace("float4up");
+{
 	float4		arg = PG_GETARG_FLOAT4(0);
 
 	PG_RETURN_FLOAT4(arg);
@@ -624,7 +624,7 @@ float4up(PG_FUNCTION_ARGS)
 
 Datum
 float4larger(PG_FUNCTION_ARGS)
-{	StackTrace("float4larger");
+{
 	float4		arg1 = PG_GETARG_FLOAT4(0);
 	float4		arg2 = PG_GETARG_FLOAT4(1);
 	float4		result;
@@ -638,7 +638,7 @@ float4larger(PG_FUNCTION_ARGS)
 
 Datum
 float4smaller(PG_FUNCTION_ARGS)
-{	StackTrace("float4smaller");
+{
 	float4		arg1 = PG_GETARG_FLOAT4(0);
 	float4		arg2 = PG_GETARG_FLOAT4(1);
 	float4		result;
@@ -661,7 +661,7 @@ float4smaller(PG_FUNCTION_ARGS)
  */
 Datum
 float8abs(PG_FUNCTION_ARGS)
-{	StackTrace("float8abs");
+{
 	float8		arg1 = PG_GETARG_FLOAT8(0);
 
 	PG_RETURN_FLOAT8(fabs(arg1));
@@ -673,7 +673,7 @@ float8abs(PG_FUNCTION_ARGS)
  */
 Datum
 float8um(PG_FUNCTION_ARGS)
-{	StackTrace("float8um");
+{
 	float8		arg1 = PG_GETARG_FLOAT8(0);
 	float8		result;
 
@@ -683,7 +683,7 @@ float8um(PG_FUNCTION_ARGS)
 
 Datum
 float8up(PG_FUNCTION_ARGS)
-{	StackTrace("float8up");
+{
 	float8		arg = PG_GETARG_FLOAT8(0);
 
 	PG_RETURN_FLOAT8(arg);
@@ -691,7 +691,7 @@ float8up(PG_FUNCTION_ARGS)
 
 Datum
 float8larger(PG_FUNCTION_ARGS)
-{	StackTrace("float8larger");
+{
 	float8		arg1 = PG_GETARG_FLOAT8(0);
 	float8		arg2 = PG_GETARG_FLOAT8(1);
 	float8		result;
@@ -705,7 +705,7 @@ float8larger(PG_FUNCTION_ARGS)
 
 Datum
 float8smaller(PG_FUNCTION_ARGS)
-{	StackTrace("float8smaller");
+{
 	float8		arg1 = PG_GETARG_FLOAT8(0);
 	float8		arg2 = PG_GETARG_FLOAT8(1);
 	float8		result;
@@ -732,7 +732,7 @@ float8smaller(PG_FUNCTION_ARGS)
  */
 Datum
 float4pl(PG_FUNCTION_ARGS)
-{	StackTrace("float4pl");
+{
 	float4		arg1 = PG_GETARG_FLOAT4(0);
 	float4		arg2 = PG_GETARG_FLOAT4(1);
 	float4		result;
@@ -752,7 +752,7 @@ float4pl(PG_FUNCTION_ARGS)
 
 Datum
 float4mi(PG_FUNCTION_ARGS)
-{	StackTrace("float4mi");
+{
 	float4		arg1 = PG_GETARG_FLOAT4(0);
 	float4		arg2 = PG_GETARG_FLOAT4(1);
 	float4		result;
@@ -764,7 +764,7 @@ float4mi(PG_FUNCTION_ARGS)
 
 Datum
 float4mul(PG_FUNCTION_ARGS)
-{	StackTrace("float4mul");
+{
 	float4		arg1 = PG_GETARG_FLOAT4(0);
 	float4		arg2 = PG_GETARG_FLOAT4(1);
 	float4		result;
@@ -777,7 +777,7 @@ float4mul(PG_FUNCTION_ARGS)
 
 Datum
 float4div(PG_FUNCTION_ARGS)
-{	StackTrace("float4div");
+{
 	float4		arg1 = PG_GETARG_FLOAT4(0);
 	float4		arg2 = PG_GETARG_FLOAT4(1);
 	float4		result;
@@ -801,7 +801,7 @@ float4div(PG_FUNCTION_ARGS)
  */
 Datum
 float8pl(PG_FUNCTION_ARGS)
-{	StackTrace("float8pl");
+{
 	float8		arg1 = PG_GETARG_FLOAT8(0);
 	float8		arg2 = PG_GETARG_FLOAT8(1);
 	float8		result;
@@ -814,7 +814,7 @@ float8pl(PG_FUNCTION_ARGS)
 
 Datum
 float8mi(PG_FUNCTION_ARGS)
-{	StackTrace("float8mi");
+{
 	float8		arg1 = PG_GETARG_FLOAT8(0);
 	float8		arg2 = PG_GETARG_FLOAT8(1);
 	float8		result;
@@ -827,7 +827,7 @@ float8mi(PG_FUNCTION_ARGS)
 
 Datum
 float8mul(PG_FUNCTION_ARGS)
-{	StackTrace("float8mul");
+{
 	float8		arg1 = PG_GETARG_FLOAT8(0);
 	float8		arg2 = PG_GETARG_FLOAT8(1);
 	float8		result;
@@ -841,7 +841,7 @@ float8mul(PG_FUNCTION_ARGS)
 
 Datum
 float8div(PG_FUNCTION_ARGS)
-{	StackTrace("float8div");
+{
 	float8		arg1 = PG_GETARG_FLOAT8(0);
 	float8		arg2 = PG_GETARG_FLOAT8(1);
 	float8		result;
@@ -869,7 +869,7 @@ float8div(PG_FUNCTION_ARGS)
  */
 static int
 float4_cmp_internal(float4 a, float4 b)
-{	StackTrace("float4_cmp_internal");
+{
 	/*
 	 * We consider all NANs to be equal and larger than any non-NAN. This is
 	 * somewhat arbitrary; the important thing is to have a consistent sort
@@ -899,7 +899,7 @@ float4_cmp_internal(float4 a, float4 b)
 
 Datum
 float4eq(PG_FUNCTION_ARGS)
-{	StackTrace("float4eq");
+{
 	float4		arg1 = PG_GETARG_FLOAT4(0);
 	float4		arg2 = PG_GETARG_FLOAT4(1);
 
@@ -908,7 +908,7 @@ float4eq(PG_FUNCTION_ARGS)
 
 Datum
 float4ne(PG_FUNCTION_ARGS)
-{	StackTrace("float4ne");
+{
 	float4		arg1 = PG_GETARG_FLOAT4(0);
 	float4		arg2 = PG_GETARG_FLOAT4(1);
 
@@ -917,7 +917,7 @@ float4ne(PG_FUNCTION_ARGS)
 
 Datum
 float4lt(PG_FUNCTION_ARGS)
-{	StackTrace("float4lt");
+{
 	float4		arg1 = PG_GETARG_FLOAT4(0);
 	float4		arg2 = PG_GETARG_FLOAT4(1);
 
@@ -926,7 +926,7 @@ float4lt(PG_FUNCTION_ARGS)
 
 Datum
 float4le(PG_FUNCTION_ARGS)
-{	StackTrace("float4le");
+{
 	float4		arg1 = PG_GETARG_FLOAT4(0);
 	float4		arg2 = PG_GETARG_FLOAT4(1);
 
@@ -935,7 +935,7 @@ float4le(PG_FUNCTION_ARGS)
 
 Datum
 float4gt(PG_FUNCTION_ARGS)
-{	StackTrace("float4gt");
+{
 	float4		arg1 = PG_GETARG_FLOAT4(0);
 	float4		arg2 = PG_GETARG_FLOAT4(1);
 
@@ -944,7 +944,7 @@ float4gt(PG_FUNCTION_ARGS)
 
 Datum
 float4ge(PG_FUNCTION_ARGS)
-{	StackTrace("float4ge");
+{
 	float4		arg1 = PG_GETARG_FLOAT4(0);
 	float4		arg2 = PG_GETARG_FLOAT4(1);
 
@@ -953,7 +953,7 @@ float4ge(PG_FUNCTION_ARGS)
 
 Datum
 btfloat4cmp(PG_FUNCTION_ARGS)
-{	StackTrace("btfloat4cmp");
+{
 	float4		arg1 = PG_GETARG_FLOAT4(0);
 	float4		arg2 = PG_GETARG_FLOAT4(1);
 
@@ -962,7 +962,7 @@ btfloat4cmp(PG_FUNCTION_ARGS)
 
 static int
 btfloat4fastcmp(Datum x, Datum y, SortSupport ssup)
-{	StackTrace("btfloat4fastcmp");
+{
 	float4		arg1 = DatumGetFloat4(x);
 	float4		arg2 = DatumGetFloat4(y);
 
@@ -971,7 +971,7 @@ btfloat4fastcmp(Datum x, Datum y, SortSupport ssup)
 
 Datum
 btfloat4sortsupport(PG_FUNCTION_ARGS)
-{	StackTrace("btfloat4sortsupport");
+{
 	SortSupport ssup = (SortSupport) PG_GETARG_POINTER(0);
 
 	ssup->comparator = btfloat4fastcmp;
@@ -983,7 +983,7 @@ btfloat4sortsupport(PG_FUNCTION_ARGS)
  */
 static int
 float8_cmp_internal(float8 a, float8 b)
-{	StackTrace("float8_cmp_internal");
+{
 	/*
 	 * We consider all NANs to be equal and larger than any non-NAN. This is
 	 * somewhat arbitrary; the important thing is to have a consistent sort
@@ -1013,7 +1013,7 @@ float8_cmp_internal(float8 a, float8 b)
 
 Datum
 float8eq(PG_FUNCTION_ARGS)
-{	StackTrace("float8eq");
+{
 	float8		arg1 = PG_GETARG_FLOAT8(0);
 	float8		arg2 = PG_GETARG_FLOAT8(1);
 
@@ -1022,7 +1022,7 @@ float8eq(PG_FUNCTION_ARGS)
 
 Datum
 float8ne(PG_FUNCTION_ARGS)
-{	StackTrace("float8ne");
+{
 	float8		arg1 = PG_GETARG_FLOAT8(0);
 	float8		arg2 = PG_GETARG_FLOAT8(1);
 
@@ -1031,7 +1031,7 @@ float8ne(PG_FUNCTION_ARGS)
 
 Datum
 float8lt(PG_FUNCTION_ARGS)
-{	StackTrace("float8lt");
+{
 	float8		arg1 = PG_GETARG_FLOAT8(0);
 	float8		arg2 = PG_GETARG_FLOAT8(1);
 
@@ -1040,7 +1040,7 @@ float8lt(PG_FUNCTION_ARGS)
 
 Datum
 float8le(PG_FUNCTION_ARGS)
-{	StackTrace("float8le");
+{
 	float8		arg1 = PG_GETARG_FLOAT8(0);
 	float8		arg2 = PG_GETARG_FLOAT8(1);
 
@@ -1049,7 +1049,7 @@ float8le(PG_FUNCTION_ARGS)
 
 Datum
 float8gt(PG_FUNCTION_ARGS)
-{	StackTrace("float8gt");
+{
 	float8		arg1 = PG_GETARG_FLOAT8(0);
 	float8		arg2 = PG_GETARG_FLOAT8(1);
 
@@ -1058,7 +1058,7 @@ float8gt(PG_FUNCTION_ARGS)
 
 Datum
 float8ge(PG_FUNCTION_ARGS)
-{	StackTrace("float8ge");
+{
 	float8		arg1 = PG_GETARG_FLOAT8(0);
 	float8		arg2 = PG_GETARG_FLOAT8(1);
 
@@ -1067,7 +1067,7 @@ float8ge(PG_FUNCTION_ARGS)
 
 Datum
 btfloat8cmp(PG_FUNCTION_ARGS)
-{	StackTrace("btfloat8cmp");
+{
 	float8		arg1 = PG_GETARG_FLOAT8(0);
 	float8		arg2 = PG_GETARG_FLOAT8(1);
 
@@ -1076,7 +1076,7 @@ btfloat8cmp(PG_FUNCTION_ARGS)
 
 static int
 btfloat8fastcmp(Datum x, Datum y, SortSupport ssup)
-{	StackTrace("btfloat8fastcmp");
+{
 	float8		arg1 = DatumGetFloat8(x);
 	float8		arg2 = DatumGetFloat8(y);
 
@@ -1085,7 +1085,7 @@ btfloat8fastcmp(Datum x, Datum y, SortSupport ssup)
 
 Datum
 btfloat8sortsupport(PG_FUNCTION_ARGS)
-{	StackTrace("btfloat8sortsupport");
+{
 	SortSupport ssup = (SortSupport) PG_GETARG_POINTER(0);
 
 	ssup->comparator = btfloat8fastcmp;
@@ -1094,7 +1094,7 @@ btfloat8sortsupport(PG_FUNCTION_ARGS)
 
 Datum
 btfloat48cmp(PG_FUNCTION_ARGS)
-{	StackTrace("btfloat48cmp");
+{
 	float4		arg1 = PG_GETARG_FLOAT4(0);
 	float8		arg2 = PG_GETARG_FLOAT8(1);
 
@@ -1104,7 +1104,7 @@ btfloat48cmp(PG_FUNCTION_ARGS)
 
 Datum
 btfloat84cmp(PG_FUNCTION_ARGS)
-{	StackTrace("btfloat84cmp");
+{
 	float8		arg1 = PG_GETARG_FLOAT8(0);
 	float4		arg2 = PG_GETARG_FLOAT4(1);
 
@@ -1124,7 +1124,7 @@ btfloat84cmp(PG_FUNCTION_ARGS)
  */
 Datum
 ftod(PG_FUNCTION_ARGS)
-{	StackTrace("ftod");
+{
 	float4		num = PG_GETARG_FLOAT4(0);
 
 	PG_RETURN_FLOAT8((float8) num);
@@ -1136,7 +1136,7 @@ ftod(PG_FUNCTION_ARGS)
  */
 Datum
 dtof(PG_FUNCTION_ARGS)
-{	StackTrace("dtof");
+{
 	float8		num = PG_GETARG_FLOAT8(0);
 
 	CHECKFLOATVAL((float4) num, isinf(num), num == 0);
@@ -1150,7 +1150,7 @@ dtof(PG_FUNCTION_ARGS)
  */
 Datum
 dtoi4(PG_FUNCTION_ARGS)
-{	StackTrace("dtoi4");
+{
 	float8		num = PG_GETARG_FLOAT8(0);
 	int32		result;
 
@@ -1170,7 +1170,7 @@ dtoi4(PG_FUNCTION_ARGS)
  */
 Datum
 dtoi2(PG_FUNCTION_ARGS)
-{	StackTrace("dtoi2");
+{
 	float8		num = PG_GETARG_FLOAT8(0);
 
 	if (num < SHRT_MIN || num > SHRT_MAX || isnan(num))
@@ -1187,7 +1187,7 @@ dtoi2(PG_FUNCTION_ARGS)
  */
 Datum
 i4tod(PG_FUNCTION_ARGS)
-{	StackTrace("i4tod");
+{
 	int32		num = PG_GETARG_INT32(0);
 
 	PG_RETURN_FLOAT8((float8) num);
@@ -1199,7 +1199,7 @@ i4tod(PG_FUNCTION_ARGS)
  */
 Datum
 i2tod(PG_FUNCTION_ARGS)
-{	StackTrace("i2tod");
+{
 	int16		num = PG_GETARG_INT16(0);
 
 	PG_RETURN_FLOAT8((float8) num);
@@ -1211,7 +1211,7 @@ i2tod(PG_FUNCTION_ARGS)
  */
 Datum
 ftoi4(PG_FUNCTION_ARGS)
-{	StackTrace("ftoi4");
+{
 	float4		num = PG_GETARG_FLOAT4(0);
 
 	if (num < INT_MIN || num > INT_MAX || isnan(num))
@@ -1228,7 +1228,7 @@ ftoi4(PG_FUNCTION_ARGS)
  */
 Datum
 ftoi2(PG_FUNCTION_ARGS)
-{	StackTrace("ftoi2");
+{
 	float4		num = PG_GETARG_FLOAT4(0);
 
 	if (num < SHRT_MIN || num > SHRT_MAX || isnan(num))
@@ -1245,7 +1245,7 @@ ftoi2(PG_FUNCTION_ARGS)
  */
 Datum
 i4tof(PG_FUNCTION_ARGS)
-{	StackTrace("i4tof");
+{
 	int32		num = PG_GETARG_INT32(0);
 
 	PG_RETURN_FLOAT4((float4) num);
@@ -1257,7 +1257,7 @@ i4tof(PG_FUNCTION_ARGS)
  */
 Datum
 i2tof(PG_FUNCTION_ARGS)
-{	StackTrace("i2tof");
+{
 	int16		num = PG_GETARG_INT16(0);
 
 	PG_RETURN_FLOAT4((float4) num);
@@ -1275,7 +1275,7 @@ i2tof(PG_FUNCTION_ARGS)
  */
 Datum
 dround(PG_FUNCTION_ARGS)
-{	StackTrace("dround");
+{
 	float8		arg1 = PG_GETARG_FLOAT8(0);
 
 	PG_RETURN_FLOAT8(rint(arg1));
@@ -1287,7 +1287,7 @@ dround(PG_FUNCTION_ARGS)
  */
 Datum
 dceil(PG_FUNCTION_ARGS)
-{	StackTrace("dceil");
+{
 	float8		arg1 = PG_GETARG_FLOAT8(0);
 
 	PG_RETURN_FLOAT8(ceil(arg1));
@@ -1299,7 +1299,7 @@ dceil(PG_FUNCTION_ARGS)
  */
 Datum
 dfloor(PG_FUNCTION_ARGS)
-{	StackTrace("dfloor");
+{
 	float8		arg1 = PG_GETARG_FLOAT8(0);
 
 	PG_RETURN_FLOAT8(floor(arg1));
@@ -1312,7 +1312,7 @@ dfloor(PG_FUNCTION_ARGS)
  */
 Datum
 dsign(PG_FUNCTION_ARGS)
-{	StackTrace("dsign");
+{
 	float8		arg1 = PG_GETARG_FLOAT8(0);
 	float8		result;
 
@@ -1335,7 +1335,7 @@ dsign(PG_FUNCTION_ARGS)
  */
 Datum
 dtrunc(PG_FUNCTION_ARGS)
-{	StackTrace("dtrunc");
+{
 	float8		arg1 = PG_GETARG_FLOAT8(0);
 	float8		result;
 
@@ -1353,7 +1353,7 @@ dtrunc(PG_FUNCTION_ARGS)
  */
 Datum
 dsqrt(PG_FUNCTION_ARGS)
-{	StackTrace("dsqrt");
+{
 	float8		arg1 = PG_GETARG_FLOAT8(0);
 	float8		result;
 
@@ -1374,7 +1374,7 @@ dsqrt(PG_FUNCTION_ARGS)
  */
 Datum
 dcbrt(PG_FUNCTION_ARGS)
-{	StackTrace("dcbrt");
+{
 	float8		arg1 = PG_GETARG_FLOAT8(0);
 	float8		result;
 
@@ -1389,7 +1389,7 @@ dcbrt(PG_FUNCTION_ARGS)
  */
 Datum
 dpow(PG_FUNCTION_ARGS)
-{	StackTrace("dpow");
+{
 	float8		arg1 = PG_GETARG_FLOAT8(0);
 	float8		arg2 = PG_GETARG_FLOAT8(1);
 	float8		result;
@@ -1442,7 +1442,7 @@ dpow(PG_FUNCTION_ARGS)
  */
 Datum
 dexp(PG_FUNCTION_ARGS)
-{	StackTrace("dexp");
+{
 	float8		arg1 = PG_GETARG_FLOAT8(0);
 	float8		result;
 
@@ -1461,7 +1461,7 @@ dexp(PG_FUNCTION_ARGS)
  */
 Datum
 dlog1(PG_FUNCTION_ARGS)
-{	StackTrace("dlog1");
+{
 	float8		arg1 = PG_GETARG_FLOAT8(0);
 	float8		result;
 
@@ -1490,7 +1490,7 @@ dlog1(PG_FUNCTION_ARGS)
  */
 Datum
 dlog10(PG_FUNCTION_ARGS)
-{	StackTrace("dlog10");
+{
 	float8		arg1 = PG_GETARG_FLOAT8(0);
 	float8		result;
 
@@ -1520,7 +1520,7 @@ dlog10(PG_FUNCTION_ARGS)
  */
 Datum
 dacos(PG_FUNCTION_ARGS)
-{	StackTrace("dacos");
+{
 	float8		arg1 = PG_GETARG_FLOAT8(0);
 	float8		result;
 
@@ -1545,7 +1545,7 @@ dacos(PG_FUNCTION_ARGS)
  */
 Datum
 dasin(PG_FUNCTION_ARGS)
-{	StackTrace("dasin");
+{
 	float8		arg1 = PG_GETARG_FLOAT8(0);
 	float8		result;
 
@@ -1566,7 +1566,7 @@ dasin(PG_FUNCTION_ARGS)
  */
 Datum
 datan(PG_FUNCTION_ARGS)
-{	StackTrace("datan");
+{
 	float8		arg1 = PG_GETARG_FLOAT8(0);
 	float8		result;
 
@@ -1587,7 +1587,7 @@ datan(PG_FUNCTION_ARGS)
  */
 Datum
 datan2(PG_FUNCTION_ARGS)
-{	StackTrace("datan2");
+{
 	float8		arg1 = PG_GETARG_FLOAT8(0);
 	float8		arg2 = PG_GETARG_FLOAT8(1);
 	float8		result;
@@ -1609,7 +1609,7 @@ datan2(PG_FUNCTION_ARGS)
  */
 Datum
 dcos(PG_FUNCTION_ARGS)
-{	StackTrace("dcos");
+{
 	float8		arg1 = PG_GETARG_FLOAT8(0);
 	float8		result;
 
@@ -1630,7 +1630,7 @@ dcos(PG_FUNCTION_ARGS)
  */
 Datum
 dcot(PG_FUNCTION_ARGS)
-{	StackTrace("dcot");
+{
 	float8		arg1 = PG_GETARG_FLOAT8(0);
 	float8		result;
 
@@ -1652,7 +1652,7 @@ dcot(PG_FUNCTION_ARGS)
  */
 Datum
 dsin(PG_FUNCTION_ARGS)
-{	StackTrace("dsin");
+{
 	float8		arg1 = PG_GETARG_FLOAT8(0);
 	float8		result;
 
@@ -1673,7 +1673,7 @@ dsin(PG_FUNCTION_ARGS)
  */
 Datum
 dtan(PG_FUNCTION_ARGS)
-{	StackTrace("dtan");
+{
 	float8		arg1 = PG_GETARG_FLOAT8(0);
 	float8		result;
 
@@ -1694,7 +1694,7 @@ dtan(PG_FUNCTION_ARGS)
  */
 Datum
 degrees(PG_FUNCTION_ARGS)
-{	StackTrace("degrees");
+{
 	float8		arg1 = PG_GETARG_FLOAT8(0);
 	float8		result;
 
@@ -1710,7 +1710,7 @@ degrees(PG_FUNCTION_ARGS)
  */
 Datum
 dpi(PG_FUNCTION_ARGS)
-{	StackTrace("dpi");
+{
 	PG_RETURN_FLOAT8(M_PI);
 }
 
@@ -1720,7 +1720,7 @@ dpi(PG_FUNCTION_ARGS)
  */
 Datum
 radians(PG_FUNCTION_ARGS)
-{	StackTrace("radians");
+{
 	float8		arg1 = PG_GETARG_FLOAT8(0);
 	float8		result;
 
@@ -1736,7 +1736,7 @@ radians(PG_FUNCTION_ARGS)
  */
 Datum
 drandom(PG_FUNCTION_ARGS)
-{	StackTrace("drandom");
+{
 	float8		result;
 
 	/* result [0.0 - 1.0) */
@@ -1751,7 +1751,7 @@ drandom(PG_FUNCTION_ARGS)
  */
 Datum
 setseed(PG_FUNCTION_ARGS)
-{	StackTrace("setseed");
+{
 	float8		seed = PG_GETARG_FLOAT8(0);
 	int			iseed;
 
@@ -1790,7 +1790,7 @@ setseed(PG_FUNCTION_ARGS)
 
 static float8 *
 check_float8_array(ArrayType *transarray, const char *caller, int n)
-{	StackTrace("check_float8_array");
+{
 	/*
 	 * We expect the input to be an N-element float array; verify that. We
 	 * don't need to use deconstruct_array() since the array data is just
@@ -1806,7 +1806,7 @@ check_float8_array(ArrayType *transarray, const char *caller, int n)
 
 Datum
 float8_accum(PG_FUNCTION_ARGS)
-{	StackTrace("float8_accum");
+{
 	ArrayType  *transarray = PG_GETARG_ARRAYTYPE_P(0);
 	float8		newval = PG_GETARG_FLOAT8(1);
 	float8	   *transvalues;
@@ -1857,7 +1857,7 @@ float8_accum(PG_FUNCTION_ARGS)
 
 Datum
 float4_accum(PG_FUNCTION_ARGS)
-{	StackTrace("float4_accum");
+{
 	ArrayType  *transarray = PG_GETARG_ARRAYTYPE_P(0);
 
 	/* do computations as float8 */
@@ -1910,7 +1910,7 @@ float4_accum(PG_FUNCTION_ARGS)
 
 Datum
 float8_avg(PG_FUNCTION_ARGS)
-{	StackTrace("float8_avg");
+{
 	ArrayType  *transarray = PG_GETARG_ARRAYTYPE_P(0);
 	float8	   *transvalues;
 	float8		N,
@@ -1930,7 +1930,7 @@ float8_avg(PG_FUNCTION_ARGS)
 
 Datum
 float8_var_pop(PG_FUNCTION_ARGS)
-{	StackTrace("float8_var_pop");
+{
 	ArrayType  *transarray = PG_GETARG_ARRAYTYPE_P(0);
 	float8	   *transvalues;
 	float8		N,
@@ -1959,7 +1959,7 @@ float8_var_pop(PG_FUNCTION_ARGS)
 
 Datum
 float8_var_samp(PG_FUNCTION_ARGS)
-{	StackTrace("float8_var_samp");
+{
 	ArrayType  *transarray = PG_GETARG_ARRAYTYPE_P(0);
 	float8	   *transvalues;
 	float8		N,
@@ -1988,7 +1988,7 @@ float8_var_samp(PG_FUNCTION_ARGS)
 
 Datum
 float8_stddev_pop(PG_FUNCTION_ARGS)
-{	StackTrace("float8_stddev_pop");
+{
 	ArrayType  *transarray = PG_GETARG_ARRAYTYPE_P(0);
 	float8	   *transvalues;
 	float8		N,
@@ -2017,7 +2017,7 @@ float8_stddev_pop(PG_FUNCTION_ARGS)
 
 Datum
 float8_stddev_samp(PG_FUNCTION_ARGS)
-{	StackTrace("float8_stddev_samp");
+{
 	ArrayType  *transarray = PG_GETARG_ARRAYTYPE_P(0);
 	float8	   *transvalues;
 	float8		N,
@@ -2062,7 +2062,7 @@ float8_stddev_samp(PG_FUNCTION_ARGS)
 
 Datum
 float8_regr_accum(PG_FUNCTION_ARGS)
-{	StackTrace("float8_regr_accum");
+{
 	ArrayType  *transarray = PG_GETARG_ARRAYTYPE_P(0);
 	float8		newvalY = PG_GETARG_FLOAT8(1);
 	float8		newvalX = PG_GETARG_FLOAT8(2);
@@ -2133,7 +2133,7 @@ float8_regr_accum(PG_FUNCTION_ARGS)
 
 Datum
 float8_regr_sxx(PG_FUNCTION_ARGS)
-{	StackTrace("float8_regr_sxx");
+{
 	ArrayType  *transarray = PG_GETARG_ARRAYTYPE_P(0);
 	float8	   *transvalues;
 	float8		N,
@@ -2162,7 +2162,7 @@ float8_regr_sxx(PG_FUNCTION_ARGS)
 
 Datum
 float8_regr_syy(PG_FUNCTION_ARGS)
-{	StackTrace("float8_regr_syy");
+{
 	ArrayType  *transarray = PG_GETARG_ARRAYTYPE_P(0);
 	float8	   *transvalues;
 	float8		N,
@@ -2191,7 +2191,7 @@ float8_regr_syy(PG_FUNCTION_ARGS)
 
 Datum
 float8_regr_sxy(PG_FUNCTION_ARGS)
-{	StackTrace("float8_regr_sxy");
+{
 	ArrayType  *transarray = PG_GETARG_ARRAYTYPE_P(0);
 	float8	   *transvalues;
 	float8		N,
@@ -2221,7 +2221,7 @@ float8_regr_sxy(PG_FUNCTION_ARGS)
 
 Datum
 float8_regr_avgx(PG_FUNCTION_ARGS)
-{	StackTrace("float8_regr_avgx");
+{
 	ArrayType  *transarray = PG_GETARG_ARRAYTYPE_P(0);
 	float8	   *transvalues;
 	float8		N,
@@ -2240,7 +2240,7 @@ float8_regr_avgx(PG_FUNCTION_ARGS)
 
 Datum
 float8_regr_avgy(PG_FUNCTION_ARGS)
-{	StackTrace("float8_regr_avgy");
+{
 	ArrayType  *transarray = PG_GETARG_ARRAYTYPE_P(0);
 	float8	   *transvalues;
 	float8		N,
@@ -2259,7 +2259,7 @@ float8_regr_avgy(PG_FUNCTION_ARGS)
 
 Datum
 float8_covar_pop(PG_FUNCTION_ARGS)
-{	StackTrace("float8_covar_pop");
+{
 	ArrayType  *transarray = PG_GETARG_ARRAYTYPE_P(0);
 	float8	   *transvalues;
 	float8		N,
@@ -2287,7 +2287,7 @@ float8_covar_pop(PG_FUNCTION_ARGS)
 
 Datum
 float8_covar_samp(PG_FUNCTION_ARGS)
-{	StackTrace("float8_covar_samp");
+{
 	ArrayType  *transarray = PG_GETARG_ARRAYTYPE_P(0);
 	float8	   *transvalues;
 	float8		N,
@@ -2315,7 +2315,7 @@ float8_covar_samp(PG_FUNCTION_ARGS)
 
 Datum
 float8_corr(PG_FUNCTION_ARGS)
-{	StackTrace("float8_corr");
+{
 	ArrayType  *transarray = PG_GETARG_ARRAYTYPE_P(0);
 	float8	   *transvalues;
 	float8		N,
@@ -2355,7 +2355,7 @@ float8_corr(PG_FUNCTION_ARGS)
 
 Datum
 float8_regr_r2(PG_FUNCTION_ARGS)
-{	StackTrace("float8_regr_r2");
+{
 	ArrayType  *transarray = PG_GETARG_ARRAYTYPE_P(0);
 	float8	   *transvalues;
 	float8		N,
@@ -2399,7 +2399,7 @@ float8_regr_r2(PG_FUNCTION_ARGS)
 
 Datum
 float8_regr_slope(PG_FUNCTION_ARGS)
-{	StackTrace("float8_regr_slope");
+{
 	ArrayType  *transarray = PG_GETARG_ARRAYTYPE_P(0);
 	float8	   *transvalues;
 	float8		N,
@@ -2434,7 +2434,7 @@ float8_regr_slope(PG_FUNCTION_ARGS)
 
 Datum
 float8_regr_intercept(PG_FUNCTION_ARGS)
-{	StackTrace("float8_regr_intercept");
+{
 	ArrayType  *transarray = PG_GETARG_ARRAYTYPE_P(0);
 	float8	   *transvalues;
 	float8		N,
@@ -2482,7 +2482,7 @@ float8_regr_intercept(PG_FUNCTION_ARGS)
  */
 Datum
 float48pl(PG_FUNCTION_ARGS)
-{	StackTrace("float48pl");
+{
 	float4		arg1 = PG_GETARG_FLOAT4(0);
 	float8		arg2 = PG_GETARG_FLOAT8(1);
 	float8		result;
@@ -2494,7 +2494,7 @@ float48pl(PG_FUNCTION_ARGS)
 
 Datum
 float48mi(PG_FUNCTION_ARGS)
-{	StackTrace("float48mi");
+{
 	float4		arg1 = PG_GETARG_FLOAT4(0);
 	float8		arg2 = PG_GETARG_FLOAT8(1);
 	float8		result;
@@ -2506,7 +2506,7 @@ float48mi(PG_FUNCTION_ARGS)
 
 Datum
 float48mul(PG_FUNCTION_ARGS)
-{	StackTrace("float48mul");
+{
 	float4		arg1 = PG_GETARG_FLOAT4(0);
 	float8		arg2 = PG_GETARG_FLOAT8(1);
 	float8		result;
@@ -2519,7 +2519,7 @@ float48mul(PG_FUNCTION_ARGS)
 
 Datum
 float48div(PG_FUNCTION_ARGS)
-{	StackTrace("float48div");
+{
 	float4		arg1 = PG_GETARG_FLOAT4(0);
 	float8		arg2 = PG_GETARG_FLOAT8(1);
 	float8		result;
@@ -2542,7 +2542,7 @@ float48div(PG_FUNCTION_ARGS)
  */
 Datum
 float84pl(PG_FUNCTION_ARGS)
-{	StackTrace("float84pl");
+{
 	float8		arg1 = PG_GETARG_FLOAT8(0);
 	float4		arg2 = PG_GETARG_FLOAT4(1);
 	float8		result;
@@ -2555,7 +2555,7 @@ float84pl(PG_FUNCTION_ARGS)
 
 Datum
 float84mi(PG_FUNCTION_ARGS)
-{	StackTrace("float84mi");
+{
 	float8		arg1 = PG_GETARG_FLOAT8(0);
 	float4		arg2 = PG_GETARG_FLOAT4(1);
 	float8		result;
@@ -2568,7 +2568,7 @@ float84mi(PG_FUNCTION_ARGS)
 
 Datum
 float84mul(PG_FUNCTION_ARGS)
-{	StackTrace("float84mul");
+{
 	float8		arg1 = PG_GETARG_FLOAT8(0);
 	float4		arg2 = PG_GETARG_FLOAT4(1);
 	float8		result;
@@ -2582,7 +2582,7 @@ float84mul(PG_FUNCTION_ARGS)
 
 Datum
 float84div(PG_FUNCTION_ARGS)
-{	StackTrace("float84div");
+{
 	float8		arg1 = PG_GETARG_FLOAT8(0);
 	float4		arg2 = PG_GETARG_FLOAT4(1);
 	float8		result;
@@ -2609,7 +2609,7 @@ float84div(PG_FUNCTION_ARGS)
  */
 Datum
 float48eq(PG_FUNCTION_ARGS)
-{	StackTrace("float48eq");
+{
 	float4		arg1 = PG_GETARG_FLOAT4(0);
 	float8		arg2 = PG_GETARG_FLOAT8(1);
 
@@ -2618,7 +2618,7 @@ float48eq(PG_FUNCTION_ARGS)
 
 Datum
 float48ne(PG_FUNCTION_ARGS)
-{	StackTrace("float48ne");
+{
 	float4		arg1 = PG_GETARG_FLOAT4(0);
 	float8		arg2 = PG_GETARG_FLOAT8(1);
 
@@ -2627,7 +2627,7 @@ float48ne(PG_FUNCTION_ARGS)
 
 Datum
 float48lt(PG_FUNCTION_ARGS)
-{	StackTrace("float48lt");
+{
 	float4		arg1 = PG_GETARG_FLOAT4(0);
 	float8		arg2 = PG_GETARG_FLOAT8(1);
 
@@ -2636,7 +2636,7 @@ float48lt(PG_FUNCTION_ARGS)
 
 Datum
 float48le(PG_FUNCTION_ARGS)
-{	StackTrace("float48le");
+{
 	float4		arg1 = PG_GETARG_FLOAT4(0);
 	float8		arg2 = PG_GETARG_FLOAT8(1);
 
@@ -2645,7 +2645,7 @@ float48le(PG_FUNCTION_ARGS)
 
 Datum
 float48gt(PG_FUNCTION_ARGS)
-{	StackTrace("float48gt");
+{
 	float4		arg1 = PG_GETARG_FLOAT4(0);
 	float8		arg2 = PG_GETARG_FLOAT8(1);
 
@@ -2654,7 +2654,7 @@ float48gt(PG_FUNCTION_ARGS)
 
 Datum
 float48ge(PG_FUNCTION_ARGS)
-{	StackTrace("float48ge");
+{
 	float4		arg1 = PG_GETARG_FLOAT4(0);
 	float8		arg2 = PG_GETARG_FLOAT8(1);
 
@@ -2666,7 +2666,7 @@ float48ge(PG_FUNCTION_ARGS)
  */
 Datum
 float84eq(PG_FUNCTION_ARGS)
-{	StackTrace("float84eq");
+{
 	float8		arg1 = PG_GETARG_FLOAT8(0);
 	float4		arg2 = PG_GETARG_FLOAT4(1);
 
@@ -2675,7 +2675,7 @@ float84eq(PG_FUNCTION_ARGS)
 
 Datum
 float84ne(PG_FUNCTION_ARGS)
-{	StackTrace("float84ne");
+{
 	float8		arg1 = PG_GETARG_FLOAT8(0);
 	float4		arg2 = PG_GETARG_FLOAT4(1);
 
@@ -2684,7 +2684,7 @@ float84ne(PG_FUNCTION_ARGS)
 
 Datum
 float84lt(PG_FUNCTION_ARGS)
-{	StackTrace("float84lt");
+{
 	float8		arg1 = PG_GETARG_FLOAT8(0);
 	float4		arg2 = PG_GETARG_FLOAT4(1);
 
@@ -2693,7 +2693,7 @@ float84lt(PG_FUNCTION_ARGS)
 
 Datum
 float84le(PG_FUNCTION_ARGS)
-{	StackTrace("float84le");
+{
 	float8		arg1 = PG_GETARG_FLOAT8(0);
 	float4		arg2 = PG_GETARG_FLOAT4(1);
 
@@ -2702,7 +2702,7 @@ float84le(PG_FUNCTION_ARGS)
 
 Datum
 float84gt(PG_FUNCTION_ARGS)
-{	StackTrace("float84gt");
+{
 	float8		arg1 = PG_GETARG_FLOAT8(0);
 	float4		arg2 = PG_GETARG_FLOAT4(1);
 
@@ -2711,7 +2711,7 @@ float84gt(PG_FUNCTION_ARGS)
 
 Datum
 float84ge(PG_FUNCTION_ARGS)
-{	StackTrace("float84ge");
+{
 	float8		arg1 = PG_GETARG_FLOAT8(0);
 	float4		arg2 = PG_GETARG_FLOAT4(1);
 
@@ -2734,7 +2734,7 @@ float84ge(PG_FUNCTION_ARGS)
  */
 Datum
 width_bucket_float8(PG_FUNCTION_ARGS)
-{	StackTrace("width_bucket_float8");
+{
 	float8		operand = PG_GETARG_FLOAT8(0);
 	float8		bound1 = PG_GETARG_FLOAT8(1);
 	float8		bound2 = PG_GETARG_FLOAT8(2);
@@ -2806,7 +2806,7 @@ width_bucket_float8(PG_FUNCTION_ARGS)
 
 static double
 cbrt(double x)
-{	StackTrace("cbrt");
+{
 	int			isneg = (x < 0.0);
 	double		absx = fabs(x);
 	double		tmpres = pow(absx, (double) 1.0 / (double) 3.0);

@@ -38,7 +38,7 @@ static Datum make_scalar_key(const JsonbValue *scalarVal, bool is_key);
 
 Datum
 gin_compare_jsonb(PG_FUNCTION_ARGS)
-{	StackTrace("gin_compare_jsonb");
+{
 	text	   *arg1 = PG_GETARG_TEXT_PP(0);
 	text	   *arg2 = PG_GETARG_TEXT_PP(1);
 	int32		result;
@@ -64,7 +64,7 @@ gin_compare_jsonb(PG_FUNCTION_ARGS)
 
 Datum
 gin_extract_jsonb(PG_FUNCTION_ARGS)
-{	StackTrace("gin_extract_jsonb");
+{
 	Jsonb	   *jb = (Jsonb *) PG_GETARG_JSONB(0);
 	int32	   *nentries = (int32 *) PG_GETARG_POINTER(1);
 	int			total = 2 * JB_ROOT_COUNT(jb);
@@ -120,7 +120,7 @@ gin_extract_jsonb(PG_FUNCTION_ARGS)
 
 Datum
 gin_extract_jsonb_query(PG_FUNCTION_ARGS)
-{	StackTrace("gin_extract_jsonb_query");
+{
 	int32	   *nentries = (int32 *) PG_GETARG_POINTER(1);
 	StrategyNumber strategy = PG_GETARG_UINT16(2);
 	int32	   *searchMode = (int32 *) PG_GETARG_POINTER(6);
@@ -191,7 +191,7 @@ gin_extract_jsonb_query(PG_FUNCTION_ARGS)
 
 Datum
 gin_consistent_jsonb(PG_FUNCTION_ARGS)
-{	StackTrace("gin_consistent_jsonb");
+{
 	bool	   *check = (bool *) PG_GETARG_POINTER(0);
 	StrategyNumber strategy = PG_GETARG_UINT16(1);
 
@@ -263,7 +263,7 @@ gin_consistent_jsonb(PG_FUNCTION_ARGS)
 
 Datum
 gin_triconsistent_jsonb(PG_FUNCTION_ARGS)
-{	StackTrace("gin_triconsistent_jsonb");
+{
 	GinTernaryValue *check = (GinTernaryValue *) PG_GETARG_POINTER(0);
 	StrategyNumber strategy = PG_GETARG_UINT16(1);
 
@@ -327,7 +327,7 @@ gin_triconsistent_jsonb(PG_FUNCTION_ARGS)
 
 Datum
 gin_extract_jsonb_path(PG_FUNCTION_ARGS)
-{	StackTrace("gin_extract_jsonb_path");
+{
 	Jsonb	   *jb = PG_GETARG_JSONB(0);
 	int32	   *nentries = (int32 *) PG_GETARG_POINTER(1);
 	int			total = 2 * JB_ROOT_COUNT(jb);
@@ -440,7 +440,7 @@ gin_extract_jsonb_path(PG_FUNCTION_ARGS)
 
 Datum
 gin_extract_jsonb_query_path(PG_FUNCTION_ARGS)
-{	StackTrace("gin_extract_jsonb_query_path");
+{
 	int32	   *nentries = (int32 *) PG_GETARG_POINTER(1);
 	StrategyNumber strategy = PG_GETARG_UINT16(2);
 	int32	   *searchMode = (int32 *) PG_GETARG_POINTER(6);
@@ -464,7 +464,7 @@ gin_extract_jsonb_query_path(PG_FUNCTION_ARGS)
 
 Datum
 gin_consistent_jsonb_path(PG_FUNCTION_ARGS)
-{	StackTrace("gin_consistent_jsonb_path");
+{
 	bool	   *check = (bool *) PG_GETARG_POINTER(0);
 	StrategyNumber strategy = PG_GETARG_UINT16(1);
 
@@ -502,7 +502,7 @@ gin_consistent_jsonb_path(PG_FUNCTION_ARGS)
 
 Datum
 gin_triconsistent_jsonb_path(PG_FUNCTION_ARGS)
-{	StackTrace("gin_triconsistent_jsonb_path");
+{
 	GinTernaryValue *check = (GinTernaryValue *) PG_GETARG_POINTER(0);
 	StrategyNumber strategy = PG_GETARG_UINT16(1);
 
@@ -541,7 +541,7 @@ gin_triconsistent_jsonb_path(PG_FUNCTION_ARGS)
  */
 static Datum
 make_text_key(char flag, const char *str, int len)
-{	StackTrace("make_text_key");
+{
 	text	   *item;
 	char		hashbuf[10];
 
@@ -579,7 +579,7 @@ make_text_key(char flag, const char *str, int len)
  */
 static Datum
 make_scalar_key(const JsonbValue *scalarVal, bool is_key)
-{	StackTrace("make_scalar_key");
+{
 	Datum		item;
 	char	   *cstr;
 

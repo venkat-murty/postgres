@@ -46,7 +46,7 @@
 int
 cx(PlannerInfo *root, Gene *tour1, Gene *tour2, Gene *offspring,
    int num_gene, City *city_table)
-{	StackTrace("cx");
+{
 	int			i,
 				start_pos,
 				curr_pos;

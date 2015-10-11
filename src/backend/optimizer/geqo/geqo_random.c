@@ -18,7 +18,7 @@
 
 void
 geqo_set_seed(PlannerInfo *root, double seed)
-{	StackTrace("geqo_set_seed");
+{
 	GeqoPrivateData *private = (GeqoPrivateData *) root->join_search_private;
 
 	/*
@@ -33,7 +33,7 @@ geqo_set_seed(PlannerInfo *root, double seed)
 
 double
 geqo_rand(PlannerInfo *root)
-{	StackTrace("geqo_rand");
+{
 	GeqoPrivateData *private = (GeqoPrivateData *) root->join_search_private;
 
 	return pg_erand48(private->random_state);

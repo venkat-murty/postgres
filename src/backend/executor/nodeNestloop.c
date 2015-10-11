@@ -58,7 +58,7 @@
  */
 TupleTableSlot *
 ExecNestLoop(NestLoopState *node)
-{	StackTrace("ExecNestLoop");
+{
 	NestLoop   *nl;
 	PlanState  *innerPlan;
 	PlanState  *outerPlan;
@@ -294,7 +294,7 @@ ExecNestLoop(NestLoopState *node)
  */
 NestLoopState *
 ExecInitNestLoop(NestLoop *node, EState *estate, int eflags)
-{	StackTrace("ExecInitNestLoop");
+{
 	NestLoopState *nlstate;
 
 	/* check for unsupported flags */
@@ -395,7 +395,7 @@ ExecInitNestLoop(NestLoop *node, EState *estate, int eflags)
  */
 void
 ExecEndNestLoop(NestLoopState *node)
-{	StackTrace("ExecEndNestLoop");
+{
 	NL1_printf("ExecEndNestLoop: %s\n",
 			   "ending node processing");
 
@@ -425,7 +425,7 @@ ExecEndNestLoop(NestLoopState *node)
  */
 void
 ExecReScanNestLoop(NestLoopState *node)
-{	StackTrace("ExecReScanNestLoop");
+{
 	PlanState  *outerPlan = outerPlanState(node);
 
 	/*

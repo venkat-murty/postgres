@@ -35,7 +35,7 @@
  */
 void
 copydir(char *fromdir, char *todir, bool recurse)
-{	StackTrace("copydir");
+{
 	DIR		   *xldir;
 	struct dirent *xlde;
 	char		fromfile[MAXPGPATH];
@@ -133,7 +133,7 @@ copydir(char *fromdir, char *todir, bool recurse)
  */
 void
 copy_file(char *fromfile, char *tofile)
-{	StackTrace("copy_file");
+{
 	char	   *buffer;
 	int			srcfd;
 	int			dstfd;

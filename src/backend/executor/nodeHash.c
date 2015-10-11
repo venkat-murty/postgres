@@ -58,7 +58,7 @@ static void *dense_alloc(HashJoinTable hashtable, Size size);
  */
 TupleTableSlot *
 ExecHash(HashState *node)
-{	StackTrace("ExecHash");
+{
 	elog(ERROR, "Hash node does not support ExecProcNode call convention");
 	return NULL;
 }
@@ -72,7 +72,7 @@ ExecHash(HashState *node)
  */
 Node *
 MultiExecHash(HashState *node)
-{	StackTrace("MultiExecHash");
+{
 	PlanState  *outerNode;
 	List	   *hashkeys;
 	HashJoinTable hashtable;
@@ -170,7 +170,7 @@ MultiExecHash(HashState *node)
  */
 HashState *
 ExecInitHash(Hash *node, EState *estate, int eflags)
-{	StackTrace("ExecInitHash");
+{
 	HashState  *hashstate;
 
 	/* check for unsupported flags */
@@ -230,7 +230,7 @@ ExecInitHash(Hash *node, EState *estate, int eflags)
  */
 void
 ExecEndHash(HashState *node)
-{	StackTrace("ExecEndHash");
+{
 	PlanState  *outerPlan;
 
 	/*
@@ -254,7 +254,7 @@ ExecEndHash(HashState *node)
  */
 HashJoinTable
 ExecHashTableCreate(Hash *node, List *hashOperators, bool keepNulls)
-{	StackTrace("ExecHashTableCreate");
+{
 	HashJoinTable hashtable;
 	Plan	   *outerNode;
 	int			nbuckets;
@@ -418,7 +418,7 @@ ExecChooseHashTableSize(double ntuples, int tupwidth, bool useskew,
 						int *numbuckets,
 						int *numbatches,
 						int *num_skew_mcvs)
-{	StackTrace("ExecChooseHashTableSize");
+{
 	int			tupsize;
 	double		inner_rel_bytes;
 	long		bucket_bytes;
@@ -555,7 +555,7 @@ ExecChooseHashTableSize(double ntuples, int tupwidth, bool useskew,
  */
 void
 ExecHashTableDestroy(HashJoinTable hashtable)
-{	StackTrace("ExecHashTableDestroy");
+{
 	int			i;
 
 	/*
@@ -585,7 +585,7 @@ ExecHashTableDestroy(HashJoinTable hashtable)
  */
 static void
 ExecHashIncreaseNumBatches(HashJoinTable hashtable)
-{	StackTrace("ExecHashIncreaseNumBatches");
+{
 	int			oldnbatch = hashtable->nbatch;
 	int			curbatch = hashtable->curbatch;
 	int			nbatch;
@@ -750,7 +750,7 @@ ExecHashIncreaseNumBatches(HashJoinTable hashtable)
  */
 static void
 ExecHashIncreaseNumBuckets(HashJoinTable hashtable)
-{	StackTrace("ExecHashIncreaseNumBuckets");
+{
 	HashMemoryChunk chunk;
 
 	/* do nothing if not an increase (it's called increase for a reason) */
@@ -831,7 +831,7 @@ void
 ExecHashTableInsert(HashJoinTable hashtable,
 					TupleTableSlot *slot,
 					uint32 hashvalue)
-{	StackTrace("ExecHashTableInsert");
+{
 	MinimalTuple tuple = ExecFetchSlotMinimalTuple(slot);
 	int			bucketno;
 	int			batchno;
@@ -924,7 +924,7 @@ ExecHashGetHashValue(HashJoinTable hashtable,
 					 bool outer_tuple,
 					 bool keep_nulls,
 					 uint32 *hashvalue)
-{	StackTrace("ExecHashGetHashValue");
+{
 	uint32		hashkey = 0;
 	FmgrInfo   *hashfunctions;
 	ListCell   *hk;
@@ -1026,7 +1026,7 @@ ExecHashGetBucketAndBatch(HashJoinTable hashtable,
 						  uint32 hashvalue,
 						  int *bucketno,
 						  int *batchno)
-{	StackTrace("ExecHashGetBucketAndBatch");
+{
 	uint32		nbuckets = (uint32) hashtable->nbuckets;
 	uint32		nbatch = (uint32) hashtable->nbatch;
 
@@ -1056,7 +1056,7 @@ ExecHashGetBucketAndBatch(HashJoinTable hashtable,
 bool
 ExecScanHashBucket(HashJoinState *hjstate,
 				   ExprContext *econtext)
-{	StackTrace("ExecScanHashBucket");
+{
 	List	   *hjclauses = hjstate->hashclauses;
 	HashJoinTable hashtable = hjstate->hj_HashTable;
 	HashJoinTuple hashTuple = hjstate->hj_CurTuple;
@@ -1113,7 +1113,7 @@ ExecScanHashBucket(HashJoinState *hjstate,
  */
 void
 ExecPrepHashTableForUnmatched(HashJoinState *hjstate)
-{	StackTrace("ExecPrepHashTableForUnmatched");
+{
 	/*
 	 * ---------- During this scan we use the HashJoinState fields as follows:
 	 *
@@ -1136,7 +1136,7 @@ ExecPrepHashTableForUnmatched(HashJoinState *hjstate)
  */
 bool
 ExecScanHashTableForUnmatched(HashJoinState *hjstate, ExprContext *econtext)
-{	StackTrace("ExecScanHashTableForUnmatched");
+{
 	HashJoinTable hashtable = hjstate->hj_HashTable;
 	HashJoinTuple hashTuple = hjstate->hj_CurTuple;
 
@@ -1204,7 +1204,7 @@ ExecScanHashTableForUnmatched(HashJoinState *hjstate, ExprContext *econtext)
  */
 void
 ExecHashTableReset(HashJoinTable hashtable)
-{	StackTrace("ExecHashTableReset");
+{
 	MemoryContext oldcxt;
 	int			nbuckets = hashtable->nbuckets;
 
@@ -1233,7 +1233,7 @@ ExecHashTableReset(HashJoinTable hashtable)
  */
 void
 ExecHashTableResetMatchFlags(HashJoinTable hashtable)
-{	StackTrace("ExecHashTableResetMatchFlags");
+{
 	HashJoinTuple tuple;
 	int			i;
 
@@ -1258,7 +1258,7 @@ ExecHashTableResetMatchFlags(HashJoinTable hashtable)
 
 void
 ExecReScanHash(HashState *node)
-{	StackTrace("ExecReScanHash");
+{
 	/*
 	 * if chgParam of subnode is not null then plan will be re-scanned by
 	 * first ExecProcNode.
@@ -1278,7 +1278,7 @@ ExecReScanHash(HashState *node)
  */
 static void
 ExecHashBuildSkewHash(HashJoinTable hashtable, Hash *node, int mcvsToUse)
-{	StackTrace("ExecHashBuildSkewHash");
+{
 	HeapTupleData *statsTuple;
 	Datum	   *values;
 	int			nvalues;
@@ -1439,7 +1439,7 @@ ExecHashBuildSkewHash(HashJoinTable hashtable, Hash *node, int mcvsToUse)
  */
 int
 ExecHashGetSkewBucket(HashJoinTable hashtable, uint32 hashvalue)
-{	StackTrace("ExecHashGetSkewBucket");
+{
 	int			bucket;
 
 	/*
@@ -1488,7 +1488,7 @@ ExecHashSkewTableInsert(HashJoinTable hashtable,
 						TupleTableSlot *slot,
 						uint32 hashvalue,
 						int bucketNumber)
-{	StackTrace("ExecHashSkewTableInsert");
+{
 	MinimalTuple tuple = ExecFetchSlotMinimalTuple(slot);
 	HashJoinTuple hashTuple;
 	int			hashTupleSize;
@@ -1526,7 +1526,7 @@ ExecHashSkewTableInsert(HashJoinTable hashtable,
  */
 static void
 ExecHashRemoveNextSkewBucket(HashJoinTable hashtable)
-{	StackTrace("ExecHashRemoveNextSkewBucket");
+{
 	int			bucketToRemove;
 	HashSkewBucket *bucket;
 	uint32		hashvalue;
@@ -1625,7 +1625,7 @@ ExecHashRemoveNextSkewBucket(HashJoinTable hashtable)
  */
 static void *
 dense_alloc(HashJoinTable hashtable, Size size)
-{	StackTrace("dense_alloc");
+{
 	HashMemoryChunk newChunk;
 	char	   *ptr;
 

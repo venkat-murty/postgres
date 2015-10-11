@@ -50,7 +50,7 @@
  */
 Datum
 current_database(PG_FUNCTION_ARGS)
-{	StackTrace("current_database");
+{
 	Name		db;
 
 	db = (Name) palloc(NAMEDATALEN);
@@ -67,7 +67,7 @@ current_database(PG_FUNCTION_ARGS)
  */
 Datum
 current_query(PG_FUNCTION_ARGS)
-{	StackTrace("current_query");
+{
 	/* there is no easy way to access the more concise 'query_string' */
 	if (debug_query_string)
 		PG_RETURN_TEXT_P(cstring_to_text(debug_query_string));
@@ -95,7 +95,7 @@ current_query(PG_FUNCTION_ARGS)
 #define SIGNAL_BACKEND_NOSUPERUSER 3
 static int
 pg_signal_backend(int pid, int sig)
-{	StackTrace("pg_signal_backend");
+{
 	PGPROC	   *proc = BackendPidGetProc(pid);
 
 	/*
@@ -157,7 +157,7 @@ pg_signal_backend(int pid, int sig)
  */
 Datum
 pg_cancel_backend(PG_FUNCTION_ARGS)
-{	StackTrace("pg_cancel_backend");
+{
 	int			r = pg_signal_backend(PG_GETARG_INT32(0), SIGINT);
 
 	if (r == SIGNAL_BACKEND_NOSUPERUSER)
@@ -181,7 +181,7 @@ pg_cancel_backend(PG_FUNCTION_ARGS)
  */
 Datum
 pg_terminate_backend(PG_FUNCTION_ARGS)
-{	StackTrace("pg_terminate_backend");
+{
 	int			r = pg_signal_backend(PG_GETARG_INT32(0), SIGTERM);
 
 	if (r == SIGNAL_BACKEND_NOSUPERUSER)
@@ -202,7 +202,7 @@ pg_terminate_backend(PG_FUNCTION_ARGS)
  */
 Datum
 pg_reload_conf(PG_FUNCTION_ARGS)
-{	StackTrace("pg_reload_conf");
+{
 	if (!superuser())
 		ereport(ERROR,
 				(errcode(ERRCODE_INSUFFICIENT_PRIVILEGE),
@@ -224,7 +224,7 @@ pg_reload_conf(PG_FUNCTION_ARGS)
  */
 Datum
 pg_rotate_logfile(PG_FUNCTION_ARGS)
-{	StackTrace("pg_rotate_logfile");
+{
 	if (!superuser())
 		ereport(ERROR,
 				(errcode(ERRCODE_INSUFFICIENT_PRIVILEGE),
@@ -251,7 +251,7 @@ typedef struct
 
 Datum
 pg_tablespace_databases(PG_FUNCTION_ARGS)
-{	StackTrace("pg_tablespace_databases");
+{
 	FuncCallContext *funcctx;
 	struct dirent *de;
 	ts_db_fctx *fctx;
@@ -342,7 +342,7 @@ pg_tablespace_databases(PG_FUNCTION_ARGS)
  */
 Datum
 pg_tablespace_location(PG_FUNCTION_ARGS)
-{	StackTrace("pg_tablespace_location");
+{
 	Oid			tablespaceOid = PG_GETARG_OID(0);
 	char		sourcepath[MAXPGPATH];
 	char		targetpath[MAXPGPATH];
@@ -398,7 +398,7 @@ pg_tablespace_location(PG_FUNCTION_ARGS)
  */
 Datum
 pg_sleep(PG_FUNCTION_ARGS)
-{	StackTrace("pg_sleep");
+{
 	float8		secs = PG_GETARG_FLOAT8(0);
 	float8		endtime;
 
@@ -450,7 +450,7 @@ pg_sleep(PG_FUNCTION_ARGS)
 /* Function to return the list of grammar keywords */
 Datum
 pg_get_keywords(PG_FUNCTION_ARGS)
-{	StackTrace("pg_get_keywords");
+{
 	FuncCallContext *funcctx;
 
 	if (SRF_IS_FIRSTCALL())
@@ -522,7 +522,7 @@ pg_get_keywords(PG_FUNCTION_ARGS)
  */
 Datum
 pg_typeof(PG_FUNCTION_ARGS)
-{	StackTrace("pg_typeof");
+{
 	PG_RETURN_OID(get_fn_expr_argtype(fcinfo->flinfo, 0));
 }
 
@@ -533,7 +533,7 @@ pg_typeof(PG_FUNCTION_ARGS)
  */
 Datum
 pg_collation_for(PG_FUNCTION_ARGS)
-{	StackTrace("pg_collation_for");
+{
 	Oid			typeid;
 	Oid			collid;
 
@@ -562,7 +562,7 @@ pg_collation_for(PG_FUNCTION_ARGS)
  */
 Datum
 pg_relation_is_updatable(PG_FUNCTION_ARGS)
-{	StackTrace("pg_relation_is_updatable");
+{
 	Oid			reloid = PG_GETARG_OID(0);
 	bool		include_triggers = PG_GETARG_BOOL(1);
 
@@ -579,7 +579,7 @@ pg_relation_is_updatable(PG_FUNCTION_ARGS)
  */
 Datum
 pg_column_is_updatable(PG_FUNCTION_ARGS)
-{	StackTrace("pg_column_is_updatable");
+{
 	Oid			reloid = PG_GETARG_OID(0);
 	AttrNumber	attnum = PG_GETARG_INT16(1);
 	AttrNumber	col = attnum - FirstLowInvalidHeapAttributeNumber;

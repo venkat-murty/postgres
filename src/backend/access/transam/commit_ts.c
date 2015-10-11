@@ -132,7 +132,7 @@ void
 TransactionTreeSetCommitTsData(TransactionId xid, int nsubxids,
 							   TransactionId *subxids, TimestampTz timestamp,
 							   RepOriginId nodeid, bool do_xlog)
-{	StackTrace("TransactionTreeSetCommitTsData");
+{
 	int			i;
 	TransactionId headxid;
 	TransactionId newestXact;
@@ -210,7 +210,7 @@ static void
 SetXidCommitTsInPage(TransactionId xid, int nsubxids,
 					 TransactionId *subxids, TimestampTz ts,
 					 RepOriginId nodeid, int pageno)
-{	StackTrace("SetXidCommitTsInPage");
+{
 	int			slotno;
 	int			i;
 
@@ -235,7 +235,7 @@ SetXidCommitTsInPage(TransactionId xid, int nsubxids,
 static void
 TransactionIdSetCommitTs(TransactionId xid, TimestampTz ts,
 						 RepOriginId nodeid, int slotno)
-{	StackTrace("TransactionIdSetCommitTs");
+{
 	int			entryno = TransactionIdToCTsEntry(xid);
 	CommitTimestampEntry entry;
 
@@ -258,7 +258,7 @@ TransactionIdSetCommitTs(TransactionId xid, TimestampTz ts,
 bool
 TransactionIdGetCommitTsData(TransactionId xid, TimestampTz *ts,
 							 RepOriginId *nodeid)
-{	StackTrace("TransactionIdGetCommitTsData");
+{
 	int			pageno = TransactionIdToCTsPage(xid);
 	int			entryno = TransactionIdToCTsEntry(xid);
 	int			slotno;
@@ -349,7 +349,7 @@ TransactionIdGetCommitTsData(TransactionId xid, TimestampTz *ts,
  */
 TransactionId
 GetLatestCommitTsData(TimestampTz *ts, RepOriginId *nodeid)
-{	StackTrace("GetLatestCommitTsData");
+{
 	TransactionId xid;
 
 	/* Error if module not enabled */
@@ -376,7 +376,7 @@ GetLatestCommitTsData(TimestampTz *ts, RepOriginId *nodeid)
  */
 Datum
 pg_xact_commit_timestamp(PG_FUNCTION_ARGS)
-{	StackTrace("pg_xact_commit_timestamp");
+{
 	TransactionId xid = PG_GETARG_UINT32(0);
 	TimestampTz ts;
 	bool		found;
@@ -392,7 +392,7 @@ pg_xact_commit_timestamp(PG_FUNCTION_ARGS)
 
 Datum
 pg_last_committed_xact(PG_FUNCTION_ARGS)
-{	StackTrace("pg_last_committed_xact");
+{
 	TransactionId xid;
 	TimestampTz ts;
 	Datum		values[2];
@@ -441,7 +441,7 @@ pg_last_committed_xact(PG_FUNCTION_ARGS)
  */
 Size
 CommitTsShmemBuffers(void)
-{	StackTrace("CommitTsShmemBuffers");
+{
 	return Min(16, Max(4, NBuffers / 1024));
 }
 
@@ -450,7 +450,7 @@ CommitTsShmemBuffers(void)
  */
 Size
 CommitTsShmemSize(void)
-{	StackTrace("CommitTsShmemSize");
+{
 	return SimpleLruShmemSize(CommitTsShmemBuffers(), 0) +
 		sizeof(CommitTimestampShared);
 }
@@ -461,7 +461,7 @@ CommitTsShmemSize(void)
  */
 void
 CommitTsShmemInit(void)
-{	StackTrace("CommitTsShmemInit");
+{
 	bool		found;
 
 	CommitTsCtl->PagePrecedes = CommitTsPagePrecedes;
@@ -492,7 +492,7 @@ CommitTsShmemInit(void)
  */
 void
 BootStrapCommitTs(void)
-{	StackTrace("BootStrapCommitTs");
+{
 	/*
 	 * Nothing to do here at present, unlike most other SLRU modules; segments
 	 * are created when the server is started with this module enabled. See
@@ -511,7 +511,7 @@ BootStrapCommitTs(void)
  */
 static int
 ZeroCommitTsPage(int pageno, bool writeXlog)
-{	StackTrace("ZeroCommitTsPage");
+{
 	int			slotno;
 
 	slotno = SimpleLruZeroPage(CommitTsCtl, pageno);
@@ -528,7 +528,7 @@ ZeroCommitTsPage(int pageno, bool writeXlog)
  */
 void
 StartupCommitTs(void)
-{	StackTrace("StartupCommitTs");
+{
 	TransactionId xid = ShmemVariableCache->nextXid;
 	int			pageno = TransactionIdToCTsPage(xid);
 
@@ -554,7 +554,7 @@ StartupCommitTs(void)
  */
 void
 CompleteCommitTsInitialization(void)
-{	StackTrace("CompleteCommitTsInitialization");
+{
 	if (!track_commit_timestamp)
 		DeactivateCommitTs(true);
 }
@@ -577,7 +577,7 @@ CompleteCommitTsInitialization(void)
  */
 void
 ActivateCommitTs(void)
-{	StackTrace("ActivateCommitTs");
+{
 	TransactionId xid = ShmemVariableCache->nextXid;
 	int			pageno = TransactionIdToCTsPage(xid);
 
@@ -634,7 +634,7 @@ ActivateCommitTs(void)
  */
 void
 DeactivateCommitTs(bool do_wal)
-{	StackTrace("DeactivateCommitTs");
+{
 	TransactionId xid = ShmemVariableCache->nextXid;
 	int			pageno = TransactionIdToCTsPage(xid);
 
@@ -658,7 +658,7 @@ DeactivateCommitTs(bool do_wal)
  */
 void
 ShutdownCommitTs(void)
-{	StackTrace("ShutdownCommitTs");
+{
 	/* Flush dirty CommitTs pages to disk */
 	SimpleLruFlush(CommitTsCtl, false);
 }
@@ -668,7 +668,7 @@ ShutdownCommitTs(void)
  */
 void
 CheckPointCommitTs(void)
-{	StackTrace("CheckPointCommitTs");
+{
 	/* Flush dirty CommitTs pages to disk */
 	SimpleLruFlush(CommitTsCtl, true);
 }
@@ -686,7 +686,7 @@ CheckPointCommitTs(void)
  */
 void
 ExtendCommitTs(TransactionId newestXact)
-{	StackTrace("ExtendCommitTs");
+{
 	int			pageno;
 
 	/* nothing to do if module not enabled */
@@ -719,7 +719,7 @@ ExtendCommitTs(TransactionId newestXact)
  */
 void
 TruncateCommitTs(TransactionId oldestXact, bool do_wal)
-{	StackTrace("TruncateCommitTs");
+{
 	int			cutoffPage;
 
 	/*
@@ -746,7 +746,7 @@ TruncateCommitTs(TransactionId oldestXact, bool do_wal)
  */
 void
 SetCommitTsLimit(TransactionId oldestXact, TransactionId newestXact)
-{	StackTrace("SetCommitTsLimit");
+{
 	/*
 	 * Be careful not to overwrite values that are either further into the
 	 * "future" or signal a disabled committs.
@@ -771,7 +771,7 @@ SetCommitTsLimit(TransactionId oldestXact, TransactionId newestXact)
  */
 void
 AdvanceOldestCommitTs(TransactionId oldestXact)
-{	StackTrace("AdvanceOldestCommitTs");
+{
 	LWLockAcquire(CommitTsLock, LW_EXCLUSIVE);
 	if (ShmemVariableCache->oldestCommitTs != InvalidTransactionId &&
 		TransactionIdPrecedes(ShmemVariableCache->oldestCommitTs, oldestXact))
@@ -791,7 +791,7 @@ AdvanceOldestCommitTs(TransactionId oldestXact)
  */
 static bool
 CommitTsPagePrecedes(int page1, int page2)
-{	StackTrace("CommitTsPagePrecedes");
+{
 	TransactionId xid1;
 	TransactionId xid2;
 
@@ -809,7 +809,7 @@ CommitTsPagePrecedes(int page1, int page2)
  */
 static void
 WriteZeroPageXlogRec(int pageno)
-{	StackTrace("WriteZeroPageXlogRec");
+{
 	XLogBeginInsert();
 	XLogRegisterData((char *) (&pageno), sizeof(int));
 	(void) XLogInsert(RM_COMMIT_TS_ID, COMMIT_TS_ZEROPAGE);
@@ -820,7 +820,7 @@ WriteZeroPageXlogRec(int pageno)
  */
 static void
 WriteTruncateXlogRec(int pageno)
-{	StackTrace("WriteTruncateXlogRec");
+{
 	XLogBeginInsert();
 	XLogRegisterData((char *) (&pageno), sizeof(int));
 	(void) XLogInsert(RM_COMMIT_TS_ID, COMMIT_TS_TRUNCATE);
@@ -833,7 +833,7 @@ static void
 WriteSetTimestampXlogRec(TransactionId mainxid, int nsubxids,
 						 TransactionId *subxids, TimestampTz timestamp,
 						 RepOriginId nodeid)
-{	StackTrace("WriteSetTimestampXlogRec");
+{
 	xl_commit_ts_set record;
 
 	record.timestamp = timestamp;
@@ -853,7 +853,7 @@ WriteSetTimestampXlogRec(TransactionId mainxid, int nsubxids,
  */
 void
 commit_ts_redo(XLogReaderState *record)
-{	StackTrace("commit_ts_redo");
+{
 	uint8		info = XLogRecGetInfo(record) & ~XLR_INFO_MASK;
 
 	/* Backup blocks are not used in commit_ts records */

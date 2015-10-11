@@ -128,7 +128,7 @@ static PGPROC *blocking_autovacuum_proc = NULL;
  */
 void
 InitDeadLockChecking(void)
-{	StackTrace("InitDeadLockChecking");
+{
 	MemoryContext oldcxt;
 
 	/* Make sure allocations are permanent */
@@ -202,7 +202,7 @@ InitDeadLockChecking(void)
  */
 DeadLockState
 DeadLockCheck(PGPROC *proc)
-{	StackTrace("DeadLockCheck");
+{
 	int			i,
 				j;
 
@@ -278,7 +278,7 @@ DeadLockCheck(PGPROC *proc)
  */
 PGPROC *
 GetBlockingAutoVacuumPgproc(void)
-{	StackTrace("GetBlockingAutoVacuumPgproc");
+{
 	PGPROC	   *ptr;
 
 	ptr = blocking_autovacuum_proc;
@@ -300,7 +300,7 @@ GetBlockingAutoVacuumPgproc(void)
  */
 static bool
 DeadLockCheckRecurse(PGPROC *proc)
-{	StackTrace("DeadLockCheckRecurse");
+{
 	int			nEdges;
 	int			oldPossibleConstraints;
 	bool		savedList;
@@ -366,7 +366,7 @@ DeadLockCheckRecurse(PGPROC *proc)
  */
 static int
 TestConfiguration(PGPROC *startProc)
-{	StackTrace("TestConfiguration");
+{
 	int			softFound = 0;
 	EDGE	   *softEdges = possibleConstraints + nPossibleConstraints;
 	int			nSoftEdges;
@@ -697,7 +697,7 @@ FindLockCycleRecurse(PGPROC *checkProc,
 static bool
 ExpandConstraints(EDGE *constraints,
 				  int nConstraints)
-{	StackTrace("ExpandConstraints");
+{
 	int			nWaitOrderProcs = 0;
 	int			i,
 				j;
@@ -868,7 +868,7 @@ TopoSort(LOCK *lock,
 #ifdef DEBUG_DEADLOCK
 static void
 PrintLockQueue(LOCK *lock, const char *info)
-{	StackTrace("PrintLockQueue");
+{
 	PROC_QUEUE *waitQueue = &(lock->waitProcs);
 	int			queue_size = waitQueue->size;
 	PGPROC	   *proc;
@@ -891,7 +891,7 @@ PrintLockQueue(LOCK *lock, const char *info)
  */
 void
 DeadLockReport(void)
-{	StackTrace("DeadLockReport");
+{
 	StringInfoData clientbuf;	/* errdetail for client */
 	StringInfoData logbuf;		/* errdetail for server log */
 	StringInfoData locktagbuf;
@@ -966,7 +966,7 @@ RememberSimpleDeadLock(PGPROC *proc1,
 					   LOCKMODE lockmode,
 					   LOCK *lock,
 					   PGPROC *proc2)
-{	StackTrace("RememberSimpleDeadLock");
+{
 	DEADLOCK_INFO *info = &deadlockDetails[0];
 
 	info->locktag = lock->tag;

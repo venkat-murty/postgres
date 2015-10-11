@@ -161,7 +161,7 @@ static const char *stringify_adefprivs_objtype(GrantObjectType objtype);
  */
 Oid
 CreateEventTrigger(CreateEventTrigStmt *stmt)
-{	StackTrace("CreateEventTrigger");
+{
 	HeapTuple	tuple;
 	Oid			funcoid;
 	Oid			funcrettype;
@@ -249,7 +249,7 @@ CreateEventTrigger(CreateEventTrigStmt *stmt)
  */
 static void
 validate_ddl_tags(const char *filtervar, List *taglist)
-{	StackTrace("validate_ddl_tags");
+{
 	ListCell   *lc;
 
 	foreach(lc, taglist)
@@ -274,7 +274,7 @@ validate_ddl_tags(const char *filtervar, List *taglist)
 
 static event_trigger_command_tag_check_result
 check_ddl_tag(const char *tag)
-{	StackTrace("check_ddl_tag");
+{
 	const char *obtypename;
 	event_trigger_support_data *etsd;
 
@@ -324,7 +324,7 @@ check_ddl_tag(const char *tag)
  */
 static void
 validate_table_rewrite_tags(const char *filtervar, List *taglist)
-{	StackTrace("validate_table_rewrite_tags");
+{
 	ListCell   *lc;
 
 	foreach(lc, taglist)
@@ -344,7 +344,7 @@ validate_table_rewrite_tags(const char *filtervar, List *taglist)
 
 static event_trigger_command_tag_check_result
 check_table_rewrite_ddl_tag(const char *tag)
-{	StackTrace("check_table_rewrite_ddl_tag");
+{
 	if (pg_strcasecmp(tag, "ALTER TABLE") == 0 ||
 		pg_strcasecmp(tag, "ALTER TYPE") == 0)
 		return EVENT_TRIGGER_COMMAND_TAG_OK;
@@ -357,7 +357,7 @@ check_table_rewrite_ddl_tag(const char *tag)
  */
 static void
 error_duplicate_filter_variable(const char *defname)
-{	StackTrace("error_duplicate_filter_variable");
+{
 	ereport(ERROR,
 			(errcode(ERRCODE_SYNTAX_ERROR),
 			 errmsg("filter variable \"%s\" specified more than once",
@@ -370,7 +370,7 @@ error_duplicate_filter_variable(const char *defname)
 static Oid
 insert_event_trigger_tuple(char *trigname, char *eventname, Oid evtOwner,
 						   Oid funcoid, List *taglist)
-{	StackTrace("insert_event_trigger_tuple");
+{
 	Relation	tgrel;
 	Oid			trigoid;
 	HeapTuple	tuple;
@@ -443,7 +443,7 @@ insert_event_trigger_tuple(char *trigname, char *eventname, Oid evtOwner,
  */
 static Datum
 filter_list_to_array(List *filterlist)
-{	StackTrace("filter_list_to_array");
+{
 	ListCell   *lc;
 	Datum	   *data;
 	int			i = 0,
@@ -472,7 +472,7 @@ filter_list_to_array(List *filterlist)
  */
 void
 RemoveEventTriggerById(Oid trigOid)
-{	StackTrace("RemoveEventTriggerById");
+{
 	Relation	tgrel;
 	HeapTuple	tup;
 
@@ -494,7 +494,7 @@ RemoveEventTriggerById(Oid trigOid)
  */
 Oid
 AlterEventTrigger(AlterEventTrigStmt *stmt)
-{	StackTrace("AlterEventTrigger");
+{
 	Relation	tgrel;
 	HeapTuple	tup;
 	Oid			trigoid;
@@ -539,7 +539,7 @@ AlterEventTrigger(AlterEventTrigStmt *stmt)
  */
 ObjectAddress
 AlterEventTriggerOwner(const char *name, Oid newOwnerId)
-{	StackTrace("AlterEventTriggerOwner");
+{
 	Oid			evtOid;
 	HeapTuple	tup;
 	Relation	rel;
@@ -572,7 +572,7 @@ AlterEventTriggerOwner(const char *name, Oid newOwnerId)
  */
 void
 AlterEventTriggerOwner_oid(Oid trigOid, Oid newOwnerId)
-{	StackTrace("AlterEventTriggerOwner_oid");
+{
 	HeapTuple	tup;
 	Relation	rel;
 
@@ -597,7 +597,7 @@ AlterEventTriggerOwner_oid(Oid trigOid, Oid newOwnerId)
  */
 static void
 AlterEventTriggerOwner_internal(Relation rel, HeapTuple tup, Oid newOwnerId)
-{	StackTrace("AlterEventTriggerOwner_internal");
+{
 	Form_pg_event_trigger form;
 
 	form = (Form_pg_event_trigger) GETSTRUCT(tup);
@@ -638,7 +638,7 @@ AlterEventTriggerOwner_internal(Relation rel, HeapTuple tup, Oid newOwnerId)
  */
 Oid
 get_event_trigger_oid(const char *trigname, bool missing_ok)
-{	StackTrace("get_event_trigger_oid");
+{
 	Oid			oid;
 
 	oid = GetSysCacheOid1(EVENTTRIGGERNAME, CStringGetDatum(trigname));
@@ -656,7 +656,7 @@ get_event_trigger_oid(const char *trigname, bool missing_ok)
  */
 static bool
 filter_event_trigger(const char **tag, EventTriggerCacheItem *item)
-{	StackTrace("filter_event_trigger");
+{
 	/*
 	 * Filter by session replication role, knowing that we never see disabled
 	 * items down here.
@@ -691,7 +691,7 @@ static List *
 EventTriggerCommonSetup(Node *parsetree,
 						EventTriggerEvent event, const char *eventstr,
 						EventTriggerData *trigdata)
-{	StackTrace("EventTriggerCommonSetup");
+{
 	const char *tag;
 	List	   *cachelist;
 	ListCell   *lc;
@@ -774,7 +774,7 @@ EventTriggerCommonSetup(Node *parsetree,
  */
 void
 EventTriggerDDLCommandStart(Node *parsetree)
-{	StackTrace("EventTriggerDDLCommandStart");
+{
 	List	   *runlist;
 	EventTriggerData trigdata;
 
@@ -822,7 +822,7 @@ EventTriggerDDLCommandStart(Node *parsetree)
  */
 void
 EventTriggerDDLCommandEnd(Node *parsetree)
-{	StackTrace("EventTriggerDDLCommandEnd");
+{
 	List	   *runlist;
 	EventTriggerData trigdata;
 
@@ -857,7 +857,7 @@ EventTriggerDDLCommandEnd(Node *parsetree)
  */
 void
 EventTriggerSQLDrop(Node *parsetree)
-{	StackTrace("EventTriggerSQLDrop");
+{
 	List	   *runlist;
 	EventTriggerData trigdata;
 
@@ -929,7 +929,7 @@ EventTriggerSQLDrop(Node *parsetree)
  */
 void
 EventTriggerTableRewrite(Node *parsetree, Oid tableOid, int reason)
-{	StackTrace("EventTriggerTableRewrite");
+{
 	List	   *runlist;
 	EventTriggerData trigdata;
 
@@ -1002,7 +1002,7 @@ EventTriggerTableRewrite(Node *parsetree, Oid tableOid, int reason)
  */
 static void
 EventTriggerInvoke(List *fn_oid_list, EventTriggerData *trigdata)
-{	StackTrace("EventTriggerInvoke");
+{
 	MemoryContext context;
 	MemoryContext oldcontext;
 	ListCell   *lc;
@@ -1067,7 +1067,7 @@ EventTriggerInvoke(List *fn_oid_list, EventTriggerData *trigdata)
  */
 bool
 EventTriggerSupportsObjectType(ObjectType obtype)
-{	StackTrace("EventTriggerSupportsObjectType");
+{
 	switch (obtype)
 	{
 		case OBJECT_DATABASE:
@@ -1127,7 +1127,7 @@ EventTriggerSupportsObjectType(ObjectType obtype)
  */
 bool
 EventTriggerSupportsObjectClass(ObjectClass objclass)
-{	StackTrace("EventTriggerSupportsObjectClass");
+{
 	switch (objclass)
 	{
 		case OCLASS_DATABASE:
@@ -1184,7 +1184,7 @@ EventTriggerSupportsObjectClass(ObjectClass objclass)
 
 bool
 EventTriggerSupportsGrantObjectType(GrantObjectType objtype)
-{	StackTrace("EventTriggerSupportsGrantObjectType");
+{
 	switch (objtype)
 	{
 		case ACL_OBJECT_DATABASE:
@@ -1218,7 +1218,7 @@ EventTriggerSupportsGrantObjectType(GrantObjectType objtype)
  */
 bool
 EventTriggerBeginCompleteQuery(void)
-{	StackTrace("EventTriggerBeginCompleteQuery");
+{
 	EventTriggerQueryState *state;
 	MemoryContext cxt;
 
@@ -1264,7 +1264,7 @@ EventTriggerBeginCompleteQuery(void)
  */
 void
 EventTriggerEndCompleteQuery(void)
-{	StackTrace("EventTriggerEndCompleteQuery");
+{
 	EventTriggerQueryState *prevstate;
 
 	prevstate = currentEventTriggerState->previous;
@@ -1282,7 +1282,7 @@ EventTriggerEndCompleteQuery(void)
  */
 bool
 trackDroppedObjectsNeeded(void)
-{	StackTrace("trackDroppedObjectsNeeded");
+{
 	/*
 	 * true if any sql_drop, table_rewrite, ddl_command_end event trigger
 	 * exists
@@ -1314,7 +1314,7 @@ trackDroppedObjectsNeeded(void)
  */
 void
 EventTriggerSQLDropAddObject(const ObjectAddress *object, bool original, bool normal)
-{	StackTrace("EventTriggerSQLDropAddObject");
+{
 	SQLDropObject *obj;
 	MemoryContext oldcxt;
 
@@ -1430,7 +1430,7 @@ EventTriggerSQLDropAddObject(const ObjectAddress *object, bool original, bool no
  */
 Datum
 pg_event_trigger_dropped_objects(PG_FUNCTION_ARGS)
-{	StackTrace("pg_event_trigger_dropped_objects");
+{
 	ReturnSetInfo *rsinfo = (ReturnSetInfo *) fcinfo->resultinfo;
 	TupleDesc	tupdesc;
 	Tuplestorestate *tupstore;
@@ -1557,7 +1557,7 @@ pg_event_trigger_dropped_objects(PG_FUNCTION_ARGS)
  */
 Datum
 pg_event_trigger_table_rewrite_oid(PG_FUNCTION_ARGS)
-{	StackTrace("pg_event_trigger_table_rewrite_oid");
+{
 	/*
 	 * Protect this function from being called out of context
 	 */
@@ -1578,7 +1578,7 @@ pg_event_trigger_table_rewrite_oid(PG_FUNCTION_ARGS)
  */
 Datum
 pg_event_trigger_table_rewrite_reason(PG_FUNCTION_ARGS)
-{	StackTrace("pg_event_trigger_table_rewrite_reason");
+{
 	/*
 	 * Protect this function from being called out of context
 	 */
@@ -1618,7 +1618,7 @@ pg_event_trigger_table_rewrite_reason(PG_FUNCTION_ARGS)
  */
 void
 EventTriggerInhibitCommandCollection(void)
-{	StackTrace("EventTriggerInhibitCommandCollection");
+{
 	if (!currentEventTriggerState)
 		return;
 
@@ -1630,7 +1630,7 @@ EventTriggerInhibitCommandCollection(void)
  */
 void
 EventTriggerUndoInhibitCommandCollection(void)
-{	StackTrace("EventTriggerUndoInhibitCommandCollection");
+{
 	if (!currentEventTriggerState)
 		return;
 
@@ -1654,7 +1654,7 @@ void
 EventTriggerCollectSimpleCommand(ObjectAddress address,
 								 ObjectAddress secondaryObject,
 								 Node *parsetree)
-{	StackTrace("EventTriggerCollectSimpleCommand");
+{
 	MemoryContext oldcxt;
 	CollectedCommand *command;
 
@@ -1695,7 +1695,7 @@ EventTriggerCollectSimpleCommand(ObjectAddress address,
  */
 void
 EventTriggerAlterTableStart(Node *parsetree)
-{	StackTrace("EventTriggerAlterTableStart");
+{
 	MemoryContext oldcxt;
 	CollectedCommand *command;
 
@@ -1728,7 +1728,7 @@ EventTriggerAlterTableStart(Node *parsetree)
  */
 void
 EventTriggerAlterTableRelid(Oid objectId)
-{	StackTrace("EventTriggerAlterTableRelid");
+{
 	if (!currentEventTriggerState ||
 		currentEventTriggerState->commandCollectionInhibited)
 		return;
@@ -1746,7 +1746,7 @@ EventTriggerAlterTableRelid(Oid objectId)
  */
 void
 EventTriggerCollectAlterTableSubcmd(Node *subcmd, ObjectAddress address)
-{	StackTrace("EventTriggerCollectAlterTableSubcmd");
+{
 	MemoryContext oldcxt;
 	CollectedATSubcmd *newsub;
 
@@ -1780,7 +1780,7 @@ EventTriggerCollectAlterTableSubcmd(Node *subcmd, ObjectAddress address)
  */
 void
 EventTriggerAlterTableEnd(void)
-{	StackTrace("EventTriggerAlterTableEnd");
+{
 	/* ignore if event trigger context not set, or collection disabled */
 	if (!currentEventTriggerState ||
 		currentEventTriggerState->commandCollectionInhibited)
@@ -1808,7 +1808,7 @@ EventTriggerAlterTableEnd(void)
  */
 void
 EventTriggerCollectGrant(InternalGrant *istmt)
-{	StackTrace("EventTriggerCollectGrant");
+{
 	MemoryContext oldcxt;
 	CollectedCommand *command;
 	InternalGrant *icopy;
@@ -1853,7 +1853,7 @@ EventTriggerCollectGrant(InternalGrant *istmt)
 void
 EventTriggerCollectAlterOpFam(AlterOpFamilyStmt *stmt, Oid opfamoid,
 							  List *operators, List *procedures)
-{	StackTrace("EventTriggerCollectAlterOpFam");
+{
 	MemoryContext oldcxt;
 	CollectedCommand *command;
 
@@ -1886,7 +1886,7 @@ EventTriggerCollectAlterOpFam(AlterOpFamilyStmt *stmt, Oid opfamoid,
 void
 EventTriggerCollectCreateOpClass(CreateOpClassStmt *stmt, Oid opcoid,
 								 List *operators, List *procedures)
-{	StackTrace("EventTriggerCollectCreateOpClass");
+{
 	MemoryContext oldcxt;
 	CollectedCommand *command;
 
@@ -1920,7 +1920,7 @@ EventTriggerCollectCreateOpClass(CreateOpClassStmt *stmt, Oid opcoid,
 void
 EventTriggerCollectAlterTSConfig(AlterTSConfigurationStmt *stmt, Oid cfgId,
 								 Oid *dictIds, int ndicts)
-{	StackTrace("EventTriggerCollectAlterTSConfig");
+{
 	MemoryContext oldcxt;
 	CollectedCommand *command;
 
@@ -1954,7 +1954,7 @@ EventTriggerCollectAlterTSConfig(AlterTSConfigurationStmt *stmt, Oid cfgId,
  */
 void
 EventTriggerCollectAlterDefPrivs(AlterDefaultPrivilegesStmt *stmt)
-{	StackTrace("EventTriggerCollectAlterDefPrivs");
+{
 	MemoryContext oldcxt;
 	CollectedCommand *command;
 
@@ -1982,7 +1982,7 @@ EventTriggerCollectAlterDefPrivs(AlterDefaultPrivilegesStmt *stmt)
  */
 Datum
 pg_event_trigger_ddl_commands(PG_FUNCTION_ARGS)
-{	StackTrace("pg_event_trigger_ddl_commands");
+{
 	ReturnSetInfo *rsinfo = (ReturnSetInfo *) fcinfo->resultinfo;
 	TupleDesc	tupdesc;
 	Tuplestorestate *tupstore;
@@ -2202,7 +2202,7 @@ pg_event_trigger_ddl_commands(PG_FUNCTION_ARGS)
  */
 static const char *
 stringify_grantobjtype(GrantObjectType objtype)
-{	StackTrace("stringify_grantobjtype");
+{
 	switch (objtype)
 	{
 		case ACL_OBJECT_COLUMN:
@@ -2243,7 +2243,7 @@ stringify_grantobjtype(GrantObjectType objtype)
  */
 static const char *
 stringify_adefprivs_objtype(GrantObjectType objtype)
-{	StackTrace("stringify_adefprivs_objtype");
+{
 	switch (objtype)
 	{
 		case ACL_OBJECT_RELATION:

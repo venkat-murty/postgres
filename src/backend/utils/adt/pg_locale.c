@@ -144,7 +144,7 @@ static char *IsoLocaleName(const char *);		/* MSVC specific */
  */
 char *
 pg_perm_setlocale(int category, const char *locale)
-{	StackTrace("pg_perm_setlocale");
+{
 	char	   *result;
 	const char *envvar;
 	char	   *envbuf;
@@ -257,7 +257,7 @@ pg_perm_setlocale(int category, const char *locale)
  */
 bool
 check_locale(int category, const char *locale, char **canonname)
-{	StackTrace("check_locale");
+{
 	char	   *save;
 	char	   *res;
 
@@ -300,37 +300,37 @@ check_locale(int category, const char *locale, char **canonname)
  */
 bool
 check_locale_monetary(char **newval, void **extra, GucSource source)
-{	StackTrace("check_locale_monetary");
+{
 	return check_locale(LC_MONETARY, *newval, NULL);
 }
 
 void
 assign_locale_monetary(const char *newval, void *extra)
-{	StackTrace("assign_locale_monetary");
+{
 	CurrentLocaleConvValid = false;
 }
 
 bool
 check_locale_numeric(char **newval, void **extra, GucSource source)
-{	StackTrace("check_locale_numeric");
+{
 	return check_locale(LC_NUMERIC, *newval, NULL);
 }
 
 void
 assign_locale_numeric(const char *newval, void *extra)
-{	StackTrace("assign_locale_numeric");
+{
 	CurrentLocaleConvValid = false;
 }
 
 bool
 check_locale_time(char **newval, void **extra, GucSource source)
-{	StackTrace("check_locale_time");
+{
 	return check_locale(LC_TIME, *newval, NULL);
 }
 
 void
 assign_locale_time(const char *newval, void *extra)
-{	StackTrace("assign_locale_time");
+{
 	CurrentLCTimeValid = false;
 }
 
@@ -346,7 +346,7 @@ assign_locale_time(const char *newval, void *extra)
  */
 bool
 check_locale_messages(char **newval, void **extra, GucSource source)
-{	StackTrace("check_locale_messages");
+{
 	if (**newval == '\0')
 	{
 		if (source == PGC_S_DEFAULT)
@@ -369,7 +369,7 @@ check_locale_messages(char **newval, void **extra, GucSource source)
 
 void
 assign_locale_messages(const char *newval, void *extra)
-{	StackTrace("assign_locale_messages");
+{
 	/*
 	 * LC_MESSAGES category does not exist everywhere, but accept it anyway.
 	 * We ignore failure, as per comment above.
@@ -386,7 +386,7 @@ assign_locale_messages(const char *newval, void *extra)
  */
 static void
 free_struct_lconv(struct lconv * s)
-{	StackTrace("free_struct_lconv");
+{
 	if (s == NULL)
 		return;
 
@@ -419,7 +419,7 @@ free_struct_lconv(struct lconv * s)
  */
 static char *
 db_encoding_strdup(int encoding, const char *str)
-{	StackTrace("db_encoding_strdup");
+{
 	char	   *pstr;
 	char	   *mstr;
 
@@ -439,7 +439,7 @@ db_encoding_strdup(int encoding, const char *str)
  */
 struct lconv *
 PGLC_localeconv(void)
-{	StackTrace("PGLC_localeconv");
+{
 	static struct lconv CurrentLocaleConv;
 	struct lconv *extlconv;
 	char	   *save_lc_monetary;
@@ -583,7 +583,7 @@ PGLC_localeconv(void)
 static size_t
 strftime_win32(char *dst, size_t dstlen,
 			   const char *format, const struct tm * tm)
-{	StackTrace("strftime_win32");
+{
 	size_t		len;
 	wchar_t		wformat[8];		/* formats used below need 3 bytes */
 	wchar_t		wbuf[MAX_L10N_DATA];
@@ -634,7 +634,7 @@ strftime_win32(char *dst, size_t dstlen,
 /* Subroutine for cache_locale_time(). */
 static void
 cache_single_time(char **dst, const char *format, const struct tm * tm)
-{	StackTrace("cache_single_time");
+{
 	char		buf[MAX_L10N_DATA];
 	char	   *ptr;
 
@@ -661,7 +661,7 @@ cache_single_time(char **dst, const char *format, const struct tm * tm)
  */
 void
 cache_locale_time(void)
-{	StackTrace("cache_locale_time");
+{
 	char	   *save_lc_time;
 	time_t		timenow;
 	struct tm  *timeinfo;
@@ -786,7 +786,7 @@ cache_locale_time(void)
  */
 static char *
 IsoLocaleName(const char *winlocname)
-{	StackTrace("IsoLocaleName");
+{
 #if (_MSC_VER >= 1400)			/* VC8.0 or later */
 	static char iso_lc_messages[32];
 	_locale_t	loct = NULL;
@@ -880,7 +880,7 @@ IsoLocaleName(const char *winlocname)
 
 static collation_cache_entry *
 lookup_collation_cache(Oid collation, bool set_flags)
-{	StackTrace("lookup_collation_cache");
+{
 	collation_cache_entry *cache_entry;
 	bool		found;
 
@@ -945,7 +945,7 @@ lookup_collation_cache(Oid collation, bool set_flags)
  */
 bool
 lc_collate_is_c(Oid collation)
-{	StackTrace("lc_collate_is_c");
+{
 	/*
 	 * If we're asked about "collation 0", return false, so that the code will
 	 * go into the non-C path and report that the collation is bogus.
@@ -995,7 +995,7 @@ lc_collate_is_c(Oid collation)
  */
 bool
 lc_ctype_is_c(Oid collation)
-{	StackTrace("lc_ctype_is_c");
+{
 	/*
 	 * If we're asked about "collation 0", return false, so that the code will
 	 * go into the non-C path and report that the collation is bogus.
@@ -1045,7 +1045,7 @@ lc_ctype_is_c(Oid collation)
 #ifdef HAVE_LOCALE_T
 static void
 report_newlocale_failure(const char *localename)
-{	StackTrace("report_newlocale_failure");
+{
 	/* copy errno in case one of the ereport auxiliary functions changes it */
 	int			save_errno = errno;
 
@@ -1082,7 +1082,7 @@ report_newlocale_failure(const char *localename)
  */
 pg_locale_t
 pg_newlocale_from_collation(Oid collid)
-{	StackTrace("pg_newlocale_from_collation");
+{
 	collation_cache_entry *cache_entry;
 
 	/* Callers must pass a valid OID */
@@ -1184,7 +1184,7 @@ pg_newlocale_from_collation(Oid collid)
  */
 size_t
 wchar2char(char *to, const wchar_t *from, size_t tolen, pg_locale_t locale)
-{	StackTrace("wchar2char");
+{
 	size_t		result;
 
 	if (tolen == 0)
@@ -1254,7 +1254,7 @@ wchar2char(char *to, const wchar_t *from, size_t tolen, pg_locale_t locale)
 size_t
 char2wchar(wchar_t *to, size_t tolen, const char *from, size_t fromlen,
 		   pg_locale_t locale)
-{	StackTrace("char2wchar");
+{
 	size_t		result;
 
 	if (tolen == 0)

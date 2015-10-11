@@ -83,7 +83,7 @@ scalararraysel_containment(PlannerInfo *root,
 						   Node *leftop, Node *rightop,
 						   Oid elemtype, bool isEquality, bool useOr,
 						   int varRelid)
-{	StackTrace("scalararraysel_containment");
+{
 	Selectivity selec;
 	VariableStatData vardata;
 	Datum		constval;
@@ -248,7 +248,7 @@ scalararraysel_containment(PlannerInfo *root,
  */
 Datum
 arraycontsel(PG_FUNCTION_ARGS)
-{	StackTrace("arraycontsel");
+{
 	PlannerInfo *root = (PlannerInfo *) PG_GETARG_POINTER(0);
 	Oid			operator = PG_GETARG_OID(1);
 	List	   *args = (List *) PG_GETARG_POINTER(2);
@@ -328,7 +328,7 @@ arraycontsel(PG_FUNCTION_ARGS)
  */
 Datum
 arraycontjoinsel(PG_FUNCTION_ARGS)
-{	StackTrace("arraycontjoinsel");
+{
 	/* For the moment this is just a stub */
 	Oid			operator = PG_GETARG_OID(1);
 
@@ -345,7 +345,7 @@ arraycontjoinsel(PG_FUNCTION_ARGS)
 static Selectivity
 calc_arraycontsel(VariableStatData *vardata, Datum constval,
 				  Oid elemtype, Oid operator)
-{	StackTrace("calc_arraycontsel");
+{
 	Selectivity selec;
 	TypeCacheEntry *typentry;
 	FmgrInfo   *cmpfunc;
@@ -452,7 +452,7 @@ mcelem_array_selec(ArrayType *array, TypeCacheEntry *typentry,
 				   float4 *numbers, int nnumbers,
 				   float4 *hist, int nhist,
 				   Oid operator, FmgrInfo *cmpfunc)
-{	StackTrace("mcelem_array_selec");
+{
 	Selectivity selec;
 	int			num_elems;
 	Datum	   *elem_values;
@@ -544,7 +544,7 @@ mcelem_array_contain_overlap_selec(Datum *mcelem, int nmcelem,
 								   float4 *numbers, int nnumbers,
 								   Datum *array_data, int nitems,
 								   Oid operator, FmgrInfo *cmpfunc)
-{	StackTrace("mcelem_array_contain_overlap_selec");
+{
 	Selectivity selec,
 				elem_selec;
 	int			mcelem_index,
@@ -720,7 +720,7 @@ mcelem_array_contained_selec(Datum *mcelem, int nmcelem,
 							 Datum *array_data, int nitems,
 							 float4 *hist, int nhist,
 							 Oid operator, FmgrInfo *cmpfunc)
-{	StackTrace("mcelem_array_contained_selec");
+{
 	int			mcelem_index,
 				i,
 				unique_nitems = 0;
@@ -941,7 +941,7 @@ mcelem_array_contained_selec(Datum *mcelem, int nmcelem,
  */
 static float *
 calc_hist(const float4 *hist, int nhist, int n)
-{	StackTrace("calc_hist");
+{
 	float	   *hist_part;
 	int			k,
 				i = 0;
@@ -1030,7 +1030,7 @@ calc_hist(const float4 *hist, int nhist, int n)
  */
 static float *
 calc_distr(const float *p, int n, int m, float rest)
-{	StackTrace("calc_distr");
+{
 	float	   *row,
 			   *prev_row,
 			   *tmp;
@@ -1109,7 +1109,7 @@ calc_distr(const float *p, int n, int m, float rest)
 /* Fast function for floor value of 2 based logarithm calculation. */
 static int
 floor_log2(uint32 n)
-{	StackTrace("floor_log2");
+{
 	int			logval = 0;
 
 	if (n == 0)
@@ -1151,7 +1151,7 @@ floor_log2(uint32 n)
 static bool
 find_next_mcelem(Datum *mcelem, int nmcelem, Datum value, int *index,
 				 FmgrInfo *cmpfunc)
-{	StackTrace("find_next_mcelem");
+{
 	int			l = *index,
 				r = nmcelem - 1,
 				i,
@@ -1185,7 +1185,7 @@ find_next_mcelem(Datum *mcelem, int nmcelem, Datum value, int *index,
  */
 static int
 element_compare(const void *key1, const void *key2, void *arg)
-{	StackTrace("element_compare");
+{
 	Datum		d1 = *((const Datum *) key1);
 	Datum		d2 = *((const Datum *) key2);
 	FmgrInfo   *cmpfunc = (FmgrInfo *) arg;
@@ -1200,7 +1200,7 @@ element_compare(const void *key1, const void *key2, void *arg)
  */
 static int
 float_compare_desc(const void *key1, const void *key2)
-{	StackTrace("float_compare_desc");
+{
 	float		d1 = *((const float *) key1);
 	float		d2 = *((const float *) key2);
 

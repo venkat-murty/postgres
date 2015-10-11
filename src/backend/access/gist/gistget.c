@@ -55,7 +55,7 @@ gistindex_keytest(IndexScanDesc scan,
 				  OffsetNumber offset,
 				  bool *recheck_p,
 				  bool *recheck_distances_p)
-{	StackTrace("gistindex_keytest");
+{
 	GISTScanOpaque so = (GISTScanOpaque) scan->opaque;
 	GISTSTATE  *giststate = so->giststate;
 	ScanKey		key = scan->keyData;
@@ -249,7 +249,7 @@ gistindex_keytest(IndexScanDesc scan,
 static void
 gistScanPage(IndexScanDesc scan, GISTSearchItem *pageItem, double *myDistances,
 			 TIDBitmap *tbm, int64 *ntids)
-{	StackTrace("gistScanPage");
+{
 	GISTScanOpaque so = (GISTScanOpaque) scan->opaque;
 	GISTSTATE  *giststate = so->giststate;
 	Relation	r = scan->indexRelation;
@@ -422,7 +422,7 @@ gistScanPage(IndexScanDesc scan, GISTSearchItem *pageItem, double *myDistances,
  */
 static GISTSearchItem *
 getNextGISTSearchItem(GISTScanOpaque so)
-{	StackTrace("getNextGISTSearchItem");
+{
 	GISTSearchItem *item;
 
 	if (!pairingheap_is_empty(so->queue))
@@ -444,7 +444,7 @@ getNextGISTSearchItem(GISTScanOpaque so)
  */
 static bool
 getNextNearest(IndexScanDesc scan)
-{	StackTrace("getNextNearest");
+{
 	GISTScanOpaque so = (GISTScanOpaque) scan->opaque;
 	bool		res = false;
 	int			i;
@@ -532,7 +532,7 @@ getNextNearest(IndexScanDesc scan)
  */
 Datum
 gistgettuple(PG_FUNCTION_ARGS)
-{	StackTrace("gistgettuple");
+{
 	IndexScanDesc scan = (IndexScanDesc) PG_GETARG_POINTER(0);
 	ScanDirection dir = (ScanDirection) PG_GETARG_INT32(1);
 	GISTScanOpaque so = (GISTScanOpaque) scan->opaque;
@@ -615,7 +615,7 @@ gistgettuple(PG_FUNCTION_ARGS)
  */
 Datum
 gistgetbitmap(PG_FUNCTION_ARGS)
-{	StackTrace("gistgetbitmap");
+{
 	IndexScanDesc scan = (IndexScanDesc) PG_GETARG_POINTER(0);
 	TIDBitmap  *tbm = (TIDBitmap *) PG_GETARG_POINTER(1);
 	GISTScanOpaque so = (GISTScanOpaque) scan->opaque;
@@ -664,7 +664,7 @@ gistgetbitmap(PG_FUNCTION_ARGS)
  */
 Datum
 gistcanreturn(PG_FUNCTION_ARGS)
-{	StackTrace("gistcanreturn");
+{
 	Relation	index = (Relation) PG_GETARG_POINTER(0);
 	int			attno = PG_GETARG_INT32(1);
 

@@ -42,7 +42,7 @@ static List *label_provider_list = NIL;
  */
 ObjectAddress
 ExecSecLabelStmt(SecLabelStmt *stmt)
-{	StackTrace("ExecSecLabelStmt");
+{
 	LabelProvider *provider = NULL;
 	ObjectAddress address;
 	Relation	relation;
@@ -144,7 +144,7 @@ ExecSecLabelStmt(SecLabelStmt *stmt)
  */
 static char *
 GetSharedSecurityLabel(const ObjectAddress *object, const char *provider)
-{	StackTrace("GetSharedSecurityLabel");
+{
 	Relation	pg_shseclabel;
 	ScanKeyData keys[3];
 	SysScanDesc scan;
@@ -192,7 +192,7 @@ GetSharedSecurityLabel(const ObjectAddress *object, const char *provider)
  */
 char *
 GetSecurityLabel(const ObjectAddress *object, const char *provider)
-{	StackTrace("GetSecurityLabel");
+{
 	Relation	pg_seclabel;
 	ScanKeyData keys[4];
 	SysScanDesc scan;
@@ -250,7 +250,7 @@ GetSecurityLabel(const ObjectAddress *object, const char *provider)
 static void
 SetSharedSecurityLabel(const ObjectAddress *object,
 					   const char *provider, const char *label)
-{	StackTrace("SetSharedSecurityLabel");
+{
 	Relation	pg_shseclabel;
 	ScanKeyData keys[4];
 	SysScanDesc scan;
@@ -329,7 +329,7 @@ SetSharedSecurityLabel(const ObjectAddress *object,
 void
 SetSecurityLabel(const ObjectAddress *object,
 				 const char *provider, const char *label)
-{	StackTrace("SetSecurityLabel");
+{
 	Relation	pg_seclabel;
 	ScanKeyData keys[4];
 	SysScanDesc scan;
@@ -418,7 +418,7 @@ SetSecurityLabel(const ObjectAddress *object,
  */
 void
 DeleteSharedSecurityLabel(Oid objectId, Oid classId)
-{	StackTrace("DeleteSharedSecurityLabel");
+{
 	Relation	pg_shseclabel;
 	ScanKeyData skey[2];
 	SysScanDesc scan;
@@ -450,7 +450,7 @@ DeleteSharedSecurityLabel(Oid objectId, Oid classId)
  */
 void
 DeleteSecurityLabel(const ObjectAddress *object)
-{	StackTrace("DeleteSecurityLabel");
+{
 	Relation	pg_seclabel;
 	ScanKeyData skey[3];
 	SysScanDesc scan;
@@ -497,7 +497,7 @@ DeleteSecurityLabel(const ObjectAddress *object)
 
 void
 register_label_provider(const char *provider_name, check_object_relabel_type hook)
-{	StackTrace("register_label_provider");
+{
 	LabelProvider *provider;
 	MemoryContext oldcxt;
 

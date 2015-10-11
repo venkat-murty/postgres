@@ -90,7 +90,7 @@ static void process_settings(Oid databaseid, Oid roleid);
  */
 static HeapTuple
 GetDatabaseTuple(const char *dbname)
-{	StackTrace("GetDatabaseTuple");
+{
 	HeapTuple	tuple;
 	Relation	relation;
 	SysScanDesc scan;
@@ -133,7 +133,7 @@ GetDatabaseTuple(const char *dbname)
  */
 static HeapTuple
 GetDatabaseTupleByOid(Oid dboid)
-{	StackTrace("GetDatabaseTupleByOid");
+{
 	HeapTuple	tuple;
 	Relation	relation;
 	SysScanDesc scan;
@@ -179,7 +179,7 @@ GetDatabaseTupleByOid(Oid dboid)
  */
 static void
 PerformAuthentication(Port *port)
-{	StackTrace("PerformAuthentication");
+{
 	/* This should be set already, but let's make sure */
 	ClientAuthInProgress = true;	/* limit visibility of log messages */
 
@@ -271,7 +271,7 @@ PerformAuthentication(Port *port)
  */
 static void
 CheckMyDatabase(const char *name, bool am_superuser)
-{	StackTrace("CheckMyDatabase");
+{
 	HeapTuple	tup;
 	Form_pg_database dbform;
 	char	   *collate;
@@ -392,7 +392,7 @@ CheckMyDatabase(const char *name, bool am_superuser)
  */
 static void
 InitCommunication(void)
-{	StackTrace("InitCommunication");
+{
 	/*
 	 * initialize shared memory and semaphores appropriately.
 	 */
@@ -419,7 +419,7 @@ InitCommunication(void)
  */
 void
 pg_split_opts(char **argv, int *argcp, const char *optstr)
-{	StackTrace("pg_split_opts");
+{
 	StringInfoData s;
 
 	initStringInfo(&s);
@@ -478,7 +478,7 @@ pg_split_opts(char **argv, int *argcp, const char *optstr)
  */
 void
 InitializeMaxBackends(void)
-{	StackTrace("InitializeMaxBackends");
+{
 	Assert(MaxBackends == 0);
 
 	/* the extra unit accounts for the autovacuum launcher */
@@ -500,7 +500,7 @@ InitializeMaxBackends(void)
  */
 void
 BaseInit(void)
-{	StackTrace("BaseInit");
+{
 	/*
 	 * Attach to shared memory and semaphores, and initialize our
 	 * input/output/debugging file descriptors.
@@ -542,7 +542,7 @@ BaseInit(void)
 void
 InitPostgres(const char *in_dbname, Oid dboid, const char *username,
 			 Oid useroid, char *out_dbname)
-{	StackTrace("InitPostgres");
+{
 	bool		bootstrap = IsBootstrapProcessingMode();
 	bool		am_superuser;
 	char	   *fullpath;
@@ -1017,7 +1017,7 @@ InitPostgres(const char *in_dbname, Oid dboid, const char *username,
  */
 static void
 process_startup_options(Port *port, bool am_superuser)
-{	StackTrace("process_startup_options");
+{
 	GucContext	gucctx;
 	ListCell   *gucopts;
 
@@ -1082,7 +1082,7 @@ process_startup_options(Port *port, bool am_superuser)
  */
 static void
 process_settings(Oid databaseid, Oid roleid)
-{	StackTrace("process_settings");
+{
 	Relation	relsetting;
 	Snapshot	snapshot;
 
@@ -1116,7 +1116,7 @@ process_settings(Oid databaseid, Oid roleid)
  */
 static void
 ShutdownPostgres(int code, Datum arg)
-{	StackTrace("ShutdownPostgres");
+{
 	/* Make sure we've killed any active transaction */
 	AbortOutOfAnyTransaction();
 
@@ -1133,7 +1133,7 @@ ShutdownPostgres(int code, Datum arg)
  */
 static void
 StatementTimeoutHandler(void)
-{	StackTrace("StatementTimeoutHandler");
+{
 	int			sig = SIGINT;
 
 	/*
@@ -1155,7 +1155,7 @@ StatementTimeoutHandler(void)
  */
 static void
 LockTimeoutHandler(void)
-{	StackTrace("LockTimeoutHandler");
+{
 #ifdef HAVE_SETSID
 	/* try to signal whole process group */
 	kill(-MyProcPid, SIGINT);
@@ -1169,7 +1169,7 @@ LockTimeoutHandler(void)
  */
 static bool
 ThereIsAtLeastOneRole(void)
-{	StackTrace("ThereIsAtLeastOneRole");
+{
 	Relation	pg_authid_rel;
 	HeapScanDesc scan;
 	bool		result;

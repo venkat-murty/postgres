@@ -54,7 +54,7 @@ static PathKey *
 make_canonical_pathkey(PlannerInfo *root,
 					   EquivalenceClass *eclass, Oid opfamily,
 					   int strategy, bool nulls_first)
-{	StackTrace("make_canonical_pathkey");
+{
 	PathKey    *pk;
 	ListCell   *lc;
 	MemoryContext oldcontext;
@@ -129,7 +129,7 @@ make_canonical_pathkey(PlannerInfo *root,
  */
 static bool
 pathkey_is_redundant(PathKey *new_pathkey, List *pathkeys)
-{	StackTrace("pathkey_is_redundant");
+{
 	EquivalenceClass *new_ec = new_pathkey->pk_eclass;
 	ListCell   *lc;
 
@@ -181,7 +181,7 @@ make_pathkey_from_sortinfo(PlannerInfo *root,
 						   Index sortref,
 						   Relids rel,
 						   bool create_it)
-{	StackTrace("make_pathkey_from_sortinfo");
+{
 	int16		strategy;
 	Oid			equality_op;
 	List	   *opfamilies;
@@ -236,7 +236,7 @@ make_pathkey_from_sortop(PlannerInfo *root,
 						 bool nulls_first,
 						 Index sortref,
 						 bool create_it)
-{	StackTrace("make_pathkey_from_sortop");
+{
 	Oid			opfamily,
 				opcintype,
 				collation;
@@ -279,7 +279,7 @@ make_pathkey_from_sortop(PlannerInfo *root,
  */
 PathKeysComparison
 compare_pathkeys(List *keys1, List *keys2)
-{	StackTrace("compare_pathkeys");
+{
 	ListCell   *key1,
 			   *key2;
 
@@ -318,7 +318,7 @@ compare_pathkeys(List *keys1, List *keys2)
  */
 bool
 pathkeys_contained_in(List *keys1, List *keys2)
-{	StackTrace("pathkeys_contained_in");
+{
 	switch (compare_pathkeys(keys1, keys2))
 	{
 		case PATHKEYS_EQUAL:
@@ -345,7 +345,7 @@ Path *
 get_cheapest_path_for_pathkeys(List *paths, List *pathkeys,
 							   Relids required_outer,
 							   CostSelector cost_criterion)
-{	StackTrace("get_cheapest_path_for_pathkeys");
+{
 	Path	   *matched_path = NULL;
 	ListCell   *l;
 
@@ -387,7 +387,7 @@ get_cheapest_fractional_path_for_pathkeys(List *paths,
 										  List *pathkeys,
 										  Relids required_outer,
 										  double fraction)
-{	StackTrace("get_cheapest_fractional_path_for_pathkeys");
+{
 	Path	   *matched_path = NULL;
 	ListCell   *l;
 
@@ -436,7 +436,7 @@ List *
 build_index_pathkeys(PlannerInfo *root,
 					 IndexOptInfo *index,
 					 ScanDirection scandir)
-{	StackTrace("build_index_pathkeys");
+{
 	List	   *retval = NIL;
 	ListCell   *lc;
 	int			i;
@@ -519,7 +519,7 @@ build_expression_pathkey(PlannerInfo *root,
 						 Oid opno,
 						 Relids rel,
 						 bool create_it)
-{	StackTrace("build_expression_pathkey");
+{
 	List	   *pathkeys;
 	Oid			opfamily,
 				opcintype;
@@ -568,7 +568,7 @@ build_expression_pathkey(PlannerInfo *root,
 List *
 convert_subquery_pathkeys(PlannerInfo *root, RelOptInfo *rel,
 						  List *subquery_pathkeys)
-{	StackTrace("convert_subquery_pathkeys");
+{
 	List	   *retval = NIL;
 	int			retvallen = 0;
 	int			outer_query_keys = list_length(root->query_pathkeys);
@@ -785,7 +785,7 @@ build_join_pathkeys(PlannerInfo *root,
 					RelOptInfo *joinrel,
 					JoinType jointype,
 					List *outer_pathkeys)
-{	StackTrace("build_join_pathkeys");
+{
 	if (jointype == JOIN_FULL || jointype == JOIN_RIGHT)
 		return NIL;
 
@@ -827,7 +827,7 @@ List *
 make_pathkeys_for_sortclauses(PlannerInfo *root,
 							  List *sortclauses,
 							  List *tlist)
-{	StackTrace("make_pathkeys_for_sortclauses");
+{
 	List	   *pathkeys = NIL;
 	ListCell   *l;
 
@@ -879,7 +879,7 @@ make_pathkeys_for_sortclauses(PlannerInfo *root,
  */
 void
 initialize_mergeclause_eclasses(PlannerInfo *root, RestrictInfo *restrictinfo)
-{	StackTrace("initialize_mergeclause_eclasses");
+{
 	Expr	   *clause = restrictinfo->clause;
 	Oid			lefttype,
 				righttype;
@@ -928,7 +928,7 @@ initialize_mergeclause_eclasses(PlannerInfo *root, RestrictInfo *restrictinfo)
  */
 void
 update_mergeclause_eclasses(PlannerInfo *root, RestrictInfo *restrictinfo)
-{	StackTrace("update_mergeclause_eclasses");
+{
 	/* Should be a merge clause ... */
 	Assert(restrictinfo->mergeopfamilies != NIL);
 	/* ... with pointers already set */
@@ -966,7 +966,7 @@ find_mergeclauses_for_pathkeys(PlannerInfo *root,
 							   List *pathkeys,
 							   bool outer_keys,
 							   List *restrictinfos)
-{	StackTrace("find_mergeclauses_for_pathkeys");
+{
 	List	   *mergeclauses = NIL;
 	ListCell   *i;
 
@@ -1082,7 +1082,7 @@ List *
 select_outer_pathkeys_for_merge(PlannerInfo *root,
 								List *mergeclauses,
 								RelOptInfo *joinrel)
-{	StackTrace("select_outer_pathkeys_for_merge");
+{
 	List	   *pathkeys = NIL;
 	int			nClauses = list_length(mergeclauses);
 	EquivalenceClass **ecs;
@@ -1254,7 +1254,7 @@ List *
 make_inner_pathkeys_for_merge(PlannerInfo *root,
 							  List *mergeclauses,
 							  List *outer_pathkeys)
-{	StackTrace("make_inner_pathkeys_for_merge");
+{
 	List	   *pathkeys = NIL;
 	EquivalenceClass *lastoeclass;
 	PathKey    *opathkey;
@@ -1353,7 +1353,7 @@ make_inner_pathkeys_for_merge(PlannerInfo *root,
  */
 static int
 pathkeys_useful_for_merging(PlannerInfo *root, RelOptInfo *rel, List *pathkeys)
-{	StackTrace("pathkeys_useful_for_merging");
+{
 	int			useful = 0;
 	ListCell   *i;
 
@@ -1420,7 +1420,7 @@ pathkeys_useful_for_merging(PlannerInfo *root, RelOptInfo *rel, List *pathkeys)
  */
 static bool
 right_merge_direction(PlannerInfo *root, PathKey *pathkey)
-{	StackTrace("right_merge_direction");
+{
 	ListCell   *l;
 
 	foreach(l, root->query_pathkeys)
@@ -1456,7 +1456,7 @@ right_merge_direction(PlannerInfo *root, PathKey *pathkey)
  */
 static int
 pathkeys_useful_for_ordering(PlannerInfo *root, List *pathkeys)
-{	StackTrace("pathkeys_useful_for_ordering");
+{
 	if (root->query_pathkeys == NIL)
 		return 0;				/* no special ordering requested */
 
@@ -1480,7 +1480,7 @@ List *
 truncate_useless_pathkeys(PlannerInfo *root,
 						  RelOptInfo *rel,
 						  List *pathkeys)
-{	StackTrace("truncate_useless_pathkeys");
+{
 	int			nuseful;
 	int			nuseful2;
 
@@ -1518,7 +1518,7 @@ truncate_useless_pathkeys(PlannerInfo *root,
  */
 bool
 has_useful_pathkeys(PlannerInfo *root, RelOptInfo *rel)
-{	StackTrace("has_useful_pathkeys");
+{
 	if (rel->joininfo != NIL || rel->has_eclass_joins)
 		return true;			/* might be able to use pathkeys for merging */
 	if (root->query_pathkeys != NIL)

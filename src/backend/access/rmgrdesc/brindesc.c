@@ -18,7 +18,7 @@
 
 void
 brin_desc(StringInfo buf, XLogReaderState *record)
-{	StackTrace("brin_desc");
+{
 	char	   *rec = XLogRecGetData(record);
 	uint8		info = XLogRecGetInfo(record) & ~XLR_INFO_MASK;
 
@@ -65,7 +65,7 @@ brin_desc(StringInfo buf, XLogReaderState *record)
 
 const char *
 brin_identify(uint8 info)
-{	StackTrace("brin_identify");
+{
 	const char *id = NULL;
 
 	switch (info & ~XLR_INFO_MASK)

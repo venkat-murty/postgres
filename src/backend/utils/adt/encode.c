@@ -34,7 +34,7 @@ static const struct pg_encoding *pg_find_encoding(const char *name);
 
 Datum
 binary_encode(PG_FUNCTION_ARGS)
-{	StackTrace("binary_encode");
+{
 	bytea	   *data = PG_GETARG_BYTEA_P(0);
 	Datum		name = PG_GETARG_DATUM(1);
 	text	   *result;
@@ -70,7 +70,7 @@ binary_encode(PG_FUNCTION_ARGS)
 
 Datum
 binary_decode(PG_FUNCTION_ARGS)
-{	StackTrace("binary_decode");
+{
 	text	   *data = PG_GETARG_TEXT_P(0);
 	Datum		name = PG_GETARG_DATUM(1);
 	bytea	   *result;
@@ -124,7 +124,7 @@ static const int8 hexlookup[128] = {
 
 unsigned
 hex_encode(const char *src, unsigned len, char *dst)
-{	StackTrace("hex_encode");
+{
 	const char *end = src + len;
 
 	while (src < end)
@@ -138,7 +138,7 @@ hex_encode(const char *src, unsigned len, char *dst)
 
 static inline char
 get_hex(char c)
-{	StackTrace("get_hex");
+{
 	int			res = -1;
 
 	if (c > 0 && c < 127)
@@ -154,7 +154,7 @@ get_hex(char c)
 
 unsigned
 hex_decode(const char *src, unsigned len, char *dst)
-{	StackTrace("hex_decode");
+{
 	const char *s,
 			   *srcend;
 	char		v1,
@@ -186,13 +186,13 @@ hex_decode(const char *src, unsigned len, char *dst)
 
 static unsigned
 hex_enc_len(const char *src, unsigned srclen)
-{	StackTrace("hex_enc_len");
+{
 	return srclen << 1;
 }
 
 static unsigned
 hex_dec_len(const char *src, unsigned srclen)
-{	StackTrace("hex_dec_len");
+{
 	return srclen >> 1;
 }
 
@@ -216,7 +216,7 @@ static const int8 b64lookup[128] = {
 
 static unsigned
 b64_encode(const char *src, unsigned len, char *dst)
-{	StackTrace("b64_encode");
+{
 	char	   *p,
 			   *lend = dst + 76;
 	const char *s,
@@ -263,7 +263,7 @@ b64_encode(const char *src, unsigned len, char *dst)
 
 static unsigned
 b64_decode(const char *src, unsigned len, char *dst)
-{	StackTrace("b64_decode");
+{
 	const char *srcend = src + len,
 			   *s = src;
 	char	   *p = dst;
@@ -333,14 +333,14 @@ b64_decode(const char *src, unsigned len, char *dst)
 
 static unsigned
 b64_enc_len(const char *src, unsigned srclen)
-{	StackTrace("b64_enc_len");
+{
 	/* 3 bytes will be converted to 4, linefeed after 76 chars */
 	return (srclen + 2) * 4 / 3 + srclen / (76 * 3 / 4);
 }
 
 static unsigned
 b64_dec_len(const char *src, unsigned srclen)
-{	StackTrace("b64_dec_len");
+{
 	return (srclen * 3) >> 2;
 }
 
@@ -363,7 +363,7 @@ b64_dec_len(const char *src, unsigned srclen)
 
 static unsigned
 esc_encode(const char *src, unsigned srclen, char *dst)
-{	StackTrace("esc_encode");
+{
 	const char *end = src + srclen;
 	char	   *rp = dst;
 	int			len = 0;
@@ -402,7 +402,7 @@ esc_encode(const char *src, unsigned srclen, char *dst)
 
 static unsigned
 esc_decode(const char *src, unsigned srclen, char *dst)
-{	StackTrace("esc_decode");
+{
 	const char *end = src + srclen;
 	char	   *rp = dst;
 	int			len = 0;
@@ -450,7 +450,7 @@ esc_decode(const char *src, unsigned srclen, char *dst)
 
 static unsigned
 esc_enc_len(const char *src, unsigned srclen)
-{	StackTrace("esc_enc_len");
+{
 	const char *end = src + srclen;
 	int			len = 0;
 
@@ -471,7 +471,7 @@ esc_enc_len(const char *src, unsigned srclen)
 
 static unsigned
 esc_dec_len(const char *src, unsigned srclen)
-{	StackTrace("esc_dec_len");
+{
 	const char *end = src + srclen;
 	int			len = 0;
 
@@ -551,7 +551,7 @@ static const struct
 
 static const struct pg_encoding *
 pg_find_encoding(const char *name)
-{	StackTrace("pg_find_encoding");
+{
 	int			i;
 
 	for (i = 0; enclist[i].name; i++)

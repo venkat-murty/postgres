@@ -48,7 +48,7 @@ static void hashbuildCallback(Relation index,
  */
 Datum
 hashbuild(PG_FUNCTION_ARGS)
-{	StackTrace("hashbuild");
+{
 	Relation	heap = (Relation) PG_GETARG_POINTER(0);
 	Relation	index = (Relation) PG_GETARG_POINTER(1);
 	IndexInfo  *indexInfo = (IndexInfo *) PG_GETARG_POINTER(2);
@@ -120,7 +120,7 @@ hashbuild(PG_FUNCTION_ARGS)
  */
 Datum
 hashbuildempty(PG_FUNCTION_ARGS)
-{	StackTrace("hashbuildempty");
+{
 	Relation	index = (Relation) PG_GETARG_POINTER(0);
 
 	_hash_metapinit(index, 0, INIT_FORKNUM);
@@ -138,7 +138,7 @@ hashbuildCallback(Relation index,
 				  bool *isnull,
 				  bool tupleIsAlive,
 				  void *state)
-{	StackTrace("hashbuildCallback");
+{
 	HashBuildState *buildstate = (HashBuildState *) state;
 	IndexTuple	itup;
 
@@ -169,7 +169,7 @@ hashbuildCallback(Relation index,
  */
 Datum
 hashinsert(PG_FUNCTION_ARGS)
-{	StackTrace("hashinsert");
+{
 	Relation	rel = (Relation) PG_GETARG_POINTER(0);
 	Datum	   *values = (Datum *) PG_GETARG_POINTER(1);
 	bool	   *isnull = (bool *) PG_GETARG_POINTER(2);
@@ -210,7 +210,7 @@ hashinsert(PG_FUNCTION_ARGS)
  */
 Datum
 hashgettuple(PG_FUNCTION_ARGS)
-{	StackTrace("hashgettuple");
+{
 	IndexScanDesc scan = (IndexScanDesc) PG_GETARG_POINTER(0);
 	ScanDirection dir = (ScanDirection) PG_GETARG_INT32(1);
 	HashScanOpaque so = (HashScanOpaque) scan->opaque;
@@ -323,7 +323,7 @@ hashgettuple(PG_FUNCTION_ARGS)
  */
 Datum
 hashgetbitmap(PG_FUNCTION_ARGS)
-{	StackTrace("hashgetbitmap");
+{
 	IndexScanDesc scan = (IndexScanDesc) PG_GETARG_POINTER(0);
 	TIDBitmap  *tbm = (TIDBitmap *) PG_GETARG_POINTER(1);
 	HashScanOpaque so = (HashScanOpaque) scan->opaque;
@@ -371,7 +371,7 @@ hashgetbitmap(PG_FUNCTION_ARGS)
  */
 Datum
 hashbeginscan(PG_FUNCTION_ARGS)
-{	StackTrace("hashbeginscan");
+{
 	Relation	rel = (Relation) PG_GETARG_POINTER(0);
 	int			nkeys = PG_GETARG_INT32(1);
 	int			norderbys = PG_GETARG_INT32(2);
@@ -404,7 +404,7 @@ hashbeginscan(PG_FUNCTION_ARGS)
  */
 Datum
 hashrescan(PG_FUNCTION_ARGS)
-{	StackTrace("hashrescan");
+{
 	IndexScanDesc scan = (IndexScanDesc) PG_GETARG_POINTER(0);
 	ScanKey		scankey = (ScanKey) PG_GETARG_POINTER(1);
 
@@ -443,7 +443,7 @@ hashrescan(PG_FUNCTION_ARGS)
  */
 Datum
 hashendscan(PG_FUNCTION_ARGS)
-{	StackTrace("hashendscan");
+{
 	IndexScanDesc scan = (IndexScanDesc) PG_GETARG_POINTER(0);
 	HashScanOpaque so = (HashScanOpaque) scan->opaque;
 	Relation	rel = scan->indexRelation;
@@ -472,7 +472,7 @@ hashendscan(PG_FUNCTION_ARGS)
  */
 Datum
 hashmarkpos(PG_FUNCTION_ARGS)
-{	StackTrace("hashmarkpos");
+{
 	elog(ERROR, "hash does not support mark/restore");
 	PG_RETURN_VOID();
 }
@@ -482,7 +482,7 @@ hashmarkpos(PG_FUNCTION_ARGS)
  */
 Datum
 hashrestrpos(PG_FUNCTION_ARGS)
-{	StackTrace("hashrestrpos");
+{
 	elog(ERROR, "hash does not support mark/restore");
 	PG_RETURN_VOID();
 }
@@ -496,7 +496,7 @@ hashrestrpos(PG_FUNCTION_ARGS)
  */
 Datum
 hashbulkdelete(PG_FUNCTION_ARGS)
-{	StackTrace("hashbulkdelete");
+{
 	IndexVacuumInfo *info = (IndexVacuumInfo *) PG_GETARG_POINTER(0);
 	IndexBulkDeleteResult *stats = (IndexBulkDeleteResult *) PG_GETARG_POINTER(1);
 	IndexBulkDeleteCallback callback = (IndexBulkDeleteCallback) PG_GETARG_POINTER(2);
@@ -680,7 +680,7 @@ loop_top:
  */
 Datum
 hashvacuumcleanup(PG_FUNCTION_ARGS)
-{	StackTrace("hashvacuumcleanup");
+{
 	IndexVacuumInfo *info = (IndexVacuumInfo *) PG_GETARG_POINTER(0);
 	IndexBulkDeleteResult *stats = (IndexBulkDeleteResult *) PG_GETARG_POINTER(1);
 	Relation	rel = info->index;
@@ -701,6 +701,6 @@ hashvacuumcleanup(PG_FUNCTION_ARGS)
 
 void
 hash_redo(XLogReaderState *record)
-{	StackTrace("hash_redo");
+{
 	elog(PANIC, "hash_redo: unimplemented");
 }

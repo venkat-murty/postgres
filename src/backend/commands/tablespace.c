@@ -113,7 +113,7 @@ static bool destroy_tablespace_directories(Oid tablespaceoid, bool redo);
  */
 void
 TablespaceCreateDbspace(Oid spcNode, Oid dbNode, bool isRedo)
-{	StackTrace("TablespaceCreateDbspace");
+{
 	struct stat st;
 	char	   *dir;
 
@@ -231,7 +231,7 @@ TablespaceCreateDbspace(Oid spcNode, Oid dbNode, bool isRedo)
  */
 Oid
 CreateTableSpace(CreateTableSpaceStmt *stmt)
-{	StackTrace("CreateTableSpace");
+{
 #ifdef HAVE_SYMLINK
 	Relation	rel;
 	Datum		values[Natts_pg_tablespace];
@@ -399,7 +399,7 @@ CreateTableSpace(CreateTableSpaceStmt *stmt)
  */
 void
 DropTableSpace(DropTableSpaceStmt *stmt)
-{	StackTrace("DropTableSpace");
+{
 #ifdef HAVE_SYMLINK
 	char	   *tablespacename = stmt->tablespacename;
 	HeapScanDesc scandesc;
@@ -562,7 +562,7 @@ DropTableSpace(DropTableSpaceStmt *stmt)
  */
 static void
 create_tablespace_directories(const char *location, const Oid tablespaceoid)
-{	StackTrace("create_tablespace_directories");
+{
 	char	   *linkloc;
 	char	   *location_with_version_dir;
 	struct stat st;
@@ -660,7 +660,7 @@ create_tablespace_directories(const char *location, const Oid tablespaceoid)
  */
 static bool
 destroy_tablespace_directories(Oid tablespaceoid, bool redo)
-{	StackTrace("destroy_tablespace_directories");
+{
 	char	   *linkloc;
 	char	   *linkloc_with_version_dir;
 	DIR		   *dirdesc;
@@ -817,7 +817,7 @@ remove_symlink:
  */
 bool
 directory_is_empty(const char *path)
-{	StackTrace("directory_is_empty");
+{
 	DIR		   *dirdesc;
 	struct dirent *de;
 
@@ -847,7 +847,7 @@ directory_is_empty(const char *path)
  */
 void
 remove_tablespace_symlink(const char *linkloc)
-{	StackTrace("remove_tablespace_symlink");
+{
 	struct stat st;
 
 	if (lstat(linkloc, &st) != 0)
@@ -895,7 +895,7 @@ remove_tablespace_symlink(const char *linkloc)
  */
 ObjectAddress
 RenameTableSpace(const char *oldname, const char *newname)
-{	StackTrace("RenameTableSpace");
+{
 	Oid			tspId;
 	Relation	rel;
 	ScanKeyData entry[1];
@@ -972,7 +972,7 @@ RenameTableSpace(const char *oldname, const char *newname)
  */
 Oid
 AlterTableSpaceOptions(AlterTableSpaceOptionsStmt *stmt)
-{	StackTrace("AlterTableSpaceOptions");
+{
 	Relation	rel;
 	ScanKeyData entry[1];
 	HeapScanDesc scandesc;
@@ -1049,7 +1049,7 @@ AlterTableSpaceOptions(AlterTableSpaceOptionsStmt *stmt)
 /* check_hook: validate new default_tablespace */
 bool
 check_default_tablespace(char **newval, void **extra, GucSource source)
-{	StackTrace("check_default_tablespace");
+{
 	/*
 	 * If we aren't inside a transaction, we cannot do database access so
 	 * cannot verify the name.  Must accept the value on faith.
@@ -1098,7 +1098,7 @@ check_default_tablespace(char **newval, void **extra, GucSource source)
  */
 Oid
 GetDefaultTablespace(char relpersistence)
-{	StackTrace("GetDefaultTablespace");
+{
 	Oid			result;
 
 	/* The temp-table case is handled elsewhere */
@@ -1144,7 +1144,7 @@ typedef struct
 /* check_hook: validate new temp_tablespaces */
 bool
 check_temp_tablespaces(char **newval, void **extra, GucSource source)
-{	StackTrace("check_temp_tablespaces");
+{
 	char	   *rawname;
 	List	   *namelist;
 
@@ -1249,7 +1249,7 @@ check_temp_tablespaces(char **newval, void **extra, GucSource source)
 /* assign_hook: do extra actions as needed */
 void
 assign_temp_tablespaces(const char *newval, void *extra)
-{	StackTrace("assign_temp_tablespaces");
+{
 	temp_tablespaces_extra *myextra = (temp_tablespaces_extra *) extra;
 
 	/*
@@ -1274,7 +1274,7 @@ assign_temp_tablespaces(const char *newval, void *extra)
  */
 void
 PrepareTempTablespaces(void)
-{	StackTrace("PrepareTempTablespaces");
+{
 	char	   *rawname;
 	List	   *namelist;
 	Oid		   *tblSpcs;
@@ -1367,7 +1367,7 @@ PrepareTempTablespaces(void)
  */
 Oid
 get_tablespace_oid(const char *tablespacename, bool missing_ok)
-{	StackTrace("get_tablespace_oid");
+{
 	Oid			result;
 	Relation	rel;
 	HeapScanDesc scandesc;
@@ -1413,7 +1413,7 @@ get_tablespace_oid(const char *tablespacename, bool missing_ok)
  */
 char *
 get_tablespace_name(Oid spc_oid)
-{	StackTrace("get_tablespace_name");
+{
 	char	   *result;
 	Relation	rel;
 	HeapScanDesc scandesc;
@@ -1452,7 +1452,7 @@ get_tablespace_name(Oid spc_oid)
  */
 void
 tblspc_redo(XLogReaderState *record)
-{	StackTrace("tblspc_redo");
+{
 	uint8		info = XLogRecGetInfo(record) & ~XLR_INFO_MASK;
 
 	/* Backup blocks are not used in tblspc records */

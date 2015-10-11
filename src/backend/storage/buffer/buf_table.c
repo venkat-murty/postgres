@@ -41,7 +41,7 @@ static HTAB *SharedBufHash;
  */
 Size
 BufTableShmemSize(int size)
-{	StackTrace("BufTableShmemSize");
+{
 	return hash_estimate_size(size, sizeof(BufferLookupEnt));
 }
 
@@ -51,7 +51,7 @@ BufTableShmemSize(int size)
  */
 void
 InitBufTable(int size)
-{	StackTrace("InitBufTable");
+{
 	HASHCTL		info;
 
 	/* assume no locking is needed yet */
@@ -78,7 +78,7 @@ InitBufTable(int size)
  */
 uint32
 BufTableHashCode(BufferTag *tagPtr)
-{	StackTrace("BufTableHashCode");
+{
 	return get_hash_value(SharedBufHash, (void *) tagPtr);
 }
 
@@ -90,7 +90,7 @@ BufTableHashCode(BufferTag *tagPtr)
  */
 int
 BufTableLookup(BufferTag *tagPtr, uint32 hashcode)
-{	StackTrace("BufTableLookup");
+{
 	BufferLookupEnt *result;
 
 	result = (BufferLookupEnt *)
@@ -118,7 +118,7 @@ BufTableLookup(BufferTag *tagPtr, uint32 hashcode)
  */
 int
 BufTableInsert(BufferTag *tagPtr, uint32 hashcode, int buf_id)
-{	StackTrace("BufTableInsert");
+{
 	BufferLookupEnt *result;
 	bool		found;
 
@@ -148,7 +148,7 @@ BufTableInsert(BufferTag *tagPtr, uint32 hashcode, int buf_id)
  */
 void
 BufTableDelete(BufferTag *tagPtr, uint32 hashcode)
-{	StackTrace("BufTableDelete");
+{
 	BufferLookupEnt *result;
 
 	result = (BufferLookupEnt *)

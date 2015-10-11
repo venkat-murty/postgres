@@ -101,7 +101,7 @@ static void InvalidateOprCacheCallBack(Datum arg, int cacheid, uint32 hashvalue)
 Oid
 LookupOperName(ParseState *pstate, List *opername, Oid oprleft, Oid oprright,
 			   bool noError, int location)
-{	StackTrace("LookupOperName");
+{
 	Oid			result;
 
 	result = OpernameGetOprid(opername, oprleft, oprright);
@@ -142,7 +142,7 @@ Oid
 LookupOperNameTypeNames(ParseState *pstate, List *opername,
 						TypeName *oprleft, TypeName *oprright,
 						bool noError, int location)
-{	StackTrace("LookupOperNameTypeNames");
+{
 	Oid			leftoid,
 				rightoid;
 
@@ -186,7 +186,7 @@ get_sort_group_operators(Oid argtype,
 						 bool needLT, bool needEQ, bool needGT,
 						 Oid *ltOpr, Oid *eqOpr, Oid *gtOpr,
 						 bool *isHashable)
-{	StackTrace("get_sort_group_operators");
+{
 	TypeCacheEntry *typentry;
 	int			cache_flags;
 	Oid			lt_opr;
@@ -241,14 +241,14 @@ get_sort_group_operators(Oid argtype,
 /* given operator tuple, return the operator OID */
 Oid
 oprid(Operator op)
-{	StackTrace("oprid");
+{
 	return HeapTupleGetOid(op);
 }
 
 /* given operator tuple, return the underlying function's OID */
 Oid
 oprfuncid(Operator op)
-{	StackTrace("oprfuncid");
+{
 	Form_pg_operator pgopform = (Form_pg_operator) GETSTRUCT(op);
 
 	return pgopform->oprcode;
@@ -265,7 +265,7 @@ oprfuncid(Operator op)
  */
 static Oid
 binary_oper_exact(List *opname, Oid arg1, Oid arg2)
-{	StackTrace("binary_oper_exact");
+{
 	Oid			result;
 	bool		was_unknown = false;
 
@@ -374,7 +374,7 @@ oper_select_candidate(int nargs,
 Operator
 oper(ParseState *pstate, List *opname, Oid ltypeId, Oid rtypeId,
 	 bool noError, int location)
-{	StackTrace("oper");
+{
 	Oid			operOid;
 	OprCacheKey key;
 	bool		key_ok;
@@ -454,7 +454,7 @@ oper(ParseState *pstate, List *opname, Oid ltypeId, Oid rtypeId,
 Operator
 compatible_oper(ParseState *pstate, List *op, Oid arg1, Oid arg2,
 				bool noError, int location)
-{	StackTrace("compatible_oper");
+{
 	Operator	optup;
 	Form_pg_operator opform;
 
@@ -490,7 +490,7 @@ compatible_oper(ParseState *pstate, List *op, Oid arg1, Oid arg2,
  */
 Oid
 compatible_oper_opid(List *op, Oid arg1, Oid arg2, bool noError)
-{	StackTrace("compatible_oper_opid");
+{
 	Operator	optup;
 	Oid			result;
 
@@ -521,7 +521,7 @@ compatible_oper_opid(List *op, Oid arg1, Oid arg2, bool noError)
  */
 Operator
 right_oper(ParseState *pstate, List *op, Oid arg, bool noError, int location)
-{	StackTrace("right_oper");
+{
 	Oid			operOid;
 	OprCacheKey key;
 	bool		key_ok;
@@ -600,7 +600,7 @@ right_oper(ParseState *pstate, List *op, Oid arg, bool noError, int location)
  */
 Operator
 left_oper(ParseState *pstate, List *op, Oid arg, bool noError, int location)
-{	StackTrace("left_oper");
+{
 	Oid			operOid;
 	OprCacheKey key;
 	bool		key_ok;
@@ -684,7 +684,7 @@ left_oper(ParseState *pstate, List *op, Oid arg, bool noError, int location)
  */
 static const char *
 op_signature_string(List *op, char oprkind, Oid arg1, Oid arg2)
-{	StackTrace("op_signature_string");
+{
 	StringInfoData argbuf;
 
 	initStringInfo(&argbuf);
@@ -707,7 +707,7 @@ static void
 op_error(ParseState *pstate, List *op, char oprkind,
 		 Oid arg1, Oid arg2,
 		 FuncDetailCode fdresult, int location)
-{	StackTrace("op_error");
+{
 	if (fdresult == FUNCDETAIL_MULTIPLE)
 		ereport(ERROR,
 				(errcode(ERRCODE_AMBIGUOUS_FUNCTION),
@@ -739,7 +739,7 @@ op_error(ParseState *pstate, List *op, char oprkind,
 Expr *
 make_op(ParseState *pstate, List *opname, Node *ltree, Node *rtree,
 		int location)
-{	StackTrace("make_op");
+{
 	Oid			ltypeId,
 				rtypeId;
 	Operator	tup;
@@ -853,7 +853,7 @@ make_scalar_array_op(ParseState *pstate, List *opname,
 					 bool useOr,
 					 Node *ltree, Node *rtree,
 					 int location)
-{	StackTrace("make_scalar_array_op");
+{
 	Oid			ltypeId,
 				rtypeId,
 				atypeId,
@@ -1017,7 +1017,7 @@ static HTAB *OprCacheHash = NULL;
 static bool
 make_oper_cache_key(ParseState *pstate, OprCacheKey *key, List *opname,
 					Oid ltypeId, Oid rtypeId, int location)
-{	StackTrace("make_oper_cache_key");
+{
 	char	   *schemaname;
 	char	   *opername;
 
@@ -1060,7 +1060,7 @@ make_oper_cache_key(ParseState *pstate, OprCacheKey *key, List *opname,
  */
 static Oid
 find_oper_cache_entry(OprCacheKey *key)
-{	StackTrace("find_oper_cache_entry");
+{
 	OprCacheEntry *oprentry;
 
 	if (OprCacheHash == NULL)
@@ -1100,7 +1100,7 @@ find_oper_cache_entry(OprCacheKey *key)
  */
 static void
 make_oper_cache_entry(OprCacheKey *key, Oid opr_oid)
-{	StackTrace("make_oper_cache_entry");
+{
 	OprCacheEntry *oprentry;
 
 	Assert(OprCacheHash != NULL);
@@ -1116,7 +1116,7 @@ make_oper_cache_entry(OprCacheKey *key, Oid opr_oid)
  */
 static void
 InvalidateOprCacheCallBack(Datum arg, int cacheid, uint32 hashvalue)
-{	StackTrace("InvalidateOprCacheCallBack");
+{
 	HASH_SEQ_STATUS status;
 	OprCacheEntry *hentry;
 

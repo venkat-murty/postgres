@@ -37,7 +37,7 @@ static inline TupleTableSlot *
 ExecScanFetch(ScanState *node,
 			  ExecScanAccessMtd accessMtd,
 			  ExecScanRecheckMtd recheckMtd)
-{	StackTrace("ExecScanFetch");
+{
 	EState	   *estate = node->ps.state;
 
 	if (estate->es_epqTuple != NULL)
@@ -108,7 +108,7 @@ TupleTableSlot *
 ExecScan(ScanState *node,
 		 ExecScanAccessMtd accessMtd,	/* function returning a tuple */
 		 ExecScanRecheckMtd recheckMtd)
-{	StackTrace("ExecScan");
+{
 	ExprContext *econtext;
 	List	   *qual;
 	ProjectionInfo *projInfo;
@@ -244,7 +244,7 @@ ExecScan(ScanState *node,
  */
 void
 ExecAssignScanProjectionInfo(ScanState *node)
-{	StackTrace("ExecAssignScanProjectionInfo");
+{
 	Scan	   *scan = (Scan *) node->ps.plan;
 
 	ExecAssignScanProjectionInfoWithVarno(node, scan->scanrelid);
@@ -256,7 +256,7 @@ ExecAssignScanProjectionInfo(ScanState *node)
  */
 void
 ExecAssignScanProjectionInfoWithVarno(ScanState *node, Index varno)
-{	StackTrace("ExecAssignScanProjectionInfoWithVarno");
+{
 	Scan	   *scan = (Scan *) node->ps.plan;
 
 	if (tlist_matches_tupdesc(&node->ps,
@@ -271,7 +271,7 @@ ExecAssignScanProjectionInfoWithVarno(ScanState *node, Index varno)
 
 static bool
 tlist_matches_tupdesc(PlanState *ps, List *tlist, Index varno, TupleDesc tupdesc)
-{	StackTrace("tlist_matches_tupdesc");
+{
 	int			numattrs = tupdesc->natts;
 	int			attrno;
 	bool		hasoid;
@@ -336,7 +336,7 @@ tlist_matches_tupdesc(PlanState *ps, List *tlist, Index varno, TupleDesc tupdesc
  */
 void
 ExecScanReScan(ScanState *node)
-{	StackTrace("ExecScanReScan");
+{
 	EState	   *estate = node->ps.state;
 
 	/* Stop projecting any tuples from SRFs in the targetlist */

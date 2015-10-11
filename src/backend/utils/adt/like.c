@@ -54,7 +54,7 @@ static int	Generic_Text_IC_like(text *str, text *pat, Oid collation);
  */
 static inline int
 wchareq(char *p1, char *p2)
-{	StackTrace("wchareq");
+{
 	int			p1_len;
 
 	/* Optimization:  quickly compare the first byte. */
@@ -90,7 +90,7 @@ wchareq(char *p1, char *p2)
  */
 static char
 SB_lower_char(unsigned char c, pg_locale_t locale, bool locale_is_c)
-{	StackTrace("SB_lower_char");
+{
 	if (locale_is_c)
 		return pg_ascii_tolower(c);
 #ifdef HAVE_LOCALE_T
@@ -148,7 +148,7 @@ SB_lower_char(unsigned char c, pg_locale_t locale, bool locale_is_c)
 /* Generic for all cases not requiring inline case-folding */
 static inline int
 GenericMatchText(char *s, int slen, char *p, int plen)
-{	StackTrace("GenericMatchText");
+{
 	if (pg_database_encoding_max_length() == 1)
 		return SB_MatchText(s, slen, p, plen, 0, true);
 	else if (GetDatabaseEncoding() == PG_UTF8)
@@ -159,7 +159,7 @@ GenericMatchText(char *s, int slen, char *p, int plen)
 
 static inline int
 Generic_Text_IC_like(text *str, text *pat, Oid collation)
-{	StackTrace("Generic_Text_IC_like");
+{
 	char	   *s,
 			   *p;
 	int			slen,
@@ -228,7 +228,7 @@ Generic_Text_IC_like(text *str, text *pat, Oid collation)
 
 Datum
 namelike(PG_FUNCTION_ARGS)
-{	StackTrace("namelike");
+{
 	Name		str = PG_GETARG_NAME(0);
 	text	   *pat = PG_GETARG_TEXT_PP(1);
 	bool		result;
@@ -249,7 +249,7 @@ namelike(PG_FUNCTION_ARGS)
 
 Datum
 namenlike(PG_FUNCTION_ARGS)
-{	StackTrace("namenlike");
+{
 	Name		str = PG_GETARG_NAME(0);
 	text	   *pat = PG_GETARG_TEXT_PP(1);
 	bool		result;
@@ -270,7 +270,7 @@ namenlike(PG_FUNCTION_ARGS)
 
 Datum
 textlike(PG_FUNCTION_ARGS)
-{	StackTrace("textlike");
+{
 	text	   *str = PG_GETARG_TEXT_PP(0);
 	text	   *pat = PG_GETARG_TEXT_PP(1);
 	bool		result;
@@ -291,7 +291,7 @@ textlike(PG_FUNCTION_ARGS)
 
 Datum
 textnlike(PG_FUNCTION_ARGS)
-{	StackTrace("textnlike");
+{
 	text	   *str = PG_GETARG_TEXT_PP(0);
 	text	   *pat = PG_GETARG_TEXT_PP(1);
 	bool		result;
@@ -312,7 +312,7 @@ textnlike(PG_FUNCTION_ARGS)
 
 Datum
 bytealike(PG_FUNCTION_ARGS)
-{	StackTrace("bytealike");
+{
 	bytea	   *str = PG_GETARG_BYTEA_PP(0);
 	bytea	   *pat = PG_GETARG_BYTEA_PP(1);
 	bool		result;
@@ -333,7 +333,7 @@ bytealike(PG_FUNCTION_ARGS)
 
 Datum
 byteanlike(PG_FUNCTION_ARGS)
-{	StackTrace("byteanlike");
+{
 	bytea	   *str = PG_GETARG_BYTEA_PP(0);
 	bytea	   *pat = PG_GETARG_BYTEA_PP(1);
 	bool		result;
@@ -358,7 +358,7 @@ byteanlike(PG_FUNCTION_ARGS)
 
 Datum
 nameiclike(PG_FUNCTION_ARGS)
-{	StackTrace("nameiclike");
+{
 	Name		str = PG_GETARG_NAME(0);
 	text	   *pat = PG_GETARG_TEXT_PP(1);
 	bool		result;
@@ -373,7 +373,7 @@ nameiclike(PG_FUNCTION_ARGS)
 
 Datum
 nameicnlike(PG_FUNCTION_ARGS)
-{	StackTrace("nameicnlike");
+{
 	Name		str = PG_GETARG_NAME(0);
 	text	   *pat = PG_GETARG_TEXT_PP(1);
 	bool		result;
@@ -388,7 +388,7 @@ nameicnlike(PG_FUNCTION_ARGS)
 
 Datum
 texticlike(PG_FUNCTION_ARGS)
-{	StackTrace("texticlike");
+{
 	text	   *str = PG_GETARG_TEXT_PP(0);
 	text	   *pat = PG_GETARG_TEXT_PP(1);
 	bool		result;
@@ -400,7 +400,7 @@ texticlike(PG_FUNCTION_ARGS)
 
 Datum
 texticnlike(PG_FUNCTION_ARGS)
-{	StackTrace("texticnlike");
+{
 	text	   *str = PG_GETARG_TEXT_PP(0);
 	text	   *pat = PG_GETARG_TEXT_PP(1);
 	bool		result;
@@ -416,7 +416,7 @@ texticnlike(PG_FUNCTION_ARGS)
  */
 Datum
 like_escape(PG_FUNCTION_ARGS)
-{	StackTrace("like_escape");
+{
 	text	   *pat = PG_GETARG_TEXT_PP(0);
 	text	   *esc = PG_GETARG_TEXT_PP(1);
 	text	   *result;
@@ -435,7 +435,7 @@ like_escape(PG_FUNCTION_ARGS)
  */
 Datum
 like_escape_bytea(PG_FUNCTION_ARGS)
-{	StackTrace("like_escape_bytea");
+{
 	bytea	   *pat = PG_GETARG_BYTEA_PP(0);
 	bytea	   *esc = PG_GETARG_BYTEA_PP(1);
 	bytea	   *result = SB_do_like_escape((text *) pat, (text *) esc);

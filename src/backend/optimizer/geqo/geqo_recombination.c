@@ -36,7 +36,7 @@
  */
 void
 init_tour(PlannerInfo *root, Gene *tour, int num_gene)
-{	StackTrace("init_tour");
+{
 	Gene	   *tmp;
 	int			remainder;
 	int			next,
@@ -70,7 +70,7 @@ init_tour(PlannerInfo *root, Gene *tour, int num_gene)
  */
 City *
 alloc_city_table(PlannerInfo *root, int num_gene)
-{	StackTrace("alloc_city_table");
+{
 	City	   *city_table;
 
 	/*
@@ -88,6 +88,6 @@ alloc_city_table(PlannerInfo *root, int num_gene)
  */
 void
 free_city_table(PlannerInfo *root, City *city_table)
-{	StackTrace("free_city_table");
+{
 	pfree(city_table);
 }

@@ -33,7 +33,7 @@
  */
 void
 print(const void *obj)
-{	StackTrace("print");
+{
 	char	   *s;
 	char	   *f;
 
@@ -51,7 +51,7 @@ print(const void *obj)
  */
 void
 pprint(const void *obj)
-{	StackTrace("pprint");
+{
 	char	   *s;
 	char	   *f;
 
@@ -69,7 +69,7 @@ pprint(const void *obj)
  */
 void
 elog_node_display(int lev, const char *title, const void *obj, bool pretty)
-{	StackTrace("elog_node_display");
+{
 	char	   *s;
 	char	   *f;
 
@@ -94,7 +94,7 @@ elog_node_display(int lev, const char *title, const void *obj, bool pretty)
  */
 char *
 format_node_dump(const char *dump)
-{	StackTrace("format_node_dump");
+{
 #define LINELEN		78
 	char		line[LINELEN + 1];
 	StringInfoData str;
@@ -148,7 +148,7 @@ format_node_dump(const char *dump)
  */
 char *
 pretty_format_node_dump(const char *dump)
-{	StackTrace("pretty_format_node_dump");
+{
 #define INDENTSTOP	3
 #define MAXINDENT	60
 #define LINELEN		78
@@ -251,7 +251,7 @@ pretty_format_node_dump(const char *dump)
  */
 void
 print_rt(const List *rtable)
-{	StackTrace("print_rt");
+{
 	const ListCell *l;
 	int			i = 1;
 
@@ -306,7 +306,7 @@ print_rt(const List *rtable)
  */
 void
 print_expr(const Node *expr, const List *rtable)
-{	StackTrace("print_expr");
+{
 	if (expr == NULL)
 	{
 		printf("<>");
@@ -452,7 +452,7 @@ print_pathkeys(const List *pathkeys, const List *rtable)
  */
 void
 print_tl(const List *tlist, const List *rtable)
-{	StackTrace("print_tl");
+{
 	const ListCell *tl;
 
 	printf("(\n");
@@ -478,7 +478,7 @@ print_tl(const List *tlist, const List *rtable)
  */
 void
 print_slot(TupleTableSlot *slot)
-{	StackTrace("print_slot");
+{
 	if (TupIsNull(slot))
 	{
 		printf("tuple is null.\n");

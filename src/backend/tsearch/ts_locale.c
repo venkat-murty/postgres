@@ -25,7 +25,7 @@ static void tsearch_readline_callback(void *arg);
 
 int
 t_isdigit(const char *ptr)
-{	StackTrace("t_isdigit");
+{
 	int			clen = pg_mblen(ptr);
 	wchar_t		character[2];
 	Oid			collation = DEFAULT_COLLATION_OID;		/* TODO */
@@ -41,7 +41,7 @@ t_isdigit(const char *ptr)
 
 int
 t_isspace(const char *ptr)
-{	StackTrace("t_isspace");
+{
 	int			clen = pg_mblen(ptr);
 	wchar_t		character[2];
 	Oid			collation = DEFAULT_COLLATION_OID;		/* TODO */
@@ -57,7 +57,7 @@ t_isspace(const char *ptr)
 
 int
 t_isalpha(const char *ptr)
-{	StackTrace("t_isalpha");
+{
 	int			clen = pg_mblen(ptr);
 	wchar_t		character[2];
 	Oid			collation = DEFAULT_COLLATION_OID;		/* TODO */
@@ -73,7 +73,7 @@ t_isalpha(const char *ptr)
 
 int
 t_isprint(const char *ptr)
-{	StackTrace("t_isprint");
+{
 	int			clen = pg_mblen(ptr);
 	wchar_t		character[2];
 	Oid			collation = DEFAULT_COLLATION_OID;		/* TODO */
@@ -115,7 +115,7 @@ t_isprint(const char *ptr)
 bool
 tsearch_readline_begin(tsearch_readline_state *stp,
 					   const char *filename)
-{	StackTrace("tsearch_readline_begin");
+{
 	if ((stp->fp = AllocateFile(filename, "r")) == NULL)
 		return false;
 	stp->filename = filename;
@@ -136,7 +136,7 @@ tsearch_readline_begin(tsearch_readline_state *stp,
  */
 char *
 tsearch_readline(tsearch_readline_state *stp)
-{	StackTrace("tsearch_readline");
+{
 	char	   *result;
 
 	stp->lineno++;
@@ -151,7 +151,7 @@ tsearch_readline(tsearch_readline_state *stp)
  */
 void
 tsearch_readline_end(tsearch_readline_state *stp)
-{	StackTrace("tsearch_readline_end");
+{
 	FreeFile(stp->fp);
 	/* Pop the error context stack */
 	error_context_stack = stp->cb.previous;
@@ -163,7 +163,7 @@ tsearch_readline_end(tsearch_readline_state *stp)
  */
 static void
 tsearch_readline_callback(void *arg)
-{	StackTrace("tsearch_readline_callback");
+{
 	tsearch_readline_state *stp = (tsearch_readline_state *) arg;
 
 	/*
@@ -195,7 +195,7 @@ tsearch_readline_callback(void *arg)
  */
 char *
 t_readline(FILE *fp)
-{	StackTrace("t_readline");
+{
 	int			len;
 	char	   *recoded;
 	char		buf[4096];		/* lines must not be longer than this */
@@ -229,7 +229,7 @@ t_readline(FILE *fp)
  */
 char *
 lowerstr(const char *str)
-{	StackTrace("lowerstr");
+{
 	return lowerstr_with_len(str, strlen(str));
 }
 
@@ -242,7 +242,7 @@ lowerstr(const char *str)
  */
 char *
 lowerstr_with_len(const char *str, int len)
-{	StackTrace("lowerstr_with_len");
+{
 	char	   *out;
 
 #ifdef USE_WIDE_UPPER_LOWER

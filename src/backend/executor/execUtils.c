@@ -70,7 +70,7 @@ static void ShutdownExprContext(ExprContext *econtext, bool isCommit);
  */
 EState *
 CreateExecutorState(void)
-{	StackTrace("CreateExecutorState");
+{
 	EState	   *estate;
 	MemoryContext qcontext;
 	MemoryContext oldcontext;
@@ -167,7 +167,7 @@ CreateExecutorState(void)
  */
 void
 FreeExecutorState(EState *estate)
-{	StackTrace("FreeExecutorState");
+{
 	/*
 	 * Shut down and free any remaining ExprContexts.  We do this explicitly
 	 * to ensure that any remaining shutdown callbacks get called (since they
@@ -207,7 +207,7 @@ FreeExecutorState(EState *estate)
  */
 ExprContext *
 CreateExprContext(EState *estate)
-{	StackTrace("CreateExprContext");
+{
 	ExprContext *econtext;
 	MemoryContext oldcontext;
 
@@ -281,7 +281,7 @@ CreateExprContext(EState *estate)
  */
 ExprContext *
 CreateStandaloneExprContext(void)
-{	StackTrace("CreateStandaloneExprContext");
+{
 	ExprContext *econtext;
 
 	/* Create the ExprContext node within the caller's memory context */
@@ -342,7 +342,7 @@ CreateStandaloneExprContext(void)
  */
 void
 FreeExprContext(ExprContext *econtext, bool isCommit)
-{	StackTrace("FreeExprContext");
+{
 	EState	   *estate;
 
 	/* Call any registered callbacks */
@@ -369,7 +369,7 @@ FreeExprContext(ExprContext *econtext, bool isCommit)
  */
 void
 ReScanExprContext(ExprContext *econtext)
-{	StackTrace("ReScanExprContext");
+{
 	/* Call any registered callbacks */
 	ShutdownExprContext(econtext, true);
 	/* And clean up the memory used */
@@ -384,7 +384,7 @@ ReScanExprContext(ExprContext *econtext)
  */
 ExprContext *
 MakePerTupleExprContext(EState *estate)
-{	StackTrace("MakePerTupleExprContext");
+{
 	if (estate->es_per_tuple_exprcontext == NULL)
 		estate->es_per_tuple_exprcontext = CreateExprContext(estate);
 
@@ -411,7 +411,7 @@ MakePerTupleExprContext(EState *estate)
  */
 void
 ExecAssignExprContext(EState *estate, PlanState *planstate)
-{	StackTrace("ExecAssignExprContext");
+{
 	planstate->ps_ExprContext = CreateExprContext(estate);
 }
 
@@ -421,7 +421,7 @@ ExecAssignExprContext(EState *estate, PlanState *planstate)
  */
 void
 ExecAssignResultType(PlanState *planstate, TupleDesc tupDesc)
-{	StackTrace("ExecAssignResultType");
+{
 	TupleTableSlot *slot = planstate->ps_ResultTupleSlot;
 
 	ExecSetSlotDescriptor(slot, tupDesc);
@@ -433,7 +433,7 @@ ExecAssignResultType(PlanState *planstate, TupleDesc tupDesc)
  */
 void
 ExecAssignResultTypeFromTL(PlanState *planstate)
-{	StackTrace("ExecAssignResultTypeFromTL");
+{
 	bool		hasoid;
 	TupleDesc	tupDesc;
 
@@ -462,7 +462,7 @@ ExecAssignResultTypeFromTL(PlanState *planstate)
  */
 TupleDesc
 ExecGetResultType(PlanState *planstate)
-{	StackTrace("ExecGetResultType");
+{
 	TupleTableSlot *slot = planstate->ps_ResultTupleSlot;
 
 	return slot->tts_tupleDescriptor;
@@ -488,7 +488,7 @@ ExecBuildProjectionInfo(List *targetList,
 						ExprContext *econtext,
 						TupleTableSlot *slot,
 						TupleDesc inputDesc)
-{	StackTrace("ExecBuildProjectionInfo");
+{
 	ProjectionInfo *projInfo = makeNode(ProjectionInfo);
 	int			len = ExecTargetListLength(targetList);
 	int		   *workspace;
@@ -609,7 +609,7 @@ ExecBuildProjectionInfo(List *targetList,
  */
 static bool
 get_last_attnums(Node *node, ProjectionInfo *projInfo)
-{	StackTrace("get_last_attnums");
+{
 	if (node == NULL)
 		return false;
 	if (IsA(node, Var))
@@ -667,7 +667,7 @@ get_last_attnums(Node *node, ProjectionInfo *projInfo)
 void
 ExecAssignProjectionInfo(PlanState *planstate,
 						 TupleDesc inputDesc)
-{	StackTrace("ExecAssignProjectionInfo");
+{
 	planstate->ps_ProjInfo =
 		ExecBuildProjectionInfo(planstate->targetlist,
 								planstate->ps_ExprContext,
@@ -694,7 +694,7 @@ ExecAssignProjectionInfo(PlanState *planstate,
  */
 void
 ExecFreeExprContext(PlanState *planstate)
-{	StackTrace("ExecFreeExprContext");
+{
 	/*
 	 * Per above discussion, don't actually delete the ExprContext. We do
 	 * unlink it from the plan node, though.
@@ -718,7 +718,7 @@ ExecFreeExprContext(PlanState *planstate)
  */
 TupleDesc
 ExecGetScanType(ScanState *scanstate)
-{	StackTrace("ExecGetScanType");
+{
 	TupleTableSlot *slot = scanstate->ss_ScanTupleSlot;
 
 	return slot->tts_tupleDescriptor;
@@ -730,7 +730,7 @@ ExecGetScanType(ScanState *scanstate)
  */
 void
 ExecAssignScanType(ScanState *scanstate, TupleDesc tupDesc)
-{	StackTrace("ExecAssignScanType");
+{
 	TupleTableSlot *slot = scanstate->ss_ScanTupleSlot;
 
 	ExecSetSlotDescriptor(slot, tupDesc);
@@ -742,7 +742,7 @@ ExecAssignScanType(ScanState *scanstate, TupleDesc tupDesc)
  */
 void
 ExecAssignScanTypeFromOuterPlan(ScanState *scanstate)
-{	StackTrace("ExecAssignScanTypeFromOuterPlan");
+{
 	PlanState  *outerPlan;
 	TupleDesc	tupDesc;
 
@@ -767,7 +767,7 @@ ExecAssignScanTypeFromOuterPlan(ScanState *scanstate)
  */
 bool
 ExecRelationIsTargetRelation(EState *estate, Index scanrelid)
-{	StackTrace("ExecRelationIsTargetRelation");
+{
 	ResultRelInfo *resultRelInfos;
 	int			i;
 
@@ -793,7 +793,7 @@ ExecRelationIsTargetRelation(EState *estate, Index scanrelid)
  */
 Relation
 ExecOpenScanRelation(EState *estate, Index scanrelid, int eflags)
-{	StackTrace("ExecOpenScanRelation");
+{
 	Relation	rel;
 	Oid			reloid;
 	LOCKMODE	lockmode;
@@ -851,7 +851,7 @@ ExecOpenScanRelation(EState *estate, Index scanrelid, int eflags)
  */
 void
 ExecCloseScanRelation(Relation scanrel)
-{	StackTrace("ExecCloseScanRelation");
+{
 	heap_close(scanrel, NoLock);
 }
 
@@ -861,7 +861,7 @@ ExecCloseScanRelation(Relation scanrel)
  */
 void
 UpdateChangedParamSet(PlanState *node, Bitmapset *newchg)
-{	StackTrace("UpdateChangedParamSet");
+{
 	Bitmapset  *parmset;
 
 	/*
@@ -894,7 +894,7 @@ void
 RegisterExprContextCallback(ExprContext *econtext,
 							ExprContextCallbackFunction function,
 							Datum arg)
-{	StackTrace("RegisterExprContextCallback");
+{
 	ExprContext_CB *ecxt_callback;
 
 	/* Save the info in appropriate memory context */
@@ -920,7 +920,7 @@ void
 UnregisterExprContextCallback(ExprContext *econtext,
 							  ExprContextCallbackFunction function,
 							  Datum arg)
-{	StackTrace("UnregisterExprContextCallback");
+{
 	ExprContext_CB **prev_callback;
 	ExprContext_CB *ecxt_callback;
 
@@ -949,7 +949,7 @@ UnregisterExprContextCallback(ExprContext *econtext,
  */
 static void
 ShutdownExprContext(ExprContext *econtext, bool isCommit)
-{	StackTrace("ShutdownExprContext");
+{
 	ExprContext_CB *ecxt_callback;
 	MemoryContext oldcontext;
 

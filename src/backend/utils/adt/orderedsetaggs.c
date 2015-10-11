@@ -100,7 +100,7 @@ static void ordered_set_shutdown(Datum arg);
  */
 static OSAPerGroupState *
 ordered_set_startup(FunctionCallInfo fcinfo, bool use_tuples)
-{	StackTrace("ordered_set_startup");
+{
 	OSAPerGroupState *osastate;
 	OSAPerQueryState *qstate;
 	MemoryContext gcontext;
@@ -316,7 +316,7 @@ ordered_set_startup(FunctionCallInfo fcinfo, bool use_tuples)
  */
 static void
 ordered_set_shutdown(Datum arg)
-{	StackTrace("ordered_set_shutdown");
+{
 	OSAPerGroupState *osastate = (OSAPerGroupState *) DatumGetPointer(arg);
 
 	/* Tuplesort object might have temp files. */
@@ -335,7 +335,7 @@ ordered_set_shutdown(Datum arg)
  */
 Datum
 ordered_set_transition(PG_FUNCTION_ARGS)
-{	StackTrace("ordered_set_transition");
+{
 	OSAPerGroupState *osastate;
 
 	/* If first call, create the transition state workspace */
@@ -360,7 +360,7 @@ ordered_set_transition(PG_FUNCTION_ARGS)
  */
 Datum
 ordered_set_transition_multi(PG_FUNCTION_ARGS)
-{	StackTrace("ordered_set_transition_multi");
+{
 	OSAPerGroupState *osastate;
 	TupleTableSlot *slot;
 	int			nargs;
@@ -404,7 +404,7 @@ ordered_set_transition_multi(PG_FUNCTION_ARGS)
  */
 Datum
 percentile_disc_final(PG_FUNCTION_ARGS)
-{	StackTrace("percentile_disc_final");
+{
 	OSAPerGroupState *osastate;
 	double		percentile;
 	Datum		val;
@@ -480,7 +480,7 @@ typedef Datum (*LerpFunc) (Datum lo, Datum hi, double pct);
 
 static Datum
 float8_lerp(Datum lo, Datum hi, double pct)
-{	StackTrace("float8_lerp");
+{
 	double		loval = DatumGetFloat8(lo);
 	double		hival = DatumGetFloat8(hi);
 
@@ -489,7 +489,7 @@ float8_lerp(Datum lo, Datum hi, double pct)
 
 static Datum
 interval_lerp(Datum lo, Datum hi, double pct)
-{	StackTrace("interval_lerp");
+{
 	Datum		diff_result = DirectFunctionCall2(interval_mi, hi, lo);
 	Datum		mul_result = DirectFunctionCall2(interval_mul,
 												 diff_result,
@@ -505,7 +505,7 @@ static Datum
 percentile_cont_final_common(FunctionCallInfo fcinfo,
 							 Oid expect_type,
 							 LerpFunc lerpfunc)
-{	StackTrace("percentile_cont_final_common");
+{
 	OSAPerGroupState *osastate;
 	double		percentile;
 	int64		first_row = 0;
@@ -589,7 +589,7 @@ percentile_cont_final_common(FunctionCallInfo fcinfo,
  */
 Datum
 percentile_cont_float8_final(PG_FUNCTION_ARGS)
-{	StackTrace("percentile_cont_float8_final");
+{
 	return percentile_cont_final_common(fcinfo, FLOAT8OID, float8_lerp);
 }
 
@@ -598,7 +598,7 @@ percentile_cont_float8_final(PG_FUNCTION_ARGS)
  */
 Datum
 percentile_cont_interval_final(PG_FUNCTION_ARGS)
-{	StackTrace("percentile_cont_interval_final");
+{
 	return percentile_cont_final_common(fcinfo, INTERVALOID, interval_lerp);
 }
 
@@ -622,7 +622,7 @@ struct pct_info
  */
 static int
 pct_info_cmp(const void *pa, const void *pb)
-{	StackTrace("pct_info_cmp");
+{
 	const struct pct_info *a = (const struct pct_info *) pa;
 	const struct pct_info *b = (const struct pct_info *) pb;
 
@@ -642,7 +642,7 @@ setup_pct_info(int num_percentiles,
 			   bool *percentiles_null,
 			   int64 rowcount,
 			   bool continuous)
-{	StackTrace("setup_pct_info");
+{
 	struct pct_info *pct_info;
 	int			i;
 
@@ -707,7 +707,7 @@ setup_pct_info(int num_percentiles,
  */
 Datum
 percentile_disc_multi_final(PG_FUNCTION_ARGS)
-{	StackTrace("percentile_disc_multi_final");
+{
 	OSAPerGroupState *osastate;
 	ArrayType  *param;
 	Datum	   *percentiles_datum;
@@ -827,7 +827,7 @@ percentile_cont_multi_final_common(FunctionCallInfo fcinfo,
 								   Oid expect_type,
 								   int16 typLen, bool typByVal, char typAlign,
 								   LerpFunc lerpfunc)
-{	StackTrace("percentile_cont_multi_final_common");
+{
 	OSAPerGroupState *osastate;
 	ArrayType  *param;
 	Datum	   *percentiles_datum;
@@ -979,7 +979,7 @@ percentile_cont_multi_final_common(FunctionCallInfo fcinfo,
  */
 Datum
 percentile_cont_float8_multi_final(PG_FUNCTION_ARGS)
-{	StackTrace("percentile_cont_float8_multi_final");
+{
 	return percentile_cont_multi_final_common(fcinfo,
 											  FLOAT8OID,
 	/* hard-wired info on type float8 */
@@ -992,7 +992,7 @@ percentile_cont_float8_multi_final(PG_FUNCTION_ARGS)
  */
 Datum
 percentile_cont_interval_multi_final(PG_FUNCTION_ARGS)
-{	StackTrace("percentile_cont_interval_multi_final");
+{
 	return percentile_cont_multi_final_common(fcinfo,
 											  INTERVALOID,
 	/* hard-wired info on type interval */
@@ -1006,7 +1006,7 @@ percentile_cont_interval_multi_final(PG_FUNCTION_ARGS)
  */
 Datum
 mode_final(PG_FUNCTION_ARGS)
-{	StackTrace("mode_final");
+{
 	OSAPerGroupState *osastate;
 	Datum		val;
 	bool		isnull;
@@ -1110,7 +1110,7 @@ mode_final(PG_FUNCTION_ARGS)
 static void
 hypothetical_check_argtypes(FunctionCallInfo fcinfo, int nargs,
 							TupleDesc tupdesc)
-{	StackTrace("hypothetical_check_argtypes");
+{
 	int			i;
 
 	/* check that we have an int4 flag column */
@@ -1137,7 +1137,7 @@ hypothetical_check_argtypes(FunctionCallInfo fcinfo, int nargs,
 static int64
 hypothetical_rank_common(FunctionCallInfo fcinfo, int flag,
 						 int64 *number_of_rows)
-{	StackTrace("hypothetical_rank_common");
+{
 	int			nargs = PG_NARGS() - 1;
 	int64		rank = 1;
 	OSAPerGroupState *osastate;
@@ -1209,7 +1209,7 @@ hypothetical_rank_common(FunctionCallInfo fcinfo, int flag,
  */
 Datum
 hypothetical_rank_final(PG_FUNCTION_ARGS)
-{	StackTrace("hypothetical_rank_final");
+{
 	int64		rank;
 	int64		rowcount;
 
@@ -1223,7 +1223,7 @@ hypothetical_rank_final(PG_FUNCTION_ARGS)
  */
 Datum
 hypothetical_percent_rank_final(PG_FUNCTION_ARGS)
-{	StackTrace("hypothetical_percent_rank_final");
+{
 	int64		rank;
 	int64		rowcount;
 	double		result_val;
@@ -1243,7 +1243,7 @@ hypothetical_percent_rank_final(PG_FUNCTION_ARGS)
  */
 Datum
 hypothetical_cume_dist_final(PG_FUNCTION_ARGS)
-{	StackTrace("hypothetical_cume_dist_final");
+{
 	int64		rank;
 	int64		rowcount;
 	double		result_val;
@@ -1260,7 +1260,7 @@ hypothetical_cume_dist_final(PG_FUNCTION_ARGS)
  */
 Datum
 hypothetical_dense_rank_final(PG_FUNCTION_ARGS)
-{	StackTrace("hypothetical_dense_rank_final");
+{
 	int			nargs = PG_NARGS() - 1;
 	int64		rank = 1;
 	int64		duplicate_count = 0;

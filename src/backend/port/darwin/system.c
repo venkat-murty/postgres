@@ -50,7 +50,7 @@ int			system(const char *command);
 
 int
 system(const char *command)
-{	StackTrace("system");
+{
 	pid_t		pid;
 	int			pstat;
 	struct sigaction ign,

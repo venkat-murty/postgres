@@ -46,7 +46,7 @@ static void ResetDecoder(XLogReaderState *state);
  */
 static void
 report_invalid_record(XLogReaderState *state, const char *fmt,...)
-{	StackTrace("report_invalid_record");
+{
 	va_list		args;
 
 	fmt = _(fmt);
@@ -63,7 +63,7 @@ report_invalid_record(XLogReaderState *state, const char *fmt,...)
  */
 XLogReaderState *
 XLogReaderAllocate(XLogPageReadCB pagereadfunc, void *private_data)
-{	StackTrace("XLogReaderAllocate");
+{
 	XLogReaderState *state;
 
 	state = (XLogReaderState *)
@@ -121,7 +121,7 @@ XLogReaderAllocate(XLogPageReadCB pagereadfunc, void *private_data)
 
 void
 XLogReaderFree(XLogReaderState *state)
-{	StackTrace("XLogReaderFree");
+{
 	int			block_id;
 
 	for (block_id = 0; block_id <= state->max_block_id; block_id++)
@@ -155,7 +155,7 @@ XLogReaderFree(XLogReaderState *state)
  */
 static bool
 allocate_recordbuf(XLogReaderState *state, uint32 reclength)
-{	StackTrace("allocate_recordbuf");
+{
 	uint32		newSize = reclength;
 
 	newSize += XLOG_BLCKSZ - (newSize % XLOG_BLCKSZ);
@@ -192,7 +192,7 @@ allocate_recordbuf(XLogReaderState *state, uint32 reclength)
  */
 XLogRecord *
 XLogReadRecord(XLogReaderState *state, XLogRecPtr RecPtr, char **errormsg)
-{	StackTrace("XLogReadRecord");
+{
 	XLogRecord *record;
 	XLogRecPtr	targetPagePtr;
 	bool		randAccess = false;
@@ -491,7 +491,7 @@ err:
  */
 static int
 ReadPageInternal(XLogReaderState *state, XLogRecPtr pageptr, int reqLen)
-{	StackTrace("ReadPageInternal");
+{
 	int			readLen;
 	uint32		targetPageOff;
 	XLogSegNo	targetSegNo;
@@ -599,7 +599,7 @@ static bool
 ValidXLogRecordHeader(XLogReaderState *state, XLogRecPtr RecPtr,
 					  XLogRecPtr PrevRecPtr, XLogRecord *record,
 					  bool randAccess)
-{	StackTrace("ValidXLogRecordHeader");
+{
 	if (record->xl_tot_len < SizeOfXLogRecord)
 	{
 		report_invalid_record(state,
@@ -665,7 +665,7 @@ ValidXLogRecordHeader(XLogReaderState *state, XLogRecPtr RecPtr,
  */
 static bool
 ValidXLogRecord(XLogReaderState *state, XLogRecord *record, XLogRecPtr recptr)
-{	StackTrace("ValidXLogRecord");
+{
 	pg_crc32c	crc;
 
 	/* Calculate the CRC */
@@ -692,7 +692,7 @@ ValidXLogRecord(XLogReaderState *state, XLogRecord *record, XLogRecPtr recptr)
 static bool
 ValidXLogPageHeader(XLogReaderState *state, XLogRecPtr recptr,
 					XLogPageHeader hdr)
-{	StackTrace("ValidXLogPageHeader");
+{
 	XLogRecPtr	recaddr;
 	XLogSegNo	segno;
 	int32		offset;
@@ -845,7 +845,7 @@ ValidXLogPageHeader(XLogReaderState *state, XLogRecPtr recptr,
  */
 XLogRecPtr
 XLogFindNextRecord(XLogReaderState *state, XLogRecPtr RecPtr)
-{	StackTrace("XLogFindNextRecord");
+{
 	XLogReaderState saved_state = *state;
 	XLogRecPtr	targetPagePtr;
 	XLogRecPtr	tmpRecPtr;
@@ -930,7 +930,7 @@ out:
 /* private function to reset the state between records */
 static void
 ResetDecoder(XLogReaderState *state)
-{	StackTrace("ResetDecoder");
+{
 	int			block_id;
 
 	state->decoded_record = NULL;
@@ -954,7 +954,7 @@ ResetDecoder(XLogReaderState *state)
  */
 bool
 DecodeXLogRecord(XLogReaderState *state, XLogRecord *record, char **errormsg)
-{	StackTrace("DecodeXLogRecord");
+{
 	/*
 	 * read next _size bytes from record buffer, but check for overrun first.
 	 */
@@ -1243,7 +1243,7 @@ err:
 bool
 XLogRecGetBlockTag(XLogReaderState *record, uint8 block_id,
 				RelFileNode *rnode, ForkNumber *forknum, BlockNumber *blknum)
-{	StackTrace("XLogRecGetBlockTag");
+{
 	DecodedBkpBlock *bkpb;
 
 	if (!record->blocks[block_id].in_use)
@@ -1266,7 +1266,7 @@ XLogRecGetBlockTag(XLogReaderState *record, uint8 block_id,
  */
 char *
 XLogRecGetBlockData(XLogReaderState *record, uint8 block_id, Size *len)
-{	StackTrace("XLogRecGetBlockData");
+{
 	DecodedBkpBlock *bkpb;
 
 	if (!record->blocks[block_id].in_use)
@@ -1295,7 +1295,7 @@ XLogRecGetBlockData(XLogReaderState *record, uint8 block_id, Size *len)
  */
 bool
 RestoreBlockImage(XLogReaderState *record, uint8 block_id, char *page)
-{	StackTrace("RestoreBlockImage");
+{
 	DecodedBkpBlock *bkpb;
 	char	   *ptr;
 	char		tmp[BLCKSZ];

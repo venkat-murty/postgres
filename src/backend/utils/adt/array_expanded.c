@@ -49,7 +49,7 @@ static void copy_byval_expanded_array(ExpandedArrayHeader *eah,
 Datum
 expand_array(Datum arraydatum, MemoryContext parentcontext,
 			 ArrayMetaState *metacache)
-{	StackTrace("expand_array");
+{
 	ArrayType  *array;
 	ExpandedArrayHeader *eah;
 	MemoryContext objcxt;
@@ -186,7 +186,7 @@ expand_array(Datum arraydatum, MemoryContext parentcontext,
 static void
 copy_byval_expanded_array(ExpandedArrayHeader *eah,
 						  ExpandedArrayHeader *oldeah)
-{	StackTrace("copy_byval_expanded_array");
+{
 	MemoryContext objcxt = eah->hdr.eoh_context;
 	int			ndims = oldeah->ndims;
 	int			dvalueslen = oldeah->dvalueslen;
@@ -233,7 +233,7 @@ copy_byval_expanded_array(ExpandedArrayHeader *eah,
  */
 static Size
 EA_get_flat_size(ExpandedObjectHeader *eohptr)
-{	StackTrace("EA_get_flat_size");
+{
 	ExpandedArrayHeader *eah = (ExpandedArrayHeader *) eohptr;
 	int			nelems;
 	int			ndims;
@@ -294,7 +294,7 @@ EA_get_flat_size(ExpandedObjectHeader *eohptr)
 static void
 EA_flatten_into(ExpandedObjectHeader *eohptr,
 				void *result, Size allocated_size)
-{	StackTrace("EA_flatten_into");
+{
 	ExpandedArrayHeader *eah = (ExpandedArrayHeader *) eohptr;
 	ArrayType  *aresult = (ArrayType *) result;
 	int			nelems;
@@ -352,7 +352,7 @@ EA_flatten_into(ExpandedObjectHeader *eohptr,
  */
 ExpandedArrayHeader *
 DatumGetExpandedArray(Datum d)
-{	StackTrace("DatumGetExpandedArray");
+{
 	/* If it's a writable expanded array already, just return it */
 	if (VARATT_IS_EXTERNAL_EXPANDED_RW(DatumGetPointer(d)))
 	{
@@ -372,7 +372,7 @@ DatumGetExpandedArray(Datum d)
  */
 ExpandedArrayHeader *
 DatumGetExpandedArrayX(Datum d, ArrayMetaState *metacache)
-{	StackTrace("DatumGetExpandedArrayX");
+{
 	/* If it's a writable expanded array already, just return it */
 	if (VARATT_IS_EXTERNAL_EXPANDED_RW(DatumGetPointer(d)))
 	{
@@ -401,7 +401,7 @@ DatumGetExpandedArrayX(Datum d, ArrayMetaState *metacache)
  */
 AnyArrayType *
 DatumGetAnyArray(Datum d)
-{	StackTrace("DatumGetAnyArray");
+{
 	ExpandedArrayHeader *eah;
 
 	/*
@@ -424,7 +424,7 @@ DatumGetAnyArray(Datum d)
  */
 void
 deconstruct_expanded_array(ExpandedArrayHeader *eah)
-{	StackTrace("deconstruct_expanded_array");
+{
 	if (eah->dvalues == NULL)
 	{
 		MemoryContext oldcxt = MemoryContextSwitchTo(eah->hdr.eoh_context);

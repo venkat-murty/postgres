@@ -296,7 +296,7 @@ pg_regcomp(regex_t *re,
 		   size_t len,
 		   int flags,
 		   Oid collation)
-{	StackTrace("pg_regcomp");
+{
 	struct vars var;
 	struct vars *v = &var;
 	struct guts *g;
@@ -505,7 +505,7 @@ moresubs(struct vars * v,
 static int
 freev(struct vars * v,
 	  int err)
-{	StackTrace("freev");
+{
 	if (v->re != NULL)
 		rfree(v->re);
 	if (v->subs != v->sub10)
@@ -534,7 +534,7 @@ freev(struct vars * v,
 static void
 makesearch(struct vars * v,
 		   struct nfa * nfa)
-{	StackTrace("makesearch");
+{
 	struct arc *a;
 	struct arc *b;
 	struct state *pre = nfa->pre;
@@ -1192,7 +1192,7 @@ nonword(struct vars * v,
 		int dir,				/* AHEAD or BEHIND */
 		struct state * lp,
 		struct state * rp)
-{	StackTrace("nonword");
+{
 	int			anchor = (dir == AHEAD) ? '$' : '^';
 
 	assert(dir == AHEAD || dir == BEHIND);
@@ -1210,7 +1210,7 @@ word(struct vars * v,
 	 int dir,					/* AHEAD or BEHIND */
 	 struct state * lp,
 	 struct state * rp)
-{	StackTrace("word");
+{
 	assert(dir == AHEAD || dir == BEHIND);
 	cloneouts(v->nfa, v->wordchrs, lp, rp, dir);
 	/* (no need for special attention to \n) */
@@ -1221,7 +1221,7 @@ word(struct vars * v,
  */
 static int						/* value, <= DUPMAX */
 scannum(struct vars * v)
-{	StackTrace("scannum");
+{
 	int			n = 0;
 
 	while (SEE(DIGIT) && n < DUPMAX)
@@ -1256,7 +1256,7 @@ repeat(struct vars * v,
 	   struct state * rp,
 	   int m,
 	   int n)
-{	StackTrace("repeat");
+{
 #define  SOME	 2
 #define  INF	 3
 #define  PAIR(x, y)  ((x)*4 + (y))
@@ -1340,7 +1340,7 @@ static void
 bracket(struct vars * v,
 		struct state * lp,
 		struct state * rp)
-{	StackTrace("bracket");
+{
 	assert(SEE('['));
 	NEXT();
 	while (!SEE(']') && !SEE(EOS))
@@ -1359,7 +1359,7 @@ static void
 cbracket(struct vars * v,
 		 struct state * lp,
 		 struct state * rp)
-{	StackTrace("cbracket");
+{
 	struct state *left = newstate(v->nfa);
 	struct state *right = newstate(v->nfa);
 
@@ -1389,7 +1389,7 @@ static void
 brackpart(struct vars * v,
 		  struct state * lp,
 		  struct state * rp)
-{	StackTrace("brackpart");
+{
 	celt		startc;
 	celt		endc;
 	struct cvec *cv;
@@ -1500,7 +1500,7 @@ brackpart(struct vars * v,
  */
 static const chr *				/* just after end of sequence */
 scanplain(struct vars * v)
-{	StackTrace("scanplain");
+{
 	const chr  *endp;
 
 	assert(SEE(COLLEL) || SEE(ECLASS) || SEE(CCLASS));
@@ -1528,7 +1528,7 @@ onechr(struct vars * v,
 	   chr c,
 	   struct state * lp,
 	   struct state * rp)
-{	StackTrace("onechr");
+{
 	if (!(v->cflags & REG_ICASE))
 	{
 		newarc(v->nfa, PLAIN, subcolor(v->cm, c), lp, rp);
@@ -1547,7 +1547,7 @@ dovec(struct vars * v,
 	  struct cvec * cv,
 	  struct state * lp,
 	  struct state * rp)
-{	StackTrace("dovec");
+{
 	chr			ch,
 				from,
 				to;
@@ -1582,7 +1582,7 @@ dovec(struct vars * v,
  */
 static void
 wordchrs(struct vars * v)
-{	StackTrace("wordchrs");
+{
 	struct state *left;
 	struct state *right;
 
@@ -1615,7 +1615,7 @@ subre(struct vars * v,
 	  int flags,
 	  struct state * begin,
 	  struct state * end)
-{	StackTrace("subre");
+{
 	struct subre *ret = v->treefree;
 
 	if (ret != NULL)
@@ -1654,7 +1654,7 @@ subre(struct vars * v,
 static void
 freesubre(struct vars * v,		/* might be NULL */
 		  struct subre * sr)
-{	StackTrace("freesubre");
+{
 	if (sr == NULL)
 		return;
 
@@ -1672,7 +1672,7 @@ freesubre(struct vars * v,		/* might be NULL */
 static void
 freesrnode(struct vars * v,		/* might be NULL */
 		   struct subre * sr)
-{	StackTrace("freesrnode");
+{
 	if (sr == NULL)
 		return;
 
@@ -1696,7 +1696,7 @@ freesrnode(struct vars * v,		/* might be NULL */
 static void
 optst(struct vars * v,
 	  struct subre * t)
-{	StackTrace("optst");
+{
 	/*
 	 * DGP (2007-11-13): I assume it was the programmer's intent to eventually
 	 * come back and add code to optimize subRE trees, but the routine coded
@@ -1745,7 +1745,7 @@ numst(struct subre * t,
  */
 static void
 markst(struct subre * t)
-{	StackTrace("markst");
+{
 	assert(t != NULL);
 
 	t->flags |= INUSE;
@@ -1760,7 +1760,7 @@ markst(struct subre * t)
  */
 static void
 cleanst(struct vars * v)
-{	StackTrace("cleanst");
+{
 	struct subre *t;
 	struct subre *next;
 
@@ -1837,7 +1837,7 @@ newlacon(struct vars * v,
 		 struct state * begin,
 		 struct state * end,
 		 int pos)
-{	StackTrace("newlacon");
+{
 	int			n;
 	struct subre *newlacons;
 	struct subre *sub;
@@ -1874,7 +1874,7 @@ newlacon(struct vars * v,
 static void
 freelacons(struct subre * subs,
 		   int n)
-{	StackTrace("freelacons");
+{
 	struct subre *sub;
 	int			i;
 
@@ -1890,7 +1890,7 @@ freelacons(struct subre * subs,
  */
 static void
 rfree(regex_t *re)
-{	StackTrace("rfree");
+{
 	struct guts *g;
 
 	if (re == NULL || re->re_magic != REMAGIC)
@@ -1926,7 +1926,7 @@ rfree(regex_t *re)
  */
 static int
 rcancelrequested(void)
-{	StackTrace("rcancelrequested");
+{
 	return InterruptPending && (QueryCancelPending || ProcDiePending);
 }
 
@@ -1938,7 +1938,7 @@ rcancelrequested(void)
 static void
 dump(regex_t *re,
 	 FILE *f)
-{	StackTrace("dump");
+{
 	struct guts *g;
 	int			i;
 
@@ -2047,7 +2047,7 @@ static const char *				/* points to buf or constant string */
 stid(struct subre * t,
 	 char *buf,
 	 size_t bufsize)
-{	StackTrace("stid");
+{
 	/* big enough for hex int or decimal t->id? */
 	if (bufsize < sizeof(void *) * 2 + 3 || bufsize < sizeof(t->id) * 3 + 1)
 		return "unable";

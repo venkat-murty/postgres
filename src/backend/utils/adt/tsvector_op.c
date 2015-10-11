@@ -75,7 +75,7 @@ static Datum tsvector_update_trigger(PG_FUNCTION_ARGS, bool config_column);
  */
 static bool
 is_expected_type(Oid typid, Oid expected_type)
-{	StackTrace("is_expected_type");
+{
 	if (typid == expected_type)
 		return true;
 	typid = getBaseType(typid);
@@ -87,7 +87,7 @@ is_expected_type(Oid typid, Oid expected_type)
 /* Check if datatype is TEXT or binary-equivalent to it */
 static bool
 is_text_type(Oid typid)
-{	StackTrace("is_text_type");
+{
 	/* varchar(n) and char(n) are binary-compatible with text */
 	if (typid == TEXTOID || typid == VARCHAROID || typid == BPCHAROID)
 		return true;
@@ -104,7 +104,7 @@ is_text_type(Oid typid)
  */
 static int
 silly_cmp_tsvector(const TSVector a, const TSVector b)
-{	StackTrace("silly_cmp_tsvector");
+{
 	if (VARSIZE(a) < VARSIZE(b))
 		return -1;
 	else if (VARSIZE(a) > VARSIZE(b))
@@ -186,7 +186,7 @@ TSVECTORCMPFUNC(cmp, +, INT32);
 
 Datum
 tsvector_strip(PG_FUNCTION_ARGS)
-{	StackTrace("tsvector_strip");
+{
 	TSVector	in = PG_GETARG_TSVECTOR(0);
 	TSVector	out;
 	int			i,
@@ -219,7 +219,7 @@ tsvector_strip(PG_FUNCTION_ARGS)
 
 Datum
 tsvector_length(PG_FUNCTION_ARGS)
-{	StackTrace("tsvector_length");
+{
 	TSVector	in = PG_GETARG_TSVECTOR(0);
 	int32		ret = in->size;
 
@@ -229,7 +229,7 @@ tsvector_length(PG_FUNCTION_ARGS)
 
 Datum
 tsvector_setweight(PG_FUNCTION_ARGS)
-{	StackTrace("tsvector_setweight");
+{
 	TSVector	in = PG_GETARG_TSVECTOR(0);
 	char		cw = PG_GETARG_CHAR(1);
 	TSVector	out;
@@ -297,7 +297,7 @@ static int32
 add_pos(TSVector src, WordEntry *srcptr,
 		TSVector dest, WordEntry *destptr,
 		int32 maxpos)
-{	StackTrace("add_pos");
+{
 	uint16	   *clen = &_POSVECPTR(dest, destptr)->npos;
 	int			i;
 	uint16		slen = POSDATALEN(src, srcptr),
@@ -327,7 +327,7 @@ add_pos(TSVector src, WordEntry *srcptr,
 
 Datum
 tsvector_concat(PG_FUNCTION_ARGS)
-{	StackTrace("tsvector_concat");
+{
 	TSVector	in1 = PG_GETARG_TSVECTOR(0);
 	TSVector	in2 = PG_GETARG_TSVECTOR(1);
 	TSVector	out;
@@ -554,7 +554,7 @@ tsvector_concat(PG_FUNCTION_ARGS)
  */
 int32
 tsCompareString(char *a, int lena, char *b, int lenb, bool prefix)
-{	StackTrace("tsCompareString");
+{
 	int			cmp;
 
 	if (lena == 0)
@@ -591,7 +591,7 @@ tsCompareString(char *a, int lena, char *b, int lenb, bool prefix)
  */
 static bool
 checkclass_str(CHKVAL *chkval, WordEntry *val, QueryOperand *item)
-{	StackTrace("checkclass_str");
+{
 	WordEntryPosVector *posvec;
 	WordEntryPos *ptr;
 	uint16		len;
@@ -616,7 +616,7 @@ checkclass_str(CHKVAL *chkval, WordEntry *val, QueryOperand *item)
  */
 static bool
 checkcondition_str(void *checkval, QueryOperand *val)
-{	StackTrace("checkcondition_str");
+{
 	CHKVAL	   *chkval = (CHKVAL *) checkval;
 	WordEntry  *StopLow = chkval->arrb;
 	WordEntry  *StopHigh = chkval->arre;
@@ -680,7 +680,7 @@ checkcondition_str(void *checkval, QueryOperand *val)
 bool
 TS_execute(QueryItem *curitem, void *checkval, bool calcnot,
 		   bool (*chkcond) (void *checkval, QueryOperand *val))
-{	StackTrace("(*chkcond)");
+{
 	/* since this function recurses, it could be driven to stack overflow */
 	check_stack_depth();
 
@@ -725,7 +725,7 @@ TS_execute(QueryItem *curitem, void *checkval, bool calcnot,
  */
 bool
 tsquery_requires_match(QueryItem *curitem)
-{	StackTrace("tsquery_requires_match");
+{
 	/* since this function recurses, it could be driven to stack overflow */
 	check_stack_depth();
 
@@ -770,7 +770,7 @@ tsquery_requires_match(QueryItem *curitem)
  */
 Datum
 ts_match_qv(PG_FUNCTION_ARGS)
-{	StackTrace("ts_match_qv");
+{
 	PG_RETURN_DATUM(DirectFunctionCall2(ts_match_vq,
 										PG_GETARG_DATUM(1),
 										PG_GETARG_DATUM(0)));
@@ -778,7 +778,7 @@ ts_match_qv(PG_FUNCTION_ARGS)
 
 Datum
 ts_match_vq(PG_FUNCTION_ARGS)
-{	StackTrace("ts_match_vq");
+{
 	TSVector	val = PG_GETARG_TSVECTOR(0);
 	TSQuery		query = PG_GETARG_TSQUERY(1);
 	CHKVAL		chkval;
@@ -809,7 +809,7 @@ ts_match_vq(PG_FUNCTION_ARGS)
 
 Datum
 ts_match_tt(PG_FUNCTION_ARGS)
-{	StackTrace("ts_match_tt");
+{
 	TSVector	vector;
 	TSQuery		query;
 	bool		res;
@@ -831,7 +831,7 @@ ts_match_tt(PG_FUNCTION_ARGS)
 
 Datum
 ts_match_tq(PG_FUNCTION_ARGS)
-{	StackTrace("ts_match_tq");
+{
 	TSVector	vector;
 	TSQuery		query = PG_GETARG_TSQUERY(1);
 	bool		res;
@@ -860,7 +860,7 @@ ts_match_tq(PG_FUNCTION_ARGS)
  */
 static int
 check_weight(TSVector txt, WordEntry *wptr, int8 weight)
-{	StackTrace("check_weight");
+{
 	int			len = POSDATALEN(txt, wptr);
 	int			num = 0;
 	WordEntryPos *ptr = POSDATAPTR(txt, wptr);
@@ -881,7 +881,7 @@ check_weight(TSVector txt, WordEntry *wptr, int8 weight)
 
 static void
 insertStatEntry(MemoryContext persistentContext, TSVectorStat *stat, TSVector txt, uint32 off)
-{	StackTrace("insertStatEntry");
+{
 	WordEntry  *we = ARRPTR(txt) + off;
 	StatEntry  *node = stat->root,
 			   *pnode = NULL;
@@ -948,7 +948,7 @@ insertStatEntry(MemoryContext persistentContext, TSVectorStat *stat, TSVector tx
 static void
 chooseNextStatEntry(MemoryContext persistentContext, TSVectorStat *stat, TSVector txt,
 					uint32 low, uint32 high, uint32 offset)
-{	StackTrace("chooseNextStatEntry");
+{
 	uint32		pos;
 	uint32		middle = (low + high) >> 1;
 
@@ -979,7 +979,7 @@ chooseNextStatEntry(MemoryContext persistentContext, TSVectorStat *stat, TSVecto
 
 static TSVectorStat *
 ts_accum(MemoryContext persistentContext, TSVectorStat *stat, Datum data)
-{	StackTrace("ts_accum");
+{
 	TSVector	txt = DatumGetTSVector(data);
 	uint32		i,
 				nbit = 0,
@@ -1015,7 +1015,7 @@ ts_accum(MemoryContext persistentContext, TSVectorStat *stat, Datum data)
 static void
 ts_setup_firstcall(FunctionCallInfo fcinfo, FuncCallContext *funcctx,
 				   TSVectorStat *stat)
-{	StackTrace("ts_setup_firstcall");
+{
 	TupleDesc	tupdesc;
 	MemoryContext oldcontext;
 	StatEntry  *node;
@@ -1060,7 +1060,7 @@ ts_setup_firstcall(FunctionCallInfo fcinfo, FuncCallContext *funcctx,
 
 static StatEntry *
 walkStatEntryTree(TSVectorStat *stat)
-{	StackTrace("walkStatEntryTree");
+{
 	StatEntry  *node = stat->stack[stat->stackpos];
 
 	if (node == NULL)
@@ -1106,7 +1106,7 @@ walkStatEntryTree(TSVectorStat *stat)
 
 static Datum
 ts_process_call(FuncCallContext *funcctx)
-{	StackTrace("ts_process_call");
+{
 	TSVectorStat *st;
 	StatEntry  *entry;
 
@@ -1146,7 +1146,7 @@ ts_process_call(FuncCallContext *funcctx)
 
 static TSVectorStat *
 ts_stat_sql(MemoryContext persistentContext, text *txt, text *ws)
-{	StackTrace("ts_stat_sql");
+{
 	char	   *query = text_to_cstring(txt);
 	int			i;
 	TSVectorStat *stat;
@@ -1234,7 +1234,7 @@ ts_stat_sql(MemoryContext persistentContext, text *txt, text *ws)
 
 Datum
 ts_stat1(PG_FUNCTION_ARGS)
-{	StackTrace("ts_stat1");
+{
 	FuncCallContext *funcctx;
 	Datum		result;
 
@@ -1259,7 +1259,7 @@ ts_stat1(PG_FUNCTION_ARGS)
 
 Datum
 ts_stat2(PG_FUNCTION_ARGS)
-{	StackTrace("ts_stat2");
+{
 	FuncCallContext *funcctx;
 	Datum		result;
 
@@ -1297,19 +1297,19 @@ ts_stat2(PG_FUNCTION_ARGS)
  */
 Datum
 tsvector_update_trigger_byid(PG_FUNCTION_ARGS)
-{	StackTrace("tsvector_update_trigger_byid");
+{
 	return tsvector_update_trigger(fcinfo, false);
 }
 
 Datum
 tsvector_update_trigger_bycolumn(PG_FUNCTION_ARGS)
-{	StackTrace("tsvector_update_trigger_bycolumn");
+{
 	return tsvector_update_trigger(fcinfo, true);
 }
 
 static Datum
 tsvector_update_trigger(PG_FUNCTION_ARGS, bool config_column)
-{	StackTrace("tsvector_update_trigger");
+{
 	TriggerData *trigdata;
 	Trigger    *trigger;
 	Relation	rel;

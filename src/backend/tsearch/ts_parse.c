@@ -58,7 +58,7 @@ typedef struct
 
 static void
 LexizeInit(LexizeData *ld, TSConfigCacheEntry *cfg)
-{	StackTrace("LexizeInit");
+{
 	ld->cfg = cfg;
 	ld->curDictId = InvalidOid;
 	ld->posDict = 0;
@@ -70,7 +70,7 @@ LexizeInit(LexizeData *ld, TSConfigCacheEntry *cfg)
 
 static void
 LPLAddTail(ListParsedLex *list, ParsedLex *newpl)
-{	StackTrace("LPLAddTail");
+{
 	if (list->tail)
 	{
 		list->tail->next = newpl;
@@ -83,7 +83,7 @@ LPLAddTail(ListParsedLex *list, ParsedLex *newpl)
 
 static ParsedLex *
 LPLRemoveHead(ListParsedLex *list)
-{	StackTrace("LPLRemoveHead");
+{
 	ParsedLex  *res = list->head;
 
 	if (list->head)
@@ -97,7 +97,7 @@ LPLRemoveHead(ListParsedLex *list)
 
 static void
 LexizeAddLemm(LexizeData *ld, int type, char *lemm, int lenlemm)
-{	StackTrace("LexizeAddLemm");
+{
 	ParsedLex  *newpl = (ParsedLex *) palloc(sizeof(ParsedLex));
 
 	newpl->type = type;
@@ -109,7 +109,7 @@ LexizeAddLemm(LexizeData *ld, int type, char *lemm, int lenlemm)
 
 static void
 RemoveHead(LexizeData *ld)
-{	StackTrace("RemoveHead");
+{
 	LPLAddTail(&ld->waste, LPLRemoveHead(&ld->towork));
 
 	ld->posDict = 0;
@@ -117,7 +117,7 @@ RemoveHead(LexizeData *ld)
 
 static void
 setCorrLex(LexizeData *ld, ParsedLex **correspondLexem)
-{	StackTrace("setCorrLex");
+{
 	if (correspondLexem)
 	{
 		*correspondLexem = ld->waste.head;
@@ -139,7 +139,7 @@ setCorrLex(LexizeData *ld, ParsedLex **correspondLexem)
 
 static void
 moveToWaste(LexizeData *ld, ParsedLex *stop)
-{	StackTrace("moveToWaste");
+{
 	bool		go = true;
 
 	while (ld->towork.head && go)
@@ -155,7 +155,7 @@ moveToWaste(LexizeData *ld, ParsedLex *stop)
 
 static void
 setNewTmpRes(LexizeData *ld, ParsedLex *lex, TSLexeme *res)
-{	StackTrace("setNewTmpRes");
+{
 	if (ld->tmpRes)
 	{
 		TSLexeme   *ptr;
@@ -170,7 +170,7 @@ setNewTmpRes(LexizeData *ld, ParsedLex *lex, TSLexeme *res)
 
 static TSLexeme *
 LexizeExec(LexizeData *ld, ParsedLex **correspondLexem)
-{	StackTrace("LexizeExec");
+{
 	int			i;
 	ListDictionary *map;
 	TSDictionaryCacheEntry *dict;
@@ -356,7 +356,7 @@ LexizeExec(LexizeData *ld, ParsedLex **correspondLexem)
  */
 void
 parsetext(Oid cfgId, ParsedText *prs, char *buf, int buflen)
-{	StackTrace("parsetext");
+{
 	int			type,
 				lenlemm;
 	char	   *lemm = NULL;
@@ -439,7 +439,7 @@ parsetext(Oid cfgId, ParsedText *prs, char *buf, int buflen)
  */
 static void
 hladdword(HeadlineParsedText *prs, char *buf, int buflen, int type)
-{	StackTrace("hladdword");
+{
 	while (prs->curwords >= prs->lenwords)
 	{
 		prs->lenwords *= 2;
@@ -455,7 +455,7 @@ hladdword(HeadlineParsedText *prs, char *buf, int buflen, int type)
 
 static void
 hlfinditem(HeadlineParsedText *prs, TSQuery query, char *buf, int buflen)
-{	StackTrace("hlfinditem");
+{
 	int			i;
 	QueryItem  *item = GETQUERY(query);
 	HeadlineWordEntry *word;
@@ -489,7 +489,7 @@ hlfinditem(HeadlineParsedText *prs, TSQuery query, char *buf, int buflen)
 
 static void
 addHLParsedLex(HeadlineParsedText *prs, TSQuery query, ParsedLex *lexs, TSLexeme *norms)
-{	StackTrace("addHLParsedLex");
+{
 	ParsedLex  *tmplexs;
 	TSLexeme   *ptr;
 
@@ -525,7 +525,7 @@ addHLParsedLex(HeadlineParsedText *prs, TSQuery query, ParsedLex *lexs, TSLexeme
 
 void
 hlparsetext(Oid cfgId, HeadlineParsedText *prs, TSQuery query, char *buf, int buflen)
-{	StackTrace("hlparsetext");
+{
 	int			type,
 				lenlemm;
 	char	   *lemm = NULL;
@@ -587,7 +587,7 @@ hlparsetext(Oid cfgId, HeadlineParsedText *prs, TSQuery query, char *buf, int bu
 
 text *
 generateHeadline(HeadlineParsedText *prs)
-{	StackTrace("generateHeadline");
+{
 	text	   *out;
 	char	   *ptr;
 	int			len = 128;

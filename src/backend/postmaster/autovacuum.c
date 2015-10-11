@@ -333,7 +333,7 @@ static void autovac_refresh_stats(void);
  */
 static pid_t
 avlauncher_forkexec(void)
-{	StackTrace("avlauncher_forkexec");
+{
 	char	   *av[10];
 	int			ac = 0;
 
@@ -352,7 +352,7 @@ avlauncher_forkexec(void)
  */
 void
 AutovacuumLauncherIAm(void)
-{	StackTrace("AutovacuumLauncherIAm");
+{
 	am_autovacuum_launcher = true;
 }
 #endif
@@ -363,7 +363,7 @@ AutovacuumLauncherIAm(void)
  */
 int
 StartAutoVacLauncher(void)
-{	StackTrace("StartAutoVacLauncher");
+{
 	pid_t		AutoVacPID;
 
 #ifdef EXEC_BACKEND
@@ -401,7 +401,7 @@ StartAutoVacLauncher(void)
  */
 NON_EXEC_STATIC void
 AutoVacLauncherMain(int argc, char *argv[])
-{	StackTrace("AutoVacLauncherMain");
+{
 	sigjmp_buf	local_sigjmp_buf;
 
 	am_autovacuum_launcher = true;
@@ -787,7 +787,7 @@ shutdown:
  */
 static void
 launcher_determine_sleep(bool canlaunch, bool recursing, struct timeval * nap)
-{	StackTrace("launcher_determine_sleep");
+{
 	/*
 	 * We sleep until the next scheduled vacuum.  We trust that when the
 	 * database list was built, care was taken so that no entries have times
@@ -871,7 +871,7 @@ launcher_determine_sleep(bool canlaunch, bool recursing, struct timeval * nap)
  */
 static void
 rebuild_database_list(Oid newdb)
-{	StackTrace("rebuild_database_list");
+{
 	List	   *dblist;
 	ListCell   *cell;
 	MemoryContext newcxt;
@@ -1056,7 +1056,7 @@ rebuild_database_list(Oid newdb)
 /* qsort comparator for avl_dbase, using adl_score */
 static int
 db_comparator(const void *a, const void *b)
-{	StackTrace("db_comparator");
+{
 	if (((const avl_dbase *) a)->adl_score == ((const avl_dbase *) b)->adl_score)
 		return 0;
 	else
@@ -1076,7 +1076,7 @@ db_comparator(const void *a, const void *b)
  */
 static Oid
 do_start_worker(void)
-{	StackTrace("do_start_worker");
+{
 	List	   *dblist;
 	ListCell   *cell;
 	TransactionId xidForceLimit;
@@ -1293,7 +1293,7 @@ do_start_worker(void)
  */
 static void
 launch_worker(TimestampTz now)
-{	StackTrace("launch_worker");
+{
 	Oid			dbid;
 	dlist_iter	iter;
 
@@ -1345,14 +1345,14 @@ launch_worker(TimestampTz now)
  */
 void
 AutoVacWorkerFailed(void)
-{	StackTrace("AutoVacWorkerFailed");
+{
 	AutoVacuumShmem->av_signal[AutoVacForkFailed] = true;
 }
 
 /* SIGHUP: set flag to re-read config file at next convenient time */
 static void
 av_sighup_handler(SIGNAL_ARGS)
-{	StackTrace("av_sighup_handler");
+{
 	int			save_errno = errno;
 
 	got_SIGHUP = true;
@@ -1364,7 +1364,7 @@ av_sighup_handler(SIGNAL_ARGS)
 /* SIGUSR2: a worker is up and running, or just finished, or failed to fork */
 static void
 avl_sigusr2_handler(SIGNAL_ARGS)
-{	StackTrace("avl_sigusr2_handler");
+{
 	int			save_errno = errno;
 
 	got_SIGUSR2 = true;
@@ -1376,7 +1376,7 @@ avl_sigusr2_handler(SIGNAL_ARGS)
 /* SIGTERM: time to die */
 static void
 avl_sigterm_handler(SIGNAL_ARGS)
-{	StackTrace("avl_sigterm_handler");
+{
 	int			save_errno = errno;
 
 	got_SIGTERM = true;
@@ -1398,7 +1398,7 @@ avl_sigterm_handler(SIGNAL_ARGS)
  */
 static pid_t
 avworker_forkexec(void)
-{	StackTrace("avworker_forkexec");
+{
 	char	   *av[10];
 	int			ac = 0;
 
@@ -1417,7 +1417,7 @@ avworker_forkexec(void)
  */
 void
 AutovacuumWorkerIAm(void)
-{	StackTrace("AutovacuumWorkerIAm");
+{
 	am_autovacuum_worker = true;
 }
 #endif
@@ -1429,7 +1429,7 @@ AutovacuumWorkerIAm(void)
  */
 int
 StartAutoVacWorker(void)
-{	StackTrace("StartAutoVacWorker");
+{
 	pid_t		worker_pid;
 
 #ifdef EXEC_BACKEND
@@ -1467,7 +1467,7 @@ StartAutoVacWorker(void)
  */
 NON_EXEC_STATIC void
 AutoVacWorkerMain(int argc, char *argv[])
-{	StackTrace("AutoVacWorkerMain");
+{
 	sigjmp_buf	local_sigjmp_buf;
 	Oid			dbid;
 
@@ -1661,7 +1661,7 @@ AutoVacWorkerMain(int argc, char *argv[])
  */
 static void
 FreeWorkerInfo(int code, Datum arg)
-{	StackTrace("FreeWorkerInfo");
+{
 	if (MyWorkerInfo != NULL)
 	{
 		LWLockAcquire(AutovacuumLock, LW_EXCLUSIVE);
@@ -1709,7 +1709,7 @@ FreeWorkerInfo(int code, Datum arg)
  */
 void
 AutoVacuumUpdateDelay(void)
-{	StackTrace("AutoVacuumUpdateDelay");
+{
 	if (MyWorkerInfo)
 	{
 		VacuumCostDelay = MyWorkerInfo->wi_cost_delay;
@@ -1725,7 +1725,7 @@ AutoVacuumUpdateDelay(void)
  */
 static void
 autovac_balance_cost(void)
-{	StackTrace("autovac_balance_cost");
+{
 	/*
 	 * The idea here is that we ration out I/O equally.  The amount of I/O
 	 * that a worker can consume is determined by cost_limit/cost_delay, so we
@@ -1813,7 +1813,7 @@ autovac_balance_cost(void)
  */
 static List *
 get_database_list(void)
-{	StackTrace("get_database_list");
+{
 	List	   *dblist = NIL;
 	Relation	rel;
 	HeapScanDesc scan;
@@ -1879,7 +1879,7 @@ get_database_list(void)
  */
 static void
 do_autovacuum(void)
-{	StackTrace("do_autovacuum");
+{
 	Relation	classRel;
 	HeapTuple	tuple;
 	HeapScanDesc relScan;
@@ -2412,7 +2412,7 @@ deleted:
  */
 static AutoVacOpts *
 extract_autovac_opts(HeapTuple tup, TupleDesc pg_class_desc)
-{	StackTrace("extract_autovac_opts");
+{
 	bytea	   *relopts;
 	AutoVacOpts *av;
 
@@ -2439,7 +2439,7 @@ extract_autovac_opts(HeapTuple tup, TupleDesc pg_class_desc)
 static PgStat_StatTabEntry *
 get_pgstat_tabentry_relid(Oid relid, bool isshared, PgStat_StatDBEntry *shared,
 						  PgStat_StatDBEntry *dbentry)
-{	StackTrace("get_pgstat_tabentry_relid");
+{
 	PgStat_StatTabEntry *tabentry = NULL;
 
 	if (isshared)
@@ -2467,7 +2467,7 @@ static autovac_table *
 table_recheck_autovac(Oid relid, HTAB *table_toast_map,
 					  TupleDesc pg_class_desc,
 					  int effective_multixact_freeze_max_age)
-{	StackTrace("table_recheck_autovac");
+{
 	Form_pg_class classForm;
 	HeapTuple	classTup;
 	bool		dovacuum;
@@ -2654,7 +2654,7 @@ relation_needs_vacanalyze(Oid relid,
 						  bool *dovacuum,
 						  bool *doanalyze,
 						  bool *wraparound)
-{	StackTrace("relation_needs_vacanalyze");
+{
 	bool		force_vacuum;
 	bool		av_enabled;
 	float4		reltuples;		/* pg_class.reltuples */
@@ -2791,7 +2791,7 @@ relation_needs_vacanalyze(Oid relid,
  */
 static void
 autovacuum_do_vac_analyze(autovac_table *tab, BufferAccessStrategy bstrategy)
-{	StackTrace("autovacuum_do_vac_analyze");
+{
 	RangeVar	rangevar;
 
 	/* Set up command parameters --- use local variables instead of palloc */
@@ -2821,7 +2821,7 @@ autovacuum_do_vac_analyze(autovac_table *tab, BufferAccessStrategy bstrategy)
  */
 static void
 autovac_report_activity(autovac_table *tab)
-{	StackTrace("autovac_report_activity");
+{
 #define MAX_AUTOVAC_ACTIV_LEN (NAMEDATALEN * 2 + 56)
 	char		activity[MAX_AUTOVAC_ACTIV_LEN];
 	int			len;
@@ -2857,7 +2857,7 @@ autovac_report_activity(autovac_table *tab)
  */
 bool
 AutoVacuumingActive(void)
-{	StackTrace("AutoVacuumingActive");
+{
 	if (!autovacuum_start_daemon || !pgstat_track_counts)
 		return false;
 	return true;
@@ -2871,7 +2871,7 @@ AutoVacuumingActive(void)
  */
 void
 autovac_init(void)
-{	StackTrace("autovac_init");
+{
 	if (autovacuum_start_daemon && !pgstat_track_counts)
 		ereport(WARNING,
 				(errmsg("autovacuum not started because of misconfiguration"),
@@ -2885,13 +2885,13 @@ autovac_init(void)
  */
 bool
 IsAutoVacuumLauncherProcess(void)
-{	StackTrace("IsAutoVacuumLauncherProcess");
+{
 	return am_autovacuum_launcher;
 }
 
 bool
 IsAutoVacuumWorkerProcess(void)
-{	StackTrace("IsAutoVacuumWorkerProcess");
+{
 	return am_autovacuum_worker;
 }
 
@@ -2902,7 +2902,7 @@ IsAutoVacuumWorkerProcess(void)
  */
 Size
 AutoVacuumShmemSize(void)
-{	StackTrace("AutoVacuumShmemSize");
+{
 	Size		size;
 
 	/*
@@ -2921,7 +2921,7 @@ AutoVacuumShmemSize(void)
  */
 void
 AutoVacuumShmemInit(void)
-{	StackTrace("AutoVacuumShmemInit");
+{
 	bool		found;
 
 	AutoVacuumShmem = (AutoVacuumShmemStruct *)
@@ -2967,7 +2967,7 @@ AutoVacuumShmemInit(void)
  */
 static void
 autovac_refresh_stats(void)
-{	StackTrace("autovac_refresh_stats");
+{
 	if (IsAutoVacuumLauncherProcess())
 	{
 		static TimestampTz last_read = 0;

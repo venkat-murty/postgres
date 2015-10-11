@@ -67,7 +67,7 @@ static void StartupProcSigHupHandler(SIGNAL_ARGS);
  */
 static void
 startupproc_quickdie(SIGNAL_ARGS)
-{	StackTrace("startupproc_quickdie");
+{
 	PG_SETMASK(&BlockSig);
 
 	/*
@@ -95,7 +95,7 @@ startupproc_quickdie(SIGNAL_ARGS)
 /* SIGUSR1: let latch facility handle the signal */
 static void
 StartupProcSigUsr1Handler(SIGNAL_ARGS)
-{	StackTrace("StartupProcSigUsr1Handler");
+{
 	int			save_errno = errno;
 
 	latch_sigusr1_handler();
@@ -106,7 +106,7 @@ StartupProcSigUsr1Handler(SIGNAL_ARGS)
 /* SIGUSR2: set flag to finish recovery */
 static void
 StartupProcTriggerHandler(SIGNAL_ARGS)
-{	StackTrace("StartupProcTriggerHandler");
+{
 	int			save_errno = errno;
 
 	promote_triggered = true;
@@ -118,7 +118,7 @@ StartupProcTriggerHandler(SIGNAL_ARGS)
 /* SIGHUP: set flag to re-read config file at next convenient time */
 static void
 StartupProcSigHupHandler(SIGNAL_ARGS)
-{	StackTrace("StartupProcSigHupHandler");
+{
 	int			save_errno = errno;
 
 	got_SIGHUP = true;
@@ -130,7 +130,7 @@ StartupProcSigHupHandler(SIGNAL_ARGS)
 /* SIGTERM: set flag to abort redo and exit */
 static void
 StartupProcShutdownHandler(SIGNAL_ARGS)
-{	StackTrace("StartupProcShutdownHandler");
+{
 	int			save_errno = errno;
 
 	if (in_restore_command)
@@ -145,7 +145,7 @@ StartupProcShutdownHandler(SIGNAL_ARGS)
 /* Handle SIGHUP and SIGTERM signals of startup process */
 void
 HandleStartupProcInterrupts(void)
-{	StackTrace("HandleStartupProcInterrupts");
+{
 	/*
 	 * Check if we were requested to re-read config file.
 	 */
@@ -176,7 +176,7 @@ HandleStartupProcInterrupts(void)
  */
 void
 StartupProcessMain(void)
-{	StackTrace("StartupProcessMain");
+{
 	/*
 	 * Properly accept or ignore signals the postmaster might send us.
 	 */
@@ -223,7 +223,7 @@ StartupProcessMain(void)
 
 void
 PreRestoreCommand(void)
-{	StackTrace("PreRestoreCommand");
+{
 	/*
 	 * Set in_restore_command to tell the signal handler that we should exit
 	 * right away on SIGTERM. We know that we're at a safe point to do that.
@@ -237,18 +237,18 @@ PreRestoreCommand(void)
 
 void
 PostRestoreCommand(void)
-{	StackTrace("PostRestoreCommand");
+{
 	in_restore_command = false;
 }
 
 bool
 IsPromoteTriggered(void)
-{	StackTrace("IsPromoteTriggered");
+{
 	return promote_triggered;
 }
 
 void
 ResetPromoteTriggered(void)
-{	StackTrace("ResetPromoteTriggered");
+{
 	promote_triggered = false;
 }

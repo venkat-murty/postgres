@@ -48,7 +48,7 @@ static List *expand_targetlist(List *tlist, int command_type,
  */
 List *
 preprocess_targetlist(PlannerInfo *root, List *tlist)
-{	StackTrace("preprocess_targetlist");
+{
 	Query	   *parse = root->parse;
 	int			result_relation = parse->resultRelation;
 	List	   *range_table = parse->rtable;
@@ -189,7 +189,7 @@ preprocess_targetlist(PlannerInfo *root, List *tlist)
  */
 List *
 preprocess_onconflict_targetlist(List *tlist, int result_relation, List *range_table)
-{	StackTrace("preprocess_onconflict_targetlist");
+{
 	return expand_targetlist(tlist, CMD_UPDATE, result_relation, range_table);
 }
 
@@ -209,7 +209,7 @@ preprocess_onconflict_targetlist(List *tlist, int result_relation, List *range_t
 static List *
 expand_targetlist(List *tlist, int command_type,
 				  Index result_relation, List *range_table)
-{	StackTrace("expand_targetlist");
+{
 	List	   *new_tlist = NIL;
 	ListCell   *tlist_item;
 	Relation	rel;
@@ -384,7 +384,7 @@ expand_targetlist(List *tlist, int command_type,
  */
 PlanRowMark *
 get_plan_rowmark(List *rowmarks, Index rtindex)
-{	StackTrace("get_plan_rowmark");
+{
 	ListCell   *l;
 
 	foreach(l, rowmarks)

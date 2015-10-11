@@ -216,7 +216,7 @@ static int	relcache_callback_count = 0;
 static void
 AddInvalidationMessage(InvalidationChunk **listHdr,
 					   SharedInvalidationMessage *msg)
-{
+{	StackTrace("AddInvalidationMessage");
 	InvalidationChunk *chunk = *listHdr;
 
 	if (chunk == NULL)
@@ -258,7 +258,7 @@ AddInvalidationMessage(InvalidationChunk **listHdr,
 static void
 AppendInvalidationMessageList(InvalidationChunk **destHdr,
 							  InvalidationChunk **srcHdr)
-{
+{	StackTrace("AppendInvalidationMessageList");
 	InvalidationChunk *chunk = *srcHdr;
 
 	if (chunk == NULL)
@@ -326,7 +326,7 @@ AppendInvalidationMessageList(InvalidationChunk **destHdr,
 static void
 AddCatcacheInvalidationMessage(InvalidationListHeader *hdr,
 							   int id, uint32 hashValue, Oid dbId)
-{
+{	StackTrace("AddCatcacheInvalidationMessage");
 	SharedInvalidationMessage msg;
 
 	Assert(id < CHAR_MAX);
@@ -354,7 +354,7 @@ AddCatcacheInvalidationMessage(InvalidationListHeader *hdr,
 static void
 AddCatalogInvalidationMessage(InvalidationListHeader *hdr,
 							  Oid dbId, Oid catId)
-{
+{	StackTrace("AddCatalogInvalidationMessage");
 	SharedInvalidationMessage msg;
 
 	msg.cat.id = SHAREDINVALCATALOG_ID;
@@ -372,7 +372,7 @@ AddCatalogInvalidationMessage(InvalidationListHeader *hdr,
 static void
 AddRelcacheInvalidationMessage(InvalidationListHeader *hdr,
 							   Oid dbId, Oid relId)
-{
+{	StackTrace("AddRelcacheInvalidationMessage");
 	SharedInvalidationMessage msg;
 
 	/* Don't add a duplicate item */
@@ -398,7 +398,7 @@ AddRelcacheInvalidationMessage(InvalidationListHeader *hdr,
 static void
 AddSnapshotInvalidationMessage(InvalidationListHeader *hdr,
 							   Oid dbId, Oid relId)
-{
+{	StackTrace("AddSnapshotInvalidationMessage");
 	SharedInvalidationMessage msg;
 
 	/* Don't add a duplicate item */
@@ -425,7 +425,7 @@ AddSnapshotInvalidationMessage(InvalidationListHeader *hdr,
 static void
 AppendInvalidationMessages(InvalidationListHeader *dest,
 						   InvalidationListHeader *src)
-{
+{	StackTrace("AppendInvalidationMessages");
 	AppendInvalidationMessageList(&dest->cclist, &src->cclist);
 	AppendInvalidationMessageList(&dest->rclist, &src->rclist);
 }
@@ -439,7 +439,7 @@ AppendInvalidationMessages(InvalidationListHeader *dest,
 static void
 ProcessInvalidationMessages(InvalidationListHeader *hdr,
 							void (*func) (SharedInvalidationMessage *msg))
-{
+{	StackTrace("(*func)");
 	ProcessMessageList(hdr->cclist, func(msg));
 	ProcessMessageList(hdr->rclist, func(msg));
 }
@@ -451,7 +451,7 @@ ProcessInvalidationMessages(InvalidationListHeader *hdr,
 static void
 ProcessInvalidationMessagesMulti(InvalidationListHeader *hdr,
 				 void (*func) (const SharedInvalidationMessage *msgs, int n))
-{
+{	StackTrace("(*func)");
 	ProcessMessageListMulti(hdr->cclist, func(msgs, n));
 	ProcessMessageListMulti(hdr->rclist, func(msgs, n));
 }
@@ -470,7 +470,7 @@ static void
 RegisterCatcacheInvalidation(int cacheId,
 							 uint32 hashValue,
 							 Oid dbId)
-{
+{	StackTrace("RegisterCatcacheInvalidation");
 	AddCatcacheInvalidationMessage(&transInvalInfo->CurrentCmdInvalidMsgs,
 								   cacheId, hashValue, dbId);
 }
@@ -482,7 +482,7 @@ RegisterCatcacheInvalidation(int cacheId,
  */
 static void
 RegisterCatalogInvalidation(Oid dbId, Oid catId)
-{
+{	StackTrace("RegisterCatalogInvalidation");
 	AddCatalogInvalidationMessage(&transInvalInfo->CurrentCmdInvalidMsgs,
 								  dbId, catId);
 }
@@ -494,7 +494,7 @@ RegisterCatalogInvalidation(Oid dbId, Oid catId)
  */
 static void
 RegisterRelcacheInvalidation(Oid dbId, Oid relId)
-{
+{	StackTrace("RegisterRelcacheInvalidation");
 	AddRelcacheInvalidationMessage(&transInvalInfo->CurrentCmdInvalidMsgs,
 								   dbId, relId);
 
@@ -522,7 +522,7 @@ RegisterRelcacheInvalidation(Oid dbId, Oid relId)
  */
 static void
 RegisterSnapshotInvalidation(Oid dbId, Oid relId)
-{
+{	StackTrace("RegisterSnapshotInvalidation");
 	AddSnapshotInvalidationMessage(&transInvalInfo->CurrentCmdInvalidMsgs,
 								   dbId, relId);
 }
@@ -536,7 +536,7 @@ RegisterSnapshotInvalidation(Oid dbId, Oid relId)
  */
 void
 LocalExecuteInvalidationMessage(SharedInvalidationMessage *msg)
-{
+{	StackTrace("LocalExecuteInvalidationMessage");
 	if (msg->id >= 0)
 	{
 		if (msg->cc.dbId == MyDatabaseId || msg->cc.dbId == InvalidOid)
@@ -620,7 +620,7 @@ LocalExecuteInvalidationMessage(SharedInvalidationMessage *msg)
  */
 void
 InvalidateSystemCaches(void)
-{
+{	StackTrace("InvalidateSystemCaches");
 	int			i;
 
 	InvalidateCatalogSnapshot();
@@ -658,7 +658,7 @@ InvalidateSystemCaches(void)
  */
 void
 AcceptInvalidationMessages(void)
-{
+{	StackTrace("AcceptInvalidationMessages");
 	ReceiveSharedInvalidMessages(LocalExecuteInvalidationMessage,
 								 InvalidateSystemCaches);
 
@@ -699,7 +699,7 @@ AcceptInvalidationMessages(void)
  */
 static void
 PrepareInvalidationState(void)
-{
+{	StackTrace("PrepareInvalidationState");
 	TransInvalidationInfo *myInfo;
 
 	if (transInvalInfo != NULL &&
@@ -736,7 +736,7 @@ PrepareInvalidationState(void)
  */
 void
 PostPrepare_Inval(void)
-{
+{	StackTrace("PostPrepare_Inval");
 	AtEOXact_Inval(false);
 }
 
@@ -745,7 +745,7 @@ PostPrepare_Inval(void)
  */
 static void
 MakeSharedInvalidMessagesArray(const SharedInvalidationMessage *msgs, int n)
-{
+{	StackTrace("MakeSharedInvalidMessagesArray");
 	/*
 	 * Initialise array first time through in each commit
 	 */
@@ -796,7 +796,7 @@ MakeSharedInvalidMessagesArray(const SharedInvalidationMessage *msgs, int n)
 int
 xactGetCommittedInvalidationMessages(SharedInvalidationMessage **msgs,
 									 bool *RelcacheInitFileInval)
-{
+{	StackTrace("xactGetCommittedInvalidationMessages");
 	MemoryContext oldcontext;
 
 	/* Quick exit if we haven't done anything with invalidation messages. */
@@ -852,7 +852,7 @@ void
 ProcessCommittedInvalidationMessages(SharedInvalidationMessage *msgs,
 									 int nmsgs, bool RelcacheInitFileInval,
 									 Oid dbid, Oid tsid)
-{
+{	StackTrace("ProcessCommittedInvalidationMessages");
 	if (nmsgs <= 0)
 		return;
 
@@ -907,7 +907,7 @@ ProcessCommittedInvalidationMessages(SharedInvalidationMessage *msgs,
  */
 void
 AtEOXact_Inval(bool isCommit)
-{
+{	StackTrace("AtEOXact_Inval");
 	/* Quick exit if no messages */
 	if (transInvalInfo == NULL)
 		return;
@@ -966,7 +966,7 @@ AtEOXact_Inval(bool isCommit)
  */
 void
 AtEOSubXact_Inval(bool isCommit)
-{
+{	StackTrace("AtEOSubXact_Inval");
 	int			my_level;
 	TransInvalidationInfo *myInfo = transInvalInfo;
 
@@ -1043,7 +1043,7 @@ AtEOSubXact_Inval(bool isCommit)
  */
 void
 CommandEndInvalidationMessages(void)
-{
+{	StackTrace("CommandEndInvalidationMessages");
 	/*
 	 * You might think this shouldn't be called outside any transaction, but
 	 * bootstrap does it, and also ABORT issued when not in a transaction. So
@@ -1074,7 +1074,7 @@ void
 CacheInvalidateHeapTuple(Relation relation,
 						 HeapTuple tuple,
 						 HeapTuple newtuple)
-{
+{	StackTrace("CacheInvalidateHeapTuple");
 	Oid			tupleRelId;
 	Oid			databaseId;
 	Oid			relationId;
@@ -1186,7 +1186,7 @@ CacheInvalidateHeapTuple(Relation relation,
  */
 void
 CacheInvalidateCatalog(Oid catalogId)
-{
+{	StackTrace("CacheInvalidateCatalog");
 	Oid			databaseId;
 
 	PrepareInvalidationState();
@@ -1210,7 +1210,7 @@ CacheInvalidateCatalog(Oid catalogId)
  */
 void
 CacheInvalidateRelcache(Relation relation)
-{
+{	StackTrace("CacheInvalidateRelcache");
 	Oid			databaseId;
 	Oid			relationId;
 
@@ -1231,7 +1231,7 @@ CacheInvalidateRelcache(Relation relation)
  */
 void
 CacheInvalidateRelcacheByTuple(HeapTuple classTuple)
-{
+{	StackTrace("CacheInvalidateRelcacheByTuple");
 	Form_pg_class classtup = (Form_pg_class) GETSTRUCT(classTuple);
 	Oid			databaseId;
 	Oid			relationId;
@@ -1254,7 +1254,7 @@ CacheInvalidateRelcacheByTuple(HeapTuple classTuple)
  */
 void
 CacheInvalidateRelcacheByRelid(Oid relid)
-{
+{	StackTrace("CacheInvalidateRelcacheByRelid");
 	HeapTuple	tup;
 
 	PrepareInvalidationState();
@@ -1294,7 +1294,7 @@ CacheInvalidateRelcacheByRelid(Oid relid)
  */
 void
 CacheInvalidateSmgr(RelFileNodeBackend rnode)
-{
+{	StackTrace("CacheInvalidateSmgr");
 	SharedInvalidationMessage msg;
 
 	msg.sm.id = SHAREDINVALSMGR_ID;
@@ -1324,7 +1324,7 @@ CacheInvalidateSmgr(RelFileNodeBackend rnode)
  */
 void
 CacheInvalidateRelmap(Oid databaseId)
-{
+{	StackTrace("CacheInvalidateRelmap");
 	SharedInvalidationMessage msg;
 
 	msg.rm.id = SHAREDINVALRELMAP_ID;
@@ -1353,7 +1353,7 @@ void
 CacheRegisterSyscacheCallback(int cacheid,
 							  SyscacheCallbackFunction func,
 							  Datum arg)
-{
+{	StackTrace("CacheRegisterSyscacheCallback");
 	if (syscache_callback_count >= MAX_SYSCACHE_CALLBACKS)
 		elog(FATAL, "out of syscache_callback_list slots");
 
@@ -1376,7 +1376,7 @@ CacheRegisterSyscacheCallback(int cacheid,
 void
 CacheRegisterRelcacheCallback(RelcacheCallbackFunction func,
 							  Datum arg)
-{
+{	StackTrace("CacheRegisterRelcacheCallback");
 	if (relcache_callback_count >= MAX_RELCACHE_CALLBACKS)
 		elog(FATAL, "out of relcache_callback_list slots");
 
@@ -1394,7 +1394,7 @@ CacheRegisterRelcacheCallback(RelcacheCallbackFunction func,
  */
 void
 CallSyscacheCallbacks(int cacheid, uint32 hashvalue)
-{
+{	StackTrace("CallSyscacheCallbacks");
 	int			i;
 
 	for (i = 0; i < syscache_callback_count; i++)

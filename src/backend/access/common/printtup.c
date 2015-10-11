@@ -71,7 +71,7 @@ typedef struct
  */
 DestReceiver *
 printtup_create_DR(CommandDest dest)
-{
+{	StackTrace("printtup_create_DR");
 	DR_printtup *self = (DR_printtup *) palloc0(sizeof(DR_printtup));
 
 	self->pub.receiveSlot = printtup;	/* might get changed later */
@@ -99,7 +99,7 @@ printtup_create_DR(CommandDest dest)
  */
 void
 SetRemoteDestReceiverParams(DestReceiver *self, Portal portal)
-{
+{	StackTrace("SetRemoteDestReceiverParams");
 	DR_printtup *myState = (DR_printtup *) self;
 
 	Assert(myState->pub.mydest == DestRemote ||
@@ -123,7 +123,7 @@ SetRemoteDestReceiverParams(DestReceiver *self, Portal portal)
 
 static void
 printtup_startup(DestReceiver *self, int operation, TupleDesc typeinfo)
-{
+{	StackTrace("printtup_startup");
 	DR_printtup *myState = (DR_printtup *) self;
 	Portal		portal = myState->portal;
 
@@ -188,7 +188,7 @@ printtup_startup(DestReceiver *self, int operation, TupleDesc typeinfo)
  */
 void
 SendRowDescriptionMessage(TupleDesc typeinfo, List *targetlist, int16 *formats)
-{
+{	StackTrace("SendRowDescriptionMessage");
 	Form_pg_attribute *attrs = typeinfo->attrs;
 	int			natts = typeinfo->natts;
 	int			proto = PG_PROTOCOL_MAJOR(FrontendProtocol);
@@ -251,7 +251,7 @@ SendRowDescriptionMessage(TupleDesc typeinfo, List *targetlist, int16 *formats)
  */
 static void
 printtup_prepare_info(DR_printtup *myState, TupleDesc typeinfo, int numAttrs)
-{
+{	StackTrace("printtup_prepare_info");
 	int16	   *formats = myState->portal->formats;
 	int			i;
 
@@ -301,7 +301,7 @@ printtup_prepare_info(DR_printtup *myState, TupleDesc typeinfo, int numAttrs)
  */
 static void
 printtup(TupleTableSlot *slot, DestReceiver *self)
-{
+{	StackTrace("printtup");
 	TupleDesc	typeinfo = slot->tts_tupleDescriptor;
 	DR_printtup *myState = (DR_printtup *) self;
 	MemoryContext oldcontext;
@@ -384,7 +384,7 @@ printtup(TupleTableSlot *slot, DestReceiver *self)
  */
 static void
 printtup_20(TupleTableSlot *slot, DestReceiver *self)
-{
+{	StackTrace("printtup_20");
 	TupleDesc	typeinfo = slot->tts_tupleDescriptor;
 	DR_printtup *myState = (DR_printtup *) self;
 	MemoryContext oldcontext;
@@ -460,7 +460,7 @@ printtup_20(TupleTableSlot *slot, DestReceiver *self)
  */
 static void
 printtup_shutdown(DestReceiver *self)
-{
+{	StackTrace("printtup_shutdown");
 	DR_printtup *myState = (DR_printtup *) self;
 
 	if (myState->myinfo)
@@ -480,7 +480,7 @@ printtup_shutdown(DestReceiver *self)
  */
 static void
 printtup_destroy(DestReceiver *self)
-{
+{	StackTrace("printtup_destroy");
 	pfree(self);
 }
 
@@ -492,7 +492,7 @@ static void
 printatt(unsigned attributeId,
 		 Form_pg_attribute attributeP,
 		 char *value)
-{
+{	StackTrace("printatt");
 	printf("\t%2d: %s%s%s%s\t(typeid = %u, len = %d, typmod = %d, byval = %c)\n",
 		   attributeId,
 		   NameStr(attributeP->attname),
@@ -511,7 +511,7 @@ printatt(unsigned attributeId,
  */
 void
 debugStartup(DestReceiver *self, int operation, TupleDesc typeinfo)
-{
+{	StackTrace("debugStartup");
 	int			natts = typeinfo->natts;
 	Form_pg_attribute *attinfo = typeinfo->attrs;
 	int			i;
@@ -530,7 +530,7 @@ debugStartup(DestReceiver *self, int operation, TupleDesc typeinfo)
  */
 void
 debugtup(TupleTableSlot *slot, DestReceiver *self)
-{
+{	StackTrace("debugtup");
 	TupleDesc	typeinfo = slot->tts_tupleDescriptor;
 	int			natts = typeinfo->natts;
 	int			i;
@@ -566,7 +566,7 @@ debugtup(TupleTableSlot *slot, DestReceiver *self)
  */
 static void
 printtup_internal_20(TupleTableSlot *slot, DestReceiver *self)
-{
+{	StackTrace("printtup_internal_20");
 	TupleDesc	typeinfo = slot->tts_tupleDescriptor;
 	DR_printtup *myState = (DR_printtup *) self;
 	MemoryContext oldcontext;

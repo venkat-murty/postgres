@@ -42,7 +42,7 @@ execCurrentOf(CurrentOfExpr *cexpr,
 			  ExprContext *econtext,
 			  Oid table_oid,
 			  ItemPointer current_tid)
-{
+{	StackTrace("execCurrentOf");
 	char	   *cursor_name;
 	char	   *table_name;
 	Portal		portal;
@@ -210,7 +210,7 @@ execCurrentOf(CurrentOfExpr *cexpr,
  */
 static char *
 fetch_cursor_param_value(ExprContext *econtext, int paramId)
-{
+{	StackTrace("fetch_cursor_param_value");
 	ParamListInfo paramInfo = econtext->ecxt_param_list_info;
 
 	if (paramInfo &&
@@ -252,7 +252,7 @@ fetch_cursor_param_value(ExprContext *econtext, int paramId)
  */
 static ScanState *
 search_plan_tree(PlanState *node, Oid table_oid)
-{
+{	StackTrace("search_plan_tree");
 	if (node == NULL)
 		return NULL;
 	switch (nodeTag(node))

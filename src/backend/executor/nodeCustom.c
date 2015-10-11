@@ -21,7 +21,7 @@
 
 CustomScanState *
 ExecInitCustomScan(CustomScan *cscan, EState *estate, int eflags)
-{
+{	StackTrace("ExecInitCustomScan");
 	CustomScanState *css;
 	Relation	scan_rel = NULL;
 	Index		scanrelid = cscan->scan.scanrelid;
@@ -108,14 +108,14 @@ ExecInitCustomScan(CustomScan *cscan, EState *estate, int eflags)
 
 TupleTableSlot *
 ExecCustomScan(CustomScanState *node)
-{
+{	StackTrace("ExecCustomScan");
 	Assert(node->methods->ExecCustomScan != NULL);
 	return node->methods->ExecCustomScan(node);
 }
 
 void
 ExecEndCustomScan(CustomScanState *node)
-{
+{	StackTrace("ExecEndCustomScan");
 	Assert(node->methods->EndCustomScan != NULL);
 	node->methods->EndCustomScan(node);
 
@@ -133,14 +133,14 @@ ExecEndCustomScan(CustomScanState *node)
 
 void
 ExecReScanCustomScan(CustomScanState *node)
-{
+{	StackTrace("ExecReScanCustomScan");
 	Assert(node->methods->ReScanCustomScan != NULL);
 	node->methods->ReScanCustomScan(node);
 }
 
 void
 ExecCustomMarkPos(CustomScanState *node)
-{
+{	StackTrace("ExecCustomMarkPos");
 	if (!node->methods->MarkPosCustomScan)
 		ereport(ERROR,
 				(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
@@ -151,7 +151,7 @@ ExecCustomMarkPos(CustomScanState *node)
 
 void
 ExecCustomRestrPos(CustomScanState *node)
-{
+{	StackTrace("ExecCustomRestrPos");
 	if (!node->methods->RestrPosCustomScan)
 		ereport(ERROR,
 				(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),

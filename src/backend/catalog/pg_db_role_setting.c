@@ -22,7 +22,7 @@
 
 void
 AlterSetting(Oid databaseid, Oid roleid, VariableSetStmt *setstmt)
-{
+{	StackTrace("AlterSetting");
 	char	   *valuestr;
 	HeapTuple	tuple;
 	Relation	rel;
@@ -177,7 +177,7 @@ AlterSetting(Oid databaseid, Oid roleid, VariableSetStmt *setstmt)
  */
 void
 DropSetting(Oid databaseid, Oid roleid)
-{
+{	StackTrace("DropSetting");
 	Relation	relsetting;
 	HeapScanDesc scan;
 	ScanKeyData keys[2];
@@ -228,7 +228,7 @@ DropSetting(Oid databaseid, Oid roleid)
 void
 ApplySetting(Snapshot snapshot, Oid databaseid, Oid roleid,
 			 Relation relsetting, GucSource source)
-{
+{	StackTrace("ApplySetting");
 	SysScanDesc scan;
 	ScanKeyData keys[2];
 	HeapTuple	tup;

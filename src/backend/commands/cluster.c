@@ -102,7 +102,7 @@ static void reform_and_rewrite_tuple(HeapTuple tuple,
  */
 void
 cluster(ClusterStmt *stmt, bool isTopLevel)
-{
+{	StackTrace("cluster");
 	if (stmt->relation != NULL)
 	{
 		/* This is the single-relation case. */
@@ -258,7 +258,7 @@ cluster(ClusterStmt *stmt, bool isTopLevel)
  */
 void
 cluster_rel(Oid tableOid, Oid indexOid, bool recheck, bool verbose)
-{
+{	StackTrace("cluster_rel");
 	Relation	OldHeap;
 
 	/* Check for user-requested abort. */
@@ -416,7 +416,7 @@ cluster_rel(Oid tableOid, Oid indexOid, bool recheck, bool verbose)
  */
 void
 check_index_is_clusterable(Relation OldHeap, Oid indexOid, bool recheck, LOCKMODE lockmode)
-{
+{	StackTrace("check_index_is_clusterable");
 	Relation	OldIndex;
 
 	OldIndex = index_open(indexOid, lockmode);
@@ -476,7 +476,7 @@ check_index_is_clusterable(Relation OldHeap, Oid indexOid, bool recheck, LOCKMOD
  */
 void
 mark_index_clustered(Relation rel, Oid indexOid, bool is_internal)
-{
+{	StackTrace("mark_index_clustered");
 	HeapTuple	indexTuple;
 	Form_pg_index indexForm;
 	Relation	pg_index;
@@ -555,7 +555,7 @@ mark_index_clustered(Relation rel, Oid indexOid, bool is_internal)
  */
 static void
 rebuild_relation(Relation OldHeap, Oid indexOid, bool verbose)
-{
+{	StackTrace("rebuild_relation");
 	Oid			tableOid = RelationGetRelid(OldHeap);
 	Oid			tableSpace = OldHeap->rd_rel->reltablespace;
 	Oid			OIDNewHeap;
@@ -607,7 +607,7 @@ rebuild_relation(Relation OldHeap, Oid indexOid, bool verbose)
 Oid
 make_new_heap(Oid OIDOldHeap, Oid NewTableSpace, char relpersistence,
 			  LOCKMODE lockmode)
-{
+{	StackTrace("make_new_heap");
 	TupleDesc	OldHeapDesc;
 	char		NewHeapName[NAMEDATALEN];
 	Oid			OIDNewHeap;
@@ -734,7 +734,7 @@ static void
 copy_heap_data(Oid OIDNewHeap, Oid OIDOldHeap, Oid OIDOldIndex, bool verbose,
 			   bool *pSwapToastByContent, TransactionId *pFreezeXid,
 			   MultiXactId *pCutoffMulti)
-{
+{	StackTrace("copy_heap_data");
 	Relation	NewHeap,
 				OldHeap,
 				OldIndex;
@@ -1137,7 +1137,7 @@ swap_relation_files(Oid r1, Oid r2, bool target_is_pg_class,
 					TransactionId frozenXid,
 					MultiXactId cutoffMulti,
 					Oid *mapped_tables)
-{
+{	StackTrace("swap_relation_files");
 	Relation	relRelation;
 	HeapTuple	reltup1,
 				reltup2;
@@ -1479,7 +1479,7 @@ finish_heap_swap(Oid OIDOldHeap, Oid OIDNewHeap,
 				 TransactionId frozenXid,
 				 MultiXactId cutoffMulti,
 				 char newrelpersistence)
-{
+{	StackTrace("finish_heap_swap");
 	ObjectAddress object;
 	Oid			mapped_tables[4];
 	int			reindex_flags;
@@ -1640,7 +1640,7 @@ finish_heap_swap(Oid OIDOldHeap, Oid OIDNewHeap,
  */
 static List *
 get_tables_to_cluster(MemoryContext cluster_context)
-{
+{	StackTrace("get_tables_to_cluster");
 	Relation	indRelation;
 	HeapScanDesc scan;
 	ScanKeyData entry;
@@ -1711,7 +1711,7 @@ reform_and_rewrite_tuple(HeapTuple tuple,
 						 TupleDesc oldTupDesc, TupleDesc newTupDesc,
 						 Datum *values, bool *isnull,
 						 bool newRelHasOids, RewriteState rwstate)
-{
+{	StackTrace("reform_and_rewrite_tuple");
 	HeapTuple	copiedTuple;
 	int			i;
 

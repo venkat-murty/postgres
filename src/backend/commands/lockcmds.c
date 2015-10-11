@@ -35,7 +35,7 @@ static void RangeVarCallbackForLockTable(const RangeVar *rv, Oid relid,
  */
 void
 LockTableCommand(LockStmt *lockstmt)
-{
+{	StackTrace("LockTableCommand");
 	ListCell   *p;
 
 	/*---------
@@ -75,7 +75,7 @@ LockTableCommand(LockStmt *lockstmt)
 static void
 RangeVarCallbackForLockTable(const RangeVar *rv, Oid relid, Oid oldrelid,
 							 void *arg)
-{
+{	StackTrace("RangeVarCallbackForLockTable");
 	LOCKMODE	lockmode = *(LOCKMODE *) arg;
 	char		relkind;
 	AclResult	aclresult;
@@ -109,7 +109,7 @@ RangeVarCallbackForLockTable(const RangeVar *rv, Oid relid, Oid oldrelid,
  */
 static void
 LockTableRecurse(Oid reloid, LOCKMODE lockmode, bool nowait)
-{
+{	StackTrace("LockTableRecurse");
 	List	   *children;
 	ListCell   *lc;
 
@@ -167,7 +167,7 @@ LockTableRecurse(Oid reloid, LOCKMODE lockmode, bool nowait)
  */
 static AclResult
 LockTableAclCheck(Oid reloid, LOCKMODE lockmode)
-{
+{	StackTrace("LockTableAclCheck");
 	AclResult	aclresult;
 	AclMode		aclmask;
 

@@ -345,7 +345,7 @@ static const char *TransStateAsString(TransState state);
  */
 bool
 IsTransactionState(void)
-{
+{	StackTrace("IsTransactionState");
 	TransactionState s = CurrentTransactionState;
 
 	/*
@@ -365,7 +365,7 @@ IsTransactionState(void)
  */
 bool
 IsAbortedTransactionBlockState(void)
-{
+{	StackTrace("IsAbortedTransactionBlockState");
 	TransactionState s = CurrentTransactionState;
 
 	if (s->blockState == TBLOCK_ABORT ||
@@ -384,7 +384,7 @@ IsAbortedTransactionBlockState(void)
  */
 TransactionId
 GetTopTransactionId(void)
-{
+{	StackTrace("GetTopTransactionId");
 	if (!TransactionIdIsValid(XactTopTransactionId))
 		AssignTransactionId(&TopTransactionStateData);
 	return XactTopTransactionId;
@@ -399,7 +399,7 @@ GetTopTransactionId(void)
  */
 TransactionId
 GetTopTransactionIdIfAny(void)
-{
+{	StackTrace("GetTopTransactionIdIfAny");
 	return XactTopTransactionId;
 }
 
@@ -412,7 +412,7 @@ GetTopTransactionIdIfAny(void)
  */
 TransactionId
 GetCurrentTransactionId(void)
-{
+{	StackTrace("GetCurrentTransactionId");
 	TransactionState s = CurrentTransactionState;
 
 	if (!TransactionIdIsValid(s->transactionId))
@@ -429,7 +429,7 @@ GetCurrentTransactionId(void)
  */
 TransactionId
 GetCurrentTransactionIdIfAny(void)
-{
+{	StackTrace("GetCurrentTransactionIdIfAny");
 	return CurrentTransactionState->transactionId;
 }
 
@@ -440,7 +440,7 @@ GetCurrentTransactionIdIfAny(void)
  */
 void
 MarkCurrentTransactionIdLoggedIfAny(void)
-{
+{	StackTrace("MarkCurrentTransactionIdLoggedIfAny");
 	if (TransactionIdIsValid(CurrentTransactionState->transactionId))
 		CurrentTransactionState->didLogXid = true;
 }
@@ -456,7 +456,7 @@ MarkCurrentTransactionIdLoggedIfAny(void)
  */
 TransactionId
 GetStableLatestTransactionId(void)
-{
+{	StackTrace("GetStableLatestTransactionId");
 	static LocalTransactionId lxid = InvalidLocalTransactionId;
 	static TransactionId stablexid = InvalidTransactionId;
 
@@ -484,7 +484,7 @@ GetStableLatestTransactionId(void)
  */
 static void
 AssignTransactionId(TransactionState s)
-{
+{	StackTrace("AssignTransactionId");
 	bool		isSubXact = (s->parent != NULL);
 	ResourceOwner currentOwner;
 	bool		log_unknown_top = false;
@@ -644,7 +644,7 @@ AssignTransactionId(TransactionState s)
  */
 SubTransactionId
 GetCurrentSubTransactionId(void)
-{
+{	StackTrace("GetCurrentSubTransactionId");
 	TransactionState s = CurrentTransactionState;
 
 	return s->subTransactionId;
@@ -658,7 +658,7 @@ GetCurrentSubTransactionId(void)
  */
 bool
 SubTransactionIsActive(SubTransactionId subxid)
-{
+{	StackTrace("SubTransactionIsActive");
 	TransactionState s;
 
 	for (s = CurrentTransactionState; s != NULL; s = s->parent)
@@ -682,7 +682,7 @@ SubTransactionIsActive(SubTransactionId subxid)
  */
 CommandId
 GetCurrentCommandId(bool used)
-{
+{	StackTrace("GetCurrentCommandId");
 	/* this is global to a transaction, not subtransaction-local */
 	if (used)
 	{
@@ -703,7 +703,7 @@ GetCurrentCommandId(bool used)
  */
 TimestampTz
 GetCurrentTransactionStartTimestamp(void)
-{
+{	StackTrace("GetCurrentTransactionStartTimestamp");
 	return xactStartTimestamp;
 }
 
@@ -712,7 +712,7 @@ GetCurrentTransactionStartTimestamp(void)
  */
 TimestampTz
 GetCurrentStatementStartTimestamp(void)
-{
+{	StackTrace("GetCurrentStatementStartTimestamp");
 	return stmtStartTimestamp;
 }
 
@@ -724,7 +724,7 @@ GetCurrentStatementStartTimestamp(void)
  */
 TimestampTz
 GetCurrentTransactionStopTimestamp(void)
-{
+{	StackTrace("GetCurrentTransactionStopTimestamp");
 	if (xactStopTimestamp != 0)
 		return xactStopTimestamp;
 	return GetCurrentTimestamp();
@@ -735,7 +735,7 @@ GetCurrentTransactionStopTimestamp(void)
  */
 void
 SetCurrentStatementStartTimestamp(void)
-{
+{	StackTrace("SetCurrentStatementStartTimestamp");
 	stmtStartTimestamp = GetCurrentTimestamp();
 }
 
@@ -744,7 +744,7 @@ SetCurrentStatementStartTimestamp(void)
  */
 static inline void
 SetCurrentTransactionStopTimestamp(void)
-{
+{	StackTrace("SetCurrentTransactionStopTimestamp");
 	xactStopTimestamp = GetCurrentTimestamp();
 }
 
@@ -756,7 +756,7 @@ SetCurrentTransactionStopTimestamp(void)
  */
 int
 GetCurrentTransactionNestLevel(void)
-{
+{	StackTrace("GetCurrentTransactionNestLevel");
 	TransactionState s = CurrentTransactionState;
 
 	return s->nestingLevel;
@@ -768,7 +768,7 @@ GetCurrentTransactionNestLevel(void)
  */
 bool
 TransactionIdIsCurrentTransactionId(TransactionId xid)
-{
+{	StackTrace("TransactionIdIsCurrentTransactionId");
 	TransactionState s;
 
 	/*
@@ -866,7 +866,7 @@ TransactionIdIsCurrentTransactionId(TransactionId xid)
  */
 bool
 TransactionStartedDuringRecovery(void)
-{
+{	StackTrace("TransactionStartedDuringRecovery");
 	return CurrentTransactionState->startedInRecovery;
 }
 
@@ -875,7 +875,7 @@ TransactionStartedDuringRecovery(void)
  */
 void
 EnterParallelMode(void)
-{
+{	StackTrace("EnterParallelMode");
 	TransactionState s = CurrentTransactionState;
 
 	Assert(s->parallelModeLevel >= 0);
@@ -888,7 +888,7 @@ EnterParallelMode(void)
  */
 void
 ExitParallelMode(void)
-{
+{	StackTrace("ExitParallelMode");
 	TransactionState s = CurrentTransactionState;
 
 	Assert(s->parallelModeLevel > 0);
@@ -908,7 +908,7 @@ ExitParallelMode(void)
  */
 bool
 IsInParallelMode(void)
-{
+{	StackTrace("IsInParallelMode");
 	return CurrentTransactionState->parallelModeLevel != 0;
 }
 
@@ -917,7 +917,7 @@ IsInParallelMode(void)
  */
 void
 CommandCounterIncrement(void)
-{
+{	StackTrace("CommandCounterIncrement");
 	/*
 	 * If the current value of the command counter hasn't been "used" to mark
 	 * tuples, we need not increment it, since there's no need to distinguish
@@ -965,7 +965,7 @@ CommandCounterIncrement(void)
  */
 void
 ForceSyncCommit(void)
-{
+{	StackTrace("ForceSyncCommit");
 	forceSyncCommit = true;
 }
 
@@ -980,7 +980,7 @@ ForceSyncCommit(void)
  */
 static void
 AtStart_Cache(void)
-{
+{	StackTrace("AtStart_Cache");
 	AcceptInvalidationMessages();
 }
 
@@ -989,7 +989,7 @@ AtStart_Cache(void)
  */
 static void
 AtStart_Memory(void)
-{
+{	StackTrace("AtStart_Memory");
 	TransactionState s = CurrentTransactionState;
 
 	/*
@@ -1038,7 +1038,7 @@ AtStart_Memory(void)
  */
 static void
 AtStart_ResourceOwner(void)
-{
+{	StackTrace("AtStart_ResourceOwner");
 	TransactionState s = CurrentTransactionState;
 
 	/*
@@ -1066,7 +1066,7 @@ AtStart_ResourceOwner(void)
  */
 static void
 AtSubStart_Memory(void)
-{
+{	StackTrace("AtSubStart_Memory");
 	TransactionState s = CurrentTransactionState;
 
 	Assert(CurTransactionContext != NULL);
@@ -1092,7 +1092,7 @@ AtSubStart_Memory(void)
  */
 static void
 AtSubStart_ResourceOwner(void)
-{
+{	StackTrace("AtSubStart_ResourceOwner");
 	TransactionState s = CurrentTransactionState;
 
 	Assert(s->parent != NULL);
@@ -1122,7 +1122,7 @@ AtSubStart_ResourceOwner(void)
  */
 static TransactionId
 RecordTransactionCommit(void)
-{
+{	StackTrace("RecordTransactionCommit");
 	TransactionId xid = GetTopTransactionIdIfAny();
 	bool		markXidCommitted = TransactionIdIsValid(xid);
 	TransactionId latestXid = InvalidTransactionId;
@@ -1333,7 +1333,7 @@ cleanup:
  */
 static void
 AtCCI_LocalCache(void)
-{
+{	StackTrace("AtCCI_LocalCache");
 	/*
 	 * Make any pending relation map changes visible.  We must do this before
 	 * processing local sinval messages, so that the map changes will get
@@ -1352,7 +1352,7 @@ AtCCI_LocalCache(void)
  */
 static void
 AtCommit_Memory(void)
-{
+{	StackTrace("AtCommit_Memory");
 	/*
 	 * Now that we're "out" of a transaction, have the system allocate things
 	 * in the top memory context instead of per-transaction contexts.
@@ -1379,7 +1379,7 @@ AtCommit_Memory(void)
  */
 static void
 AtSubCommit_Memory(void)
-{
+{	StackTrace("AtSubCommit_Memory");
 	TransactionState s = CurrentTransactionState;
 
 	Assert(s->parent != NULL);
@@ -1408,7 +1408,7 @@ AtSubCommit_Memory(void)
  */
 static void
 AtSubCommit_childXids(void)
-{
+{	StackTrace("AtSubCommit_childXids");
 	TransactionState s = CurrentTransactionState;
 	int			new_nChildXids;
 
@@ -1498,7 +1498,7 @@ AtSubCommit_childXids(void)
  */
 static TransactionId
 RecordTransactionAbort(bool isSubXact)
-{
+{	StackTrace("RecordTransactionAbort");
 	TransactionId xid = GetCurrentTransactionIdIfAny();
 	TransactionId latestXid;
 	int			nrels;
@@ -1609,7 +1609,7 @@ RecordTransactionAbort(bool isSubXact)
  */
 static void
 AtAbort_Memory(void)
-{
+{	StackTrace("AtAbort_Memory");
 	/*
 	 * Switch into TransactionAbortContext, which should have some free space
 	 * even if nothing else does.  We'll work in this context until we've
@@ -1629,7 +1629,7 @@ AtAbort_Memory(void)
  */
 static void
 AtSubAbort_Memory(void)
-{
+{	StackTrace("AtSubAbort_Memory");
 	Assert(TransactionAbortContext != NULL);
 
 	MemoryContextSwitchTo(TransactionAbortContext);
@@ -1641,7 +1641,7 @@ AtSubAbort_Memory(void)
  */
 static void
 AtAbort_ResourceOwner(void)
-{
+{	StackTrace("AtAbort_ResourceOwner");
 	/*
 	 * Make sure we have a valid ResourceOwner, if possible (else it will be
 	 * NULL, which is OK)
@@ -1654,7 +1654,7 @@ AtAbort_ResourceOwner(void)
  */
 static void
 AtSubAbort_ResourceOwner(void)
-{
+{	StackTrace("AtSubAbort_ResourceOwner");
 	TransactionState s = CurrentTransactionState;
 
 	/* Make sure we have a valid ResourceOwner */
@@ -1667,7 +1667,7 @@ AtSubAbort_ResourceOwner(void)
  */
 static void
 AtSubAbort_childXids(void)
-{
+{	StackTrace("AtSubAbort_childXids");
 	TransactionState s = CurrentTransactionState;
 
 	/*
@@ -1699,7 +1699,7 @@ AtSubAbort_childXids(void)
  */
 static void
 AtCleanup_Memory(void)
-{
+{	StackTrace("AtCleanup_Memory");
 	Assert(CurrentTransactionState->parent == NULL);
 
 	/*
@@ -1735,7 +1735,7 @@ AtCleanup_Memory(void)
  */
 static void
 AtSubCleanup_Memory(void)
-{
+{	StackTrace("AtSubCleanup_Memory");
 	TransactionState s = CurrentTransactionState;
 
 	Assert(s->parent != NULL);
@@ -1770,7 +1770,7 @@ AtSubCleanup_Memory(void)
  */
 static void
 StartTransaction(void)
-{
+{	StackTrace("StartTransaction");
 	TransactionState s;
 	VirtualTransactionId vxid;
 
@@ -1908,7 +1908,7 @@ StartTransaction(void)
  */
 static void
 CommitTransaction(void)
-{
+{	StackTrace("CommitTransaction");
 	TransactionState s = CurrentTransactionState;
 	TransactionId latestXid;
 	bool		is_parallel_worker;
@@ -2144,7 +2144,7 @@ CommitTransaction(void)
  */
 static void
 PrepareTransaction(void)
-{
+{	StackTrace("PrepareTransaction");
 	TransactionState s = CurrentTransactionState;
 	TransactionId xid = GetCurrentTransactionId();
 	GlobalTransaction gxact;
@@ -2413,7 +2413,7 @@ PrepareTransaction(void)
  */
 static void
 AbortTransaction(void)
-{
+{	StackTrace("AbortTransaction");
 	TransactionState s = CurrentTransactionState;
 	TransactionId latestXid;
 	bool		is_parallel_worker;
@@ -2586,7 +2586,7 @@ AbortTransaction(void)
  */
 static void
 CleanupTransaction(void)
-{
+{	StackTrace("CleanupTransaction");
 	TransactionState s = CurrentTransactionState;
 
 	/*
@@ -2635,7 +2635,7 @@ CleanupTransaction(void)
  */
 void
 StartTransactionCommand(void)
-{
+{	StackTrace("StartTransactionCommand");
 	TransactionState s = CurrentTransactionState;
 
 	switch (s->blockState)
@@ -2705,7 +2705,7 @@ StartTransactionCommand(void)
  */
 void
 CommitTransactionCommand(void)
-{
+{	StackTrace("CommitTransactionCommand");
 	TransactionState s = CurrentTransactionState;
 
 	switch (s->blockState)
@@ -2944,7 +2944,7 @@ CommitTransactionCommand(void)
  */
 void
 AbortCurrentTransaction(void)
-{
+{	StackTrace("AbortCurrentTransaction");
 	TransactionState s = CurrentTransactionState;
 
 	switch (s->blockState)
@@ -3112,7 +3112,7 @@ AbortCurrentTransaction(void)
  */
 void
 PreventTransactionChain(bool isTopLevel, const char *stmtType)
-{
+{	StackTrace("PreventTransactionChain");
 	/*
 	 * xact block already started?
 	 */
@@ -3160,13 +3160,13 @@ PreventTransactionChain(bool isTopLevel, const char *stmtType)
  */
 void
 WarnNoTransactionChain(bool isTopLevel, const char *stmtType)
-{
+{	StackTrace("WarnNoTransactionChain");
 	CheckTransactionChain(isTopLevel, false, stmtType);
 }
 
 void
 RequireTransactionChain(bool isTopLevel, const char *stmtType)
-{
+{	StackTrace("RequireTransactionChain");
 	CheckTransactionChain(isTopLevel, true, stmtType);
 }
 
@@ -3189,7 +3189,7 @@ RequireTransactionChain(bool isTopLevel, const char *stmtType)
  */
 static void
 CheckTransactionChain(bool isTopLevel, bool throwError, const char *stmtType)
-{
+{	StackTrace("CheckTransactionChain");
 	/*
 	 * xact block already started?
 	 */
@@ -3228,7 +3228,7 @@ CheckTransactionChain(bool isTopLevel, bool throwError, const char *stmtType)
  */
 bool
 IsInTransactionChain(bool isTopLevel)
-{
+{	StackTrace("IsInTransactionChain");
 	/*
 	 * Return true on same conditions that would make PreventTransactionChain
 	 * error out
@@ -3263,7 +3263,7 @@ IsInTransactionChain(bool isTopLevel)
  */
 void
 RegisterXactCallback(XactCallback callback, void *arg)
-{
+{	StackTrace("RegisterXactCallback");
 	XactCallbackItem *item;
 
 	item = (XactCallbackItem *)
@@ -3276,7 +3276,7 @@ RegisterXactCallback(XactCallback callback, void *arg)
 
 void
 UnregisterXactCallback(XactCallback callback, void *arg)
-{
+{	StackTrace("UnregisterXactCallback");
 	XactCallbackItem *item;
 	XactCallbackItem *prev;
 
@@ -3297,7 +3297,7 @@ UnregisterXactCallback(XactCallback callback, void *arg)
 
 static void
 CallXactCallbacks(XactEvent event)
-{
+{	StackTrace("CallXactCallbacks");
 	XactCallbackItem *item;
 
 	for (item = Xact_callbacks; item; item = item->next)
@@ -3318,7 +3318,7 @@ CallXactCallbacks(XactEvent event)
  */
 void
 RegisterSubXactCallback(SubXactCallback callback, void *arg)
-{
+{	StackTrace("RegisterSubXactCallback");
 	SubXactCallbackItem *item;
 
 	item = (SubXactCallbackItem *)
@@ -3331,7 +3331,7 @@ RegisterSubXactCallback(SubXactCallback callback, void *arg)
 
 void
 UnregisterSubXactCallback(SubXactCallback callback, void *arg)
-{
+{	StackTrace("UnregisterSubXactCallback");
 	SubXactCallbackItem *item;
 	SubXactCallbackItem *prev;
 
@@ -3354,7 +3354,7 @@ static void
 CallSubXactCallbacks(SubXactEvent event,
 					 SubTransactionId mySubid,
 					 SubTransactionId parentSubid)
-{
+{	StackTrace("CallSubXactCallbacks");
 	SubXactCallbackItem *item;
 
 	for (item = SubXact_callbacks; item; item = item->next)
@@ -3373,7 +3373,7 @@ CallSubXactCallbacks(SubXactEvent event,
  */
 void
 BeginTransactionBlock(void)
-{
+{	StackTrace("BeginTransactionBlock");
 	TransactionState s = CurrentTransactionState;
 
 	switch (s->blockState)
@@ -3432,7 +3432,7 @@ BeginTransactionBlock(void)
  */
 bool
 PrepareTransactionBlock(char *gid)
-{
+{	StackTrace("PrepareTransactionBlock");
 	TransactionState s;
 	bool		result;
 
@@ -3483,7 +3483,7 @@ PrepareTransactionBlock(char *gid)
  */
 bool
 EndTransactionBlock(void)
-{
+{	StackTrace("EndTransactionBlock");
 	TransactionState s = CurrentTransactionState;
 	bool		result = false;
 
@@ -3607,7 +3607,7 @@ EndTransactionBlock(void)
  */
 void
 UserAbortTransactionBlock(void)
-{
+{	StackTrace("UserAbortTransactionBlock");
 	TransactionState s = CurrentTransactionState;
 
 	switch (s->blockState)
@@ -3706,7 +3706,7 @@ UserAbortTransactionBlock(void)
  */
 void
 DefineSavepoint(char *name)
-{
+{	StackTrace("DefineSavepoint");
 	TransactionState s = CurrentTransactionState;
 
 	/*
@@ -3769,7 +3769,7 @@ DefineSavepoint(char *name)
  */
 void
 ReleaseSavepoint(List *options)
-{
+{	StackTrace("ReleaseSavepoint");
 	TransactionState s = CurrentTransactionState;
 	TransactionState target,
 				xact;
@@ -3882,7 +3882,7 @@ ReleaseSavepoint(List *options)
  */
 void
 RollbackToSavepoint(List *options)
-{
+{	StackTrace("RollbackToSavepoint");
 	TransactionState s = CurrentTransactionState;
 	TransactionState target,
 				xact;
@@ -4011,7 +4011,7 @@ RollbackToSavepoint(List *options)
  */
 void
 BeginInternalSubTransaction(char *name)
-{
+{	StackTrace("BeginInternalSubTransaction");
 	TransactionState s = CurrentTransactionState;
 
 	/*
@@ -4081,7 +4081,7 @@ BeginInternalSubTransaction(char *name)
  */
 void
 ReleaseCurrentSubTransaction(void)
-{
+{	StackTrace("ReleaseCurrentSubTransaction");
 	TransactionState s = CurrentTransactionState;
 
 	/*
@@ -4115,7 +4115,7 @@ ReleaseCurrentSubTransaction(void)
  */
 void
 RollbackAndReleaseCurrentSubTransaction(void)
-{
+{	StackTrace("RollbackAndReleaseCurrentSubTransaction");
 	TransactionState s = CurrentTransactionState;
 
 	/*
@@ -4180,7 +4180,7 @@ RollbackAndReleaseCurrentSubTransaction(void)
  */
 void
 AbortOutOfAnyTransaction(void)
-{
+{	StackTrace("AbortOutOfAnyTransaction");
 	TransactionState s = CurrentTransactionState;
 
 	/*
@@ -4262,7 +4262,7 @@ AbortOutOfAnyTransaction(void)
  */
 bool
 IsTransactionBlock(void)
-{
+{	StackTrace("IsTransactionBlock");
 	TransactionState s = CurrentTransactionState;
 
 	if (s->blockState == TBLOCK_DEFAULT || s->blockState == TBLOCK_STARTED)
@@ -4280,7 +4280,7 @@ IsTransactionBlock(void)
  */
 bool
 IsTransactionOrTransactionBlock(void)
-{
+{	StackTrace("IsTransactionOrTransactionBlock");
 	TransactionState s = CurrentTransactionState;
 
 	if (s->blockState == TBLOCK_DEFAULT)
@@ -4294,7 +4294,7 @@ IsTransactionOrTransactionBlock(void)
  */
 char
 TransactionBlockStatusCode(void)
-{
+{	StackTrace("TransactionBlockStatusCode");
 	TransactionState s = CurrentTransactionState;
 
 	switch (s->blockState)
@@ -4334,7 +4334,7 @@ TransactionBlockStatusCode(void)
  */
 bool
 IsSubTransaction(void)
-{
+{	StackTrace("IsSubTransaction");
 	TransactionState s = CurrentTransactionState;
 
 	if (s->nestingLevel >= 2)
@@ -4357,7 +4357,7 @@ IsSubTransaction(void)
  */
 static void
 StartSubTransaction(void)
-{
+{	StackTrace("StartSubTransaction");
 	TransactionState s = CurrentTransactionState;
 
 	if (s->state != TRANS_DEFAULT)
@@ -4395,7 +4395,7 @@ StartSubTransaction(void)
  */
 static void
 CommitSubTransaction(void)
-{
+{	StackTrace("CommitSubTransaction");
 	TransactionState s = CurrentTransactionState;
 
 	ShowTransactionState("CommitSubTransaction");
@@ -4503,7 +4503,7 @@ CommitSubTransaction(void)
  */
 static void
 AbortSubTransaction(void)
-{
+{	StackTrace("AbortSubTransaction");
 	TransactionState s = CurrentTransactionState;
 
 	/* Prevent cancel/die interrupt while cleaning up */
@@ -4645,7 +4645,7 @@ AbortSubTransaction(void)
  */
 static void
 CleanupSubTransaction(void)
-{
+{	StackTrace("CleanupSubTransaction");
 	TransactionState s = CurrentTransactionState;
 
 	ShowTransactionState("CleanupSubTransaction");
@@ -4678,7 +4678,7 @@ CleanupSubTransaction(void)
  */
 static void
 PushTransaction(void)
-{
+{	StackTrace("PushTransaction");
 	TransactionState p = CurrentTransactionState;
 	TransactionState s;
 
@@ -4737,7 +4737,7 @@ PushTransaction(void)
  */
 static void
 PopTransaction(void)
-{
+{	StackTrace("PopTransaction");
 	TransactionState s = CurrentTransactionState;
 
 	if (s->state != TRANS_DEFAULT)
@@ -4771,7 +4771,7 @@ PopTransaction(void)
  */
 Size
 EstimateTransactionStateSpace(void)
-{
+{	StackTrace("EstimateTransactionStateSpace");
 	TransactionState s;
 	Size		nxids = 5;		/* iso level, deferrable, top & current XID,
 								 * XID count */
@@ -4803,7 +4803,7 @@ EstimateTransactionStateSpace(void)
  */
 void
 SerializeTransactionState(Size maxsize, char *start_address)
-{
+{	StackTrace("SerializeTransactionState");
 	TransactionState s;
 	Size		nxids = 0;
 	Size		i = 0;
@@ -4869,7 +4869,7 @@ SerializeTransactionState(Size maxsize, char *start_address)
  */
 void
 StartParallelWorkerTransaction(char *tstatespace)
-{
+{	StackTrace("StartParallelWorkerTransaction");
 	TransactionId *tstate = (TransactionId *) tstatespace;
 
 	Assert(CurrentTransactionState->blockState == TBLOCK_DEFAULT);
@@ -4891,7 +4891,7 @@ StartParallelWorkerTransaction(char *tstatespace)
  */
 void
 EndParallelWorkerTransaction(void)
-{
+{	StackTrace("EndParallelWorkerTransaction");
 	Assert(CurrentTransactionState->blockState == TBLOCK_PARALLEL_INPROGRESS);
 	CommitTransaction();
 	CurrentTransactionState->blockState = TBLOCK_DEFAULT;
@@ -4903,7 +4903,7 @@ EndParallelWorkerTransaction(void)
  */
 static void
 ShowTransactionState(const char *str)
-{
+{	StackTrace("ShowTransactionState");
 	/* skip work if message will definitely not be printed */
 	if (log_min_messages <= DEBUG3 || client_min_messages <= DEBUG3)
 	{
@@ -4918,7 +4918,7 @@ ShowTransactionState(const char *str)
  */
 static void
 ShowTransactionStateRec(TransactionState s)
-{
+{	StackTrace("ShowTransactionStateRec");
 	StringInfoData buf;
 
 	initStringInfo(&buf);
@@ -4956,7 +4956,7 @@ ShowTransactionStateRec(TransactionState s)
  */
 static const char *
 BlockStateAsString(TBlockState blockState)
-{
+{	StackTrace("BlockStateAsString");
 	switch (blockState)
 	{
 		case TBLOCK_DEFAULT:
@@ -5007,7 +5007,7 @@ BlockStateAsString(TBlockState blockState)
  */
 static const char *
 TransStateAsString(TransState state)
-{
+{	StackTrace("TransStateAsString");
 	switch (state)
 	{
 		case TRANS_DEFAULT:
@@ -5037,7 +5037,7 @@ TransStateAsString(TransState state)
  */
 int
 xactGetCommittedChildren(TransactionId **ptr)
-{
+{	StackTrace("xactGetCommittedChildren");
 	TransactionState s = CurrentTransactionState;
 
 	if (s->nChildXids == 0)
@@ -5066,7 +5066,7 @@ XactLogCommitRecord(TimestampTz commit_time,
 					int nmsgs, SharedInvalidationMessage *msgs,
 					bool relcacheInval, bool forceSync,
 					TransactionId twophase_xid)
-{
+{	StackTrace("XactLogCommitRecord");
 	xl_xact_commit xlrec;
 	xl_xact_xinfo xl_xinfo;
 	xl_xact_dbinfo xl_dbinfo;
@@ -5202,7 +5202,7 @@ XactLogAbortRecord(TimestampTz abort_time,
 				   int nsubxacts, TransactionId *subxacts,
 				   int nrels, RelFileNode *rels,
 				   TransactionId twophase_xid)
-{
+{	StackTrace("XactLogAbortRecord");
 	xl_xact_abort xlrec;
 	xl_xact_xinfo xl_xinfo;
 	xl_xact_subxacts xl_subxacts;
@@ -5287,7 +5287,7 @@ xact_redo_commit(xl_xact_parsed_commit *parsed,
 				 TransactionId xid,
 				 XLogRecPtr lsn,
 				 RepOriginId origin_id)
-{
+{	StackTrace("xact_redo_commit");
 	TransactionId max_xid;
 	int			i;
 	TimestampTz commit_time;
@@ -5447,7 +5447,7 @@ xact_redo_commit(xl_xact_parsed_commit *parsed,
  */
 static void
 xact_redo_abort(xl_xact_parsed_abort *parsed, TransactionId xid)
-{
+{	StackTrace("xact_redo_abort");
 	int			i;
 	TransactionId max_xid;
 
@@ -5524,7 +5524,7 @@ xact_redo_abort(xl_xact_parsed_abort *parsed, TransactionId xid)
 
 void
 xact_redo(XLogReaderState *record)
-{
+{	StackTrace("xact_redo");
 	uint8		info = XLogRecGetInfo(record) & XLOG_XACT_OPMASK;
 
 	/* Backup blocks are not used in xact records */

@@ -32,7 +32,7 @@
 
 static Oid
 oidin_subr(const char *s, char **endloc)
-{
+{	StackTrace("oidin_subr");
 	unsigned long cvt;
 	char	   *endptr;
 	Oid			result;
@@ -112,7 +112,7 @@ oidin_subr(const char *s, char **endloc)
 
 Datum
 oidin(PG_FUNCTION_ARGS)
-{
+{	StackTrace("oidin");
 	char	   *s = PG_GETARG_CSTRING(0);
 	Oid			result;
 
@@ -122,7 +122,7 @@ oidin(PG_FUNCTION_ARGS)
 
 Datum
 oidout(PG_FUNCTION_ARGS)
-{
+{	StackTrace("oidout");
 	Oid			o = PG_GETARG_OID(0);
 	char	   *result = (char *) palloc(12);
 
@@ -135,7 +135,7 @@ oidout(PG_FUNCTION_ARGS)
  */
 Datum
 oidrecv(PG_FUNCTION_ARGS)
-{
+{	StackTrace("oidrecv");
 	StringInfo	buf = (StringInfo) PG_GETARG_POINTER(0);
 
 	PG_RETURN_OID((Oid) pq_getmsgint(buf, sizeof(Oid)));
@@ -146,7 +146,7 @@ oidrecv(PG_FUNCTION_ARGS)
  */
 Datum
 oidsend(PG_FUNCTION_ARGS)
-{
+{	StackTrace("oidsend");
 	Oid			arg1 = PG_GETARG_OID(0);
 	StringInfoData buf;
 
@@ -162,7 +162,7 @@ oidsend(PG_FUNCTION_ARGS)
  */
 oidvector *
 buildoidvector(const Oid *oids, int n)
-{
+{	StackTrace("buildoidvector");
 	oidvector  *result;
 
 	result = (oidvector *) palloc0(OidVectorSize(n));
@@ -189,7 +189,7 @@ buildoidvector(const Oid *oids, int n)
  */
 Datum
 oidvectorin(PG_FUNCTION_ARGS)
-{
+{	StackTrace("oidvectorin");
 	char	   *oidString = PG_GETARG_CSTRING(0);
 	oidvector  *result;
 	int			n;
@@ -226,7 +226,7 @@ oidvectorin(PG_FUNCTION_ARGS)
  */
 Datum
 oidvectorout(PG_FUNCTION_ARGS)
-{
+{	StackTrace("oidvectorout");
 	oidvector  *oidArray = (oidvector *) PG_GETARG_POINTER(0);
 	int			num,
 				nnums = oidArray->dim1;
@@ -252,7 +252,7 @@ oidvectorout(PG_FUNCTION_ARGS)
  */
 Datum
 oidvectorrecv(PG_FUNCTION_ARGS)
-{
+{	StackTrace("oidvectorrecv");
 	StringInfo	buf = (StringInfo) PG_GETARG_POINTER(0);
 	FunctionCallInfoData locfcinfo;
 	oidvector  *result;
@@ -300,7 +300,7 @@ oidvectorrecv(PG_FUNCTION_ARGS)
  */
 Datum
 oidvectorsend(PG_FUNCTION_ARGS)
-{
+{	StackTrace("oidvectorsend");
 	return array_send(fcinfo);
 }
 
@@ -309,7 +309,7 @@ oidvectorsend(PG_FUNCTION_ARGS)
  */
 Oid
 oidparse(Node *node)
-{
+{	StackTrace("oidparse");
 	switch (nodeTag(node))
 	{
 		case T_Integer:
@@ -335,7 +335,7 @@ oidparse(Node *node)
 
 Datum
 oideq(PG_FUNCTION_ARGS)
-{
+{	StackTrace("oideq");
 	Oid			arg1 = PG_GETARG_OID(0);
 	Oid			arg2 = PG_GETARG_OID(1);
 
@@ -344,7 +344,7 @@ oideq(PG_FUNCTION_ARGS)
 
 Datum
 oidne(PG_FUNCTION_ARGS)
-{
+{	StackTrace("oidne");
 	Oid			arg1 = PG_GETARG_OID(0);
 	Oid			arg2 = PG_GETARG_OID(1);
 
@@ -353,7 +353,7 @@ oidne(PG_FUNCTION_ARGS)
 
 Datum
 oidlt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("oidlt");
 	Oid			arg1 = PG_GETARG_OID(0);
 	Oid			arg2 = PG_GETARG_OID(1);
 
@@ -362,7 +362,7 @@ oidlt(PG_FUNCTION_ARGS)
 
 Datum
 oidle(PG_FUNCTION_ARGS)
-{
+{	StackTrace("oidle");
 	Oid			arg1 = PG_GETARG_OID(0);
 	Oid			arg2 = PG_GETARG_OID(1);
 
@@ -371,7 +371,7 @@ oidle(PG_FUNCTION_ARGS)
 
 Datum
 oidge(PG_FUNCTION_ARGS)
-{
+{	StackTrace("oidge");
 	Oid			arg1 = PG_GETARG_OID(0);
 	Oid			arg2 = PG_GETARG_OID(1);
 
@@ -380,7 +380,7 @@ oidge(PG_FUNCTION_ARGS)
 
 Datum
 oidgt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("oidgt");
 	Oid			arg1 = PG_GETARG_OID(0);
 	Oid			arg2 = PG_GETARG_OID(1);
 
@@ -389,7 +389,7 @@ oidgt(PG_FUNCTION_ARGS)
 
 Datum
 oidlarger(PG_FUNCTION_ARGS)
-{
+{	StackTrace("oidlarger");
 	Oid			arg1 = PG_GETARG_OID(0);
 	Oid			arg2 = PG_GETARG_OID(1);
 
@@ -398,7 +398,7 @@ oidlarger(PG_FUNCTION_ARGS)
 
 Datum
 oidsmaller(PG_FUNCTION_ARGS)
-{
+{	StackTrace("oidsmaller");
 	Oid			arg1 = PG_GETARG_OID(0);
 	Oid			arg2 = PG_GETARG_OID(1);
 
@@ -407,7 +407,7 @@ oidsmaller(PG_FUNCTION_ARGS)
 
 Datum
 oidvectoreq(PG_FUNCTION_ARGS)
-{
+{	StackTrace("oidvectoreq");
 	int32		cmp = DatumGetInt32(btoidvectorcmp(fcinfo));
 
 	PG_RETURN_BOOL(cmp == 0);
@@ -415,7 +415,7 @@ oidvectoreq(PG_FUNCTION_ARGS)
 
 Datum
 oidvectorne(PG_FUNCTION_ARGS)
-{
+{	StackTrace("oidvectorne");
 	int32		cmp = DatumGetInt32(btoidvectorcmp(fcinfo));
 
 	PG_RETURN_BOOL(cmp != 0);
@@ -423,7 +423,7 @@ oidvectorne(PG_FUNCTION_ARGS)
 
 Datum
 oidvectorlt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("oidvectorlt");
 	int32		cmp = DatumGetInt32(btoidvectorcmp(fcinfo));
 
 	PG_RETURN_BOOL(cmp < 0);
@@ -431,7 +431,7 @@ oidvectorlt(PG_FUNCTION_ARGS)
 
 Datum
 oidvectorle(PG_FUNCTION_ARGS)
-{
+{	StackTrace("oidvectorle");
 	int32		cmp = DatumGetInt32(btoidvectorcmp(fcinfo));
 
 	PG_RETURN_BOOL(cmp <= 0);
@@ -439,7 +439,7 @@ oidvectorle(PG_FUNCTION_ARGS)
 
 Datum
 oidvectorge(PG_FUNCTION_ARGS)
-{
+{	StackTrace("oidvectorge");
 	int32		cmp = DatumGetInt32(btoidvectorcmp(fcinfo));
 
 	PG_RETURN_BOOL(cmp >= 0);
@@ -447,7 +447,7 @@ oidvectorge(PG_FUNCTION_ARGS)
 
 Datum
 oidvectorgt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("oidvectorgt");
 	int32		cmp = DatumGetInt32(btoidvectorcmp(fcinfo));
 
 	PG_RETURN_BOOL(cmp > 0);

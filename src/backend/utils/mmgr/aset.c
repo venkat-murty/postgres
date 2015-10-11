@@ -315,7 +315,7 @@ static const unsigned char LogTable256[256] =
  */
 static inline int
 AllocSetFreeIndex(Size size)
-{
+{	StackTrace("AllocSetFreeIndex");
 	int			idx;
 	unsigned int t,
 				tsize;
@@ -349,7 +349,7 @@ AllocSetFreeIndex(Size size)
 /* Wipe freed memory for debugging purposes */
 static void
 wipe_mem(void *ptr, size_t size)
-{
+{	StackTrace("wipe_mem");
 	VALGRIND_MAKE_MEM_UNDEFINED(ptr, size);
 	memset(ptr, 0x7F, size);
 	VALGRIND_MAKE_MEM_NOACCESS(ptr, size);
@@ -359,7 +359,7 @@ wipe_mem(void *ptr, size_t size)
 #ifdef MEMORY_CONTEXT_CHECKING
 static void
 set_sentinel(void *base, Size offset)
-{
+{	StackTrace("set_sentinel");
 	char	   *ptr = (char *) base + offset;
 
 	VALGRIND_MAKE_MEM_UNDEFINED(ptr, 1);
@@ -369,7 +369,7 @@ set_sentinel(void *base, Size offset)
 
 static bool
 sentinel_ok(const void *base, Size offset)
-{
+{	StackTrace("sentinel_ok");
 	const char *ptr = (const char *) base + offset;
 	bool		ret;
 
@@ -397,7 +397,7 @@ sentinel_ok(const void *base, Size offset)
  */
 static void
 randomize_mem(char *ptr, size_t size)
-{
+{	StackTrace("randomize_mem");
 	static int	save_ctr = 1;
 	size_t		remaining = size;
 	int			ctr;
@@ -437,7 +437,7 @@ AllocSetContextCreate(MemoryContext parent,
 					  Size minContextSize,
 					  Size initBlockSize,
 					  Size maxBlockSize)
-{
+{	StackTrace("AllocSetContextCreate");
 	AllocSet	set;
 
 	/* Do the type-independent part of context creation */
@@ -530,7 +530,7 @@ AllocSetContextCreate(MemoryContext parent,
  */
 static void
 AllocSetInit(MemoryContext context)
-{
+{	StackTrace("AllocSetInit");
 	/*
 	 * Since MemoryContextCreate already zeroed the context node, we don't
 	 * have to do anything here: it's already OK.
@@ -550,7 +550,7 @@ AllocSetInit(MemoryContext context)
  */
 static void
 AllocSetReset(MemoryContext context)
-{
+{	StackTrace("AllocSetReset");
 	AllocSet	set = (AllocSet) context;
 	AllocBlock	block;
 
@@ -612,7 +612,7 @@ AllocSetReset(MemoryContext context)
  */
 static void
 AllocSetDelete(MemoryContext context)
-{
+{	StackTrace("AllocSetDelete");
 	AllocSet	set = (AllocSet) context;
 	AllocBlock	block = set->blocks;
 
@@ -651,7 +651,7 @@ AllocSetDelete(MemoryContext context)
  */
 static void *
 AllocSetAlloc(MemoryContext context, Size size)
-{
+{	StackTrace("AllocSetAlloc");
 	AllocSet	set = (AllocSet) context;
 	AllocBlock	block;
 	AllocChunk	chunk;
@@ -921,7 +921,7 @@ AllocSetAlloc(MemoryContext context, Size size)
  */
 static void
 AllocSetFree(MemoryContext context, void *pointer)
-{
+{	StackTrace("AllocSetFree");
 	AllocSet	set = (AllocSet) context;
 	AllocChunk	chunk = AllocPointerGetChunk(pointer);
 
@@ -1002,7 +1002,7 @@ AllocSetFree(MemoryContext context, void *pointer)
  */
 static void *
 AllocSetRealloc(MemoryContext context, void *pointer, Size size)
-{
+{	StackTrace("AllocSetRealloc");
 	AllocSet	set = (AllocSet) context;
 	AllocChunk	chunk = AllocPointerGetChunk(pointer);
 	Size		oldsize = chunk->size;
@@ -1197,7 +1197,7 @@ AllocSetRealloc(MemoryContext context, void *pointer, Size size)
  */
 static Size
 AllocSetGetChunkSpace(MemoryContext context, void *pointer)
-{
+{	StackTrace("AllocSetGetChunkSpace");
 	AllocChunk	chunk = AllocPointerGetChunk(pointer);
 
 	return chunk->size + ALLOC_CHUNKHDRSZ;
@@ -1209,7 +1209,7 @@ AllocSetGetChunkSpace(MemoryContext context, void *pointer)
  */
 static bool
 AllocSetIsEmpty(MemoryContext context)
-{
+{	StackTrace("AllocSetIsEmpty");
 	/*
 	 * For now, we say "empty" only if the context is new or just reset. We
 	 * could examine the freelists to determine if all space has been freed,
@@ -1227,7 +1227,7 @@ AllocSetIsEmpty(MemoryContext context)
  */
 static void
 AllocSetStats(MemoryContext context, int level)
-{
+{	StackTrace("AllocSetStats");
 	AllocSet	set = (AllocSet) context;
 	Size		nblocks = 0;
 	Size		nchunks = 0;
@@ -1276,7 +1276,7 @@ AllocSetStats(MemoryContext context, int level)
  */
 static void
 AllocSetCheck(MemoryContext context)
-{
+{	StackTrace("AllocSetCheck");
 	AllocSet	set = (AllocSet) context;
 	char	   *name = set->header.name;
 	AllocBlock	block;

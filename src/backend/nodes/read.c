@@ -36,7 +36,7 @@ static char *pg_strtok_ptr = NULL;
  */
 void *
 stringToNode(char *str)
-{
+{	StackTrace("stringToNode");
 	char	   *save_strtok;
 	void	   *retval;
 
@@ -105,7 +105,7 @@ stringToNode(char *str)
  */
 char *
 pg_strtok(int *length)
-{
+{	StackTrace("pg_strtok");
 	char	   *local_str;		/* working pointer to string */
 	char	   *ret_str;		/* start of token to return */
 
@@ -166,7 +166,7 @@ pg_strtok(int *length)
  */
 char *
 debackslash(char *token, int length)
-{
+{	StackTrace("debackslash");
 	char	   *result = palloc(length + 1);
 	char	   *ptr = result;
 
@@ -198,7 +198,7 @@ debackslash(char *token, int length)
  */
 static NodeTag
 nodeTokenType(char *token, int length)
-{
+{	StackTrace("nodeTokenType");
 	NodeTag		retval;
 	char	   *numptr;
 	int			numlen;
@@ -276,7 +276,7 @@ nodeTokenType(char *token, int length)
  */
 void *
 nodeRead(char *token, int tok_len)
-{
+{	StackTrace("nodeRead");
 	Node	   *result;
 	NodeTag		type;
 

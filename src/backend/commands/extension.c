@@ -117,7 +117,7 @@ static char *read_whole_file(const char *filename, int *length);
  */
 Oid
 get_extension_oid(const char *extname, bool missing_ok)
-{
+{	StackTrace("get_extension_oid");
 	Oid			result;
 	Relation	rel;
 	SysScanDesc scandesc;
@@ -162,7 +162,7 @@ get_extension_oid(const char *extname, bool missing_ok)
  */
 char *
 get_extension_name(Oid ext_oid)
-{
+{	StackTrace("get_extension_name");
 	char	   *result;
 	Relation	rel;
 	SysScanDesc scandesc;
@@ -201,7 +201,7 @@ get_extension_name(Oid ext_oid)
  */
 static Oid
 get_extension_schema(Oid ext_oid)
-{
+{	StackTrace("get_extension_schema");
 	Oid			result;
 	Relation	rel;
 	SysScanDesc scandesc;
@@ -238,7 +238,7 @@ get_extension_schema(Oid ext_oid)
  */
 static void
 check_valid_extension_name(const char *extensionname)
-{
+{	StackTrace("check_valid_extension_name");
 	int			namelen = strlen(extensionname);
 
 	/*
@@ -285,7 +285,7 @@ check_valid_extension_name(const char *extensionname)
 
 static void
 check_valid_version_name(const char *versionname)
-{
+{	StackTrace("check_valid_version_name");
 	int			namelen = strlen(versionname);
 
 	/*
@@ -332,7 +332,7 @@ check_valid_version_name(const char *versionname)
  */
 static bool
 is_extension_control_filename(const char *filename)
-{
+{	StackTrace("is_extension_control_filename");
 	const char *extension = strrchr(filename, '.');
 
 	return (extension != NULL) && (strcmp(extension, ".control") == 0);
@@ -340,7 +340,7 @@ is_extension_control_filename(const char *filename)
 
 static bool
 is_extension_script_filename(const char *filename)
-{
+{	StackTrace("is_extension_script_filename");
 	const char *extension = strrchr(filename, '.');
 
 	return (extension != NULL) && (strcmp(extension, ".sql") == 0);
@@ -348,7 +348,7 @@ is_extension_script_filename(const char *filename)
 
 static char *
 get_extension_control_directory(void)
-{
+{	StackTrace("get_extension_control_directory");
 	char		sharepath[MAXPGPATH];
 	char	   *result;
 
@@ -361,7 +361,7 @@ get_extension_control_directory(void)
 
 static char *
 get_extension_control_filename(const char *extname)
-{
+{	StackTrace("get_extension_control_filename");
 	char		sharepath[MAXPGPATH];
 	char	   *result;
 
@@ -375,7 +375,7 @@ get_extension_control_filename(const char *extname)
 
 static char *
 get_extension_script_directory(ExtensionControlFile *control)
-{
+{	StackTrace("get_extension_script_directory");
 	char		sharepath[MAXPGPATH];
 	char	   *result;
 
@@ -399,7 +399,7 @@ get_extension_script_directory(ExtensionControlFile *control)
 static char *
 get_extension_aux_control_filename(ExtensionControlFile *control,
 								   const char *version)
-{
+{	StackTrace("get_extension_aux_control_filename");
 	char	   *result;
 	char	   *scriptdir;
 
@@ -417,7 +417,7 @@ get_extension_aux_control_filename(ExtensionControlFile *control,
 static char *
 get_extension_script_filename(ExtensionControlFile *control,
 							  const char *from_version, const char *version)
-{
+{	StackTrace("get_extension_script_filename");
 	char	   *result;
 	char	   *scriptdir;
 
@@ -449,7 +449,7 @@ get_extension_script_filename(ExtensionControlFile *control,
 static void
 parse_extension_control_file(ExtensionControlFile *control,
 							 const char *version)
-{
+{	StackTrace("parse_extension_control_file");
 	char	   *filename;
 	FILE	   *file;
 	ConfigVariable *item,
@@ -585,7 +585,7 @@ parse_extension_control_file(ExtensionControlFile *control,
  */
 static ExtensionControlFile *
 read_extension_control_file(const char *extname)
-{
+{	StackTrace("read_extension_control_file");
 	ExtensionControlFile *control;
 
 	/*
@@ -614,7 +614,7 @@ read_extension_control_file(const char *extname)
 static ExtensionControlFile *
 read_extension_aux_control_file(const ExtensionControlFile *pcontrol,
 								const char *version)
-{
+{	StackTrace("read_extension_aux_control_file");
 	ExtensionControlFile *acontrol;
 
 	/*
@@ -637,7 +637,7 @@ read_extension_aux_control_file(const ExtensionControlFile *pcontrol,
 static char *
 read_extension_script_file(const ExtensionControlFile *control,
 						   const char *filename)
-{
+{	StackTrace("read_extension_script_file");
 	int			src_encoding;
 	char	   *src_str;
 	char	   *dest_str;
@@ -679,7 +679,7 @@ read_extension_script_file(const ExtensionControlFile *control,
  */
 static void
 execute_sql_string(const char *sql, const char *filename)
-{
+{	StackTrace("execute_sql_string");
 	List	   *raw_parsetree_list;
 	DestReceiver *dest;
 	ListCell   *lc1;
@@ -768,7 +768,7 @@ execute_extension_script(Oid extensionOid, ExtensionControlFile *control,
 						 const char *version,
 						 List *requiredSchemas,
 						 const char *schemaName, Oid schemaOid)
-{
+{	StackTrace("execute_extension_script");
 	char	   *filename;
 	int			save_nestlevel;
 	StringInfoData pathbuf;
@@ -930,7 +930,7 @@ execute_extension_script(Oid extensionOid, ExtensionControlFile *control,
  */
 static ExtensionVersionInfo *
 get_ext_ver_info(const char *versionname, List **evi_list)
-{
+{	StackTrace("get_ext_ver_info");
 	ExtensionVersionInfo *evi;
 	ListCell   *lc;
 
@@ -963,7 +963,7 @@ get_ext_ver_info(const char *versionname, List **evi_list)
  */
 static ExtensionVersionInfo *
 get_nearest_unprocessed_vertex(List *evi_list)
-{
+{	StackTrace("get_nearest_unprocessed_vertex");
 	ExtensionVersionInfo *evi = NULL;
 	ListCell   *lc;
 
@@ -991,7 +991,7 @@ get_nearest_unprocessed_vertex(List *evi_list)
  */
 static List *
 get_ext_ver_list(ExtensionControlFile *control)
-{
+{	StackTrace("get_ext_ver_list");
 	List	   *evi_list = NIL;
 	int			extnamelen = strlen(control->name);
 	char	   *location;
@@ -1055,7 +1055,7 @@ get_ext_ver_list(ExtensionControlFile *control)
 static List *
 identify_update_path(ExtensionControlFile *control,
 					 const char *oldVersion, const char *newVersion)
-{
+{	StackTrace("identify_update_path");
 	List	   *result;
 	List	   *evi_list;
 	ExtensionVersionInfo *evi_start;
@@ -1096,7 +1096,7 @@ find_update_path(List *evi_list,
 				 ExtensionVersionInfo *evi_start,
 				 ExtensionVersionInfo *evi_target,
 				 bool reinitialize)
-{
+{	StackTrace("find_update_path");
 	List	   *result;
 	ExtensionVersionInfo *evi;
 	ListCell   *lc;
@@ -1169,7 +1169,7 @@ find_update_path(List *evi_list,
  */
 ObjectAddress
 CreateExtension(CreateExtensionStmt *stmt)
-{
+{	StackTrace("CreateExtension");
 	DefElem    *d_schema = NULL;
 	DefElem    *d_new_version = NULL;
 	DefElem    *d_old_version = NULL;
@@ -1491,7 +1491,7 @@ InsertExtensionTuple(const char *extName, Oid extOwner,
 					 Oid schemaOid, bool relocatable, const char *extVersion,
 					 Datum extConfig, Datum extCondition,
 					 List *requiredExtensions)
-{
+{	StackTrace("InsertExtensionTuple");
 	Oid			extensionOid;
 	Relation	rel;
 	Datum		values[Natts_pg_extension];
@@ -1574,7 +1574,7 @@ InsertExtensionTuple(const char *extName, Oid extOwner,
  */
 void
 RemoveExtensionById(Oid extId)
-{
+{	StackTrace("RemoveExtensionById");
 	Relation	rel;
 	SysScanDesc scandesc;
 	HeapTuple	tuple;
@@ -1628,7 +1628,7 @@ RemoveExtensionById(Oid extId)
  */
 Datum
 pg_available_extensions(PG_FUNCTION_ARGS)
-{
+{	StackTrace("pg_available_extensions");
 	ReturnSetInfo *rsinfo = (ReturnSetInfo *) fcinfo->resultinfo;
 	TupleDesc	tupdesc;
 	Tuplestorestate *tupstore;
@@ -1737,7 +1737,7 @@ pg_available_extensions(PG_FUNCTION_ARGS)
  */
 Datum
 pg_available_extension_versions(PG_FUNCTION_ARGS)
-{
+{	StackTrace("pg_available_extension_versions");
 	ReturnSetInfo *rsinfo = (ReturnSetInfo *) fcinfo->resultinfo;
 	TupleDesc	tupdesc;
 	Tuplestorestate *tupstore;
@@ -1826,7 +1826,7 @@ static void
 get_available_versions_for_extension(ExtensionControlFile *pcontrol,
 									 Tuplestorestate *tupstore,
 									 TupleDesc tupdesc)
-{
+{	StackTrace("get_available_versions_for_extension");
 	int			extnamelen = strlen(pcontrol->name);
 	char	   *location;
 	DIR		   *dir;
@@ -1926,7 +1926,7 @@ get_available_versions_for_extension(ExtensionControlFile *pcontrol,
  */
 Datum
 pg_extension_update_paths(PG_FUNCTION_ARGS)
-{
+{	StackTrace("pg_extension_update_paths");
 	Name		extname = PG_GETARG_NAME(0);
 	ReturnSetInfo *rsinfo = (ReturnSetInfo *) fcinfo->resultinfo;
 	TupleDesc	tupdesc;
@@ -2040,7 +2040,7 @@ pg_extension_update_paths(PG_FUNCTION_ARGS)
  */
 Datum
 pg_extension_config_dump(PG_FUNCTION_ARGS)
-{
+{	StackTrace("pg_extension_config_dump");
 	Oid			tableoid = PG_GETARG_OID(0);
 	text	   *wherecond = PG_GETARG_TEXT_P(1);
 	char	   *tablename;
@@ -2228,7 +2228,7 @@ pg_extension_config_dump(PG_FUNCTION_ARGS)
  */
 static void
 extension_config_remove(Oid extensionoid, Oid tableoid)
-{
+{	StackTrace("extension_config_remove");
 	Relation	extRel;
 	ScanKeyData key[1];
 	SysScanDesc extScan;
@@ -2400,7 +2400,7 @@ extension_config_remove(Oid extensionoid, Oid tableoid)
  */
 ObjectAddress
 AlterExtensionNamespace(List *names, const char *newschema, Oid *oldschema)
-{
+{	StackTrace("AlterExtensionNamespace");
 	char	   *extensionName;
 	Oid			extensionOid;
 	Oid			nspOid;
@@ -2589,7 +2589,7 @@ AlterExtensionNamespace(List *names, const char *newschema, Oid *oldschema)
  */
 ObjectAddress
 ExecAlterExtensionStmt(AlterExtensionStmt *stmt)
-{
+{	StackTrace("ExecAlterExtensionStmt");
 	DefElem    *d_new_version = NULL;
 	char	   *versionName;
 	char	   *oldVersionName;
@@ -2740,7 +2740,7 @@ ApplyExtensionUpdates(Oid extensionOid,
 					  ExtensionControlFile *pcontrol,
 					  const char *initialVersion,
 					  List *updateVersions)
-{
+{	StackTrace("ApplyExtensionUpdates");
 	const char *oldVersionName = initialVersion;
 	ListCell   *lcv;
 
@@ -2897,7 +2897,7 @@ ApplyExtensionUpdates(Oid extensionOid,
 ObjectAddress
 ExecAlterExtensionContentsStmt(AlterExtensionContentsStmt *stmt,
 							   ObjectAddress *objAddr)
-{
+{	StackTrace("ExecAlterExtensionContentsStmt");
 	ObjectAddress extension;
 	ObjectAddress object;
 	Relation	relation;
@@ -3014,7 +3014,7 @@ ExecAlterExtensionContentsStmt(AlterExtensionContentsStmt *stmt,
  */
 static char *
 read_whole_file(const char *filename, int *length)
-{
+{	StackTrace("read_whole_file");
 	char	   *buf;
 	FILE	   *file;
 	size_t		bytes_to_read;

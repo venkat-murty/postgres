@@ -170,7 +170,7 @@ static void RemoveGXact(GlobalTransaction gxact);
  */
 Size
 TwoPhaseShmemSize(void)
-{
+{	StackTrace("TwoPhaseShmemSize");
 	Size		size;
 
 	/* Need the fixed struct, the array of pointers, and the GTD structs */
@@ -186,7 +186,7 @@ TwoPhaseShmemSize(void)
 
 void
 TwoPhaseShmemInit(void)
-{
+{	StackTrace("TwoPhaseShmemInit");
 	bool		found;
 
 	TwoPhaseState = ShmemInitStruct("Prepared Transaction Table",
@@ -241,7 +241,7 @@ TwoPhaseShmemInit(void)
  */
 static void
 AtProcExit_Twophase(int code, Datum arg)
-{
+{	StackTrace("AtProcExit_Twophase");
 	/* same logic as abort */
 	AtAbort_Twophase();
 }
@@ -251,7 +251,7 @@ AtProcExit_Twophase(int code, Datum arg)
  */
 void
 AtAbort_Twophase(void)
-{
+{	StackTrace("AtAbort_Twophase");
 	if (MyLockedGxact == NULL)
 		return;
 
@@ -296,7 +296,7 @@ AtAbort_Twophase(void)
  */
 void
 PostPrepare_Twophase()
-{
+{	StackTrace("PostPrepare_Twophase");
 	LWLockAcquire(TwoPhaseStateLock, LW_EXCLUSIVE);
 	MyLockedGxact->locking_backend = InvalidBackendId;
 	LWLockRelease(TwoPhaseStateLock);
@@ -316,7 +316,7 @@ PostPrepare_Twophase()
 GlobalTransaction
 MarkAsPreparing(TransactionId xid, const char *gid,
 				TimestampTz prepared_at, Oid owner, Oid databaseid)
-{
+{	StackTrace("MarkAsPreparing");
 	GlobalTransaction gxact;
 	PGPROC	   *proc;
 	PGXACT	   *pgxact;
@@ -428,7 +428,7 @@ MarkAsPreparing(TransactionId xid, const char *gid,
 static void
 GXactLoadSubxactData(GlobalTransaction gxact, int nsubxacts,
 					 TransactionId *children)
-{
+{	StackTrace("GXactLoadSubxactData");
 	PGPROC	   *proc = &ProcGlobal->allProcs[gxact->pgprocno];
 	PGXACT	   *pgxact = &ProcGlobal->allPgXact[gxact->pgprocno];
 
@@ -452,7 +452,7 @@ GXactLoadSubxactData(GlobalTransaction gxact, int nsubxacts,
  */
 static void
 MarkAsPrepared(GlobalTransaction gxact)
-{
+{	StackTrace("MarkAsPrepared");
 	/* Lock here may be overkill, but I'm not convinced of that ... */
 	LWLockAcquire(TwoPhaseStateLock, LW_EXCLUSIVE);
 	Assert(!gxact->valid);
@@ -472,7 +472,7 @@ MarkAsPrepared(GlobalTransaction gxact)
  */
 static GlobalTransaction
 LockGXact(const char *gid, Oid user)
-{
+{	StackTrace("LockGXact");
 	int			i;
 
 	/* on first call, register the exit hook */
@@ -548,7 +548,7 @@ LockGXact(const char *gid, Oid user)
  */
 static void
 RemoveGXact(GlobalTransaction gxact)
-{
+{	StackTrace("RemoveGXact");
 	int			i;
 
 	LWLockAcquire(TwoPhaseStateLock, LW_EXCLUSIVE);
@@ -588,7 +588,7 @@ RemoveGXact(GlobalTransaction gxact)
  */
 static bool
 TransactionIdIsPrepared(TransactionId xid)
-{
+{	StackTrace("TransactionIdIsPrepared");
 	bool		result = false;
 	int			i;
 
@@ -625,7 +625,7 @@ TransactionIdIsPrepared(TransactionId xid)
  */
 static int
 GetPreparedTransactionList(GlobalTransaction *gxacts)
-{
+{	StackTrace("GetPreparedTransactionList");
 	GlobalTransaction array;
 	int			num;
 	int			i;
@@ -670,7 +670,7 @@ typedef struct
  */
 Datum
 pg_prepared_xact(PG_FUNCTION_ARGS)
-{
+{	StackTrace("pg_prepared_xact");
 	FuncCallContext *funcctx;
 	Working_State *status;
 
@@ -759,7 +759,7 @@ pg_prepared_xact(PG_FUNCTION_ARGS)
  */
 static GlobalTransaction
 TwoPhaseGetGXact(TransactionId xid)
-{
+{	StackTrace("TwoPhaseGetGXact");
 	GlobalTransaction result = NULL;
 	int			i;
 
@@ -808,7 +808,7 @@ TwoPhaseGetGXact(TransactionId xid)
  */
 BackendId
 TwoPhaseGetDummyBackendId(TransactionId xid)
-{
+{	StackTrace("TwoPhaseGetDummyBackendId");
 	GlobalTransaction gxact = TwoPhaseGetGXact(xid);
 
 	return gxact->dummyBackendId;
@@ -820,7 +820,7 @@ TwoPhaseGetDummyBackendId(TransactionId xid)
  */
 PGPROC *
 TwoPhaseGetDummyProc(TransactionId xid)
-{
+{	StackTrace("TwoPhaseGetDummyProc");
 	GlobalTransaction gxact = TwoPhaseGetGXact(xid);
 
 	return &ProcGlobal->allProcs[gxact->pgprocno];
@@ -915,7 +915,7 @@ static struct xllist
  */
 static void
 save_state_data(const void *data, uint32 len)
-{
+{	StackTrace("save_state_data");
 	uint32		padlen = MAXALIGN(len);
 
 	if (padlen > records.bytes_free)
@@ -943,7 +943,7 @@ save_state_data(const void *data, uint32 len)
  */
 void
 StartPrepare(GlobalTransaction gxact)
-{
+{	StackTrace("StartPrepare");
 	PGPROC	   *proc = &ProcGlobal->allProcs[gxact->pgprocno];
 	PGXACT	   *pgxact = &ProcGlobal->allPgXact[gxact->pgprocno];
 	TransactionId xid = pgxact->xid;
@@ -1017,7 +1017,7 @@ StartPrepare(GlobalTransaction gxact)
  */
 void
 EndPrepare(GlobalTransaction gxact)
-{
+{	StackTrace("EndPrepare");
 	PGXACT	   *pgxact = &ProcGlobal->allPgXact[gxact->pgprocno];
 	TransactionId xid = pgxact->xid;
 	TwoPhaseFileHeader *hdr;
@@ -1196,7 +1196,7 @@ EndPrepare(GlobalTransaction gxact)
 void
 RegisterTwoPhaseRecord(TwoPhaseRmgrId rmid, uint16 info,
 					   const void *data, uint32 len)
-{
+{	StackTrace("RegisterTwoPhaseRecord");
 	TwoPhaseRecordOnDisk record;
 
 	record.rmid = rmid;
@@ -1216,7 +1216,7 @@ RegisterTwoPhaseRecord(TwoPhaseRmgrId rmid, uint16 info,
  */
 static char *
 ReadTwoPhaseFile(TransactionId xid, bool give_warnings)
-{
+{	StackTrace("ReadTwoPhaseFile");
 	char		path[MAXPGPATH];
 	char	   *buf;
 	TwoPhaseFileHeader *hdr;
@@ -1318,7 +1318,7 @@ ReadTwoPhaseFile(TransactionId xid, bool give_warnings)
  */
 bool
 StandbyTransactionIdIsPrepared(TransactionId xid)
-{
+{	StackTrace("StandbyTransactionIdIsPrepared");
 	char	   *buf;
 	TwoPhaseFileHeader *hdr;
 	bool		result;
@@ -1346,7 +1346,7 @@ StandbyTransactionIdIsPrepared(TransactionId xid)
  */
 void
 FinishPreparedTransaction(const char *gid, bool isCommit)
-{
+{	StackTrace("FinishPreparedTransaction");
 	GlobalTransaction gxact;
 	PGPROC	   *proc;
 	PGXACT	   *pgxact;
@@ -1497,7 +1497,7 @@ FinishPreparedTransaction(const char *gid, bool isCommit)
 static void
 ProcessRecords(char *bufptr, TransactionId xid,
 			   const TwoPhaseCallback callbacks[])
-{
+{	StackTrace("ProcessRecords");
 	for (;;)
 	{
 		TwoPhaseRecordOnDisk *record = (TwoPhaseRecordOnDisk *) bufptr;
@@ -1524,7 +1524,7 @@ ProcessRecords(char *bufptr, TransactionId xid,
  */
 void
 RemoveTwoPhaseFile(TransactionId xid, bool giveWarning)
-{
+{	StackTrace("RemoveTwoPhaseFile");
 	char		path[MAXPGPATH];
 
 	TwoPhaseFilePath(path, xid);
@@ -1543,7 +1543,7 @@ RemoveTwoPhaseFile(TransactionId xid, bool giveWarning)
  */
 void
 RecreateTwoPhaseFile(TransactionId xid, void *content, int len)
-{
+{	StackTrace("RecreateTwoPhaseFile");
 	char		path[MAXPGPATH];
 	pg_crc32c	statefile_crc;
 	int			fd;
@@ -1617,7 +1617,7 @@ RecreateTwoPhaseFile(TransactionId xid, void *content, int len)
  */
 void
 CheckPointTwoPhase(XLogRecPtr redo_horizon)
-{
+{	StackTrace("CheckPointTwoPhase");
 	TransactionId *xids;
 	int			nxids;
 	char		path[MAXPGPATH];
@@ -1730,7 +1730,7 @@ CheckPointTwoPhase(XLogRecPtr redo_horizon)
  */
 TransactionId
 PrescanPreparedTransactions(TransactionId **xids_p, int *nxids_p)
-{
+{	StackTrace("PrescanPreparedTransactions");
 	TransactionId origNextXid = ShmemVariableCache->nextXid;
 	TransactionId result = origNextXid;
 	DIR		   *cldir;
@@ -1870,7 +1870,7 @@ PrescanPreparedTransactions(TransactionId **xids_p, int *nxids_p)
  */
 void
 StandbyRecoverPreparedTransactions(bool overwriteOK)
-{
+{	StackTrace("StandbyRecoverPreparedTransactions");
 	DIR		   *cldir;
 	struct dirent *clde;
 
@@ -1948,7 +1948,7 @@ StandbyRecoverPreparedTransactions(bool overwriteOK)
  */
 void
 RecoverPreparedTransactions(void)
-{
+{	StackTrace("RecoverPreparedTransactions");
 	char		dir[MAXPGPATH];
 	DIR		   *cldir;
 	struct dirent *clde;
@@ -2085,7 +2085,7 @@ RecordTransactionCommitPrepared(TransactionId xid,
 								int ninvalmsgs,
 								SharedInvalidationMessage *invalmsgs,
 								bool initfileinval)
-{
+{	StackTrace("RecordTransactionCommitPrepared");
 	XLogRecPtr	recptr;
 
 	START_CRIT_SECTION();
@@ -2140,7 +2140,7 @@ RecordTransactionAbortPrepared(TransactionId xid,
 							   TransactionId *children,
 							   int nrels,
 							   RelFileNode *rels)
-{
+{	StackTrace("RecordTransactionAbortPrepared");
 	XLogRecPtr	recptr;
 
 	/*

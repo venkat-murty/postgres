@@ -36,7 +36,7 @@
  */
 ObjectAddress
 CreateConversionCommand(CreateConversionStmt *stmt)
-{
+{	StackTrace("CreateConversionCommand");
 	Oid			namespaceId;
 	char	   *conversion_name;
 	AclResult	aclresult;

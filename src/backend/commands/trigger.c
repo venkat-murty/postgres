@@ -137,7 +137,7 @@ ObjectAddress
 CreateTrigger(CreateTrigStmt *stmt, const char *queryString,
 			  Oid relOid, Oid refRelOid, Oid constraintOid, Oid indexOid,
 			  bool isInternal)
-{
+{	StackTrace("CreateTrigger");
 	int16		tgtype;
 	int			ncolumns;
 	int16	   *columns;
@@ -832,7 +832,7 @@ typedef struct
 
 static void
 ConvertTriggerToFK(CreateTrigStmt *stmt, Oid funcoid)
-{
+{	StackTrace("ConvertTriggerToFK");
 	static List *info_list = NIL;
 
 	static const char *const funcdescr[3] = {
@@ -1080,7 +1080,7 @@ ConvertTriggerToFK(CreateTrigStmt *stmt, Oid funcoid)
  */
 void
 RemoveTriggerById(Oid trigOid)
-{
+{	StackTrace("RemoveTriggerById");
 	Relation	tgrel;
 	SysScanDesc tgscan;
 	ScanKeyData skey[1];
@@ -1157,7 +1157,7 @@ RemoveTriggerById(Oid trigOid)
  */
 Oid
 get_trigger_oid(Oid relid, const char *trigname, bool missing_ok)
-{
+{	StackTrace("get_trigger_oid");
 	Relation	tgrel;
 	ScanKeyData skey[2];
 	SysScanDesc tgscan;
@@ -1208,7 +1208,7 @@ get_trigger_oid(Oid relid, const char *trigname, bool missing_ok)
 static void
 RangeVarCallbackForRenameTrigger(const RangeVar *rv, Oid relid, Oid oldrelid,
 								 void *arg)
-{
+{	StackTrace("RangeVarCallbackForRenameTrigger");
 	HeapTuple	tuple;
 	Form_pg_class form;
 
@@ -1252,7 +1252,7 @@ RangeVarCallbackForRenameTrigger(const RangeVar *rv, Oid relid, Oid oldrelid,
  */
 ObjectAddress
 renametrig(RenameStmt *stmt)
-{
+{	StackTrace("renametrig");
 	Oid			tgoid;
 	Relation	targetrel;
 	Relation	tgrel;
@@ -1388,7 +1388,7 @@ renametrig(RenameStmt *stmt)
 void
 EnableDisableTrigger(Relation rel, const char *tgname,
 					 char fires_when, bool skip_system)
-{
+{	StackTrace("EnableDisableTrigger");
 	Relation	tgrel;
 	int			nkeys;
 	ScanKeyData keys[2];
@@ -1492,7 +1492,7 @@ EnableDisableTrigger(Relation rel, const char *tgname,
  */
 void
 RelationBuildTriggers(Relation relation)
-{
+{	StackTrace("RelationBuildTriggers");
 	TriggerDesc *trigdesc;
 	int			numtrigs;
 	int			maxtrigs;
@@ -1626,7 +1626,7 @@ RelationBuildTriggers(Relation relation)
  */
 static void
 SetTriggerFlags(TriggerDesc *trigdesc, Trigger *trigger)
-{
+{	StackTrace("SetTriggerFlags");
 	int16		tgtype = trigger->tgtype;
 
 	trigdesc->trig_insert_before_row |=
@@ -1690,7 +1690,7 @@ SetTriggerFlags(TriggerDesc *trigdesc, Trigger *trigger)
  */
 TriggerDesc *
 CopyTriggerDesc(TriggerDesc *trigdesc)
-{
+{	StackTrace("CopyTriggerDesc");
 	TriggerDesc *newdesc;
 	Trigger    *trigger;
 	int			i;
@@ -1741,7 +1741,7 @@ CopyTriggerDesc(TriggerDesc *trigdesc)
  */
 void
 FreeTriggerDesc(TriggerDesc *trigdesc)
-{
+{	StackTrace("FreeTriggerDesc");
 	Trigger    *trigger;
 	int			i;
 
@@ -1774,7 +1774,7 @@ FreeTriggerDesc(TriggerDesc *trigdesc)
 #ifdef NOT_USED
 bool
 equalTriggerDescs(TriggerDesc *trigdesc1, TriggerDesc *trigdesc2)
-{
+{	StackTrace("equalTriggerDescs");
 	int			i,
 				j;
 
@@ -1865,7 +1865,7 @@ ExecCallTriggerFunc(TriggerData *trigdata,
 					FmgrInfo *finfo,
 					Instrumentation *instr,
 					MemoryContext per_tuple_context)
-{
+{	StackTrace("ExecCallTriggerFunc");
 	FunctionCallInfoData fcinfo;
 	PgStat_FunctionCallUsage fcusage;
 	Datum		result;
@@ -1943,7 +1943,7 @@ ExecCallTriggerFunc(TriggerData *trigdata,
 
 void
 ExecBSInsertTriggers(EState *estate, ResultRelInfo *relinfo)
-{
+{	StackTrace("ExecBSInsertTriggers");
 	TriggerDesc *trigdesc;
 	int			i;
 	TriggerData LocTriggerData;
@@ -1993,7 +1993,7 @@ ExecBSInsertTriggers(EState *estate, ResultRelInfo *relinfo)
 
 void
 ExecASInsertTriggers(EState *estate, ResultRelInfo *relinfo)
-{
+{	StackTrace("ExecASInsertTriggers");
 	TriggerDesc *trigdesc = relinfo->ri_TrigDesc;
 
 	if (trigdesc && trigdesc->trig_insert_after_statement)
@@ -2004,7 +2004,7 @@ ExecASInsertTriggers(EState *estate, ResultRelInfo *relinfo)
 TupleTableSlot *
 ExecBRInsertTriggers(EState *estate, ResultRelInfo *relinfo,
 					 TupleTableSlot *slot)
-{
+{	StackTrace("ExecBRInsertTriggers");
 	TriggerDesc *trigdesc = relinfo->ri_TrigDesc;
 	HeapTuple	slottuple = ExecMaterializeSlot(slot);
 	HeapTuple	newtuple = slottuple;
@@ -2068,7 +2068,7 @@ ExecBRInsertTriggers(EState *estate, ResultRelInfo *relinfo,
 void
 ExecARInsertTriggers(EState *estate, ResultRelInfo *relinfo,
 					 HeapTuple trigtuple, List *recheckIndexes)
-{
+{	StackTrace("ExecARInsertTriggers");
 	TriggerDesc *trigdesc = relinfo->ri_TrigDesc;
 
 	if (trigdesc && trigdesc->trig_insert_after_row)
@@ -2079,7 +2079,7 @@ ExecARInsertTriggers(EState *estate, ResultRelInfo *relinfo,
 TupleTableSlot *
 ExecIRInsertTriggers(EState *estate, ResultRelInfo *relinfo,
 					 TupleTableSlot *slot)
-{
+{	StackTrace("ExecIRInsertTriggers");
 	TriggerDesc *trigdesc = relinfo->ri_TrigDesc;
 	HeapTuple	slottuple = ExecMaterializeSlot(slot);
 	HeapTuple	newtuple = slottuple;
@@ -2142,7 +2142,7 @@ ExecIRInsertTriggers(EState *estate, ResultRelInfo *relinfo,
 
 void
 ExecBSDeleteTriggers(EState *estate, ResultRelInfo *relinfo)
-{
+{	StackTrace("ExecBSDeleteTriggers");
 	TriggerDesc *trigdesc;
 	int			i;
 	TriggerData LocTriggerData;
@@ -2192,7 +2192,7 @@ ExecBSDeleteTriggers(EState *estate, ResultRelInfo *relinfo)
 
 void
 ExecASDeleteTriggers(EState *estate, ResultRelInfo *relinfo)
-{
+{	StackTrace("ExecASDeleteTriggers");
 	TriggerDesc *trigdesc = relinfo->ri_TrigDesc;
 
 	if (trigdesc && trigdesc->trig_delete_after_statement)
@@ -2205,7 +2205,7 @@ ExecBRDeleteTriggers(EState *estate, EPQState *epqstate,
 					 ResultRelInfo *relinfo,
 					 ItemPointer tupleid,
 					 HeapTuple fdw_trigtuple)
-{
+{	StackTrace("ExecBRDeleteTriggers");
 	TriggerDesc *trigdesc = relinfo->ri_TrigDesc;
 	bool		result = true;
 	TriggerData LocTriggerData;
@@ -2271,7 +2271,7 @@ void
 ExecARDeleteTriggers(EState *estate, ResultRelInfo *relinfo,
 					 ItemPointer tupleid,
 					 HeapTuple fdw_trigtuple)
-{
+{	StackTrace("ExecARDeleteTriggers");
 	TriggerDesc *trigdesc = relinfo->ri_TrigDesc;
 
 	if (trigdesc && trigdesc->trig_delete_after_row)
@@ -2299,7 +2299,7 @@ ExecARDeleteTriggers(EState *estate, ResultRelInfo *relinfo,
 bool
 ExecIRDeleteTriggers(EState *estate, ResultRelInfo *relinfo,
 					 HeapTuple trigtuple)
-{
+{	StackTrace("ExecIRDeleteTriggers");
 	TriggerDesc *trigdesc = relinfo->ri_TrigDesc;
 	TriggerData LocTriggerData;
 	HeapTuple	rettuple;
@@ -2343,7 +2343,7 @@ ExecIRDeleteTriggers(EState *estate, ResultRelInfo *relinfo,
 
 void
 ExecBSUpdateTriggers(EState *estate, ResultRelInfo *relinfo)
-{
+{	StackTrace("ExecBSUpdateTriggers");
 	TriggerDesc *trigdesc;
 	int			i;
 	TriggerData LocTriggerData;
@@ -2396,7 +2396,7 @@ ExecBSUpdateTriggers(EState *estate, ResultRelInfo *relinfo)
 
 void
 ExecASUpdateTriggers(EState *estate, ResultRelInfo *relinfo)
-{
+{	StackTrace("ExecASUpdateTriggers");
 	TriggerDesc *trigdesc = relinfo->ri_TrigDesc;
 
 	if (trigdesc && trigdesc->trig_update_after_statement)
@@ -2411,7 +2411,7 @@ ExecBRUpdateTriggers(EState *estate, EPQState *epqstate,
 					 ItemPointer tupleid,
 					 HeapTuple fdw_trigtuple,
 					 TupleTableSlot *slot)
-{
+{	StackTrace("ExecBRUpdateTriggers");
 	TriggerDesc *trigdesc = relinfo->ri_TrigDesc;
 	HeapTuple	slottuple = ExecMaterializeSlot(slot);
 	HeapTuple	newtuple = slottuple;
@@ -2526,7 +2526,7 @@ ExecARUpdateTriggers(EState *estate, ResultRelInfo *relinfo,
 					 HeapTuple fdw_trigtuple,
 					 HeapTuple newtuple,
 					 List *recheckIndexes)
-{
+{	StackTrace("ExecARUpdateTriggers");
 	TriggerDesc *trigdesc = relinfo->ri_TrigDesc;
 
 	if (trigdesc && trigdesc->trig_update_after_row)
@@ -2555,7 +2555,7 @@ ExecARUpdateTriggers(EState *estate, ResultRelInfo *relinfo,
 TupleTableSlot *
 ExecIRUpdateTriggers(EState *estate, ResultRelInfo *relinfo,
 					 HeapTuple trigtuple, TupleTableSlot *slot)
-{
+{	StackTrace("ExecIRUpdateTriggers");
 	TriggerDesc *trigdesc = relinfo->ri_TrigDesc;
 	HeapTuple	slottuple = ExecMaterializeSlot(slot);
 	HeapTuple	newtuple = slottuple;
@@ -2618,7 +2618,7 @@ ExecIRUpdateTriggers(EState *estate, ResultRelInfo *relinfo,
 
 void
 ExecBSTruncateTriggers(EState *estate, ResultRelInfo *relinfo)
-{
+{	StackTrace("ExecBSTruncateTriggers");
 	TriggerDesc *trigdesc;
 	int			i;
 	TriggerData LocTriggerData;
@@ -2668,7 +2668,7 @@ ExecBSTruncateTriggers(EState *estate, ResultRelInfo *relinfo)
 
 void
 ExecASTruncateTriggers(EState *estate, ResultRelInfo *relinfo)
-{
+{	StackTrace("ExecASTruncateTriggers");
 	TriggerDesc *trigdesc = relinfo->ri_TrigDesc;
 
 	if (trigdesc && trigdesc->trig_truncate_after_statement)
@@ -2684,7 +2684,7 @@ GetTupleForTrigger(EState *estate,
 				   ItemPointer tid,
 				   LockTupleMode lockmode,
 				   TupleTableSlot **newSlot)
-{
+{	StackTrace("GetTupleForTrigger");
 	Relation	relation = relinfo->ri_RelationDesc;
 	HeapTupleData tuple;
 	HeapTuple	result;
@@ -2826,7 +2826,7 @@ TriggerEnabled(EState *estate, ResultRelInfo *relinfo,
 			   Trigger *trigger, TriggerEvent event,
 			   Bitmapset *modifiedCols,
 			   HeapTuple oldtup, HeapTuple newtup)
-{
+{	StackTrace("TriggerEnabled");
 	/* Check replication-role-dependent enable state */
 	if (SessionReplicationRole == SESSION_REPLICATION_ROLE_REPLICA)
 	{
@@ -3227,7 +3227,7 @@ static SetConstraintState SetConstraintStateAddItem(SetConstraintState state,
  */
 static Tuplestorestate *
 GetCurrentFDWTuplestore()
-{
+{	StackTrace("GetCurrentFDWTuplestore");
 	Tuplestorestate *ret;
 
 	ret = afterTriggers.fdw_tuplestores[afterTriggers.query_depth];
@@ -3271,7 +3271,7 @@ GetCurrentFDWTuplestore()
  */
 static bool
 afterTriggerCheckState(AfterTriggerShared evtshared)
-{
+{	StackTrace("afterTriggerCheckState");
 	Oid			tgoid = evtshared->ats_tgoid;
 	SetConstraintState state = afterTriggers.state;
 	int			i;
@@ -3318,7 +3318,7 @@ afterTriggerCheckState(AfterTriggerShared evtshared)
 static void
 afterTriggerAddEvent(AfterTriggerEventList *events,
 					 AfterTriggerEvent event, AfterTriggerShared evtshared)
-{
+{	StackTrace("afterTriggerAddEvent");
 	Size		eventsize = SizeofTriggerEvent(event);
 	Size		needed = eventsize + sizeof(AfterTriggerSharedData);
 	AfterTriggerEventChunk *chunk;
@@ -3434,7 +3434,7 @@ afterTriggerAddEvent(AfterTriggerEventList *events,
  */
 static void
 afterTriggerFreeEventList(AfterTriggerEventList *events)
-{
+{	StackTrace("afterTriggerFreeEventList");
 	AfterTriggerEventChunk *chunk;
 	AfterTriggerEventChunk *next_chunk;
 
@@ -3458,7 +3458,7 @@ afterTriggerFreeEventList(AfterTriggerEventList *events)
 static void
 afterTriggerRestoreEventList(AfterTriggerEventList *events,
 							 const AfterTriggerEventList *old_events)
-{
+{	StackTrace("afterTriggerRestoreEventList");
 	AfterTriggerEventChunk *chunk;
 	AfterTriggerEventChunk *next_chunk;
 
@@ -3517,7 +3517,7 @@ AfterTriggerExecute(AfterTriggerEvent event,
 					MemoryContext per_tuple_context,
 					TupleTableSlot *trig_tuple_slot1,
 					TupleTableSlot *trig_tuple_slot2)
-{
+{	StackTrace("AfterTriggerExecute");
 	AfterTriggerShared evtshared = GetTriggerSharedData(event);
 	Oid			tgoid = evtshared->ats_tgoid;
 	TriggerData LocTriggerData;
@@ -3685,7 +3685,7 @@ static bool
 afterTriggerMarkEvents(AfterTriggerEventList *events,
 					   AfterTriggerEventList *move_list,
 					   bool immediate_only)
-{
+{	StackTrace("afterTriggerMarkEvents");
 	bool		found = false;
 	AfterTriggerEvent event;
 	AfterTriggerEventChunk *chunk;
@@ -3758,7 +3758,7 @@ afterTriggerInvokeEvents(AfterTriggerEventList *events,
 						 CommandId firing_id,
 						 EState *estate,
 						 bool delete_ok)
-{
+{	StackTrace("afterTriggerInvokeEvents");
 	bool		all_fired = true;
 	AfterTriggerEventChunk *chunk;
 	MemoryContext per_tuple_context;
@@ -3902,7 +3902,7 @@ afterTriggerInvokeEvents(AfterTriggerEventList *events,
  */
 void
 AfterTriggerBeginXact(void)
-{
+{	StackTrace("AfterTriggerBeginXact");
 	/*
 	 * Initialize after-trigger state structure to empty
 	 */
@@ -3938,7 +3938,7 @@ AfterTriggerBeginXact(void)
  */
 void
 AfterTriggerBeginQuery(void)
-{
+{	StackTrace("AfterTriggerBeginQuery");
 	/* Increase the query stack depth */
 	afterTriggers.query_depth++;
 }
@@ -3958,7 +3958,7 @@ AfterTriggerBeginQuery(void)
  */
 void
 AfterTriggerEndQuery(EState *estate)
-{
+{	StackTrace("AfterTriggerEndQuery");
 	AfterTriggerEventList *events;
 	Tuplestorestate *fdw_tuplestore;
 
@@ -4038,7 +4038,7 @@ AfterTriggerEndQuery(EState *estate)
  */
 void
 AfterTriggerFireDeferred(void)
-{
+{	StackTrace("AfterTriggerFireDeferred");
 	AfterTriggerEventList *events;
 	bool		snap_pushed = false;
 
@@ -4094,7 +4094,7 @@ AfterTriggerFireDeferred(void)
  */
 void
 AfterTriggerEndXact(bool isCommit)
-{
+{	StackTrace("AfterTriggerEndXact");
 	/*
 	 * Forget the pending-events list.
 	 *
@@ -4146,7 +4146,7 @@ AfterTriggerEndXact(bool isCommit)
  */
 void
 AfterTriggerBeginSubXact(void)
-{
+{	StackTrace("AfterTriggerBeginSubXact");
 	int			my_level = GetCurrentTransactionNestLevel();
 
 	/*
@@ -4214,7 +4214,7 @@ AfterTriggerBeginSubXact(void)
  */
 void
 AfterTriggerEndSubXact(bool isCommit)
-{
+{	StackTrace("AfterTriggerEndSubXact");
 	int			my_level = GetCurrentTransactionNestLevel();
 	SetConstraintState state;
 	AfterTriggerEvent event;
@@ -4328,7 +4328,7 @@ AfterTriggerEndSubXact(bool isCommit)
  */
 static void
 AfterTriggerEnlargeQueryState(void)
-{
+{	StackTrace("AfterTriggerEnlargeQueryState");
 	int			init_depth = afterTriggers.maxquerydepth;
 
 	Assert(afterTriggers.query_depth >= afterTriggers.maxquerydepth);
@@ -4383,7 +4383,7 @@ AfterTriggerEnlargeQueryState(void)
  */
 static SetConstraintState
 SetConstraintStateCreate(int numalloc)
-{
+{	StackTrace("SetConstraintStateCreate");
 	SetConstraintState state;
 
 	/* Behave sanely with numalloc == 0 */
@@ -4408,7 +4408,7 @@ SetConstraintStateCreate(int numalloc)
  */
 static SetConstraintState
 SetConstraintStateCopy(SetConstraintState origstate)
-{
+{	StackTrace("SetConstraintStateCopy");
 	SetConstraintState state;
 
 	state = SetConstraintStateCreate(origstate->numstates);
@@ -4429,7 +4429,7 @@ SetConstraintStateCopy(SetConstraintState origstate)
 static SetConstraintState
 SetConstraintStateAddItem(SetConstraintState state,
 						  Oid tgoid, bool tgisdeferred)
-{
+{	StackTrace("SetConstraintStateAddItem");
 	if (state->numstates >= state->numalloc)
 	{
 		int			newalloc = state->numalloc * 2;
@@ -4458,7 +4458,7 @@ SetConstraintStateAddItem(SetConstraintState state,
  */
 void
 AfterTriggerSetState(ConstraintsSetStmt *stmt)
-{
+{	StackTrace("AfterTriggerSetState");
 	int			my_level = GetCurrentTransactionNestLevel();
 
 	/* If we haven't already done so, initialize our state. */
@@ -4752,7 +4752,7 @@ AfterTriggerSetState(ConstraintsSetStmt *stmt)
  */
 bool
 AfterTriggerPendingOnRel(Oid relid)
-{
+{	StackTrace("AfterTriggerPendingOnRel");
 	AfterTriggerEvent event;
 	AfterTriggerEventChunk *chunk;
 	int			depth;
@@ -4813,7 +4813,7 @@ AfterTriggerSaveEvent(EState *estate, ResultRelInfo *relinfo,
 					  int event, bool row_trigger,
 					  HeapTuple oldtup, HeapTuple newtup,
 					  List *recheckIndexes, Bitmapset *modifiedCols)
-{
+{	StackTrace("AfterTriggerSaveEvent");
 	Relation	rel = relinfo->ri_RelationDesc;
 	TriggerDesc *trigdesc = relinfo->ri_TrigDesc;
 	AfterTriggerEventData new_event;
@@ -5019,6 +5019,6 @@ AfterTriggerSaveEvent(EState *estate, ResultRelInfo *relinfo,
 
 Datum
 pg_trigger_depth(PG_FUNCTION_ARGS)
-{
+{	StackTrace("pg_trigger_depth");
 	PG_RETURN_INT32(MyTriggerDepth);
 }

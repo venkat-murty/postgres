@@ -99,7 +99,7 @@ static void check_hashjoinable(RestrictInfo *restrictinfo);
  */
 void
 add_base_rels_to_query(PlannerInfo *root, Node *jtnode)
-{
+{	StackTrace("add_base_rels_to_query");
 	if (jtnode == NULL)
 		return;
 	if (IsA(jtnode, RangeTblRef))
@@ -145,7 +145,7 @@ add_base_rels_to_query(PlannerInfo *root, Node *jtnode)
  */
 void
 build_base_rel_tlists(PlannerInfo *root, List *final_tlist)
-{
+{	StackTrace("build_base_rel_tlists");
 	List	   *tlist_vars = pull_var_clause((Node *) final_tlist,
 											 PVC_RECURSE_AGGREGATES,
 											 PVC_INCLUDE_PLACEHOLDERS);
@@ -174,7 +174,7 @@ build_base_rel_tlists(PlannerInfo *root, List *final_tlist)
 void
 add_vars_to_targetlist(PlannerInfo *root, List *vars,
 					   Relids where_needed, bool create_new_ph)
-{
+{	StackTrace("add_vars_to_targetlist");
 	ListCell   *temp;
 
 	Assert(!bms_is_empty(where_needed));
@@ -246,7 +246,7 @@ add_vars_to_targetlist(PlannerInfo *root, List *vars,
  */
 void
 find_lateral_references(PlannerInfo *root)
-{
+{	StackTrace("find_lateral_references");
 	Index		rti;
 
 	/* We need do nothing if the query contains no LATERAL RTEs */
@@ -294,7 +294,7 @@ find_lateral_references(PlannerInfo *root)
 
 static void
 extract_lateral_references(PlannerInfo *root, RelOptInfo *brel, Index rtindex)
-{
+{	StackTrace("extract_lateral_references");
 	RangeTblEntry *rte = root->simple_rte_array[rtindex];
 	List	   *vars;
 	List	   *newvars;
@@ -391,7 +391,7 @@ extract_lateral_references(PlannerInfo *root, RelOptInfo *brel, Index rtindex)
  */
 void
 create_lateral_join_info(PlannerInfo *root)
-{
+{	StackTrace("create_lateral_join_info");
 	Index		rti;
 	ListCell   *lc;
 
@@ -574,7 +574,7 @@ create_lateral_join_info(PlannerInfo *root)
  */
 static void
 add_lateral_info(PlannerInfo *root, Relids lhs, Relids rhs)
-{
+{	StackTrace("add_lateral_info");
 	LateralJoinInfo *ljinfo;
 	ListCell   *lc;
 
@@ -641,7 +641,7 @@ add_lateral_info(PlannerInfo *root, Relids lhs, Relids rhs)
  */
 List *
 deconstruct_jointree(PlannerInfo *root)
-{
+{	StackTrace("deconstruct_jointree");
 	List	   *result;
 	Relids		qualscope;
 	Relids		inner_join_rels;
@@ -689,7 +689,7 @@ static List *
 deconstruct_recurse(PlannerInfo *root, Node *jtnode, bool below_outer_join,
 					Relids *qualscope, Relids *inner_join_rels,
 					List **postponed_qual_list)
-{
+{	StackTrace("deconstruct_recurse");
 	List	   *joinlist;
 
 	if (jtnode == NULL)
@@ -1038,7 +1038,7 @@ make_outerjoininfo(PlannerInfo *root,
 				   Relids left_rels, Relids right_rels,
 				   Relids inner_join_rels,
 				   JoinType jointype, List *clause)
-{
+{	StackTrace("make_outerjoininfo");
 	SpecialJoinInfo *sjinfo = makeNode(SpecialJoinInfo);
 	Relids		clause_relids;
 	Relids		strict_relids;
@@ -1250,7 +1250,7 @@ make_outerjoininfo(PlannerInfo *root,
  */
 static void
 compute_semijoin_info(SpecialJoinInfo *sjinfo, List *clause)
-{
+{	StackTrace("compute_semijoin_info");
 	List	   *semi_operators;
 	List	   *semi_rhs_exprs;
 	bool		all_btree;
@@ -1474,7 +1474,7 @@ distribute_qual_to_rels(PlannerInfo *root, Node *clause,
 						Relids outerjoin_nonnullable,
 						Relids deduced_nullable_relids,
 						List **postponed_qual_list)
-{
+{	StackTrace("distribute_qual_to_rels");
 	Relids		relids;
 	bool		is_pushed_down;
 	bool		outerjoin_delayed;
@@ -1893,7 +1893,7 @@ check_outerjoin_delay(PlannerInfo *root,
 					  Relids *relids_p, /* in/out parameter */
 					  Relids *nullable_relids_p,		/* output parameter */
 					  bool is_pushed_down)
-{
+{	StackTrace("check_outerjoin_delay");
 	Relids		relids;
 	Relids		nullable_relids;
 	bool		outerjoin_delayed;
@@ -1975,7 +1975,7 @@ check_outerjoin_delay(PlannerInfo *root,
 static bool
 check_equivalence_delay(PlannerInfo *root,
 						RestrictInfo *restrictinfo)
-{
+{	StackTrace("check_equivalence_delay");
 	Relids		relids;
 	Relids		nullable_relids;
 
@@ -2009,7 +2009,7 @@ check_equivalence_delay(PlannerInfo *root,
  */
 static bool
 check_redundant_nullability_qual(PlannerInfo *root, Node *clause)
-{
+{	StackTrace("check_redundant_nullability_qual");
 	Var		   *forced_null_var;
 	Index		forced_null_rel;
 	ListCell   *lc;
@@ -2048,7 +2048,7 @@ check_redundant_nullability_qual(PlannerInfo *root, Node *clause)
 void
 distribute_restrictinfo_to_rels(PlannerInfo *root,
 								RestrictInfo *restrictinfo)
-{
+{	StackTrace("distribute_restrictinfo_to_rels");
 	Relids		relids = restrictinfo->required_relids;
 	RelOptInfo *rel;
 
@@ -2134,7 +2134,7 @@ process_implied_equality(PlannerInfo *root,
 						 Relids nullable_relids,
 						 bool below_outer_join,
 						 bool both_const)
-{
+{	StackTrace("process_implied_equality");
 	Expr	   *clause;
 
 	/*
@@ -2194,7 +2194,7 @@ build_implied_join_equality(Oid opno,
 							Expr *item2,
 							Relids qualscope,
 							Relids nullable_relids)
-{
+{	StackTrace("build_implied_join_equality");
 	RestrictInfo *restrictinfo;
 	Expr	   *clause;
 
@@ -2246,7 +2246,7 @@ build_implied_join_equality(Oid opno,
  */
 static void
 check_mergejoinable(RestrictInfo *restrictinfo)
-{
+{	StackTrace("check_mergejoinable");
 	Expr	   *clause = restrictinfo->clause;
 	Oid			opno;
 	Node	   *leftarg;
@@ -2283,7 +2283,7 @@ check_mergejoinable(RestrictInfo *restrictinfo)
  */
 static void
 check_hashjoinable(RestrictInfo *restrictinfo)
-{
+{	StackTrace("check_hashjoinable");
 	Expr	   *clause = restrictinfo->clause;
 	Oid			opno;
 	Node	   *leftarg;

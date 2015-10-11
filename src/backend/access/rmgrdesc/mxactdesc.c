@@ -18,7 +18,7 @@
 
 static void
 out_member(StringInfo buf, MultiXactMember *member)
-{
+{	StackTrace("out_member");
 	appendStringInfo(buf, "%u ", member->xid);
 	switch (member->status)
 	{
@@ -48,7 +48,7 @@ out_member(StringInfo buf, MultiXactMember *member)
 
 void
 multixact_desc(StringInfo buf, XLogReaderState *record)
-{
+{	StackTrace("multixact_desc");
 	char	   *rec = XLogRecGetData(record);
 	uint8		info = XLogRecGetInfo(record) & ~XLR_INFO_MASK;
 
@@ -74,7 +74,7 @@ multixact_desc(StringInfo buf, XLogReaderState *record)
 
 const char *
 multixact_identify(uint8 info)
-{
+{	StackTrace("multixact_identify");
 	const char *id = NULL;
 
 	switch (info & ~XLR_INFO_MASK)

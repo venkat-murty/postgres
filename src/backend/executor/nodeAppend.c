@@ -73,7 +73,7 @@ static bool exec_append_initialize_next(AppendState *appendstate);
  */
 static bool
 exec_append_initialize_next(AppendState *appendstate)
-{
+{	StackTrace("exec_append_initialize_next");
 	int			whichplan;
 
 	/*
@@ -118,7 +118,7 @@ exec_append_initialize_next(AppendState *appendstate)
  */
 AppendState *
 ExecInitAppend(Append *node, EState *estate, int eflags)
-{
+{	StackTrace("ExecInitAppend");
 	AppendState *appendstate = makeNode(AppendState);
 	PlanState **appendplanstates;
 	int			nplans;
@@ -192,7 +192,7 @@ ExecInitAppend(Append *node, EState *estate, int eflags)
  */
 TupleTableSlot *
 ExecAppend(AppendState *node)
-{
+{	StackTrace("ExecAppend");
 	for (;;)
 	{
 		PlanState  *subnode;
@@ -244,7 +244,7 @@ ExecAppend(AppendState *node)
  */
 void
 ExecEndAppend(AppendState *node)
-{
+{	StackTrace("ExecEndAppend");
 	PlanState **appendplans;
 	int			nplans;
 	int			i;
@@ -264,7 +264,7 @@ ExecEndAppend(AppendState *node)
 
 void
 ExecReScanAppend(AppendState *node)
-{
+{	StackTrace("ExecReScanAppend");
 	int			i;
 
 	for (i = 0; i < node->as_nplans; i++)

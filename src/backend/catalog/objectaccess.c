@@ -28,7 +28,7 @@ object_access_hook_type object_access_hook = NULL;
 void
 RunObjectPostCreateHook(Oid classId, Oid objectId, int subId,
 						bool is_internal)
-{
+{	StackTrace("RunObjectPostCreateHook");
 	ObjectAccessPostCreate pc_arg;
 
 	/* caller should check, but just in case... */
@@ -50,7 +50,7 @@ RunObjectPostCreateHook(Oid classId, Oid objectId, int subId,
 void
 RunObjectDropHook(Oid classId, Oid objectId, int subId,
 				  int dropflags)
-{
+{	StackTrace("RunObjectDropHook");
 	ObjectAccessDrop drop_arg;
 
 	/* caller should check, but just in case... */
@@ -72,7 +72,7 @@ RunObjectDropHook(Oid classId, Oid objectId, int subId,
 void
 RunObjectPostAlterHook(Oid classId, Oid objectId, int subId,
 					   Oid auxiliaryId, bool is_internal)
-{
+{	StackTrace("RunObjectPostAlterHook");
 	ObjectAccessPostAlter pa_arg;
 
 	/* caller should check, but just in case... */
@@ -94,7 +94,7 @@ RunObjectPostAlterHook(Oid classId, Oid objectId, int subId,
  */
 bool
 RunNamespaceSearchHook(Oid objectId, bool ereport_on_violation)
-{
+{	StackTrace("RunNamespaceSearchHook");
 	ObjectAccessNamespaceSearch ns_arg;
 
 	/* caller should check, but just in case... */
@@ -118,7 +118,7 @@ RunNamespaceSearchHook(Oid objectId, bool ereport_on_violation)
  */
 void
 RunFunctionExecuteHook(Oid objectId)
-{
+{	StackTrace("RunFunctionExecuteHook");
 	/* caller should check, but just in case... */
 	Assert(object_access_hook != NULL);
 

@@ -34,7 +34,7 @@ static bool hk_depth_search(BipartiteMatchState *state, int u, int depth);
  */
 BipartiteMatchState *
 BipartiteMatch(int u_size, int v_size, short **adjacency)
-{
+{	StackTrace("BipartiteMatch");
 	BipartiteMatchState *state = palloc(sizeof(BipartiteMatchState));
 
 	Assert(u_size < SHRT_MAX);
@@ -70,7 +70,7 @@ BipartiteMatch(int u_size, int v_size, short **adjacency)
  */
 void
 BipartiteMatchFree(BipartiteMatchState *state)
-{
+{	StackTrace("BipartiteMatchFree");
 	/* adjacency matrix is treated as owned by the caller */
 	pfree(state->pair_uv);
 	pfree(state->pair_vu);
@@ -81,7 +81,7 @@ BipartiteMatchFree(BipartiteMatchState *state)
 
 static bool
 hk_breadth_search(BipartiteMatchState *state)
-{
+{	StackTrace("hk_breadth_search");
 	int			usize = state->u_size;
 	short	   *queue = state->queue;
 	float	   *distance = state->distance;
@@ -130,7 +130,7 @@ hk_breadth_search(BipartiteMatchState *state)
 
 static bool
 hk_depth_search(BipartiteMatchState *state, int u, int depth)
-{
+{	StackTrace("hk_depth_search");
 	float	   *distance = state->distance;
 	short	   *pair_uv = state->pair_uv;
 	short	   *pair_vu = state->pair_vu;

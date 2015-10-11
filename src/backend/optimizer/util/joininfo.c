@@ -35,7 +35,7 @@
 bool
 have_relevant_joinclause(PlannerInfo *root,
 						 RelOptInfo *rel1, RelOptInfo *rel2)
-{
+{	StackTrace("have_relevant_joinclause");
 	bool		result = false;
 	List	   *joininfo;
 	Relids		other_relids;
@@ -95,7 +95,7 @@ void
 add_join_clause_to_rels(PlannerInfo *root,
 						RestrictInfo *restrictinfo,
 						Relids join_relids)
-{
+{	StackTrace("add_join_clause_to_rels");
 	int			cur_relid;
 
 	cur_relid = -1;
@@ -122,7 +122,7 @@ void
 remove_join_clause_from_rels(PlannerInfo *root,
 							 RestrictInfo *restrictinfo,
 							 Relids join_relids)
-{
+{	StackTrace("remove_join_clause_from_rels");
 	int			cur_relid;
 
 	cur_relid = -1;

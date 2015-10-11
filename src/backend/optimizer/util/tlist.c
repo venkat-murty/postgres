@@ -30,7 +30,7 @@
  */
 TargetEntry *
 tlist_member(Node *node, List *targetlist)
-{
+{	StackTrace("tlist_member");
 	ListCell   *temp;
 
 	foreach(temp, targetlist)
@@ -51,7 +51,7 @@ tlist_member(Node *node, List *targetlist)
  */
 TargetEntry *
 tlist_member_ignore_relabel(Node *node, List *targetlist)
-{
+{	StackTrace("tlist_member_ignore_relabel");
 	ListCell   *temp;
 
 	while (node && IsA(node, RelabelType))
@@ -82,7 +82,7 @@ tlist_member_ignore_relabel(Node *node, List *targetlist)
  */
 TargetEntry *
 tlist_member_match_var(Var *var, List *targetlist)
-{
+{	StackTrace("tlist_member_match_var");
 	ListCell   *temp;
 
 	foreach(temp, targetlist)
@@ -117,7 +117,7 @@ tlist_member_match_var(Var *var, List *targetlist)
 List *
 flatten_tlist(List *tlist, PVCAggregateBehavior aggbehavior,
 			  PVCPlaceHolderBehavior phbehavior)
-{
+{	StackTrace("flatten_tlist");
 	List	   *vlist = pull_var_clause((Node *) tlist,
 										aggbehavior,
 										phbehavior);
@@ -139,7 +139,7 @@ flatten_tlist(List *tlist, PVCAggregateBehavior aggbehavior,
  */
 List *
 add_to_flat_tlist(List *tlist, List *exprs)
-{
+{	StackTrace("add_to_flat_tlist");
 	int			next_resno = list_length(tlist) + 1;
 	ListCell   *lc;
 
@@ -170,7 +170,7 @@ add_to_flat_tlist(List *tlist, List *exprs)
  */
 List *
 get_tlist_exprs(List *tlist, bool includeJunk)
-{
+{	StackTrace("get_tlist_exprs");
 	List	   *result = NIL;
 	ListCell   *l;
 
@@ -193,7 +193,7 @@ get_tlist_exprs(List *tlist, bool includeJunk)
  */
 int
 count_nonjunk_tlist_entries(List *tlist)
-{
+{	StackTrace("count_nonjunk_tlist_entries");
 	int			len = 0;
 	ListCell   *l;
 
@@ -225,7 +225,7 @@ count_nonjunk_tlist_entries(List *tlist)
  */
 bool
 tlist_same_exprs(List *tlist1, List *tlist2)
-{
+{	StackTrace("tlist_same_exprs");
 	ListCell   *lc1,
 			   *lc2;
 
@@ -255,7 +255,7 @@ tlist_same_exprs(List *tlist1, List *tlist2)
  */
 bool
 tlist_same_datatypes(List *tlist, List *colTypes, bool junkOK)
-{
+{	StackTrace("tlist_same_datatypes");
 	ListCell   *l;
 	ListCell   *curColType = list_head(colTypes);
 
@@ -289,7 +289,7 @@ tlist_same_datatypes(List *tlist, List *colTypes, bool junkOK)
  */
 bool
 tlist_same_collations(List *tlist, List *colCollations, bool junkOK)
-{
+{	StackTrace("tlist_same_collations");
 	ListCell   *l;
 	ListCell   *curColColl = list_head(colCollations);
 
@@ -324,7 +324,7 @@ tlist_same_collations(List *tlist, List *colCollations, bool junkOK)
  */
 TargetEntry *
 get_sortgroupref_tle(Index sortref, List *targetList)
-{
+{	StackTrace("get_sortgroupref_tle");
 	ListCell   *l;
 
 	foreach(l, targetList)
@@ -347,7 +347,7 @@ get_sortgroupref_tle(Index sortref, List *targetList)
 TargetEntry *
 get_sortgroupclause_tle(SortGroupClause *sgClause,
 						List *targetList)
-{
+{	StackTrace("get_sortgroupclause_tle");
 	return get_sortgroupref_tle(sgClause->tleSortGroupRef, targetList);
 }
 
@@ -358,7 +358,7 @@ get_sortgroupclause_tle(SortGroupClause *sgClause,
  */
 Node *
 get_sortgroupclause_expr(SortGroupClause *sgClause, List *targetList)
-{
+{	StackTrace("get_sortgroupclause_expr");
 	TargetEntry *tle = get_sortgroupclause_tle(sgClause, targetList);
 
 	return (Node *) tle->expr;
@@ -371,7 +371,7 @@ get_sortgroupclause_expr(SortGroupClause *sgClause, List *targetList)
  */
 List *
 get_sortgrouplist_exprs(List *sgClauses, List *targetList)
-{
+{	StackTrace("get_sortgrouplist_exprs");
 	List	   *result = NIL;
 	ListCell   *l;
 
@@ -401,7 +401,7 @@ get_sortgrouplist_exprs(List *sgClauses, List *targetList)
  */
 SortGroupClause *
 get_sortgroupref_clause(Index sortref, List *clauses)
-{
+{	StackTrace("get_sortgroupref_clause");
 	ListCell   *l;
 
 	foreach(l, clauses)
@@ -422,7 +422,7 @@ get_sortgroupref_clause(Index sortref, List *clauses)
  */
 Oid *
 extract_grouping_ops(List *groupClause)
-{
+{	StackTrace("extract_grouping_ops");
 	int			numCols = list_length(groupClause);
 	int			colno = 0;
 	Oid		   *groupOperators;
@@ -448,7 +448,7 @@ extract_grouping_ops(List *groupClause)
  */
 AttrNumber *
 extract_grouping_cols(List *groupClause, List *tlist)
-{
+{	StackTrace("extract_grouping_cols");
 	AttrNumber *grpColIdx;
 	int			numCols = list_length(groupClause);
 	int			colno = 0;
@@ -474,7 +474,7 @@ extract_grouping_cols(List *groupClause, List *tlist)
  */
 bool
 grouping_is_sortable(List *groupClause)
-{
+{	StackTrace("grouping_is_sortable");
 	ListCell   *glitem;
 
 	foreach(glitem, groupClause)
@@ -494,7 +494,7 @@ grouping_is_sortable(List *groupClause)
  */
 bool
 grouping_is_hashable(List *groupClause)
-{
+{	StackTrace("grouping_is_hashable");
 	ListCell   *glitem;
 
 	foreach(glitem, groupClause)

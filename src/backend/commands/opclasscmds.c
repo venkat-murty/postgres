@@ -80,7 +80,7 @@ static void dropProcedures(List *opfamilyname, Oid amoid, Oid opfamilyoid,
  */
 static HeapTuple
 OpFamilyCacheLookup(Oid amID, List *opfamilyname, bool missing_ok)
-{
+{	StackTrace("OpFamilyCacheLookup");
 	char	   *schemaname;
 	char	   *opfname;
 	HeapTuple	htup;
@@ -138,7 +138,7 @@ OpFamilyCacheLookup(Oid amID, List *opfamilyname, bool missing_ok)
  */
 Oid
 get_opfamily_oid(Oid amID, List *opfamilyname, bool missing_ok)
-{
+{	StackTrace("get_opfamily_oid");
 	HeapTuple	htup;
 	Oid			opfID;
 
@@ -159,7 +159,7 @@ get_opfamily_oid(Oid amID, List *opfamilyname, bool missing_ok)
  */
 static HeapTuple
 OpClassCacheLookup(Oid amID, List *opclassname, bool missing_ok)
-{
+{	StackTrace("OpClassCacheLookup");
 	char	   *schemaname;
 	char	   *opcname;
 	HeapTuple	htup;
@@ -217,7 +217,7 @@ OpClassCacheLookup(Oid amID, List *opclassname, bool missing_ok)
  */
 Oid
 get_opclass_oid(Oid amID, List *opclassname, bool missing_ok)
-{
+{	StackTrace("get_opclass_oid");
 	HeapTuple	htup;
 	Oid			opcID;
 
@@ -238,7 +238,7 @@ get_opclass_oid(Oid amID, List *opclassname, bool missing_ok)
  */
 static ObjectAddress
 CreateOpFamily(char *amname, char *opfname, Oid namespaceoid, Oid amoid)
-{
+{	StackTrace("CreateOpFamily");
 	Oid			opfamilyoid;
 	Relation	rel;
 	HeapTuple	tup;
@@ -318,7 +318,7 @@ CreateOpFamily(char *amname, char *opfname, Oid namespaceoid, Oid amoid)
  */
 ObjectAddress
 DefineOpClass(CreateOpClassStmt *stmt)
-{
+{	StackTrace("DefineOpClass");
 	char	   *opcname;		/* name of opclass we're creating */
 	Oid			amoid,			/* our AM's oid */
 				typeoid,		/* indexable datatype oid */
@@ -725,7 +725,7 @@ DefineOpClass(CreateOpClassStmt *stmt)
  */
 ObjectAddress
 DefineOpFamily(CreateOpFamilyStmt *stmt)
-{
+{	StackTrace("DefineOpFamily");
 	char	   *opfname;		/* name of opfamily we're creating */
 	Oid			amoid,			/* our AM's oid */
 				namespaceoid;	/* namespace to create opfamily in */
@@ -770,7 +770,7 @@ DefineOpFamily(CreateOpFamilyStmt *stmt)
  */
 Oid
 AlterOpFamily(AlterOpFamilyStmt *stmt)
-{
+{	StackTrace("AlterOpFamily");
 	Oid			amoid,			/* our AM's oid */
 				opfamilyoid;	/* oid of opfamily */
 	int			maxOpNumber,	/* amstrategies value */
@@ -830,7 +830,7 @@ AlterOpFamily(AlterOpFamilyStmt *stmt)
 static void
 AlterOpFamilyAdd(AlterOpFamilyStmt *stmt, Oid amoid, Oid opfamilyoid,
 				 int maxOpNumber, int maxProcNumber, List *items)
-{
+{	StackTrace("AlterOpFamilyAdd");
 	List	   *operators;		/* OpFamilyMember list for operators */
 	List	   *procedures;		/* OpFamilyMember list for support procs */
 	ListCell   *l;
@@ -964,7 +964,7 @@ AlterOpFamilyAdd(AlterOpFamilyStmt *stmt, Oid amoid, Oid opfamilyoid,
 static void
 AlterOpFamilyDrop(AlterOpFamilyStmt *stmt, Oid amoid, Oid opfamilyoid,
 				  int maxOpNumber, int maxProcNumber, List *items)
-{
+{	StackTrace("AlterOpFamilyDrop");
 	List	   *operators;		/* OpFamilyMember list for operators */
 	List	   *procedures;		/* OpFamilyMember list for support procs */
 	ListCell   *l;
@@ -1040,7 +1040,7 @@ AlterOpFamilyDrop(AlterOpFamilyStmt *stmt, Oid amoid, Oid opfamilyoid,
  */
 static void
 processTypesSpec(List *args, Oid *lefttype, Oid *righttype)
-{
+{	StackTrace("processTypesSpec");
 	TypeName   *typeName;
 
 	Assert(args != NIL);
@@ -1069,7 +1069,7 @@ processTypesSpec(List *args, Oid *lefttype, Oid *righttype)
  */
 static void
 assignOperTypes(OpFamilyMember *member, Oid amoid, Oid typeoid)
-{
+{	StackTrace("assignOperTypes");
 	Operator	optup;
 	Form_pg_operator opform;
 
@@ -1143,7 +1143,7 @@ assignOperTypes(OpFamilyMember *member, Oid amoid, Oid typeoid)
  */
 static void
 assignProcTypes(OpFamilyMember *member, Oid amoid, Oid typeoid)
-{
+{	StackTrace("assignProcTypes");
 	HeapTuple	proctup;
 	Form_pg_proc procform;
 
@@ -1241,7 +1241,7 @@ assignProcTypes(OpFamilyMember *member, Oid amoid, Oid typeoid)
  */
 static void
 addFamilyMember(List **list, OpFamilyMember *member, bool isProc)
-{
+{	StackTrace("addFamilyMember");
 	ListCell   *l;
 
 	foreach(l, *list)
@@ -1282,7 +1282,7 @@ static void
 storeOperators(List *opfamilyname, Oid amoid,
 			   Oid opfamilyoid, Oid opclassoid,
 			   List *operators, bool isAdd)
-{
+{	StackTrace("storeOperators");
 	Relation	rel;
 	Datum		values[Natts_pg_amop];
 	bool		nulls[Natts_pg_amop];
@@ -1399,7 +1399,7 @@ static void
 storeProcedures(List *opfamilyname, Oid amoid,
 				Oid opfamilyoid, Oid opclassoid,
 				List *procedures, bool isAdd)
-{
+{	StackTrace("storeProcedures");
 	Relation	rel;
 	Datum		values[Natts_pg_amproc];
 	bool		nulls[Natts_pg_amproc];
@@ -1500,7 +1500,7 @@ storeProcedures(List *opfamilyname, Oid amoid,
 static void
 dropOperators(List *opfamilyname, Oid amoid, Oid opfamilyoid,
 			  List *operators)
-{
+{	StackTrace("dropOperators");
 	ListCell   *l;
 
 	foreach(l, operators)
@@ -1540,7 +1540,7 @@ dropOperators(List *opfamilyname, Oid amoid, Oid opfamilyoid,
 static void
 dropProcedures(List *opfamilyname, Oid amoid, Oid opfamilyoid,
 			   List *procedures)
-{
+{	StackTrace("dropProcedures");
 	ListCell   *l;
 
 	foreach(l, procedures)
@@ -1576,7 +1576,7 @@ dropProcedures(List *opfamilyname, Oid amoid, Oid opfamilyoid,
  */
 void
 RemoveOpFamilyById(Oid opfamilyOid)
-{
+{	StackTrace("RemoveOpFamilyById");
 	Relation	rel;
 	HeapTuple	tup;
 
@@ -1595,7 +1595,7 @@ RemoveOpFamilyById(Oid opfamilyOid)
 
 void
 RemoveOpClassById(Oid opclassOid)
-{
+{	StackTrace("RemoveOpClassById");
 	Relation	rel;
 	HeapTuple	tup;
 
@@ -1614,7 +1614,7 @@ RemoveOpClassById(Oid opclassOid)
 
 void
 RemoveAmOpEntryById(Oid entryOid)
-{
+{	StackTrace("RemoveAmOpEntryById");
 	Relation	rel;
 	HeapTuple	tup;
 	ScanKeyData skey[1];
@@ -1643,7 +1643,7 @@ RemoveAmOpEntryById(Oid entryOid)
 
 void
 RemoveAmProcEntryById(Oid entryOid)
-{
+{	StackTrace("RemoveAmProcEntryById");
 	Relation	rel;
 	HeapTuple	tup;
 	ScanKeyData skey[1];
@@ -1672,7 +1672,7 @@ RemoveAmProcEntryById(Oid entryOid)
 
 char *
 get_am_name(Oid amOid)
-{
+{	StackTrace("get_am_name");
 	HeapTuple	tup;
 	char	   *result = NULL;
 
@@ -1694,7 +1694,7 @@ get_am_name(Oid amOid)
 void
 IsThereOpClassInNamespace(const char *opcname, Oid opcmethod,
 						  Oid opcnamespace)
-{
+{	StackTrace("IsThereOpClassInNamespace");
 	/* make sure the new name doesn't exist */
 	if (SearchSysCacheExists3(CLAAMNAMENSP,
 							  ObjectIdGetDatum(opcmethod),
@@ -1717,7 +1717,7 @@ IsThereOpClassInNamespace(const char *opcname, Oid opcmethod,
 void
 IsThereOpFamilyInNamespace(const char *opfname, Oid opfmethod,
 						   Oid opfnamespace)
-{
+{	StackTrace("IsThereOpFamilyInNamespace");
 	/* make sure the new name doesn't exist */
 	if (SearchSysCacheExists3(OPFAMILYAMNAMENSP,
 							  ObjectIdGetDatum(opfmethod),
@@ -1739,7 +1739,7 @@ IsThereOpFamilyInNamespace(const char *opfname, Oid opfmethod,
  */
 Oid
 get_am_oid(const char *amname, bool missing_ok)
-{
+{	StackTrace("get_am_oid");
 	Oid			oid;
 
 	oid = GetSysCacheOid1(AMNAME, CStringGetDatum(amname));

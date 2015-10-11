@@ -98,7 +98,7 @@ static void remove_from_unowned_list(SMgrRelation reln);
  */
 void
 smgrinit(void)
-{
+{	StackTrace("smgrinit");
 	int			i;
 
 	for (i = 0; i < NSmgr; i++)
@@ -116,7 +116,7 @@ smgrinit(void)
  */
 static void
 smgrshutdown(int code, Datum arg)
-{
+{	StackTrace("smgrshutdown");
 	int			i;
 
 	for (i = 0; i < NSmgr; i++)
@@ -133,7 +133,7 @@ smgrshutdown(int code, Datum arg)
  */
 SMgrRelation
 smgropen(RelFileNode rnode, BackendId backend)
-{
+{	StackTrace("smgropen");
 	RelFileNodeBackend brnode;
 	SMgrRelation reln;
 	bool		found;
@@ -189,7 +189,7 @@ smgropen(RelFileNode rnode, BackendId backend)
  */
 void
 smgrsetowner(SMgrRelation *owner, SMgrRelation reln)
-{
+{	StackTrace("smgrsetowner");
 	/* We don't support "disowning" an SMgrRelation here, use smgrclearowner */
 	Assert(owner != NULL);
 
@@ -218,7 +218,7 @@ smgrsetowner(SMgrRelation *owner, SMgrRelation reln)
  */
 void
 smgrclearowner(SMgrRelation *owner, SMgrRelation reln)
-{
+{	StackTrace("smgrclearowner");
 	/* Do nothing if the SMgrRelation object is not owned by the owner */
 	if (reln->smgr_owner != owner)
 		return;
@@ -240,7 +240,7 @@ smgrclearowner(SMgrRelation *owner, SMgrRelation reln)
  */
 static void
 add_to_unowned_list(SMgrRelation reln)
-{
+{	StackTrace("add_to_unowned_list");
 	/* place it at head of the list (to make smgrsetowner cheap) */
 	reln->next_unowned_reln = first_unowned_reln;
 	first_unowned_reln = reln;
@@ -261,7 +261,7 @@ add_to_unowned_list(SMgrRelation reln)
  */
 static void
 remove_from_unowned_list(SMgrRelation reln)
-{
+{	StackTrace("remove_from_unowned_list");
 	SMgrRelation *link;
 	SMgrRelation cur;
 
@@ -283,7 +283,7 @@ remove_from_unowned_list(SMgrRelation reln)
  */
 bool
 smgrexists(SMgrRelation reln, ForkNumber forknum)
-{
+{	StackTrace("smgrexists");
 	return (*(smgrsw[reln->smgr_which].smgr_exists)) (reln, forknum);
 }
 
@@ -292,7 +292,7 @@ smgrexists(SMgrRelation reln, ForkNumber forknum)
  */
 void
 smgrclose(SMgrRelation reln)
-{
+{	StackTrace("smgrclose");
 	SMgrRelation *owner;
 	ForkNumber	forknum;
 
@@ -322,7 +322,7 @@ smgrclose(SMgrRelation reln)
  */
 void
 smgrcloseall(void)
-{
+{	StackTrace("smgrcloseall");
 	HASH_SEQ_STATUS status;
 	SMgrRelation reln;
 
@@ -346,7 +346,7 @@ smgrcloseall(void)
  */
 void
 smgrclosenode(RelFileNodeBackend rnode)
-{
+{	StackTrace("smgrclosenode");
 	SMgrRelation reln;
 
 	/* Nothing to do if hashtable not set up */
@@ -372,7 +372,7 @@ smgrclosenode(RelFileNodeBackend rnode)
  */
 void
 smgrcreate(SMgrRelation reln, ForkNumber forknum, bool isRedo)
-{
+{	StackTrace("smgrcreate");
 	/*
 	 * Exit quickly in WAL replay mode if we've already opened the file. If
 	 * it's open, it surely must exist.
@@ -410,7 +410,7 @@ smgrcreate(SMgrRelation reln, ForkNumber forknum, bool isRedo)
  */
 void
 smgrdounlink(SMgrRelation reln, bool isRedo)
-{
+{	StackTrace("smgrdounlink");
 	RelFileNodeBackend rnode = reln->smgr_rnode;
 	int			which = reln->smgr_which;
 	ForkNumber	forknum;
@@ -467,7 +467,7 @@ smgrdounlink(SMgrRelation reln, bool isRedo)
  */
 void
 smgrdounlinkall(SMgrRelation *rels, int nrels, bool isRedo)
-{
+{	StackTrace("smgrdounlinkall");
 	int			i = 0;
 	RelFileNodeBackend *rnodes;
 	ForkNumber	forknum;
@@ -545,7 +545,7 @@ smgrdounlinkall(SMgrRelation *rels, int nrels, bool isRedo)
  */
 void
 smgrdounlinkfork(SMgrRelation reln, ForkNumber forknum, bool isRedo)
-{
+{	StackTrace("smgrdounlinkfork");
 	RelFileNodeBackend rnode = reln->smgr_rnode;
 	int			which = reln->smgr_which;
 
@@ -597,7 +597,7 @@ smgrdounlinkfork(SMgrRelation reln, ForkNumber forknum, bool isRedo)
 void
 smgrextend(SMgrRelation reln, ForkNumber forknum, BlockNumber blocknum,
 		   char *buffer, bool skipFsync)
-{
+{	StackTrace("smgrextend");
 	(*(smgrsw[reln->smgr_which].smgr_extend)) (reln, forknum, blocknum,
 											   buffer, skipFsync);
 }
@@ -607,7 +607,7 @@ smgrextend(SMgrRelation reln, ForkNumber forknum, BlockNumber blocknum,
  */
 void
 smgrprefetch(SMgrRelation reln, ForkNumber forknum, BlockNumber blocknum)
-{
+{	StackTrace("smgrprefetch");
 	(*(smgrsw[reln->smgr_which].smgr_prefetch)) (reln, forknum, blocknum);
 }
 
@@ -622,7 +622,7 @@ smgrprefetch(SMgrRelation reln, ForkNumber forknum, BlockNumber blocknum)
 void
 smgrread(SMgrRelation reln, ForkNumber forknum, BlockNumber blocknum,
 		 char *buffer)
-{
+{	StackTrace("smgrread");
 	(*(smgrsw[reln->smgr_which].smgr_read)) (reln, forknum, blocknum, buffer);
 }
 
@@ -644,7 +644,7 @@ smgrread(SMgrRelation reln, ForkNumber forknum, BlockNumber blocknum,
 void
 smgrwrite(SMgrRelation reln, ForkNumber forknum, BlockNumber blocknum,
 		  char *buffer, bool skipFsync)
-{
+{	StackTrace("smgrwrite");
 	(*(smgrsw[reln->smgr_which].smgr_write)) (reln, forknum, blocknum,
 											  buffer, skipFsync);
 }
@@ -655,7 +655,7 @@ smgrwrite(SMgrRelation reln, ForkNumber forknum, BlockNumber blocknum,
  */
 BlockNumber
 smgrnblocks(SMgrRelation reln, ForkNumber forknum)
-{
+{	StackTrace("smgrnblocks");
 	return (*(smgrsw[reln->smgr_which].smgr_nblocks)) (reln, forknum);
 }
 
@@ -667,7 +667,7 @@ smgrnblocks(SMgrRelation reln, ForkNumber forknum)
  */
 void
 smgrtruncate(SMgrRelation reln, ForkNumber forknum, BlockNumber nblocks)
-{
+{	StackTrace("smgrtruncate");
 	/*
 	 * Get rid of any buffers for the about-to-be-deleted blocks. bufmgr will
 	 * just drop them without bothering to write the contents.
@@ -717,7 +717,7 @@ smgrtruncate(SMgrRelation reln, ForkNumber forknum, BlockNumber nblocks)
  */
 void
 smgrimmedsync(SMgrRelation reln, ForkNumber forknum)
-{
+{	StackTrace("smgrimmedsync");
 	(*(smgrsw[reln->smgr_which].smgr_immedsync)) (reln, forknum);
 }
 
@@ -727,7 +727,7 @@ smgrimmedsync(SMgrRelation reln, ForkNumber forknum)
  */
 void
 smgrpreckpt(void)
-{
+{	StackTrace("smgrpreckpt");
 	int			i;
 
 	for (i = 0; i < NSmgr; i++)
@@ -742,7 +742,7 @@ smgrpreckpt(void)
  */
 void
 smgrsync(void)
-{
+{	StackTrace("smgrsync");
 	int			i;
 
 	for (i = 0; i < NSmgr; i++)
@@ -757,7 +757,7 @@ smgrsync(void)
  */
 void
 smgrpostckpt(void)
-{
+{	StackTrace("smgrpostckpt");
 	int			i;
 
 	for (i = 0; i < NSmgr; i++)
@@ -781,7 +781,7 @@ smgrpostckpt(void)
  */
 void
 AtEOXact_SMgr(void)
-{
+{	StackTrace("AtEOXact_SMgr");
 	/*
 	 * Zap all unowned SMgrRelations.  We rely on smgrclose() to remove each
 	 * one from the list.

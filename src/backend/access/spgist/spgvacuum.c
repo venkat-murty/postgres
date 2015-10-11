@@ -61,7 +61,7 @@ typedef struct spgBulkDeleteState
  */
 static void
 spgAddPendingTID(spgBulkDeleteState *bds, ItemPointer tid)
-{
+{	StackTrace("spgAddPendingTID");
 	spgVacPendingItem *pitem;
 	spgVacPendingItem **listLink;
 
@@ -87,7 +87,7 @@ spgAddPendingTID(spgBulkDeleteState *bds, ItemPointer tid)
  */
 static void
 spgClearPendingList(spgBulkDeleteState *bds)
-{
+{	StackTrace("spgClearPendingList");
 	spgVacPendingItem *pitem;
 	spgVacPendingItem *nitem;
 
@@ -124,7 +124,7 @@ spgClearPendingList(spgBulkDeleteState *bds)
 static void
 vacuumLeafPage(spgBulkDeleteState *bds, Relation index, Buffer buffer,
 			   bool forPending)
-{
+{	StackTrace("vacuumLeafPage");
 	Page		page = BufferGetPage(buffer);
 	spgxlogVacuumLeaf xlrec;
 	OffsetNumber toDead[MaxIndexTuplesPerPage];
@@ -404,7 +404,7 @@ vacuumLeafPage(spgBulkDeleteState *bds, Relation index, Buffer buffer,
  */
 static void
 vacuumLeafRoot(spgBulkDeleteState *bds, Relation index, Buffer buffer)
-{
+{	StackTrace("vacuumLeafRoot");
 	Page		page = BufferGetPage(buffer);
 	spgxlogVacuumRoot xlrec;
 	OffsetNumber toDelete[MaxIndexTuplesPerPage];
@@ -489,7 +489,7 @@ vacuumLeafRoot(spgBulkDeleteState *bds, Relation index, Buffer buffer)
  */
 static void
 vacuumRedirectAndPlaceholder(Relation index, Buffer buffer)
-{
+{	StackTrace("vacuumRedirectAndPlaceholder");
 	Page		page = BufferGetPage(buffer);
 	SpGistPageOpaque opaque = SpGistPageGetOpaque(page);
 	OffsetNumber i,
@@ -604,7 +604,7 @@ vacuumRedirectAndPlaceholder(Relation index, Buffer buffer)
  */
 static void
 spgvacuumpage(spgBulkDeleteState *bds, BlockNumber blkno)
-{
+{	StackTrace("spgvacuumpage");
 	Relation	index = bds->info->index;
 	Buffer		buffer;
 	Page		page;
@@ -686,7 +686,7 @@ spgvacuumpage(spgBulkDeleteState *bds, BlockNumber blkno)
  */
 static void
 spgprocesspending(spgBulkDeleteState *bds)
-{
+{	StackTrace("spgprocesspending");
 	Relation	index = bds->info->index;
 	spgVacPendingItem *pitem;
 	spgVacPendingItem *nitem;
@@ -798,7 +798,7 @@ spgprocesspending(spgBulkDeleteState *bds)
  */
 static void
 spgvacuumscan(spgBulkDeleteState *bds)
-{
+{	StackTrace("spgvacuumscan");
 	Relation	index = bds->info->index;
 	bool		needLock;
 	BlockNumber num_pages,
@@ -894,7 +894,7 @@ spgvacuumscan(spgBulkDeleteState *bds)
  */
 Datum
 spgbulkdelete(PG_FUNCTION_ARGS)
-{
+{	StackTrace("spgbulkdelete");
 	IndexVacuumInfo *info = (IndexVacuumInfo *) PG_GETARG_POINTER(0);
 	IndexBulkDeleteResult *stats = (IndexBulkDeleteResult *) PG_GETARG_POINTER(1);
 	IndexBulkDeleteCallback callback = (IndexBulkDeleteCallback) PG_GETARG_POINTER(2);
@@ -917,7 +917,7 @@ spgbulkdelete(PG_FUNCTION_ARGS)
 /* Dummy callback to delete no tuples during spgvacuumcleanup */
 static bool
 dummy_callback(ItemPointer itemptr, void *state)
-{
+{	StackTrace("dummy_callback");
 	return false;
 }
 
@@ -928,7 +928,7 @@ dummy_callback(ItemPointer itemptr, void *state)
  */
 Datum
 spgvacuumcleanup(PG_FUNCTION_ARGS)
-{
+{	StackTrace("spgvacuumcleanup");
 	IndexVacuumInfo *info = (IndexVacuumInfo *) PG_GETARG_POINTER(0);
 	IndexBulkDeleteResult *stats = (IndexBulkDeleteResult *) PG_GETARG_POINTER(1);
 	Relation	index = info->index;

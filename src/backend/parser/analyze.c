@@ -90,7 +90,7 @@ static void transformLockingClause(ParseState *pstate, Query *qry,
 Query *
 parse_analyze(Node *parseTree, const char *sourceText,
 			  Oid *paramTypes, int numParams)
-{
+{	StackTrace("parse_analyze");
 	ParseState *pstate = make_parsestate(NULL);
 	Query	   *query;
 
@@ -121,7 +121,7 @@ parse_analyze(Node *parseTree, const char *sourceText,
 Query *
 parse_analyze_varparams(Node *parseTree, const char *sourceText,
 						Oid **paramTypes, int *numParams)
-{
+{	StackTrace("parse_analyze_varparams");
 	ParseState *pstate = make_parsestate(NULL);
 	Query	   *query;
 
@@ -152,7 +152,7 @@ Query *
 parse_sub_analyze(Node *parseTree, ParseState *parentParseState,
 				  CommonTableExpr *parentCTE,
 				  bool locked_from_parent)
-{
+{	StackTrace("parse_sub_analyze");
 	ParseState *pstate = make_parsestate(parentParseState);
 	Query	   *query;
 
@@ -178,7 +178,7 @@ parse_sub_analyze(Node *parseTree, ParseState *parentParseState,
  */
 Query *
 transformTopLevelStmt(ParseState *pstate, Node *parseTree)
-{
+{	StackTrace("transformTopLevelStmt");
 	if (IsA(parseTree, SelectStmt))
 	{
 		SelectStmt *stmt = (SelectStmt *) parseTree;
@@ -217,7 +217,7 @@ transformTopLevelStmt(ParseState *pstate, Node *parseTree)
  */
 Query *
 transformStmt(ParseState *pstate, Node *parseTree)
-{
+{	StackTrace("transformStmt");
 	Query	   *result;
 
 	switch (nodeTag(parseTree))
@@ -296,7 +296,7 @@ transformStmt(ParseState *pstate, Node *parseTree)
  */
 bool
 analyze_requires_snapshot(Node *parseTree)
-{
+{	StackTrace("analyze_requires_snapshot");
 	bool		result;
 
 	switch (nodeTag(parseTree))
@@ -340,7 +340,7 @@ analyze_requires_snapshot(Node *parseTree)
  */
 static Query *
 transformDeleteStmt(ParseState *pstate, DeleteStmt *stmt)
-{
+{	StackTrace("transformDeleteStmt");
 	Query	   *qry = makeNode(Query);
 	ParseNamespaceItem *nsitem;
 	Node	   *qual;
@@ -409,7 +409,7 @@ transformDeleteStmt(ParseState *pstate, DeleteStmt *stmt)
  */
 static Query *
 transformInsertStmt(ParseState *pstate, InsertStmt *stmt)
-{
+{	StackTrace("transformInsertStmt");
 	Query	   *qry = makeNode(Query);
 	SelectStmt *selectStmt = (SelectStmt *) stmt->selectStmt;
 	List	   *exprList = NIL;
@@ -792,7 +792,7 @@ transformInsertStmt(ParseState *pstate, InsertStmt *stmt)
 static List *
 transformInsertRow(ParseState *pstate, List *exprlist,
 				   List *stmtcols, List *icolumns, List *attrnos)
-{
+{	StackTrace("transformInsertRow");
 	List	   *result;
 	ListCell   *lc;
 	ListCell   *icols;
@@ -873,7 +873,7 @@ transformInsertRow(ParseState *pstate, List *exprlist,
 static OnConflictExpr *
 transformOnConflictClause(ParseState *pstate,
 						  OnConflictClause *onConflictClause)
-{
+{	StackTrace("transformOnConflictClause");
 	List	   *arbiterElems;
 	Node	   *arbiterWhere;
 	Oid			arbiterConstraint;
@@ -956,7 +956,7 @@ transformOnConflictClause(ParseState *pstate,
  */
 static int
 count_rowexpr_columns(ParseState *pstate, Node *expr)
-{
+{	StackTrace("count_rowexpr_columns");
 	if (expr == NULL)
 		return -1;
 	if (IsA(expr, RowExpr))
@@ -998,7 +998,7 @@ count_rowexpr_columns(ParseState *pstate, Node *expr)
  */
 static Query *
 transformSelectStmt(ParseState *pstate, SelectStmt *stmt)
-{
+{	StackTrace("transformSelectStmt");
 	Query	   *qry = makeNode(Query);
 	Node	   *qual;
 	ListCell   *l;
@@ -1130,7 +1130,7 @@ transformSelectStmt(ParseState *pstate, SelectStmt *stmt)
  */
 static Query *
 transformValuesClause(ParseState *pstate, SelectStmt *stmt)
-{
+{	StackTrace("transformValuesClause");
 	Query	   *qry = makeNode(Query);
 	List	   *exprsLists;
 	List	   *collations;
@@ -1355,7 +1355,7 @@ transformValuesClause(ParseState *pstate, SelectStmt *stmt)
  */
 static Query *
 transformSetOperationStmt(ParseState *pstate, SelectStmt *stmt)
-{
+{	StackTrace("transformSetOperationStmt");
 	Query	   *qry = makeNode(Query);
 	SelectStmt *leftmostSelect;
 	int			leftmostRTI;
@@ -1598,7 +1598,7 @@ transformSetOperationStmt(ParseState *pstate, SelectStmt *stmt)
 static Node *
 transformSetOperationTree(ParseState *pstate, SelectStmt *stmt,
 						  bool isTopLevel, List **targetlist)
-{
+{	StackTrace("transformSetOperationTree");
 	bool		isLeaf;
 
 	Assert(stmt && IsA(stmt, SelectStmt));
@@ -1937,7 +1937,7 @@ transformSetOperationTree(ParseState *pstate, SelectStmt *stmt,
  */
 static void
 determineRecursiveColTypes(ParseState *pstate, Node *larg, List *nrtargetlist)
-{
+{	StackTrace("determineRecursiveColTypes");
 	Node	   *node;
 	int			leftmostRTI;
 	Query	   *leftmostQuery;
@@ -1993,7 +1993,7 @@ determineRecursiveColTypes(ParseState *pstate, Node *larg, List *nrtargetlist)
  */
 static Query *
 transformUpdateStmt(ParseState *pstate, UpdateStmt *stmt)
-{
+{	StackTrace("transformUpdateStmt");
 	Query	   *qry = makeNode(Query);
 	ParseNamespaceItem *nsitem;
 	Node	   *qual;
@@ -2058,7 +2058,7 @@ transformUpdateStmt(ParseState *pstate, UpdateStmt *stmt)
  */
 static List *
 transformUpdateTargetList(ParseState *pstate, List *origTlist)
-{
+{	StackTrace("transformUpdateTargetList");
 	List	   *tlist = NIL;
 	RangeTblEntry *target_rte;
 	ListCell   *orig_tl;
@@ -2131,7 +2131,7 @@ transformUpdateTargetList(ParseState *pstate, List *origTlist)
  */
 static List *
 transformReturningList(ParseState *pstate, List *returningList)
-{
+{	StackTrace("transformReturningList");
 	List	   *rlist;
 	int			save_next_resno;
 
@@ -2185,7 +2185,7 @@ transformReturningList(ParseState *pstate, List *returningList)
  */
 static Query *
 transformDeclareCursorStmt(ParseState *pstate, DeclareCursorStmt *stmt)
-{
+{	StackTrace("transformDeclareCursorStmt");
 	Query	   *result;
 
 	/*
@@ -2269,7 +2269,7 @@ transformDeclareCursorStmt(ParseState *pstate, DeclareCursorStmt *stmt)
  */
 static Query *
 transformExplainStmt(ParseState *pstate, ExplainStmt *stmt)
-{
+{	StackTrace("transformExplainStmt");
 	Query	   *result;
 
 	/* transform contained query, allowing SELECT INTO */
@@ -2293,7 +2293,7 @@ transformExplainStmt(ParseState *pstate, ExplainStmt *stmt)
  */
 static Query *
 transformCreateTableAsStmt(ParseState *pstate, CreateTableAsStmt *stmt)
-{
+{	StackTrace("transformCreateTableAsStmt");
 	Query	   *result;
 	Query	   *query;
 
@@ -2370,7 +2370,7 @@ transformCreateTableAsStmt(ParseState *pstate, CreateTableAsStmt *stmt)
  */
 const char *
 LCS_asString(LockClauseStrength strength)
-{
+{	StackTrace("LCS_asString");
 	switch (strength)
 	{
 		case LCS_NONE:
@@ -2395,7 +2395,7 @@ LCS_asString(LockClauseStrength strength)
  */
 void
 CheckSelectLocking(Query *qry, LockClauseStrength strength)
-{
+{	StackTrace("CheckSelectLocking");
 	Assert(strength != LCS_NONE);		/* else caller error */
 
 	if (qry->setOperations)
@@ -2460,7 +2460,7 @@ CheckSelectLocking(Query *qry, LockClauseStrength strength)
 static void
 transformLockingClause(ParseState *pstate, Query *qry, LockingClause *lc,
 					   bool pushedDown)
-{
+{	StackTrace("transformLockingClause");
 	List	   *lockedRels = lc->lockedRels;
 	ListCell   *l;
 	ListCell   *rt;
@@ -2614,7 +2614,7 @@ void
 applyLockingClause(Query *qry, Index rtindex,
 				   LockClauseStrength strength, LockWaitPolicy waitPolicy,
 				   bool pushedDown)
-{
+{	StackTrace("applyLockingClause");
 	RowMarkClause *rc;
 
 	Assert(strength != LCS_NONE);		/* else caller error */

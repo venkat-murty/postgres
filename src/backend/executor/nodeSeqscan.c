@@ -43,7 +43,7 @@ static TupleTableSlot *SeqNext(SeqScanState *node);
  */
 static TupleTableSlot *
 SeqNext(SeqScanState *node)
-{
+{	StackTrace("SeqNext");
 	HeapTuple	tuple;
 	HeapScanDesc scandesc;
 	EState	   *estate;
@@ -88,7 +88,7 @@ SeqNext(SeqScanState *node)
  */
 static bool
 SeqRecheck(SeqScanState *node, TupleTableSlot *slot)
-{
+{	StackTrace("SeqRecheck");
 	/*
 	 * Note that unlike IndexScan, SeqScan never use keys in heap_beginscan
 	 * (and this is very bad) - so, here we do not check are keys ok or not.
@@ -107,7 +107,7 @@ SeqRecheck(SeqScanState *node, TupleTableSlot *slot)
  */
 TupleTableSlot *
 ExecSeqScan(SeqScanState *node)
-{
+{	StackTrace("ExecSeqScan");
 	return ExecScan((ScanState *) node,
 					(ExecScanAccessMtd) SeqNext,
 					(ExecScanRecheckMtd) SeqRecheck);
@@ -121,7 +121,7 @@ ExecSeqScan(SeqScanState *node)
  */
 static void
 InitScanRelation(SeqScanState *node, EState *estate, int eflags)
-{
+{	StackTrace("InitScanRelation");
 	Relation	currentRelation;
 	HeapScanDesc currentScanDesc;
 
@@ -153,7 +153,7 @@ InitScanRelation(SeqScanState *node, EState *estate, int eflags)
  */
 SeqScanState *
 ExecInitSeqScan(SeqScan *node, EState *estate, int eflags)
-{
+{	StackTrace("ExecInitSeqScan");
 	SeqScanState *scanstate;
 
 	/*
@@ -217,7 +217,7 @@ ExecInitSeqScan(SeqScan *node, EState *estate, int eflags)
  */
 void
 ExecEndSeqScan(SeqScanState *node)
-{
+{	StackTrace("ExecEndSeqScan");
 	Relation	relation;
 	HeapScanDesc scanDesc;
 
@@ -262,7 +262,7 @@ ExecEndSeqScan(SeqScanState *node)
  */
 void
 ExecReScanSeqScan(SeqScanState *node)
-{
+{	StackTrace("ExecReScanSeqScan");
 	HeapScanDesc scan;
 
 	scan = node->ss_currentScanDesc;

@@ -106,7 +106,7 @@ static void _bt_vacuum_one_page(Relation rel, Buffer buffer, Relation heapRel);
 bool
 _bt_doinsert(Relation rel, IndexTuple itup,
 			 IndexUniqueCheck checkUnique, Relation heapRel)
-{
+{	StackTrace("_bt_doinsert");
 	bool		is_unique = false;
 	int			natts = rel->rd_rel->relnatts;
 	ScanKey		itup_scankey;
@@ -240,7 +240,7 @@ _bt_check_unique(Relation rel, IndexTuple itup, Relation heapRel,
 				 Buffer buf, OffsetNumber offset, ScanKey itup_scankey,
 				 IndexUniqueCheck checkUnique, bool *is_unique,
 				 uint32 *speculativeToken)
-{
+{	StackTrace("_bt_check_unique");
 	TupleDesc	itupdesc = RelationGetDescr(rel);
 	int			natts = rel->rd_rel->relnatts;
 	SnapshotData SnapshotDirty;
@@ -536,7 +536,7 @@ _bt_findinsertloc(Relation rel,
 				  IndexTuple newtup,
 				  BTStack stack,
 				  Relation heapRel)
-{
+{	StackTrace("_bt_findinsertloc");
 	Buffer		buf = *bufptr;
 	Page		page = BufferGetPage(buf);
 	Size		itemsz;
@@ -728,7 +728,7 @@ _bt_insertonpg(Relation rel,
 			   IndexTuple itup,
 			   OffsetNumber newitemoff,
 			   bool split_only_page)
-{
+{	StackTrace("_bt_insertonpg");
 	Page		page;
 	BTPageOpaque lpageop;
 	OffsetNumber firstright = InvalidOffsetNumber;
@@ -950,7 +950,7 @@ static Buffer
 _bt_split(Relation rel, Buffer buf, Buffer cbuf, OffsetNumber firstright,
 		  OffsetNumber newitemoff, Size newitemsz, IndexTuple newitem,
 		  bool newitemonleft)
-{
+{	StackTrace("_bt_split");
 	Buffer		rbuf;
 	Page		origpage;
 	Page		leftpage,
@@ -1384,7 +1384,7 @@ _bt_findsplitloc(Relation rel,
 				 OffsetNumber newitemoff,
 				 Size newitemsz,
 				 bool *newitemonleft)
-{
+{	StackTrace("_bt_findsplitloc");
 	BTPageOpaque opaque;
 	OffsetNumber offnum;
 	OffsetNumber maxoff;
@@ -1532,7 +1532,7 @@ _bt_checksplitloc(FindSplitData *state,
 				  bool newitemonleft,
 				  int olddataitemstoleft,
 				  Size firstoldonrightsz)
-{
+{	StackTrace("_bt_checksplitloc");
 	int			leftfree,
 				rightfree;
 	Size		firstrightitemsz;
@@ -1627,7 +1627,7 @@ _bt_insert_parent(Relation rel,
 				  BTStack stack,
 				  bool is_root,
 				  bool is_only)
-{
+{	StackTrace("_bt_insert_parent");
 	/*
 	 * Here we have to do something Lehman and Yao don't talk about: deal with
 	 * a root split and construction of a new root.  If our stack is empty
@@ -1732,7 +1732,7 @@ _bt_insert_parent(Relation rel,
  */
 void
 _bt_finish_split(Relation rel, Buffer lbuf, BTStack stack)
-{
+{	StackTrace("_bt_finish_split");
 	Page		lpage = BufferGetPage(lbuf);
 	BTPageOpaque lpageop = (BTPageOpaque) PageGetSpecialPointer(lpage);
 	Buffer		rbuf;
@@ -1791,7 +1791,7 @@ _bt_finish_split(Relation rel, Buffer lbuf, BTStack stack)
  */
 Buffer
 _bt_getstackbuf(Relation rel, BTStack stack, int access)
-{
+{	StackTrace("_bt_getstackbuf");
 	BlockNumber blkno;
 	OffsetNumber start;
 
@@ -1910,7 +1910,7 @@ _bt_getstackbuf(Relation rel, BTStack stack, int access)
  */
 static Buffer
 _bt_newroot(Relation rel, Buffer lbuf, Buffer rbuf)
-{
+{	StackTrace("_bt_newroot");
 	Buffer		rootbuf;
 	Page		lpage,
 				rootpage;
@@ -2083,7 +2083,7 @@ _bt_pgaddtup(Page page,
 			 Size itemsize,
 			 IndexTuple itup,
 			 OffsetNumber itup_off)
-{
+{	StackTrace("_bt_pgaddtup");
 	BTPageOpaque opaque = (BTPageOpaque) PageGetSpecialPointer(page);
 	IndexTupleData trunctuple;
 
@@ -2111,7 +2111,7 @@ _bt_pgaddtup(Page page,
 static bool
 _bt_isequal(TupleDesc itupdesc, Page page, OffsetNumber offnum,
 			int keysz, ScanKey scankey)
-{
+{	StackTrace("_bt_isequal");
 	IndexTuple	itup;
 	int			i;
 
@@ -2159,7 +2159,7 @@ _bt_isequal(TupleDesc itupdesc, Page page, OffsetNumber offnum,
  */
 static void
 _bt_vacuum_one_page(Relation rel, Buffer buffer, Relation heapRel)
-{
+{	StackTrace("_bt_vacuum_one_page");
 	OffsetNumber deletable[MaxOffsetNumber];
 	int			ndeletable = 0;
 	OffsetNumber offnum,

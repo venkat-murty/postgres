@@ -29,7 +29,7 @@
 A_Expr *
 makeA_Expr(A_Expr_Kind kind, List *name,
 		   Node *lexpr, Node *rexpr, int location)
-{
+{	StackTrace("makeA_Expr");
 	A_Expr	   *a = makeNode(A_Expr);
 
 	a->kind = kind;
@@ -47,7 +47,7 @@ makeA_Expr(A_Expr_Kind kind, List *name,
 A_Expr *
 makeSimpleA_Expr(A_Expr_Kind kind, char *name,
 				 Node *lexpr, Node *rexpr, int location)
-{
+{	StackTrace("makeSimpleA_Expr");
 	A_Expr	   *a = makeNode(A_Expr);
 
 	a->kind = kind;
@@ -69,7 +69,7 @@ makeVar(Index varno,
 		int32 vartypmod,
 		Oid varcollid,
 		Index varlevelsup)
-{
+{	StackTrace("makeVar");
 	Var		   *var = makeNode(Var);
 
 	var->varno = varno;
@@ -102,7 +102,7 @@ makeVar(Index varno,
 Var *
 makeVarFromTargetEntry(Index varno,
 					   TargetEntry *tle)
-{
+{	StackTrace("makeVarFromTargetEntry");
 	return makeVar(varno,
 				   tle->resno,
 				   exprType((Node *) tle->expr),
@@ -132,7 +132,7 @@ makeWholeRowVar(RangeTblEntry *rte,
 				Index varno,
 				Index varlevelsup,
 				bool allowScalar)
-{
+{	StackTrace("makeWholeRowVar");
 	Var		   *result;
 	Oid			toid;
 	Node	   *fexpr;
@@ -235,7 +235,7 @@ makeTargetEntry(Expr *expr,
 				AttrNumber resno,
 				char *resname,
 				bool resjunk)
-{
+{	StackTrace("makeTargetEntry");
 	TargetEntry *tle = makeNode(TargetEntry);
 
 	tle->expr = expr;
@@ -265,7 +265,7 @@ makeTargetEntry(Expr *expr,
  */
 TargetEntry *
 flatCopyTargetEntry(TargetEntry *src_tle)
-{
+{	StackTrace("flatCopyTargetEntry");
 	TargetEntry *tle = makeNode(TargetEntry);
 
 	Assert(IsA(src_tle, TargetEntry));
@@ -279,7 +279,7 @@ flatCopyTargetEntry(TargetEntry *src_tle)
  */
 FromExpr *
 makeFromExpr(List *fromlist, Node *quals)
-{
+{	StackTrace("makeFromExpr");
 	FromExpr   *f = makeNode(FromExpr);
 
 	f->fromlist = fromlist;
@@ -299,7 +299,7 @@ makeConst(Oid consttype,
 		  Datum constvalue,
 		  bool constisnull,
 		  bool constbyval)
-{
+{	StackTrace("makeConst");
 	Const	   *cnst = makeNode(Const);
 
 	cnst->consttype = consttype;
@@ -323,7 +323,7 @@ makeConst(Oid consttype,
  */
 Const *
 makeNullConst(Oid consttype, int32 consttypmod, Oid constcollid)
-{
+{	StackTrace("makeNullConst");
 	int16		typLen;
 	bool		typByVal;
 
@@ -343,7 +343,7 @@ makeNullConst(Oid consttype, int32 consttypmod, Oid constcollid)
  */
 Node *
 makeBoolConst(bool value, bool isnull)
-{
+{	StackTrace("makeBoolConst");
 	/* note that pg_type.h hardwires size of bool as 1 ... duplicate it */
 	return (Node *) makeConst(BOOLOID, -1, InvalidOid, 1,
 							  BoolGetDatum(value), isnull, true);
@@ -355,7 +355,7 @@ makeBoolConst(bool value, bool isnull)
  */
 Expr *
 makeBoolExpr(BoolExprType boolop, List *args, int location)
-{
+{	StackTrace("makeBoolExpr");
 	BoolExpr   *b = makeNode(BoolExpr);
 
 	b->boolop = boolop;
@@ -373,7 +373,7 @@ makeBoolExpr(BoolExprType boolop, List *args, int location)
  */
 Alias *
 makeAlias(const char *aliasname, List *colnames)
-{
+{	StackTrace("makeAlias");
 	Alias	   *a = makeNode(Alias);
 
 	a->aliasname = pstrdup(aliasname);
@@ -389,7 +389,7 @@ makeAlias(const char *aliasname, List *colnames)
 RelabelType *
 makeRelabelType(Expr *arg, Oid rtype, int32 rtypmod, Oid rcollid,
 				CoercionForm rformat)
-{
+{	StackTrace("makeRelabelType");
 	RelabelType *r = makeNode(RelabelType);
 
 	r->arg = arg;
@@ -408,7 +408,7 @@ makeRelabelType(Expr *arg, Oid rtype, int32 rtypmod, Oid rcollid,
  */
 RangeVar *
 makeRangeVar(char *schemaname, char *relname, int location)
-{
+{	StackTrace("makeRangeVar");
 	RangeVar   *r = makeNode(RangeVar);
 
 	r->catalogname = NULL;
@@ -430,7 +430,7 @@ makeRangeVar(char *schemaname, char *relname, int location)
  */
 TypeName *
 makeTypeName(char *typnam)
-{
+{	StackTrace("makeTypeName");
 	return makeTypeNameFromNameList(list_make1(makeString(typnam)));
 }
 
@@ -442,7 +442,7 @@ makeTypeName(char *typnam)
  */
 TypeName *
 makeTypeNameFromNameList(List *names)
-{
+{	StackTrace("makeTypeNameFromNameList");
 	TypeName   *n = makeNode(TypeName);
 
 	n->names = names;
@@ -458,7 +458,7 @@ makeTypeNameFromNameList(List *names)
  */
 TypeName *
 makeTypeNameFromOid(Oid typeOid, int32 typmod)
-{
+{	StackTrace("makeTypeNameFromOid");
 	TypeName   *n = makeNode(TypeName);
 
 	n->typeOid = typeOid;
@@ -476,7 +476,7 @@ makeTypeNameFromOid(Oid typeOid, int32 typmod)
 FuncExpr *
 makeFuncExpr(Oid funcid, Oid rettype, List *args,
 			 Oid funccollid, Oid inputcollid, CoercionForm fformat)
-{
+{	StackTrace("makeFuncExpr");
 	FuncExpr   *funcexpr;
 
 	funcexpr = makeNode(FuncExpr);
@@ -502,7 +502,7 @@ makeFuncExpr(Oid funcid, Oid rettype, List *args,
  */
 DefElem *
 makeDefElem(char *name, Node *arg)
-{
+{	StackTrace("makeDefElem");
 	DefElem    *res = makeNode(DefElem);
 
 	res->defnamespace = NULL;
@@ -520,7 +520,7 @@ makeDefElem(char *name, Node *arg)
 DefElem *
 makeDefElemExtended(char *nameSpace, char *name, Node *arg,
 					DefElemAction defaction)
-{
+{	StackTrace("makeDefElemExtended");
 	DefElem    *res = makeNode(DefElem);
 
 	res->defnamespace = nameSpace;
@@ -539,7 +539,7 @@ makeDefElemExtended(char *nameSpace, char *name, Node *arg,
  */
 FuncCall *
 makeFuncCall(List *name, List *args, int location)
-{
+{	StackTrace("makeFuncCall");
 	FuncCall   *n = makeNode(FuncCall);
 
 	n->funcname = name;
@@ -561,7 +561,7 @@ makeFuncCall(List *name, List *args, int location)
  */
 GroupingSet *
 makeGroupingSet(GroupingSetKind kind, List *content, int location)
-{
+{	StackTrace("makeGroupingSet");
 	GroupingSet *n = makeNode(GroupingSet);
 
 	n->kind = kind;

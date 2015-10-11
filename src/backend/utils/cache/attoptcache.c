@@ -52,7 +52,7 @@ typedef struct
  */
 static void
 InvalidateAttoptCacheCallback(Datum arg, int cacheid, uint32 hashvalue)
-{
+{	StackTrace("InvalidateAttoptCacheCallback");
 	HASH_SEQ_STATUS status;
 	AttoptCacheEntry *attopt;
 
@@ -75,7 +75,7 @@ InvalidateAttoptCacheCallback(Datum arg, int cacheid, uint32 hashvalue)
  */
 static void
 InitializeAttoptCache(void)
-{
+{	StackTrace("InitializeAttoptCache");
 	HASHCTL		ctl;
 
 	/* Initialize the hash table. */
@@ -102,7 +102,7 @@ InitializeAttoptCache(void)
  */
 AttributeOpts *
 get_attribute_options(Oid attrelid, int attnum)
-{
+{	StackTrace("get_attribute_options");
 	AttoptCacheKey key;
 	AttoptCacheEntry *attopt;
 	AttributeOpts *result;

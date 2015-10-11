@@ -20,7 +20,7 @@
 
 void
 smgr_desc(StringInfo buf, XLogReaderState *record)
-{
+{	StackTrace("smgr_desc");
 	char	   *rec = XLogRecGetData(record);
 	uint8		info = XLogRecGetInfo(record) & ~XLR_INFO_MASK;
 
@@ -44,7 +44,7 @@ smgr_desc(StringInfo buf, XLogReaderState *record)
 
 const char *
 smgr_identify(uint8 info)
-{
+{	StackTrace("smgr_identify");
 	const char *id = NULL;
 
 	switch (info & ~XLR_INFO_MASK)

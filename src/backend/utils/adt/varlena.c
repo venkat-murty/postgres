@@ -138,7 +138,7 @@ static void text_format_append_string(StringInfo buf, const char *str,
  */
 text *
 cstring_to_text(const char *s)
-{
+{	StackTrace("cstring_to_text");
 	return cstring_to_text_with_len(s, strlen(s));
 }
 
@@ -150,7 +150,7 @@ cstring_to_text(const char *s)
  */
 text *
 cstring_to_text_with_len(const char *s, int len)
-{
+{	StackTrace("cstring_to_text_with_len");
 	text	   *result = (text *) palloc(len + VARHDRSZ);
 
 	SET_VARSIZE(result, len + VARHDRSZ);
@@ -171,7 +171,7 @@ cstring_to_text_with_len(const char *s, int len)
  */
 char *
 text_to_cstring(const text *t)
-{
+{	StackTrace("text_to_cstring");
 	/* must cast away the const, unfortunately */
 	text	   *tunpacked = pg_detoast_datum_packed((struct varlena *) t);
 	int			len = VARSIZE_ANY_EXHDR(tunpacked);
@@ -202,7 +202,7 @@ text_to_cstring(const text *t)
  */
 void
 text_to_cstring_buffer(const text *src, char *dst, size_t dst_len)
-{
+{	StackTrace("text_to_cstring_buffer");
 	/* must cast away the const, unfortunately */
 	text	   *srcunpacked = pg_detoast_datum_packed((struct varlena *) src);
 	size_t		src_len = VARSIZE_ANY_EXHDR(srcunpacked);
@@ -244,7 +244,7 @@ text_to_cstring_buffer(const text *src, char *dst, size_t dst_len)
  */
 Datum
 byteain(PG_FUNCTION_ARGS)
-{
+{	StackTrace("byteain");
 	char	   *inputText = PG_GETARG_CSTRING(0);
 	char	   *tp;
 	char	   *rp;
@@ -340,7 +340,7 @@ byteain(PG_FUNCTION_ARGS)
  */
 Datum
 byteaout(PG_FUNCTION_ARGS)
-{
+{	StackTrace("byteaout");
 	bytea	   *vlena = PG_GETARG_BYTEA_PP(0);
 	char	   *result;
 	char	   *rp;
@@ -412,7 +412,7 @@ byteaout(PG_FUNCTION_ARGS)
  */
 Datum
 bytearecv(PG_FUNCTION_ARGS)
-{
+{	StackTrace("bytearecv");
 	StringInfo	buf = (StringInfo) PG_GETARG_POINTER(0);
 	bytea	   *result;
 	int			nbytes;
@@ -431,7 +431,7 @@ bytearecv(PG_FUNCTION_ARGS)
  */
 Datum
 byteasend(PG_FUNCTION_ARGS)
-{
+{	StackTrace("byteasend");
 	bytea	   *vlena = PG_GETARG_BYTEA_P_COPY(0);
 
 	PG_RETURN_BYTEA_P(vlena);
@@ -439,7 +439,7 @@ byteasend(PG_FUNCTION_ARGS)
 
 Datum
 bytea_string_agg_transfn(PG_FUNCTION_ARGS)
-{
+{	StackTrace("bytea_string_agg_transfn");
 	StringInfo	state;
 
 	state = PG_ARGISNULL(0) ? NULL : (StringInfo) PG_GETARG_POINTER(0);
@@ -471,7 +471,7 @@ bytea_string_agg_transfn(PG_FUNCTION_ARGS)
 
 Datum
 bytea_string_agg_finalfn(PG_FUNCTION_ARGS)
-{
+{	StackTrace("bytea_string_agg_finalfn");
 	StringInfo	state;
 
 	/* cannot be called directly because of internal-type argument */
@@ -497,7 +497,7 @@ bytea_string_agg_finalfn(PG_FUNCTION_ARGS)
  */
 Datum
 textin(PG_FUNCTION_ARGS)
-{
+{	StackTrace("textin");
 	char	   *inputText = PG_GETARG_CSTRING(0);
 
 	PG_RETURN_TEXT_P(cstring_to_text(inputText));
@@ -508,7 +508,7 @@ textin(PG_FUNCTION_ARGS)
  */
 Datum
 textout(PG_FUNCTION_ARGS)
-{
+{	StackTrace("textout");
 	Datum		txt = PG_GETARG_DATUM(0);
 
 	PG_RETURN_CSTRING(TextDatumGetCString(txt));
@@ -519,7 +519,7 @@ textout(PG_FUNCTION_ARGS)
  */
 Datum
 textrecv(PG_FUNCTION_ARGS)
-{
+{	StackTrace("textrecv");
 	StringInfo	buf = (StringInfo) PG_GETARG_POINTER(0);
 	text	   *result;
 	char	   *str;
@@ -537,7 +537,7 @@ textrecv(PG_FUNCTION_ARGS)
  */
 Datum
 textsend(PG_FUNCTION_ARGS)
-{
+{	StackTrace("textsend");
 	text	   *t = PG_GETARG_TEXT_PP(0);
 	StringInfoData buf;
 
@@ -552,7 +552,7 @@ textsend(PG_FUNCTION_ARGS)
  */
 Datum
 unknownin(PG_FUNCTION_ARGS)
-{
+{	StackTrace("unknownin");
 	char	   *str = PG_GETARG_CSTRING(0);
 
 	/* representation is same as cstring */
@@ -564,7 +564,7 @@ unknownin(PG_FUNCTION_ARGS)
  */
 Datum
 unknownout(PG_FUNCTION_ARGS)
-{
+{	StackTrace("unknownout");
 	/* representation is same as cstring */
 	char	   *str = PG_GETARG_CSTRING(0);
 
@@ -576,7 +576,7 @@ unknownout(PG_FUNCTION_ARGS)
  */
 Datum
 unknownrecv(PG_FUNCTION_ARGS)
-{
+{	StackTrace("unknownrecv");
 	StringInfo	buf = (StringInfo) PG_GETARG_POINTER(0);
 	char	   *str;
 	int			nbytes;
@@ -591,7 +591,7 @@ unknownrecv(PG_FUNCTION_ARGS)
  */
 Datum
 unknownsend(PG_FUNCTION_ARGS)
-{
+{	StackTrace("unknownsend");
 	/* representation is same as cstring */
 	char	   *str = PG_GETARG_CSTRING(0);
 	StringInfoData buf;
@@ -611,7 +611,7 @@ unknownsend(PG_FUNCTION_ARGS)
  */
 Datum
 textlen(PG_FUNCTION_ARGS)
-{
+{	StackTrace("textlen");
 	Datum		str = PG_GETARG_DATUM(0);
 
 	/* try to avoid decompressing argument */
@@ -629,7 +629,7 @@ textlen(PG_FUNCTION_ARGS)
  */
 static int32
 text_length(Datum str)
-{
+{	StackTrace("text_length");
 	/* fastpath when max encoding length is one */
 	if (pg_database_encoding_max_length() == 1)
 		PG_RETURN_INT32(toast_raw_datum_size(str) - VARHDRSZ);
@@ -649,7 +649,7 @@ text_length(Datum str)
  */
 Datum
 textoctetlen(PG_FUNCTION_ARGS)
-{
+{	StackTrace("textoctetlen");
 	Datum		str = PG_GETARG_DATUM(0);
 
 	/* We need not detoast the input at all */
@@ -668,7 +668,7 @@ textoctetlen(PG_FUNCTION_ARGS)
  */
 Datum
 textcat(PG_FUNCTION_ARGS)
-{
+{	StackTrace("textcat");
 	text	   *t1 = PG_GETARG_TEXT_PP(0);
 	text	   *t2 = PG_GETARG_TEXT_PP(1);
 
@@ -683,7 +683,7 @@ textcat(PG_FUNCTION_ARGS)
  */
 static text *
 text_catenate(text *t1, text *t2)
-{
+{	StackTrace("text_catenate");
 	text	   *result;
 	int			len1,
 				len2,
@@ -724,7 +724,7 @@ text_catenate(text *t1, text *t2)
  */
 static int
 charlen_to_bytelen(const char *p, int n)
-{
+{	StackTrace("charlen_to_bytelen");
 	if (pg_database_encoding_max_length() == 1)
 	{
 		/* Optimization for single-byte encodings */
@@ -770,7 +770,7 @@ charlen_to_bytelen(const char *p, int n)
  */
 Datum
 text_substr(PG_FUNCTION_ARGS)
-{
+{	StackTrace("text_substr");
 	PG_RETURN_TEXT_P(text_substring(PG_GETARG_DATUM(0),
 									PG_GETARG_INT32(1),
 									PG_GETARG_INT32(2),
@@ -784,7 +784,7 @@ text_substr(PG_FUNCTION_ARGS)
  */
 Datum
 text_substr_no_len(PG_FUNCTION_ARGS)
-{
+{	StackTrace("text_substr_no_len");
 	PG_RETURN_TEXT_P(text_substring(PG_GETARG_DATUM(0),
 									PG_GETARG_INT32(1),
 									-1, true));
@@ -803,7 +803,7 @@ text_substr_no_len(PG_FUNCTION_ARGS)
  */
 static text *
 text_substring(Datum str, int32 start, int32 length, bool length_not_specified)
-{
+{	StackTrace("text_substring");
 	int32		eml = pg_database_encoding_max_length();
 	int32		S = start;		/* start position */
 	int32		S1;				/* adjusted start position */
@@ -1000,7 +1000,7 @@ text_substring(Datum str, int32 start, int32 length, bool length_not_specified)
  */
 Datum
 textoverlay(PG_FUNCTION_ARGS)
-{
+{	StackTrace("textoverlay");
 	text	   *t1 = PG_GETARG_TEXT_PP(0);
 	text	   *t2 = PG_GETARG_TEXT_PP(1);
 	int			sp = PG_GETARG_INT32(2);		/* substring start position */
@@ -1011,7 +1011,7 @@ textoverlay(PG_FUNCTION_ARGS)
 
 Datum
 textoverlay_no_len(PG_FUNCTION_ARGS)
-{
+{	StackTrace("textoverlay_no_len");
 	text	   *t1 = PG_GETARG_TEXT_PP(0);
 	text	   *t2 = PG_GETARG_TEXT_PP(1);
 	int			sp = PG_GETARG_INT32(2);		/* substring start position */
@@ -1023,7 +1023,7 @@ textoverlay_no_len(PG_FUNCTION_ARGS)
 
 static text *
 text_overlay(text *t1, text *t2, int sp, int sl)
-{
+{	StackTrace("text_overlay");
 	text	   *result;
 	text	   *s1;
 	text	   *s2;
@@ -1061,7 +1061,7 @@ text_overlay(text *t1, text *t2, int sp, int sl)
  */
 Datum
 textpos(PG_FUNCTION_ARGS)
-{
+{	StackTrace("textpos");
 	text	   *str = PG_GETARG_TEXT_PP(0);
 	text	   *search_str = PG_GETARG_TEXT_PP(1);
 
@@ -1084,7 +1084,7 @@ textpos(PG_FUNCTION_ARGS)
  */
 static int
 text_position(text *t1, text *t2)
-{
+{	StackTrace("text_position");
 	TextPositionState state;
 	int			result;
 
@@ -1108,7 +1108,7 @@ text_position(text *t1, text *t2)
 
 static void
 text_position_setup(text *t1, text *t2, TextPositionState *state)
-{
+{	StackTrace("text_position_setup");
 	int			len1 = VARSIZE_ANY_EXHDR(t1);
 	int			len2 = VARSIZE_ANY_EXHDR(t2);
 
@@ -1220,7 +1220,7 @@ text_position_setup(text *t1, text *t2, TextPositionState *state)
 
 static int
 text_position_next(int start_pos, TextPositionState *state)
-{
+{	StackTrace("text_position_next");
 	int			haystack_len = state->len1;
 	int			needle_len = state->len2;
 	int			skiptablemask = state->skiptablemask;
@@ -1354,7 +1354,7 @@ text_position_next(int start_pos, TextPositionState *state)
 
 static void
 text_position_cleanup(TextPositionState *state)
-{
+{	StackTrace("text_position_cleanup");
 	if (state->use_wchar)
 	{
 		pfree(state->wstr1);
@@ -1371,7 +1371,7 @@ text_position_cleanup(TextPositionState *state)
  */
 int
 varstr_cmp(char *arg1, int len1, char *arg2, int len2, Oid collid)
-{
+{	StackTrace("varstr_cmp");
 	int			result;
 
 	/*
@@ -1562,7 +1562,7 @@ varstr_cmp(char *arg1, int len1, char *arg2, int len2, Oid collid)
  */
 static int
 text_cmp(text *arg1, text *arg2, Oid collid)
-{
+{	StackTrace("text_cmp");
 	char	   *a1p,
 			   *a2p;
 	int			len1,
@@ -1587,7 +1587,7 @@ text_cmp(text *arg1, text *arg2, Oid collid)
 
 Datum
 texteq(PG_FUNCTION_ARGS)
-{
+{	StackTrace("texteq");
 	Datum		arg1 = PG_GETARG_DATUM(0);
 	Datum		arg2 = PG_GETARG_DATUM(1);
 	bool		result;
@@ -1622,7 +1622,7 @@ texteq(PG_FUNCTION_ARGS)
 
 Datum
 textne(PG_FUNCTION_ARGS)
-{
+{	StackTrace("textne");
 	Datum		arg1 = PG_GETARG_DATUM(0);
 	Datum		arg2 = PG_GETARG_DATUM(1);
 	bool		result;
@@ -1651,7 +1651,7 @@ textne(PG_FUNCTION_ARGS)
 
 Datum
 text_lt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("text_lt");
 	text	   *arg1 = PG_GETARG_TEXT_PP(0);
 	text	   *arg2 = PG_GETARG_TEXT_PP(1);
 	bool		result;
@@ -1666,7 +1666,7 @@ text_lt(PG_FUNCTION_ARGS)
 
 Datum
 text_le(PG_FUNCTION_ARGS)
-{
+{	StackTrace("text_le");
 	text	   *arg1 = PG_GETARG_TEXT_PP(0);
 	text	   *arg2 = PG_GETARG_TEXT_PP(1);
 	bool		result;
@@ -1681,7 +1681,7 @@ text_le(PG_FUNCTION_ARGS)
 
 Datum
 text_gt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("text_gt");
 	text	   *arg1 = PG_GETARG_TEXT_PP(0);
 	text	   *arg2 = PG_GETARG_TEXT_PP(1);
 	bool		result;
@@ -1696,7 +1696,7 @@ text_gt(PG_FUNCTION_ARGS)
 
 Datum
 text_ge(PG_FUNCTION_ARGS)
-{
+{	StackTrace("text_ge");
 	text	   *arg1 = PG_GETARG_TEXT_PP(0);
 	text	   *arg2 = PG_GETARG_TEXT_PP(1);
 	bool		result;
@@ -1711,7 +1711,7 @@ text_ge(PG_FUNCTION_ARGS)
 
 Datum
 bttextcmp(PG_FUNCTION_ARGS)
-{
+{	StackTrace("bttextcmp");
 	text	   *arg1 = PG_GETARG_TEXT_PP(0);
 	text	   *arg2 = PG_GETARG_TEXT_PP(1);
 	int32		result;
@@ -1726,7 +1726,7 @@ bttextcmp(PG_FUNCTION_ARGS)
 
 Datum
 bttextsortsupport(PG_FUNCTION_ARGS)
-{
+{	StackTrace("bttextsortsupport");
 	SortSupport ssup = (SortSupport) PG_GETARG_POINTER(0);
 	Oid			collid = ssup->ssup_collation;
 	MemoryContext oldcontext;
@@ -1742,7 +1742,7 @@ bttextsortsupport(PG_FUNCTION_ARGS)
 
 static void
 btsortsupport_worker(SortSupport ssup, Oid collid)
-{
+{	StackTrace("btsortsupport_worker");
 	bool		abbreviate = ssup->abbreviate;
 	bool		collate_c = false;
 	TextSortSupport *tss;
@@ -1860,7 +1860,7 @@ btsortsupport_worker(SortSupport ssup, Oid collid)
  */
 static int
 bttextfastcmp_c(Datum x, Datum y, SortSupport ssup)
-{
+{	StackTrace("bttextfastcmp_c");
 	text	   *arg1 = DatumGetTextPP(x);
 	text	   *arg2 = DatumGetTextPP(y);
 	char	   *a1p,
@@ -1893,7 +1893,7 @@ bttextfastcmp_c(Datum x, Datum y, SortSupport ssup)
  */
 static int
 bttextfastcmp_locale(Datum x, Datum y, SortSupport ssup)
-{
+{	StackTrace("bttextfastcmp_locale");
 	text	   *arg1 = DatumGetTextPP(x);
 	text	   *arg2 = DatumGetTextPP(y);
 	TextSortSupport *tss = (TextSortSupport *) ssup->ssup_extra;
@@ -1966,7 +1966,7 @@ done:
  */
 static int
 bttextcmp_abbrev(Datum x, Datum y, SortSupport ssup)
-{
+{	StackTrace("bttextcmp_abbrev");
 	char	   *a = (char *) &x;
 	char	   *b = (char *) &y;
 	int			result;
@@ -1989,7 +1989,7 @@ bttextcmp_abbrev(Datum x, Datum y, SortSupport ssup)
  */
 static Datum
 bttext_abbrev_convert(Datum original, SortSupport ssup)
-{
+{	StackTrace("bttext_abbrev_convert");
 	TextSortSupport *tss = (TextSortSupport *) ssup->ssup_extra;
 	text	   *authoritative = DatumGetTextPP(original);
 	char	   *authoritative_data = VARDATA_ANY(authoritative);
@@ -2118,7 +2118,7 @@ bttext_abbrev_convert(Datum original, SortSupport ssup)
  */
 static bool
 bttext_abbrev_abort(int memtupcount, SortSupport ssup)
-{
+{	StackTrace("bttext_abbrev_abort");
 	TextSortSupport *tss = (TextSortSupport *) ssup->ssup_extra;
 	double		abbrev_distinct,
 				key_distinct;
@@ -2232,7 +2232,7 @@ bttext_abbrev_abort(int memtupcount, SortSupport ssup)
 
 Datum
 text_larger(PG_FUNCTION_ARGS)
-{
+{	StackTrace("text_larger");
 	text	   *arg1 = PG_GETARG_TEXT_PP(0);
 	text	   *arg2 = PG_GETARG_TEXT_PP(1);
 	text	   *result;
@@ -2244,7 +2244,7 @@ text_larger(PG_FUNCTION_ARGS)
 
 Datum
 text_smaller(PG_FUNCTION_ARGS)
-{
+{	StackTrace("text_smaller");
 	text	   *arg1 = PG_GETARG_TEXT_PP(0);
 	text	   *arg2 = PG_GETARG_TEXT_PP(1);
 	text	   *result;
@@ -2264,7 +2264,7 @@ text_smaller(PG_FUNCTION_ARGS)
 
 static int
 internal_text_pattern_compare(text *arg1, text *arg2)
-{
+{	StackTrace("internal_text_pattern_compare");
 	int			result;
 	int			len1,
 				len2;
@@ -2286,7 +2286,7 @@ internal_text_pattern_compare(text *arg1, text *arg2)
 
 Datum
 text_pattern_lt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("text_pattern_lt");
 	text	   *arg1 = PG_GETARG_TEXT_PP(0);
 	text	   *arg2 = PG_GETARG_TEXT_PP(1);
 	int			result;
@@ -2302,7 +2302,7 @@ text_pattern_lt(PG_FUNCTION_ARGS)
 
 Datum
 text_pattern_le(PG_FUNCTION_ARGS)
-{
+{	StackTrace("text_pattern_le");
 	text	   *arg1 = PG_GETARG_TEXT_PP(0);
 	text	   *arg2 = PG_GETARG_TEXT_PP(1);
 	int			result;
@@ -2318,7 +2318,7 @@ text_pattern_le(PG_FUNCTION_ARGS)
 
 Datum
 text_pattern_ge(PG_FUNCTION_ARGS)
-{
+{	StackTrace("text_pattern_ge");
 	text	   *arg1 = PG_GETARG_TEXT_PP(0);
 	text	   *arg2 = PG_GETARG_TEXT_PP(1);
 	int			result;
@@ -2334,7 +2334,7 @@ text_pattern_ge(PG_FUNCTION_ARGS)
 
 Datum
 text_pattern_gt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("text_pattern_gt");
 	text	   *arg1 = PG_GETARG_TEXT_PP(0);
 	text	   *arg2 = PG_GETARG_TEXT_PP(1);
 	int			result;
@@ -2350,7 +2350,7 @@ text_pattern_gt(PG_FUNCTION_ARGS)
 
 Datum
 bttext_pattern_cmp(PG_FUNCTION_ARGS)
-{
+{	StackTrace("bttext_pattern_cmp");
 	text	   *arg1 = PG_GETARG_TEXT_PP(0);
 	text	   *arg2 = PG_GETARG_TEXT_PP(1);
 	int			result;
@@ -2372,7 +2372,7 @@ bttext_pattern_cmp(PG_FUNCTION_ARGS)
  */
 Datum
 byteaoctetlen(PG_FUNCTION_ARGS)
-{
+{	StackTrace("byteaoctetlen");
 	Datum		str = PG_GETARG_DATUM(0);
 
 	/* We need not detoast the input at all */
@@ -2388,7 +2388,7 @@ byteaoctetlen(PG_FUNCTION_ARGS)
  */
 Datum
 byteacat(PG_FUNCTION_ARGS)
-{
+{	StackTrace("byteacat");
 	bytea	   *t1 = PG_GETARG_BYTEA_PP(0);
 	bytea	   *t2 = PG_GETARG_BYTEA_PP(1);
 
@@ -2403,7 +2403,7 @@ byteacat(PG_FUNCTION_ARGS)
  */
 static bytea *
 bytea_catenate(bytea *t1, bytea *t2)
-{
+{	StackTrace("bytea_catenate");
 	bytea	   *result;
 	int			len1,
 				len2,
@@ -2455,7 +2455,7 @@ bytea_catenate(bytea *t1, bytea *t2)
  */
 Datum
 bytea_substr(PG_FUNCTION_ARGS)
-{
+{	StackTrace("bytea_substr");
 	PG_RETURN_BYTEA_P(bytea_substring(PG_GETARG_DATUM(0),
 									  PG_GETARG_INT32(1),
 									  PG_GETARG_INT32(2),
@@ -2469,7 +2469,7 @@ bytea_substr(PG_FUNCTION_ARGS)
  */
 Datum
 bytea_substr_no_len(PG_FUNCTION_ARGS)
-{
+{	StackTrace("bytea_substr_no_len");
 	PG_RETURN_BYTEA_P(bytea_substring(PG_GETARG_DATUM(0),
 									  PG_GETARG_INT32(1),
 									  -1,
@@ -2481,7 +2481,7 @@ bytea_substring(Datum str,
 				int S,
 				int L,
 				bool length_not_specified)
-{
+{	StackTrace("bytea_substring");
 	int			S1;				/* adjusted start position */
 	int			L1;				/* adjusted substring length */
 
@@ -2537,7 +2537,7 @@ bytea_substring(Datum str,
  */
 Datum
 byteaoverlay(PG_FUNCTION_ARGS)
-{
+{	StackTrace("byteaoverlay");
 	bytea	   *t1 = PG_GETARG_BYTEA_PP(0);
 	bytea	   *t2 = PG_GETARG_BYTEA_PP(1);
 	int			sp = PG_GETARG_INT32(2);		/* substring start position */
@@ -2548,7 +2548,7 @@ byteaoverlay(PG_FUNCTION_ARGS)
 
 Datum
 byteaoverlay_no_len(PG_FUNCTION_ARGS)
-{
+{	StackTrace("byteaoverlay_no_len");
 	bytea	   *t1 = PG_GETARG_BYTEA_PP(0);
 	bytea	   *t2 = PG_GETARG_BYTEA_PP(1);
 	int			sp = PG_GETARG_INT32(2);		/* substring start position */
@@ -2560,7 +2560,7 @@ byteaoverlay_no_len(PG_FUNCTION_ARGS)
 
 static bytea *
 bytea_overlay(bytea *t1, bytea *t2, int sp, int sl)
-{
+{	StackTrace("bytea_overlay");
 	bytea	   *result;
 	bytea	   *s1;
 	bytea	   *s2;
@@ -2597,7 +2597,7 @@ bytea_overlay(bytea *t1, bytea *t2, int sp, int sl)
  */
 Datum
 byteapos(PG_FUNCTION_ARGS)
-{
+{	StackTrace("byteapos");
 	bytea	   *t1 = PG_GETARG_BYTEA_PP(0);
 	bytea	   *t2 = PG_GETARG_BYTEA_PP(1);
 	int			pos;
@@ -2641,7 +2641,7 @@ byteapos(PG_FUNCTION_ARGS)
  */
 Datum
 byteaGetByte(PG_FUNCTION_ARGS)
-{
+{	StackTrace("byteaGetByte");
 	bytea	   *v = PG_GETARG_BYTEA_PP(0);
 	int32		n = PG_GETARG_INT32(1);
 	int			len;
@@ -2670,7 +2670,7 @@ byteaGetByte(PG_FUNCTION_ARGS)
  */
 Datum
 byteaGetBit(PG_FUNCTION_ARGS)
-{
+{	StackTrace("byteaGetBit");
 	bytea	   *v = PG_GETARG_BYTEA_PP(0);
 	int32		n = PG_GETARG_INT32(1);
 	int			byteNo,
@@ -2707,7 +2707,7 @@ byteaGetBit(PG_FUNCTION_ARGS)
  */
 Datum
 byteaSetByte(PG_FUNCTION_ARGS)
-{
+{	StackTrace("byteaSetByte");
 	bytea	   *v = PG_GETARG_BYTEA_P(0);
 	int32		n = PG_GETARG_INT32(1);
 	int32		newByte = PG_GETARG_INT32(2);
@@ -2746,7 +2746,7 @@ byteaSetByte(PG_FUNCTION_ARGS)
  */
 Datum
 byteaSetBit(PG_FUNCTION_ARGS)
-{
+{	StackTrace("byteaSetBit");
 	bytea	   *v = PG_GETARG_BYTEA_P(0);
 	int32		n = PG_GETARG_INT32(1);
 	int32		newBit = PG_GETARG_INT32(2);
@@ -2803,7 +2803,7 @@ byteaSetBit(PG_FUNCTION_ARGS)
  */
 Datum
 text_name(PG_FUNCTION_ARGS)
-{
+{	StackTrace("text_name");
 	text	   *s = PG_GETARG_TEXT_PP(0);
 	Name		result;
 	int			len;
@@ -2826,7 +2826,7 @@ text_name(PG_FUNCTION_ARGS)
  */
 Datum
 name_text(PG_FUNCTION_ARGS)
-{
+{	StackTrace("name_text");
 	Name		s = PG_GETARG_NAME(0);
 
 	PG_RETURN_TEXT_P(cstring_to_text(NameStr(*s)));
@@ -2843,7 +2843,7 @@ name_text(PG_FUNCTION_ARGS)
  */
 List *
 textToQualifiedNameList(text *textval)
-{
+{	StackTrace("textToQualifiedNameList");
 	char	   *rawname;
 	List	   *result = NIL;
 	List	   *namelist;
@@ -2902,7 +2902,7 @@ textToQualifiedNameList(text *textval)
 bool
 SplitIdentifierString(char *rawstring, char separator,
 					  List **namelist)
-{
+{	StackTrace("SplitIdentifierString");
 	char	   *nextp = rawstring;
 	bool		done = false;
 
@@ -3027,7 +3027,7 @@ SplitIdentifierString(char *rawstring, char separator,
 bool
 SplitDirectoriesString(char *rawstring, char separator,
 					   List **namelist)
-{
+{	StackTrace("SplitDirectoriesString");
 	char	   *nextp = rawstring;
 	bool		done = false;
 
@@ -3124,7 +3124,7 @@ SplitDirectoriesString(char *rawstring, char separator,
 
 Datum
 byteaeq(PG_FUNCTION_ARGS)
-{
+{	StackTrace("byteaeq");
 	Datum		arg1 = PG_GETARG_DATUM(0);
 	Datum		arg2 = PG_GETARG_DATUM(1);
 	bool		result;
@@ -3156,7 +3156,7 @@ byteaeq(PG_FUNCTION_ARGS)
 
 Datum
 byteane(PG_FUNCTION_ARGS)
-{
+{	StackTrace("byteane");
 	Datum		arg1 = PG_GETARG_DATUM(0);
 	Datum		arg2 = PG_GETARG_DATUM(1);
 	bool		result;
@@ -3188,7 +3188,7 @@ byteane(PG_FUNCTION_ARGS)
 
 Datum
 bytealt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("bytealt");
 	bytea	   *arg1 = PG_GETARG_BYTEA_PP(0);
 	bytea	   *arg2 = PG_GETARG_BYTEA_PP(1);
 	int			len1,
@@ -3208,7 +3208,7 @@ bytealt(PG_FUNCTION_ARGS)
 
 Datum
 byteale(PG_FUNCTION_ARGS)
-{
+{	StackTrace("byteale");
 	bytea	   *arg1 = PG_GETARG_BYTEA_PP(0);
 	bytea	   *arg2 = PG_GETARG_BYTEA_PP(1);
 	int			len1,
@@ -3228,7 +3228,7 @@ byteale(PG_FUNCTION_ARGS)
 
 Datum
 byteagt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("byteagt");
 	bytea	   *arg1 = PG_GETARG_BYTEA_PP(0);
 	bytea	   *arg2 = PG_GETARG_BYTEA_PP(1);
 	int			len1,
@@ -3248,7 +3248,7 @@ byteagt(PG_FUNCTION_ARGS)
 
 Datum
 byteage(PG_FUNCTION_ARGS)
-{
+{	StackTrace("byteage");
 	bytea	   *arg1 = PG_GETARG_BYTEA_PP(0);
 	bytea	   *arg2 = PG_GETARG_BYTEA_PP(1);
 	int			len1,
@@ -3268,7 +3268,7 @@ byteage(PG_FUNCTION_ARGS)
 
 Datum
 byteacmp(PG_FUNCTION_ARGS)
-{
+{	StackTrace("byteacmp");
 	bytea	   *arg1 = PG_GETARG_BYTEA_PP(0);
 	bytea	   *arg2 = PG_GETARG_BYTEA_PP(1);
 	int			len1,
@@ -3296,7 +3296,7 @@ byteacmp(PG_FUNCTION_ARGS)
  */
 static void
 appendStringInfoText(StringInfo str, const text *t)
-{
+{	StackTrace("appendStringInfoText");
 	appendBinaryStringInfo(str, VARDATA_ANY(t), VARSIZE_ANY_EXHDR(t));
 }
 
@@ -3310,7 +3310,7 @@ appendStringInfoText(StringInfo str, const text *t)
  */
 Datum
 replace_text(PG_FUNCTION_ARGS)
-{
+{	StackTrace("replace_text");
 	text	   *src_text = PG_GETARG_TEXT_PP(0);
 	text	   *from_sub_text = PG_GETARG_TEXT_PP(1);
 	text	   *to_sub_text = PG_GETARG_TEXT_PP(2);
@@ -3393,7 +3393,7 @@ replace_text(PG_FUNCTION_ARGS)
  */
 static bool
 check_replace_text_has_escape_char(const text *replace_text)
-{
+{	StackTrace("check_replace_text_has_escape_char");
 	const char *p = VARDATA_ANY(replace_text);
 	const char *p_end = p + VARSIZE_ANY_EXHDR(replace_text);
 
@@ -3428,7 +3428,7 @@ static void
 appendStringInfoRegexpSubstr(StringInfo str, text *replace_text,
 							 regmatch_t *pmatch,
 							 char *start_ptr, int data_pos)
-{
+{	StackTrace("appendStringInfoRegexpSubstr");
 	const char *p = VARDATA_ANY(replace_text);
 	const char *p_end = p + VARSIZE_ANY_EXHDR(replace_text);
 	int			eml = pg_database_encoding_max_length();
@@ -3532,7 +3532,7 @@ appendStringInfoRegexpSubstr(StringInfo str, text *replace_text,
 text *
 replace_text_regexp(text *src_text, void *regexp,
 					text *replace_text, bool glob)
-{
+{	StackTrace("replace_text_regexp");
 	text	   *ret_text;
 	regex_t    *re = (regex_t *) regexp;
 	int			src_text_len = VARSIZE_ANY_EXHDR(src_text);
@@ -3666,7 +3666,7 @@ replace_text_regexp(text *src_text, void *regexp,
  */
 Datum
 split_text(PG_FUNCTION_ARGS)
-{
+{	StackTrace("split_text");
 	text	   *inputstring = PG_GETARG_TEXT_PP(0);
 	text	   *fldsep = PG_GETARG_TEXT_PP(1);
 	int			fldnum = PG_GETARG_INT32(2);
@@ -3763,7 +3763,7 @@ split_text(PG_FUNCTION_ARGS)
  */
 static bool
 text_isequal(text *txt1, text *txt2)
-{
+{	StackTrace("text_isequal");
 	return DatumGetBool(DirectFunctionCall2(texteq,
 											PointerGetDatum(txt1),
 											PointerGetDatum(txt2)));
@@ -3776,7 +3776,7 @@ text_isequal(text *txt1, text *txt2)
  */
 Datum
 text_to_array(PG_FUNCTION_ARGS)
-{
+{	StackTrace("text_to_array");
 	return text_to_array_internal(fcinfo);
 }
 
@@ -3790,7 +3790,7 @@ text_to_array(PG_FUNCTION_ARGS)
  */
 Datum
 text_to_array_null(PG_FUNCTION_ARGS)
-{
+{	StackTrace("text_to_array_null");
 	return text_to_array_internal(fcinfo);
 }
 
@@ -3801,7 +3801,7 @@ text_to_array_null(PG_FUNCTION_ARGS)
  */
 static Datum
 text_to_array_internal(PG_FUNCTION_ARGS)
-{
+{	StackTrace("text_to_array_internal");
 	text	   *inputstring;
 	text	   *fldsep;
 	text	   *null_string;
@@ -3968,7 +3968,7 @@ text_to_array_internal(PG_FUNCTION_ARGS)
  */
 Datum
 array_to_text(PG_FUNCTION_ARGS)
-{
+{	StackTrace("array_to_text");
 	ArrayType  *v = PG_GETARG_ARRAYTYPE_P(0);
 	char	   *fldsep = text_to_cstring(PG_GETARG_TEXT_PP(1));
 
@@ -3984,7 +3984,7 @@ array_to_text(PG_FUNCTION_ARGS)
  */
 Datum
 array_to_text_null(PG_FUNCTION_ARGS)
-{
+{	StackTrace("array_to_text_null");
 	ArrayType  *v;
 	char	   *fldsep;
 	char	   *null_string;
@@ -4011,7 +4011,7 @@ array_to_text_null(PG_FUNCTION_ARGS)
 static text *
 array_to_text_internal(FunctionCallInfo fcinfo, ArrayType *v,
 					   const char *fldsep, const char *null_string)
-{
+{	StackTrace("array_to_text_internal");
 	text	   *result;
 	int			nitems,
 			   *dims,
@@ -4133,7 +4133,7 @@ array_to_text_internal(FunctionCallInfo fcinfo, ArrayType *v,
  */
 Datum
 to_hex32(PG_FUNCTION_ARGS)
-{
+{	StackTrace("to_hex32");
 	uint32		value = (uint32) PG_GETARG_INT32(0);
 	char	   *ptr;
 	const char *digits = "0123456789abcdef";
@@ -4157,7 +4157,7 @@ to_hex32(PG_FUNCTION_ARGS)
  */
 Datum
 to_hex64(PG_FUNCTION_ARGS)
-{
+{	StackTrace("to_hex64");
 	uint64		value = (uint64) PG_GETARG_INT64(0);
 	char	   *ptr;
 	const char *digits = "0123456789abcdef";
@@ -4184,7 +4184,7 @@ to_hex64(PG_FUNCTION_ARGS)
 
 Datum
 md5_text(PG_FUNCTION_ARGS)
-{
+{	StackTrace("md5_text");
 	text	   *in_text = PG_GETARG_TEXT_PP(0);
 	size_t		len;
 	char		hexsum[MD5_HASH_LEN + 1];
@@ -4208,7 +4208,7 @@ md5_text(PG_FUNCTION_ARGS)
  */
 Datum
 md5_bytea(PG_FUNCTION_ARGS)
-{
+{	StackTrace("md5_bytea");
 	bytea	   *in = PG_GETARG_BYTEA_PP(0);
 	size_t		len;
 	char		hexsum[MD5_HASH_LEN + 1];
@@ -4229,7 +4229,7 @@ md5_bytea(PG_FUNCTION_ARGS)
  */
 Datum
 pg_column_size(PG_FUNCTION_ARGS)
-{
+{	StackTrace("pg_column_size");
 	Datum		value = PG_GETARG_DATUM(0);
 	int32		result;
 	int			typlen;
@@ -4283,7 +4283,7 @@ pg_column_size(PG_FUNCTION_ARGS)
 /* subroutine to initialize state */
 static StringInfo
 makeStringAggState(FunctionCallInfo fcinfo)
-{
+{	StackTrace("makeStringAggState");
 	StringInfo	state;
 	MemoryContext aggcontext;
 	MemoryContext oldcontext;
@@ -4307,7 +4307,7 @@ makeStringAggState(FunctionCallInfo fcinfo)
 
 Datum
 string_agg_transfn(PG_FUNCTION_ARGS)
-{
+{	StackTrace("string_agg_transfn");
 	StringInfo	state;
 
 	state = PG_ARGISNULL(0) ? NULL : (StringInfo) PG_GETARG_POINTER(0);
@@ -4333,7 +4333,7 @@ string_agg_transfn(PG_FUNCTION_ARGS)
 
 Datum
 string_agg_finalfn(PG_FUNCTION_ARGS)
-{
+{	StackTrace("string_agg_finalfn");
 	StringInfo	state;
 
 	/* cannot be called directly because of internal-type argument */
@@ -4357,7 +4357,7 @@ string_agg_finalfn(PG_FUNCTION_ARGS)
 static text *
 concat_internal(const char *sepstr, int argidx,
 				FunctionCallInfo fcinfo)
-{
+{	StackTrace("concat_internal");
 	text	   *result;
 	StringInfoData str;
 	bool		first_arg = true;
@@ -4437,7 +4437,7 @@ concat_internal(const char *sepstr, int argidx,
  */
 Datum
 text_concat(PG_FUNCTION_ARGS)
-{
+{	StackTrace("text_concat");
 	text	   *result;
 
 	result = concat_internal("", 0, fcinfo);
@@ -4452,7 +4452,7 @@ text_concat(PG_FUNCTION_ARGS)
  */
 Datum
 text_concat_ws(PG_FUNCTION_ARGS)
-{
+{	StackTrace("text_concat_ws");
 	char	   *sep;
 	text	   *result;
 
@@ -4473,7 +4473,7 @@ text_concat_ws(PG_FUNCTION_ARGS)
  */
 Datum
 text_left(PG_FUNCTION_ARGS)
-{
+{	StackTrace("text_left");
 	text	   *str = PG_GETARG_TEXT_PP(0);
 	const char *p = VARDATA_ANY(str);
 	int			len = VARSIZE_ANY_EXHDR(str);
@@ -4493,7 +4493,7 @@ text_left(PG_FUNCTION_ARGS)
  */
 Datum
 text_right(PG_FUNCTION_ARGS)
-{
+{	StackTrace("text_right");
 	text	   *str = PG_GETARG_TEXT_PP(0);
 	const char *p = VARDATA_ANY(str);
 	int			len = VARSIZE_ANY_EXHDR(str);
@@ -4514,7 +4514,7 @@ text_right(PG_FUNCTION_ARGS)
  */
 Datum
 text_reverse(PG_FUNCTION_ARGS)
-{
+{	StackTrace("text_reverse");
 	text	   *str = PG_GETARG_TEXT_PP(0);
 	const char *p = VARDATA_ANY(str);
 	int			len = VARSIZE_ANY_EXHDR(str);
@@ -4568,7 +4568,7 @@ text_reverse(PG_FUNCTION_ARGS)
  */
 Datum
 text_format(PG_FUNCTION_ARGS)
-{
+{	StackTrace("text_format");
 	text	   *fmt;
 	StringInfoData str;
 	const char *cp;
@@ -4843,7 +4843,7 @@ text_format(PG_FUNCTION_ARGS)
  */
 static bool
 text_format_parse_digits(const char **ptr, const char *end_ptr, int *value)
-{
+{	StackTrace("text_format_parse_digits");
 	bool		found = false;
 	const char *cp = *ptr;
 	int			val = 0;
@@ -4894,7 +4894,7 @@ static const char *
 text_format_parse_format(const char *start_ptr, const char *end_ptr,
 						 int *argpos, int *widthpos,
 						 int *flags, int *width)
-{
+{	StackTrace("text_format_parse_format");
 	const char *cp = start_ptr;
 	int			n;
 
@@ -4972,7 +4972,7 @@ text_format_string_conversion(StringInfo buf, char conversion,
 							  FmgrInfo *typOutputInfo,
 							  Datum value, bool isNull,
 							  int flags, int width)
-{
+{	StackTrace("text_format_string_conversion");
 	char	   *str;
 
 	/* Handle NULL arguments before trying to stringify the value. */
@@ -5019,7 +5019,7 @@ text_format_string_conversion(StringInfo buf, char conversion,
 static void
 text_format_append_string(StringInfo buf, const char *str,
 						  int flags, int width)
-{
+{	StackTrace("text_format_append_string");
 	bool		align_to_left = false;
 	int			len;
 
@@ -5070,7 +5070,7 @@ text_format_append_string(StringInfo buf, const char *str,
  */
 Datum
 text_format_nv(PG_FUNCTION_ARGS)
-{
+{	StackTrace("text_format_nv");
 	return text_format(fcinfo);
 }
 
@@ -5080,7 +5080,7 @@ text_format_nv(PG_FUNCTION_ARGS)
  */
 static inline bool
 rest_of_char_same(const char *s1, const char *s2, int len)
-{
+{	StackTrace("rest_of_char_same");
 	while (len > 0)
 	{
 		len--;

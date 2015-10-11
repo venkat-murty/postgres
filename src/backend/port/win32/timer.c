@@ -34,7 +34,7 @@ static HANDLE timerThreadHandle = INVALID_HANDLE_VALUE;
 /* Timer management thread */
 static DWORD WINAPI
 pg_timer_thread(LPVOID param)
-{
+{	StackTrace("pg_timer_thread");
 	DWORD		waittime;
 
 	Assert(param == NULL);
@@ -84,7 +84,7 @@ pg_timer_thread(LPVOID param)
  */
 int
 setitimer(int which, const struct itimerval * value, struct itimerval * ovalue)
-{
+{	StackTrace("setitimer");
 	Assert(value != NULL);
 	Assert(value->it_interval.tv_sec == 0 && value->it_interval.tv_usec == 0);
 	Assert(which == ITIMER_REAL);

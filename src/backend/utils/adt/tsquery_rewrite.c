@@ -23,7 +23,7 @@
 
 static int
 addone(int *counters, int last, int total)
-{
+{	StackTrace("addone");
 	/* since this function recurses, it could be driven to stack overflow. */
 	check_stack_depth();
 
@@ -45,7 +45,7 @@ addone(int *counters, int last, int total)
  */
 static QTNode *
 findeq(QTNode *node, QTNode *ex, QTNode *subs, bool *isfind)
-{
+{	StackTrace("findeq");
 	if ((node->sign & ex->sign) != ex->sign ||
 		node->valnode->type != ex->valnode->type)
 		return node;
@@ -175,7 +175,7 @@ findeq(QTNode *node, QTNode *ex, QTNode *subs, bool *isfind)
 
 static QTNode *
 dofindsubquery(QTNode *root, QTNode *ex, QTNode *subs, bool *isfind)
-{
+{	StackTrace("dofindsubquery");
 	/* since this function recurses, it could be driven to stack overflow. */
 	check_stack_depth();
 
@@ -194,7 +194,7 @@ dofindsubquery(QTNode *root, QTNode *ex, QTNode *subs, bool *isfind)
 
 static QTNode *
 dropvoidsubtree(QTNode *root)
-{
+{	StackTrace("dropvoidsubtree");
 	if (!root)
 		return NULL;
 
@@ -233,7 +233,7 @@ dropvoidsubtree(QTNode *root)
 
 QTNode *
 findsubquery(QTNode *root, QTNode *ex, QTNode *subs, bool *isfind)
-{
+{	StackTrace("findsubquery");
 	bool		DidFind = false;
 
 	root = dofindsubquery(root, ex, subs, &DidFind);
@@ -249,7 +249,7 @@ findsubquery(QTNode *root, QTNode *ex, QTNode *subs, bool *isfind)
 
 Datum
 tsquery_rewrite_query(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tsquery_rewrite_query");
 	TSQuery		query = PG_GETARG_TSQUERY_COPY(0);
 	text	   *in = PG_GETARG_TEXT_P(1);
 	TSQuery		rewrited = query;
@@ -377,7 +377,7 @@ tsquery_rewrite_query(PG_FUNCTION_ARGS)
 
 Datum
 tsquery_rewrite(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tsquery_rewrite");
 	TSQuery		query = PG_GETARG_TSQUERY_COPY(0);
 	TSQuery		ex = PG_GETARG_TSQUERY(1);
 	TSQuery		subst = PG_GETARG_TSQUERY(2);

@@ -27,7 +27,7 @@
  */
 Datum
 gistvacuumcleanup(PG_FUNCTION_ARGS)
-{
+{	StackTrace("gistvacuumcleanup");
 	IndexVacuumInfo *info = (IndexVacuumInfo *) PG_GETARG_POINTER(0);
 	IndexBulkDeleteResult *stats = (IndexBulkDeleteResult *) PG_GETARG_POINTER(1);
 	Relation	rel = info->index;
@@ -110,7 +110,7 @@ typedef struct GistBDItem
 
 static void
 pushStackIfSplited(Page page, GistBDItem *stack)
-{
+{	StackTrace("pushStackIfSplited");
 	GISTPageOpaque opaque = GistPageGetOpaque(page);
 
 	if (stack->blkno != GIST_ROOT_BLKNO && !XLogRecPtrIsInvalid(stack->parentlsn) &&
@@ -139,7 +139,7 @@ pushStackIfSplited(Page page, GistBDItem *stack)
  */
 Datum
 gistbulkdelete(PG_FUNCTION_ARGS)
-{
+{	StackTrace("gistbulkdelete");
 	IndexVacuumInfo *info = (IndexVacuumInfo *) PG_GETARG_POINTER(0);
 	IndexBulkDeleteResult *stats = (IndexBulkDeleteResult *) PG_GETARG_POINTER(1);
 	IndexBulkDeleteCallback callback = (IndexBulkDeleteCallback) PG_GETARG_POINTER(2);

@@ -94,7 +94,7 @@ static Relids alias_relid_set(PlannerInfo *root, Relids relids);
  */
 Relids
 pull_varnos(Node *node)
-{
+{	StackTrace("pull_varnos");
 	pull_varnos_context context;
 
 	context.varnos = NULL;
@@ -119,7 +119,7 @@ pull_varnos(Node *node)
  */
 Relids
 pull_varnos_of_level(Node *node, int levelsup)
-{
+{	StackTrace("pull_varnos_of_level");
 	pull_varnos_context context;
 
 	context.varnos = NULL;
@@ -139,7 +139,7 @@ pull_varnos_of_level(Node *node, int levelsup)
 
 static bool
 pull_varnos_walker(Node *node, pull_varnos_context *context)
-{
+{	StackTrace("pull_varnos_walker");
 	if (node == NULL)
 		return false;
 	if (IsA(node, Var))
@@ -218,7 +218,7 @@ pull_varnos_walker(Node *node, pull_varnos_context *context)
  */
 void
 pull_varattnos(Node *node, Index varno, Bitmapset **varattnos)
-{
+{	StackTrace("pull_varattnos");
 	pull_varattnos_context context;
 
 	context.varattnos = *varattnos;
@@ -231,7 +231,7 @@ pull_varattnos(Node *node, Index varno, Bitmapset **varattnos)
 
 static bool
 pull_varattnos_walker(Node *node, pull_varattnos_context *context)
-{
+{	StackTrace("pull_varattnos_walker");
 	if (node == NULL)
 		return false;
 	if (IsA(node, Var))
@@ -262,7 +262,7 @@ pull_varattnos_walker(Node *node, pull_varattnos_context *context)
  */
 List *
 pull_vars_of_level(Node *node, int levelsup)
-{
+{	StackTrace("pull_vars_of_level");
 	pull_vars_context context;
 
 	context.vars = NIL;
@@ -282,7 +282,7 @@ pull_vars_of_level(Node *node, int levelsup)
 
 static bool
 pull_vars_walker(Node *node, pull_vars_context *context)
-{
+{	StackTrace("pull_vars_walker");
 	if (node == NULL)
 		return false;
 	if (IsA(node, Var))
@@ -330,13 +330,13 @@ pull_vars_walker(Node *node, pull_vars_context *context)
  */
 bool
 contain_var_clause(Node *node)
-{
+{	StackTrace("contain_var_clause");
 	return contain_var_clause_walker(node, NULL);
 }
 
 static bool
 contain_var_clause_walker(Node *node, void *context)
-{
+{	StackTrace("contain_var_clause_walker");
 	if (node == NULL)
 		return false;
 	if (IsA(node, Var))
@@ -368,7 +368,7 @@ contain_var_clause_walker(Node *node, void *context)
  */
 bool
 contain_vars_of_level(Node *node, int levelsup)
-{
+{	StackTrace("contain_vars_of_level");
 	int			sublevels_up = levelsup;
 
 	return query_or_expression_tree_walker(node,
@@ -379,7 +379,7 @@ contain_vars_of_level(Node *node, int levelsup)
 
 static bool
 contain_vars_of_level_walker(Node *node, int *sublevels_up)
-{
+{	StackTrace("contain_vars_of_level_walker");
 	if (node == NULL)
 		return false;
 	if (IsA(node, Var))
@@ -436,7 +436,7 @@ contain_vars_of_level_walker(Node *node, int *sublevels_up)
  */
 int
 locate_var_of_level(Node *node, int levelsup)
-{
+{	StackTrace("locate_var_of_level");
 	locate_var_of_level_context context;
 
 	context.var_location = -1;	/* in case we find nothing */
@@ -453,7 +453,7 @@ locate_var_of_level(Node *node, int levelsup)
 static bool
 locate_var_of_level_walker(Node *node,
 						   locate_var_of_level_context *context)
-{
+{	StackTrace("locate_var_of_level_walker");
 	if (node == NULL)
 		return false;
 	if (IsA(node, Var))
@@ -523,7 +523,7 @@ locate_var_of_level_walker(Node *node,
 List *
 pull_var_clause(Node *node, PVCAggregateBehavior aggbehavior,
 				PVCPlaceHolderBehavior phbehavior)
-{
+{	StackTrace("pull_var_clause");
 	pull_var_clause_context context;
 
 	context.varlist = NIL;
@@ -536,7 +536,7 @@ pull_var_clause(Node *node, PVCAggregateBehavior aggbehavior,
 
 static bool
 pull_var_clause_walker(Node *node, pull_var_clause_context *context)
-{
+{	StackTrace("pull_var_clause_walker");
 	if (node == NULL)
 		return false;
 	if (IsA(node, Var))
@@ -639,7 +639,7 @@ pull_var_clause_walker(Node *node, pull_var_clause_context *context)
  */
 Node *
 flatten_join_alias_vars(PlannerInfo *root, Node *node)
-{
+{	StackTrace("flatten_join_alias_vars");
 	flatten_join_alias_vars_context context;
 
 	context.root = root;
@@ -655,7 +655,7 @@ flatten_join_alias_vars(PlannerInfo *root, Node *node)
 static Node *
 flatten_join_alias_vars_mutator(Node *node,
 								flatten_join_alias_vars_context *context)
-{
+{	StackTrace("flatten_join_alias_vars_mutator");
 	if (node == NULL)
 		return NULL;
 	if (IsA(node, Var))
@@ -796,7 +796,7 @@ flatten_join_alias_vars_mutator(Node *node,
  */
 static Relids
 alias_relid_set(PlannerInfo *root, Relids relids)
-{
+{	StackTrace("alias_relid_set");
 	Relids		result = NULL;
 	int			rtindex;
 

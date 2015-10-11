@@ -62,7 +62,7 @@ static Block GetLocalBufferStorage(void);
 void
 LocalPrefetchBuffer(SMgrRelation smgr, ForkNumber forkNum,
 					BlockNumber blockNum)
-{
+{	StackTrace("LocalPrefetchBuffer");
 #ifdef USE_PREFETCH
 	BufferTag	newTag;			/* identity of requested block */
 	LocalBufferLookupEnt *hresult;
@@ -101,7 +101,7 @@ LocalPrefetchBuffer(SMgrRelation smgr, ForkNumber forkNum,
 BufferDesc *
 LocalBufferAlloc(SMgrRelation smgr, ForkNumber forkNum, BlockNumber blockNum,
 				 bool *foundPtr)
-{
+{	StackTrace("LocalBufferAlloc");
 	BufferTag	newTag;			/* identity of requested block */
 	LocalBufferLookupEnt *hresult;
 	BufferDesc *bufHdr;
@@ -264,7 +264,7 @@ LocalBufferAlloc(SMgrRelation smgr, ForkNumber forkNum, BlockNumber blockNum,
  */
 void
 MarkLocalBufferDirty(Buffer buffer)
-{
+{	StackTrace("MarkLocalBufferDirty");
 	int			bufid;
 	BufferDesc *bufHdr;
 
@@ -300,7 +300,7 @@ MarkLocalBufferDirty(Buffer buffer)
 void
 DropRelFileNodeLocalBuffers(RelFileNode rnode, ForkNumber forkNum,
 							BlockNumber firstDelBlock)
-{
+{	StackTrace("DropRelFileNodeLocalBuffers");
 	int			i;
 
 	for (i = 0; i < NLocBuffer; i++)
@@ -342,7 +342,7 @@ DropRelFileNodeLocalBuffers(RelFileNode rnode, ForkNumber forkNum,
  */
 void
 DropRelFileNodeAllLocalBuffers(RelFileNode rnode)
-{
+{	StackTrace("DropRelFileNodeAllLocalBuffers");
 	int			i;
 
 	for (i = 0; i < NLocBuffer; i++)
@@ -381,7 +381,7 @@ DropRelFileNodeAllLocalBuffers(RelFileNode rnode)
  */
 static void
 InitLocalBuffers(void)
-{
+{	StackTrace("InitLocalBuffers");
 	int			nbufs = num_temp_buffers;
 	HASHCTL		info;
 	int			i;
@@ -439,7 +439,7 @@ InitLocalBuffers(void)
  */
 static Block
 GetLocalBufferStorage(void)
-{
+{	StackTrace("GetLocalBufferStorage");
 	static char *cur_block = NULL;
 	static int	next_buf_in_block = 0;
 	static int	num_bufs_in_block = 0;
@@ -496,7 +496,7 @@ GetLocalBufferStorage(void)
  */
 static void
 CheckForLocalBufferLeaks(void)
-{
+{	StackTrace("CheckForLocalBufferLeaks");
 #ifdef USE_ASSERT_CHECKING
 	if (LocalRefCount)
 	{
@@ -525,7 +525,7 @@ CheckForLocalBufferLeaks(void)
  */
 void
 AtEOXact_LocalBuffers(bool isCommit)
-{
+{	StackTrace("AtEOXact_LocalBuffers");
 	CheckForLocalBufferLeaks();
 }
 
@@ -536,7 +536,7 @@ AtEOXact_LocalBuffers(bool isCommit)
  */
 void
 AtProcExit_LocalBuffers(void)
-{
+{	StackTrace("AtProcExit_LocalBuffers");
 	/*
 	 * We shouldn't be holding any remaining pins; if we are, and assertions
 	 * aren't enabled, we'll fail later in DropRelFileNodeBuffers while trying

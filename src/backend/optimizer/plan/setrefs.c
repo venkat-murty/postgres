@@ -202,7 +202,7 @@ static bool extract_query_dependencies_walker(Node *node,
  */
 Plan *
 set_plan_references(PlannerInfo *root, Plan *plan)
-{
+{	StackTrace("set_plan_references");
 	PlannerGlobal *glob = root->glob;
 	int			rtoffset = list_length(glob->finalrtable);
 	ListCell   *lc;
@@ -246,7 +246,7 @@ set_plan_references(PlannerInfo *root, Plan *plan)
  */
 static void
 add_rtes_to_flat_rtable(PlannerInfo *root, bool recursing)
-{
+{	StackTrace("add_rtes_to_flat_rtable");
 	PlannerGlobal *glob = root->glob;
 	Index		rti;
 	ListCell   *lc;
@@ -333,7 +333,7 @@ add_rtes_to_flat_rtable(PlannerInfo *root, bool recursing)
  */
 static void
 flatten_unplanned_rtes(PlannerGlobal *glob, RangeTblEntry *rte)
-{
+{	StackTrace("flatten_unplanned_rtes");
 	/* Use query_tree_walker to find all RTEs in the parse tree */
 	(void) query_tree_walker(rte->subquery,
 							 flatten_rtes_walker,
@@ -343,7 +343,7 @@ flatten_unplanned_rtes(PlannerGlobal *glob, RangeTblEntry *rte)
 
 static bool
 flatten_rtes_walker(Node *node, PlannerGlobal *glob)
-{
+{	StackTrace("flatten_rtes_walker");
 	if (node == NULL)
 		return false;
 	if (IsA(node, RangeTblEntry))
@@ -379,7 +379,7 @@ flatten_rtes_walker(Node *node, PlannerGlobal *glob)
  */
 static void
 add_rte_to_flat_rtable(PlannerGlobal *glob, RangeTblEntry *rte)
-{
+{	StackTrace("add_rte_to_flat_rtable");
 	RangeTblEntry *newrte;
 
 	/* flat copy to duplicate all the scalar fields */
@@ -428,7 +428,7 @@ add_rte_to_flat_rtable(PlannerGlobal *glob, RangeTblEntry *rte)
  */
 static Plan *
 set_plan_refs(PlannerInfo *root, Plan *plan, int rtoffset)
-{
+{	StackTrace("set_plan_refs");
 	ListCell   *l;
 
 	if (plan == NULL)
@@ -917,7 +917,7 @@ static Plan *
 set_indexonlyscan_references(PlannerInfo *root,
 							 IndexOnlyScan *plan,
 							 int rtoffset)
-{
+{	StackTrace("set_indexonlyscan_references");
 	indexed_tlist *index_itlist;
 
 	index_itlist = build_tlist_index(plan->indextlist);
@@ -958,7 +958,7 @@ static Plan *
 set_subqueryscan_references(PlannerInfo *root,
 							SubqueryScan *plan,
 							int rtoffset)
-{
+{	StackTrace("set_subqueryscan_references");
 	RelOptInfo *rel;
 	Plan	   *result;
 
@@ -1029,7 +1029,7 @@ set_subqueryscan_references(PlannerInfo *root,
  */
 static bool
 trivial_subqueryscan(SubqueryScan *plan)
-{
+{	StackTrace("trivial_subqueryscan");
 	int			attrno;
 	ListCell   *lp,
 			   *lc;
@@ -1086,7 +1086,7 @@ static void
 set_foreignscan_references(PlannerInfo *root,
 						   ForeignScan *fscan,
 						   int rtoffset)
-{
+{	StackTrace("set_foreignscan_references");
 	/* Adjust scanrelid if it's valid */
 	if (fscan->scan.scanrelid > 0)
 		fscan->scan.scanrelid += rtoffset;
@@ -1150,7 +1150,7 @@ static void
 set_customscan_references(PlannerInfo *root,
 						  CustomScan *cscan,
 						  int rtoffset)
-{
+{	StackTrace("set_customscan_references");
 	ListCell   *lc;
 
 	/* Adjust scanrelid if it's valid */
@@ -1223,7 +1223,7 @@ set_customscan_references(PlannerInfo *root,
  */
 static inline Var *
 copyVar(Var *var)
-{
+{	StackTrace("copyVar");
 	Var		   *newvar = (Var *) palloc(sizeof(Var));
 
 	*newvar = *var;
@@ -1245,7 +1245,7 @@ copyVar(Var *var)
  */
 static void
 fix_expr_common(PlannerInfo *root, Node *node)
-{
+{	StackTrace("fix_expr_common");
 	/* We assume callers won't call us on a NULL pointer */
 	if (IsA(node, Aggref))
 	{
@@ -1339,7 +1339,7 @@ fix_expr_common(PlannerInfo *root, Node *node)
  */
 static Node *
 fix_param_node(PlannerInfo *root, Param *p)
-{
+{	StackTrace("fix_param_node");
 	if (p->paramkind == PARAM_MULTIEXPR)
 	{
 		int			subqueryid = p->paramid >> 16;
@@ -1368,7 +1368,7 @@ fix_param_node(PlannerInfo *root, Param *p)
  */
 static Node *
 fix_scan_expr(PlannerInfo *root, Node *node, int rtoffset)
-{
+{	StackTrace("fix_scan_expr");
 	fix_scan_expr_context context;
 
 	context.root = root;
@@ -1398,7 +1398,7 @@ fix_scan_expr(PlannerInfo *root, Node *node, int rtoffset)
 
 static Node *
 fix_scan_expr_mutator(Node *node, fix_scan_expr_context *context)
-{
+{	StackTrace("fix_scan_expr_mutator");
 	if (node == NULL)
 		return NULL;
 	if (IsA(node, Var))
@@ -1445,7 +1445,7 @@ fix_scan_expr_mutator(Node *node, fix_scan_expr_context *context)
 
 static bool
 fix_scan_expr_walker(Node *node, fix_scan_expr_context *context)
-{
+{	StackTrace("fix_scan_expr_walker");
 	if (node == NULL)
 		return false;
 	Assert(!IsA(node, PlaceHolderVar));
@@ -1464,7 +1464,7 @@ fix_scan_expr_walker(Node *node, fix_scan_expr_context *context)
  */
 static void
 set_join_references(PlannerInfo *root, Join *join, int rtoffset)
-{
+{	StackTrace("set_join_references");
 	Plan	   *outer_plan = join->plan.lefttree;
 	Plan	   *inner_plan = join->plan.righttree;
 	indexed_tlist *outer_itlist;
@@ -1598,7 +1598,7 @@ set_join_references(PlannerInfo *root, Join *join, int rtoffset)
  */
 static void
 set_upper_references(PlannerInfo *root, Plan *plan, int rtoffset)
-{
+{	StackTrace("set_upper_references");
 	Plan	   *subplan = plan->lefttree;
 	indexed_tlist *subplan_itlist;
 	List	   *output_targetlist;
@@ -1664,7 +1664,7 @@ set_upper_references(PlannerInfo *root, Plan *plan, int rtoffset)
  */
 static void
 set_dummy_tlist_references(Plan *plan, int rtoffset)
-{
+{	StackTrace("set_dummy_tlist_references");
 	List	   *output_targetlist;
 	ListCell   *l;
 
@@ -1717,7 +1717,7 @@ set_dummy_tlist_references(Plan *plan, int rtoffset)
  */
 static indexed_tlist *
 build_tlist_index(List *tlist)
-{
+{	StackTrace("build_tlist_index");
 	indexed_tlist *itlist;
 	tlist_vinfo *vinfo;
 	ListCell   *l;
@@ -1767,7 +1767,7 @@ build_tlist_index(List *tlist)
  */
 static indexed_tlist *
 build_tlist_index_other_vars(List *tlist, Index ignore_rel)
-{
+{	StackTrace("build_tlist_index_other_vars");
 	indexed_tlist *itlist;
 	tlist_vinfo *vinfo;
 	ListCell   *l;
@@ -1819,7 +1819,7 @@ build_tlist_index_other_vars(List *tlist, Index ignore_rel)
 static Var *
 search_indexed_tlist_for_var(Var *var, indexed_tlist *itlist,
 							 Index newvarno, int rtoffset)
-{
+{	StackTrace("search_indexed_tlist_for_var");
 	Index		varno = var->varno;
 	AttrNumber	varattno = var->varattno;
 	tlist_vinfo *vinfo;
@@ -1859,7 +1859,7 @@ search_indexed_tlist_for_var(Var *var, indexed_tlist *itlist,
 static Var *
 search_indexed_tlist_for_non_var(Node *node,
 								 indexed_tlist *itlist, Index newvarno)
-{
+{	StackTrace("search_indexed_tlist_for_non_var");
 	TargetEntry *tle;
 
 	tle = tlist_member(node, itlist->tlist);
@@ -1892,7 +1892,7 @@ search_indexed_tlist_for_sortgroupref(Node *node,
 									  Index sortgroupref,
 									  indexed_tlist *itlist,
 									  Index newvarno)
-{
+{	StackTrace("search_indexed_tlist_for_sortgroupref");
 	ListCell   *lc;
 
 	foreach(lc, itlist->tlist)
@@ -1953,7 +1953,7 @@ fix_join_expr(PlannerInfo *root,
 			  indexed_tlist *inner_itlist,
 			  Index acceptable_rel,
 			  int rtoffset)
-{
+{	StackTrace("fix_join_expr");
 	fix_join_expr_context context;
 
 	context.root = root;
@@ -1966,7 +1966,7 @@ fix_join_expr(PlannerInfo *root,
 
 static Node *
 fix_join_expr_mutator(Node *node, fix_join_expr_context *context)
-{
+{	StackTrace("fix_join_expr_mutator");
 	Var		   *newvar;
 
 	if (node == NULL)
@@ -2094,7 +2094,7 @@ fix_upper_expr(PlannerInfo *root,
 			   indexed_tlist *subplan_itlist,
 			   Index newvarno,
 			   int rtoffset)
-{
+{	StackTrace("fix_upper_expr");
 	fix_upper_expr_context context;
 
 	context.root = root;
@@ -2106,7 +2106,7 @@ fix_upper_expr(PlannerInfo *root,
 
 static Node *
 fix_upper_expr_mutator(Node *node, fix_upper_expr_context *context)
-{
+{	StackTrace("fix_upper_expr_mutator");
 	Var		   *newvar;
 
 	if (node == NULL)
@@ -2190,7 +2190,7 @@ set_returning_clause_references(PlannerInfo *root,
 								Plan *topplan,
 								Index resultRelation,
 								int rtoffset)
-{
+{	StackTrace("set_returning_clause_references");
 	indexed_tlist *itlist;
 
 	/*
@@ -2237,14 +2237,14 @@ set_returning_clause_references(PlannerInfo *root,
  */
 void
 fix_opfuncids(Node *node)
-{
+{	StackTrace("fix_opfuncids");
 	/* This tree walk requires no special setup, so away we go... */
 	fix_opfuncids_walker(node, NULL);
 }
 
 static bool
 fix_opfuncids_walker(Node *node, void *context)
-{
+{	StackTrace("fix_opfuncids_walker");
 	if (node == NULL)
 		return false;
 	if (IsA(node, OpExpr))
@@ -2268,7 +2268,7 @@ fix_opfuncids_walker(Node *node, void *context)
  */
 void
 set_opfuncid(OpExpr *opexpr)
-{
+{	StackTrace("set_opfuncid");
 	if (opexpr->opfuncid == InvalidOid)
 		opexpr->opfuncid = get_opcode(opexpr->opno);
 }
@@ -2279,7 +2279,7 @@ set_opfuncid(OpExpr *opexpr)
  */
 void
 set_sa_opfuncid(ScalarArrayOpExpr *opexpr)
-{
+{	StackTrace("set_sa_opfuncid");
 	if (opexpr->opfuncid == InvalidOid)
 		opexpr->opfuncid = get_opcode(opexpr->opno);
 }
@@ -2297,7 +2297,7 @@ set_sa_opfuncid(ScalarArrayOpExpr *opexpr)
  */
 void
 record_plan_function_dependency(PlannerInfo *root, Oid funcid)
-{
+{	StackTrace("record_plan_function_dependency");
 	/*
 	 * For performance reasons, we don't bother to track built-in functions;
 	 * we just assume they'll never change (or at least not in ways that'd
@@ -2337,7 +2337,7 @@ extract_query_dependencies(Node *query,
 						   List **relationOids,
 						   List **invalItems,
 						   bool *hasRowSecurity)
-{
+{	StackTrace("extract_query_dependencies");
 	PlannerGlobal glob;
 	PlannerInfo root;
 
@@ -2361,7 +2361,7 @@ extract_query_dependencies(Node *query,
 
 static bool
 extract_query_dependencies_walker(Node *node, PlannerInfo *context)
-{
+{	StackTrace("extract_query_dependencies_walker");
 	if (node == NULL)
 		return false;
 	Assert(!IsA(node, PlaceHolderVar));

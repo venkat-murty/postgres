@@ -66,7 +66,7 @@ static void XactLockTableWaitErrorCb(void *arg);
  */
 void
 RelationInitLockInfo(Relation relation)
-{
+{	StackTrace("RelationInitLockInfo");
 	Assert(RelationIsValid(relation));
 	Assert(OidIsValid(RelationGetRelid(relation)));
 
@@ -84,7 +84,7 @@ RelationInitLockInfo(Relation relation)
  */
 static inline void
 SetLocktagRelationOid(LOCKTAG *tag, Oid relid)
-{
+{	StackTrace("SetLocktagRelationOid");
 	Oid			dbid;
 
 	if (IsSharedRelation(relid))
@@ -103,7 +103,7 @@ SetLocktagRelationOid(LOCKTAG *tag, Oid relid)
  */
 void
 LockRelationOid(Oid relid, LOCKMODE lockmode)
-{
+{	StackTrace("LockRelationOid");
 	LOCKTAG		tag;
 	LockAcquireResult res;
 
@@ -136,7 +136,7 @@ LockRelationOid(Oid relid, LOCKMODE lockmode)
  */
 bool
 ConditionalLockRelationOid(Oid relid, LOCKMODE lockmode)
-{
+{	StackTrace("ConditionalLockRelationOid");
 	LOCKTAG		tag;
 	LockAcquireResult res;
 
@@ -165,7 +165,7 @@ ConditionalLockRelationOid(Oid relid, LOCKMODE lockmode)
  */
 void
 UnlockRelationId(LockRelId *relid, LOCKMODE lockmode)
-{
+{	StackTrace("UnlockRelationId");
 	LOCKTAG		tag;
 
 	SET_LOCKTAG_RELATION(tag, relid->dbId, relid->relId);
@@ -180,7 +180,7 @@ UnlockRelationId(LockRelId *relid, LOCKMODE lockmode)
  */
 void
 UnlockRelationOid(Oid relid, LOCKMODE lockmode)
-{
+{	StackTrace("UnlockRelationOid");
 	LOCKTAG		tag;
 
 	SetLocktagRelationOid(&tag, relid);
@@ -197,7 +197,7 @@ UnlockRelationOid(Oid relid, LOCKMODE lockmode)
  */
 void
 LockRelation(Relation relation, LOCKMODE lockmode)
-{
+{	StackTrace("LockRelation");
 	LOCKTAG		tag;
 	LockAcquireResult res;
 
@@ -224,7 +224,7 @@ LockRelation(Relation relation, LOCKMODE lockmode)
  */
 bool
 ConditionalLockRelation(Relation relation, LOCKMODE lockmode)
-{
+{	StackTrace("ConditionalLockRelation");
 	LOCKTAG		tag;
 	LockAcquireResult res;
 
@@ -255,7 +255,7 @@ ConditionalLockRelation(Relation relation, LOCKMODE lockmode)
  */
 void
 UnlockRelation(Relation relation, LOCKMODE lockmode)
-{
+{	StackTrace("UnlockRelation");
 	LOCKTAG		tag;
 
 	SET_LOCKTAG_RELATION(tag,
@@ -273,7 +273,7 @@ UnlockRelation(Relation relation, LOCKMODE lockmode)
  */
 bool
 LockHasWaitersRelation(Relation relation, LOCKMODE lockmode)
-{
+{	StackTrace("LockHasWaitersRelation");
 	LOCKTAG		tag;
 
 	SET_LOCKTAG_RELATION(tag,
@@ -297,7 +297,7 @@ LockHasWaitersRelation(Relation relation, LOCKMODE lockmode)
  */
 void
 LockRelationIdForSession(LockRelId *relid, LOCKMODE lockmode)
-{
+{	StackTrace("LockRelationIdForSession");
 	LOCKTAG		tag;
 
 	SET_LOCKTAG_RELATION(tag, relid->dbId, relid->relId);
@@ -310,7 +310,7 @@ LockRelationIdForSession(LockRelId *relid, LOCKMODE lockmode)
  */
 void
 UnlockRelationIdForSession(LockRelId *relid, LOCKMODE lockmode)
-{
+{	StackTrace("UnlockRelationIdForSession");
 	LOCKTAG		tag;
 
 	SET_LOCKTAG_RELATION(tag, relid->dbId, relid->relId);
@@ -330,7 +330,7 @@ UnlockRelationIdForSession(LockRelId *relid, LOCKMODE lockmode)
  */
 void
 LockRelationForExtension(Relation relation, LOCKMODE lockmode)
-{
+{	StackTrace("LockRelationForExtension");
 	LOCKTAG		tag;
 
 	SET_LOCKTAG_RELATION_EXTEND(tag,
@@ -345,7 +345,7 @@ LockRelationForExtension(Relation relation, LOCKMODE lockmode)
  */
 void
 UnlockRelationForExtension(Relation relation, LOCKMODE lockmode)
-{
+{	StackTrace("UnlockRelationForExtension");
 	LOCKTAG		tag;
 
 	SET_LOCKTAG_RELATION_EXTEND(tag,
@@ -363,7 +363,7 @@ UnlockRelationForExtension(Relation relation, LOCKMODE lockmode)
  */
 void
 LockPage(Relation relation, BlockNumber blkno, LOCKMODE lockmode)
-{
+{	StackTrace("LockPage");
 	LOCKTAG		tag;
 
 	SET_LOCKTAG_PAGE(tag,
@@ -382,7 +382,7 @@ LockPage(Relation relation, BlockNumber blkno, LOCKMODE lockmode)
  */
 bool
 ConditionalLockPage(Relation relation, BlockNumber blkno, LOCKMODE lockmode)
-{
+{	StackTrace("ConditionalLockPage");
 	LOCKTAG		tag;
 
 	SET_LOCKTAG_PAGE(tag,
@@ -398,7 +398,7 @@ ConditionalLockPage(Relation relation, BlockNumber blkno, LOCKMODE lockmode)
  */
 void
 UnlockPage(Relation relation, BlockNumber blkno, LOCKMODE lockmode)
-{
+{	StackTrace("UnlockPage");
 	LOCKTAG		tag;
 
 	SET_LOCKTAG_PAGE(tag,
@@ -418,7 +418,7 @@ UnlockPage(Relation relation, BlockNumber blkno, LOCKMODE lockmode)
  */
 void
 LockTuple(Relation relation, ItemPointer tid, LOCKMODE lockmode)
-{
+{	StackTrace("LockTuple");
 	LOCKTAG		tag;
 
 	SET_LOCKTAG_TUPLE(tag,
@@ -438,7 +438,7 @@ LockTuple(Relation relation, ItemPointer tid, LOCKMODE lockmode)
  */
 bool
 ConditionalLockTuple(Relation relation, ItemPointer tid, LOCKMODE lockmode)
-{
+{	StackTrace("ConditionalLockTuple");
 	LOCKTAG		tag;
 
 	SET_LOCKTAG_TUPLE(tag,
@@ -455,7 +455,7 @@ ConditionalLockTuple(Relation relation, ItemPointer tid, LOCKMODE lockmode)
  */
 void
 UnlockTuple(Relation relation, ItemPointer tid, LOCKMODE lockmode)
-{
+{	StackTrace("UnlockTuple");
 	LOCKTAG		tag;
 
 	SET_LOCKTAG_TUPLE(tag,
@@ -476,7 +476,7 @@ UnlockTuple(Relation relation, ItemPointer tid, LOCKMODE lockmode)
  */
 void
 XactLockTableInsert(TransactionId xid)
-{
+{	StackTrace("XactLockTableInsert");
 	LOCKTAG		tag;
 
 	SET_LOCKTAG_TRANSACTION(tag, xid);
@@ -493,7 +493,7 @@ XactLockTableInsert(TransactionId xid)
  */
 void
 XactLockTableDelete(TransactionId xid)
-{
+{	StackTrace("XactLockTableDelete");
 	LOCKTAG		tag;
 
 	SET_LOCKTAG_TRANSACTION(tag, xid);
@@ -518,7 +518,7 @@ XactLockTableDelete(TransactionId xid)
 void
 XactLockTableWait(TransactionId xid, Relation rel, ItemPointer ctid,
 				  XLTW_Oper oper)
-{
+{	StackTrace("XactLockTableWait");
 	LOCKTAG		tag;
 	XactLockTableWaitInfo info;
 	ErrorContextCallback callback;
@@ -570,7 +570,7 @@ XactLockTableWait(TransactionId xid, Relation rel, ItemPointer ctid,
  */
 bool
 ConditionalXactLockTableWait(TransactionId xid)
-{
+{	StackTrace("ConditionalXactLockTableWait");
 	LOCKTAG		tag;
 
 	for (;;)
@@ -606,7 +606,7 @@ ConditionalXactLockTableWait(TransactionId xid)
  */
 uint32
 SpeculativeInsertionLockAcquire(TransactionId xid)
-{
+{	StackTrace("SpeculativeInsertionLockAcquire");
 	LOCKTAG		tag;
 
 	speculativeInsertionToken++;
@@ -632,7 +632,7 @@ SpeculativeInsertionLockAcquire(TransactionId xid)
  */
 void
 SpeculativeInsertionLockRelease(TransactionId xid)
-{
+{	StackTrace("SpeculativeInsertionLockRelease");
 	LOCKTAG		tag;
 
 	SET_LOCKTAG_SPECULATIVE_INSERTION(tag, xid, speculativeInsertionToken);
@@ -648,7 +648,7 @@ SpeculativeInsertionLockRelease(TransactionId xid)
  */
 void
 SpeculativeInsertionWait(TransactionId xid, uint32 token)
-{
+{	StackTrace("SpeculativeInsertionWait");
 	LOCKTAG		tag;
 
 	SET_LOCKTAG_SPECULATIVE_INSERTION(tag, xid, token);
@@ -666,7 +666,7 @@ SpeculativeInsertionWait(TransactionId xid, uint32 token)
  */
 static void
 XactLockTableWaitErrorCb(void *arg)
-{
+{	StackTrace("XactLockTableWaitErrorCb");
 	XactLockTableWaitInfo *info = (XactLockTableWaitInfo *) arg;
 
 	/*
@@ -730,7 +730,7 @@ XactLockTableWaitErrorCb(void *arg)
  */
 void
 WaitForLockersMultiple(List *locktags, LOCKMODE lockmode)
-{
+{	StackTrace("WaitForLockersMultiple");
 	List	   *holders = NIL;
 	ListCell   *lc;
 
@@ -774,7 +774,7 @@ WaitForLockersMultiple(List *locktags, LOCKMODE lockmode)
  */
 void
 WaitForLockers(LOCKTAG heaplocktag, LOCKMODE lockmode)
-{
+{	StackTrace("WaitForLockers");
 	List	   *l;
 
 	l = list_make1(&heaplocktag);
@@ -794,7 +794,7 @@ WaitForLockers(LOCKTAG heaplocktag, LOCKMODE lockmode)
 void
 LockDatabaseObject(Oid classid, Oid objid, uint16 objsubid,
 				   LOCKMODE lockmode)
-{
+{	StackTrace("LockDatabaseObject");
 	LOCKTAG		tag;
 
 	SET_LOCKTAG_OBJECT(tag,
@@ -815,7 +815,7 @@ LockDatabaseObject(Oid classid, Oid objid, uint16 objsubid,
 void
 UnlockDatabaseObject(Oid classid, Oid objid, uint16 objsubid,
 					 LOCKMODE lockmode)
-{
+{	StackTrace("UnlockDatabaseObject");
 	LOCKTAG		tag;
 
 	SET_LOCKTAG_OBJECT(tag,
@@ -835,7 +835,7 @@ UnlockDatabaseObject(Oid classid, Oid objid, uint16 objsubid,
 void
 LockSharedObject(Oid classid, Oid objid, uint16 objsubid,
 				 LOCKMODE lockmode)
-{
+{	StackTrace("LockSharedObject");
 	LOCKTAG		tag;
 
 	SET_LOCKTAG_OBJECT(tag,
@@ -856,7 +856,7 @@ LockSharedObject(Oid classid, Oid objid, uint16 objsubid,
 void
 UnlockSharedObject(Oid classid, Oid objid, uint16 objsubid,
 				   LOCKMODE lockmode)
-{
+{	StackTrace("UnlockSharedObject");
 	LOCKTAG		tag;
 
 	SET_LOCKTAG_OBJECT(tag,
@@ -877,7 +877,7 @@ UnlockSharedObject(Oid classid, Oid objid, uint16 objsubid,
 void
 LockSharedObjectForSession(Oid classid, Oid objid, uint16 objsubid,
 						   LOCKMODE lockmode)
-{
+{	StackTrace("LockSharedObjectForSession");
 	LOCKTAG		tag;
 
 	SET_LOCKTAG_OBJECT(tag,
@@ -895,7 +895,7 @@ LockSharedObjectForSession(Oid classid, Oid objid, uint16 objsubid,
 void
 UnlockSharedObjectForSession(Oid classid, Oid objid, uint16 objsubid,
 							 LOCKMODE lockmode)
-{
+{	StackTrace("UnlockSharedObjectForSession");
 	LOCKTAG		tag;
 
 	SET_LOCKTAG_OBJECT(tag,
@@ -917,7 +917,7 @@ UnlockSharedObjectForSession(Oid classid, Oid objid, uint16 objsubid,
  */
 void
 DescribeLockTag(StringInfo buf, const LOCKTAG *tag)
-{
+{	StackTrace("DescribeLockTag");
 	switch ((LockTagType) tag->locktag_type)
 	{
 		case LOCKTAG_RELATION:

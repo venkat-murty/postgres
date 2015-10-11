@@ -91,7 +91,7 @@ static void ExecDropStmt(DropStmt *stmt, bool isTopLevel);
  */
 bool
 CommandIsReadOnly(Node *parsetree)
-{
+{	StackTrace("CommandIsReadOnly");
 	if (IsA(parsetree, PlannedStmt))
 	{
 		PlannedStmt *stmt = (PlannedStmt *) parsetree;
@@ -127,7 +127,7 @@ CommandIsReadOnly(Node *parsetree)
  */
 static void
 check_xact_readonly(Node *parsetree)
-{
+{	StackTrace("check_xact_readonly");
 	/* Only perform the check if we have a reason to do so. */
 	if (!XactReadOnly && !IsInParallelMode())
 		return;
@@ -225,7 +225,7 @@ check_xact_readonly(Node *parsetree)
  */
 void
 PreventCommandIfReadOnly(const char *cmdname)
-{
+{	StackTrace("PreventCommandIfReadOnly");
 	if (XactReadOnly)
 		ereport(ERROR,
 				(errcode(ERRCODE_READ_ONLY_SQL_TRANSACTION),
@@ -243,7 +243,7 @@ PreventCommandIfReadOnly(const char *cmdname)
  */
 void
 PreventCommandIfParallelMode(const char *cmdname)
-{
+{	StackTrace("PreventCommandIfParallelMode");
 	if (IsInParallelMode())
 		ereport(ERROR,
 				(errcode(ERRCODE_INVALID_TRANSACTION_STATE),
@@ -262,7 +262,7 @@ PreventCommandIfParallelMode(const char *cmdname)
  */
 void
 PreventCommandDuringRecovery(const char *cmdname)
-{
+{	StackTrace("PreventCommandDuringRecovery");
 	if (RecoveryInProgress())
 		ereport(ERROR,
 				(errcode(ERRCODE_READ_ONLY_SQL_TRANSACTION),
@@ -280,7 +280,7 @@ PreventCommandDuringRecovery(const char *cmdname)
  */
 static void
 CheckRestrictedOperation(const char *cmdname)
-{
+{	StackTrace("CheckRestrictedOperation");
 	if (InSecurityRestrictedOperation())
 		ereport(ERROR,
 				(errcode(ERRCODE_INSUFFICIENT_PRIVILEGE),
@@ -318,7 +318,7 @@ ProcessUtility(Node *parsetree,
 			   ParamListInfo params,
 			   DestReceiver *dest,
 			   char *completionTag)
-{
+{	StackTrace("ProcessUtility");
 	Assert(queryString != NULL);	/* required as of 8.4 */
 
 	/*
@@ -354,7 +354,7 @@ standard_ProcessUtility(Node *parsetree,
 						ParamListInfo params,
 						DestReceiver *dest,
 						char *completionTag)
-{
+{	StackTrace("standard_ProcessUtility");
 	bool		isTopLevel = (context == PROCESS_UTILITY_TOPLEVEL);
 
 	check_xact_readonly(parsetree);
@@ -908,7 +908,7 @@ ProcessUtilitySlow(Node *parsetree,
 				   ParamListInfo params,
 				   DestReceiver *dest,
 				   char *completionTag)
-{
+{	StackTrace("ProcessUtilitySlow");
 	bool		isTopLevel = (context == PROCESS_UTILITY_TOPLEVEL);
 	bool		isCompleteQuery = (context <= PROCESS_UTILITY_QUERY);
 	bool		needCleanup;
@@ -1552,7 +1552,7 @@ ProcessUtilitySlow(Node *parsetree,
  */
 static void
 ExecDropStmt(DropStmt *stmt, bool isTopLevel)
-{
+{	StackTrace("ExecDropStmt");
 	switch (stmt->removeType)
 	{
 		case OBJECT_INDEX:
@@ -1585,7 +1585,7 @@ ExecDropStmt(DropStmt *stmt, bool isTopLevel)
  */
 bool
 UtilityReturnsTuples(Node *parsetree)
-{
+{	StackTrace("UtilityReturnsTuples");
 	switch (nodeTag(parsetree))
 	{
 		case T_FetchStmt:
@@ -1635,7 +1635,7 @@ UtilityReturnsTuples(Node *parsetree)
  */
 TupleDesc
 UtilityTupleDescriptor(Node *parsetree)
-{
+{	StackTrace("UtilityTupleDescriptor");
 	switch (nodeTag(parsetree))
 	{
 		case T_FetchStmt:
@@ -1685,7 +1685,7 @@ UtilityTupleDescriptor(Node *parsetree)
 #ifdef NOT_USED
 bool
 QueryReturnsTuples(Query *parsetree)
-{
+{	StackTrace("QueryReturnsTuples");
 	switch (parsetree->commandType)
 	{
 		case CMD_SELECT:
@@ -1728,7 +1728,7 @@ QueryReturnsTuples(Query *parsetree)
  */
 Query *
 UtilityContainsQuery(Node *parsetree)
-{
+{	StackTrace("UtilityContainsQuery");
 	Query	   *qry;
 
 	switch (nodeTag(parsetree))
@@ -1761,7 +1761,7 @@ UtilityContainsQuery(Node *parsetree)
  */
 static const char *
 AlterObjectTypeCommandTag(ObjectType objtype)
-{
+{	StackTrace("AlterObjectTypeCommandTag");
 	const char *tag;
 
 	switch (objtype)
@@ -1894,7 +1894,7 @@ AlterObjectTypeCommandTag(ObjectType objtype)
  */
 const char *
 CreateCommandTag(Node *parsetree)
-{
+{	StackTrace("CreateCommandTag");
 	const char *tag;
 
 	switch (nodeTag(parsetree))
@@ -2677,7 +2677,7 @@ CreateCommandTag(Node *parsetree)
  */
 LogStmtLevel
 GetCommandLogLevel(Node *parsetree)
-{
+{	StackTrace("GetCommandLogLevel");
 	LogStmtLevel lev;
 
 	switch (nodeTag(parsetree))

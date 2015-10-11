@@ -36,7 +36,7 @@
  */
 Datum
 unique_key_recheck(PG_FUNCTION_ARGS)
-{
+{	StackTrace("unique_key_recheck");
 	TriggerData *trigdata = (TriggerData *) fcinfo->context;
 	const char *funcname = "unique_key_recheck";
 	HeapTuple	new_row;

@@ -77,7 +77,7 @@ static Pointer datum_write(Pointer ptr, Datum datum, bool typbyval,
 
 Datum
 range_in(PG_FUNCTION_ARGS)
-{
+{	StackTrace("range_in");
 	char	   *input_str = PG_GETARG_CSTRING(0);
 	Oid			rngtypoid = PG_GETARG_OID(1);
 	Oid			typmod = PG_GETARG_INT32(2);
@@ -117,7 +117,7 @@ range_in(PG_FUNCTION_ARGS)
 
 Datum
 range_out(PG_FUNCTION_ARGS)
-{
+{	StackTrace("range_out");
 	RangeType  *range = PG_GETARG_RANGE(0);
 	char	   *output_str;
 	RangeIOData *cache;
@@ -155,7 +155,7 @@ range_out(PG_FUNCTION_ARGS)
 
 Datum
 range_recv(PG_FUNCTION_ARGS)
-{
+{	StackTrace("range_recv");
 	StringInfo	buf = (StringInfo) PG_GETARG_POINTER(0);
 	Oid			rngtypoid = PG_GETARG_OID(1);
 	int32		typmod = PG_GETARG_INT32(2);
@@ -236,7 +236,7 @@ range_recv(PG_FUNCTION_ARGS)
 
 Datum
 range_send(PG_FUNCTION_ARGS)
-{
+{	StackTrace("range_send");
 	RangeType  *range = PG_GETARG_RANGE(0);
 	StringInfo	buf = makeStringInfo();
 	RangeIOData *cache;
@@ -290,7 +290,7 @@ range_send(PG_FUNCTION_ARGS)
  */
 static RangeIOData *
 get_range_io_data(FunctionCallInfo fcinfo, Oid rngtypid, IOFuncSelector func)
-{
+{	StackTrace("get_range_io_data");
 	RangeIOData *cache = (RangeIOData *) fcinfo->flinfo->fn_extra;
 
 	if (cache == NULL || cache->typcache->type_id != rngtypid)
@@ -349,7 +349,7 @@ get_range_io_data(FunctionCallInfo fcinfo, Oid rngtypid, IOFuncSelector func)
 /* Construct standard-form range value from two arguments */
 Datum
 range_constructor2(PG_FUNCTION_ARGS)
-{
+{	StackTrace("range_constructor2");
 	Datum		arg1 = PG_GETARG_DATUM(0);
 	Datum		arg2 = PG_GETARG_DATUM(1);
 	Oid			rngtypid = get_fn_expr_rettype(fcinfo->flinfo);
@@ -378,7 +378,7 @@ range_constructor2(PG_FUNCTION_ARGS)
 /* Construct general range value from three arguments */
 Datum
 range_constructor3(PG_FUNCTION_ARGS)
-{
+{	StackTrace("range_constructor3");
 	Datum		arg1 = PG_GETARG_DATUM(0);
 	Datum		arg2 = PG_GETARG_DATUM(1);
 	Oid			rngtypid = get_fn_expr_rettype(fcinfo->flinfo);
@@ -418,7 +418,7 @@ range_constructor3(PG_FUNCTION_ARGS)
 /* extract lower bound value */
 Datum
 range_lower(PG_FUNCTION_ARGS)
-{
+{	StackTrace("range_lower");
 	RangeType  *r1 = PG_GETARG_RANGE(0);
 	TypeCacheEntry *typcache;
 	RangeBound	lower;
@@ -439,7 +439,7 @@ range_lower(PG_FUNCTION_ARGS)
 /* extract upper bound value */
 Datum
 range_upper(PG_FUNCTION_ARGS)
-{
+{	StackTrace("range_upper");
 	RangeType  *r1 = PG_GETARG_RANGE(0);
 	TypeCacheEntry *typcache;
 	RangeBound	lower;
@@ -463,7 +463,7 @@ range_upper(PG_FUNCTION_ARGS)
 /* is range empty? */
 Datum
 range_empty(PG_FUNCTION_ARGS)
-{
+{	StackTrace("range_empty");
 	RangeType  *r1 = PG_GETARG_RANGE(0);
 	char		flags = range_get_flags(r1);
 
@@ -473,7 +473,7 @@ range_empty(PG_FUNCTION_ARGS)
 /* is lower bound inclusive? */
 Datum
 range_lower_inc(PG_FUNCTION_ARGS)
-{
+{	StackTrace("range_lower_inc");
 	RangeType  *r1 = PG_GETARG_RANGE(0);
 	char		flags = range_get_flags(r1);
 
@@ -483,7 +483,7 @@ range_lower_inc(PG_FUNCTION_ARGS)
 /* is upper bound inclusive? */
 Datum
 range_upper_inc(PG_FUNCTION_ARGS)
-{
+{	StackTrace("range_upper_inc");
 	RangeType  *r1 = PG_GETARG_RANGE(0);
 	char		flags = range_get_flags(r1);
 
@@ -493,7 +493,7 @@ range_upper_inc(PG_FUNCTION_ARGS)
 /* is lower bound infinite? */
 Datum
 range_lower_inf(PG_FUNCTION_ARGS)
-{
+{	StackTrace("range_lower_inf");
 	RangeType  *r1 = PG_GETARG_RANGE(0);
 	char		flags = range_get_flags(r1);
 
@@ -503,7 +503,7 @@ range_lower_inf(PG_FUNCTION_ARGS)
 /* is upper bound infinite? */
 Datum
 range_upper_inf(PG_FUNCTION_ARGS)
-{
+{	StackTrace("range_upper_inf");
 	RangeType  *r1 = PG_GETARG_RANGE(0);
 	char		flags = range_get_flags(r1);
 
@@ -516,7 +516,7 @@ range_upper_inf(PG_FUNCTION_ARGS)
 /* contains? */
 Datum
 range_contains_elem(PG_FUNCTION_ARGS)
-{
+{	StackTrace("range_contains_elem");
 	RangeType  *r = PG_GETARG_RANGE(0);
 	Datum		val = PG_GETARG_DATUM(1);
 	TypeCacheEntry *typcache;
@@ -529,7 +529,7 @@ range_contains_elem(PG_FUNCTION_ARGS)
 /* contained by? */
 Datum
 elem_contained_by_range(PG_FUNCTION_ARGS)
-{
+{	StackTrace("elem_contained_by_range");
 	Datum		val = PG_GETARG_DATUM(0);
 	RangeType  *r = PG_GETARG_RANGE(1);
 	TypeCacheEntry *typcache;
@@ -545,7 +545,7 @@ elem_contained_by_range(PG_FUNCTION_ARGS)
 /* equality (internal version) */
 bool
 range_eq_internal(TypeCacheEntry *typcache, RangeType *r1, RangeType *r2)
-{
+{	StackTrace("range_eq_internal");
 	RangeBound	lower1,
 				lower2;
 	RangeBound	upper1,
@@ -577,7 +577,7 @@ range_eq_internal(TypeCacheEntry *typcache, RangeType *r1, RangeType *r2)
 /* equality */
 Datum
 range_eq(PG_FUNCTION_ARGS)
-{
+{	StackTrace("range_eq");
 	RangeType  *r1 = PG_GETARG_RANGE(0);
 	RangeType  *r2 = PG_GETARG_RANGE(1);
 	TypeCacheEntry *typcache;
@@ -590,14 +590,14 @@ range_eq(PG_FUNCTION_ARGS)
 /* inequality (internal version) */
 bool
 range_ne_internal(TypeCacheEntry *typcache, RangeType *r1, RangeType *r2)
-{
+{	StackTrace("range_ne_internal");
 	return (!range_eq_internal(typcache, r1, r2));
 }
 
 /* inequality */
 Datum
 range_ne(PG_FUNCTION_ARGS)
-{
+{	StackTrace("range_ne");
 	RangeType  *r1 = PG_GETARG_RANGE(0);
 	RangeType  *r2 = PG_GETARG_RANGE(1);
 	TypeCacheEntry *typcache;
@@ -610,7 +610,7 @@ range_ne(PG_FUNCTION_ARGS)
 /* contains? */
 Datum
 range_contains(PG_FUNCTION_ARGS)
-{
+{	StackTrace("range_contains");
 	RangeType  *r1 = PG_GETARG_RANGE(0);
 	RangeType  *r2 = PG_GETARG_RANGE(1);
 	TypeCacheEntry *typcache;
@@ -623,7 +623,7 @@ range_contains(PG_FUNCTION_ARGS)
 /* contained by? */
 Datum
 range_contained_by(PG_FUNCTION_ARGS)
-{
+{	StackTrace("range_contained_by");
 	RangeType  *r1 = PG_GETARG_RANGE(0);
 	RangeType  *r2 = PG_GETARG_RANGE(1);
 	TypeCacheEntry *typcache;
@@ -636,7 +636,7 @@ range_contained_by(PG_FUNCTION_ARGS)
 /* strictly left of? (internal version) */
 bool
 range_before_internal(TypeCacheEntry *typcache, RangeType *r1, RangeType *r2)
-{
+{	StackTrace("range_before_internal");
 	RangeBound	lower1,
 				lower2;
 	RangeBound	upper1,
@@ -661,7 +661,7 @@ range_before_internal(TypeCacheEntry *typcache, RangeType *r1, RangeType *r2)
 /* strictly left of? */
 Datum
 range_before(PG_FUNCTION_ARGS)
-{
+{	StackTrace("range_before");
 	RangeType  *r1 = PG_GETARG_RANGE(0);
 	RangeType  *r2 = PG_GETARG_RANGE(1);
 	TypeCacheEntry *typcache;
@@ -674,7 +674,7 @@ range_before(PG_FUNCTION_ARGS)
 /* strictly right of? (internal version) */
 bool
 range_after_internal(TypeCacheEntry *typcache, RangeType *r1, RangeType *r2)
-{
+{	StackTrace("range_after_internal");
 	RangeBound	lower1,
 				lower2;
 	RangeBound	upper1,
@@ -699,7 +699,7 @@ range_after_internal(TypeCacheEntry *typcache, RangeType *r1, RangeType *r2)
 /* strictly right of? */
 Datum
 range_after(PG_FUNCTION_ARGS)
-{
+{	StackTrace("range_after");
 	RangeType  *r1 = PG_GETARG_RANGE(0);
 	RangeType  *r2 = PG_GETARG_RANGE(1);
 	TypeCacheEntry *typcache;
@@ -729,7 +729,7 @@ range_after(PG_FUNCTION_ARGS)
  */
 bool
 bounds_adjacent(TypeCacheEntry *typcache, RangeBound boundA, RangeBound boundB)
-{
+{	StackTrace("bounds_adjacent");
 	int			cmp;
 
 	Assert(!boundA.lower && boundB.lower);
@@ -770,7 +770,7 @@ bounds_adjacent(TypeCacheEntry *typcache, RangeBound boundA, RangeBound boundB)
 /* adjacent to (but not overlapping)? (internal version) */
 bool
 range_adjacent_internal(TypeCacheEntry *typcache, RangeType *r1, RangeType *r2)
-{
+{	StackTrace("range_adjacent_internal");
 	RangeBound	lower1,
 				lower2;
 	RangeBound	upper1,
@@ -800,7 +800,7 @@ range_adjacent_internal(TypeCacheEntry *typcache, RangeType *r1, RangeType *r2)
 /* adjacent to (but not overlapping)? */
 Datum
 range_adjacent(PG_FUNCTION_ARGS)
-{
+{	StackTrace("range_adjacent");
 	RangeType  *r1 = PG_GETARG_RANGE(0);
 	RangeType  *r2 = PG_GETARG_RANGE(1);
 	TypeCacheEntry *typcache;
@@ -813,7 +813,7 @@ range_adjacent(PG_FUNCTION_ARGS)
 /* overlaps? (internal version) */
 bool
 range_overlaps_internal(TypeCacheEntry *typcache, RangeType *r1, RangeType *r2)
-{
+{	StackTrace("range_overlaps_internal");
 	RangeBound	lower1,
 				lower2;
 	RangeBound	upper1,
@@ -846,7 +846,7 @@ range_overlaps_internal(TypeCacheEntry *typcache, RangeType *r1, RangeType *r2)
 /* overlaps? */
 Datum
 range_overlaps(PG_FUNCTION_ARGS)
-{
+{	StackTrace("range_overlaps");
 	RangeType  *r1 = PG_GETARG_RANGE(0);
 	RangeType  *r2 = PG_GETARG_RANGE(1);
 	TypeCacheEntry *typcache;
@@ -859,7 +859,7 @@ range_overlaps(PG_FUNCTION_ARGS)
 /* does not extend to right of? (internal version) */
 bool
 range_overleft_internal(TypeCacheEntry *typcache, RangeType *r1, RangeType *r2)
-{
+{	StackTrace("range_overleft_internal");
 	RangeBound	lower1,
 				lower2;
 	RangeBound	upper1,
@@ -887,7 +887,7 @@ range_overleft_internal(TypeCacheEntry *typcache, RangeType *r1, RangeType *r2)
 /* does not extend to right of? */
 Datum
 range_overleft(PG_FUNCTION_ARGS)
-{
+{	StackTrace("range_overleft");
 	RangeType  *r1 = PG_GETARG_RANGE(0);
 	RangeType  *r2 = PG_GETARG_RANGE(1);
 	TypeCacheEntry *typcache;
@@ -900,7 +900,7 @@ range_overleft(PG_FUNCTION_ARGS)
 /* does not extend to left of? (internal version) */
 bool
 range_overright_internal(TypeCacheEntry *typcache, RangeType *r1, RangeType *r2)
-{
+{	StackTrace("range_overright_internal");
 	RangeBound	lower1,
 				lower2;
 	RangeBound	upper1,
@@ -928,7 +928,7 @@ range_overright_internal(TypeCacheEntry *typcache, RangeType *r1, RangeType *r2)
 /* does not extend to left of? */
 Datum
 range_overright(PG_FUNCTION_ARGS)
-{
+{	StackTrace("range_overright");
 	RangeType  *r1 = PG_GETARG_RANGE(0);
 	RangeType  *r2 = PG_GETARG_RANGE(1);
 	TypeCacheEntry *typcache;
@@ -944,7 +944,7 @@ range_overright(PG_FUNCTION_ARGS)
 /* set difference */
 Datum
 range_minus(PG_FUNCTION_ARGS)
-{
+{	StackTrace("range_minus");
 	RangeType  *r1 = PG_GETARG_RANGE(0);
 	RangeType  *r2 = PG_GETARG_RANGE(1);
 	TypeCacheEntry *typcache;
@@ -1013,7 +1013,7 @@ range_minus(PG_FUNCTION_ARGS)
 static RangeType *
 range_union_internal(TypeCacheEntry *typcache, RangeType *r1, RangeType *r2,
 					 bool strict)
-{
+{	StackTrace("range_union_internal");
 	RangeBound	lower1,
 				lower2;
 	RangeBound	upper1,
@@ -1058,7 +1058,7 @@ range_union_internal(TypeCacheEntry *typcache, RangeType *r1, RangeType *r2,
 
 Datum
 range_union(PG_FUNCTION_ARGS)
-{
+{	StackTrace("range_union");
 	RangeType  *r1 = PG_GETARG_RANGE(0);
 	RangeType  *r2 = PG_GETARG_RANGE(1);
 	TypeCacheEntry *typcache;
@@ -1074,7 +1074,7 @@ range_union(PG_FUNCTION_ARGS)
  */
 Datum
 range_merge(PG_FUNCTION_ARGS)
-{
+{	StackTrace("range_merge");
 	RangeType  *r1 = PG_GETARG_RANGE(0);
 	RangeType  *r2 = PG_GETARG_RANGE(1);
 	TypeCacheEntry *typcache;
@@ -1087,7 +1087,7 @@ range_merge(PG_FUNCTION_ARGS)
 /* set intersection */
 Datum
 range_intersect(PG_FUNCTION_ARGS)
-{
+{	StackTrace("range_intersect");
 	RangeType  *r1 = PG_GETARG_RANGE(0);
 	RangeType  *r2 = PG_GETARG_RANGE(1);
 	TypeCacheEntry *typcache;
@@ -1130,7 +1130,7 @@ range_intersect(PG_FUNCTION_ARGS)
 /* btree comparator */
 Datum
 range_cmp(PG_FUNCTION_ARGS)
-{
+{	StackTrace("range_cmp");
 	RangeType  *r1 = PG_GETARG_RANGE(0);
 	RangeType  *r2 = PG_GETARG_RANGE(1);
 	TypeCacheEntry *typcache;
@@ -1174,7 +1174,7 @@ range_cmp(PG_FUNCTION_ARGS)
 /* inequality operators using the range_cmp function */
 Datum
 range_lt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("range_lt");
 	int			cmp = range_cmp(fcinfo);
 
 	PG_RETURN_BOOL(cmp < 0);
@@ -1182,7 +1182,7 @@ range_lt(PG_FUNCTION_ARGS)
 
 Datum
 range_le(PG_FUNCTION_ARGS)
-{
+{	StackTrace("range_le");
 	int			cmp = range_cmp(fcinfo);
 
 	PG_RETURN_BOOL(cmp <= 0);
@@ -1190,7 +1190,7 @@ range_le(PG_FUNCTION_ARGS)
 
 Datum
 range_ge(PG_FUNCTION_ARGS)
-{
+{	StackTrace("range_ge");
 	int			cmp = range_cmp(fcinfo);
 
 	PG_RETURN_BOOL(cmp >= 0);
@@ -1198,7 +1198,7 @@ range_ge(PG_FUNCTION_ARGS)
 
 Datum
 range_gt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("range_gt");
 	int			cmp = range_cmp(fcinfo);
 
 	PG_RETURN_BOOL(cmp > 0);
@@ -1209,7 +1209,7 @@ range_gt(PG_FUNCTION_ARGS)
 /* hash a range value */
 Datum
 hash_range(PG_FUNCTION_ARGS)
-{
+{	StackTrace("hash_range");
 	RangeType  *r = PG_GETARG_RANGE(0);
 	uint32		result;
 	TypeCacheEntry *typcache;
@@ -1277,7 +1277,7 @@ hash_range(PG_FUNCTION_ARGS)
 
 Datum
 int4range_canonical(PG_FUNCTION_ARGS)
-{
+{	StackTrace("int4range_canonical");
 	RangeType  *r = PG_GETARG_RANGE(0);
 	TypeCacheEntry *typcache;
 	RangeBound	lower;
@@ -1308,7 +1308,7 @@ int4range_canonical(PG_FUNCTION_ARGS)
 
 Datum
 int8range_canonical(PG_FUNCTION_ARGS)
-{
+{	StackTrace("int8range_canonical");
 	RangeType  *r = PG_GETARG_RANGE(0);
 	TypeCacheEntry *typcache;
 	RangeBound	lower;
@@ -1339,7 +1339,7 @@ int8range_canonical(PG_FUNCTION_ARGS)
 
 Datum
 daterange_canonical(PG_FUNCTION_ARGS)
-{
+{	StackTrace("daterange_canonical");
 	RangeType  *r = PG_GETARG_RANGE(0);
 	TypeCacheEntry *typcache;
 	RangeBound	lower;
@@ -1382,7 +1382,7 @@ daterange_canonical(PG_FUNCTION_ARGS)
 
 Datum
 int4range_subdiff(PG_FUNCTION_ARGS)
-{
+{	StackTrace("int4range_subdiff");
 	int32		v1 = PG_GETARG_INT32(0);
 	int32		v2 = PG_GETARG_INT32(1);
 
@@ -1391,7 +1391,7 @@ int4range_subdiff(PG_FUNCTION_ARGS)
 
 Datum
 int8range_subdiff(PG_FUNCTION_ARGS)
-{
+{	StackTrace("int8range_subdiff");
 	int64		v1 = PG_GETARG_INT64(0);
 	int64		v2 = PG_GETARG_INT64(1);
 
@@ -1400,7 +1400,7 @@ int8range_subdiff(PG_FUNCTION_ARGS)
 
 Datum
 numrange_subdiff(PG_FUNCTION_ARGS)
-{
+{	StackTrace("numrange_subdiff");
 	Datum		v1 = PG_GETARG_DATUM(0);
 	Datum		v2 = PG_GETARG_DATUM(1);
 	Datum		numresult;
@@ -1416,7 +1416,7 @@ numrange_subdiff(PG_FUNCTION_ARGS)
 
 Datum
 daterange_subdiff(PG_FUNCTION_ARGS)
-{
+{	StackTrace("daterange_subdiff");
 	int32		v1 = PG_GETARG_INT32(0);
 	int32		v2 = PG_GETARG_INT32(1);
 
@@ -1425,7 +1425,7 @@ daterange_subdiff(PG_FUNCTION_ARGS)
 
 Datum
 tsrange_subdiff(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tsrange_subdiff");
 	Timestamp	v1 = PG_GETARG_TIMESTAMP(0);
 	Timestamp	v2 = PG_GETARG_TIMESTAMP(1);
 	float8		result;
@@ -1441,7 +1441,7 @@ tsrange_subdiff(PG_FUNCTION_ARGS)
 
 Datum
 tstzrange_subdiff(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tstzrange_subdiff");
 	Timestamp	v1 = PG_GETARG_TIMESTAMP(0);
 	Timestamp	v2 = PG_GETARG_TIMESTAMP(1);
 	float8		result;
@@ -1474,7 +1474,7 @@ tstzrange_subdiff(PG_FUNCTION_ARGS)
  */
 TypeCacheEntry *
 range_get_typcache(FunctionCallInfo fcinfo, Oid rngtypid)
-{
+{	StackTrace("range_get_typcache");
 	TypeCacheEntry *typcache = (TypeCacheEntry *) fcinfo->flinfo->fn_extra;
 
 	if (typcache == NULL ||
@@ -1499,7 +1499,7 @@ range_get_typcache(FunctionCallInfo fcinfo, Oid rngtypid)
 RangeType *
 range_serialize(TypeCacheEntry *typcache, RangeBound *lower, RangeBound *upper,
 				bool empty)
-{
+{	StackTrace("range_serialize");
 	RangeType  *range;
 	int			cmp;
 	Size		msize;
@@ -1628,7 +1628,7 @@ range_serialize(TypeCacheEntry *typcache, RangeBound *lower, RangeBound *upper,
 void
 range_deserialize(TypeCacheEntry *typcache, RangeType *range,
 				  RangeBound *lower, RangeBound *upper, bool *empty)
-{
+{	StackTrace("range_deserialize");
 	char		flags;
 	int16		typlen;
 	bool		typbyval;
@@ -1694,7 +1694,7 @@ range_deserialize(TypeCacheEntry *typcache, RangeType *range,
  */
 char
 range_get_flags(RangeType *range)
-{
+{	StackTrace("range_get_flags");
 	/* fetch the flag byte from datum's last byte */
 	return *((char *) range + VARSIZE(range) - 1);
 }
@@ -1708,7 +1708,7 @@ range_get_flags(RangeType *range)
  */
 void
 range_set_contain_empty(RangeType *range)
-{
+{	StackTrace("range_set_contain_empty");
 	char	   *flagsp;
 
 	/* flag byte is datum's last byte */
@@ -1724,7 +1724,7 @@ range_set_contain_empty(RangeType *range)
 RangeType *
 make_range(TypeCacheEntry *typcache, RangeBound *lower, RangeBound *upper,
 		   bool empty)
-{
+{	StackTrace("make_range");
 	RangeType  *range;
 
 	range = range_serialize(typcache, lower, upper, empty);
@@ -1763,7 +1763,7 @@ make_range(TypeCacheEntry *typcache, RangeBound *lower, RangeBound *upper,
  */
 int
 range_cmp_bounds(TypeCacheEntry *typcache, RangeBound *b1, RangeBound *b2)
-{
+{	StackTrace("range_cmp_bounds");
 	int32		result;
 
 	/*
@@ -1838,7 +1838,7 @@ range_cmp_bounds(TypeCacheEntry *typcache, RangeBound *b1, RangeBound *b2)
 int
 range_cmp_bound_values(TypeCacheEntry *typcache, RangeBound *b1,
 					   RangeBound *b2)
-{
+{	StackTrace("range_cmp_bound_values");
 	/*
 	 * First, handle cases involving infinity, which don't require invoking
 	 * the comparison proc.
@@ -1872,7 +1872,7 @@ range_cmp_bound_values(TypeCacheEntry *typcache, RangeBound *b1,
  */
 RangeType *
 make_empty_range(TypeCacheEntry *typcache)
-{
+{	StackTrace("make_empty_range");
 	RangeBound	lower;
 	RangeBound	upper;
 
@@ -1902,7 +1902,7 @@ make_empty_range(TypeCacheEntry *typcache)
  */
 static char
 range_parse_flags(const char *flags_str)
-{
+{	StackTrace("range_parse_flags");
 	char		flags = 0;
 
 	if (flags_str[0] == '\0' ||
@@ -1975,7 +1975,7 @@ range_parse_flags(const char *flags_str)
 static void
 range_parse(const char *string, char *flags, char **lbound_str,
 			char **ubound_str)
-{
+{	StackTrace("range_parse");
 	const char *ptr = string;
 	bool		infinite;
 
@@ -2084,7 +2084,7 @@ range_parse(const char *string, char *flags, char **lbound_str,
 static const char *
 range_parse_bound(const char *string, const char *ptr,
 				  char **bound_str, bool *infinite)
-{
+{	StackTrace("range_parse_bound");
 	StringInfoData buf;
 
 	/* Check for null: completely empty input means null */
@@ -2152,7 +2152,7 @@ range_parse_bound(const char *string, const char *ptr,
  */
 static char *
 range_deparse(char flags, const char *lbound_str, const char *ubound_str)
-{
+{	StackTrace("range_deparse");
 	StringInfoData buf;
 
 	if (flags & RANGE_EMPTY)
@@ -2182,7 +2182,7 @@ range_deparse(char flags, const char *lbound_str, const char *ubound_str)
  */
 static char *
 range_bound_escape(const char *value)
-{
+{	StackTrace("range_bound_escape");
 	bool		nq;
 	const char *ptr;
 	StringInfoData buf;
@@ -2231,7 +2231,7 @@ range_bound_escape(const char *value)
  */
 bool
 range_contains_internal(TypeCacheEntry *typcache, RangeType *r1, RangeType *r2)
-{
+{	StackTrace("range_contains_internal");
 	RangeBound	lower1;
 	RangeBound	upper1;
 	bool		empty1;
@@ -2263,7 +2263,7 @@ range_contains_internal(TypeCacheEntry *typcache, RangeType *r1, RangeType *r2)
 
 bool
 range_contained_by_internal(TypeCacheEntry *typcache, RangeType *r1, RangeType *r2)
-{
+{	StackTrace("range_contained_by_internal");
 	return range_contains_internal(typcache, r2, r1);
 }
 
@@ -2272,7 +2272,7 @@ range_contained_by_internal(TypeCacheEntry *typcache, RangeType *r1, RangeType *
  */
 bool
 range_contains_elem_internal(TypeCacheEntry *typcache, RangeType *r, Datum val)
-{
+{	StackTrace("range_contains_elem_internal");
 	RangeBound	lower;
 	RangeBound	upper;
 	bool		empty;
@@ -2328,7 +2328,7 @@ range_contains_elem_internal(TypeCacheEntry *typcache, RangeType *r, Datum val)
 static Size
 datum_compute_size(Size data_length, Datum val, bool typbyval, char typalign,
 				   int16 typlen, char typstorage)
-{
+{	StackTrace("datum_compute_size");
 	if (TYPE_IS_PACKABLE(typlen, typstorage) &&
 		VARATT_CAN_MAKE_SHORT(DatumGetPointer(val)))
 	{
@@ -2354,7 +2354,7 @@ datum_compute_size(Size data_length, Datum val, bool typbyval, char typalign,
 static Pointer
 datum_write(Pointer ptr, Datum datum, bool typbyval, char typalign,
 			int16 typlen, char typstorage)
-{
+{	StackTrace("datum_write");
 	Size		data_length;
 
 	if (typbyval)

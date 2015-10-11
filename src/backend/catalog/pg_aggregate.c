@@ -69,7 +69,7 @@ AggregateCreate(const char *aggName,
 				int32 aggmTransSpace,
 				const char *agginitval,
 				const char *aggminitval)
-{
+{	StackTrace("AggregateCreate");
 	Relation	aggdesc;
 	HeapTuple	tup;
 	bool		nulls[Natts_pg_aggregate];
@@ -670,7 +670,7 @@ lookup_agg_function(List *fnName,
 					Oid *input_types,
 					Oid variadicArgType,
 					Oid *rettype)
-{
+{	StackTrace("lookup_agg_function");
 	Oid			fnOid;
 	bool		retset;
 	int			nvargs;

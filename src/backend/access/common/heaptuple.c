@@ -85,7 +85,7 @@ Size
 heap_compute_data_size(TupleDesc tupleDesc,
 					   Datum *values,
 					   bool *isnull)
-{
+{	StackTrace("heap_compute_data_size");
 	Size		data_length = 0;
 	int			i;
 	int			numberOfAttributes = tupleDesc->natts;
@@ -147,7 +147,7 @@ heap_fill_tuple(TupleDesc tupleDesc,
 				Datum *values, bool *isnull,
 				char *data, Size data_size,
 				uint16 *infomask, bits8 *bit)
-{
+{	StackTrace("heap_fill_tuple");
 	bits8	   *bitP;
 	int			bitmask;
 	int			i;
@@ -295,7 +295,7 @@ heap_fill_tuple(TupleDesc tupleDesc,
  */
 bool
 heap_attisnull(HeapTuple tup, int attnum)
-{
+{	StackTrace("heap_attisnull");
 	if (attnum > (int) HeapTupleHeaderGetNatts(tup->t_data))
 		return true;
 
@@ -352,7 +352,7 @@ Datum
 nocachegetattr(HeapTuple tuple,
 			   int attnum,
 			   TupleDesc tupleDesc)
-{
+{	StackTrace("nocachegetattr");
 	HeapTupleHeader tup = tuple->t_data;
 	Form_pg_attribute *att = tupleDesc->attrs;
 	char	   *tp;				/* ptr to data part of tuple */
@@ -550,7 +550,7 @@ nocachegetattr(HeapTuple tuple,
  */
 Datum
 heap_getsysattr(HeapTuple tup, int attnum, TupleDesc tupleDesc, bool *isnull)
-{
+{	StackTrace("heap_getsysattr");
 	Datum		result;
 
 	Assert(tup);
@@ -606,7 +606,7 @@ heap_getsysattr(HeapTuple tup, int attnum, TupleDesc tupleDesc, bool *isnull)
  */
 HeapTuple
 heap_copytuple(HeapTuple tuple)
-{
+{	StackTrace("heap_copytuple");
 	HeapTuple	newTuple;
 
 	if (!HeapTupleIsValid(tuple) || tuple->t_data == NULL)
@@ -632,7 +632,7 @@ heap_copytuple(HeapTuple tuple)
  */
 void
 heap_copytuple_with_tuple(HeapTuple src, HeapTuple dest)
-{
+{	StackTrace("heap_copytuple_with_tuple");
 	if (!HeapTupleIsValid(src) || src->t_data == NULL)
 	{
 		dest->t_data = NULL;
@@ -654,7 +654,7 @@ heap_copytuple_with_tuple(HeapTuple src, HeapTuple dest)
  */
 Datum
 heap_copy_tuple_as_datum(HeapTuple tuple, TupleDesc tupleDesc)
-{
+{	StackTrace("heap_copy_tuple_as_datum");
 	HeapTupleHeader td;
 
 	/*
@@ -692,7 +692,7 @@ HeapTuple
 heap_form_tuple(TupleDesc tupleDescriptor,
 				Datum *values,
 				bool *isnull)
-{
+{	StackTrace("heap_form_tuple");
 	HeapTuple	tuple;			/* return tuple */
 	HeapTupleHeader td;			/* tuple data */
 	Size		len,
@@ -792,7 +792,7 @@ HeapTuple
 heap_formtuple(TupleDesc tupleDescriptor,
 			   Datum *values,
 			   char *nulls)
-{
+{	StackTrace("heap_formtuple");
 	HeapTuple	tuple;			/* return tuple */
 	int			numberOfAttributes = tupleDescriptor->natts;
 	bool	   *boolNulls = (bool *) palloc(numberOfAttributes * sizeof(bool));
@@ -826,7 +826,7 @@ heap_modify_tuple(HeapTuple tuple,
 				  Datum *replValues,
 				  bool *replIsnull,
 				  bool *doReplace)
-{
+{	StackTrace("heap_modify_tuple");
 	int			numberOfAttributes = tupleDesc->natts;
 	int			attoff;
 	Datum	   *values;
@@ -896,7 +896,7 @@ heap_modifytuple(HeapTuple tuple,
 				 Datum *replValues,
 				 char *replNulls,
 				 char *replActions)
-{
+{	StackTrace("heap_modifytuple");
 	HeapTuple	result;
 	int			numberOfAttributes = tupleDesc->natts;
 	bool	   *boolNulls = (bool *) palloc(numberOfAttributes * sizeof(bool));
@@ -937,7 +937,7 @@ heap_modifytuple(HeapTuple tuple,
 void
 heap_deform_tuple(HeapTuple tuple, TupleDesc tupleDesc,
 				  Datum *values, bool *isnull)
-{
+{	StackTrace("heap_deform_tuple");
 	HeapTupleHeader tup = tuple->t_data;
 	bool		hasnulls = HeapTupleHasNulls(tuple);
 	Form_pg_attribute *att = tupleDesc->attrs;
@@ -1051,7 +1051,7 @@ heap_deformtuple(HeapTuple tuple,
 				 TupleDesc tupleDesc,
 				 Datum *values,
 				 char *nulls)
-{
+{	StackTrace("heap_deformtuple");
 	int			natts = tupleDesc->natts;
 	bool	   *boolNulls = (bool *) palloc(natts * sizeof(bool));
 	int			attnum;
@@ -1077,7 +1077,7 @@ heap_deformtuple(HeapTuple tuple,
  */
 static void
 slot_deform_tuple(TupleTableSlot *slot, int natts)
-{
+{	StackTrace("slot_deform_tuple");
 	HeapTuple	tuple = slot->tts_tuple;
 	TupleDesc	tupleDesc = slot->tts_tupleDescriptor;
 	Datum	   *values = slot->tts_values;
@@ -1184,7 +1184,7 @@ slot_deform_tuple(TupleTableSlot *slot, int natts)
  */
 Datum
 slot_getattr(TupleTableSlot *slot, int attnum, bool *isnull)
-{
+{	StackTrace("slot_getattr");
 	HeapTuple	tuple = slot->tts_tuple;
 	TupleDesc	tupleDesc = slot->tts_tupleDescriptor;
 	HeapTupleHeader tup;
@@ -1280,7 +1280,7 @@ slot_getattr(TupleTableSlot *slot, int attnum, bool *isnull)
  */
 void
 slot_getallattrs(TupleTableSlot *slot)
-{
+{	StackTrace("slot_getallattrs");
 	int			tdesc_natts = slot->tts_tupleDescriptor->natts;
 	int			attnum;
 	HeapTuple	tuple;
@@ -1324,7 +1324,7 @@ slot_getallattrs(TupleTableSlot *slot)
  */
 void
 slot_getsomeattrs(TupleTableSlot *slot, int attnum)
-{
+{	StackTrace("slot_getsomeattrs");
 	HeapTuple	tuple;
 	int			attno;
 
@@ -1371,7 +1371,7 @@ slot_getsomeattrs(TupleTableSlot *slot, int attnum)
  */
 bool
 slot_attisnull(TupleTableSlot *slot, int attnum)
-{
+{	StackTrace("slot_attisnull");
 	HeapTuple	tuple = slot->tts_tuple;
 	TupleDesc	tupleDesc = slot->tts_tupleDescriptor;
 
@@ -1415,7 +1415,7 @@ slot_attisnull(TupleTableSlot *slot, int attnum)
  */
 void
 heap_freetuple(HeapTuple htup)
-{
+{	StackTrace("heap_freetuple");
 	pfree(htup);
 }
 
@@ -1435,7 +1435,7 @@ MinimalTuple
 heap_form_minimal_tuple(TupleDesc tupleDescriptor,
 						Datum *values,
 						bool *isnull)
-{
+{	StackTrace("heap_form_minimal_tuple");
 	MinimalTuple tuple;			/* return tuple */
 	Size		len,
 				data_len;
@@ -1510,7 +1510,7 @@ heap_form_minimal_tuple(TupleDesc tupleDescriptor,
  */
 void
 heap_free_minimal_tuple(MinimalTuple mtup)
-{
+{	StackTrace("heap_free_minimal_tuple");
 	pfree(mtup);
 }
 
@@ -1522,7 +1522,7 @@ heap_free_minimal_tuple(MinimalTuple mtup)
  */
 MinimalTuple
 heap_copy_minimal_tuple(MinimalTuple mtup)
-{
+{	StackTrace("heap_copy_minimal_tuple");
 	MinimalTuple result;
 
 	result = (MinimalTuple) palloc(mtup->t_len);
@@ -1541,7 +1541,7 @@ heap_copy_minimal_tuple(MinimalTuple mtup)
  */
 HeapTuple
 heap_tuple_from_minimal_tuple(MinimalTuple mtup)
-{
+{	StackTrace("heap_tuple_from_minimal_tuple");
 	HeapTuple	result;
 	uint32		len = mtup->t_len + MINIMAL_TUPLE_OFFSET;
 
@@ -1563,7 +1563,7 @@ heap_tuple_from_minimal_tuple(MinimalTuple mtup)
  */
 MinimalTuple
 minimal_tuple_from_heap_tuple(HeapTuple htup)
-{
+{	StackTrace("minimal_tuple_from_heap_tuple");
 	MinimalTuple result;
 	uint32		len;
 

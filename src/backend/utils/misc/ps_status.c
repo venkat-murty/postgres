@@ -116,7 +116,7 @@ static char **save_argv;
  */
 char	  **
 save_ps_display_args(int argc, char **argv)
-{
+{	StackTrace("save_ps_display_args");
 	save_argc = argc;
 	save_argv = argv;
 
@@ -216,7 +216,7 @@ save_ps_display_args(int argc, char **argv)
 void
 init_ps_display(const char *username, const char *dbname,
 				const char *host_info, const char *initial_str)
-{
+{	StackTrace("init_ps_display");
 	Assert(username);
 	Assert(dbname);
 	Assert(host_info);
@@ -297,7 +297,7 @@ init_ps_display(const char *username, const char *dbname,
  */
 void
 set_ps_display(const char *activity, bool force)
-{
+{	StackTrace("set_ps_display");
 #ifndef PS_USE_NONE
 	/* update_process_title=off disables updates, unless force = true */
 	if (!force && !update_process_title)
@@ -376,7 +376,7 @@ set_ps_display(const char *activity, bool force)
  */
 const char *
 get_ps_display(int *displen)
-{
+{	StackTrace("get_ps_display");
 #ifdef PS_USE_CLOBBER_ARGV
 	/* If ps_buffer is a pointer, it might still be null */
 	if (!ps_buffer)

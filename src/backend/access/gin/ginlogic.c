@@ -54,13 +54,13 @@
  */
 static bool
 trueConsistentFn(GinScanKey key)
-{
+{	StackTrace("trueConsistentFn");
 	key->recheckCurItem = false;
 	return true;
 }
 static GinTernaryValue
 trueTriConsistentFn(GinScanKey key)
-{
+{	StackTrace("trueTriConsistentFn");
 	return GIN_TRUE;
 }
 
@@ -69,7 +69,7 @@ trueTriConsistentFn(GinScanKey key)
  */
 static bool
 directBoolConsistentFn(GinScanKey key)
-{
+{	StackTrace("directBoolConsistentFn");
 	/*
 	 * Initialize recheckCurItem in case the consistentFn doesn't know it
 	 * should set it.  The safe assumption in that case is to force recheck.
@@ -93,7 +93,7 @@ directBoolConsistentFn(GinScanKey key)
  */
 static GinTernaryValue
 directTriConsistentFn(GinScanKey key)
-{
+{	StackTrace("directTriConsistentFn");
 	return DatumGetGinTernaryValue(FunctionCall7Coll(
 												  key->triConsistentFmgrInfo,
 													 key->collation,
@@ -113,7 +113,7 @@ directTriConsistentFn(GinScanKey key)
  */
 static bool
 shimBoolConsistentFn(GinScanKey key)
-{
+{	StackTrace("shimBoolConsistentFn");
 	GinTernaryValue result;
 
 	result = DatumGetGinTernaryValue(FunctionCall7Coll(
@@ -152,7 +152,7 @@ shimBoolConsistentFn(GinScanKey key)
  */
 static GinTernaryValue
 shimTriConsistentFn(GinScanKey key)
-{
+{	StackTrace("shimTriConsistentFn");
 	int			nmaybe;
 	int			maybeEntries[MAX_MAYBE_ENTRIES];
 	int			i;
@@ -223,7 +223,7 @@ shimTriConsistentFn(GinScanKey key)
  */
 void
 ginInitConsistentFunction(GinState *ginstate, GinScanKey key)
-{
+{	StackTrace("ginInitConsistentFunction");
 	if (key->searchMode == GIN_SEARCH_MODE_EVERYTHING)
 	{
 		key->boolConsistentFn = trueConsistentFn;

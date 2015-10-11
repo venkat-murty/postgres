@@ -24,7 +24,7 @@
 
 Datum
 spg_quad_config(PG_FUNCTION_ARGS)
-{
+{	StackTrace("spg_quad_config");
 	/* spgConfigIn *cfgin = (spgConfigIn *) PG_GETARG_POINTER(0); */
 	spgConfigOut *cfg = (spgConfigOut *) PG_GETARG_POINTER(1);
 
@@ -52,7 +52,7 @@ spg_quad_config(PG_FUNCTION_ARGS)
  */
 static int16
 getQuadrant(Point *centroid, Point *tst)
-{
+{	StackTrace("getQuadrant");
 	if ((SPTEST(point_above, tst, centroid) ||
 		 SPTEST(point_horiz, tst, centroid)) &&
 		(SPTEST(point_right, tst, centroid) ||
@@ -80,7 +80,7 @@ getQuadrant(Point *centroid, Point *tst)
 
 Datum
 spg_quad_choose(PG_FUNCTION_ARGS)
-{
+{	StackTrace("spg_quad_choose");
 	spgChooseIn *in = (spgChooseIn *) PG_GETARG_POINTER(0);
 	spgChooseOut *out = (spgChooseOut *) PG_GETARG_POINTER(1);
 	Point	   *inPoint = DatumGetPointP(in->datum),
@@ -111,7 +111,7 @@ spg_quad_choose(PG_FUNCTION_ARGS)
 #ifdef USE_MEDIAN
 static int
 x_cmp(const void *a, const void *b, void *arg)
-{
+{	StackTrace("x_cmp");
 	Point	   *pa = *(Point **) a;
 	Point	   *pb = *(Point **) b;
 
@@ -122,7 +122,7 @@ x_cmp(const void *a, const void *b, void *arg)
 
 static int
 y_cmp(const void *a, const void *b, void *arg)
-{
+{	StackTrace("y_cmp");
 	Point	   *pa = *(Point **) a;
 	Point	   *pb = *(Point **) b;
 
@@ -134,7 +134,7 @@ y_cmp(const void *a, const void *b, void *arg)
 
 Datum
 spg_quad_picksplit(PG_FUNCTION_ARGS)
-{
+{	StackTrace("spg_quad_picksplit");
 	spgPickSplitIn *in = (spgPickSplitIn *) PG_GETARG_POINTER(0);
 	spgPickSplitOut *out = (spgPickSplitOut *) PG_GETARG_POINTER(1);
 	int			i;
@@ -192,7 +192,7 @@ spg_quad_picksplit(PG_FUNCTION_ARGS)
 
 Datum
 spg_quad_inner_consistent(PG_FUNCTION_ARGS)
-{
+{	StackTrace("spg_quad_inner_consistent");
 	spgInnerConsistentIn *in = (spgInnerConsistentIn *) PG_GETARG_POINTER(0);
 	spgInnerConsistentOut *out = (spgInnerConsistentOut *) PG_GETARG_POINTER(1);
 	Point	   *centroid;
@@ -301,7 +301,7 @@ spg_quad_inner_consistent(PG_FUNCTION_ARGS)
 
 Datum
 spg_quad_leaf_consistent(PG_FUNCTION_ARGS)
-{
+{	StackTrace("spg_quad_leaf_consistent");
 	spgLeafConsistentIn *in = (spgLeafConsistentIn *) PG_GETARG_POINTER(0);
 	spgLeafConsistentOut *out = (spgLeafConsistentOut *) PG_GETARG_POINTER(1);
 	Point	   *datum = DatumGetPointP(in->leafDatum);

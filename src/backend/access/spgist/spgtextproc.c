@@ -77,7 +77,7 @@ typedef struct spgNodePtr
 
 Datum
 spg_text_config(PG_FUNCTION_ARGS)
-{
+{	StackTrace("spg_text_config");
 	/* spgConfigIn *cfgin = (spgConfigIn *) PG_GETARG_POINTER(0); */
 	spgConfigOut *cfg = (spgConfigOut *) PG_GETARG_POINTER(1);
 
@@ -94,7 +94,7 @@ spg_text_config(PG_FUNCTION_ARGS)
  */
 static Datum
 formTextDatum(const char *data, int datalen)
-{
+{	StackTrace("formTextDatum");
 	char	   *p;
 
 	p = (char *) palloc(datalen + VARHDRSZ);
@@ -119,7 +119,7 @@ formTextDatum(const char *data, int datalen)
  */
 static int
 commonPrefix(const char *a, const char *b, int lena, int lenb)
-{
+{	StackTrace("commonPrefix");
 	int			i = 0;
 
 	while (i < lena && i < lenb && *a == *b)
@@ -139,7 +139,7 @@ commonPrefix(const char *a, const char *b, int lena, int lenb)
  */
 static bool
 searchChar(Datum *nodeLabels, int nNodes, int16 c, int *i)
-{
+{	StackTrace("searchChar");
 	int			StopLow = 0,
 				StopHigh = nNodes;
 
@@ -165,7 +165,7 @@ searchChar(Datum *nodeLabels, int nNodes, int16 c, int *i)
 
 Datum
 spg_text_choose(PG_FUNCTION_ARGS)
-{
+{	StackTrace("spg_text_choose");
 	spgChooseIn *in = (spgChooseIn *) PG_GETARG_POINTER(0);
 	spgChooseOut *out = (spgChooseOut *) PG_GETARG_POINTER(1);
 	text	   *inText = DatumGetTextPP(in->datum);
@@ -297,7 +297,7 @@ spg_text_choose(PG_FUNCTION_ARGS)
 /* qsort comparator to sort spgNodePtr structs by "c" */
 static int
 cmpNodePtr(const void *a, const void *b)
-{
+{	StackTrace("cmpNodePtr");
 	const spgNodePtr *aa = (const spgNodePtr *) a;
 	const spgNodePtr *bb = (const spgNodePtr *) b;
 
@@ -306,7 +306,7 @@ cmpNodePtr(const void *a, const void *b)
 
 Datum
 spg_text_picksplit(PG_FUNCTION_ARGS)
-{
+{	StackTrace("spg_text_picksplit");
 	spgPickSplitIn *in = (spgPickSplitIn *) PG_GETARG_POINTER(0);
 	spgPickSplitOut *out = (spgPickSplitOut *) PG_GETARG_POINTER(1);
 	text	   *text0 = DatumGetTextPP(in->datums[0]);
@@ -399,7 +399,7 @@ spg_text_picksplit(PG_FUNCTION_ARGS)
 
 Datum
 spg_text_inner_consistent(PG_FUNCTION_ARGS)
-{
+{	StackTrace("spg_text_inner_consistent");
 	spgInnerConsistentIn *in = (spgInnerConsistentIn *) PG_GETARG_POINTER(0);
 	spgInnerConsistentOut *out = (spgInnerConsistentOut *) PG_GETARG_POINTER(1);
 	bool		collate_is_c = lc_collate_is_c(PG_GET_COLLATION());
@@ -541,7 +541,7 @@ spg_text_inner_consistent(PG_FUNCTION_ARGS)
 
 Datum
 spg_text_leaf_consistent(PG_FUNCTION_ARGS)
-{
+{	StackTrace("spg_text_leaf_consistent");
 	spgLeafConsistentIn *in = (spgLeafConsistentIn *) PG_GETARG_POINTER(0);
 	spgLeafConsistentOut *out = (spgLeafConsistentOut *) PG_GETARG_POINTER(1);
 	int			level = in->level;

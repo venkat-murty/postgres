@@ -999,7 +999,7 @@ static void NUM_cache_remove(NUMCacheEntry *ent);
  */
 static const KeyWord *
 index_seq_search(char *str, const KeyWord *kw, const int *index)
-{
+{	StackTrace("index_seq_search");
 	int			poz;
 
 	if (!KeyWord_INDEX_FILTER(*str))
@@ -1023,7 +1023,7 @@ index_seq_search(char *str, const KeyWord *kw, const int *index)
 
 static const KeySuffix *
 suff_search(char *str, const KeySuffix *suf, int type)
-{
+{	StackTrace("suff_search");
 	const KeySuffix *s;
 
 	for (s = suf; s->name != NULL; s++)
@@ -1043,7 +1043,7 @@ suff_search(char *str, const KeySuffix *suf, int type)
  */
 static void
 NUMDesc_prepare(NUMDesc *num, FormatNode *n)
-{
+{	StackTrace("NUMDesc_prepare");
 	if (n->type != NODE_TYPE_ACTION)
 		return;
 
@@ -1235,7 +1235,7 @@ NUMDesc_prepare(NUMDesc *num, FormatNode *n)
 static void
 parse_format(FormatNode *node, char *str, const KeyWord *kw,
 			 const KeySuffix *suf, const int *index, int ver, NUMDesc *Num)
-{
+{	StackTrace("parse_format");
 	const KeySuffix *s;
 	FormatNode *n;
 	int			node_set = 0,
@@ -1365,7 +1365,7 @@ parse_format(FormatNode *node, char *str, const KeyWord *kw,
 
 static void
 dump_node(FormatNode *node, int max)
-{
+{	StackTrace("dump_node");
 	FormatNode *n;
 	int			a;
 
@@ -1400,7 +1400,7 @@ dump_node(FormatNode *node, int max)
  */
 static const char *
 get_th(char *num, int type)
-{
+{	StackTrace("get_th");
 	int			len = strlen(num),
 				last,
 				seclast;
@@ -1446,7 +1446,7 @@ get_th(char *num, int type)
  */
 static char *
 str_numth(char *dest, char *num, int type)
-{
+{	StackTrace("str_numth");
 	if (dest != num)
 		strcpy(dest, num);
 	strcat(dest, get_th(num, type));
@@ -1481,7 +1481,7 @@ str_numth(char *dest, char *num, int type)
  */
 char *
 str_tolower(const char *buff, size_t nbytes, Oid collid)
-{
+{	StackTrace("str_tolower");
 	char	   *result;
 
 	if (!buff)
@@ -1601,7 +1601,7 @@ str_tolower(const char *buff, size_t nbytes, Oid collid)
  */
 char *
 str_toupper(const char *buff, size_t nbytes, Oid collid)
-{
+{	StackTrace("str_toupper");
 	char	   *result;
 
 	if (!buff)
@@ -1721,7 +1721,7 @@ str_toupper(const char *buff, size_t nbytes, Oid collid)
  */
 char *
 str_initcap(const char *buff, size_t nbytes, Oid collid)
-{
+{	StackTrace("str_initcap");
 	char	   *result;
 	int			wasalnum = false;
 
@@ -1866,7 +1866,7 @@ str_initcap(const char *buff, size_t nbytes, Oid collid)
  */
 char *
 asc_tolower(const char *buff, size_t nbytes)
-{
+{	StackTrace("asc_tolower");
 	char	   *result;
 	char	   *p;
 
@@ -1889,7 +1889,7 @@ asc_tolower(const char *buff, size_t nbytes)
  */
 char *
 asc_toupper(const char *buff, size_t nbytes)
-{
+{	StackTrace("asc_toupper");
 	char	   *result;
 	char	   *p;
 
@@ -1912,7 +1912,7 @@ asc_toupper(const char *buff, size_t nbytes)
  */
 char *
 asc_initcap(const char *buff, size_t nbytes)
-{
+{	StackTrace("asc_initcap");
 	char	   *result;
 	char	   *p;
 	int			wasalnum = false;
@@ -1943,31 +1943,31 @@ asc_initcap(const char *buff, size_t nbytes)
 
 static char *
 str_tolower_z(const char *buff, Oid collid)
-{
+{	StackTrace("str_tolower_z");
 	return str_tolower(buff, strlen(buff), collid);
 }
 
 static char *
 str_toupper_z(const char *buff, Oid collid)
-{
+{	StackTrace("str_toupper_z");
 	return str_toupper(buff, strlen(buff), collid);
 }
 
 static char *
 str_initcap_z(const char *buff, Oid collid)
-{
+{	StackTrace("str_initcap_z");
 	return str_initcap(buff, strlen(buff), collid);
 }
 
 static char *
 asc_tolower_z(const char *buff)
-{
+{	StackTrace("asc_tolower_z");
 	return asc_tolower(buff, strlen(buff));
 }
 
 static char *
 asc_toupper_z(const char *buff)
-{
+{	StackTrace("asc_toupper_z");
 	return asc_toupper(buff, strlen(buff));
 }
 
@@ -1988,7 +1988,7 @@ asc_toupper_z(const char *buff)
  */
 static void
 dump_index(const KeyWord *k, const int *index)
-{
+{	StackTrace("dump_index");
 	int			i,
 				count = 0,
 				free_i = 0;
@@ -2019,7 +2019,7 @@ dump_index(const KeyWord *k, const int *index)
  */
 static bool
 is_next_separator(FormatNode *n)
-{
+{	StackTrace("is_next_separator");
 	if (n->type == NODE_TYPE_END)
 		return FALSE;
 
@@ -2051,7 +2051,7 @@ is_next_separator(FormatNode *n)
 
 static int
 adjust_partial_year_to_2020(int year)
-{
+{	StackTrace("adjust_partial_year_to_2020");
 	/*
 	 * Adjust all dates toward 2020; this is effectively what happens when we
 	 * assume '70' is 1970 and '69' is 2069.
@@ -2075,7 +2075,7 @@ adjust_partial_year_to_2020(int year)
 
 static int
 strspace_len(char *str)
-{
+{	StackTrace("strspace_len");
 	int			len = 0;
 
 	while (*str && isspace((unsigned char) *str))
@@ -2088,7 +2088,7 @@ strspace_len(char *str)
 
 static int
 strdigits_len(char *str)
-{
+{	StackTrace("strdigits_len");
 	char	   *p = str;
 	int			len;
 
@@ -2111,7 +2111,7 @@ strdigits_len(char *str)
  */
 static void
 from_char_set_mode(TmFromChar *tmfc, const FromCharDateMode mode)
-{
+{	StackTrace("from_char_set_mode");
 	if (mode != FROM_CHAR_DATE_NONE)
 	{
 		if (tmfc->mode == FROM_CHAR_DATE_NONE)
@@ -2133,7 +2133,7 @@ from_char_set_mode(TmFromChar *tmfc, const FromCharDateMode mode)
  */
 static void
 from_char_set_int(int *dest, const int value, const FormatNode *node)
-{
+{	StackTrace("from_char_set_int");
 	if (*dest != 0 && *dest != value)
 		ereport(ERROR,
 				(errcode(ERRCODE_INVALID_DATETIME_FORMAT),
@@ -2166,7 +2166,7 @@ from_char_set_int(int *dest, const int value, const FormatNode *node)
  */
 static int
 from_char_parse_int_len(int *dest, char **src, const int len, FormatNode *node)
-{
+{	StackTrace("from_char_parse_int_len");
 	long		result;
 	char		copy[DCH_MAX_ITEM_SIZ + 1];
 	char	   *init = *src;
@@ -2256,7 +2256,7 @@ from_char_parse_int_len(int *dest, char **src, const int len, FormatNode *node)
  */
 static int
 from_char_parse_int(int *dest, char **src, FormatNode *node)
-{
+{	StackTrace("from_char_parse_int");
 	return from_char_parse_int_len(dest, src, node->key->len, node);
 }
 
@@ -2266,7 +2266,7 @@ from_char_parse_int(int *dest, char **src, FormatNode *node)
  */
 static int
 seq_search(char *name, const char *const * array, int type, int max, int *len)
-{
+{	StackTrace("seq_search");
 	const char *p;
 	const char *const * a;
 	char	   *n;
@@ -2345,7 +2345,7 @@ seq_search(char *name, const char *const * array, int type, int max, int *len)
 static int
 from_char_seq_search(int *dest, char **src, const char *const * array, int type, int max,
 					 FormatNode *node)
-{
+{	StackTrace("from_char_seq_search");
 	int			len;
 
 	*dest = seq_search(*src, array, type, max, &len);
@@ -2374,7 +2374,7 @@ from_char_seq_search(int *dest, char **src, const char *const * array, int type,
  */
 static void
 DCH_to_char(FormatNode *node, bool is_interval, TmToChar *in, char *out, Oid collid)
-{
+{	StackTrace("DCH_to_char");
 	FormatNode *n;
 	char	   *s;
 	struct pg_tm *tm = &in->tm;
@@ -2940,7 +2940,7 @@ DCH_to_char(FormatNode *node, bool is_interval, TmToChar *in, char *out, Oid col
  */
 static void
 DCH_from_char(FormatNode *node, char *in, TmFromChar *out)
-{
+{	StackTrace("DCH_from_char");
 	FormatNode *n;
 	char	   *s;
 	int			len,
@@ -3207,7 +3207,7 @@ DCH_from_char(FormatNode *node, char *in, TmFromChar *out)
 
 static DCHCacheEntry *
 DCH_cache_getnew(char *str)
-{
+{	StackTrace("DCH_cache_getnew");
 	DCHCacheEntry *ent;
 
 	/* counter overflow check - paranoia? */
@@ -3258,7 +3258,7 @@ DCH_cache_getnew(char *str)
 
 static DCHCacheEntry *
 DCH_cache_search(char *str)
-{
+{	StackTrace("DCH_cache_search");
 	int			i;
 	DCHCacheEntry *ent;
 
@@ -3290,7 +3290,7 @@ DCH_cache_search(char *str)
  */
 static text *
 datetime_to_char_body(TmToChar *tmtc, text *fmt, bool is_interval, Oid collid)
-{
+{	StackTrace("datetime_to_char_body");
 	FormatNode *format;
 	char	   *fmt_str,
 			   *result;
@@ -3379,7 +3379,7 @@ datetime_to_char_body(TmToChar *tmtc, text *fmt, bool is_interval, Oid collid)
  */
 Datum
 timestamp_to_char(PG_FUNCTION_ARGS)
-{
+{	StackTrace("timestamp_to_char");
 	Timestamp	dt = PG_GETARG_TIMESTAMP(0);
 	text	   *fmt = PG_GETARG_TEXT_P(1),
 			   *res;
@@ -3410,7 +3410,7 @@ timestamp_to_char(PG_FUNCTION_ARGS)
 
 Datum
 timestamptz_to_char(PG_FUNCTION_ARGS)
-{
+{	StackTrace("timestamptz_to_char");
 	TimestampTz dt = PG_GETARG_TIMESTAMP(0);
 	text	   *fmt = PG_GETARG_TEXT_P(1),
 			   *res;
@@ -3447,7 +3447,7 @@ timestamptz_to_char(PG_FUNCTION_ARGS)
  */
 Datum
 interval_to_char(PG_FUNCTION_ARGS)
-{
+{	StackTrace("interval_to_char");
 	Interval   *it = PG_GETARG_INTERVAL_P(0);
 	text	   *fmt = PG_GETARG_TEXT_P(1),
 			   *res;
@@ -3481,7 +3481,7 @@ interval_to_char(PG_FUNCTION_ARGS)
  */
 Datum
 to_timestamp(PG_FUNCTION_ARGS)
-{
+{	StackTrace("to_timestamp");
 	text	   *date_txt = PG_GETARG_TEXT_P(0);
 	text	   *fmt = PG_GETARG_TEXT_P(1);
 	Timestamp	result;
@@ -3508,7 +3508,7 @@ to_timestamp(PG_FUNCTION_ARGS)
  */
 Datum
 to_date(PG_FUNCTION_ARGS)
-{
+{	StackTrace("to_date");
 	text	   *date_txt = PG_GETARG_TEXT_P(0);
 	text	   *fmt = PG_GETARG_TEXT_P(1);
 	DateADT		result;
@@ -3547,7 +3547,7 @@ to_date(PG_FUNCTION_ARGS)
 static void
 do_to_timestamp(text *date_txt, text *fmt,
 				struct pg_tm * tm, fsec_t *fsec)
-{
+{	StackTrace("do_to_timestamp");
 	FormatNode *format;
 	TmFromChar	tmfc;
 	int			fmt_len;
@@ -3806,7 +3806,7 @@ do_to_timestamp(text *date_txt, text *fmt,
 
 static char *
 fill_str(char *str, int c, int max)
-{
+{	StackTrace("fill_str");
 	memset(str, c, max);
 	*(str + max) = '\0';
 	return str;
@@ -3827,7 +3827,7 @@ do { \
 
 static NUMCacheEntry *
 NUM_cache_getnew(char *str)
-{
+{	StackTrace("NUM_cache_getnew");
 	NUMCacheEntry *ent;
 
 	/* counter overflow check - paranoia? */
@@ -3891,7 +3891,7 @@ NUM_cache_getnew(char *str)
 
 static NUMCacheEntry *
 NUM_cache_search(char *str)
-{
+{	StackTrace("NUM_cache_search");
 	int			i;
 	NUMCacheEntry *ent;
 
@@ -3919,7 +3919,7 @@ NUM_cache_search(char *str)
 
 static void
 NUM_cache_remove(NUMCacheEntry *ent)
-{
+{	StackTrace("NUM_cache_remove");
 #ifdef DEBUG_TO_FROM_CHAR
 	elog(DEBUG_elog_output, "REMOVING ENTRY (%s)", ent->str);
 #endif
@@ -3933,7 +3933,7 @@ NUM_cache_remove(NUMCacheEntry *ent)
  */
 static FormatNode *
 NUM_cache(int len, NUMDesc *Num, text *pars_str, bool *shouldFree)
-{
+{	StackTrace("NUM_cache");
 	FormatNode *format = NULL;
 	char	   *str;
 
@@ -4008,7 +4008,7 @@ NUM_cache(int len, NUMDesc *Num, text *pars_str, bool *shouldFree)
 
 static char *
 int_to_roman(int number)
-{
+{	StackTrace("int_to_roman");
 	int			len = 0,
 				num = 0;
 	char	   *p = NULL,
@@ -4057,7 +4057,7 @@ int_to_roman(int number)
  */
 static void
 NUM_prepare_locale(NUMProc *Np)
-{
+{	StackTrace("NUM_prepare_locale");
 	if (Np->Num->need_locale)
 	{
 		struct lconv *lconv;
@@ -4139,7 +4139,7 @@ NUM_prepare_locale(NUMProc *Np)
  */
 static char *
 get_last_relevant_decnum(char *num)
-{
+{	StackTrace("get_last_relevant_decnum");
 	char	   *result,
 			   *p = strchr(num, '.');
 
@@ -4167,7 +4167,7 @@ get_last_relevant_decnum(char *num)
  */
 static void
 NUM_numpart_from_char(NUMProc *Np, int id, int input_len)
-{
+{	StackTrace("NUM_numpart_from_char");
 	bool		isread = FALSE;
 
 #ifdef DEBUG_TO_FROM_CHAR
@@ -4385,7 +4385,7 @@ NUM_numpart_from_char(NUMProc *Np, int id, int input_len)
  */
 static void
 NUM_numpart_to_char(NUMProc *Np, int id)
-{
+{	StackTrace("NUM_numpart_to_char");
 	int			end;
 
 	if (IS_ROMAN(Np->Num))
@@ -4574,7 +4574,7 @@ static char *
 NUM_processor(FormatNode *node, NUMDesc *Num, char *inout,
 		   char *number, int from_char_input_len, int to_char_out_pre_spaces,
 			  int sign, bool is_to_char, Oid collid)
-{
+{	StackTrace("NUM_processor");
 	FormatNode *n;
 	NUMProc		_Np,
 			   *Np = &_Np;
@@ -5022,7 +5022,7 @@ do { \
  */
 Datum
 numeric_to_number(PG_FUNCTION_ARGS)
-{
+{	StackTrace("numeric_to_number");
 	text	   *value = PG_GETARG_TEXT_P(0);
 	text	   *fmt = PG_GETARG_TEXT_P(1);
 	NUMDesc		Num;
@@ -5066,7 +5066,7 @@ numeric_to_number(PG_FUNCTION_ARGS)
  */
 Datum
 numeric_to_char(PG_FUNCTION_ARGS)
-{
+{	StackTrace("numeric_to_char");
 	Numeric		value = PG_GETARG_NUMERIC(0);
 	text	   *fmt = PG_GETARG_TEXT_P(1);
 	NUMDesc		Num;
@@ -5190,7 +5190,7 @@ numeric_to_char(PG_FUNCTION_ARGS)
  */
 Datum
 int4_to_char(PG_FUNCTION_ARGS)
-{
+{	StackTrace("int4_to_char");
 	int32		value = PG_GETARG_INT32(0);
 	text	   *fmt = PG_GETARG_TEXT_P(1);
 	NUMDesc		Num;
@@ -5285,7 +5285,7 @@ int4_to_char(PG_FUNCTION_ARGS)
  */
 Datum
 int8_to_char(PG_FUNCTION_ARGS)
-{
+{	StackTrace("int8_to_char");
 	int64		value = PG_GETARG_INT64(0);
 	text	   *fmt = PG_GETARG_TEXT_P(1);
 	NUMDesc		Num;
@@ -5395,7 +5395,7 @@ int8_to_char(PG_FUNCTION_ARGS)
  */
 Datum
 float4_to_char(PG_FUNCTION_ARGS)
-{
+{	StackTrace("float4_to_char");
 	float4		value = PG_GETARG_FLOAT4(0);
 	text	   *fmt = PG_GETARG_TEXT_P(1);
 	NUMDesc		Num;
@@ -5501,7 +5501,7 @@ float4_to_char(PG_FUNCTION_ARGS)
  */
 Datum
 float8_to_char(PG_FUNCTION_ARGS)
-{
+{	StackTrace("float8_to_char");
 	float8		value = PG_GETARG_FLOAT8(0);
 	text	   *fmt = PG_GETARG_TEXT_P(1);
 	NUMDesc		Num;

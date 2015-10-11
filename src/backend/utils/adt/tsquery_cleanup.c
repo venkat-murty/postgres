@@ -30,7 +30,7 @@ typedef struct NODE
  */
 static NODE *
 maketree(QueryItem *in)
-{
+{	StackTrace("maketree");
 	NODE	   *node = (NODE *) palloc(sizeof(NODE));
 
 	node->valnode = in;
@@ -56,7 +56,7 @@ typedef struct
 
 static void
 plainnode(PLAINTREE *state, NODE *node)
-{
+{	StackTrace("plainnode");
 	/* since this function recurses, it could be driven to stack overflow. */
 	check_stack_depth();
 
@@ -91,7 +91,7 @@ plainnode(PLAINTREE *state, NODE *node)
  */
 static QueryItem *
 plaintree(NODE *root, int *len)
-{
+{	StackTrace("plaintree");
 	PLAINTREE	pl;
 
 	pl.cur = 0;
@@ -109,7 +109,7 @@ plaintree(NODE *root, int *len)
 
 static void
 freetree(NODE *node)
-{
+{	StackTrace("freetree");
 	/* since this function recurses, it could be driven to stack overflow. */
 	check_stack_depth();
 
@@ -130,7 +130,7 @@ freetree(NODE *node)
  */
 static NODE *
 clean_NOT_intree(NODE *node)
-{
+{	StackTrace("clean_NOT_intree");
 	/* since this function recurses, it could be driven to stack overflow. */
 	check_stack_depth();
 
@@ -183,7 +183,7 @@ clean_NOT_intree(NODE *node)
 
 QueryItem *
 clean_NOT(QueryItem *ptr, int *len)
-{
+{	StackTrace("clean_NOT");
 	NODE	   *root = maketree(ptr);
 
 	return plaintree(clean_NOT_intree(root), len);
@@ -214,7 +214,7 @@ clean_NOT(QueryItem *ptr, int *len)
  */
 static NODE *
 clean_fakeval_intree(NODE *node, char *result)
-{
+{	StackTrace("clean_fakeval_intree");
 	char		lresult = V_UNKNOWN,
 				rresult = V_UNKNOWN;
 
@@ -272,7 +272,7 @@ clean_fakeval_intree(NODE *node, char *result)
 
 QueryItem *
 clean_fakeval(QueryItem *ptr, int *len)
-{
+{	StackTrace("clean_fakeval");
 	NODE	   *root = maketree(ptr);
 	char		result = V_UNKNOWN;
 	NODE	   *resroot;

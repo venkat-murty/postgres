@@ -135,7 +135,7 @@ static void ResetReindexPending(void);
  */
 static bool
 relationHasPrimaryKey(Relation rel)
-{
+{	StackTrace("relationHasPrimaryKey");
 	bool		result = false;
 	List	   *indexoidlist;
 	ListCell   *indexoidscan;
@@ -187,7 +187,7 @@ void
 index_check_primary_key(Relation heapRel,
 						IndexInfo *indexInfo,
 						bool is_alter_table)
-{
+{	StackTrace("index_check_primary_key");
 	List	   *cmds;
 	int			i;
 
@@ -273,7 +273,7 @@ ConstructTupleDescriptor(Relation heapRelation,
 						 Oid accessMethodObjectId,
 						 Oid *collationObjectId,
 						 Oid *classObjectId)
-{
+{	StackTrace("ConstructTupleDescriptor");
 	int			numatts = indexInfo->ii_NumIndexAttrs;
 	ListCell   *colnames_item = list_head(indexColNames);
 	ListCell   *indexpr_item = list_head(indexInfo->ii_Expressions);
@@ -472,7 +472,7 @@ static void
 InitializeAttributeOids(Relation indexRelation,
 						int numatts,
 						Oid indexoid)
-{
+{	StackTrace("InitializeAttributeOids");
 	TupleDesc	tupleDescriptor;
 	int			i;
 
@@ -488,7 +488,7 @@ InitializeAttributeOids(Relation indexRelation,
  */
 static void
 AppendAttributeTuples(Relation indexRelation, int numatts)
-{
+{	StackTrace("AppendAttributeTuples");
 	Relation	pg_attribute;
 	CatalogIndexState indstate;
 	TupleDesc	indexTupDesc;
@@ -540,7 +540,7 @@ UpdateIndexRelation(Oid indexoid,
 					bool isexclusion,
 					bool immediate,
 					bool isvalid)
-{
+{	StackTrace("UpdateIndexRelation");
 	int2vector *indkey;
 	oidvector  *indcollation;
 	oidvector  *indclass;
@@ -702,7 +702,7 @@ index_create(Relation heapRelation,
 			 bool concurrent,
 			 bool is_internal,
 			 bool if_not_exists)
-{
+{	StackTrace("index_create");
 	Oid			heapRelationId = RelationGetRelid(heapRelation);
 	Relation	pg_class;
 	Relation	indexRelation;
@@ -1143,7 +1143,7 @@ index_constraint_create(Relation heapRelation,
 						bool remove_old_dependencies,
 						bool allow_system_table_mods,
 						bool is_internal)
-{
+{	StackTrace("index_constraint_create");
 	Oid			namespaceId = RelationGetNamespace(heapRelation);
 	ObjectAddress myself,
 				referenced;
@@ -1330,7 +1330,7 @@ index_constraint_create(Relation heapRelation,
  */
 void
 index_drop(Oid indexId, bool concurrent)
-{
+{	StackTrace("index_drop");
 	Oid			heapId;
 	Relation	userHeapRelation;
 	Relation	userIndexRelation;
@@ -1625,7 +1625,7 @@ index_drop(Oid indexId, bool concurrent)
  */
 IndexInfo *
 BuildIndexInfo(Relation index)
-{
+{	StackTrace("BuildIndexInfo");
 	IndexInfo  *ii = makeNode(IndexInfo);
 	Form_pg_index indexStruct = index->rd_index;
 	int			i;
@@ -1692,7 +1692,7 @@ BuildIndexInfo(Relation index)
  */
 void
 BuildSpeculativeIndexInfo(Relation index, IndexInfo *ii)
-{
+{	StackTrace("BuildSpeculativeIndexInfo");
 	int			ncols = index->rd_rel->relnatts;
 	int			i;
 
@@ -1750,7 +1750,7 @@ FormIndexDatum(IndexInfo *indexInfo,
 			   EState *estate,
 			   Datum *values,
 			   bool *isnull)
-{
+{	StackTrace("FormIndexDatum");
 	ListCell   *indexpr_item;
 	int			i;
 
@@ -1829,7 +1829,7 @@ index_update_stats(Relation rel,
 				   bool hasindex,
 				   bool isprimary,
 				   double reltuples)
-{
+{	StackTrace("index_update_stats");
 	Oid			relid = RelationGetRelid(rel);
 	Relation	pg_class;
 	HeapTuple	tuple;
@@ -1987,7 +1987,7 @@ index_build(Relation heapRelation,
 			IndexInfo *indexInfo,
 			bool isprimary,
 			bool isreindex)
-{
+{	StackTrace("index_build");
 	RegProcedure procedure;
 	IndexBuildResult *stats;
 	Oid			save_userid;
@@ -2158,7 +2158,7 @@ IndexBuildHeapScan(Relation heapRelation,
 				   bool allow_sync,
 				   IndexBuildCallback callback,
 				   void *callback_state)
-{
+{	StackTrace("IndexBuildHeapScan");
 	return IndexBuildHeapRangeScan(heapRelation, indexRelation,
 								   indexInfo, allow_sync,
 								   0, InvalidBlockNumber,
@@ -2179,7 +2179,7 @@ IndexBuildHeapRangeScan(Relation heapRelation,
 						BlockNumber numblocks,
 						IndexBuildCallback callback,
 						void *callback_state)
-{
+{	StackTrace("IndexBuildHeapRangeScan");
 	bool		is_system_catalog;
 	bool		checking_uniqueness;
 	HeapScanDesc scan;
@@ -2585,7 +2585,7 @@ static void
 IndexCheckExclusion(Relation heapRelation,
 					Relation indexRelation,
 					IndexInfo *indexInfo)
-{
+{	StackTrace("IndexCheckExclusion");
 	HeapScanDesc scan;
 	HeapTuple	heapTuple;
 	Datum		values[INDEX_MAX_KEYS];
@@ -2745,7 +2745,7 @@ IndexCheckExclusion(Relation heapRelation,
  */
 void
 validate_index(Oid heapId, Oid indexId, Snapshot snapshot)
-{
+{	StackTrace("validate_index");
 	Relation	heapRelation,
 				indexRelation;
 	IndexInfo  *indexInfo;
@@ -2834,7 +2834,7 @@ validate_index(Oid heapId, Oid indexId, Snapshot snapshot)
  */
 static bool
 validate_index_callback(ItemPointer itemptr, void *opaque)
-{
+{	StackTrace("validate_index_callback");
 	v_i_state  *state = (v_i_state *) opaque;
 
 	tuplesort_putdatum(state->tuplesort, PointerGetDatum(itemptr), false);
@@ -2854,7 +2854,7 @@ validate_index_heapscan(Relation heapRelation,
 						IndexInfo *indexInfo,
 						Snapshot snapshot,
 						v_i_state *state)
-{
+{	StackTrace("validate_index_heapscan");
 	HeapScanDesc scan;
 	HeapTuple	heapTuple;
 	Datum		values[INDEX_MAX_KEYS];
@@ -3082,7 +3082,7 @@ validate_index_heapscan(Relation heapRelation,
  */
 void
 index_set_state_flags(Oid indexId, IndexStateFlagsAction action)
-{
+{	StackTrace("index_set_state_flags");
 	Relation	pg_index;
 	HeapTuple	indexTuple;
 	Form_pg_index indexForm;
@@ -3161,7 +3161,7 @@ index_set_state_flags(Oid indexId, IndexStateFlagsAction action)
  */
 Oid
 IndexGetRelation(Oid indexId, bool missing_ok)
-{
+{	StackTrace("IndexGetRelation");
 	HeapTuple	tuple;
 	Form_pg_index index;
 	Oid			result;
@@ -3187,7 +3187,7 @@ IndexGetRelation(Oid indexId, bool missing_ok)
 void
 reindex_index(Oid indexId, bool skip_constraint_checks, char persistence,
 			  int options)
-{
+{	StackTrace("reindex_index");
 	Relation	iRel,
 				heapRelation;
 	Oid			heapId;
@@ -3389,7 +3389,7 @@ reindex_index(Oid indexId, bool skip_constraint_checks, char persistence,
  */
 bool
 reindex_relation(Oid relid, int flags, int options)
-{
+{	StackTrace("reindex_relation");
 	Relation	rel;
 	Oid			toast_relid;
 	List	   *indexIds;
@@ -3540,7 +3540,7 @@ static List *pendingReindexedIndexes = NIL;
  */
 bool
 ReindexIsProcessingHeap(Oid heapOid)
-{
+{	StackTrace("ReindexIsProcessingHeap");
 	return heapOid == currentlyReindexedHeap;
 }
 
@@ -3550,7 +3550,7 @@ ReindexIsProcessingHeap(Oid heapOid)
  */
 static bool
 ReindexIsCurrentlyProcessingIndex(Oid indexOid)
-{
+{	StackTrace("ReindexIsCurrentlyProcessingIndex");
 	return indexOid == currentlyReindexedIndex;
 }
 
@@ -3561,7 +3561,7 @@ ReindexIsCurrentlyProcessingIndex(Oid indexOid)
  */
 bool
 ReindexIsProcessingIndex(Oid indexOid)
-{
+{	StackTrace("ReindexIsProcessingIndex");
 	return indexOid == currentlyReindexedIndex ||
 		list_member_oid(pendingReindexedIndexes, indexOid);
 }
@@ -3574,7 +3574,7 @@ ReindexIsProcessingIndex(Oid indexOid)
  */
 static void
 SetReindexProcessing(Oid heapOid, Oid indexOid)
-{
+{	StackTrace("SetReindexProcessing");
 	Assert(OidIsValid(heapOid) && OidIsValid(indexOid));
 	/* Reindexing is not re-entrant. */
 	if (OidIsValid(currentlyReindexedHeap))
@@ -3591,7 +3591,7 @@ SetReindexProcessing(Oid heapOid, Oid indexOid)
  */
 static void
 ResetReindexProcessing(void)
-{
+{	StackTrace("ResetReindexProcessing");
 	currentlyReindexedHeap = InvalidOid;
 	currentlyReindexedIndex = InvalidOid;
 }
@@ -3605,7 +3605,7 @@ ResetReindexProcessing(void)
  */
 static void
 SetReindexPending(List *indexes)
-{
+{	StackTrace("SetReindexPending");
 	/* Reindexing is not re-entrant. */
 	if (pendingReindexedIndexes)
 		elog(ERROR, "cannot reindex while reindexing");
@@ -3618,7 +3618,7 @@ SetReindexPending(List *indexes)
  */
 static void
 RemoveReindexPending(Oid indexOid)
-{
+{	StackTrace("RemoveReindexPending");
 	pendingReindexedIndexes = list_delete_oid(pendingReindexedIndexes,
 											  indexOid);
 }
@@ -3629,6 +3629,6 @@ RemoveReindexPending(Oid indexOid)
  */
 static void
 ResetReindexPending(void)
-{
+{	StackTrace("ResetReindexPending");
 	pendingReindexedIndexes = NIL;
 }

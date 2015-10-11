@@ -76,7 +76,7 @@ static int inet_hist_match_divider(inet *boundary, inet *query,
  */
 Datum
 networksel(PG_FUNCTION_ARGS)
-{
+{	StackTrace("networksel");
 	PlannerInfo *root = (PlannerInfo *) PG_GETARG_POINTER(0);
 	Oid			operator = PG_GETARG_OID(1);
 	List	   *args = (List *) PG_GETARG_POINTER(2);
@@ -196,7 +196,7 @@ networksel(PG_FUNCTION_ARGS)
  */
 Datum
 networkjoinsel(PG_FUNCTION_ARGS)
-{
+{	StackTrace("networkjoinsel");
 	PlannerInfo *root = (PlannerInfo *) PG_GETARG_POINTER(0);
 	Oid			operator = PG_GETARG_OID(1);
 	List	   *args = (List *) PG_GETARG_POINTER(2);
@@ -264,7 +264,7 @@ networkjoinsel(PG_FUNCTION_ARGS)
 static Selectivity
 networkjoinsel_inner(Oid operator,
 					 VariableStatData *vardata1, VariableStatData *vardata2)
-{
+{	StackTrace("networkjoinsel_inner");
 	Form_pg_statistic stats;
 	double		nullfrac1 = 0.0,
 				nullfrac2 = 0.0;
@@ -407,7 +407,7 @@ networkjoinsel_inner(Oid operator,
 static Selectivity
 networkjoinsel_semi(Oid operator,
 					VariableStatData *vardata1, VariableStatData *vardata2)
-{
+{	StackTrace("networkjoinsel_semi");
 	Form_pg_statistic stats;
 	Selectivity selec = 0.0,
 				sumcommon1 = 0.0,
@@ -571,7 +571,7 @@ networkjoinsel_semi(Oid operator,
  */
 static Selectivity
 mcv_population(float4 *mcv_numbers, int mcv_nvalues)
-{
+{	StackTrace("mcv_population");
 	Selectivity sumcommon = 0.0;
 	int			i;
 
@@ -637,7 +637,7 @@ mcv_population(float4 *mcv_numbers, int mcv_nvalues)
 static Selectivity
 inet_hist_value_sel(Datum *values, int nvalues, Datum constvalue,
 					int opr_codenum)
-{
+{	StackTrace("inet_hist_value_sel");
 	Selectivity match = 0.0;
 	inet	   *query,
 			   *left,
@@ -707,7 +707,7 @@ static Selectivity
 inet_mcv_join_sel(Datum *mcv1_values, float4 *mcv1_numbers, int mcv1_nvalues,
 				  Datum *mcv2_values, float4 *mcv2_numbers, int mcv2_nvalues,
 				  Oid operator)
-{
+{	StackTrace("inet_mcv_join_sel");
 	Selectivity selec = 0.0;
 	FmgrInfo	proc;
 	int			i,
@@ -739,7 +739,7 @@ static Selectivity
 inet_mcv_hist_sel(Datum *mcv_values, float4 *mcv_numbers, int mcv_nvalues,
 				  Datum *hist_values, int hist_nvalues,
 				  int opr_codenum)
-{
+{	StackTrace("inet_mcv_hist_sel");
 	Selectivity selec = 0.0;
 	int			i;
 
@@ -776,7 +776,7 @@ static Selectivity
 inet_hist_inclusion_join_sel(Datum *hist1_values, int hist1_nvalues,
 							 Datum *hist2_values, int hist2_nvalues,
 							 int opr_codenum)
-{
+{	StackTrace("inet_hist_inclusion_join_sel");
 	double		match = 0.0;
 	int			i,
 				k,
@@ -829,7 +829,7 @@ inet_semi_join_sel(Datum lhs_value,
 				   bool hist_exists, Datum *hist_values, int hist_nvalues,
 				   double hist_weight,
 				   FmgrInfo *proc, int opr_codenum)
-{
+{	StackTrace("inet_semi_join_sel");
 	if (mcv_exists)
 	{
 		int			i;
@@ -868,7 +868,7 @@ inet_semi_join_sel(Datum lhs_value,
  */
 static int
 inet_opr_codenum(Oid operator)
-{
+{	StackTrace("inet_opr_codenum");
 	switch (operator)
 	{
 		case OID_INET_SUP_OP:
@@ -911,7 +911,7 @@ inet_opr_codenum(Oid operator)
  */
 static int
 inet_inclusion_cmp(inet *left, inet *right, int opr_codenum)
-{
+{	StackTrace("inet_inclusion_cmp");
 	if (ip_family(left) == ip_family(right))
 	{
 		int			order;
@@ -937,7 +937,7 @@ inet_inclusion_cmp(inet *left, inet *right, int opr_codenum)
  */
 static int
 inet_masklen_inclusion_cmp(inet *left, inet *right, int opr_codenum)
-{
+{	StackTrace("inet_masklen_inclusion_cmp");
 	int			order;
 
 	order = (int) ip_bits(left) - (int) ip_bits(right);
@@ -971,7 +971,7 @@ inet_masklen_inclusion_cmp(inet *left, inet *right, int opr_codenum)
  */
 static int
 inet_hist_match_divider(inet *boundary, inet *query, int opr_codenum)
-{
+{	StackTrace("inet_hist_match_divider");
 	if (ip_family(boundary) == ip_family(query) &&
 		inet_masklen_inclusion_cmp(boundary, query, opr_codenum) == 0)
 	{

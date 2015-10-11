@@ -45,7 +45,7 @@ static bool displayStruct(mixedStruct *structToDisplay);
 
 void
 GucInfoMain(void)
-{
+{	StackTrace("GucInfoMain");
 	struct config_generic **guc_vars;
 	int			numOpts,
 				i;
@@ -74,7 +74,7 @@ GucInfoMain(void)
  */
 static bool
 displayStruct(mixedStruct *structToDisplay)
-{
+{	StackTrace("displayStruct");
 	return !(structToDisplay->generic.flags & (GUC_NO_SHOW_ALL |
 											   GUC_NOT_IN_SAMPLE |
 											   GUC_DISALLOW_IN_FILE));
@@ -87,7 +87,7 @@ displayStruct(mixedStruct *structToDisplay)
  */
 static void
 printMixedStruct(mixedStruct *structToPrint)
-{
+{	StackTrace("printMixedStruct");
 	printf("%s\t%s\t%s\t",
 		   structToPrint->generic.name,
 		   GucContext_Names[structToPrint->generic.context],

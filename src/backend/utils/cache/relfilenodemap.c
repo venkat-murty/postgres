@@ -53,7 +53,7 @@ typedef struct
  */
 static void
 RelfilenodeMapInvalidateCallback(Datum arg, Oid relid)
-{
+{	StackTrace("RelfilenodeMapInvalidateCallback");
 	HASH_SEQ_STATUS status;
 	RelfilenodeMapEntry *entry;
 
@@ -87,7 +87,7 @@ RelfilenodeMapInvalidateCallback(Datum arg, Oid relid)
  */
 static void
 InitializeRelfilenodeMap(void)
-{
+{	StackTrace("InitializeRelfilenodeMap");
 	HASHCTL		ctl;
 	int			i;
 
@@ -139,7 +139,7 @@ InitializeRelfilenodeMap(void)
  */
 Oid
 RelidByRelfilenode(Oid reltablespace, Oid relfilenode)
-{
+{	StackTrace("RelidByRelfilenode");
 	RelfilenodeMapKey key;
 	RelfilenodeMapEntry *entry;
 	bool		found;

@@ -42,7 +42,7 @@ static float calc_rank_and(const float *w, TSVector t, TSQuery q);
  */
 static float4
 word_distance(int32 w)
-{
+{	StackTrace("word_distance");
 	if (w > 100)
 		return 1e-30f;
 
@@ -51,7 +51,7 @@ word_distance(int32 w)
 
 static int
 cnt_length(TSVector t)
-{
+{	StackTrace("cnt_length");
 	WordEntry  *ptr = ARRPTR(t),
 			   *end = (WordEntry *) STRPTR(t);
 	int			len = 0;
@@ -84,7 +84,7 @@ cnt_length(TSVector t)
  */
 static WordEntry *
 find_wordentry(TSVector t, TSQuery q, QueryOperand *item, int32 *nitem)
-{
+{	StackTrace("find_wordentry");
 	WordEntry  *StopLow = ARRPTR(t);
 	WordEntry  *StopHigh = (WordEntry *) STRPTR(t);
 	WordEntry  *StopMiddle = StopHigh;
@@ -133,7 +133,7 @@ find_wordentry(TSVector t, TSQuery q, QueryOperand *item, int32 *nitem)
  */
 static int
 compareQueryOperand(const void *a, const void *b, void *arg)
-{
+{	StackTrace("compareQueryOperand");
 	char	   *operand = (char *) arg;
 	QueryOperand *qa = (*(QueryOperand *const *) a);
 	QueryOperand *qb = (*(QueryOperand *const *) b);
@@ -152,7 +152,7 @@ compareQueryOperand(const void *a, const void *b, void *arg)
  */
 static QueryOperand **
 SortAndUniqItems(TSQuery q, int *size)
-{
+{	StackTrace("SortAndUniqItems");
 	char	   *operand = GETOPERAND(q);
 	QueryItem  *item = GETQUERY(q);
 	QueryOperand **res,
@@ -198,7 +198,7 @@ SortAndUniqItems(TSQuery q, int *size)
 
 static float
 calc_rank_and(const float *w, TSVector t, TSQuery q)
-{
+{	StackTrace("calc_rank_and");
 	WordEntryPosVector **pos;
 	WordEntryPosVector1 posnull;
 	WordEntryPosVector *POSNULL;
@@ -281,7 +281,7 @@ calc_rank_and(const float *w, TSVector t, TSQuery q)
 
 static float
 calc_rank_or(const float *w, TSVector t, TSQuery q)
-{
+{	StackTrace("calc_rank_or");
 	WordEntry  *entry,
 			   *firstentry;
 	WordEntryPosVector1 posnull;
@@ -355,7 +355,7 @@ calc_rank_or(const float *w, TSVector t, TSQuery q)
 
 static float
 calc_rank(const float *w, TSVector t, TSQuery q, int32 method)
-{
+{	StackTrace("calc_rank");
 	QueryItem  *item = GETQUERY(q);
 	float		res = 0.0;
 	int			len;
@@ -396,7 +396,7 @@ calc_rank(const float *w, TSVector t, TSQuery q, int32 method)
 
 static const float *
 getWeights(ArrayType *win)
-{
+{	StackTrace("getWeights");
 	static float ws[lengthof(weights)];
 	int			i;
 	float4	   *arrdata;
@@ -434,7 +434,7 @@ getWeights(ArrayType *win)
 
 Datum
 ts_rank_wttf(PG_FUNCTION_ARGS)
-{
+{	StackTrace("ts_rank_wttf");
 	ArrayType  *win = (ArrayType *) PG_DETOAST_DATUM(PG_GETARG_DATUM(0));
 	TSVector	txt = PG_GETARG_TSVECTOR(1);
 	TSQuery		query = PG_GETARG_TSQUERY(2);
@@ -451,7 +451,7 @@ ts_rank_wttf(PG_FUNCTION_ARGS)
 
 Datum
 ts_rank_wtt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("ts_rank_wtt");
 	ArrayType  *win = (ArrayType *) PG_DETOAST_DATUM(PG_GETARG_DATUM(0));
 	TSVector	txt = PG_GETARG_TSVECTOR(1);
 	TSQuery		query = PG_GETARG_TSQUERY(2);
@@ -467,7 +467,7 @@ ts_rank_wtt(PG_FUNCTION_ARGS)
 
 Datum
 ts_rank_ttf(PG_FUNCTION_ARGS)
-{
+{	StackTrace("ts_rank_ttf");
 	TSVector	txt = PG_GETARG_TSVECTOR(0);
 	TSQuery		query = PG_GETARG_TSQUERY(1);
 	int			method = PG_GETARG_INT32(2);
@@ -482,7 +482,7 @@ ts_rank_ttf(PG_FUNCTION_ARGS)
 
 Datum
 ts_rank_tt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("ts_rank_tt");
 	TSVector	txt = PG_GETARG_TSVECTOR(0);
 	TSQuery		query = PG_GETARG_TSQUERY(1);
 	float		res;
@@ -504,7 +504,7 @@ typedef struct
 
 static int
 compareDocR(const void *va, const void *vb)
-{
+{	StackTrace("compareDocR");
 	const DocRepresentation *a = (const DocRepresentation *) va;
 	const DocRepresentation *b = (const DocRepresentation *) vb;
 
@@ -524,7 +524,7 @@ typedef struct
 
 static bool
 checkcondition_QueryOperand(void *checkval, QueryOperand *val)
-{
+{	StackTrace("checkcondition_QueryOperand");
 	QueryRepresentation *qr = (QueryRepresentation *) checkval;
 
 	return QR_GET_OPERAND_EXISTS(qr, val);
@@ -542,7 +542,7 @@ typedef struct
 
 static bool
 Cover(DocRepresentation *doc, int len, QueryRepresentation *qr, CoverExt *ext)
-{
+{	StackTrace("Cover");
 	DocRepresentation *ptr;
 	int			lastpos = ext->pos;
 	int			i;
@@ -623,7 +623,7 @@ Cover(DocRepresentation *doc, int len, QueryRepresentation *qr, CoverExt *ext)
 
 static DocRepresentation *
 get_docrep(TSVector txt, QueryRepresentation *qr, int *doclen)
-{
+{	StackTrace("get_docrep");
 	QueryItem  *item = GETQUERY(qr->query);
 	WordEntry  *entry,
 			   *firstentry;
@@ -732,7 +732,7 @@ get_docrep(TSVector txt, QueryRepresentation *qr, int *doclen)
 
 static float4
 calc_rank_cd(const float4 *arrdata, TSVector txt, TSQuery query, int method)
-{
+{	StackTrace("calc_rank_cd");
 	DocRepresentation *doc;
 	int			len,
 				i,
@@ -834,7 +834,7 @@ calc_rank_cd(const float4 *arrdata, TSVector txt, TSQuery query, int method)
 
 Datum
 ts_rankcd_wttf(PG_FUNCTION_ARGS)
-{
+{	StackTrace("ts_rankcd_wttf");
 	ArrayType  *win = (ArrayType *) PG_DETOAST_DATUM(PG_GETARG_DATUM(0));
 	TSVector	txt = PG_GETARG_TSVECTOR(1);
 	TSQuery		query = PG_GETARG_TSQUERY(2);
@@ -851,7 +851,7 @@ ts_rankcd_wttf(PG_FUNCTION_ARGS)
 
 Datum
 ts_rankcd_wtt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("ts_rankcd_wtt");
 	ArrayType  *win = (ArrayType *) PG_DETOAST_DATUM(PG_GETARG_DATUM(0));
 	TSVector	txt = PG_GETARG_TSVECTOR(1);
 	TSQuery		query = PG_GETARG_TSQUERY(2);
@@ -867,7 +867,7 @@ ts_rankcd_wtt(PG_FUNCTION_ARGS)
 
 Datum
 ts_rankcd_ttf(PG_FUNCTION_ARGS)
-{
+{	StackTrace("ts_rankcd_ttf");
 	TSVector	txt = PG_GETARG_TSVECTOR(0);
 	TSQuery		query = PG_GETARG_TSQUERY(1);
 	int			method = PG_GETARG_INT32(2);
@@ -882,7 +882,7 @@ ts_rankcd_ttf(PG_FUNCTION_ARGS)
 
 Datum
 ts_rankcd_tt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("ts_rankcd_tt");
 	TSVector	txt = PG_GETARG_TSVECTOR(0);
 	TSQuery		query = PG_GETARG_TSQUERY(1);
 	float		res;

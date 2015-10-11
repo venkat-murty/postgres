@@ -51,7 +51,7 @@ static TupleTableSlot *TidNext(TidScanState *node);
  */
 static void
 TidListCreate(TidScanState *tidstate)
-{
+{	StackTrace("TidListCreate");
 	List	   *evalList = tidstate->tss_tidquals;
 	ExprContext *econtext = tidstate->ss.ps.ps_ExprContext;
 	BlockNumber nblocks;
@@ -220,7 +220,7 @@ TidListCreate(TidScanState *tidstate)
  */
 static int
 itemptr_comparator(const void *a, const void *b)
-{
+{	StackTrace("itemptr_comparator");
 	const ItemPointerData *ipa = (const ItemPointerData *) a;
 	const ItemPointerData *ipb = (const ItemPointerData *) b;
 	BlockNumber ba = ItemPointerGetBlockNumber(ipa);
@@ -249,7 +249,7 @@ itemptr_comparator(const void *a, const void *b)
  */
 static TupleTableSlot *
 TidNext(TidScanState *node)
-{
+{	StackTrace("TidNext");
 	EState	   *estate;
 	ScanDirection direction;
 	Snapshot	snapshot;
@@ -359,7 +359,7 @@ TidNext(TidScanState *node)
  */
 static bool
 TidRecheck(TidScanState *node, TupleTableSlot *slot)
-{
+{	StackTrace("TidRecheck");
 	/*
 	 * XXX shouldn't we check here to make sure tuple matches TID list? In
 	 * runtime-key case this is not certain, is it?  However, in the WHERE
@@ -389,7 +389,7 @@ TidRecheck(TidScanState *node, TupleTableSlot *slot)
  */
 TupleTableSlot *
 ExecTidScan(TidScanState *node)
-{
+{	StackTrace("ExecTidScan");
 	return ExecScan(&node->ss,
 					(ExecScanAccessMtd) TidNext,
 					(ExecScanRecheckMtd) TidRecheck);
@@ -401,7 +401,7 @@ ExecTidScan(TidScanState *node)
  */
 void
 ExecReScanTidScan(TidScanState *node)
-{
+{	StackTrace("ExecReScanTidScan");
 	if (node->tss_TidList)
 		pfree(node->tss_TidList);
 	node->tss_TidList = NULL;
@@ -420,7 +420,7 @@ ExecReScanTidScan(TidScanState *node)
  */
 void
 ExecEndTidScan(TidScanState *node)
-{
+{	StackTrace("ExecEndTidScan");
 	/*
 	 * Free the exprcontext
 	 */
@@ -451,7 +451,7 @@ ExecEndTidScan(TidScanState *node)
  */
 TidScanState *
 ExecInitTidScan(TidScan *node, EState *estate, int eflags)
-{
+{	StackTrace("ExecInitTidScan");
 	TidScanState *tidstate;
 	Relation	currentRelation;
 

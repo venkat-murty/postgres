@@ -110,7 +110,7 @@ static char *domainAddConstraint(Oid domainOid, Oid domainNamespace,
  */
 ObjectAddress
 DefineType(List *names, List *parameters)
-{
+{	StackTrace("DefineType");
 	char	   *typeName;
 	Oid			typeNamespace;
 	int16		internalLength = -1;	/* default: variable-length */
@@ -681,7 +681,7 @@ DefineType(List *names, List *parameters)
  */
 void
 RemoveTypeById(Oid typeOid)
-{
+{	StackTrace("RemoveTypeById");
 	Relation	relation;
 	HeapTuple	tup;
 
@@ -721,7 +721,7 @@ RemoveTypeById(Oid typeOid)
  */
 ObjectAddress
 DefineDomain(CreateDomainStmt *stmt)
-{
+{	StackTrace("DefineDomain");
 	char	   *domainName;
 	Oid			domainNamespace;
 	AclResult	aclresult;
@@ -1099,7 +1099,7 @@ DefineDomain(CreateDomainStmt *stmt)
  */
 ObjectAddress
 DefineEnum(CreateEnumStmt *stmt)
-{
+{	StackTrace("DefineEnum");
 	char	   *enumName;
 	char	   *enumArrayName;
 	Oid			enumNamespace;
@@ -1220,7 +1220,7 @@ DefineEnum(CreateEnumStmt *stmt)
  */
 ObjectAddress
 AlterEnum(AlterEnumStmt *stmt, bool isTopLevel)
-{
+{	StackTrace("AlterEnum");
 	Oid			enum_type_oid;
 	TypeName   *typename;
 	HeapTuple	tup;
@@ -1279,7 +1279,7 @@ AlterEnum(AlterEnumStmt *stmt, bool isTopLevel)
  */
 static void
 checkEnumOwner(HeapTuple tup)
-{
+{	StackTrace("checkEnumOwner");
 	Form_pg_type typTup = (Form_pg_type) GETSTRUCT(tup);
 
 	/* Check that this is actually an enum */
@@ -1301,7 +1301,7 @@ checkEnumOwner(HeapTuple tup)
  */
 ObjectAddress
 DefineRange(CreateRangeStmt *stmt)
-{
+{	StackTrace("DefineRange");
 	char	   *typeName;
 	Oid			typeNamespace;
 	Oid			typoid;
@@ -1570,7 +1570,7 @@ DefineRange(CreateRangeStmt *stmt)
 static void
 makeRangeConstructors(const char *name, Oid namespace,
 					  Oid rangeOid, Oid subtype)
-{
+{	StackTrace("makeRangeConstructors");
 	static const char *const prosrc[2] = {"range_constructor2",
 	"range_constructor3"};
 	static const int pronargs[2] = {2, 3};
@@ -1640,7 +1640,7 @@ makeRangeConstructors(const char *name, Oid namespace,
 
 static Oid
 findTypeInputFunction(List *procname, Oid typeOid)
-{
+{	StackTrace("findTypeInputFunction");
 	Oid			argList[3];
 	Oid			procOid;
 
@@ -1707,7 +1707,7 @@ findTypeInputFunction(List *procname, Oid typeOid)
 
 static Oid
 findTypeOutputFunction(List *procname, Oid typeOid)
-{
+{	StackTrace("findTypeOutputFunction");
 	Oid			argList[1];
 	Oid			procOid;
 
@@ -1758,7 +1758,7 @@ findTypeOutputFunction(List *procname, Oid typeOid)
 
 static Oid
 findTypeReceiveFunction(List *procname, Oid typeOid)
-{
+{	StackTrace("findTypeReceiveFunction");
 	Oid			argList[3];
 	Oid			procOid;
 
@@ -1789,7 +1789,7 @@ findTypeReceiveFunction(List *procname, Oid typeOid)
 
 static Oid
 findTypeSendFunction(List *procname, Oid typeOid)
-{
+{	StackTrace("findTypeSendFunction");
 	Oid			argList[1];
 	Oid			procOid;
 
@@ -1812,7 +1812,7 @@ findTypeSendFunction(List *procname, Oid typeOid)
 
 static Oid
 findTypeTypmodinFunction(List *procname)
-{
+{	StackTrace("findTypeTypmodinFunction");
 	Oid			argList[1];
 	Oid			procOid;
 
@@ -1839,7 +1839,7 @@ findTypeTypmodinFunction(List *procname)
 
 static Oid
 findTypeTypmodoutFunction(List *procname)
-{
+{	StackTrace("findTypeTypmodoutFunction");
 	Oid			argList[1];
 	Oid			procOid;
 
@@ -1866,7 +1866,7 @@ findTypeTypmodoutFunction(List *procname)
 
 static Oid
 findTypeAnalyzeFunction(List *procname, Oid typeOid)
-{
+{	StackTrace("findTypeAnalyzeFunction");
 	Oid			argList[1];
 	Oid			procOid;
 
@@ -1901,7 +1901,7 @@ findTypeAnalyzeFunction(List *procname, Oid typeOid)
  */
 static Oid
 findRangeSubOpclass(List *opcname, Oid subtype)
-{
+{	StackTrace("findRangeSubOpclass");
 	Oid			opcid;
 	Oid			opInputType;
 
@@ -1940,7 +1940,7 @@ findRangeSubOpclass(List *opcname, Oid subtype)
 
 static Oid
 findRangeCanonicalFunction(List *procname, Oid typeOid)
-{
+{	StackTrace("findRangeCanonicalFunction");
 	Oid			argList[1];
 	Oid			procOid;
 	AclResult	aclresult;
@@ -1981,7 +1981,7 @@ findRangeCanonicalFunction(List *procname, Oid typeOid)
 
 static Oid
 findRangeSubtypeDiffFunction(List *procname, Oid subtype)
-{
+{	StackTrace("findRangeSubtypeDiffFunction");
 	Oid			argList[2];
 	Oid			procOid;
 	AclResult	aclresult;
@@ -2028,7 +2028,7 @@ findRangeSubtypeDiffFunction(List *procname, Oid subtype)
  */
 Oid
 AssignTypeArrayOid(void)
-{
+{	StackTrace("AssignTypeArrayOid");
 	Oid			type_array_oid;
 
 	/* Use binary-upgrade override for pg_type.typarray? */
@@ -2069,7 +2069,7 @@ AssignTypeArrayOid(void)
  */
 ObjectAddress
 DefineCompositeType(RangeVar *typevar, List *coldeflist)
-{
+{	StackTrace("DefineCompositeType");
 	CreateStmt *createStmt = makeNode(CreateStmt);
 	Oid			old_type_oid;
 	Oid			typeNamespace;
@@ -2126,7 +2126,7 @@ DefineCompositeType(RangeVar *typevar, List *coldeflist)
  */
 ObjectAddress
 AlterDomainDefault(List *names, Node *defaultRaw)
-{
+{	StackTrace("AlterDomainDefault");
 	TypeName   *typename;
 	Oid			domainoid;
 	HeapTuple	tup;
@@ -2267,7 +2267,7 @@ AlterDomainDefault(List *names, Node *defaultRaw)
  */
 ObjectAddress
 AlterDomainNotNull(List *names, bool notNull)
-{
+{	StackTrace("AlterDomainNotNull");
 	TypeName   *typename;
 	Oid			domainoid;
 	Relation	typrel;
@@ -2385,7 +2385,7 @@ AlterDomainNotNull(List *names, bool notNull)
 ObjectAddress
 AlterDomainDropConstraint(List *names, const char *constrName,
 						  DropBehavior behavior, bool missing_ok)
-{
+{	StackTrace("AlterDomainDropConstraint");
 	TypeName   *typename;
 	Oid			domainoid;
 	HeapTuple	tup;
@@ -2475,7 +2475,7 @@ AlterDomainDropConstraint(List *names, const char *constrName,
 ObjectAddress
 AlterDomainAddConstraint(List *names, Node *newConstraint,
 						 ObjectAddress *constrAddr)
-{
+{	StackTrace("AlterDomainAddConstraint");
 	TypeName   *typename;
 	Oid			domainoid;
 	Relation	typrel;
@@ -2583,7 +2583,7 @@ AlterDomainAddConstraint(List *names, Node *newConstraint,
  */
 ObjectAddress
 AlterDomainValidateConstraint(List *names, char *constrName)
-{
+{	StackTrace("AlterDomainValidateConstraint");
 	TypeName   *typename;
 	Oid			domainoid;
 	Relation	typrel;
@@ -2686,7 +2686,7 @@ AlterDomainValidateConstraint(List *names, char *constrName)
 
 static void
 validateDomainConstraint(Oid domainoid, char *ccbin)
-{
+{	StackTrace("validateDomainConstraint");
 	Expr	   *expr = (Expr *) stringToNode(ccbin);
 	List	   *rels;
 	ListCell   *rt;
@@ -2804,7 +2804,7 @@ validateDomainConstraint(Oid domainoid, char *ccbin)
  */
 static List *
 get_rels_with_domain(Oid domainOid, LOCKMODE lockmode)
-{
+{	StackTrace("get_rels_with_domain");
 	List	   *result = NIL;
 	Relation	depRel;
 	ScanKeyData key[2];
@@ -2957,7 +2957,7 @@ get_rels_with_domain(Oid domainOid, LOCKMODE lockmode)
  */
 void
 checkDomainOwner(HeapTuple tup)
-{
+{	StackTrace("checkDomainOwner");
 	Form_pg_type typTup = (Form_pg_type) GETSTRUCT(tup);
 
 	/* Check that this is actually a domain */
@@ -2979,7 +2979,7 @@ static char *
 domainAddConstraint(Oid domainOid, Oid domainNamespace, Oid baseTypeOid,
 					int typMod, Constraint *constr,
 					char *domainName, ObjectAddress *constrAddr)
-{
+{	StackTrace("domainAddConstraint");
 	Node	   *expr;
 	char	   *ccsrc;
 	char	   *ccbin;
@@ -3109,7 +3109,7 @@ domainAddConstraint(Oid domainOid, Oid domainNamespace, Oid baseTypeOid,
  */
 ObjectAddress
 RenameType(RenameStmt *stmt)
-{
+{	StackTrace("RenameType");
 	List	   *names = stmt->object;
 	const char *newTypeName = stmt->newname;
 	TypeName   *typename;
@@ -3187,7 +3187,7 @@ RenameType(RenameStmt *stmt)
  */
 ObjectAddress
 AlterTypeOwner(List *names, Oid newOwnerId, ObjectType objecttype)
-{
+{	StackTrace("AlterTypeOwner");
 	TypeName   *typename;
 	Oid			typeOid;
 	Relation	rel;
@@ -3349,7 +3349,7 @@ AlterTypeOwner(List *names, Oid newOwnerId, ObjectType objecttype)
 void
 AlterTypeOwnerInternal(Oid typeOid, Oid newOwnerId,
 					   bool hasDependEntry)
-{
+{	StackTrace("AlterTypeOwnerInternal");
 	Relation	rel;
 	HeapTuple	tup;
 	Form_pg_type typTup;
@@ -3413,7 +3413,7 @@ AlterTypeOwnerInternal(Oid typeOid, Oid newOwnerId,
 ObjectAddress
 AlterTypeNamespace(List *names, const char *newschema, ObjectType objecttype,
 				   Oid *oldschema)
-{
+{	StackTrace("AlterTypeNamespace");
 	TypeName   *typename;
 	Oid			typeOid;
 	Oid			nspOid;
@@ -3449,7 +3449,7 @@ AlterTypeNamespace(List *names, const char *newschema, ObjectType objecttype,
 
 Oid
 AlterTypeNamespace_oid(Oid typeOid, Oid nspOid, ObjectAddresses *objsMoved)
-{
+{	StackTrace("AlterTypeNamespace_oid");
 	Oid			elemOid;
 
 	/* check permissions on type */
@@ -3490,7 +3490,7 @@ AlterTypeNamespaceInternal(Oid typeOid, Oid nspOid,
 						   bool isImplicitArray,
 						   bool errorOnTableType,
 						   ObjectAddresses *objsMoved)
-{
+{	StackTrace("AlterTypeNamespaceInternal");
 	Relation	rel;
 	HeapTuple	tup;
 	Form_pg_type typform;

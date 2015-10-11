@@ -190,7 +190,7 @@ static void ReqShutdownHandler(SIGNAL_ARGS);
  */
 void
 CheckpointerMain(void)
-{
+{	StackTrace("CheckpointerMain");
 	sigjmp_buf	local_sigjmp_buf;
 	MemoryContext checkpointer_context;
 
@@ -583,7 +583,7 @@ CheckpointerMain(void)
  */
 static void
 CheckArchiveTimeout(void)
-{
+{	StackTrace("CheckArchiveTimeout");
 	pg_time_t	now;
 	pg_time_t	last_time;
 
@@ -636,7 +636,7 @@ CheckArchiveTimeout(void)
  */
 static bool
 ImmediateCheckpointRequested(void)
-{
+{	StackTrace("ImmediateCheckpointRequested");
 	if (checkpoint_requested)
 	{
 		volatile CheckpointerShmemStruct *cps = CheckpointerShmem;
@@ -666,7 +666,7 @@ ImmediateCheckpointRequested(void)
  */
 void
 CheckpointWriteDelay(int flags, double progress)
-{
+{	StackTrace("CheckpointWriteDelay");
 	static int	absorb_counter = WRITES_PER_ABSORB;
 
 	/* Do nothing if checkpoint is being executed by non-checkpointer process */
@@ -730,7 +730,7 @@ CheckpointWriteDelay(int flags, double progress)
  */
 static bool
 IsCheckpointOnSchedule(double progress)
-{
+{	StackTrace("IsCheckpointOnSchedule");
 	XLogRecPtr	recptr;
 	struct timeval now;
 	double		elapsed_xlogs,
@@ -813,7 +813,7 @@ IsCheckpointOnSchedule(double progress)
  */
 static void
 chkpt_quickdie(SIGNAL_ARGS)
-{
+{	StackTrace("chkpt_quickdie");
 	PG_SETMASK(&BlockSig);
 
 	/*
@@ -840,7 +840,7 @@ chkpt_quickdie(SIGNAL_ARGS)
 /* SIGHUP: set flag to re-read config file at next convenient time */
 static void
 ChkptSigHupHandler(SIGNAL_ARGS)
-{
+{	StackTrace("ChkptSigHupHandler");
 	int			save_errno = errno;
 
 	got_SIGHUP = true;
@@ -852,7 +852,7 @@ ChkptSigHupHandler(SIGNAL_ARGS)
 /* SIGINT: set flag to run a normal checkpoint right away */
 static void
 ReqCheckpointHandler(SIGNAL_ARGS)
-{
+{	StackTrace("ReqCheckpointHandler");
 	int			save_errno = errno;
 
 	checkpoint_requested = true;
@@ -864,7 +864,7 @@ ReqCheckpointHandler(SIGNAL_ARGS)
 /* SIGUSR1: used for latch wakeups */
 static void
 chkpt_sigusr1_handler(SIGNAL_ARGS)
-{
+{	StackTrace("chkpt_sigusr1_handler");
 	int			save_errno = errno;
 
 	latch_sigusr1_handler();
@@ -875,7 +875,7 @@ chkpt_sigusr1_handler(SIGNAL_ARGS)
 /* SIGUSR2: set flag to run a shutdown checkpoint and exit */
 static void
 ReqShutdownHandler(SIGNAL_ARGS)
-{
+{	StackTrace("ReqShutdownHandler");
 	int			save_errno = errno;
 
 	shutdown_requested = true;
@@ -896,7 +896,7 @@ ReqShutdownHandler(SIGNAL_ARGS)
  */
 Size
 CheckpointerShmemSize(void)
-{
+{	StackTrace("CheckpointerShmemSize");
 	Size		size;
 
 	/*
@@ -915,7 +915,7 @@ CheckpointerShmemSize(void)
  */
 void
 CheckpointerShmemInit(void)
-{
+{	StackTrace("CheckpointerShmemInit");
 	Size		size = CheckpointerShmemSize();
 	bool		found;
 
@@ -956,7 +956,7 @@ CheckpointerShmemInit(void)
  */
 void
 RequestCheckpoint(int flags)
-{
+{	StackTrace("RequestCheckpoint");
 	/* use volatile pointer to prevent code rearrangement */
 	volatile CheckpointerShmemStruct *cps = CheckpointerShmem;
 	int			ntries;
@@ -1114,7 +1114,7 @@ RequestCheckpoint(int flags)
  */
 bool
 ForwardFsyncRequest(RelFileNode rnode, ForkNumber forknum, BlockNumber segno)
-{
+{	StackTrace("ForwardFsyncRequest");
 	CheckpointerRequest *request;
 	bool		too_full;
 
@@ -1186,7 +1186,7 @@ ForwardFsyncRequest(RelFileNode rnode, ForkNumber forknum, BlockNumber segno)
  */
 static bool
 CompactCheckpointerRequestQueue(void)
-{
+{	StackTrace("CompactCheckpointerRequestQueue");
 	struct CheckpointerSlotMapping
 	{
 		CheckpointerRequest request;
@@ -1294,7 +1294,7 @@ CompactCheckpointerRequestQueue(void)
  */
 void
 AbsorbFsyncRequests(void)
-{
+{	StackTrace("AbsorbFsyncRequests");
 	CheckpointerRequest *requests = NULL;
 	CheckpointerRequest *request;
 	int			n;
@@ -1348,7 +1348,7 @@ AbsorbFsyncRequests(void)
  */
 static void
 UpdateSharedMemoryConfig(void)
-{
+{	StackTrace("UpdateSharedMemoryConfig");
 	/* update global shmem state for sync rep */
 	SyncRepUpdateSyncStandbysDefined();
 
@@ -1367,7 +1367,7 @@ UpdateSharedMemoryConfig(void)
  */
 bool
 FirstCallSinceLastCheckpoint(void)
-{
+{	StackTrace("FirstCallSinceLastCheckpoint");
 	/* use volatile pointer to prevent code rearrangement */
 	volatile CheckpointerShmemStruct *cps = CheckpointerShmem;
 	static int	ckpt_done = 0;

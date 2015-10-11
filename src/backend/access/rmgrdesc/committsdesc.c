@@ -20,7 +20,7 @@
 
 void
 commit_ts_desc(StringInfo buf, XLogReaderState *record)
-{
+{	StackTrace("commit_ts_desc");
 	char	   *rec = XLogRecGetData(record);
 	uint8		info = XLogRecGetInfo(record) & ~XLR_INFO_MASK;
 
@@ -67,7 +67,7 @@ commit_ts_desc(StringInfo buf, XLogReaderState *record)
 
 const char *
 commit_ts_identify(uint8 info)
-{
+{	StackTrace("commit_ts_identify");
 	switch (info)
 	{
 		case COMMIT_TS_ZEROPAGE:

@@ -173,7 +173,7 @@ static void KnownAssignedXidsReset(void);
  */
 Size
 ProcArrayShmemSize(void)
-{
+{	StackTrace("ProcArrayShmemSize");
 	Size		size;
 
 	/* Size of the ProcArray structure itself */
@@ -215,7 +215,7 @@ ProcArrayShmemSize(void)
  */
 void
 CreateSharedProcArray(void)
-{
+{	StackTrace("CreateSharedProcArray");
 	bool		found;
 
 	/* Create or attach to the ProcArray shared structure */
@@ -265,7 +265,7 @@ CreateSharedProcArray(void)
  */
 void
 ProcArrayAdd(PGPROC *proc)
-{
+{	StackTrace("ProcArrayAdd");
 	ProcArrayStruct *arrayP = procArray;
 	int			index;
 
@@ -323,7 +323,7 @@ ProcArrayAdd(PGPROC *proc)
  */
 void
 ProcArrayRemove(PGPROC *proc, TransactionId latestXid)
-{
+{	StackTrace("ProcArrayRemove");
 	ProcArrayStruct *arrayP = procArray;
 	int			index;
 
@@ -386,7 +386,7 @@ ProcArrayRemove(PGPROC *proc, TransactionId latestXid)
  */
 void
 ProcArrayEndTransaction(PGPROC *proc, TransactionId latestXid)
-{
+{	StackTrace("ProcArrayEndTransaction");
 	PGXACT	   *pgxact = &allPgXact[proc->pgprocno];
 
 	if (TransactionIdIsValid(latestXid))
@@ -452,7 +452,7 @@ ProcArrayEndTransaction(PGPROC *proc, TransactionId latestXid)
  */
 void
 ProcArrayClearTransaction(PGPROC *proc)
-{
+{	StackTrace("ProcArrayClearTransaction");
 	PGXACT	   *pgxact = &allPgXact[proc->pgprocno];
 
 	/*
@@ -484,7 +484,7 @@ ProcArrayClearTransaction(PGPROC *proc)
  */
 void
 ProcArrayInitRecovery(TransactionId initializedUptoXID)
-{
+{	StackTrace("ProcArrayInitRecovery");
 	Assert(standbyState == STANDBY_INITIALIZED);
 	Assert(TransactionIdIsNormal(initializedUptoXID));
 
@@ -515,7 +515,7 @@ ProcArrayInitRecovery(TransactionId initializedUptoXID)
  */
 void
 ProcArrayApplyRecoveryInfo(RunningTransactions running)
-{
+{	StackTrace("ProcArrayApplyRecoveryInfo");
 	TransactionId *xids;
 	int			nxids;
 	TransactionId nextXid;
@@ -763,7 +763,7 @@ ProcArrayApplyRecoveryInfo(RunningTransactions running)
 void
 ProcArrayApplyXidAssignment(TransactionId topxid,
 							int nsubxids, TransactionId *subxids)
-{
+{	StackTrace("ProcArrayApplyXidAssignment");
 	TransactionId max_xid;
 	int			i;
 
@@ -846,7 +846,7 @@ ProcArrayApplyXidAssignment(TransactionId topxid,
  */
 bool
 TransactionIdIsInProgress(TransactionId xid)
-{
+{	StackTrace("TransactionIdIsInProgress");
 	static TransactionId *xids = NULL;
 	int			nxids = 0;
 	ProcArrayStruct *arrayP = procArray;
@@ -1063,7 +1063,7 @@ TransactionIdIsInProgress(TransactionId xid)
  */
 bool
 TransactionIdIsActive(TransactionId xid)
-{
+{	StackTrace("TransactionIdIsActive");
 	bool		result = false;
 	ProcArrayStruct *arrayP = procArray;
 	int			i;
@@ -1156,7 +1156,7 @@ TransactionIdIsActive(TransactionId xid)
  */
 TransactionId
 GetOldestXmin(Relation rel, bool ignoreVacuum)
-{
+{	StackTrace("GetOldestXmin");
 	ProcArrayStruct *arrayP = procArray;
 	TransactionId result;
 	int			index;
@@ -1302,7 +1302,7 @@ GetOldestXmin(Relation rel, bool ignoreVacuum)
  */
 int
 GetMaxSnapshotXidCount(void)
-{
+{	StackTrace("GetMaxSnapshotXidCount");
 	return procArray->maxProcs;
 }
 
@@ -1313,7 +1313,7 @@ GetMaxSnapshotXidCount(void)
  */
 int
 GetMaxSnapshotSubxidCount(void)
-{
+{	StackTrace("GetMaxSnapshotSubxidCount");
 	return TOTAL_MAX_CACHED_SUBXIDS;
 }
 
@@ -1354,7 +1354,7 @@ GetMaxSnapshotSubxidCount(void)
  */
 Snapshot
 GetSnapshotData(Snapshot snapshot)
-{
+{	StackTrace("GetSnapshotData");
 	ProcArrayStruct *arrayP = procArray;
 	TransactionId xmin;
 	TransactionId xmax;
@@ -1621,7 +1621,7 @@ GetSnapshotData(Snapshot snapshot)
  */
 bool
 ProcArrayInstallImportedXmin(TransactionId xmin, TransactionId sourcexid)
-{
+{	StackTrace("ProcArrayInstallImportedXmin");
 	bool		result = false;
 	ProcArrayStruct *arrayP = procArray;
 	int			index;
@@ -1693,7 +1693,7 @@ ProcArrayInstallImportedXmin(TransactionId xmin, TransactionId sourcexid)
  */
 bool
 ProcArrayInstallRestoredXmin(TransactionId xmin, PGPROC *proc)
-{
+{	StackTrace("ProcArrayInstallRestoredXmin");
 	bool		result = false;
 	TransactionId xid;
 	volatile PGXACT *pgxact;
@@ -1755,7 +1755,7 @@ ProcArrayInstallRestoredXmin(TransactionId xmin, PGPROC *proc)
  */
 RunningTransactions
 GetRunningTransactionData(void)
-{
+{	StackTrace("GetRunningTransactionData");
 	/* result workspace */
 	static RunningTransactionsData CurrentRunningXactsData;
 
@@ -1913,7 +1913,7 @@ GetRunningTransactionData(void)
  */
 TransactionId
 GetOldestActiveTransactionId(void)
-{
+{	StackTrace("GetOldestActiveTransactionId");
 	ProcArrayStruct *arrayP = procArray;
 	TransactionId oldestRunningXid;
 	int			index;
@@ -1979,7 +1979,7 @@ GetOldestActiveTransactionId(void)
  */
 TransactionId
 GetOldestSafeDecodingTransactionId(void)
-{
+{	StackTrace("GetOldestSafeDecodingTransactionId");
 	ProcArrayStruct *arrayP = procArray;
 	TransactionId oldestSafeXid;
 	int			index;
@@ -2067,7 +2067,7 @@ GetOldestSafeDecodingTransactionId(void)
  */
 VirtualTransactionId *
 GetVirtualXIDsDelayingChkpt(int *nvxids)
-{
+{	StackTrace("GetVirtualXIDsDelayingChkpt");
 	VirtualTransactionId *vxids;
 	ProcArrayStruct *arrayP = procArray;
 	int			count = 0;
@@ -2112,7 +2112,7 @@ GetVirtualXIDsDelayingChkpt(int *nvxids)
  */
 bool
 HaveVirtualXIDsDelayingChkpt(VirtualTransactionId *vxids, int nvxids)
-{
+{	StackTrace("HaveVirtualXIDsDelayingChkpt");
 	bool		result = false;
 	ProcArrayStruct *arrayP = procArray;
 	int			index;
@@ -2159,7 +2159,7 @@ HaveVirtualXIDsDelayingChkpt(VirtualTransactionId *vxids, int nvxids)
  */
 PGPROC *
 BackendPidGetProc(int pid)
-{
+{	StackTrace("BackendPidGetProc");
 	PGPROC	   *result = NULL;
 	ProcArrayStruct *arrayP = procArray;
 	int			index;
@@ -2200,7 +2200,7 @@ BackendPidGetProc(int pid)
  */
 int
 BackendXidGetPid(TransactionId xid)
-{
+{	StackTrace("BackendXidGetPid");
 	int			result = 0;
 	ProcArrayStruct *arrayP = procArray;
 	int			index;
@@ -2235,7 +2235,7 @@ BackendXidGetPid(TransactionId xid)
  */
 bool
 IsBackendPid(int pid)
-{
+{	StackTrace("IsBackendPid");
 	return (BackendPidGetProc(pid) != NULL);
 }
 
@@ -2270,7 +2270,7 @@ VirtualTransactionId *
 GetCurrentVirtualXIDs(TransactionId limitXmin, bool excludeXmin0,
 					  bool allDbs, int excludeVacuum,
 					  int *nvxids)
-{
+{	StackTrace("GetCurrentVirtualXIDs");
 	VirtualTransactionId *vxids;
 	ProcArrayStruct *arrayP = procArray;
 	int			count = 0;
@@ -2356,7 +2356,7 @@ GetCurrentVirtualXIDs(TransactionId limitXmin, bool excludeXmin0,
  */
 VirtualTransactionId *
 GetConflictingVirtualXIDs(TransactionId limitXmin, Oid dbOid)
-{
+{	StackTrace("GetConflictingVirtualXIDs");
 	static VirtualTransactionId *vxids;
 	ProcArrayStruct *arrayP = procArray;
 	int			count = 0;
@@ -2428,7 +2428,7 @@ GetConflictingVirtualXIDs(TransactionId limitXmin, Oid dbOid)
  */
 pid_t
 CancelVirtualTransaction(VirtualTransactionId vxid, ProcSignalReason sigmode)
-{
+{	StackTrace("CancelVirtualTransaction");
 	ProcArrayStruct *arrayP = procArray;
 	int			index;
 	pid_t		pid = 0;
@@ -2476,7 +2476,7 @@ CancelVirtualTransaction(VirtualTransactionId vxid, ProcSignalReason sigmode)
  */
 bool
 MinimumActiveBackends(int min)
-{
+{	StackTrace("MinimumActiveBackends");
 	ProcArrayStruct *arrayP = procArray;
 	int			count = 0;
 	int			index;
@@ -2530,7 +2530,7 @@ MinimumActiveBackends(int min)
  */
 int
 CountDBBackends(Oid databaseid)
-{
+{	StackTrace("CountDBBackends");
 	ProcArrayStruct *arrayP = procArray;
 	int			count = 0;
 	int			index;
@@ -2559,7 +2559,7 @@ CountDBBackends(Oid databaseid)
  */
 void
 CancelDBBackends(Oid databaseid, ProcSignalReason sigmode, bool conflictPending)
-{
+{	StackTrace("CancelDBBackends");
 	ProcArrayStruct *arrayP = procArray;
 	int			index;
 	pid_t		pid = 0;
@@ -2599,7 +2599,7 @@ CancelDBBackends(Oid databaseid, ProcSignalReason sigmode, bool conflictPending)
  */
 int
 CountUserBackends(Oid roleid)
-{
+{	StackTrace("CountUserBackends");
 	ProcArrayStruct *arrayP = procArray;
 	int			count = 0;
 	int			index;
@@ -2647,7 +2647,7 @@ CountUserBackends(Oid roleid)
  */
 bool
 CountOtherDBBackends(Oid databaseId, int *nbackends, int *nprepared)
-{
+{	StackTrace("CountOtherDBBackends");
 	ProcArrayStruct *arrayP = procArray;
 
 #define MAXAUTOVACPIDS	10		/* max autovacs to SIGTERM per iteration */
@@ -2722,7 +2722,7 @@ CountOtherDBBackends(Oid databaseId, int *nbackends, int *nprepared)
 void
 ProcArraySetReplicationSlotXmin(TransactionId xmin, TransactionId catalog_xmin,
 								bool already_locked)
-{
+{	StackTrace("ProcArraySetReplicationSlotXmin");
 	Assert(!already_locked || LWLockHeldByMe(ProcArrayLock));
 
 	if (!already_locked)
@@ -2744,7 +2744,7 @@ ProcArraySetReplicationSlotXmin(TransactionId xmin, TransactionId catalog_xmin,
 void
 ProcArrayGetReplicationSlotXmin(TransactionId *xmin,
 								TransactionId *catalog_xmin)
-{
+{	StackTrace("ProcArrayGetReplicationSlotXmin");
 	LWLockAcquire(ProcArrayLock, LW_SHARED);
 
 	if (xmin != NULL)
@@ -2775,7 +2775,7 @@ void
 XidCacheRemoveRunningXids(TransactionId xid,
 						  int nxids, const TransactionId *xids,
 						  TransactionId latestXid)
-{
+{	StackTrace("XidCacheRemoveRunningXids");
 	int			i,
 				j;
 
@@ -2846,7 +2846,7 @@ XidCacheRemoveRunningXids(TransactionId xid,
  */
 static void
 DisplayXidCache(void)
-{
+{	StackTrace("DisplayXidCache");
 	fprintf(stderr,
 			"XidCache: xmin: %ld, known: %ld, myxact: %ld, latest: %ld, mainxid: %ld, childxid: %ld, knownassigned: %ld, nooflo: %ld, slow: %ld\n",
 			xc_by_recent_xmin,
@@ -2930,7 +2930,7 @@ DisplayXidCache(void)
  */
 void
 RecordKnownAssignedTransactionIds(TransactionId xid)
-{
+{	StackTrace("RecordKnownAssignedTransactionIds");
 	Assert(standbyState >= STANDBY_INITIALIZED);
 	Assert(TransactionIdIsValid(xid));
 	Assert(TransactionIdIsValid(latestObservedXid));
@@ -3004,7 +3004,7 @@ RecordKnownAssignedTransactionIds(TransactionId xid)
 void
 ExpireTreeKnownAssignedTransactionIds(TransactionId xid, int nsubxids,
 							   TransactionId *subxids, TransactionId max_xid)
-{
+{	StackTrace("ExpireTreeKnownAssignedTransactionIds");
 	Assert(standbyState >= STANDBY_INITIALIZED);
 
 	/*
@@ -3028,7 +3028,7 @@ ExpireTreeKnownAssignedTransactionIds(TransactionId xid, int nsubxids,
  */
 void
 ExpireAllKnownAssignedTransactionIds(void)
-{
+{	StackTrace("ExpireAllKnownAssignedTransactionIds");
 	LWLockAcquire(ProcArrayLock, LW_EXCLUSIVE);
 	KnownAssignedXidsRemovePreceding(InvalidTransactionId);
 	LWLockRelease(ProcArrayLock);
@@ -3040,7 +3040,7 @@ ExpireAllKnownAssignedTransactionIds(void)
  */
 void
 ExpireOldKnownAssignedTransactionIds(TransactionId xid)
-{
+{	StackTrace("ExpireOldKnownAssignedTransactionIds");
 	LWLockAcquire(ProcArrayLock, LW_EXCLUSIVE);
 	KnownAssignedXidsRemovePreceding(xid);
 	LWLockRelease(ProcArrayLock);
@@ -3143,7 +3143,7 @@ ExpireOldKnownAssignedTransactionIds(TransactionId xid)
  */
 static void
 KnownAssignedXidsCompress(bool force)
-{
+{	StackTrace("KnownAssignedXidsCompress");
 	/* use volatile pointer to prevent code rearrangement */
 	volatile ProcArrayStruct *pArray = procArray;
 	int			head,
@@ -3207,7 +3207,7 @@ KnownAssignedXidsCompress(bool force)
 static void
 KnownAssignedXidsAdd(TransactionId from_xid, TransactionId to_xid,
 					 bool exclusive_lock)
-{
+{	StackTrace("KnownAssignedXidsAdd");
 	/* use volatile pointer to prevent code rearrangement */
 	volatile ProcArrayStruct *pArray = procArray;
 	TransactionId next_xid;
@@ -3325,7 +3325,7 @@ KnownAssignedXidsAdd(TransactionId from_xid, TransactionId to_xid,
  */
 static bool
 KnownAssignedXidsSearch(TransactionId xid, bool remove)
-{
+{	StackTrace("KnownAssignedXidsSearch");
 	/* use volatile pointer to prevent code rearrangement */
 	volatile ProcArrayStruct *pArray = procArray;
 	int			first,
@@ -3419,7 +3419,7 @@ KnownAssignedXidsSearch(TransactionId xid, bool remove)
  */
 static bool
 KnownAssignedXidExists(TransactionId xid)
-{
+{	StackTrace("KnownAssignedXidExists");
 	Assert(TransactionIdIsValid(xid));
 
 	return KnownAssignedXidsSearch(xid, false);
@@ -3432,7 +3432,7 @@ KnownAssignedXidExists(TransactionId xid)
  */
 static void
 KnownAssignedXidsRemove(TransactionId xid)
-{
+{	StackTrace("KnownAssignedXidsRemove");
 	Assert(TransactionIdIsValid(xid));
 
 	elog(trace_recovery(DEBUG4), "remove KnownAssignedXid %u", xid);
@@ -3459,7 +3459,7 @@ KnownAssignedXidsRemove(TransactionId xid)
 static void
 KnownAssignedXidsRemoveTree(TransactionId xid, int nsubxids,
 							TransactionId *subxids)
-{
+{	StackTrace("KnownAssignedXidsRemoveTree");
 	int			i;
 
 	if (TransactionIdIsValid(xid))
@@ -3480,7 +3480,7 @@ KnownAssignedXidsRemoveTree(TransactionId xid, int nsubxids,
  */
 static void
 KnownAssignedXidsRemovePreceding(TransactionId removeXid)
-{
+{	StackTrace("KnownAssignedXidsRemovePreceding");
 	/* use volatile pointer to prevent code rearrangement */
 	volatile ProcArrayStruct *pArray = procArray;
 	int			count = 0;
@@ -3559,7 +3559,7 @@ KnownAssignedXidsRemovePreceding(TransactionId removeXid)
  */
 static int
 KnownAssignedXidsGet(TransactionId *xarray, TransactionId xmax)
-{
+{	StackTrace("KnownAssignedXidsGet");
 	TransactionId xtmp = InvalidTransactionId;
 
 	return KnownAssignedXidsGetAndSetXmin(xarray, &xtmp, xmax);
@@ -3574,7 +3574,7 @@ KnownAssignedXidsGet(TransactionId *xarray, TransactionId xmax)
 static int
 KnownAssignedXidsGetAndSetXmin(TransactionId *xarray, TransactionId *xmin,
 							   TransactionId xmax)
-{
+{	StackTrace("KnownAssignedXidsGetAndSetXmin");
 	/* use volatile pointer to prevent code rearrangement */
 	volatile ProcArrayStruct *pArray = procArray;
 	int			count = 0;
@@ -3633,7 +3633,7 @@ KnownAssignedXidsGetAndSetXmin(TransactionId *xarray, TransactionId *xmin,
  */
 static TransactionId
 KnownAssignedXidsGetOldestXmin(void)
-{
+{	StackTrace("KnownAssignedXidsGetOldestXmin");
 	/* use volatile pointer to prevent code rearrangement */
 	volatile ProcArrayStruct *pArray = procArray;
 	int			head,
@@ -3670,7 +3670,7 @@ KnownAssignedXidsGetOldestXmin(void)
  */
 static void
 KnownAssignedXidsDisplay(int trace_level)
-{
+{	StackTrace("KnownAssignedXidsDisplay");
 	/* use volatile pointer to prevent code rearrangement */
 	volatile ProcArrayStruct *pArray = procArray;
 	StringInfoData buf;
@@ -3709,7 +3709,7 @@ KnownAssignedXidsDisplay(int trace_level)
  */
 static void
 KnownAssignedXidsReset(void)
-{
+{	StackTrace("KnownAssignedXidsReset");
 	/* use volatile pointer to prevent code rearrangement */
 	volatile ProcArrayStruct *pArray = procArray;
 

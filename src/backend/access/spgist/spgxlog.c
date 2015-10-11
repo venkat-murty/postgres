@@ -33,7 +33,7 @@ static MemoryContext opCtx;		/* working memory for operations */
  */
 static void
 fillFakeState(SpGistState *state, spgxlogState stateSrc)
-{
+{	StackTrace("fillFakeState");
 	memset(state, 0, sizeof(*state));
 
 	state->myXid = stateSrc.myXid;
@@ -48,7 +48,7 @@ fillFakeState(SpGistState *state, spgxlogState stateSrc)
  */
 static void
 addOrReplaceTuple(Page page, Item tuple, int size, OffsetNumber offset)
-{
+{	StackTrace("addOrReplaceTuple");
 	if (offset <= PageGetMaxOffsetNumber(page))
 	{
 		SpGistDeadTuple dt = (SpGistDeadTuple) PageGetItem(page,
@@ -72,7 +72,7 @@ addOrReplaceTuple(Page page, Item tuple, int size, OffsetNumber offset)
 
 static void
 spgRedoCreateIndex(XLogReaderState *record)
-{
+{	StackTrace("spgRedoCreateIndex");
 	XLogRecPtr	lsn = record->EndRecPtr;
 	Buffer		buffer;
 	Page		page;
@@ -104,7 +104,7 @@ spgRedoCreateIndex(XLogReaderState *record)
 
 static void
 spgRedoAddLeaf(XLogReaderState *record)
-{
+{	StackTrace("spgRedoAddLeaf");
 	XLogRecPtr	lsn = record->EndRecPtr;
 	char	   *ptr = XLogRecGetData(record);
 	spgxlogAddLeaf *xldata = (spgxlogAddLeaf *) ptr;
@@ -201,7 +201,7 @@ spgRedoAddLeaf(XLogReaderState *record)
 
 static void
 spgRedoMoveLeafs(XLogReaderState *record)
-{
+{	StackTrace("spgRedoMoveLeafs");
 	XLogRecPtr	lsn = record->EndRecPtr;
 	char	   *ptr = XLogRecGetData(record);
 	spgxlogMoveLeafs *xldata = (spgxlogMoveLeafs *) ptr;
@@ -314,7 +314,7 @@ spgRedoMoveLeafs(XLogReaderState *record)
 
 static void
 spgRedoAddNode(XLogReaderState *record)
-{
+{	StackTrace("spgRedoAddNode");
 	XLogRecPtr	lsn = record->EndRecPtr;
 	char	   *ptr = XLogRecGetData(record);
 	spgxlogAddNode *xldata = (spgxlogAddNode *) ptr;
@@ -481,7 +481,7 @@ spgRedoAddNode(XLogReaderState *record)
 
 static void
 spgRedoSplitTuple(XLogReaderState *record)
-{
+{	StackTrace("spgRedoSplitTuple");
 	XLogRecPtr	lsn = record->EndRecPtr;
 	char	   *ptr = XLogRecGetData(record);
 	spgxlogSplitTuple *xldata = (spgxlogSplitTuple *) ptr;
@@ -559,7 +559,7 @@ spgRedoSplitTuple(XLogReaderState *record)
 
 static void
 spgRedoPickSplit(XLogReaderState *record)
-{
+{	StackTrace("spgRedoPickSplit");
 	XLogRecPtr	lsn = record->EndRecPtr;
 	char	   *ptr = XLogRecGetData(record);
 	spgxlogPickSplit *xldata = (spgxlogPickSplit *) ptr;
@@ -781,7 +781,7 @@ spgRedoPickSplit(XLogReaderState *record)
 
 static void
 spgRedoVacuumLeaf(XLogReaderState *record)
-{
+{	StackTrace("spgRedoVacuumLeaf");
 	XLogRecPtr	lsn = record->EndRecPtr;
 	char	   *ptr = XLogRecGetData(record);
 	spgxlogVacuumLeaf *xldata = (spgxlogVacuumLeaf *) ptr;
@@ -864,7 +864,7 @@ spgRedoVacuumLeaf(XLogReaderState *record)
 
 static void
 spgRedoVacuumRoot(XLogReaderState *record)
-{
+{	StackTrace("spgRedoVacuumRoot");
 	XLogRecPtr	lsn = record->EndRecPtr;
 	char	   *ptr = XLogRecGetData(record);
 	spgxlogVacuumRoot *xldata = (spgxlogVacuumRoot *) ptr;
@@ -890,7 +890,7 @@ spgRedoVacuumRoot(XLogReaderState *record)
 
 static void
 spgRedoVacuumRedirect(XLogReaderState *record)
-{
+{	StackTrace("spgRedoVacuumRedirect");
 	XLogRecPtr	lsn = record->EndRecPtr;
 	char	   *ptr = XLogRecGetData(record);
 	spgxlogVacuumRedirect *xldata = (spgxlogVacuumRedirect *) ptr;
@@ -967,7 +967,7 @@ spgRedoVacuumRedirect(XLogReaderState *record)
 
 void
 spg_redo(XLogReaderState *record)
-{
+{	StackTrace("spg_redo");
 	uint8		info = XLogRecGetInfo(record) & ~XLR_INFO_MASK;
 	MemoryContext oldCxt;
 
@@ -1011,7 +1011,7 @@ spg_redo(XLogReaderState *record)
 
 void
 spg_xlog_startup(void)
-{
+{	StackTrace("spg_xlog_startup");
 	opCtx = AllocSetContextCreate(CurrentMemoryContext,
 								  "SP-GiST temporary context",
 								  ALLOCSET_DEFAULT_MINSIZE,
@@ -1021,7 +1021,7 @@ spg_xlog_startup(void)
 
 void
 spg_xlog_cleanup(void)
-{
+{	StackTrace("spg_xlog_cleanup");
 	MemoryContextDelete(opCtx);
 	opCtx = NULL;
 }

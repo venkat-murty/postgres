@@ -172,7 +172,7 @@ static int width_bucket_array_variable(Datum operand,
  */
 Datum
 array_in(PG_FUNCTION_ARGS)
-{
+{	StackTrace("array_in");
 	char	   *string = PG_GETARG_CSTRING(0);	/* external form */
 	Oid			element_type = PG_GETARG_OID(1);		/* type of an array
 														 * element */
@@ -432,7 +432,7 @@ array_in(PG_FUNCTION_ARGS)
  */
 static bool
 array_isspace(char ch)
-{
+{	StackTrace("array_isspace");
 	if (ch == ' ' ||
 		ch == '\t' ||
 		ch == '\n' ||
@@ -452,7 +452,7 @@ array_isspace(char ch)
  */
 static int
 ArrayCount(const char *str, int *dim, char typdelim)
-{
+{	StackTrace("ArrayCount");
 	int			nest_level = 0,
 				i;
 	int			ndim = 1,
@@ -732,7 +732,7 @@ ReadArrayStr(char *arrayStr,
 			 bool *nulls,
 			 bool *hasnulls,
 			 int32 *nbytes)
-{
+{	StackTrace("ReadArrayStr");
 	int			i,
 				nest_level = 0;
 	char	   *srcptr;
@@ -964,7 +964,7 @@ CopyArrayEls(ArrayType *array,
 			 bool typbyval,
 			 char typalign,
 			 bool freedata)
-{
+{	StackTrace("CopyArrayEls");
 	char	   *p = ARR_DATA_PTR(array);
 	bits8	   *bitmap = ARR_NULLBITMAP(array);
 	int			bitval = 0;
@@ -1012,7 +1012,7 @@ CopyArrayEls(ArrayType *array,
  */
 Datum
 array_out(PG_FUNCTION_ARGS)
-{
+{	StackTrace("array_out");
 	AnyArrayType *v = PG_GETARG_ANY_ARRAY(0);
 	Oid			element_type = AARR_ELEMTYPE(v);
 	int			typlen;
@@ -1255,7 +1255,7 @@ array_out(PG_FUNCTION_ARGS)
  */
 Datum
 array_recv(PG_FUNCTION_ARGS)
-{
+{	StackTrace("array_recv");
 	StringInfo	buf = (StringInfo) PG_GETARG_POINTER(0);
 	Oid			spec_element_type = PG_GETARG_OID(1);	/* type of an array
 														 * element */
@@ -1441,7 +1441,7 @@ ReadArrayBinary(StringInfo buf,
 				bool *nulls,
 				bool *hasnulls,
 				int32 *nbytes)
-{
+{	StackTrace("ReadArrayBinary");
 	int			i;
 	bool		hasnull;
 	int32		totbytes;
@@ -1535,7 +1535,7 @@ ReadArrayBinary(StringInfo buf,
  */
 Datum
 array_send(PG_FUNCTION_ARGS)
-{
+{	StackTrace("array_send");
 	AnyArrayType *v = PG_GETARG_ANY_ARRAY(0);
 	Oid			element_type = AARR_ELEMTYPE(v);
 	int			typlen;
@@ -1639,7 +1639,7 @@ array_send(PG_FUNCTION_ARGS)
  */
 Datum
 array_ndims(PG_FUNCTION_ARGS)
-{
+{	StackTrace("array_ndims");
 	AnyArrayType *v = PG_GETARG_ANY_ARRAY(0);
 
 	/* Sanity check: does it look like an array at all? */
@@ -1655,7 +1655,7 @@ array_ndims(PG_FUNCTION_ARGS)
  */
 Datum
 array_dims(PG_FUNCTION_ARGS)
-{
+{	StackTrace("array_dims");
 	AnyArrayType *v = PG_GETARG_ANY_ARRAY(0);
 	char	   *p;
 	int			i;
@@ -1693,7 +1693,7 @@ array_dims(PG_FUNCTION_ARGS)
  */
 Datum
 array_lower(PG_FUNCTION_ARGS)
-{
+{	StackTrace("array_lower");
 	AnyArrayType *v = PG_GETARG_ANY_ARRAY(0);
 	int			reqdim = PG_GETARG_INT32(1);
 	int		   *lb;
@@ -1720,7 +1720,7 @@ array_lower(PG_FUNCTION_ARGS)
  */
 Datum
 array_upper(PG_FUNCTION_ARGS)
-{
+{	StackTrace("array_upper");
 	AnyArrayType *v = PG_GETARG_ANY_ARRAY(0);
 	int			reqdim = PG_GETARG_INT32(1);
 	int		   *dimv,
@@ -1750,7 +1750,7 @@ array_upper(PG_FUNCTION_ARGS)
  */
 Datum
 array_length(PG_FUNCTION_ARGS)
-{
+{	StackTrace("array_length");
 	AnyArrayType *v = PG_GETARG_ANY_ARRAY(0);
 	int			reqdim = PG_GETARG_INT32(1);
 	int		   *dimv;
@@ -1777,7 +1777,7 @@ array_length(PG_FUNCTION_ARGS)
  */
 Datum
 array_cardinality(PG_FUNCTION_ARGS)
-{
+{	StackTrace("array_cardinality");
 	AnyArrayType *v = PG_GETARG_ANY_ARRAY(0);
 
 	PG_RETURN_INT32(ArrayGetNItems(AARR_NDIM(v), AARR_DIMS(v)));
@@ -1814,7 +1814,7 @@ array_get_element(Datum arraydatum,
 				  bool elmbyval,
 				  char elmalign,
 				  bool *isNull)
-{
+{	StackTrace("array_get_element");
 	int			i,
 				ndim,
 			   *dim,
@@ -1912,7 +1912,7 @@ array_get_element_expanded(Datum arraydatum,
 						   int arraytyplen,
 						   int elmlen, bool elmbyval, char elmalign,
 						   bool *isNull)
-{
+{	StackTrace("array_get_element_expanded");
 	ExpandedArrayHeader *eah;
 	int			i,
 				ndim,
@@ -2018,7 +2018,7 @@ array_get_slice(Datum arraydatum,
 				int elmlen,
 				bool elmbyval,
 				char elmalign)
-{
+{	StackTrace("array_get_slice");
 	ArrayType  *array;
 	ArrayType  *newarray;
 	int			i,
@@ -2188,7 +2188,7 @@ array_set_element(Datum arraydatum,
 				  int elmlen,
 				  bool elmbyval,
 				  char elmalign)
-{
+{	StackTrace("array_set_element");
 	ArrayType  *array;
 	ArrayType  *newarray;
 	int			i,
@@ -2466,7 +2466,7 @@ array_set_element_expanded(Datum arraydatum,
 						   Datum dataValue, bool isNull,
 						   int arraytyplen,
 						   int elmlen, bool elmbyval, char elmalign)
-{
+{	StackTrace("array_set_element_expanded");
 	ExpandedArrayHeader *eah;
 	Datum	   *dvalues;
 	bool	   *dnulls;
@@ -2744,7 +2744,7 @@ array_set_slice(Datum arraydatum,
 				int elmlen,
 				bool elmbyval,
 				char elmalign)
-{
+{	StackTrace("array_set_slice");
 	ArrayType  *array;
 	ArrayType  *srcArray;
 	ArrayType  *newarray;
@@ -3037,7 +3037,7 @@ Datum
 array_ref(ArrayType *array, int nSubscripts, int *indx,
 		  int arraytyplen, int elmlen, bool elmbyval, char elmalign,
 		  bool *isNull)
-{
+{	StackTrace("array_ref");
 	return array_get_element(PointerGetDatum(array), nSubscripts, indx,
 							 arraytyplen, elmlen, elmbyval, elmalign,
 							 isNull);
@@ -3054,7 +3054,7 @@ ArrayType *
 array_set(ArrayType *array, int nSubscripts, int *indx,
 		  Datum dataValue, bool isNull,
 		  int arraytyplen, int elmlen, bool elmbyval, char elmalign)
-{
+{	StackTrace("array_set");
 	return DatumGetArrayTypeP(array_set_element(PointerGetDatum(array),
 												nSubscripts, indx,
 												dataValue, isNull,
@@ -3092,7 +3092,7 @@ array_set(ArrayType *array, int nSubscripts, int *indx,
  */
 Datum
 array_map(FunctionCallInfo fcinfo, Oid retType, ArrayMapState *amstate)
-{
+{	StackTrace("array_map");
 	AnyArrayType *v;
 	ArrayType  *result;
 	Datum	   *values;
@@ -3280,7 +3280,7 @@ ArrayType *
 construct_array(Datum *elems, int nelems,
 				Oid elmtype,
 				int elmlen, bool elmbyval, char elmalign)
-{
+{	StackTrace("construct_array");
 	int			dims[1];
 	int			lbs[1];
 
@@ -3317,7 +3317,7 @@ construct_md_array(Datum *elems,
 				   int *dims,
 				   int *lbs,
 				   Oid elmtype, int elmlen, bool elmbyval, char elmalign)
-{
+{	StackTrace("construct_md_array");
 	ArrayType  *result;
 	bool		hasnulls;
 	int32		nbytes;
@@ -3396,7 +3396,7 @@ construct_md_array(Datum *elems,
  */
 ArrayType *
 construct_empty_array(Oid elmtype)
-{
+{	StackTrace("construct_empty_array");
 	ArrayType  *result;
 
 	result = (ArrayType *) palloc0(sizeof(ArrayType));
@@ -3415,7 +3415,7 @@ ExpandedArrayHeader *
 construct_empty_expanded_array(Oid element_type,
 							   MemoryContext parentcontext,
 							   ArrayMetaState *metacache)
-{
+{	StackTrace("construct_empty_expanded_array");
 	ArrayType  *array = construct_empty_array(element_type);
 	Datum		d;
 
@@ -3450,7 +3450,7 @@ deconstruct_array(ArrayType *array,
 				  Oid elmtype,
 				  int elmlen, bool elmbyval, char elmalign,
 				  Datum **elemsp, bool **nullsp, int *nelemsp)
-{
+{	StackTrace("deconstruct_array");
 	Datum	   *elems;
 	bool	   *nulls;
 	int			nelems;
@@ -3514,7 +3514,7 @@ deconstruct_array(ArrayType *array,
  */
 bool
 array_contains_nulls(ArrayType *array)
-{
+{	StackTrace("array_contains_nulls");
 	int			nelems;
 	bits8	   *bitmap;
 	int			bitmask;
@@ -3561,7 +3561,7 @@ array_contains_nulls(ArrayType *array)
  */
 Datum
 array_eq(PG_FUNCTION_ARGS)
-{
+{	StackTrace("array_eq");
 	AnyArrayType *array1 = PG_GETARG_ANY_ARRAY(0);
 	AnyArrayType *array2 = PG_GETARG_ANY_ARRAY(1);
 	Oid			collation = PG_GET_COLLATION();
@@ -3690,37 +3690,37 @@ array_eq(PG_FUNCTION_ARGS)
 
 Datum
 array_ne(PG_FUNCTION_ARGS)
-{
+{	StackTrace("array_ne");
 	PG_RETURN_BOOL(!DatumGetBool(array_eq(fcinfo)));
 }
 
 Datum
 array_lt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("array_lt");
 	PG_RETURN_BOOL(array_cmp(fcinfo) < 0);
 }
 
 Datum
 array_gt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("array_gt");
 	PG_RETURN_BOOL(array_cmp(fcinfo) > 0);
 }
 
 Datum
 array_le(PG_FUNCTION_ARGS)
-{
+{	StackTrace("array_le");
 	PG_RETURN_BOOL(array_cmp(fcinfo) <= 0);
 }
 
 Datum
 array_ge(PG_FUNCTION_ARGS)
-{
+{	StackTrace("array_ge");
 	PG_RETURN_BOOL(array_cmp(fcinfo) >= 0);
 }
 
 Datum
 btarraycmp(PG_FUNCTION_ARGS)
-{
+{	StackTrace("btarraycmp");
 	PG_RETURN_INT32(array_cmp(fcinfo));
 }
 
@@ -3732,7 +3732,7 @@ btarraycmp(PG_FUNCTION_ARGS)
  */
 static int
 array_cmp(FunctionCallInfo fcinfo)
-{
+{	StackTrace("array_cmp");
 	AnyArrayType *array1 = PG_GETARG_ANY_ARRAY(0);
 	AnyArrayType *array2 = PG_GETARG_ANY_ARRAY(1);
 	Oid			collation = PG_GET_COLLATION();
@@ -3903,7 +3903,7 @@ array_cmp(FunctionCallInfo fcinfo)
 
 Datum
 hash_array(PG_FUNCTION_ARGS)
-{
+{	StackTrace("hash_array");
 	AnyArrayType *array = PG_GETARG_ANY_ARRAY(0);
 	int			ndims = AARR_NDIM(array);
 	int		   *dims = AARR_DIMS(array);
@@ -4012,7 +4012,7 @@ hash_array(PG_FUNCTION_ARGS)
 static bool
 array_contain_compare(AnyArrayType *array1, AnyArrayType *array2, Oid collation,
 					  bool matchall, void **fn_extra)
-{
+{	StackTrace("array_contain_compare");
 	bool		result = matchall;
 	Oid			element_type = AARR_ELEMTYPE(array1);
 	TypeCacheEntry *typentry;
@@ -4154,7 +4154,7 @@ array_contain_compare(AnyArrayType *array1, AnyArrayType *array2, Oid collation,
 
 Datum
 arrayoverlap(PG_FUNCTION_ARGS)
-{
+{	StackTrace("arrayoverlap");
 	AnyArrayType *array1 = PG_GETARG_ANY_ARRAY(0);
 	AnyArrayType *array2 = PG_GETARG_ANY_ARRAY(1);
 	Oid			collation = PG_GET_COLLATION();
@@ -4172,7 +4172,7 @@ arrayoverlap(PG_FUNCTION_ARGS)
 
 Datum
 arraycontains(PG_FUNCTION_ARGS)
-{
+{	StackTrace("arraycontains");
 	AnyArrayType *array1 = PG_GETARG_ANY_ARRAY(0);
 	AnyArrayType *array2 = PG_GETARG_ANY_ARRAY(1);
 	Oid			collation = PG_GET_COLLATION();
@@ -4190,7 +4190,7 @@ arraycontains(PG_FUNCTION_ARGS)
 
 Datum
 arraycontained(PG_FUNCTION_ARGS)
-{
+{	StackTrace("arraycontained");
 	AnyArrayType *array1 = PG_GETARG_ANY_ARRAY(0);
 	AnyArrayType *array2 = PG_GETARG_ANY_ARRAY(1);
 	Oid			collation = PG_GET_COLLATION();
@@ -4227,7 +4227,7 @@ arraycontained(PG_FUNCTION_ARGS)
  */
 ArrayIterator
 array_create_iterator(ArrayType *arr, int slice_ndim, ArrayMetaState *mstate)
-{
+{	StackTrace("array_create_iterator");
 	ArrayIterator iterator = palloc0(sizeof(ArrayIteratorData));
 
 	/*
@@ -4306,7 +4306,7 @@ array_create_iterator(ArrayType *arr, int slice_ndim, ArrayMetaState *mstate)
  */
 bool
 array_iterate(ArrayIterator iterator, Datum *value, bool *isnull)
-{
+{	StackTrace("array_iterate");
 	/* Done if we have reached the end of the array */
 	if (iterator->current_item >= iterator->nitems)
 		return false;
@@ -4389,7 +4389,7 @@ array_iterate(ArrayIterator iterator, Datum *value, bool *isnull)
  */
 void
 array_free_iterator(ArrayIterator iterator)
-{
+{	StackTrace("array_free_iterator");
 	if (iterator->slice_ndim > 0)
 	{
 		pfree(iterator->slice_values);
@@ -4411,7 +4411,7 @@ array_free_iterator(ArrayIterator iterator)
  */
 static bool
 array_get_isnull(const bits8 *nullbitmap, int offset)
-{
+{	StackTrace("array_get_isnull");
 	if (nullbitmap == NULL)
 		return false;			/* assume not null */
 	if (nullbitmap[offset / 8] & (1 << (offset % 8)))
@@ -4428,7 +4428,7 @@ array_get_isnull(const bits8 *nullbitmap, int offset)
  */
 static void
 array_set_isnull(bits8 *nullbitmap, int offset, bool isNull)
-{
+{	StackTrace("array_set_isnull");
 	int			bitmask;
 
 	nullbitmap += offset / 8;
@@ -4446,7 +4446,7 @@ array_set_isnull(bits8 *nullbitmap, int offset, bool isNull)
  */
 static Datum
 ArrayCast(char *value, bool byval, int len)
-{
+{	StackTrace("ArrayCast");
 	return fetch_att(value, byval, len);
 }
 
@@ -4461,7 +4461,7 @@ ArrayCastAndSet(Datum src,
 				bool typbyval,
 				char typalign,
 				char *dest)
-{
+{	StackTrace("ArrayCastAndSet");
 	int			inc;
 
 	if (typlen > 0)
@@ -4497,7 +4497,7 @@ ArrayCastAndSet(Datum src,
 static char *
 array_seek(char *ptr, int offset, bits8 *nullbitmap, int nitems,
 		   int typlen, bool typbyval, char typalign)
-{
+{	StackTrace("array_seek");
 	int			bitmask;
 	int			i;
 
@@ -4545,7 +4545,7 @@ array_seek(char *ptr, int offset, bits8 *nullbitmap, int nitems,
 static int
 array_nelems_size(char *ptr, int offset, bits8 *nullbitmap, int nitems,
 				  int typlen, bool typbyval, char typalign)
-{
+{	StackTrace("array_nelems_size");
 	return array_seek(ptr, offset, nullbitmap, nitems,
 					  typlen, typbyval, typalign) - ptr;
 }
@@ -4568,7 +4568,7 @@ static int
 array_copy(char *destptr, int nitems,
 		   char *srcptr, int offset, bits8 *nullbitmap,
 		   int typlen, bool typbyval, char typalign)
-{
+{	StackTrace("array_copy");
 	int			numbytes;
 
 	numbytes = array_nelems_size(srcptr, offset, nullbitmap, nitems,
@@ -4598,7 +4598,7 @@ void
 array_bitmap_copy(bits8 *destbitmap, int destoffset,
 				  const bits8 *srcbitmap, int srcoffset,
 				  int nitems)
-{
+{	StackTrace("array_bitmap_copy");
 	int			destbitmask,
 				destbitval,
 				srcbitmask,
@@ -4670,7 +4670,7 @@ array_slice_size(char *arraydataptr, bits8 *arraynullsptr,
 				 int ndim, int *dim, int *lb,
 				 int *st, int *endp,
 				 int typlen, bool typbyval, char typalign)
-{
+{	StackTrace("array_slice_size");
 	int			src_offset,
 				span[MAXDIM],
 				prod[MAXDIM],
@@ -4737,7 +4737,7 @@ array_extract_slice(ArrayType *newarray,
 					int typlen,
 					bool typbyval,
 					char typalign)
-{
+{	StackTrace("array_extract_slice");
 	char	   *destdataptr = ARR_DATA_PTR(newarray);
 	bits8	   *destnullsptr = ARR_NULLBITMAP(newarray);
 	char	   *srcdataptr;
@@ -4810,7 +4810,7 @@ array_insert_slice(ArrayType *destArray,
 				   int typlen,
 				   bool typbyval,
 				   char typalign)
-{
+{	StackTrace("array_insert_slice");
 	char	   *destPtr = ARR_DATA_PTR(destArray);
 	char	   *origPtr = ARR_DATA_PTR(origArray);
 	char	   *srcPtr = ARR_DATA_PTR(srcArray);
@@ -4923,7 +4923,7 @@ array_insert_slice(ArrayType *destArray,
  */
 ArrayBuildState *
 initArrayResult(Oid element_type, MemoryContext rcontext, bool subcontext)
-{
+{	StackTrace("initArrayResult");
 	ArrayBuildState *astate;
 	MemoryContext arr_context = rcontext;
 
@@ -4968,7 +4968,7 @@ accumArrayResult(ArrayBuildState *astate,
 				 Datum dvalue, bool disnull,
 				 Oid element_type,
 				 MemoryContext rcontext)
-{
+{	StackTrace("accumArrayResult");
 	MemoryContext oldcontext;
 
 	if (astate == NULL)
@@ -5030,7 +5030,7 @@ accumArrayResult(ArrayBuildState *astate,
 Datum
 makeArrayResult(ArrayBuildState *astate,
 				MemoryContext rcontext)
-{
+{	StackTrace("makeArrayResult");
 	int			ndims;
 	int			dims[1];
 	int			lbs[1];
@@ -5066,7 +5066,7 @@ makeMdArrayResult(ArrayBuildState *astate,
 				  int *lbs,
 				  MemoryContext rcontext,
 				  bool release)
-{
+{	StackTrace("makeMdArrayResult");
 	ArrayType  *result;
 	MemoryContext oldcontext;
 
@@ -5114,7 +5114,7 @@ makeMdArrayResult(ArrayBuildState *astate,
 ArrayBuildStateArr *
 initArrayResultArr(Oid array_type, Oid element_type, MemoryContext rcontext,
 				   bool subcontext)
-{
+{	StackTrace("initArrayResultArr");
 	ArrayBuildStateArr *astate;
 	MemoryContext arr_context = rcontext;		/* by default use the parent
 												 * ctx */
@@ -5165,7 +5165,7 @@ accumArrayResultArr(ArrayBuildStateArr *astate,
 					Datum dvalue, bool disnull,
 					Oid array_type,
 					MemoryContext rcontext)
-{
+{	StackTrace("accumArrayResultArr");
 	ArrayType  *arg;
 	MemoryContext oldcontext;
 	int		   *dims,
@@ -5321,7 +5321,7 @@ Datum
 makeArrayResultArr(ArrayBuildStateArr *astate,
 				   MemoryContext rcontext,
 				   bool release)
-{
+{	StackTrace("makeArrayResultArr");
 	ArrayType  *result;
 	MemoryContext oldcontext;
 
@@ -5394,7 +5394,7 @@ makeArrayResultArr(ArrayBuildStateArr *astate,
  */
 ArrayBuildStateAny *
 initArrayResultAny(Oid input_type, MemoryContext rcontext, bool subcontext)
-{
+{	StackTrace("initArrayResultAny");
 	ArrayBuildStateAny *astate;
 	Oid			element_type = get_element_type(input_type);
 
@@ -5442,7 +5442,7 @@ accumArrayResultAny(ArrayBuildStateAny *astate,
 					Datum dvalue, bool disnull,
 					Oid input_type,
 					MemoryContext rcontext)
-{
+{	StackTrace("accumArrayResultAny");
 	if (astate == NULL)
 		astate = initArrayResultAny(input_type, rcontext, true);
 
@@ -5468,7 +5468,7 @@ accumArrayResultAny(ArrayBuildStateAny *astate,
 Datum
 makeArrayResultAny(ArrayBuildStateAny *astate,
 				   MemoryContext rcontext, bool release)
-{
+{	StackTrace("makeArrayResultAny");
 	Datum		result;
 
 	if (astate->scalarstate)
@@ -5497,7 +5497,7 @@ makeArrayResultAny(ArrayBuildStateAny *astate,
 
 Datum
 array_larger(PG_FUNCTION_ARGS)
-{
+{	StackTrace("array_larger");
 	if (array_cmp(fcinfo) > 0)
 		PG_RETURN_DATUM(PG_GETARG_DATUM(0));
 	else
@@ -5506,7 +5506,7 @@ array_larger(PG_FUNCTION_ARGS)
 
 Datum
 array_smaller(PG_FUNCTION_ARGS)
-{
+{	StackTrace("array_smaller");
 	if (array_cmp(fcinfo) < 0)
 		PG_RETURN_DATUM(PG_GETARG_DATUM(0));
 	else
@@ -5527,7 +5527,7 @@ typedef struct generate_subscripts_fctx
  */
 Datum
 generate_subscripts(PG_FUNCTION_ARGS)
-{
+{	StackTrace("generate_subscripts");
 	FuncCallContext *funcctx;
 	MemoryContext oldcontext;
 	generate_subscripts_fctx *fctx;
@@ -5591,7 +5591,7 @@ generate_subscripts(PG_FUNCTION_ARGS)
  */
 Datum
 generate_subscripts_nodir(PG_FUNCTION_ARGS)
-{
+{	StackTrace("generate_subscripts_nodir");
 	/* just call the other one -- it can handle both cases */
 	return generate_subscripts(fcinfo);
 }
@@ -5602,7 +5602,7 @@ generate_subscripts_nodir(PG_FUNCTION_ARGS)
  */
 Datum
 array_fill_with_lower_bounds(PG_FUNCTION_ARGS)
-{
+{	StackTrace("array_fill_with_lower_bounds");
 	ArrayType  *dims;
 	ArrayType  *lbs;
 	ArrayType  *result;
@@ -5643,7 +5643,7 @@ array_fill_with_lower_bounds(PG_FUNCTION_ARGS)
  */
 Datum
 array_fill(PG_FUNCTION_ARGS)
-{
+{	StackTrace("array_fill");
 	ArrayType  *dims;
 	ArrayType  *result;
 	Oid			elmtype;
@@ -5679,7 +5679,7 @@ array_fill(PG_FUNCTION_ARGS)
 static ArrayType *
 create_array_envelope(int ndims, int *dimv, int *lbsv, int nbytes,
 					  Oid elmtype, int dataoffset)
-{
+{	StackTrace("create_array_envelope");
 	ArrayType  *result;
 
 	result = (ArrayType *) palloc0(nbytes);
@@ -5697,7 +5697,7 @@ static ArrayType *
 array_fill_internal(ArrayType *dims, ArrayType *lbs,
 					Datum value, bool isnull, Oid elmtype,
 					FunctionCallInfo fcinfo)
-{
+{	StackTrace("array_fill_internal");
 	ArrayType  *result;
 	int		   *dimv;
 	int		   *lbsv;
@@ -5874,7 +5874,7 @@ array_fill_internal(ArrayType *dims, ArrayType *lbs,
  */
 Datum
 array_unnest(PG_FUNCTION_ARGS)
-{
+{	StackTrace("array_unnest");
 	typedef struct
 	{
 		array_iter	iter;
@@ -5972,7 +5972,7 @@ array_replace_internal(ArrayType *array,
 					   Datum replace, bool replace_isnull,
 					   bool remove, Oid collation,
 					   FunctionCallInfo fcinfo)
-{
+{	StackTrace("array_replace_internal");
 	ArrayType  *result;
 	Oid			element_type;
 	Datum	   *values;
@@ -6226,7 +6226,7 @@ array_replace_internal(ArrayType *array,
  */
 Datum
 array_remove(PG_FUNCTION_ARGS)
-{
+{	StackTrace("array_remove");
 	ArrayType  *array;
 	Datum		search = PG_GETARG_DATUM(1);
 	bool		search_isnull = PG_ARGISNULL(1);
@@ -6248,7 +6248,7 @@ array_remove(PG_FUNCTION_ARGS)
  */
 Datum
 array_replace(PG_FUNCTION_ARGS)
-{
+{	StackTrace("array_replace");
 	ArrayType  *array;
 	Datum		search = PG_GETARG_DATUM(1);
 	bool		search_isnull = PG_ARGISNULL(1);
@@ -6277,7 +6277,7 @@ array_replace(PG_FUNCTION_ARGS)
  */
 Datum
 width_bucket_array(PG_FUNCTION_ARGS)
-{
+{	StackTrace("width_bucket_array");
 	Datum		operand = PG_GETARG_DATUM(0);
 	ArrayType  *thresholds = PG_GETARG_ARRAYTYPE_P(1);
 	Oid			collation = PG_GET_COLLATION();
@@ -6340,7 +6340,7 @@ width_bucket_array(PG_FUNCTION_ARGS)
  */
 static int
 width_bucket_array_float8(Datum operand, ArrayType *thresholds)
-{
+{	StackTrace("width_bucket_array_float8");
 	float8		op = DatumGetFloat8(operand);
 	float8	   *thresholds_data;
 	int			left;
@@ -6387,7 +6387,7 @@ width_bucket_array_fixed(Datum operand,
 						 ArrayType *thresholds,
 						 Oid collation,
 						 TypeCacheEntry *typentry)
-{
+{	StackTrace("width_bucket_array_fixed");
 	char	   *thresholds_data;
 	int			typlen = typentry->typlen;
 	bool		typbyval = typentry->typbyval;
@@ -6440,7 +6440,7 @@ width_bucket_array_variable(Datum operand,
 							ArrayType *thresholds,
 							Oid collation,
 							TypeCacheEntry *typentry)
-{
+{	StackTrace("width_bucket_array_variable");
 	char	   *thresholds_data;
 	int			typlen = typentry->typlen;
 	bool		typbyval = typentry->typbyval;

@@ -33,7 +33,7 @@
  */
 TupleTableSlot *
 ExecGroup(GroupState *node)
-{
+{	StackTrace("ExecGroup");
 	ExprContext *econtext;
 	int			numCols;
 	AttrNumber *grpColIdx;
@@ -195,7 +195,7 @@ ExecGroup(GroupState *node)
  */
 GroupState *
 ExecInitGroup(Group *node, EState *estate, int eflags)
-{
+{	StackTrace("ExecInitGroup");
 	GroupState *grpstate;
 
 	/* check for unsupported flags */
@@ -265,7 +265,7 @@ ExecInitGroup(Group *node, EState *estate, int eflags)
  */
 void
 ExecEndGroup(GroupState *node)
-{
+{	StackTrace("ExecEndGroup");
 	PlanState  *outerPlan;
 
 	ExecFreeExprContext(&node->ss.ps);
@@ -279,7 +279,7 @@ ExecEndGroup(GroupState *node)
 
 void
 ExecReScanGroup(GroupState *node)
-{
+{	StackTrace("ExecReScanGroup");
 	PlanState  *outerPlan = outerPlanState(node);
 
 	node->grp_done = FALSE;

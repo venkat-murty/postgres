@@ -65,7 +65,7 @@ static int	compare_lexeme_textfreq(const void *e1, const void *e2);
  */
 Datum
 tsmatchsel(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tsmatchsel");
 	PlannerInfo *root = (PlannerInfo *) PG_GETARG_POINTER(0);
 
 #ifdef NOT_USED
@@ -137,7 +137,7 @@ tsmatchsel(PG_FUNCTION_ARGS)
  */
 Datum
 tsmatchjoinsel(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tsmatchjoinsel");
 	/* for the moment we just punt */
 	PG_RETURN_FLOAT8(DEFAULT_TS_MATCH_SEL);
 }
@@ -148,7 +148,7 @@ tsmatchjoinsel(PG_FUNCTION_ARGS)
  */
 static Selectivity
 tsquerysel(VariableStatData *vardata, Datum constval)
-{
+{	StackTrace("tsquerysel");
 	Selectivity selec;
 	TSQuery		query;
 
@@ -212,7 +212,7 @@ tsquerysel(VariableStatData *vardata, Datum constval)
 static Selectivity
 mcelem_tsquery_selec(TSQuery query, Datum *mcelem, int nmcelem,
 					 float4 *numbers, int nnumbers)
-{
+{	StackTrace("mcelem_tsquery_selec");
 	float4		minfreq;
 	TextFreq   *lookup;
 	Selectivity selec;
@@ -283,7 +283,7 @@ mcelem_tsquery_selec(TSQuery query, Datum *mcelem, int nmcelem,
 static Selectivity
 tsquery_opr_selec(QueryItem *item, char *operand,
 				  TextFreq *lookup, int length, float4 minfreq)
-{
+{	StackTrace("tsquery_opr_selec");
 	Selectivity selec;
 
 	/* since this function recurses, it could be driven to stack overflow */
@@ -437,7 +437,7 @@ tsquery_opr_selec(QueryItem *item, char *operand,
  */
 static int
 compare_lexeme_textfreq(const void *e1, const void *e2)
-{
+{	StackTrace("compare_lexeme_textfreq");
 	const LexemeKey *key = (const LexemeKey *) e1;
 	const TextFreq *t = (const TextFreq *) e2;
 	int			len1,

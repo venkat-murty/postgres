@@ -36,7 +36,7 @@
 void
 BlockSampler_Init(BlockSampler bs, BlockNumber nblocks, int samplesize,
 				  long randseed)
-{
+{	StackTrace("BlockSampler_Init");
 	bs->N = nblocks;			/* measured table size */
 
 	/*
@@ -52,13 +52,13 @@ BlockSampler_Init(BlockSampler bs, BlockNumber nblocks, int samplesize,
 
 bool
 BlockSampler_HasMore(BlockSampler bs)
-{
+{	StackTrace("BlockSampler_HasMore");
 	return (bs->t < bs->N) && (bs->m < bs->n);
 }
 
 BlockNumber
 BlockSampler_Next(BlockSampler bs)
-{
+{	StackTrace("BlockSampler_Next");
 	BlockNumber K = bs->N - bs->t;		/* remaining blocks */
 	int			k = bs->n - bs->m;		/* blocks still to sample */
 	double		p;				/* probability to skip block */
@@ -127,7 +127,7 @@ BlockSampler_Next(BlockSampler bs)
  */
 void
 reservoir_init_selection_state(ReservoirState rs, int n)
-{
+{	StackTrace("reservoir_init_selection_state");
 	/*
 	 * Reservoir sampling is not used anywhere where it would need to return
 	 * repeatable results so we can initialize it randomly.
@@ -140,7 +140,7 @@ reservoir_init_selection_state(ReservoirState rs, int n)
 
 double
 reservoir_get_next_S(ReservoirState rs, double t, int n)
-{
+{	StackTrace("reservoir_get_next_S");
 	double		S;
 
 	/* The magic constant here is T from Vitter's paper */
@@ -227,7 +227,7 @@ reservoir_get_next_S(ReservoirState rs, double t, int n)
  */
 void
 sampler_random_init_state(long seed, SamplerRandomState randstate)
-{
+{	StackTrace("sampler_random_init_state");
 	randstate[0] = RAND48_SEED_0;
 	randstate[1] = (unsigned short) seed;
 	randstate[2] = (unsigned short) (seed >> 16);
@@ -236,7 +236,7 @@ sampler_random_init_state(long seed, SamplerRandomState randstate)
 /* Select a random value R uniformly distributed in (0 - 1) */
 double
 sampler_random_fract(SamplerRandomState randstate)
-{
+{	StackTrace("sampler_random_fract");
 	return pg_erand48(randstate);
 }
 
@@ -253,7 +253,7 @@ static ReservoirStateData oldrs;
 
 double
 anl_random_fract(void)
-{
+{	StackTrace("anl_random_fract");
 	/* initialize if first time through */
 	if (oldrs.randstate[0] == 0)
 		sampler_random_init_state(random(), oldrs.randstate);
@@ -264,7 +264,7 @@ anl_random_fract(void)
 
 double
 anl_init_selection_state(int n)
-{
+{	StackTrace("anl_init_selection_state");
 	/* initialize if first time through */
 	if (oldrs.randstate[0] == 0)
 		sampler_random_init_state(random(), oldrs.randstate);
@@ -275,7 +275,7 @@ anl_init_selection_state(int n)
 
 double
 anl_get_next_S(double t, int n, double *stateptr)
-{
+{	StackTrace("anl_get_next_S");
 	double		result;
 
 	oldrs.W = *stateptr;

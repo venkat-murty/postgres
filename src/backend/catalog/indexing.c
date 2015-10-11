@@ -38,7 +38,7 @@
  */
 CatalogIndexState
 CatalogOpenIndexes(Relation heapRel)
-{
+{	StackTrace("CatalogOpenIndexes");
 	ResultRelInfo *resultRelInfo;
 
 	resultRelInfo = makeNode(ResultRelInfo);
@@ -56,7 +56,7 @@ CatalogOpenIndexes(Relation heapRel)
  */
 void
 CatalogCloseIndexes(CatalogIndexState indstate)
-{
+{	StackTrace("CatalogCloseIndexes");
 	ExecCloseIndices(indstate);
 	pfree(indstate);
 }
@@ -70,7 +70,7 @@ CatalogCloseIndexes(CatalogIndexState indstate)
  */
 void
 CatalogIndexInsert(CatalogIndexState indstate, HeapTuple heapTuple)
-{
+{	StackTrace("CatalogIndexInsert");
 	int			i;
 	int			numIndexes;
 	RelationPtr relationDescs;
@@ -155,7 +155,7 @@ CatalogIndexInsert(CatalogIndexState indstate, HeapTuple heapTuple)
  */
 void
 CatalogUpdateIndexes(Relation heapRel, HeapTuple heapTuple)
-{
+{	StackTrace("CatalogUpdateIndexes");
 	CatalogIndexState indstate;
 
 	indstate = CatalogOpenIndexes(heapRel);

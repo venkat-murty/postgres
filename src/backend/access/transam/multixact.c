@@ -382,7 +382,7 @@ static void WriteMZeroPageXlogRec(int pageno, uint8 info);
 MultiXactId
 MultiXactIdCreate(TransactionId xid1, MultiXactStatus status1,
 				  TransactionId xid2, MultiXactStatus status2)
-{
+{	StackTrace("MultiXactIdCreate");
 	MultiXactId newMulti;
 	MultiXactMember members[2];
 
@@ -434,7 +434,7 @@ MultiXactIdCreate(TransactionId xid1, MultiXactStatus status1,
  */
 MultiXactId
 MultiXactIdExpand(MultiXactId multi, TransactionId xid, MultiXactStatus status)
-{
+{	StackTrace("MultiXactIdExpand");
 	MultiXactId newMulti;
 	MultiXactMember *members;
 	MultiXactMember *newMembers;
@@ -546,7 +546,7 @@ MultiXactIdExpand(MultiXactId multi, TransactionId xid, MultiXactStatus status)
  */
 bool
 MultiXactIdIsRunning(MultiXactId multi, bool isLockOnly)
-{
+{	StackTrace("MultiXactIdIsRunning");
 	MultiXactMember *members;
 	int			nmembers;
 	int			i;
@@ -620,7 +620,7 @@ MultiXactIdIsRunning(MultiXactId multi, bool isLockOnly)
  */
 void
 MultiXactIdSetOldestMember(void)
-{
+{	StackTrace("MultiXactIdSetOldestMember");
 	if (!MultiXactIdIsValid(OldestMemberMXactId[MyBackendId]))
 	{
 		MultiXactId nextMXact;
@@ -677,7 +677,7 @@ MultiXactIdSetOldestMember(void)
  */
 static void
 MultiXactIdSetOldestVisible(void)
-{
+{	StackTrace("MultiXactIdSetOldestVisible");
 	if (!MultiXactIdIsValid(OldestVisibleMXactId[MyBackendId]))
 	{
 		MultiXactId oldestMXact;
@@ -718,7 +718,7 @@ MultiXactIdSetOldestVisible(void)
  */
 MultiXactId
 ReadNextMultiXactId(void)
-{
+{	StackTrace("ReadNextMultiXactId");
 	MultiXactId mxid;
 
 	/* XXX we could presumably do this without a lock. */
@@ -743,7 +743,7 @@ ReadNextMultiXactId(void)
  */
 MultiXactId
 MultiXactIdCreateFromMembers(int nmembers, MultiXactMember *members)
-{
+{	StackTrace("MultiXactIdCreateFromMembers");
 	MultiXactId multi;
 	MultiXactOffset offset;
 	xl_multixact_create xlrec;
@@ -851,7 +851,7 @@ MultiXactIdCreateFromMembers(int nmembers, MultiXactMember *members)
 static void
 RecordNewMultiXact(MultiXactId multi, MultiXactOffset offset,
 				   int nmembers, MultiXactMember *members)
-{
+{	StackTrace("RecordNewMultiXact");
 	int			pageno;
 	int			prev_pageno;
 	int			entryno;
@@ -944,7 +944,7 @@ RecordNewMultiXact(MultiXactId multi, MultiXactOffset offset,
  */
 static MultiXactId
 GetNewMultiXactId(int nmembers, MultiXactOffset *offset)
-{
+{	StackTrace("GetNewMultiXactId");
 	MultiXactId result;
 	MultiXactOffset nextOffset;
 
@@ -1204,7 +1204,7 @@ GetNewMultiXactId(int nmembers, MultiXactOffset *offset)
 int
 GetMultiXactIdMembers(MultiXactId multi, MultiXactMember **members,
 					  bool allow_old, bool onlyLock)
-{
+{	StackTrace("GetMultiXactIdMembers");
 	int			pageno;
 	int			prev_pageno;
 	int			entryno;
@@ -1451,7 +1451,7 @@ retry:
  */
 static int
 mxactMemberComparator(const void *arg1, const void *arg2)
-{
+{	StackTrace("mxactMemberComparator");
 	MultiXactMember member1 = *(const MultiXactMember *) arg1;
 	MultiXactMember member2 = *(const MultiXactMember *) arg2;
 
@@ -1481,7 +1481,7 @@ mxactMemberComparator(const void *arg1, const void *arg2)
  */
 static MultiXactId
 mXactCacheGetBySet(int nmembers, MultiXactMember *members)
-{
+{	StackTrace("mXactCacheGetBySet");
 	dlist_iter	iter;
 
 	debug_elog3(DEBUG2, "CacheGet: looking for %s",
@@ -1523,7 +1523,7 @@ mXactCacheGetBySet(int nmembers, MultiXactMember *members)
  */
 static int
 mXactCacheGetById(MultiXactId multi, MultiXactMember **members)
-{
+{	StackTrace("mXactCacheGetById");
 	dlist_iter	iter;
 
 	debug_elog3(DEBUG2, "CacheGet: looking for %u", multi);
@@ -1569,7 +1569,7 @@ mXactCacheGetById(MultiXactId multi, MultiXactMember **members)
  */
 static void
 mXactCachePut(MultiXactId multi, int nmembers, MultiXactMember *members)
-{
+{	StackTrace("mXactCachePut");
 	mXactCacheEnt *entry;
 
 	debug_elog3(DEBUG2, "CachePut: storing %s",
@@ -1618,7 +1618,7 @@ mXactCachePut(MultiXactId multi, int nmembers, MultiXactMember *members)
 
 static char *
 mxstatus_to_string(MultiXactStatus status)
-{
+{	StackTrace("mxstatus_to_string");
 	switch (status)
 	{
 		case MultiXactStatusForKeyShare:
@@ -1641,7 +1641,7 @@ mxstatus_to_string(MultiXactStatus status)
 
 char *
 mxid_to_string(MultiXactId multi, int nmembers, MultiXactMember *members)
-{
+{	StackTrace("mxid_to_string");
 	static char *str = NULL;
 	StringInfoData buf;
 	int			i;
@@ -1672,7 +1672,7 @@ mxid_to_string(MultiXactId multi, int nmembers, MultiXactMember *members)
  */
 void
 AtEOXact_MultiXact(void)
-{
+{	StackTrace("AtEOXact_MultiXact");
 	/*
 	 * Reset our OldestMemberMXactId and OldestVisibleMXactId values, both of
 	 * which should only be valid while within a transaction.
@@ -1701,7 +1701,7 @@ AtEOXact_MultiXact(void)
  */
 void
 AtPrepare_MultiXact(void)
-{
+{	StackTrace("AtPrepare_MultiXact");
 	MultiXactId myOldestMember = OldestMemberMXactId[MyBackendId];
 
 	if (MultiXactIdIsValid(myOldestMember))
@@ -1715,7 +1715,7 @@ AtPrepare_MultiXact(void)
  */
 void
 PostPrepare_MultiXact(TransactionId xid)
-{
+{	StackTrace("PostPrepare_MultiXact");
 	MultiXactId myOldestMember;
 
 	/*
@@ -1766,7 +1766,7 @@ PostPrepare_MultiXact(TransactionId xid)
 void
 multixact_twophase_recover(TransactionId xid, uint16 info,
 						   void *recdata, uint32 len)
-{
+{	StackTrace("multixact_twophase_recover");
 	BackendId	dummyBackendId = TwoPhaseGetDummyBackendId(xid);
 	MultiXactId oldestMember;
 
@@ -1787,7 +1787,7 @@ multixact_twophase_recover(TransactionId xid, uint16 info,
 void
 multixact_twophase_postcommit(TransactionId xid, uint16 info,
 							  void *recdata, uint32 len)
-{
+{	StackTrace("multixact_twophase_postcommit");
 	BackendId	dummyBackendId = TwoPhaseGetDummyBackendId(xid);
 
 	Assert(len == sizeof(MultiXactId));
@@ -1802,7 +1802,7 @@ multixact_twophase_postcommit(TransactionId xid, uint16 info,
 void
 multixact_twophase_postabort(TransactionId xid, uint16 info,
 							 void *recdata, uint32 len)
-{
+{	StackTrace("multixact_twophase_postabort");
 	multixact_twophase_postcommit(xid, info, recdata, len);
 }
 
@@ -1813,7 +1813,7 @@ multixact_twophase_postabort(TransactionId xid, uint16 info,
  */
 Size
 MultiXactShmemSize(void)
-{
+{	StackTrace("MultiXactShmemSize");
 	Size		size;
 
 	/* We need 2*MaxOldestSlot + 1 perBackendXactIds[] entries */
@@ -1830,7 +1830,7 @@ MultiXactShmemSize(void)
 
 void
 MultiXactShmemInit(void)
-{
+{	StackTrace("MultiXactShmemInit");
 	bool		found;
 
 	debug_elog2(DEBUG2, "Shared Memory Init for MultiXact");
@@ -1874,7 +1874,7 @@ MultiXactShmemInit(void)
  */
 void
 BootStrapMultiXact(void)
-{
+{	StackTrace("BootStrapMultiXact");
 	int			slotno;
 
 	LWLockAcquire(MultiXactOffsetControlLock, LW_EXCLUSIVE);
@@ -1911,7 +1911,7 @@ BootStrapMultiXact(void)
  */
 static int
 ZeroMultiXactOffsetPage(int pageno, bool writeXlog)
-{
+{	StackTrace("ZeroMultiXactOffsetPage");
 	int			slotno;
 
 	slotno = SimpleLruZeroPage(MultiXactOffsetCtl, pageno);
@@ -1927,7 +1927,7 @@ ZeroMultiXactOffsetPage(int pageno, bool writeXlog)
  */
 static int
 ZeroMultiXactMemberPage(int pageno, bool writeXlog)
-{
+{	StackTrace("ZeroMultiXactMemberPage");
 	int			slotno;
 
 	slotno = SimpleLruZeroPage(MultiXactMemberCtl, pageno);
@@ -1955,7 +1955,7 @@ ZeroMultiXactMemberPage(int pageno, bool writeXlog)
  */
 static void
 MaybeExtendOffsetSlru(void)
-{
+{	StackTrace("MaybeExtendOffsetSlru");
 	int			pageno;
 
 	pageno = MultiXactIdToOffsetPage(MultiXactState->nextMXact);
@@ -1988,7 +1988,7 @@ MaybeExtendOffsetSlru(void)
  */
 void
 StartupMultiXact(void)
-{
+{	StackTrace("StartupMultiXact");
 	MultiXactId multi = MultiXactState->nextMXact;
 	MultiXactOffset offset = MultiXactState->nextOffset;
 	int			pageno;
@@ -2014,7 +2014,7 @@ StartupMultiXact(void)
  */
 void
 TrimMultiXact(void)
-{
+{	StackTrace("TrimMultiXact");
 	MultiXactId multi = MultiXactState->nextMXact;
 	MultiXactOffset offset = MultiXactState->nextOffset;
 	MultiXactId	oldestMXact;
@@ -2104,7 +2104,7 @@ TrimMultiXact(void)
  */
 void
 ShutdownMultiXact(void)
-{
+{	StackTrace("ShutdownMultiXact");
 	/* Flush dirty MultiXact pages to disk */
 	TRACE_POSTGRESQL_MULTIXACT_CHECKPOINT_START(false);
 	SimpleLruFlush(MultiXactOffsetCtl, false);
@@ -2121,7 +2121,7 @@ MultiXactGetCheckptMulti(bool is_shutdown,
 						 MultiXactOffset *nextMultiOffset,
 						 MultiXactId *oldestMulti,
 						 Oid *oldestMultiDB)
-{
+{	StackTrace("MultiXactGetCheckptMulti");
 	LWLockAcquire(MultiXactGenLock, LW_SHARED);
 	*nextMulti = MultiXactState->nextMXact;
 	*nextMultiOffset = MultiXactState->nextOffset;
@@ -2139,7 +2139,7 @@ MultiXactGetCheckptMulti(bool is_shutdown,
  */
 void
 CheckPointMultiXact(void)
-{
+{	StackTrace("CheckPointMultiXact");
 	TRACE_POSTGRESQL_MULTIXACT_CHECKPOINT_START(true);
 
 	/* Flush dirty MultiXact pages to disk */
@@ -2160,7 +2160,7 @@ CheckPointMultiXact(void)
 void
 MultiXactSetNextMXact(MultiXactId nextMulti,
 					  MultiXactOffset nextMultiOffset)
-{
+{	StackTrace("MultiXactSetNextMXact");
 	debug_elog4(DEBUG2, "MultiXact: setting next multi to %u offset %u",
 				nextMulti, nextMultiOffset);
 	LWLockAcquire(MultiXactGenLock, LW_EXCLUSIVE);
@@ -2190,7 +2190,7 @@ MultiXactSetNextMXact(MultiXactId nextMulti,
  */
 void
 SetMultiXactIdLimit(MultiXactId oldest_datminmxid, Oid oldest_datoid)
-{
+{	StackTrace("SetMultiXactIdLimit");
 	MultiXactId multiVacLimit;
 	MultiXactId multiWarnLimit;
 	MultiXactId multiStopLimit;
@@ -2331,7 +2331,7 @@ SetMultiXactIdLimit(MultiXactId oldest_datminmxid, Oid oldest_datoid)
 void
 MultiXactAdvanceNextMXact(MultiXactId minMulti,
 						  MultiXactOffset minMultiOffset)
-{
+{	StackTrace("MultiXactAdvanceNextMXact");
 	LWLockAcquire(MultiXactGenLock, LW_EXCLUSIVE);
 	if (MultiXactIdPrecedes(MultiXactState->nextMXact, minMulti))
 	{
@@ -2354,7 +2354,7 @@ MultiXactAdvanceNextMXact(MultiXactId minMulti,
  */
 void
 MultiXactAdvanceOldest(MultiXactId oldestMulti, Oid oldestMultiDB)
-{
+{	StackTrace("MultiXactAdvanceOldest");
 	if (MultiXactIdPrecedes(MultiXactState->oldestMultiXactId, oldestMulti))
 		SetMultiXactIdLimit(oldestMulti, oldestMultiDB);
 }
@@ -2365,7 +2365,7 @@ MultiXactAdvanceOldest(MultiXactId oldestMulti, Oid oldestMultiDB)
  */
 void
 MultiXactSetSafeTruncate(MultiXactId safeTruncateMulti)
-{
+{	StackTrace("MultiXactSetSafeTruncate");
 	LWLockAcquire(MultiXactGenLock, LW_EXCLUSIVE);
 	MultiXactState->lastCheckpointedOldest = safeTruncateMulti;
 	LWLockRelease(MultiXactGenLock);
@@ -2381,7 +2381,7 @@ MultiXactSetSafeTruncate(MultiXactId safeTruncateMulti)
  */
 static void
 ExtendMultiXactOffset(MultiXactId multi)
-{
+{	StackTrace("ExtendMultiXactOffset");
 	int			pageno;
 
 	/*
@@ -2411,7 +2411,7 @@ ExtendMultiXactOffset(MultiXactId multi)
  */
 static void
 ExtendMultiXactMember(MultiXactOffset offset, int nmembers)
-{
+{	StackTrace("ExtendMultiXactMember");
 	/*
 	 * It's possible that the members span more than one page of the members
 	 * file, so we loop to ensure we consider each page.  The coding is not
@@ -2483,7 +2483,7 @@ ExtendMultiXactMember(MultiXactOffset offset, int nmembers)
  */
 MultiXactId
 GetOldestMultiXactId(void)
-{
+{	StackTrace("GetOldestMultiXactId");
 	MultiXactId oldestMXact;
 	MultiXactId nextMXact;
 	int			i;
@@ -2530,7 +2530,7 @@ GetOldestMultiXactId(void)
  */
 static void
 DetermineSafeOldestOffset(MultiXactId oldestMXact)
-{
+{	StackTrace("DetermineSafeOldestOffset");
 	MultiXactOffset oldestOffset;
 	MultiXactOffset nextOffset;
 	MultiXactOffset offsetStopLimit;
@@ -2617,7 +2617,7 @@ DetermineSafeOldestOffset(MultiXactId oldestMXact)
  */
 static bool
 SetOffsetVacuumLimit(bool finish_setup)
-{
+{	StackTrace("SetOffsetVacuumLimit");
 	MultiXactId	oldestMultiXactId;
 	MultiXactId nextMXact;
 	bool		finishedStartup;
@@ -2723,7 +2723,7 @@ SetOffsetVacuumLimit(bool finish_setup)
 static bool
 MultiXactOffsetWouldWrap(MultiXactOffset boundary, MultiXactOffset start,
 						 uint32 distance)
-{
+{	StackTrace("MultiXactOffsetWouldWrap");
 	MultiXactOffset finish;
 
 	/*
@@ -2767,7 +2767,7 @@ MultiXactOffsetWouldWrap(MultiXactOffset boundary, MultiXactOffset start,
  */
 static bool
 find_multixact_start(MultiXactId multi, MultiXactOffset *result)
-{
+{	StackTrace("find_multixact_start");
 	MultiXactOffset offset;
 	int			pageno;
 	int			entryno;
@@ -2797,7 +2797,7 @@ find_multixact_start(MultiXactId multi, MultiXactOffset *result)
  */
 static bool
 ReadMultiXactCounts(uint32 *multixacts, MultiXactOffset *members)
-{
+{	StackTrace("ReadMultiXactCounts");
 	MultiXactOffset nextOffset;
 	MultiXactOffset oldestOffset;
 	MultiXactId oldestMultiXactId;
@@ -2853,7 +2853,7 @@ ReadMultiXactCounts(uint32 *multixacts, MultiXactOffset *members)
  */
 int
 MultiXactMemberFreezeThreshold(void)
-{
+{	StackTrace("MultiXactMemberFreezeThreshold");
 	MultiXactOffset members;
 	uint32		multixacts;
 	uint32		victim_multixacts;
@@ -2899,7 +2899,7 @@ typedef struct MembersLiveRange
 static bool
 SlruScanDirCbRemoveMembers(SlruCtl ctl, char *filename, int segpage,
 						   void *data)
-{
+{	StackTrace("SlruScanDirCbRemoveMembers");
 	MembersLiveRange *range = (MembersLiveRange *) data;
 	MultiXactOffset nextOffset;
 
@@ -2952,7 +2952,7 @@ typedef struct mxtruncinfo
  */
 static bool
 SlruScanDirCbFindEarliest(SlruCtl ctl, char *filename, int segpage, void *data)
-{
+{	StackTrace("SlruScanDirCbFindEarliest");
 	mxtruncinfo *trunc = (mxtruncinfo *) data;
 
 	if (trunc->earliestExistingPage == -1 ||
@@ -2977,7 +2977,7 @@ SlruScanDirCbFindEarliest(SlruCtl ctl, char *filename, int segpage, void *data)
  */
 void
 TruncateMultiXact(void)
-{
+{	StackTrace("TruncateMultiXact");
 	MultiXactId oldestMXact;
 	MultiXactOffset oldestOffset;
 	MultiXactId		nextMXact;
@@ -3083,7 +3083,7 @@ TruncateMultiXact(void)
  */
 static bool
 MultiXactOffsetPagePrecedes(int page1, int page2)
-{
+{	StackTrace("MultiXactOffsetPagePrecedes");
 	MultiXactId multi1;
 	MultiXactId multi2;
 
@@ -3101,7 +3101,7 @@ MultiXactOffsetPagePrecedes(int page1, int page2)
  */
 static bool
 MultiXactMemberPagePrecedes(int page1, int page2)
-{
+{	StackTrace("MultiXactMemberPagePrecedes");
 	MultiXactOffset offset1;
 	MultiXactOffset offset2;
 
@@ -3119,7 +3119,7 @@ MultiXactMemberPagePrecedes(int page1, int page2)
  */
 bool
 MultiXactIdPrecedes(MultiXactId multi1, MultiXactId multi2)
-{
+{	StackTrace("MultiXactIdPrecedes");
 	int32		diff = (int32) (multi1 - multi2);
 
 	return (diff < 0);
@@ -3133,7 +3133,7 @@ MultiXactIdPrecedes(MultiXactId multi1, MultiXactId multi2)
  */
 bool
 MultiXactIdPrecedesOrEquals(MultiXactId multi1, MultiXactId multi2)
-{
+{	StackTrace("MultiXactIdPrecedesOrEquals");
 	int32		diff = (int32) (multi1 - multi2);
 
 	return (diff <= 0);
@@ -3145,7 +3145,7 @@ MultiXactIdPrecedesOrEquals(MultiXactId multi1, MultiXactId multi2)
  */
 static bool
 MultiXactOffsetPrecedes(MultiXactOffset offset1, MultiXactOffset offset2)
-{
+{	StackTrace("MultiXactOffsetPrecedes");
 	int32		diff = (int32) (offset1 - offset2);
 
 	return (diff < 0);
@@ -3157,7 +3157,7 @@ MultiXactOffsetPrecedes(MultiXactOffset offset1, MultiXactOffset offset2)
  */
 static void
 WriteMZeroPageXlogRec(int pageno, uint8 info)
-{
+{	StackTrace("WriteMZeroPageXlogRec");
 	XLogBeginInsert();
 	XLogRegisterData((char *) (&pageno), sizeof(int));
 	(void) XLogInsert(RM_MULTIXACT_ID, info);
@@ -3168,7 +3168,7 @@ WriteMZeroPageXlogRec(int pageno, uint8 info)
  */
 void
 multixact_redo(XLogReaderState *record)
-{
+{	StackTrace("multixact_redo");
 	uint8		info = XLogRecGetInfo(record) & ~XLR_INFO_MASK;
 
 	/* Backup blocks are not used in multixact records */
@@ -3251,7 +3251,7 @@ multixact_redo(XLogReaderState *record)
 
 Datum
 pg_get_multixact_members(PG_FUNCTION_ARGS)
-{
+{	StackTrace("pg_get_multixact_members");
 	typedef struct
 	{
 		MultiXactMember *members;

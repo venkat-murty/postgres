@@ -103,7 +103,7 @@ static HeapTuple build_dummy_tuple(CatCache *cache, int nkeys, ScanKey skeys);
  */
 static void
 GetCCHashEqFuncs(Oid keytype, PGFunction *hashfunc, RegProcedure *eqfunc)
-{
+{	StackTrace("GetCCHashEqFuncs");
 	switch (keytype)
 	{
 		case BOOLOID:
@@ -177,7 +177,7 @@ GetCCHashEqFuncs(Oid keytype, PGFunction *hashfunc, RegProcedure *eqfunc)
  */
 static uint32
 CatalogCacheComputeHashValue(CatCache *cache, int nkeys, ScanKey cur_skey)
-{
+{	StackTrace("CatalogCacheComputeHashValue");
 	uint32		hashValue = 0;
 	uint32		oneHash;
 
@@ -230,7 +230,7 @@ CatalogCacheComputeHashValue(CatCache *cache, int nkeys, ScanKey cur_skey)
  */
 static uint32
 CatalogCacheComputeTupleHashValue(CatCache *cache, HeapTuple tuple)
-{
+{	StackTrace("CatalogCacheComputeTupleHashValue");
 	ScanKeyData cur_skey[CATCACHE_MAXKEYS];
 	bool		isNull = false;
 
@@ -293,7 +293,7 @@ CatalogCacheComputeTupleHashValue(CatCache *cache, HeapTuple tuple)
 
 static void
 CatCachePrintStats(int code, Datum arg)
-{
+{	StackTrace("CatCachePrintStats");
 	slist_iter	iter;
 	long		cc_searches = 0;
 	long		cc_hits = 0;
@@ -357,7 +357,7 @@ CatCachePrintStats(int code, Datum arg)
  */
 static void
 CatCacheRemoveCTup(CatCache *cache, CatCTup *ct)
-{
+{	StackTrace("CatCacheRemoveCTup");
 	Assert(ct->refcount == 0);
 	Assert(ct->my_cache == cache);
 
@@ -394,7 +394,7 @@ CatCacheRemoveCTup(CatCache *cache, CatCTup *ct)
  */
 static void
 CatCacheRemoveCList(CatCache *cache, CatCList *cl)
-{
+{	StackTrace("CatCacheRemoveCList");
 	int			i;
 
 	Assert(cl->refcount == 0);
@@ -446,7 +446,7 @@ CatCacheRemoveCList(CatCache *cache, CatCList *cl)
  */
 void
 CatalogCacheIdInvalidate(int cacheId, uint32 hashValue)
-{
+{	StackTrace("CatalogCacheIdInvalidate");
 	slist_iter	cache_iter;
 
 	CACHE1_elog(DEBUG2, "CatalogCacheIdInvalidate: called");
@@ -528,7 +528,7 @@ CatalogCacheIdInvalidate(int cacheId, uint32 hashValue)
  */
 void
 CreateCacheMemoryContext(void)
-{
+{	StackTrace("CreateCacheMemoryContext");
 	/*
 	 * Purely for paranoia, check that context doesn't exist; caller probably
 	 * did so already.
@@ -553,7 +553,7 @@ CreateCacheMemoryContext(void)
  */
 void
 AtEOXact_CatCache(bool isCommit)
-{
+{	StackTrace("AtEOXact_CatCache");
 #ifdef USE_ASSERT_CHECKING
 	slist_iter	cache_iter;
 
@@ -603,7 +603,7 @@ AtEOXact_CatCache(bool isCommit)
  */
 static void
 ResetCatalogCache(CatCache *cache)
-{
+{	StackTrace("ResetCatalogCache");
 	dlist_mutable_iter iter;
 	int			i;
 
@@ -650,7 +650,7 @@ ResetCatalogCache(CatCache *cache)
  */
 void
 ResetCatalogCaches(void)
-{
+{	StackTrace("ResetCatalogCaches");
 	slist_iter	iter;
 
 	CACHE1_elog(DEBUG2, "ResetCatalogCaches called");
@@ -680,7 +680,7 @@ ResetCatalogCaches(void)
  */
 void
 CatalogCacheFlushCatalog(Oid catId)
-{
+{	StackTrace("CatalogCacheFlushCatalog");
 	slist_iter	iter;
 
 	CACHE2_elog(DEBUG2, "CatalogCacheFlushCatalog called for %u", catId);
@@ -729,7 +729,7 @@ InitCatCache(int id,
 			 int nkeys,
 			 const int *key,
 			 int nbuckets)
-{
+{	StackTrace("InitCatCache");
 	CatCache   *cp;
 	MemoryContext oldcxt;
 	int			i;
@@ -819,7 +819,7 @@ InitCatCache(int id,
  */
 static void
 RehashCatCache(CatCache *cp)
-{
+{	StackTrace("RehashCatCache");
 	dlist_head *newbucket;
 	int			newnbuckets;
 	int			i;
@@ -882,7 +882,7 @@ do { \
 
 static void
 CatalogCacheInitializeCache(CatCache *cache)
-{
+{	StackTrace("CatalogCacheInitializeCache");
 	Relation	relation;
 	MemoryContext oldcxt;
 	TupleDesc	tupdesc;
@@ -993,7 +993,7 @@ CatalogCacheInitializeCache(CatCache *cache)
  */
 void
 InitCatCachePhase2(CatCache *cache, bool touch_index)
-{
+{	StackTrace("InitCatCachePhase2");
 	if (cache->cc_tupdesc == NULL)
 		CatalogCacheInitializeCache(cache);
 
@@ -1044,7 +1044,7 @@ InitCatCachePhase2(CatCache *cache, bool touch_index)
  */
 static bool
 IndexScanOK(CatCache *cache, ScanKey cur_skey)
-{
+{	StackTrace("IndexScanOK");
 	switch (cache->id)
 	{
 		case INDEXRELID:
@@ -1112,7 +1112,7 @@ SearchCatCache(CatCache *cache,
 			   Datum v2,
 			   Datum v3,
 			   Datum v4)
-{
+{	StackTrace("SearchCatCache");
 	ScanKeyData cur_skey[CATCACHE_MAXKEYS];
 	uint32		hashValue;
 	Index		hashIndex;
@@ -1322,7 +1322,7 @@ SearchCatCache(CatCache *cache,
  */
 void
 ReleaseCatCache(HeapTuple tuple)
-{
+{	StackTrace("ReleaseCatCache");
 	CatCTup    *ct = (CatCTup *) (((char *) tuple) -
 								  offsetof(CatCTup, tuple));
 
@@ -1358,7 +1358,7 @@ GetCatCacheHashValue(CatCache *cache,
 					 Datum v2,
 					 Datum v3,
 					 Datum v4)
-{
+{	StackTrace("GetCatCacheHashValue");
 	ScanKeyData cur_skey[CATCACHE_MAXKEYS];
 
 	/*
@@ -1399,7 +1399,7 @@ SearchCatCacheList(CatCache *cache,
 				   Datum v2,
 				   Datum v3,
 				   Datum v4)
-{
+{	StackTrace("SearchCatCacheList");
 	ScanKeyData cur_skey[CATCACHE_MAXKEYS];
 	uint32		lHashValue;
 	dlist_iter	iter;
@@ -1670,7 +1670,7 @@ SearchCatCacheList(CatCache *cache,
  */
 void
 ReleaseCatCacheList(CatCList *list)
-{
+{	StackTrace("ReleaseCatCacheList");
 	/* Safety checks to ensure we were handed a cache entry */
 	Assert(list->cl_magic == CL_MAGIC);
 	Assert(list->refcount > 0);
@@ -1694,7 +1694,7 @@ ReleaseCatCacheList(CatCList *list)
 static CatCTup *
 CatalogCacheCreateEntry(CatCache *cache, HeapTuple ntp,
 						uint32 hashValue, Index hashIndex, bool negative)
-{
+{	StackTrace("CatalogCacheCreateEntry");
 	CatCTup    *ct;
 	HeapTuple	dtp;
 	MemoryContext oldcxt;
@@ -1759,7 +1759,7 @@ CatalogCacheCreateEntry(CatCache *cache, HeapTuple ntp,
  */
 static HeapTuple
 build_dummy_tuple(CatCache *cache, int nkeys, ScanKey skeys)
-{
+{	StackTrace("build_dummy_tuple");
 	HeapTuple	ntp;
 	TupleDesc	tupDesc = cache->cc_tupdesc;
 	Datum	   *values;
@@ -1854,7 +1854,7 @@ PrepareToInvalidateCacheTuple(Relation relation,
 							  HeapTuple tuple,
 							  HeapTuple newtuple,
 							  void (*function) (int, uint32, Oid))
-{
+{	StackTrace("(*function)");
 	slist_iter	iter;
 	Oid			reloid;
 
@@ -1915,7 +1915,7 @@ PrepareToInvalidateCacheTuple(Relation relation,
  */
 void
 PrintCatCacheLeakWarning(HeapTuple tuple)
-{
+{	StackTrace("PrintCatCacheLeakWarning");
 	CatCTup    *ct = (CatCTup *) (((char *) tuple) -
 								  offsetof(CatCTup, tuple));
 
@@ -1931,7 +1931,7 @@ PrintCatCacheLeakWarning(HeapTuple tuple)
 
 void
 PrintCatCacheListLeakWarning(CatCList *list)
-{
+{	StackTrace("PrintCatCacheListLeakWarning");
 	elog(WARNING, "cache reference leak: cache %s (%d), list %p has count %d",
 		 list->my_cache->cc_relname, list->my_cache->id,
 		 list, list->refcount);

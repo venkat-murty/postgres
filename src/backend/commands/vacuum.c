@@ -82,7 +82,7 @@ static bool vacuum_rel(Oid relid, RangeVar *relation, int options,
  */
 void
 ExecVacuum(VacuumStmt *vacstmt, bool isTopLevel)
-{
+{	StackTrace("ExecVacuum");
 	VacuumParams params;
 
 	/* sanity checks on options */
@@ -147,7 +147,7 @@ ExecVacuum(VacuumStmt *vacstmt, bool isTopLevel)
 void
 vacuum(int options, RangeVar *relation, Oid relid, VacuumParams *params,
 	   List *va_cols, BufferAccessStrategy bstrategy, bool isTopLevel)
-{
+{	StackTrace("vacuum");
 	const char *stmttype;
 	volatile bool in_outer_xact,
 				use_own_xacts;
@@ -369,7 +369,7 @@ vacuum(int options, RangeVar *relation, Oid relid, VacuumParams *params,
  */
 static List *
 get_rel_oids(Oid relid, const RangeVar *vacrel)
-{
+{	StackTrace("get_rel_oids");
 	List	   *oid_list = NIL;
 	MemoryContext oldcontext;
 
@@ -468,7 +468,7 @@ vacuum_set_xid_limits(Relation rel,
 					  TransactionId *xidFullScanLimit,
 					  MultiXactId *multiXactCutoff,
 					  MultiXactId *mxactFullScanLimit)
-{
+{	StackTrace("vacuum_set_xid_limits");
 	int			freezemin;
 	int			mxid_freezemin;
 	int			effective_multixact_freeze_max_age;
@@ -645,7 +645,7 @@ vac_estimate_reltuples(Relation relation, bool is_analyze,
 					   BlockNumber total_pages,
 					   BlockNumber scanned_pages,
 					   double scanned_tuples)
-{
+{	StackTrace("vac_estimate_reltuples");
 	BlockNumber old_rel_pages = relation->rd_rel->relpages;
 	double		old_rel_tuples = relation->rd_rel->reltuples;
 	double		old_density;
@@ -747,7 +747,7 @@ vac_update_relstats(Relation relation,
 					bool hasindex, TransactionId frozenxid,
 					MultiXactId minmulti,
 					bool in_outer_xact)
-{
+{	StackTrace("vac_update_relstats");
 	Oid			relid = RelationGetRelid(relation);
 	Relation	rd;
 	HeapTuple	ctup;
@@ -879,7 +879,7 @@ vac_update_relstats(Relation relation,
  */
 void
 vac_update_datfrozenxid(void)
-{
+{	StackTrace("vac_update_datfrozenxid");
 	HeapTuple	tuple;
 	Form_pg_database dbform;
 	Relation	relation;
@@ -1046,7 +1046,7 @@ vac_truncate_clog(TransactionId frozenXID,
 				  MultiXactId minMulti,
 				  TransactionId lastSaneFrozenXid,
 				  MultiXactId lastSaneMinMulti)
-{
+{	StackTrace("vac_truncate_clog");
 	TransactionId myXID = GetCurrentTransactionId();
 	Relation	relation;
 	HeapScanDesc scan;
@@ -1165,7 +1165,7 @@ vac_truncate_clog(TransactionId frozenXID,
  */
 static bool
 vacuum_rel(Oid relid, RangeVar *relation, int options, VacuumParams *params)
-{
+{	StackTrace("vacuum_rel");
 	LOCKMODE	lmode;
 	Relation	onerel;
 	LockRelId	onerelid;
@@ -1422,7 +1422,7 @@ vacuum_rel(Oid relid, RangeVar *relation, int options, VacuumParams *params)
 void
 vac_open_indexes(Relation relation, LOCKMODE lockmode,
 				 int *nindexes, Relation **Irel)
-{
+{	StackTrace("vac_open_indexes");
 	List	   *indexoidlist;
 	ListCell   *indexoidscan;
 	int			i;
@@ -1464,7 +1464,7 @@ vac_open_indexes(Relation relation, LOCKMODE lockmode,
  */
 void
 vac_close_indexes(int nindexes, Relation *Irel, LOCKMODE lockmode)
-{
+{	StackTrace("vac_close_indexes");
 	if (Irel == NULL)
 		return;
 
@@ -1485,7 +1485,7 @@ vac_close_indexes(int nindexes, Relation *Irel, LOCKMODE lockmode)
  */
 void
 vacuum_delay_point(void)
-{
+{	StackTrace("vacuum_delay_point");
 	/* Always check for interrupts */
 	CHECK_FOR_INTERRUPTS();
 

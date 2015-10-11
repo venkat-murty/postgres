@@ -250,7 +250,7 @@ static void *readtup_heap(Tuplestorestate *state, unsigned int len);
  */
 static Tuplestorestate *
 tuplestore_begin_common(int eflags, bool interXact, int maxKBytes)
-{
+{	StackTrace("tuplestore_begin_common");
 	Tuplestorestate *state;
 
 	state = (Tuplestorestate *) palloc0(sizeof(Tuplestorestate));
@@ -307,7 +307,7 @@ tuplestore_begin_common(int eflags, bool interXact, int maxKBytes)
  */
 Tuplestorestate *
 tuplestore_begin_heap(bool randomAccess, bool interXact, int maxKBytes)
-{
+{	StackTrace("tuplestore_begin_heap");
 	Tuplestorestate *state;
 	int			eflags;
 
@@ -348,7 +348,7 @@ tuplestore_begin_heap(bool randomAccess, bool interXact, int maxKBytes)
  */
 void
 tuplestore_set_eflags(Tuplestorestate *state, int eflags)
-{
+{	StackTrace("tuplestore_set_eflags");
 	int			i;
 
 	if (state->status != TSS_INMEM || state->memtupcount != 0)
@@ -372,7 +372,7 @@ tuplestore_set_eflags(Tuplestorestate *state, int eflags)
  */
 int
 tuplestore_alloc_read_pointer(Tuplestorestate *state, int eflags)
-{
+{	StackTrace("tuplestore_alloc_read_pointer");
 	/* Check for possible increase of requirements */
 	if (state->status != TSS_INMEM || state->memtupcount != 0)
 	{
@@ -407,7 +407,7 @@ tuplestore_alloc_read_pointer(Tuplestorestate *state, int eflags)
  */
 void
 tuplestore_clear(Tuplestorestate *state)
-{
+{	StackTrace("tuplestore_clear");
 	int			i;
 	TSReadPointer *readptr;
 
@@ -441,7 +441,7 @@ tuplestore_clear(Tuplestorestate *state)
  */
 void
 tuplestore_end(Tuplestorestate *state)
-{
+{	StackTrace("tuplestore_end");
 	int			i;
 
 	if (state->myfile)
@@ -461,7 +461,7 @@ tuplestore_end(Tuplestorestate *state)
  */
 void
 tuplestore_select_read_pointer(Tuplestorestate *state, int ptr)
-{
+{	StackTrace("tuplestore_select_read_pointer");
 	TSReadPointer *readptr;
 	TSReadPointer *oldptr;
 
@@ -533,7 +533,7 @@ tuplestore_select_read_pointer(Tuplestorestate *state, int ptr)
  */
 bool
 tuplestore_ateof(Tuplestorestate *state)
-{
+{	StackTrace("tuplestore_ateof");
 	return state->readptrs[state->activeptr].eof_reached;
 }
 
@@ -554,7 +554,7 @@ tuplestore_ateof(Tuplestorestate *state)
  */
 static bool
 grow_memtuples(Tuplestorestate *state)
-{
+{	StackTrace("grow_memtuples");
 	int			newmemtupsize;
 	int			memtupsize = state->memtupsize;
 	int64		memNowUsed = state->allowedMem - state->availMem;
@@ -685,7 +685,7 @@ noalloc:
 void
 tuplestore_puttupleslot(Tuplestorestate *state,
 						TupleTableSlot *slot)
-{
+{	StackTrace("tuplestore_puttupleslot");
 	MinimalTuple tuple;
 	MemoryContext oldcxt = MemoryContextSwitchTo(state->context);
 
@@ -706,7 +706,7 @@ tuplestore_puttupleslot(Tuplestorestate *state,
  */
 void
 tuplestore_puttuple(Tuplestorestate *state, HeapTuple tuple)
-{
+{	StackTrace("tuplestore_puttuple");
 	MemoryContext oldcxt = MemoryContextSwitchTo(state->context);
 
 	/*
@@ -727,7 +727,7 @@ tuplestore_puttuple(Tuplestorestate *state, HeapTuple tuple)
 void
 tuplestore_putvalues(Tuplestorestate *state, TupleDesc tdesc,
 					 Datum *values, bool *isnull)
-{
+{	StackTrace("tuplestore_putvalues");
 	MinimalTuple tuple;
 	MemoryContext oldcxt = MemoryContextSwitchTo(state->context);
 
@@ -741,7 +741,7 @@ tuplestore_putvalues(Tuplestorestate *state, TupleDesc tdesc,
 
 static void
 tuplestore_puttuple_common(Tuplestorestate *state, void *tuple)
-{
+{	StackTrace("tuplestore_puttuple_common");
 	TSReadPointer *readptr;
 	int			i;
 	ResourceOwner oldowner;
@@ -878,7 +878,7 @@ tuplestore_puttuple_common(Tuplestorestate *state, void *tuple)
 static void *
 tuplestore_gettuple(Tuplestorestate *state, bool forward,
 					bool *should_free)
-{
+{	StackTrace("tuplestore_gettuple");
 	TSReadPointer *readptr = &state->readptrs[state->activeptr];
 	unsigned int tuplen;
 	void	   *tup;
@@ -1053,7 +1053,7 @@ tuplestore_gettuple(Tuplestorestate *state, bool forward,
 bool
 tuplestore_gettupleslot(Tuplestorestate *state, bool forward,
 						bool copy, TupleTableSlot *slot)
-{
+{	StackTrace("tuplestore_gettupleslot");
 	MinimalTuple tuple;
 	bool		should_free;
 
@@ -1084,7 +1084,7 @@ tuplestore_gettupleslot(Tuplestorestate *state, bool forward,
  */
 bool
 tuplestore_advance(Tuplestorestate *state, bool forward)
-{
+{	StackTrace("tuplestore_advance");
 	void	   *tuple;
 	bool		should_free;
 
@@ -1109,7 +1109,7 @@ tuplestore_advance(Tuplestorestate *state, bool forward)
  */
 bool
 tuplestore_skiptuples(Tuplestorestate *state, int64 ntuples, bool forward)
-{
+{	StackTrace("tuplestore_skiptuples");
 	TSReadPointer *readptr = &state->readptrs[state->activeptr];
 
 	Assert(forward || (readptr->eflags & EXEC_FLAG_BACKWARD));
@@ -1180,7 +1180,7 @@ tuplestore_skiptuples(Tuplestorestate *state, int64 ntuples, bool forward)
  */
 static void
 dumptuples(Tuplestorestate *state)
-{
+{	StackTrace("dumptuples");
 	int			i;
 
 	for (i = state->memtupdeleted;; i++)
@@ -1207,7 +1207,7 @@ dumptuples(Tuplestorestate *state)
  */
 void
 tuplestore_rescan(Tuplestorestate *state)
-{
+{	StackTrace("tuplestore_rescan");
 	TSReadPointer *readptr = &state->readptrs[state->activeptr];
 
 	Assert(readptr->eflags & EXEC_FLAG_REWIND);
@@ -1243,7 +1243,7 @@ tuplestore_rescan(Tuplestorestate *state)
 void
 tuplestore_copy_read_pointer(Tuplestorestate *state,
 							 int srcptr, int destptr)
-{
+{	StackTrace("tuplestore_copy_read_pointer");
 	TSReadPointer *sptr = &state->readptrs[srcptr];
 	TSReadPointer *dptr = &state->readptrs[destptr];
 
@@ -1334,7 +1334,7 @@ tuplestore_copy_read_pointer(Tuplestorestate *state,
  */
 void
 tuplestore_trim(Tuplestorestate *state)
-{
+{	StackTrace("tuplestore_trim");
 	int			oldest;
 	int			nremove;
 	int			i;
@@ -1429,7 +1429,7 @@ tuplestore_trim(Tuplestorestate *state)
  */
 bool
 tuplestore_in_memory(Tuplestorestate *state)
-{
+{	StackTrace("tuplestore_in_memory");
 	return (state->status == TSS_INMEM);
 }
 
@@ -1440,7 +1440,7 @@ tuplestore_in_memory(Tuplestorestate *state)
 
 static unsigned int
 getlen(Tuplestorestate *state, bool eofOK)
-{
+{	StackTrace("getlen");
 	unsigned int len;
 	size_t		nbytes;
 
@@ -1467,7 +1467,7 @@ getlen(Tuplestorestate *state, bool eofOK)
 
 static void *
 copytup_heap(Tuplestorestate *state, void *tup)
-{
+{	StackTrace("copytup_heap");
 	MinimalTuple tuple;
 
 	tuple = minimal_tuple_from_heap_tuple((HeapTuple) tup);
@@ -1477,7 +1477,7 @@ copytup_heap(Tuplestorestate *state, void *tup)
 
 static void
 writetup_heap(Tuplestorestate *state, void *tup)
-{
+{	StackTrace("writetup_heap");
 	MinimalTuple tuple = (MinimalTuple) tup;
 
 	/* the part of the MinimalTuple we'll write: */
@@ -1510,7 +1510,7 @@ writetup_heap(Tuplestorestate *state, void *tup)
 
 static void *
 readtup_heap(Tuplestorestate *state, unsigned int len)
-{
+{	StackTrace("readtup_heap");
 	unsigned int tupbodylen = len - sizeof(int);
 	unsigned int tuplen = tupbodylen + MINIMAL_TUPLE_DATA_OFFSET;
 	MinimalTuple tuple = (MinimalTuple) palloc(tuplen);

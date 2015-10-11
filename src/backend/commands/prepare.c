@@ -53,7 +53,7 @@ static Datum build_regtype_array(Oid *param_types, int num_params);
  */
 void
 PrepareQuery(PrepareStmt *stmt, const char *queryString)
-{
+{	StackTrace("PrepareQuery");
 	CachedPlanSource *plansource;
 	Oid		   *argtypes = NULL;
 	int			nargs;
@@ -188,7 +188,7 @@ void
 ExecuteQuery(ExecuteStmt *stmt, IntoClause *intoClause,
 			 const char *queryString, ParamListInfo params,
 			 DestReceiver *dest, char *completionTag)
-{
+{	StackTrace("ExecuteQuery");
 	PreparedStatement *entry;
 	CachedPlan *cplan;
 	List	   *plan_list;
@@ -316,7 +316,7 @@ ExecuteQuery(ExecuteStmt *stmt, IntoClause *intoClause,
 static ParamListInfo
 EvaluateParams(PreparedStatement *pstmt, List *params,
 			   const char *queryString, EState *estate)
-{
+{	StackTrace("EvaluateParams");
 	Oid		   *param_types = pstmt->plansource->param_types;
 	int			num_params = pstmt->plansource->num_params;
 	int			nparams = list_length(params);
@@ -418,7 +418,7 @@ EvaluateParams(PreparedStatement *pstmt, List *params,
  */
 static void
 InitQueryHashTable(void)
-{
+{	StackTrace("InitQueryHashTable");
 	HASHCTL		hash_ctl;
 
 	MemSet(&hash_ctl, 0, sizeof(hash_ctl));
@@ -442,7 +442,7 @@ void
 StorePreparedStatement(const char *stmt_name,
 					   CachedPlanSource *plansource,
 					   bool from_sql)
-{
+{	StackTrace("StorePreparedStatement");
 	PreparedStatement *entry;
 	TimestampTz cur_ts = GetCurrentStatementStartTimestamp();
 	bool		found;
@@ -482,7 +482,7 @@ StorePreparedStatement(const char *stmt_name,
  */
 PreparedStatement *
 FetchPreparedStatement(const char *stmt_name, bool throwError)
-{
+{	StackTrace("FetchPreparedStatement");
 	PreparedStatement *entry;
 
 	/*
@@ -514,7 +514,7 @@ FetchPreparedStatement(const char *stmt_name, bool throwError)
  */
 TupleDesc
 FetchPreparedStatementResultDesc(PreparedStatement *stmt)
-{
+{	StackTrace("FetchPreparedStatementResultDesc");
 	/*
 	 * Since we don't allow prepared statements' result tupdescs to change,
 	 * there's no need to worry about revalidating the cached plan here.
@@ -537,7 +537,7 @@ FetchPreparedStatementResultDesc(PreparedStatement *stmt)
  */
 List *
 FetchPreparedStatementTargetList(PreparedStatement *stmt)
-{
+{	StackTrace("FetchPreparedStatementTargetList");
 	List	   *tlist;
 
 	/* Get the plan's primary targetlist */
@@ -553,7 +553,7 @@ FetchPreparedStatementTargetList(PreparedStatement *stmt)
  */
 void
 DeallocateQuery(DeallocateStmt *stmt)
-{
+{	StackTrace("DeallocateQuery");
 	if (stmt->name)
 		DropPreparedStatement(stmt->name, true);
 	else
@@ -567,7 +567,7 @@ DeallocateQuery(DeallocateStmt *stmt)
  */
 void
 DropPreparedStatement(const char *stmt_name, bool showError)
-{
+{	StackTrace("DropPreparedStatement");
 	PreparedStatement *entry;
 
 	/* Find the query's hash table entry; raise error if wanted */
@@ -588,7 +588,7 @@ DropPreparedStatement(const char *stmt_name, bool showError)
  */
 void
 DropAllPreparedStatements(void)
-{
+{	StackTrace("DropAllPreparedStatements");
 	HASH_SEQ_STATUS seq;
 	PreparedStatement *entry;
 
@@ -620,7 +620,7 @@ DropAllPreparedStatements(void)
 void
 ExplainExecuteQuery(ExecuteStmt *execstmt, IntoClause *into, ExplainState *es,
 					const char *queryString, ParamListInfo params)
-{
+{	StackTrace("ExplainExecuteQuery");
 	PreparedStatement *entry;
 	const char *query_string;
 	CachedPlan *cplan;
@@ -687,7 +687,7 @@ ExplainExecuteQuery(ExecuteStmt *execstmt, IntoClause *into, ExplainState *es,
  */
 Datum
 pg_prepared_statement(PG_FUNCTION_ARGS)
-{
+{	StackTrace("pg_prepared_statement");
 	ReturnSetInfo *rsinfo = (ReturnSetInfo *) fcinfo->resultinfo;
 	TupleDesc	tupdesc;
 	Tuplestorestate *tupstore;
@@ -778,7 +778,7 @@ pg_prepared_statement(PG_FUNCTION_ARGS)
  */
 static Datum
 build_regtype_array(Oid *param_types, int num_params)
-{
+{	StackTrace("build_regtype_array");
 	Datum	   *tmp_ary;
 	ArrayType  *result;
 	int			i;

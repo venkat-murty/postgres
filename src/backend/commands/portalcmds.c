@@ -43,7 +43,7 @@
 void
 PerformCursorOpen(PlannedStmt *stmt, ParamListInfo params,
 				  const char *queryString, bool isTopLevel)
-{
+{	StackTrace("PerformCursorOpen");
 	DeclareCursorStmt *cstmt = (DeclareCursorStmt *) stmt->utilityStmt;
 	Portal		portal;
 	MemoryContext oldContext;
@@ -146,7 +146,7 @@ void
 PerformPortalFetch(FetchStmt *stmt,
 				   DestReceiver *dest,
 				   char *completionTag)
-{
+{	StackTrace("PerformPortalFetch");
 	Portal		portal;
 	long		nprocessed;
 
@@ -192,7 +192,7 @@ PerformPortalFetch(FetchStmt *stmt,
  */
 void
 PerformPortalClose(const char *name)
-{
+{	StackTrace("PerformPortalClose");
 	Portal		portal;
 
 	/* NULL means CLOSE ALL */
@@ -241,7 +241,7 @@ PerformPortalClose(const char *name)
  */
 void
 PortalCleanup(Portal portal)
-{
+{	StackTrace("PortalCleanup");
 	QueryDesc  *queryDesc;
 
 	/*
@@ -302,7 +302,7 @@ PortalCleanup(Portal portal)
  */
 void
 PersistHoldablePortal(Portal portal)
-{
+{	StackTrace("PersistHoldablePortal");
 	QueryDesc  *queryDesc = PortalGetQueryDesc(portal);
 	Portal		saveActivePortal;
 	ResourceOwner saveResourceOwner;

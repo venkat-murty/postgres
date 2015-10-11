@@ -46,7 +46,7 @@ static void tstoreReceiveSlot_detoast(TupleTableSlot *slot, DestReceiver *self);
  */
 static void
 tstoreStartupReceiver(DestReceiver *self, int operation, TupleDesc typeinfo)
-{
+{	StackTrace("tstoreStartupReceiver");
 	TStoreState *myState = (TStoreState *) self;
 	bool		needtoast = false;
 	Form_pg_attribute *attrs = typeinfo->attrs;
@@ -92,7 +92,7 @@ tstoreStartupReceiver(DestReceiver *self, int operation, TupleDesc typeinfo)
  */
 static void
 tstoreReceiveSlot_notoast(TupleTableSlot *slot, DestReceiver *self)
-{
+{	StackTrace("tstoreReceiveSlot_notoast");
 	TStoreState *myState = (TStoreState *) self;
 
 	tuplestore_puttupleslot(myState->tstore, slot);
@@ -104,7 +104,7 @@ tstoreReceiveSlot_notoast(TupleTableSlot *slot, DestReceiver *self)
  */
 static void
 tstoreReceiveSlot_detoast(TupleTableSlot *slot, DestReceiver *self)
-{
+{	StackTrace("tstoreReceiveSlot_detoast");
 	TStoreState *myState = (TStoreState *) self;
 	TupleDesc	typeinfo = slot->tts_tupleDescriptor;
 	Form_pg_attribute *attrs = typeinfo->attrs;
@@ -159,7 +159,7 @@ tstoreReceiveSlot_detoast(TupleTableSlot *slot, DestReceiver *self)
  */
 static void
 tstoreShutdownReceiver(DestReceiver *self)
-{
+{	StackTrace("tstoreShutdownReceiver");
 	TStoreState *myState = (TStoreState *) self;
 
 	/* Release workspace if any */
@@ -176,7 +176,7 @@ tstoreShutdownReceiver(DestReceiver *self)
  */
 static void
 tstoreDestroyReceiver(DestReceiver *self)
-{
+{	StackTrace("tstoreDestroyReceiver");
 	pfree(self);
 }
 
@@ -185,7 +185,7 @@ tstoreDestroyReceiver(DestReceiver *self)
  */
 DestReceiver *
 CreateTuplestoreDestReceiver(void)
-{
+{	StackTrace("CreateTuplestoreDestReceiver");
 	TStoreState *self = (TStoreState *) palloc0(sizeof(TStoreState));
 
 	self->pub.receiveSlot = tstoreReceiveSlot_notoast;	/* might change */
@@ -207,7 +207,7 @@ SetTuplestoreDestReceiverParams(DestReceiver *self,
 								Tuplestorestate *tStore,
 								MemoryContext tContext,
 								bool detoast)
-{
+{	StackTrace("SetTuplestoreDestReceiverParams");
 	TStoreState *myState = (TStoreState *) self;
 
 	Assert(myState->pub.mydest == DestTuplestore);

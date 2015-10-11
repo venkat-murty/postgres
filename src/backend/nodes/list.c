@@ -35,7 +35,7 @@
  */
 static void
 check_list_invariants(const List *list)
-{
+{	StackTrace("check_list_invariants");
 	if (list == NIL)
 		return;
 
@@ -64,7 +64,7 @@ check_list_invariants(const List *list)
  */
 static List *
 new_list(NodeTag type)
-{
+{	StackTrace("new_list");
 	List	   *new_list;
 	ListCell   *new_head;
 
@@ -90,7 +90,7 @@ new_list(NodeTag type)
  */
 static void
 new_head_cell(List *list)
-{
+{	StackTrace("new_head_cell");
 	ListCell   *new_head;
 
 	new_head = (ListCell *) palloc(sizeof(*new_head));
@@ -109,7 +109,7 @@ new_head_cell(List *list)
  */
 static void
 new_tail_cell(List *list)
-{
+{	StackTrace("new_tail_cell");
 	ListCell   *new_tail;
 
 	new_tail = (ListCell *) palloc(sizeof(*new_tail));
@@ -129,7 +129,7 @@ new_tail_cell(List *list)
  */
 List *
 lappend(List *list, void *datum)
-{
+{	StackTrace("lappend");
 	Assert(IsPointerList(list));
 
 	if (list == NIL)
@@ -147,7 +147,7 @@ lappend(List *list, void *datum)
  */
 List *
 lappend_int(List *list, int datum)
-{
+{	StackTrace("lappend_int");
 	Assert(IsIntegerList(list));
 
 	if (list == NIL)
@@ -165,7 +165,7 @@ lappend_int(List *list, int datum)
  */
 List *
 lappend_oid(List *list, Oid datum)
-{
+{	StackTrace("lappend_oid");
 	Assert(IsOidList(list));
 
 	if (list == NIL)
@@ -186,7 +186,7 @@ lappend_oid(List *list, Oid datum)
  */
 static ListCell *
 add_new_cell(List *list, ListCell *prev_cell)
-{
+{	StackTrace("add_new_cell");
 	ListCell   *new_cell;
 
 	new_cell = (ListCell *) palloc(sizeof(*new_cell));
@@ -210,7 +210,7 @@ add_new_cell(List *list, ListCell *prev_cell)
  */
 ListCell *
 lappend_cell(List *list, ListCell *prev, void *datum)
-{
+{	StackTrace("lappend_cell");
 	ListCell   *new_cell;
 
 	Assert(IsPointerList(list));
@@ -223,7 +223,7 @@ lappend_cell(List *list, ListCell *prev, void *datum)
 
 ListCell *
 lappend_cell_int(List *list, ListCell *prev, int datum)
-{
+{	StackTrace("lappend_cell_int");
 	ListCell   *new_cell;
 
 	Assert(IsIntegerList(list));
@@ -236,7 +236,7 @@ lappend_cell_int(List *list, ListCell *prev, int datum)
 
 ListCell *
 lappend_cell_oid(List *list, ListCell *prev, Oid datum)
-{
+{	StackTrace("lappend_cell_oid");
 	ListCell   *new_cell;
 
 	Assert(IsOidList(list));
@@ -260,7 +260,7 @@ lappend_cell_oid(List *list, ListCell *prev, Oid datum)
  */
 List *
 lcons(void *datum, List *list)
-{
+{	StackTrace("lcons");
 	Assert(IsPointerList(list));
 
 	if (list == NIL)
@@ -278,7 +278,7 @@ lcons(void *datum, List *list)
  */
 List *
 lcons_int(int datum, List *list)
-{
+{	StackTrace("lcons_int");
 	Assert(IsIntegerList(list));
 
 	if (list == NIL)
@@ -296,7 +296,7 @@ lcons_int(int datum, List *list)
  */
 List *
 lcons_oid(Oid datum, List *list)
-{
+{	StackTrace("lcons_oid");
 	Assert(IsOidList(list));
 
 	if (list == NIL)
@@ -322,7 +322,7 @@ lcons_oid(Oid datum, List *list)
  */
 List *
 list_concat(List *list1, List *list2)
-{
+{	StackTrace("list_concat");
 	if (list1 == NIL)
 		return list2;
 	if (list2 == NIL)
@@ -351,7 +351,7 @@ list_concat(List *list1, List *list2)
  */
 List *
 list_truncate(List *list, int new_size)
-{
+{	StackTrace("list_truncate");
 	ListCell   *cell;
 	int			n;
 
@@ -387,7 +387,7 @@ list_truncate(List *list, int new_size)
  */
 ListCell *
 list_nth_cell(const List *list, int n)
-{
+{	StackTrace("list_nth_cell");
 	ListCell   *match;
 
 	Assert(list != NIL);
@@ -411,7 +411,7 @@ list_nth_cell(const List *list, int n)
  */
 void *
 list_nth(const List *list, int n)
-{
+{	StackTrace("list_nth");
 	Assert(IsPointerList(list));
 	return lfirst(list_nth_cell(list, n));
 }
@@ -422,7 +422,7 @@ list_nth(const List *list, int n)
  */
 int
 list_nth_int(const List *list, int n)
-{
+{	StackTrace("list_nth_int");
 	Assert(IsIntegerList(list));
 	return lfirst_int(list_nth_cell(list, n));
 }
@@ -433,7 +433,7 @@ list_nth_int(const List *list, int n)
  */
 Oid
 list_nth_oid(const List *list, int n)
-{
+{	StackTrace("list_nth_oid");
 	Assert(IsOidList(list));
 	return lfirst_oid(list_nth_cell(list, n));
 }
@@ -445,7 +445,7 @@ list_nth_oid(const List *list, int n)
  */
 bool
 list_member(const List *list, const void *datum)
-{
+{	StackTrace("list_member");
 	const ListCell *cell;
 
 	Assert(IsPointerList(list));
@@ -466,7 +466,7 @@ list_member(const List *list, const void *datum)
  */
 bool
 list_member_ptr(const List *list, const void *datum)
-{
+{	StackTrace("list_member_ptr");
 	const ListCell *cell;
 
 	Assert(IsPointerList(list));
@@ -486,7 +486,7 @@ list_member_ptr(const List *list, const void *datum)
  */
 bool
 list_member_int(const List *list, int datum)
-{
+{	StackTrace("list_member_int");
 	const ListCell *cell;
 
 	Assert(IsIntegerList(list));
@@ -506,7 +506,7 @@ list_member_int(const List *list, int datum)
  */
 bool
 list_member_oid(const List *list, Oid datum)
-{
+{	StackTrace("list_member_oid");
 	const ListCell *cell;
 
 	Assert(IsOidList(list));
@@ -529,7 +529,7 @@ list_member_oid(const List *list, Oid datum)
  */
 List *
 list_delete_cell(List *list, ListCell *cell, ListCell *prev)
-{
+{	StackTrace("list_delete_cell");
 	check_list_invariants(list);
 	Assert(prev != NULL ? lnext(prev) == cell : list_head(list) == cell);
 
@@ -568,7 +568,7 @@ list_delete_cell(List *list, ListCell *cell, ListCell *prev)
  */
 List *
 list_delete(List *list, void *datum)
-{
+{	StackTrace("list_delete");
 	ListCell   *cell;
 	ListCell   *prev;
 
@@ -591,7 +591,7 @@ list_delete(List *list, void *datum)
 /* As above, but use simple pointer equality */
 List *
 list_delete_ptr(List *list, void *datum)
-{
+{	StackTrace("list_delete_ptr");
 	ListCell   *cell;
 	ListCell   *prev;
 
@@ -614,7 +614,7 @@ list_delete_ptr(List *list, void *datum)
 /* As above, but for integers */
 List *
 list_delete_int(List *list, int datum)
-{
+{	StackTrace("list_delete_int");
 	ListCell   *cell;
 	ListCell   *prev;
 
@@ -637,7 +637,7 @@ list_delete_int(List *list, int datum)
 /* As above, but for OIDs */
 List *
 list_delete_oid(List *list, Oid datum)
-{
+{	StackTrace("list_delete_oid");
 	ListCell   *cell;
 	ListCell   *prev;
 
@@ -667,7 +667,7 @@ list_delete_oid(List *list, Oid datum)
  */
 List *
 list_delete_first(List *list)
-{
+{	StackTrace("list_delete_first");
 	check_list_invariants(list);
 
 	if (list == NIL)
@@ -698,7 +698,7 @@ list_delete_first(List *list)
  */
 List *
 list_union(const List *list1, const List *list2)
-{
+{	StackTrace("list_union");
 	List	   *result;
 	const ListCell *cell;
 
@@ -722,7 +722,7 @@ list_union(const List *list1, const List *list2)
  */
 List *
 list_union_ptr(const List *list1, const List *list2)
-{
+{	StackTrace("list_union_ptr");
 	List	   *result;
 	const ListCell *cell;
 
@@ -745,7 +745,7 @@ list_union_ptr(const List *list1, const List *list2)
  */
 List *
 list_union_int(const List *list1, const List *list2)
-{
+{	StackTrace("list_union_int");
 	List	   *result;
 	const ListCell *cell;
 
@@ -768,7 +768,7 @@ list_union_int(const List *list1, const List *list2)
  */
 List *
 list_union_oid(const List *list1, const List *list2)
-{
+{	StackTrace("list_union_oid");
 	List	   *result;
 	const ListCell *cell;
 
@@ -801,7 +801,7 @@ list_union_oid(const List *list1, const List *list2)
  */
 List *
 list_intersection(const List *list1, const List *list2)
-{
+{	StackTrace("list_intersection");
 	List	   *result;
 	const ListCell *cell;
 
@@ -827,7 +827,7 @@ list_intersection(const List *list1, const List *list2)
  */
 List *
 list_intersection_int(const List *list1, const List *list2)
-{
+{	StackTrace("list_intersection_int");
 	List	   *result;
 	const ListCell *cell;
 
@@ -859,7 +859,7 @@ list_intersection_int(const List *list1, const List *list2)
  */
 List *
 list_difference(const List *list1, const List *list2)
-{
+{	StackTrace("list_difference");
 	const ListCell *cell;
 	List	   *result = NIL;
 
@@ -885,7 +885,7 @@ list_difference(const List *list1, const List *list2)
  */
 List *
 list_difference_ptr(const List *list1, const List *list2)
-{
+{	StackTrace("list_difference_ptr");
 	const ListCell *cell;
 	List	   *result = NIL;
 
@@ -910,7 +910,7 @@ list_difference_ptr(const List *list1, const List *list2)
  */
 List *
 list_difference_int(const List *list1, const List *list2)
-{
+{	StackTrace("list_difference_int");
 	const ListCell *cell;
 	List	   *result = NIL;
 
@@ -935,7 +935,7 @@ list_difference_int(const List *list1, const List *list2)
  */
 List *
 list_difference_oid(const List *list1, const List *list2)
-{
+{	StackTrace("list_difference_oid");
 	const ListCell *cell;
 	List	   *result = NIL;
 
@@ -963,7 +963,7 @@ list_difference_oid(const List *list1, const List *list2)
  */
 List *
 list_append_unique(List *list, void *datum)
-{
+{	StackTrace("list_append_unique");
 	if (list_member(list, datum))
 		return list;
 	else
@@ -976,7 +976,7 @@ list_append_unique(List *list, void *datum)
  */
 List *
 list_append_unique_ptr(List *list, void *datum)
-{
+{	StackTrace("list_append_unique_ptr");
 	if (list_member_ptr(list, datum))
 		return list;
 	else
@@ -988,7 +988,7 @@ list_append_unique_ptr(List *list, void *datum)
  */
 List *
 list_append_unique_int(List *list, int datum)
-{
+{	StackTrace("list_append_unique_int");
 	if (list_member_int(list, datum))
 		return list;
 	else
@@ -1000,7 +1000,7 @@ list_append_unique_int(List *list, int datum)
  */
 List *
 list_append_unique_oid(List *list, Oid datum)
-{
+{	StackTrace("list_append_unique_oid");
 	if (list_member_oid(list, datum))
 		return list;
 	else
@@ -1019,7 +1019,7 @@ list_append_unique_oid(List *list, Oid datum)
  */
 List *
 list_concat_unique(List *list1, List *list2)
-{
+{	StackTrace("list_concat_unique");
 	ListCell   *cell;
 
 	Assert(IsPointerList(list1));
@@ -1041,7 +1041,7 @@ list_concat_unique(List *list1, List *list2)
  */
 List *
 list_concat_unique_ptr(List *list1, List *list2)
-{
+{	StackTrace("list_concat_unique_ptr");
 	ListCell   *cell;
 
 	Assert(IsPointerList(list1));
@@ -1062,7 +1062,7 @@ list_concat_unique_ptr(List *list1, List *list2)
  */
 List *
 list_concat_unique_int(List *list1, List *list2)
-{
+{	StackTrace("list_concat_unique_int");
 	ListCell   *cell;
 
 	Assert(IsIntegerList(list1));
@@ -1083,7 +1083,7 @@ list_concat_unique_int(List *list1, List *list2)
  */
 List *
 list_concat_unique_oid(List *list1, List *list2)
-{
+{	StackTrace("list_concat_unique_oid");
 	ListCell   *cell;
 
 	Assert(IsOidList(list1));
@@ -1104,7 +1104,7 @@ list_concat_unique_oid(List *list1, List *list2)
  */
 static void
 list_free_private(List *list, bool deep)
-{
+{	StackTrace("list_free_private");
 	ListCell   *cell;
 
 	check_list_invariants(list);
@@ -1134,7 +1134,7 @@ list_free_private(List *list, bool deep)
  */
 void
 list_free(List *list)
-{
+{	StackTrace("list_free");
 	list_free_private(list, false);
 }
 
@@ -1148,7 +1148,7 @@ list_free(List *list)
  */
 void
 list_free_deep(List *list)
-{
+{	StackTrace("list_free_deep");
 	/*
 	 * A "deep" free operation only makes sense on a list of pointers.
 	 */
@@ -1161,7 +1161,7 @@ list_free_deep(List *list)
  */
 List *
 list_copy(const List *oldlist)
-{
+{	StackTrace("list_copy");
 	List	   *newlist;
 	ListCell   *newlist_prev;
 	ListCell   *oldlist_cur;
@@ -1204,7 +1204,7 @@ list_copy(const List *oldlist)
  */
 List *
 list_copy_tail(const List *oldlist, int nskip)
-{
+{	StackTrace("list_copy_tail");
 	List	   *newlist;
 	ListCell   *newlist_prev;
 	ListCell   *oldlist_cur;
@@ -1272,6 +1272,6 @@ int			length(const List *list);
 
 int
 length(const List *list)
-{
+{	StackTrace("length");
 	return list_length(list);
 }

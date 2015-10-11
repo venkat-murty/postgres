@@ -35,7 +35,7 @@
  */
 static int
 rightneighbor(int x)
-{
+{	StackTrace("rightneighbor");
 	/*
 	 * Move right. This might wrap around, stepping to the leftmost node at
 	 * the next level.
@@ -61,7 +61,7 @@ rightneighbor(int x)
  */
 bool
 fsm_set_avail(Page page, int slot, uint8 value)
-{
+{	StackTrace("fsm_set_avail");
 	int			nodeno = NonLeafNodesPerPage + slot;
 	FSMPage		fsmpage = (FSMPage) PageGetContents(page);
 	uint8		oldvalue;
@@ -120,7 +120,7 @@ fsm_set_avail(Page page, int slot, uint8 value)
  */
 uint8
 fsm_get_avail(Page page, int slot)
-{
+{	StackTrace("fsm_get_avail");
 	FSMPage		fsmpage = (FSMPage) PageGetContents(page);
 
 	Assert(slot < LeafNodesPerPage);
@@ -136,7 +136,7 @@ fsm_get_avail(Page page, int slot)
  */
 uint8
 fsm_get_max_avail(Page page)
-{
+{	StackTrace("fsm_get_max_avail");
 	FSMPage		fsmpage = (FSMPage) PageGetContents(page);
 
 	return fsmpage->fp_nodes[0];
@@ -157,7 +157,7 @@ fsm_get_max_avail(Page page)
 int
 fsm_search_avail(Buffer buf, uint8 minvalue, bool advancenext,
 				 bool exclusive_lock_held)
-{
+{	StackTrace("fsm_search_avail");
 	Page		page = BufferGetPage(buf);
 	FSMPage		fsmpage = (FSMPage) PageGetContents(page);
 	int			nodeno;
@@ -311,7 +311,7 @@ restart:
  */
 bool
 fsm_truncate_avail(Page page, int nslots)
-{
+{	StackTrace("fsm_truncate_avail");
 	FSMPage		fsmpage = (FSMPage) PageGetContents(page);
 	uint8	   *ptr;
 	bool		changed = false;
@@ -340,7 +340,7 @@ fsm_truncate_avail(Page page, int nslots)
  */
 bool
 fsm_rebuild_page(Page page)
-{
+{	StackTrace("fsm_rebuild_page");
 	FSMPage		fsmpage = (FSMPage) PageGetContents(page);
 	bool		changed = false;
 	int			nodeno;

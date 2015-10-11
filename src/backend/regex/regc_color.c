@@ -48,7 +48,7 @@
 static void
 initcm(struct vars * v,
 	   struct colormap * cm)
-{
+{	StackTrace("initcm");
 	int			i;
 	int			j;
 	union tree *t;
@@ -89,7 +89,7 @@ initcm(struct vars * v,
  */
 static void
 freecm(struct colormap * cm)
-{
+{	StackTrace("freecm");
 	size_t		i;
 	union tree *cb;
 
@@ -149,7 +149,7 @@ static color					/* previous color */
 setcolor(struct colormap * cm,
 		 chr c,
 		 pcolor co)
-{
+{	StackTrace("setcolor");
 	uchr		uc = c;
 	int			shift;
 	int			level;
@@ -208,7 +208,7 @@ setcolor(struct colormap * cm,
  */
 static color
 maxcolor(struct colormap * cm)
-{
+{	StackTrace("maxcolor");
 	if (CISERR())
 		return COLORLESS;
 
@@ -221,7 +221,7 @@ maxcolor(struct colormap * cm)
  */
 static color					/* COLORLESS for error */
 newcolor(struct colormap * cm)
-{
+{	StackTrace("newcolor");
 	struct colordesc *cd;
 	size_t		n;
 
@@ -294,7 +294,7 @@ newcolor(struct colormap * cm)
 static void
 freecolor(struct colormap * cm,
 		  pcolor co)
-{
+{	StackTrace("freecolor");
 	struct colordesc *cd = &cm->cd[co];
 	color		pco,
 				nco;			/* for freelist scan */
@@ -352,7 +352,7 @@ freecolor(struct colormap * cm,
  */
 static color
 pseudocolor(struct colormap * cm)
-{
+{	StackTrace("pseudocolor");
 	color		co;
 
 	co = newcolor(cm);
@@ -368,7 +368,7 @@ pseudocolor(struct colormap * cm)
  */
 static color
 subcolor(struct colormap * cm, chr c)
-{
+{	StackTrace("subcolor");
 	color		co;				/* current color of c */
 	color		sco;			/* new subcolor */
 
@@ -394,7 +394,7 @@ subcolor(struct colormap * cm, chr c)
 static color
 newsub(struct colormap * cm,
 	   pcolor co)
-{
+{	StackTrace("newsub");
 	color		sco;			/* new subcolor */
 
 	sco = cm->cd[co].sub;
@@ -425,7 +425,7 @@ subrange(struct vars * v,
 		 chr to,
 		 struct state * lp,
 		 struct state * rp)
-{
+{	StackTrace("subrange");
 	uchr		uf;
 	int			i;
 
@@ -461,7 +461,7 @@ subblock(struct vars * v,
 		 chr start,				/* first of BYTTAB chrs */
 		 struct state * lp,
 		 struct state * rp)
-{
+{	StackTrace("subblock");
 	uchr		uc = start;
 	struct colormap *cm = v->cm;
 	int			shift;
@@ -556,7 +556,7 @@ subblock(struct vars * v,
 static void
 okcolors(struct nfa * nfa,
 		 struct colormap * cm)
-{
+{	StackTrace("okcolors");
 	struct colordesc *cd;
 	struct colordesc *end = CDEND(cm);
 	struct colordesc *scd;
@@ -615,7 +615,7 @@ okcolors(struct nfa * nfa,
 static void
 colorchain(struct colormap * cm,
 		   struct arc * a)
-{
+{	StackTrace("colorchain");
 	struct colordesc *cd = &cm->cd[a->co];
 
 	if (cd->arcs != NULL)
@@ -631,7 +631,7 @@ colorchain(struct colormap * cm,
 static void
 uncolorchain(struct colormap * cm,
 			 struct arc * a)
-{
+{	StackTrace("uncolorchain");
 	struct colordesc *cd = &cm->cd[a->co];
 	struct arc *aa = a->colorchainRev;
 
@@ -661,7 +661,7 @@ rainbow(struct nfa * nfa,
 		pcolor but,				/* COLORLESS if no exceptions */
 		struct state * from,
 		struct state * to)
-{
+{	StackTrace("rainbow");
 	struct colordesc *cd;
 	struct colordesc *end = CDEND(cm);
 	color		co;
@@ -685,7 +685,7 @@ colorcomplement(struct nfa * nfa,
 										 * outarcs */
 				struct state * from,
 				struct state * to)
-{
+{	StackTrace("colorcomplement");
 	struct colordesc *cd;
 	struct colordesc *end = CDEND(cm);
 	color		co;
@@ -706,7 +706,7 @@ colorcomplement(struct nfa * nfa,
 static void
 dumpcolors(struct colormap * cm,
 		   FILE *f)
-{
+{	StackTrace("dumpcolors");
 	struct colordesc *cd;
 	struct colordesc *end;
 	color		co;
@@ -751,7 +751,7 @@ fillcheck(struct colormap * cm,
 		  union tree * tree,
 		  int level,			/* level number (top == 0) of this block */
 		  FILE *f)
-{
+{	StackTrace("number");
 	int			i;
 	union tree *t;
 	union tree *fillt = &cm->tree[level + 1];
@@ -778,7 +778,7 @@ fillcheck(struct colormap * cm,
 static void
 dumpchr(chr c,
 		FILE *f)
-{
+{	StackTrace("dumpchr");
 	if (c == '\\')
 		fprintf(f, "\\\\");
 	else if (c > ' ' && c <= '~')

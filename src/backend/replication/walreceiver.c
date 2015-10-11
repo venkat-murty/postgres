@@ -151,7 +151,7 @@ static void WalRcvQuickDieHandler(SIGNAL_ARGS);
 
 static void
 ProcessWalRcvInterrupts(void)
-{
+{	StackTrace("ProcessWalRcvInterrupts");
 	/*
 	 * Although walreceiver interrupt handling doesn't use the same scheme as
 	 * regular backends, call CHECK_FOR_INTERRUPTS() to make sure we receive
@@ -170,14 +170,14 @@ ProcessWalRcvInterrupts(void)
 
 static void
 EnableWalRcvImmediateExit(void)
-{
+{	StackTrace("EnableWalRcvImmediateExit");
 	WalRcvImmediateInterruptOK = true;
 	ProcessWalRcvInterrupts();
 }
 
 static void
 DisableWalRcvImmediateExit(void)
-{
+{	StackTrace("DisableWalRcvImmediateExit");
 	WalRcvImmediateInterruptOK = false;
 	ProcessWalRcvInterrupts();
 }
@@ -185,7 +185,7 @@ DisableWalRcvImmediateExit(void)
 /* Main entry point for walreceiver process */
 void
 WalReceiverMain(void)
-{
+{	StackTrace("WalReceiverMain");
 	char		conninfo[MAXCONNINFO];
 	char		slotname[NAMEDATALEN];
 	XLogRecPtr	startpoint;
@@ -558,7 +558,7 @@ WalReceiverMain(void)
  */
 static void
 WalRcvWaitForStartPosition(XLogRecPtr *startpoint, TimeLineID *startpointTLI)
-{
+{	StackTrace("WalRcvWaitForStartPosition");
 	/* use volatile pointer to prevent code rearrangement */
 	volatile WalRcvData *walrcv = WalRcv;
 	int			state;
@@ -643,7 +643,7 @@ WalRcvWaitForStartPosition(XLogRecPtr *startpoint, TimeLineID *startpointTLI)
  */
 static void
 WalRcvFetchTimeLineHistoryFiles(TimeLineID first, TimeLineID last)
-{
+{	StackTrace("WalRcvFetchTimeLineHistoryFiles");
 	TimeLineID	tli;
 
 	for (tli = first; tli <= last; tli++)
@@ -692,7 +692,7 @@ WalRcvFetchTimeLineHistoryFiles(TimeLineID first, TimeLineID last)
  */
 static void
 WalRcvDie(int code, Datum arg)
-{
+{	StackTrace("WalRcvDie");
 	/* use volatile pointer to prevent code rearrangement */
 	volatile WalRcvData *walrcv = WalRcv;
 
@@ -723,7 +723,7 @@ WalRcvDie(int code, Datum arg)
 /* SIGHUP: set flag to re-read config file at next convenient time */
 static void
 WalRcvSigHupHandler(SIGNAL_ARGS)
-{
+{	StackTrace("WalRcvSigHupHandler");
 	got_SIGHUP = true;
 }
 
@@ -731,7 +731,7 @@ WalRcvSigHupHandler(SIGNAL_ARGS)
 /* SIGUSR1: used by latch mechanism */
 static void
 WalRcvSigUsr1Handler(SIGNAL_ARGS)
-{
+{	StackTrace("WalRcvSigUsr1Handler");
 	int			save_errno = errno;
 
 	latch_sigusr1_handler();
@@ -742,7 +742,7 @@ WalRcvSigUsr1Handler(SIGNAL_ARGS)
 /* SIGTERM: set flag for main loop, or shutdown immediately if safe */
 static void
 WalRcvShutdownHandler(SIGNAL_ARGS)
-{
+{	StackTrace("WalRcvShutdownHandler");
 	int			save_errno = errno;
 
 	got_SIGTERM = true;
@@ -764,7 +764,7 @@ WalRcvShutdownHandler(SIGNAL_ARGS)
  */
 static void
 WalRcvQuickDieHandler(SIGNAL_ARGS)
-{
+{	StackTrace("WalRcvQuickDieHandler");
 	PG_SETMASK(&BlockSig);
 
 	/*
@@ -793,7 +793,7 @@ WalRcvQuickDieHandler(SIGNAL_ARGS)
  */
 static void
 XLogWalRcvProcessMsg(unsigned char type, char *buf, Size len)
-{
+{	StackTrace("XLogWalRcvProcessMsg");
 	int			hdrlen;
 	XLogRecPtr	dataStart;
 	XLogRecPtr	walEnd;
@@ -862,7 +862,7 @@ XLogWalRcvProcessMsg(unsigned char type, char *buf, Size len)
  */
 static void
 XLogWalRcvWrite(char *buf, Size nbytes, XLogRecPtr recptr)
-{
+{	StackTrace("XLogWalRcvWrite");
 	int			startoff;
 	int			byteswritten;
 
@@ -971,7 +971,7 @@ XLogWalRcvWrite(char *buf, Size nbytes, XLogRecPtr recptr)
  */
 static void
 XLogWalRcvFlush(bool dying)
-{
+{	StackTrace("XLogWalRcvFlush");
 	if (LogstreamResult.Flush < LogstreamResult.Write)
 	{
 		/* use volatile pointer to prevent code rearrangement */
@@ -1031,7 +1031,7 @@ XLogWalRcvFlush(bool dying)
  */
 static void
 XLogWalRcvSendReply(bool force, bool requestReply)
-{
+{	StackTrace("XLogWalRcvSendReply");
 	static XLogRecPtr writePtr = 0;
 	static XLogRecPtr flushPtr = 0;
 	XLogRecPtr	applyPtr;
@@ -1097,7 +1097,7 @@ XLogWalRcvSendReply(bool force, bool requestReply)
  */
 static void
 XLogWalRcvSendHSFeedback(bool immed)
-{
+{	StackTrace("XLogWalRcvSendHSFeedback");
 	TimestampTz now;
 	TransactionId nextXid;
 	uint32		nextEpoch;
@@ -1178,7 +1178,7 @@ XLogWalRcvSendHSFeedback(bool immed)
  */
 static void
 ProcessWalSndrMessage(XLogRecPtr walEnd, TimestampTz sendTime)
-{
+{	StackTrace("ProcessWalSndrMessage");
 	/* use volatile pointer to prevent code rearrangement */
 	volatile WalRcvData *walrcv = WalRcv;
 

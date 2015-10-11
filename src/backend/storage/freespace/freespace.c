@@ -128,7 +128,7 @@ static uint8 fsm_vacuum_page(Relation rel, FSMAddress addr, bool *eof);
  */
 BlockNumber
 GetPageWithFreeSpace(Relation rel, Size spaceNeeded)
-{
+{	StackTrace("GetPageWithFreeSpace");
 	uint8		min_cat = fsm_space_needed_to_cat(spaceNeeded);
 
 	return fsm_search(rel, min_cat);
@@ -146,7 +146,7 @@ GetPageWithFreeSpace(Relation rel, Size spaceNeeded)
 BlockNumber
 RecordAndGetPageWithFreeSpace(Relation rel, BlockNumber oldPage,
 							  Size oldSpaceAvail, Size spaceNeeded)
-{
+{	StackTrace("RecordAndGetPageWithFreeSpace");
 	int			old_cat = fsm_space_avail_to_cat(oldSpaceAvail);
 	int			search_cat = fsm_space_needed_to_cat(spaceNeeded);
 	FSMAddress	addr;
@@ -177,7 +177,7 @@ RecordAndGetPageWithFreeSpace(Relation rel, BlockNumber oldPage,
  */
 void
 RecordPageWithFreeSpace(Relation rel, BlockNumber heapBlk, Size spaceAvail)
-{
+{	StackTrace("RecordPageWithFreeSpace");
 	int			new_cat = fsm_space_avail_to_cat(spaceAvail);
 	FSMAddress	addr;
 	uint16		slot;
@@ -195,7 +195,7 @@ RecordPageWithFreeSpace(Relation rel, BlockNumber heapBlk, Size spaceAvail)
 void
 XLogRecordPageWithFreeSpace(RelFileNode rnode, BlockNumber heapBlk,
 							Size spaceAvail)
-{
+{	StackTrace("XLogRecordPageWithFreeSpace");
 	int			new_cat = fsm_space_avail_to_cat(spaceAvail);
 	FSMAddress	addr;
 	uint16		slot;
@@ -226,7 +226,7 @@ XLogRecordPageWithFreeSpace(RelFileNode rnode, BlockNumber heapBlk,
  */
 Size
 GetRecordedFreeSpace(Relation rel, BlockNumber heapBlk)
-{
+{	StackTrace("GetRecordedFreeSpace");
 	FSMAddress	addr;
 	uint16		slot;
 	Buffer		buf;
@@ -255,7 +255,7 @@ GetRecordedFreeSpace(Relation rel, BlockNumber heapBlk)
  */
 void
 FreeSpaceMapTruncateRel(Relation rel, BlockNumber nblocks)
-{
+{	StackTrace("FreeSpaceMapTruncateRel");
 	BlockNumber new_nfsmblocks;
 	FSMAddress	first_removed_address;
 	uint16		first_removed_slot;
@@ -317,7 +317,7 @@ FreeSpaceMapTruncateRel(Relation rel, BlockNumber nblocks)
  */
 void
 FreeSpaceMapVacuum(Relation rel)
-{
+{	StackTrace("FreeSpaceMapVacuum");
 	bool		dummy;
 
 	/*
@@ -334,7 +334,7 @@ FreeSpaceMapVacuum(Relation rel)
  */
 static uint8
 fsm_space_avail_to_cat(Size avail)
-{
+{	StackTrace("fsm_space_avail_to_cat");
 	int			cat;
 
 	Assert(avail < BLCKSZ);
@@ -360,7 +360,7 @@ fsm_space_avail_to_cat(Size avail)
  */
 static Size
 fsm_space_cat_to_avail(uint8 cat)
-{
+{	StackTrace("fsm_space_cat_to_avail");
 	/* The highest category represents exactly MaxFSMRequestSize bytes. */
 	if (cat == 255)
 		return MaxFSMRequestSize;
@@ -374,7 +374,7 @@ fsm_space_cat_to_avail(uint8 cat)
  */
 static uint8
 fsm_space_needed_to_cat(Size needed)
-{
+{	StackTrace("fsm_space_needed_to_cat");
 	int			cat;
 
 	/* Can't ask for more space than the highest category represents */
@@ -397,7 +397,7 @@ fsm_space_needed_to_cat(Size needed)
  */
 static BlockNumber
 fsm_logical_to_physical(FSMAddress addr)
-{
+{	StackTrace("fsm_logical_to_physical");
 	BlockNumber pages;
 	int			leafno;
 	int			l;
@@ -433,7 +433,7 @@ fsm_logical_to_physical(FSMAddress addr)
  */
 static FSMAddress
 fsm_get_location(BlockNumber heapblk, uint16 *slot)
-{
+{	StackTrace("fsm_get_location");
 	FSMAddress	addr;
 
 	addr.level = FSM_BOTTOM_LEVEL;
@@ -448,7 +448,7 @@ fsm_get_location(BlockNumber heapblk, uint16 *slot)
  */
 static BlockNumber
 fsm_get_heap_blk(FSMAddress addr, uint16 slot)
-{
+{	StackTrace("fsm_get_heap_blk");
 	Assert(addr.level == FSM_BOTTOM_LEVEL);
 	return ((unsigned int) addr.logpageno) * SlotsPerFSMPage + slot;
 }
@@ -459,7 +459,7 @@ fsm_get_heap_blk(FSMAddress addr, uint16 slot)
  */
 static FSMAddress
 fsm_get_parent(FSMAddress child, uint16 *slot)
-{
+{	StackTrace("fsm_get_parent");
 	FSMAddress	parent;
 
 	Assert(child.level < FSM_ROOT_LEVEL);
@@ -477,7 +477,7 @@ fsm_get_parent(FSMAddress child, uint16 *slot)
  */
 static FSMAddress
 fsm_get_child(FSMAddress parent, uint16 slot)
-{
+{	StackTrace("fsm_get_child");
 	FSMAddress	child;
 
 	Assert(parent.level > FSM_BOTTOM_LEVEL);
@@ -496,7 +496,7 @@ fsm_get_child(FSMAddress parent, uint16 slot)
  */
 static Buffer
 fsm_readbuf(Relation rel, FSMAddress addr, bool extend)
-{
+{	StackTrace("fsm_readbuf");
 	BlockNumber blkno = fsm_logical_to_physical(addr);
 	Buffer		buf;
 
@@ -547,7 +547,7 @@ fsm_readbuf(Relation rel, FSMAddress addr, bool extend)
  */
 static void
 fsm_extend(Relation rel, BlockNumber fsm_nblocks)
-{
+{	StackTrace("fsm_extend");
 	BlockNumber fsm_nblocks_now;
 	Page		pg;
 
@@ -607,7 +607,7 @@ fsm_extend(Relation rel, BlockNumber fsm_nblocks)
 static int
 fsm_set_and_search(Relation rel, FSMAddress addr, uint16 slot,
 				   uint8 newValue, uint8 minValue)
-{
+{	StackTrace("fsm_set_and_search");
 	Buffer		buf;
 	Page		page;
 	int			newslot = -1;
@@ -638,7 +638,7 @@ fsm_set_and_search(Relation rel, FSMAddress addr, uint16 slot,
  */
 static BlockNumber
 fsm_search(Relation rel, uint8 min_cat)
-{
+{	StackTrace("fsm_search");
 	int			restarts = 0;
 	FSMAddress	addr = FSM_ROOT_ADDRESS;
 
@@ -726,7 +726,7 @@ fsm_search(Relation rel, uint8 min_cat)
  */
 static uint8
 fsm_vacuum_page(Relation rel, FSMAddress addr, bool *eof_p)
-{
+{	StackTrace("fsm_vacuum_page");
 	Buffer		buf;
 	Page		page;
 	uint8		max_avail;

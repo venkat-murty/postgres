@@ -27,7 +27,7 @@
  */
 ExpandedObjectHeader *
 DatumGetEOHP(Datum d)
-{
+{	StackTrace("DatumGetEOHP");
 	varattrib_1b_e *datum = (varattrib_1b_e *) DatumGetPointer(d);
 	varatt_expanded ptr;
 
@@ -48,7 +48,7 @@ void
 EOH_init_header(ExpandedObjectHeader *eohptr,
 				const ExpandedObjectMethods *methods,
 				MemoryContext obj_context)
-{
+{	StackTrace("EOH_init_header");
 	varatt_expanded ptr;
 
 	eohptr->vl_len_ = EOH_HEADER_MAGIC;
@@ -73,14 +73,14 @@ EOH_init_header(ExpandedObjectHeader *eohptr,
 
 Size
 EOH_get_flat_size(ExpandedObjectHeader *eohptr)
-{
+{	StackTrace("EOH_get_flat_size");
 	return (*eohptr->eoh_methods->get_flat_size) (eohptr);
 }
 
 void
 EOH_flatten_into(ExpandedObjectHeader *eohptr,
 				 void *result, Size allocated_size)
-{
+{	StackTrace("EOH_flatten_into");
 	(*eohptr->eoh_methods->flatten_into) (eohptr, result, allocated_size);
 }
 
@@ -89,7 +89,7 @@ EOH_flatten_into(ExpandedObjectHeader *eohptr,
  */
 bool
 DatumIsReadWriteExpandedObject(Datum d, bool isnull, int16 typlen)
-{
+{	StackTrace("DatumIsReadWriteExpandedObject");
 	/* Reject if it's NULL or not a varlena type */
 	if (isnull || typlen != -1)
 		return false;
@@ -107,7 +107,7 @@ DatumIsReadWriteExpandedObject(Datum d, bool isnull, int16 typlen)
  */
 Datum
 MakeExpandedObjectReadOnly(Datum d, bool isnull, int16 typlen)
-{
+{	StackTrace("MakeExpandedObjectReadOnly");
 	ExpandedObjectHeader *eohptr;
 
 	/* Nothing to do if it's NULL or not a varlena type */
@@ -134,7 +134,7 @@ MakeExpandedObjectReadOnly(Datum d, bool isnull, int16 typlen)
  */
 Datum
 TransferExpandedObject(Datum d, MemoryContext new_parent)
-{
+{	StackTrace("TransferExpandedObject");
 	ExpandedObjectHeader *eohptr = DatumGetEOHP(d);
 
 	/* Assert caller gave a R/W pointer */
@@ -152,7 +152,7 @@ TransferExpandedObject(Datum d, MemoryContext new_parent)
  */
 void
 DeleteExpandedObject(Datum d)
-{
+{	StackTrace("DeleteExpandedObject");
 	ExpandedObjectHeader *eohptr = DatumGetEOHP(d);
 
 	/* Assert caller gave a R/W pointer */

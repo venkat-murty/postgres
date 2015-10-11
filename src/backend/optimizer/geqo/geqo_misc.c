@@ -32,7 +32,7 @@
  */
 static double
 avg_pool(Pool *pool)
-{
+{	StackTrace("avg_pool");
 	int			i;
 	double		cumulative = 0.0;
 
@@ -55,7 +55,7 @@ avg_pool(Pool *pool)
  */
 void
 print_pool(FILE *fp, Pool *pool, int start, int stop)
-{
+{	StackTrace("print_pool");
 	int			i,
 				j;
 
@@ -89,7 +89,7 @@ print_pool(FILE *fp, Pool *pool, int start, int stop)
  */
 void
 print_gen(FILE *fp, Pool *pool, int generation)
-{
+{	StackTrace("print_gen");
 	int			lowest;
 
 	/* Get index to lowest ranking gene in poplulation. */
@@ -110,7 +110,7 @@ print_gen(FILE *fp, Pool *pool, int generation)
 
 void
 print_edge_table(FILE *fp, Edge *edge_table, int num_gene)
-{
+{	StackTrace("print_edge_table");
 	int			i,
 				j;
 

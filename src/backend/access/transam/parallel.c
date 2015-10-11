@@ -114,7 +114,7 @@ static void ParallelWorkerMain(Datum main_arg);
  */
 ParallelContext *
 CreateParallelContext(parallel_worker_main_type entrypoint, int nworkers)
-{
+{	StackTrace("CreateParallelContext");
 	MemoryContext oldcontext;
 	ParallelContext *pcxt;
 
@@ -158,7 +158,7 @@ ParallelContext *
 CreateParallelContextForExternalFunction(char *library_name,
 										 char *function_name,
 										 int nworkers)
-{
+{	StackTrace("CreateParallelContextForExternalFunction");
 	MemoryContext oldcontext;
 	ParallelContext *pcxt;
 
@@ -183,7 +183,7 @@ CreateParallelContextForExternalFunction(char *library_name,
  */
 void
 InitializeParallelDSM(ParallelContext *pcxt)
-{
+{	StackTrace("InitializeParallelDSM");
 	MemoryContext oldcontext;
 	Size		library_len = 0;
 	Size		guc_len = 0;
@@ -376,7 +376,7 @@ InitializeParallelDSM(ParallelContext *pcxt)
  */
 void
 LaunchParallelWorkers(ParallelContext *pcxt)
-{
+{	StackTrace("LaunchParallelWorkers");
 	MemoryContext oldcontext;
 	BackgroundWorker worker;
 	int			i;
@@ -452,7 +452,7 @@ LaunchParallelWorkers(ParallelContext *pcxt)
  */
 void
 WaitForParallelWorkersToFinish(ParallelContext *pcxt)
-{
+{	StackTrace("WaitForParallelWorkersToFinish");
 	for (;;)
 	{
 		bool		anyone_alive = false;
@@ -501,7 +501,7 @@ WaitForParallelWorkersToFinish(ParallelContext *pcxt)
  */
 void
 DestroyParallelContext(ParallelContext *pcxt)
-{
+{	StackTrace("DestroyParallelContext");
 	int			i;
 
 	/*
@@ -594,7 +594,7 @@ DestroyParallelContext(ParallelContext *pcxt)
  */
 bool
 ParallelContextActive(void)
-{
+{	StackTrace("ParallelContextActive");
 	return !dlist_is_empty(&pcxt_list);
 }
 
@@ -603,7 +603,7 @@ ParallelContextActive(void)
  */
 void
 HandleParallelMessageInterrupt(void)
-{
+{	StackTrace("HandleParallelMessageInterrupt");
 	int			save_errno = errno;
 
 	InterruptPending = true;
@@ -618,7 +618,7 @@ HandleParallelMessageInterrupt(void)
  */
 void
 HandleParallelMessages(void)
-{
+{	StackTrace("HandleParallelMessages");
 	dlist_iter	iter;
 
 	ParallelMessagePending = false;
@@ -676,7 +676,7 @@ HandleParallelMessages(void)
  */
 static void
 HandleParallelMessage(ParallelContext *pcxt, int i, StringInfo msg)
-{
+{	StackTrace("HandleParallelMessage");
 	char		msgtype;
 
 	msgtype = pq_getmsgbyte(msg);
@@ -760,7 +760,7 @@ HandleParallelMessage(ParallelContext *pcxt, int i, StringInfo msg)
  */
 void
 AtEOSubXact_Parallel(bool isCommit, SubTransactionId mySubId)
-{
+{	StackTrace("AtEOSubXact_Parallel");
 	while (!dlist_is_empty(&pcxt_list))
 	{
 		ParallelContext *pcxt;
@@ -779,7 +779,7 @@ AtEOSubXact_Parallel(bool isCommit, SubTransactionId mySubId)
  */
 void
 AtEOXact_Parallel(bool isCommit)
-{
+{	StackTrace("AtEOXact_Parallel");
 	while (!dlist_is_empty(&pcxt_list))
 	{
 		ParallelContext *pcxt;
@@ -796,7 +796,7 @@ AtEOXact_Parallel(bool isCommit)
  */
 static void
 ParallelWorkerMain(Datum main_arg)
-{
+{	StackTrace("ParallelWorkerMain");
 	dsm_segment *seg;
 	shm_toc    *toc;
 	FixedParallelState *fps;
@@ -966,7 +966,7 @@ ParallelWorkerMain(Datum main_arg)
  */
 static void
 ParallelExtensionTrampoline(dsm_segment *seg, shm_toc *toc)
-{
+{	StackTrace("ParallelExtensionTrampoline");
 	char	   *extensionstate;
 	char	   *library_name;
 	char	   *function_name;
@@ -989,7 +989,7 @@ ParallelExtensionTrampoline(dsm_segment *seg, shm_toc *toc)
  */
 static void
 ParallelErrorContext(void *arg)
-{
+{	StackTrace("ParallelErrorContext");
 	errcontext("parallel worker, pid %d", *(int32 *) arg);
 }
 
@@ -999,7 +999,7 @@ ParallelErrorContext(void *arg)
  */
 void
 ParallelWorkerReportLastRecEnd(XLogRecPtr last_xlog_end)
-{
+{	StackTrace("ParallelWorkerReportLastRecEnd");
 	FixedParallelState *fps = MyFixedParallelState;
 
 	Assert(fps != NULL);

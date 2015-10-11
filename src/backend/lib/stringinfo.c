@@ -26,7 +26,7 @@
  */
 StringInfo
 makeStringInfo(void)
-{
+{	StackTrace("makeStringInfo");
 	StringInfo	res;
 
 	res = (StringInfo) palloc(sizeof(StringInfoData));
@@ -44,7 +44,7 @@ makeStringInfo(void)
  */
 void
 initStringInfo(StringInfo str)
-{
+{	StackTrace("initStringInfo");
 	int			size = 1024;	/* initial default buffer size */
 
 	str->data = (char *) palloc(size);
@@ -60,7 +60,7 @@ initStringInfo(StringInfo str)
  */
 void
 resetStringInfo(StringInfo str)
-{
+{	StackTrace("resetStringInfo");
 	str->data[0] = '\0';
 	str->len = 0;
 	str->cursor = 0;
@@ -76,7 +76,7 @@ resetStringInfo(StringInfo str)
  */
 void
 appendStringInfo(StringInfo str, const char *fmt,...)
-{
+{	StackTrace("appendStringInfo");
 	for (;;)
 	{
 		va_list		args;
@@ -112,7 +112,7 @@ appendStringInfo(StringInfo str, const char *fmt,...)
  */
 int
 appendStringInfoVA(StringInfo str, const char *fmt, va_list args)
-{
+{	StackTrace("appendStringInfoVA");
 	int			avail;
 	size_t		nprinted;
 
@@ -155,7 +155,7 @@ appendStringInfoVA(StringInfo str, const char *fmt, va_list args)
  */
 void
 appendStringInfoString(StringInfo str, const char *s)
-{
+{	StackTrace("appendStringInfoString");
 	appendBinaryStringInfo(str, s, strlen(s));
 }
 
@@ -167,7 +167,7 @@ appendStringInfoString(StringInfo str, const char *s)
  */
 void
 appendStringInfoChar(StringInfo str, char ch)
-{
+{	StackTrace("appendStringInfoChar");
 	/* Make more room if needed */
 	if (str->len + 1 >= str->maxlen)
 		enlargeStringInfo(str, 1);
@@ -185,7 +185,7 @@ appendStringInfoChar(StringInfo str, char ch)
  */
 void
 appendStringInfoSpaces(StringInfo str, int count)
-{
+{	StackTrace("appendStringInfoSpaces");
 	if (count > 0)
 	{
 		/* Make more room if needed */
@@ -206,7 +206,7 @@ appendStringInfoSpaces(StringInfo str, int count)
  */
 void
 appendBinaryStringInfo(StringInfo str, const char *data, int datalen)
-{
+{	StackTrace("appendBinaryStringInfo");
 	Assert(str != NULL);
 
 	/* Make more room if needed */
@@ -243,7 +243,7 @@ appendBinaryStringInfo(StringInfo str, const char *data, int datalen)
  */
 void
 enlargeStringInfo(StringInfo str, int needed)
-{
+{	StackTrace("enlargeStringInfo");
 	int			newlen;
 
 	/*

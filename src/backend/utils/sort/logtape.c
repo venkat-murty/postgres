@@ -201,7 +201,7 @@ static void ltsDumpBuffer(LogicalTapeSet *lts, LogicalTape *lt);
  */
 static void
 ltsWriteBlock(LogicalTapeSet *lts, long blocknum, void *buffer)
-{
+{	StackTrace("ltsWriteBlock");
 	if (BufFileSeekBlock(lts->pfile, blocknum) != 0 ||
 		BufFileWrite(lts->pfile, buffer, BLCKSZ) != BLCKSZ)
 		ereport(ERROR,
@@ -218,7 +218,7 @@ ltsWriteBlock(LogicalTapeSet *lts, long blocknum, void *buffer)
  */
 static void
 ltsReadBlock(LogicalTapeSet *lts, long blocknum, void *buffer)
-{
+{	StackTrace("ltsReadBlock");
 	if (BufFileSeekBlock(lts->pfile, blocknum) != 0 ||
 		BufFileRead(lts->pfile, buffer, BLCKSZ) != BLCKSZ)
 		ereport(ERROR,
@@ -232,7 +232,7 @@ ltsReadBlock(LogicalTapeSet *lts, long blocknum, void *buffer)
  */
 static int
 freeBlocks_cmp(const void *a, const void *b)
-{
+{	StackTrace("freeBlocks_cmp");
 	long		ablk = *((const long *) a);
 	long		bblk = *((const long *) b);
 
@@ -252,7 +252,7 @@ freeBlocks_cmp(const void *a, const void *b)
  */
 static long
 ltsGetFreeBlock(LogicalTapeSet *lts)
-{
+{	StackTrace("ltsGetFreeBlock");
 	/*
 	 * If there are multiple free blocks, we select the one appearing last in
 	 * freeBlocks[] (after sorting the array if needed).  If there are none,
@@ -277,7 +277,7 @@ ltsGetFreeBlock(LogicalTapeSet *lts)
  */
 static void
 ltsReleaseBlock(LogicalTapeSet *lts, long blocknum)
-{
+{	StackTrace("ltsReleaseBlock");
 	int			ndx;
 
 	/*
@@ -318,7 +318,7 @@ ltsReleaseBlock(LogicalTapeSet *lts, long blocknum)
 static void
 ltsRecordBlockNum(LogicalTapeSet *lts, IndirectBlock *indirect,
 				  long blocknum)
-{
+{	StackTrace("ltsRecordBlockNum");
 	if (indirect->nextSlot >= BLOCKS_PER_INDIR_BLOCK)
 	{
 		/*
@@ -359,7 +359,7 @@ static long
 ltsRewindIndirectBlock(LogicalTapeSet *lts,
 					   IndirectBlock *indirect,
 					   bool freezing)
-{
+{	StackTrace("ltsRewindIndirectBlock");
 	/* Handle case of never-written-to tape */
 	if (indirect == NULL)
 		return -1L;
@@ -402,7 +402,7 @@ ltsRewindIndirectBlock(LogicalTapeSet *lts,
 static long
 ltsRewindFrozenIndirectBlock(LogicalTapeSet *lts,
 							 IndirectBlock *indirect)
-{
+{	StackTrace("ltsRewindFrozenIndirectBlock");
 	/* Handle case of never-written-to tape */
 	if (indirect == NULL)
 		return -1L;
@@ -439,7 +439,7 @@ static long
 ltsRecallNextBlockNum(LogicalTapeSet *lts,
 					  IndirectBlock *indirect,
 					  bool frozen)
-{
+{	StackTrace("ltsRecallNextBlockNum");
 	/* Handle case of never-written-to tape */
 	if (indirect == NULL)
 		return -1L;
@@ -476,7 +476,7 @@ ltsRecallNextBlockNum(LogicalTapeSet *lts,
 static long
 ltsRecallPrevBlockNum(LogicalTapeSet *lts,
 					  IndirectBlock *indirect)
-{
+{	StackTrace("ltsRecallPrevBlockNum");
 	/* Handle case of never-written-to tape */
 	if (indirect == NULL)
 		return -1L;
@@ -510,7 +510,7 @@ ltsRecallPrevBlockNum(LogicalTapeSet *lts,
  */
 LogicalTapeSet *
 LogicalTapeSetCreate(int ntapes)
-{
+{	StackTrace("LogicalTapeSetCreate");
 	LogicalTapeSet *lts;
 	LogicalTape *lt;
 	int			i;
@@ -558,7 +558,7 @@ LogicalTapeSetCreate(int ntapes)
  */
 void
 LogicalTapeSetClose(LogicalTapeSet *lts)
-{
+{	StackTrace("LogicalTapeSetClose");
 	LogicalTape *lt;
 	IndirectBlock *ib,
 			   *nextib;
@@ -591,7 +591,7 @@ LogicalTapeSetClose(LogicalTapeSet *lts)
  */
 void
 LogicalTapeSetForgetFreeSpace(LogicalTapeSet *lts)
-{
+{	StackTrace("LogicalTapeSetForgetFreeSpace");
 	lts->forgetFreeSpace = true;
 }
 
@@ -600,7 +600,7 @@ LogicalTapeSetForgetFreeSpace(LogicalTapeSet *lts)
  */
 static void
 ltsDumpBuffer(LogicalTapeSet *lts, LogicalTape *lt)
-{
+{	StackTrace("ltsDumpBuffer");
 	long		datablock = ltsGetFreeBlock(lts);
 
 	Assert(lt->dirty);
@@ -618,7 +618,7 @@ ltsDumpBuffer(LogicalTapeSet *lts, LogicalTape *lt)
 void
 LogicalTapeWrite(LogicalTapeSet *lts, int tapenum,
 				 void *ptr, size_t size)
-{
+{	StackTrace("LogicalTapeWrite");
 	LogicalTape *lt;
 	size_t		nthistime;
 
@@ -678,7 +678,7 @@ LogicalTapeWrite(LogicalTapeSet *lts, int tapenum,
  */
 void
 LogicalTapeRewind(LogicalTapeSet *lts, int tapenum, bool forWrite)
-{
+{	StackTrace("LogicalTapeRewind");
 	LogicalTape *lt;
 	long		datablocknum;
 
@@ -765,7 +765,7 @@ LogicalTapeRewind(LogicalTapeSet *lts, int tapenum, bool forWrite)
 size_t
 LogicalTapeRead(LogicalTapeSet *lts, int tapenum,
 				void *ptr, size_t size)
-{
+{	StackTrace("LogicalTapeRead");
 	LogicalTape *lt;
 	size_t		nread = 0;
 	size_t		nthistime;
@@ -824,7 +824,7 @@ LogicalTapeRead(LogicalTapeSet *lts, int tapenum,
  */
 void
 LogicalTapeFreeze(LogicalTapeSet *lts, int tapenum)
-{
+{	StackTrace("LogicalTapeFreeze");
 	LogicalTape *lt;
 	long		datablocknum;
 
@@ -867,7 +867,7 @@ LogicalTapeFreeze(LogicalTapeSet *lts, int tapenum)
  */
 bool
 LogicalTapeBackspace(LogicalTapeSet *lts, int tapenum, size_t size)
-{
+{	StackTrace("LogicalTapeBackspace");
 	LogicalTape *lt;
 	long		nblocks;
 	int			newpos;
@@ -934,7 +934,7 @@ LogicalTapeBackspace(LogicalTapeSet *lts, int tapenum, size_t size)
 bool
 LogicalTapeSeek(LogicalTapeSet *lts, int tapenum,
 				long blocknum, int offset)
-{
+{	StackTrace("LogicalTapeSeek");
 	LogicalTape *lt;
 
 	Assert(tapenum >= 0 && tapenum < lts->nTapes);
@@ -997,7 +997,7 @@ LogicalTapeSeek(LogicalTapeSet *lts, int tapenum,
 void
 LogicalTapeTell(LogicalTapeSet *lts, int tapenum,
 				long *blocknum, int *offset)
-{
+{	StackTrace("LogicalTapeTell");
 	LogicalTape *lt;
 
 	Assert(tapenum >= 0 && tapenum < lts->nTapes);
@@ -1011,6 +1011,6 @@ LogicalTapeTell(LogicalTapeSet *lts, int tapenum,
  */
 long
 LogicalTapeSetBlocks(LogicalTapeSet *lts)
-{
+{	StackTrace("LogicalTapeSetBlocks");
 	return lts->nFileBlocks;
 }

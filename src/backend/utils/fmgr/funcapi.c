@@ -49,7 +49,7 @@ static TypeFuncClass get_type_func_class(Oid typid);
  */
 FuncCallContext *
 init_MultiFuncCall(PG_FUNCTION_ARGS)
-{
+{	StackTrace("init_MultiFuncCall");
 	FuncCallContext *retval;
 
 	/*
@@ -127,7 +127,7 @@ init_MultiFuncCall(PG_FUNCTION_ARGS)
  */
 FuncCallContext *
 per_MultiFuncCall(PG_FUNCTION_ARGS)
-{
+{	StackTrace("per_MultiFuncCall");
 	FuncCallContext *retval = (FuncCallContext *) fcinfo->flinfo->fn_extra;
 
 	/*
@@ -154,7 +154,7 @@ per_MultiFuncCall(PG_FUNCTION_ARGS)
  */
 void
 end_MultiFuncCall(PG_FUNCTION_ARGS, FuncCallContext *funcctx)
-{
+{	StackTrace("end_MultiFuncCall");
 	ReturnSetInfo *rsi = (ReturnSetInfo *) fcinfo->resultinfo;
 
 	/* Deregister the shutdown callback */
@@ -172,7 +172,7 @@ end_MultiFuncCall(PG_FUNCTION_ARGS, FuncCallContext *funcctx)
  */
 static void
 shutdown_MultiFuncCall(Datum arg)
-{
+{	StackTrace("shutdown_MultiFuncCall");
 	FmgrInfo   *flinfo = (FmgrInfo *) DatumGetPointer(arg);
 	FuncCallContext *funcctx = (FuncCallContext *) flinfo->fn_extra;
 
@@ -212,7 +212,7 @@ TypeFuncClass
 get_call_result_type(FunctionCallInfo fcinfo,
 					 Oid *resultTypeId,
 					 TupleDesc *resultTupleDesc)
-{
+{	StackTrace("get_call_result_type");
 	return internal_get_result_type(fcinfo->flinfo->fn_oid,
 									fcinfo->flinfo->fn_expr,
 									(ReturnSetInfo *) fcinfo->resultinfo,
@@ -228,7 +228,7 @@ TypeFuncClass
 get_expr_result_type(Node *expr,
 					 Oid *resultTypeId,
 					 TupleDesc *resultTupleDesc)
-{
+{	StackTrace("get_expr_result_type");
 	TypeFuncClass result;
 
 	if (expr && IsA(expr, FuncExpr))
@@ -270,7 +270,7 @@ TypeFuncClass
 get_func_result_type(Oid functionId,
 					 Oid *resultTypeId,
 					 TupleDesc *resultTupleDesc)
-{
+{	StackTrace("get_func_result_type");
 	return internal_get_result_type(functionId,
 									NULL,
 									NULL,
@@ -292,7 +292,7 @@ internal_get_result_type(Oid funcid,
 						 ReturnSetInfo *rsinfo,
 						 Oid *resultTypeId,
 						 TupleDesc *resultTupleDesc)
-{
+{	StackTrace("internal_get_result_type");
 	TypeFuncClass result;
 	HeapTuple	tp;
 	Form_pg_proc procform;
@@ -403,7 +403,7 @@ internal_get_result_type(Oid funcid,
 static bool
 resolve_polymorphic_tupdesc(TupleDesc tupdesc, oidvector *declared_args,
 							Node *call_expr)
-{
+{	StackTrace("resolve_polymorphic_tupdesc");
 	int			natts = tupdesc->natts;
 	int			nargs = declared_args->dim1;
 	bool		have_anyelement_result = false;
@@ -597,7 +597,7 @@ resolve_polymorphic_tupdesc(TupleDesc tupdesc, oidvector *declared_args,
 bool
 resolve_polymorphic_argtypes(int numargs, Oid *argtypes, char *argmodes,
 							 Node *call_expr)
-{
+{	StackTrace("resolve_polymorphic_argtypes");
 	bool		have_anyelement_result = false;
 	bool		have_anyarray_result = false;
 	bool		have_anyrange_result = false;
@@ -747,7 +747,7 @@ resolve_polymorphic_argtypes(int numargs, Oid *argtypes, char *argmodes,
  */
 static TypeFuncClass
 get_type_func_class(Oid typid)
-{
+{	StackTrace("get_type_func_class");
 	switch (get_typtype(typid))
 	{
 		case TYPTYPE_COMPOSITE:
@@ -791,7 +791,7 @@ get_type_func_class(Oid typid)
 int
 get_func_arg_info(HeapTuple procTup,
 				  Oid **p_argtypes, char ***p_argnames, char **p_argmodes)
-{
+{	StackTrace("get_func_arg_info");
 	Form_pg_proc procStruct = (Form_pg_proc) GETSTRUCT(procTup);
 	Datum		proallargtypes;
 	Datum		proargmodes;
@@ -885,7 +885,7 @@ get_func_arg_info(HeapTuple procTup,
 int
 get_func_trftypes(HeapTuple procTup,
 				  Oid **p_trftypes)
-{
+{	StackTrace("get_func_trftypes");
 	Datum		protrftypes;
 	ArrayType  *arr;
 	int			nelems;
@@ -933,7 +933,7 @@ get_func_trftypes(HeapTuple procTup,
 int
 get_func_input_arg_names(Datum proargnames, Datum proargmodes,
 						 char ***arg_names)
-{
+{	StackTrace("get_func_input_arg_names");
 	ArrayType  *arr;
 	int			numargs;
 	Datum	   *argnames;
@@ -1017,7 +1017,7 @@ get_func_input_arg_names(Datum proargnames, Datum proargmodes,
  */
 char *
 get_func_result_name(Oid functionId)
-{
+{	StackTrace("get_func_result_name");
 	char	   *result;
 	HeapTuple	procTuple;
 	Datum		proargmodes;
@@ -1120,7 +1120,7 @@ get_func_result_name(Oid functionId)
  */
 TupleDesc
 build_function_result_tupdesc_t(HeapTuple procTuple)
-{
+{	StackTrace("build_function_result_tupdesc_t");
 	Form_pg_proc procform = (Form_pg_proc) GETSTRUCT(procTuple);
 	Datum		proallargtypes;
 	Datum		proargmodes;
@@ -1170,7 +1170,7 @@ TupleDesc
 build_function_result_tupdesc_d(Datum proallargtypes,
 								Datum proargmodes,
 								Datum proargnames)
-{
+{	StackTrace("build_function_result_tupdesc_d");
 	TupleDesc	desc;
 	ArrayType  *arr;
 	int			numargs;
@@ -1285,7 +1285,7 @@ build_function_result_tupdesc_d(Datum proallargtypes,
  */
 TupleDesc
 RelationNameGetTupleDesc(const char *relname)
-{
+{	StackTrace("RelationNameGetTupleDesc");
 	RangeVar   *relvar;
 	Relation	rel;
 	TupleDesc	tupdesc;
@@ -1318,7 +1318,7 @@ RelationNameGetTupleDesc(const char *relname)
  */
 TupleDesc
 TypeGetTupleDesc(Oid typeoid, List *colaliases)
-{
+{	StackTrace("TypeGetTupleDesc");
 	TypeFuncClass functypclass = get_type_func_class(typeoid);
 	TupleDesc	tupdesc = NULL;
 

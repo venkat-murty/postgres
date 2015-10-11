@@ -57,7 +57,7 @@ execTuplesMatch(TupleTableSlot *slot1,
 				AttrNumber *matchColIdx,
 				FmgrInfo *eqfunctions,
 				MemoryContext evalContext)
-{
+{	StackTrace("execTuplesMatch");
 	MemoryContext oldContext;
 	bool		result;
 	int			i;
@@ -127,7 +127,7 @@ execTuplesUnequal(TupleTableSlot *slot1,
 				  AttrNumber *matchColIdx,
 				  FmgrInfo *eqfunctions,
 				  MemoryContext evalContext)
-{
+{	StackTrace("execTuplesUnequal");
 	MemoryContext oldContext;
 	bool		result;
 	int			i;
@@ -188,7 +188,7 @@ execTuplesUnequal(TupleTableSlot *slot1,
 FmgrInfo *
 execTuplesMatchPrepare(int numCols,
 					   Oid *eqOperators)
-{
+{	StackTrace("execTuplesMatchPrepare");
 	FmgrInfo   *eqFunctions = (FmgrInfo *) palloc(numCols * sizeof(FmgrInfo));
 	int			i;
 
@@ -219,7 +219,7 @@ execTuplesHashPrepare(int numCols,
 					  Oid *eqOperators,
 					  FmgrInfo **eqFunctions,
 					  FmgrInfo **hashFunctions)
-{
+{	StackTrace("execTuplesHashPrepare");
 	int			i;
 
 	*eqFunctions = (FmgrInfo *) palloc(numCols * sizeof(FmgrInfo));
@@ -277,7 +277,7 @@ BuildTupleHashTable(int numCols, AttrNumber *keyColIdx,
 					FmgrInfo *hashfunctions,
 					long nbuckets, Size entrysize,
 					MemoryContext tablecxt, MemoryContext tempcxt)
-{
+{	StackTrace("BuildTupleHashTable");
 	TupleHashTable hashtable;
 	HASHCTL		hash_ctl;
 
@@ -330,7 +330,7 @@ BuildTupleHashTable(int numCols, AttrNumber *keyColIdx,
 TupleHashEntry
 LookupTupleHashEntry(TupleHashTable hashtable, TupleTableSlot *slot,
 					 bool *isnew)
-{
+{	StackTrace("LookupTupleHashEntry");
 	TupleHashEntry entry;
 	MemoryContext oldContext;
 	TupleHashTable saveCurHT;
@@ -422,7 +422,7 @@ TupleHashEntry
 FindTupleHashEntry(TupleHashTable hashtable, TupleTableSlot *slot,
 				   FmgrInfo *eqfunctions,
 				   FmgrInfo *hashfunctions)
-{
+{	StackTrace("FindTupleHashEntry");
 	TupleHashEntry entry;
 	MemoryContext oldContext;
 	TupleHashTable saveCurHT;
@@ -476,7 +476,7 @@ FindTupleHashEntry(TupleHashTable hashtable, TupleTableSlot *slot,
  */
 static uint32
 TupleHashTableHash(const void *key, Size keysize)
-{
+{	StackTrace("TupleHashTableHash");
 	MinimalTuple tuple = ((const TupleHashEntryData *) key)->firstTuple;
 	TupleTableSlot *slot;
 	TupleHashTable hashtable = CurTupleHashTable;
@@ -538,7 +538,7 @@ TupleHashTableHash(const void *key, Size keysize)
  */
 static int
 TupleHashTableMatch(const void *key1, const void *key2, Size keysize)
-{
+{	StackTrace("TupleHashTableMatch");
 	MinimalTuple tuple1 = ((const TupleHashEntryData *) key1)->firstTuple;
 
 #ifdef USE_ASSERT_CHECKING

@@ -34,7 +34,7 @@
  */
 Node *
 MultiExecBitmapIndexScan(BitmapIndexScanState *node)
-{
+{	StackTrace("MultiExecBitmapIndexScan");
 	TIDBitmap  *tbm;
 	IndexScanDesc scandesc;
 	double		nTuples = 0;
@@ -114,7 +114,7 @@ MultiExecBitmapIndexScan(BitmapIndexScanState *node)
  */
 void
 ExecReScanBitmapIndexScan(BitmapIndexScanState *node)
-{
+{	StackTrace("ExecReScanBitmapIndexScan");
 	ExprContext *econtext = node->biss_RuntimeContext;
 
 	/*
@@ -158,7 +158,7 @@ ExecReScanBitmapIndexScan(BitmapIndexScanState *node)
  */
 void
 ExecEndBitmapIndexScan(BitmapIndexScanState *node)
-{
+{	StackTrace("ExecEndBitmapIndexScan");
 	Relation	indexRelationDesc;
 	IndexScanDesc indexScanDesc;
 
@@ -193,7 +193,7 @@ ExecEndBitmapIndexScan(BitmapIndexScanState *node)
  */
 BitmapIndexScanState *
 ExecInitBitmapIndexScan(BitmapIndexScan *node, EState *estate, int eflags)
-{
+{	StackTrace("ExecInitBitmapIndexScan");
 	BitmapIndexScanState *indexstate;
 	bool		relistarget;
 

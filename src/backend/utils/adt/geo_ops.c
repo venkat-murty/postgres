@@ -122,7 +122,7 @@ static double dist_ppoly_internal(Point *pt, POLYGON *poly);
 
 static int
 single_decode(char *str, float8 *x, char **s)
-{
+{	StackTrace("single_decode");
 	char	   *cp;
 
 	if (!PointerIsValid(str))
@@ -147,7 +147,7 @@ single_decode(char *str, float8 *x, char **s)
 
 static int
 single_encode(float8 x, char *str)
-{
+{	StackTrace("single_encode");
 	int			ndig = DBL_DIG + extra_float_digits;
 
 	if (ndig < 1)
@@ -159,7 +159,7 @@ single_encode(float8 x, char *str)
 
 static int
 pair_decode(char *str, float8 *x, float8 *y, char **s)
-{
+{	StackTrace("pair_decode");
 	int			has_delim;
 	char	   *cp;
 
@@ -203,7 +203,7 @@ pair_decode(char *str, float8 *x, float8 *y, char **s)
 
 static int
 pair_encode(float8 x, float8 y, char *str)
-{
+{	StackTrace("pair_encode");
 	int			ndig = DBL_DIG + extra_float_digits;
 
 	if (ndig < 1)
@@ -215,7 +215,7 @@ pair_encode(float8 x, float8 y, char *str)
 
 static int
 path_decode(int opentype, int npts, char *str, int *isopen, char **ss, Point *p)
-{
+{	StackTrace("path_decode");
 	int			depth = 0;
 	char	   *s,
 			   *cp;
@@ -287,7 +287,7 @@ path_decode(int opentype, int npts, char *str, int *isopen, char **ss, Point *p)
 
 static char *
 path_encode(enum path_delim path_delim, int npts, Point *pt)
-{
+{	StackTrace("path_encode");
 	int			size = npts * (P_MAXLEN + 3) + 2;
 	char	   *result;
 	char	   *cp;
@@ -353,7 +353,7 @@ path_encode(enum path_delim path_delim, int npts, Point *pt)
  *-------------------------------------------------------------*/
 static int
 pair_count(char *s, char delim)
-{
+{	StackTrace("pair_count");
 	int			ndelim = 0;
 
 	while ((s = strchr(s, delim)) != NULL)
@@ -383,7 +383,7 @@ pair_count(char *s, char delim)
  */
 Datum
 box_in(PG_FUNCTION_ARGS)
-{
+{	StackTrace("box_in");
 	char	   *str = PG_GETARG_CSTRING(0);
 	BOX		   *box = (BOX *) palloc(sizeof(BOX));
 	int			isopen;
@@ -418,7 +418,7 @@ box_in(PG_FUNCTION_ARGS)
  */
 Datum
 box_out(PG_FUNCTION_ARGS)
-{
+{	StackTrace("box_out");
 	BOX		   *box = PG_GETARG_BOX_P(0);
 
 	PG_RETURN_CSTRING(path_encode(PATH_NONE, 2, &(box->high)));
@@ -429,7 +429,7 @@ box_out(PG_FUNCTION_ARGS)
  */
 Datum
 box_recv(PG_FUNCTION_ARGS)
-{
+{	StackTrace("box_recv");
 	StringInfo	buf = (StringInfo) PG_GETARG_POINTER(0);
 	BOX		   *box;
 	double		x,
@@ -464,7 +464,7 @@ box_recv(PG_FUNCTION_ARGS)
  */
 Datum
 box_send(PG_FUNCTION_ARGS)
-{
+{	StackTrace("box_send");
 	BOX		   *box = PG_GETARG_BOX_P(0);
 	StringInfoData buf;
 
@@ -481,7 +481,7 @@ box_send(PG_FUNCTION_ARGS)
  */
 static BOX *
 box_construct(double x1, double x2, double y1, double y2)
-{
+{	StackTrace("box_construct");
 	BOX		   *result = (BOX *) palloc(sizeof(BOX));
 
 	return box_fill(result, x1, x2, y1, y2);
@@ -492,7 +492,7 @@ box_construct(double x1, double x2, double y1, double y2)
  */
 static BOX *
 box_fill(BOX *result, double x1, double x2, double y1, double y2)
-{
+{	StackTrace("box_fill");
 	if (x1 > x2)
 	{
 		result->high.x = x1;
@@ -522,7 +522,7 @@ box_fill(BOX *result, double x1, double x2, double y1, double y2)
  */
 static BOX *
 box_copy(BOX *box)
-{
+{	StackTrace("box_copy");
 	BOX		   *result = (BOX *) palloc(sizeof(BOX));
 
 	memcpy((char *) result, (char *) box, sizeof(BOX));
@@ -540,7 +540,7 @@ box_copy(BOX *box)
  */
 Datum
 box_same(PG_FUNCTION_ARGS)
-{
+{	StackTrace("box_same");
 	BOX		   *box1 = PG_GETARG_BOX_P(0);
 	BOX		   *box2 = PG_GETARG_BOX_P(1);
 
@@ -554,7 +554,7 @@ box_same(PG_FUNCTION_ARGS)
  */
 Datum
 box_overlap(PG_FUNCTION_ARGS)
-{
+{	StackTrace("box_overlap");
 	BOX		   *box1 = PG_GETARG_BOX_P(0);
 	BOX		   *box2 = PG_GETARG_BOX_P(1);
 
@@ -563,7 +563,7 @@ box_overlap(PG_FUNCTION_ARGS)
 
 static bool
 box_ov(BOX *box1, BOX *box2)
-{
+{	StackTrace("box_ov");
 	return (FPle(box1->low.x, box2->high.x) &&
 			FPle(box2->low.x, box1->high.x) &&
 			FPle(box1->low.y, box2->high.y) &&
@@ -574,7 +574,7 @@ box_ov(BOX *box1, BOX *box2)
  */
 Datum
 box_left(PG_FUNCTION_ARGS)
-{
+{	StackTrace("box_left");
 	BOX		   *box1 = PG_GETARG_BOX_P(0);
 	BOX		   *box2 = PG_GETARG_BOX_P(1);
 
@@ -589,7 +589,7 @@ box_left(PG_FUNCTION_ARGS)
  */
 Datum
 box_overleft(PG_FUNCTION_ARGS)
-{
+{	StackTrace("box_overleft");
 	BOX		   *box1 = PG_GETARG_BOX_P(0);
 	BOX		   *box2 = PG_GETARG_BOX_P(1);
 
@@ -600,7 +600,7 @@ box_overleft(PG_FUNCTION_ARGS)
  */
 Datum
 box_right(PG_FUNCTION_ARGS)
-{
+{	StackTrace("box_right");
 	BOX		   *box1 = PG_GETARG_BOX_P(0);
 	BOX		   *box2 = PG_GETARG_BOX_P(1);
 
@@ -615,7 +615,7 @@ box_right(PG_FUNCTION_ARGS)
  */
 Datum
 box_overright(PG_FUNCTION_ARGS)
-{
+{	StackTrace("box_overright");
 	BOX		   *box1 = PG_GETARG_BOX_P(0);
 	BOX		   *box2 = PG_GETARG_BOX_P(1);
 
@@ -626,7 +626,7 @@ box_overright(PG_FUNCTION_ARGS)
  */
 Datum
 box_below(PG_FUNCTION_ARGS)
-{
+{	StackTrace("box_below");
 	BOX		   *box1 = PG_GETARG_BOX_P(0);
 	BOX		   *box2 = PG_GETARG_BOX_P(1);
 
@@ -638,7 +638,7 @@ box_below(PG_FUNCTION_ARGS)
  */
 Datum
 box_overbelow(PG_FUNCTION_ARGS)
-{
+{	StackTrace("box_overbelow");
 	BOX		   *box1 = PG_GETARG_BOX_P(0);
 	BOX		   *box2 = PG_GETARG_BOX_P(1);
 
@@ -649,7 +649,7 @@ box_overbelow(PG_FUNCTION_ARGS)
  */
 Datum
 box_above(PG_FUNCTION_ARGS)
-{
+{	StackTrace("box_above");
 	BOX		   *box1 = PG_GETARG_BOX_P(0);
 	BOX		   *box2 = PG_GETARG_BOX_P(1);
 
@@ -661,7 +661,7 @@ box_above(PG_FUNCTION_ARGS)
  */
 Datum
 box_overabove(PG_FUNCTION_ARGS)
-{
+{	StackTrace("box_overabove");
 	BOX		   *box1 = PG_GETARG_BOX_P(0);
 	BOX		   *box2 = PG_GETARG_BOX_P(1);
 
@@ -672,7 +672,7 @@ box_overabove(PG_FUNCTION_ARGS)
  */
 Datum
 box_contained(PG_FUNCTION_ARGS)
-{
+{	StackTrace("box_contained");
 	BOX		   *box1 = PG_GETARG_BOX_P(0);
 	BOX		   *box2 = PG_GETARG_BOX_P(1);
 
@@ -686,7 +686,7 @@ box_contained(PG_FUNCTION_ARGS)
  */
 Datum
 box_contain(PG_FUNCTION_ARGS)
-{
+{	StackTrace("box_contain");
 	BOX		   *box1 = PG_GETARG_BOX_P(0);
 	BOX		   *box2 = PG_GETARG_BOX_P(1);
 
@@ -707,7 +707,7 @@ box_contain(PG_FUNCTION_ARGS)
  */
 Datum
 box_below_eq(PG_FUNCTION_ARGS)
-{
+{	StackTrace("box_below_eq");
 	BOX		   *box1 = PG_GETARG_BOX_P(0);
 	BOX		   *box2 = PG_GETARG_BOX_P(1);
 
@@ -716,7 +716,7 @@ box_below_eq(PG_FUNCTION_ARGS)
 
 Datum
 box_above_eq(PG_FUNCTION_ARGS)
-{
+{	StackTrace("box_above_eq");
 	BOX		   *box1 = PG_GETARG_BOX_P(0);
 	BOX		   *box2 = PG_GETARG_BOX_P(1);
 
@@ -729,7 +729,7 @@ box_above_eq(PG_FUNCTION_ARGS)
  */
 Datum
 box_lt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("box_lt");
 	BOX		   *box1 = PG_GETARG_BOX_P(0);
 	BOX		   *box2 = PG_GETARG_BOX_P(1);
 
@@ -738,7 +738,7 @@ box_lt(PG_FUNCTION_ARGS)
 
 Datum
 box_gt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("box_gt");
 	BOX		   *box1 = PG_GETARG_BOX_P(0);
 	BOX		   *box2 = PG_GETARG_BOX_P(1);
 
@@ -747,7 +747,7 @@ box_gt(PG_FUNCTION_ARGS)
 
 Datum
 box_eq(PG_FUNCTION_ARGS)
-{
+{	StackTrace("box_eq");
 	BOX		   *box1 = PG_GETARG_BOX_P(0);
 	BOX		   *box2 = PG_GETARG_BOX_P(1);
 
@@ -756,7 +756,7 @@ box_eq(PG_FUNCTION_ARGS)
 
 Datum
 box_le(PG_FUNCTION_ARGS)
-{
+{	StackTrace("box_le");
 	BOX		   *box1 = PG_GETARG_BOX_P(0);
 	BOX		   *box2 = PG_GETARG_BOX_P(1);
 
@@ -765,7 +765,7 @@ box_le(PG_FUNCTION_ARGS)
 
 Datum
 box_ge(PG_FUNCTION_ARGS)
-{
+{	StackTrace("box_ge");
 	BOX		   *box1 = PG_GETARG_BOX_P(0);
 	BOX		   *box2 = PG_GETARG_BOX_P(1);
 
@@ -781,7 +781,7 @@ box_ge(PG_FUNCTION_ARGS)
  */
 Datum
 box_area(PG_FUNCTION_ARGS)
-{
+{	StackTrace("box_area");
 	BOX		   *box = PG_GETARG_BOX_P(0);
 
 	PG_RETURN_FLOAT8(box_ar(box));
@@ -793,7 +793,7 @@ box_area(PG_FUNCTION_ARGS)
  */
 Datum
 box_width(PG_FUNCTION_ARGS)
-{
+{	StackTrace("box_width");
 	BOX		   *box = PG_GETARG_BOX_P(0);
 
 	PG_RETURN_FLOAT8(box->high.x - box->low.x);
@@ -805,7 +805,7 @@ box_width(PG_FUNCTION_ARGS)
  */
 Datum
 box_height(PG_FUNCTION_ARGS)
-{
+{	StackTrace("box_height");
 	BOX		   *box = PG_GETARG_BOX_P(0);
 
 	PG_RETURN_FLOAT8(box->high.y - box->low.y);
@@ -817,7 +817,7 @@ box_height(PG_FUNCTION_ARGS)
  */
 Datum
 box_distance(PG_FUNCTION_ARGS)
-{
+{	StackTrace("box_distance");
 	BOX		   *box1 = PG_GETARG_BOX_P(0);
 	BOX		   *box2 = PG_GETARG_BOX_P(1);
 	Point		a,
@@ -834,7 +834,7 @@ box_distance(PG_FUNCTION_ARGS)
  */
 Datum
 box_center(PG_FUNCTION_ARGS)
-{
+{	StackTrace("box_center");
 	BOX		   *box = PG_GETARG_BOX_P(0);
 	Point	   *result = (Point *) palloc(sizeof(Point));
 
@@ -848,7 +848,7 @@ box_center(PG_FUNCTION_ARGS)
  */
 static double
 box_ar(BOX *box)
-{
+{	StackTrace("box_ar");
 	return box_wd(box) * box_ht(box);
 }
 
@@ -857,7 +857,7 @@ box_ar(BOX *box)
  */
 static void
 box_cn(Point *center, BOX *box)
-{
+{	StackTrace("box_cn");
 	center->x = (box->high.x + box->low.x) / 2.0;
 	center->y = (box->high.y + box->low.y) / 2.0;
 }
@@ -868,7 +868,7 @@ box_cn(Point *center, BOX *box)
  */
 static double
 box_wd(BOX *box)
-{
+{	StackTrace("box_wd");
 	return box->high.x - box->low.x;
 }
 
@@ -878,7 +878,7 @@ box_wd(BOX *box)
  */
 static double
 box_ht(BOX *box)
-{
+{	StackTrace("box_ht");
 	return box->high.y - box->low.y;
 }
 
@@ -893,7 +893,7 @@ box_ht(BOX *box)
  */
 Datum
 box_intersect(PG_FUNCTION_ARGS)
-{
+{	StackTrace("box_intersect");
 	BOX		   *box1 = PG_GETARG_BOX_P(0);
 	BOX		   *box2 = PG_GETARG_BOX_P(1);
 	BOX		   *result;
@@ -918,7 +918,7 @@ box_intersect(PG_FUNCTION_ARGS)
  */
 Datum
 box_diagonal(PG_FUNCTION_ARGS)
-{
+{	StackTrace("box_diagonal");
 	BOX		   *box = PG_GETARG_BOX_P(0);
 	LSEG	   *result = (LSEG *) palloc(sizeof(LSEG));
 
@@ -935,7 +935,7 @@ box_diagonal(PG_FUNCTION_ARGS)
 
 static bool
 line_decode(const char *str, LINE *line)
-{
+{	StackTrace("line_decode");
 	char	   *tail;
 
 	while (isspace((unsigned char) *str))
@@ -976,7 +976,7 @@ line_decode(const char *str, LINE *line)
 
 Datum
 line_in(PG_FUNCTION_ARGS)
-{
+{	StackTrace("line_in");
 	char	   *str = PG_GETARG_CSTRING(0);
 	LINE	   *line;
 	LSEG		lseg;
@@ -1012,7 +1012,7 @@ line_in(PG_FUNCTION_ARGS)
 
 Datum
 line_out(PG_FUNCTION_ARGS)
-{
+{	StackTrace("line_out");
 	LINE	   *line = PG_GETARG_LINE_P(0);
 	int			ndig = DBL_DIG + extra_float_digits;
 
@@ -1027,7 +1027,7 @@ line_out(PG_FUNCTION_ARGS)
  */
 Datum
 line_recv(PG_FUNCTION_ARGS)
-{
+{	StackTrace("line_recv");
 	StringInfo	buf = (StringInfo) PG_GETARG_POINTER(0);
 	LINE	   *line;
 
@@ -1045,7 +1045,7 @@ line_recv(PG_FUNCTION_ARGS)
  */
 Datum
 line_send(PG_FUNCTION_ARGS)
-{
+{	StackTrace("line_send");
 	LINE	   *line = PG_GETARG_LINE_P(0);
 	StringInfoData buf;
 
@@ -1067,7 +1067,7 @@ line_send(PG_FUNCTION_ARGS)
  */
 static LINE *
 line_construct_pm(Point *pt, double m)
-{
+{	StackTrace("line_construct_pm");
 	LINE	   *result = (LINE *) palloc(sizeof(LINE));
 
 	if (m == DBL_MAX)
@@ -1093,7 +1093,7 @@ line_construct_pm(Point *pt, double m)
  */
 static void
 line_construct_pts(LINE *line, Point *pt1, Point *pt2)
-{
+{	StackTrace("line_construct_pts");
 	if (FPeq(pt1->x, pt2->x))
 	{							/* vertical */
 		/* use "x = C" */
@@ -1135,7 +1135,7 @@ line_construct_pts(LINE *line, Point *pt1, Point *pt2)
  */
 Datum
 line_construct_pp(PG_FUNCTION_ARGS)
-{
+{	StackTrace("line_construct_pp");
 	Point	   *pt1 = PG_GETARG_POINT_P(0);
 	Point	   *pt2 = PG_GETARG_POINT_P(1);
 	LINE	   *result = (LINE *) palloc(sizeof(LINE));
@@ -1151,7 +1151,7 @@ line_construct_pp(PG_FUNCTION_ARGS)
 
 Datum
 line_intersect(PG_FUNCTION_ARGS)
-{
+{	StackTrace("line_intersect");
 	LINE	   *l1 = PG_GETARG_LINE_P(0);
 	LINE	   *l2 = PG_GETARG_LINE_P(1);
 
@@ -1162,7 +1162,7 @@ line_intersect(PG_FUNCTION_ARGS)
 
 Datum
 line_parallel(PG_FUNCTION_ARGS)
-{
+{	StackTrace("line_parallel");
 	LINE	   *l1 = PG_GETARG_LINE_P(0);
 	LINE	   *l2 = PG_GETARG_LINE_P(1);
 
@@ -1174,7 +1174,7 @@ line_parallel(PG_FUNCTION_ARGS)
 
 Datum
 line_perp(PG_FUNCTION_ARGS)
-{
+{	StackTrace("line_perp");
 	LINE	   *l1 = PG_GETARG_LINE_P(0);
 	LINE	   *l2 = PG_GETARG_LINE_P(1);
 
@@ -1188,7 +1188,7 @@ line_perp(PG_FUNCTION_ARGS)
 
 Datum
 line_vertical(PG_FUNCTION_ARGS)
-{
+{	StackTrace("line_vertical");
 	LINE	   *line = PG_GETARG_LINE_P(0);
 
 	PG_RETURN_BOOL(FPzero(line->B));
@@ -1196,7 +1196,7 @@ line_vertical(PG_FUNCTION_ARGS)
 
 Datum
 line_horizontal(PG_FUNCTION_ARGS)
-{
+{	StackTrace("line_horizontal");
 	LINE	   *line = PG_GETARG_LINE_P(0);
 
 	PG_RETURN_BOOL(FPzero(line->A));
@@ -1204,7 +1204,7 @@ line_horizontal(PG_FUNCTION_ARGS)
 
 Datum
 line_eq(PG_FUNCTION_ARGS)
-{
+{	StackTrace("line_eq");
 	LINE	   *l1 = PG_GETARG_LINE_P(0);
 	LINE	   *l2 = PG_GETARG_LINE_P(1);
 	double		k;
@@ -1233,7 +1233,7 @@ line_eq(PG_FUNCTION_ARGS)
  */
 Datum
 line_distance(PG_FUNCTION_ARGS)
-{
+{	StackTrace("line_distance");
 	LINE	   *l1 = PG_GETARG_LINE_P(0);
 	LINE	   *l2 = PG_GETARG_LINE_P(1);
 	float8		result;
@@ -1255,7 +1255,7 @@ line_distance(PG_FUNCTION_ARGS)
  */
 Datum
 line_interpt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("line_interpt");
 	LINE	   *l1 = PG_GETARG_LINE_P(0);
 	LINE	   *l2 = PG_GETARG_LINE_P(1);
 	Point	   *result;
@@ -1274,7 +1274,7 @@ line_interpt(PG_FUNCTION_ARGS)
  */
 static Point *
 line_interpt_internal(LINE *l1, LINE *l2)
-{
+{	StackTrace("line_interpt_internal");
 	Point	   *result;
 	double		x,
 				y;
@@ -1340,7 +1340,7 @@ line_interpt_internal(LINE *l1, LINE *l2)
 
 Datum
 path_area(PG_FUNCTION_ARGS)
-{
+{	StackTrace("path_area");
 	PATH	   *path = PG_GETARG_PATH_P(0);
 	double		area = 0.0;
 	int			i,
@@ -1363,7 +1363,7 @@ path_area(PG_FUNCTION_ARGS)
 
 Datum
 path_in(PG_FUNCTION_ARGS)
-{
+{	StackTrace("path_in");
 	char	   *str = PG_GETARG_CSTRING(0);
 	PATH	   *path;
 	int			isopen;
@@ -1433,7 +1433,7 @@ path_out(PG_FUNCTION_ARGS)
  */
 Datum
 path_recv(PG_FUNCTION_ARGS)
-{
+{	StackTrace("path_recv");
 	StringInfo	buf = (StringInfo) PG_GETARG_POINTER(0);
 	PATH	   *path;
 	int			closed;
@@ -1471,7 +1471,7 @@ path_recv(PG_FUNCTION_ARGS)
  */
 Datum
 path_send(PG_FUNCTION_ARGS)
-{
+{	StackTrace("path_send");
 	PATH	   *path = PG_GETARG_PATH_P(0);
 	StringInfoData buf;
 	int32		i;
@@ -1498,7 +1498,7 @@ path_send(PG_FUNCTION_ARGS)
 
 Datum
 path_n_lt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("path_n_lt");
 	PATH	   *p1 = PG_GETARG_PATH_P(0);
 	PATH	   *p2 = PG_GETARG_PATH_P(1);
 
@@ -1507,7 +1507,7 @@ path_n_lt(PG_FUNCTION_ARGS)
 
 Datum
 path_n_gt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("path_n_gt");
 	PATH	   *p1 = PG_GETARG_PATH_P(0);
 	PATH	   *p2 = PG_GETARG_PATH_P(1);
 
@@ -1516,7 +1516,7 @@ path_n_gt(PG_FUNCTION_ARGS)
 
 Datum
 path_n_eq(PG_FUNCTION_ARGS)
-{
+{	StackTrace("path_n_eq");
 	PATH	   *p1 = PG_GETARG_PATH_P(0);
 	PATH	   *p2 = PG_GETARG_PATH_P(1);
 
@@ -1525,7 +1525,7 @@ path_n_eq(PG_FUNCTION_ARGS)
 
 Datum
 path_n_le(PG_FUNCTION_ARGS)
-{
+{	StackTrace("path_n_le");
 	PATH	   *p1 = PG_GETARG_PATH_P(0);
 	PATH	   *p2 = PG_GETARG_PATH_P(1);
 
@@ -1534,7 +1534,7 @@ path_n_le(PG_FUNCTION_ARGS)
 
 Datum
 path_n_ge(PG_FUNCTION_ARGS)
-{
+{	StackTrace("path_n_ge");
 	PATH	   *p1 = PG_GETARG_PATH_P(0);
 	PATH	   *p2 = PG_GETARG_PATH_P(1);
 
@@ -1547,7 +1547,7 @@ path_n_ge(PG_FUNCTION_ARGS)
 
 Datum
 path_isclosed(PG_FUNCTION_ARGS)
-{
+{	StackTrace("path_isclosed");
 	PATH	   *path = PG_GETARG_PATH_P(0);
 
 	PG_RETURN_BOOL(path->closed);
@@ -1555,7 +1555,7 @@ path_isclosed(PG_FUNCTION_ARGS)
 
 Datum
 path_isopen(PG_FUNCTION_ARGS)
-{
+{	StackTrace("path_isopen");
 	PATH	   *path = PG_GETARG_PATH_P(0);
 
 	PG_RETURN_BOOL(!path->closed);
@@ -1563,7 +1563,7 @@ path_isopen(PG_FUNCTION_ARGS)
 
 Datum
 path_npoints(PG_FUNCTION_ARGS)
-{
+{	StackTrace("path_npoints");
 	PATH	   *path = PG_GETARG_PATH_P(0);
 
 	PG_RETURN_INT32(path->npts);
@@ -1572,7 +1572,7 @@ path_npoints(PG_FUNCTION_ARGS)
 
 Datum
 path_close(PG_FUNCTION_ARGS)
-{
+{	StackTrace("path_close");
 	PATH	   *path = PG_GETARG_PATH_P_COPY(0);
 
 	path->closed = TRUE;
@@ -1582,7 +1582,7 @@ path_close(PG_FUNCTION_ARGS)
 
 Datum
 path_open(PG_FUNCTION_ARGS)
-{
+{	StackTrace("path_open");
 	PATH	   *path = PG_GETARG_PATH_P_COPY(0);
 
 	path->closed = FALSE;
@@ -1598,7 +1598,7 @@ path_open(PG_FUNCTION_ARGS)
  */
 Datum
 path_inter(PG_FUNCTION_ARGS)
-{
+{	StackTrace("path_inter");
 	PATH	   *p1 = PG_GETARG_PATH_P(0);
 	PATH	   *p2 = PG_GETARG_PATH_P(1);
 	BOX			b1,
@@ -1676,7 +1676,7 @@ path_inter(PG_FUNCTION_ARGS)
  */
 Datum
 path_distance(PG_FUNCTION_ARGS)
-{
+{	StackTrace("path_distance");
 	PATH	   *p1 = PG_GETARG_PATH_P(0);
 	PATH	   *p2 = PG_GETARG_PATH_P(1);
 	float8		min = 0.0;		/* initialize to keep compiler quiet */
@@ -1740,7 +1740,7 @@ path_distance(PG_FUNCTION_ARGS)
 
 Datum
 path_length(PG_FUNCTION_ARGS)
-{
+{	StackTrace("path_length");
 	PATH	   *path = PG_GETARG_PATH_P(0);
 	float8		result = 0.0;
 	int			i;
@@ -1779,7 +1779,7 @@ path_length(PG_FUNCTION_ARGS)
 
 Datum
 point_in(PG_FUNCTION_ARGS)
-{
+{	StackTrace("point_in");
 	char	   *str = PG_GETARG_CSTRING(0);
 	Point	   *point;
 	double		x,
@@ -1801,7 +1801,7 @@ point_in(PG_FUNCTION_ARGS)
 
 Datum
 point_out(PG_FUNCTION_ARGS)
-{
+{	StackTrace("point_out");
 	Point	   *pt = PG_GETARG_POINT_P(0);
 
 	PG_RETURN_CSTRING(path_encode(PATH_NONE, 1, pt));
@@ -1812,7 +1812,7 @@ point_out(PG_FUNCTION_ARGS)
  */
 Datum
 point_recv(PG_FUNCTION_ARGS)
-{
+{	StackTrace("point_recv");
 	StringInfo	buf = (StringInfo) PG_GETARG_POINTER(0);
 	Point	   *point;
 
@@ -1827,7 +1827,7 @@ point_recv(PG_FUNCTION_ARGS)
  */
 Datum
 point_send(PG_FUNCTION_ARGS)
-{
+{	StackTrace("point_send");
 	Point	   *pt = PG_GETARG_POINT_P(0);
 	StringInfoData buf;
 
@@ -1840,7 +1840,7 @@ point_send(PG_FUNCTION_ARGS)
 
 static Point *
 point_construct(double x, double y)
-{
+{	StackTrace("point_construct");
 	Point	   *result = (Point *) palloc(sizeof(Point));
 
 	result->x = x;
@@ -1851,7 +1851,7 @@ point_construct(double x, double y)
 
 static Point *
 point_copy(Point *pt)
-{
+{	StackTrace("point_copy");
 	Point	   *result;
 
 	if (!PointerIsValid(pt))
@@ -1876,7 +1876,7 @@ point_copy(Point *pt)
 
 Datum
 point_left(PG_FUNCTION_ARGS)
-{
+{	StackTrace("point_left");
 	Point	   *pt1 = PG_GETARG_POINT_P(0);
 	Point	   *pt2 = PG_GETARG_POINT_P(1);
 
@@ -1885,7 +1885,7 @@ point_left(PG_FUNCTION_ARGS)
 
 Datum
 point_right(PG_FUNCTION_ARGS)
-{
+{	StackTrace("point_right");
 	Point	   *pt1 = PG_GETARG_POINT_P(0);
 	Point	   *pt2 = PG_GETARG_POINT_P(1);
 
@@ -1894,7 +1894,7 @@ point_right(PG_FUNCTION_ARGS)
 
 Datum
 point_above(PG_FUNCTION_ARGS)
-{
+{	StackTrace("point_above");
 	Point	   *pt1 = PG_GETARG_POINT_P(0);
 	Point	   *pt2 = PG_GETARG_POINT_P(1);
 
@@ -1903,7 +1903,7 @@ point_above(PG_FUNCTION_ARGS)
 
 Datum
 point_below(PG_FUNCTION_ARGS)
-{
+{	StackTrace("point_below");
 	Point	   *pt1 = PG_GETARG_POINT_P(0);
 	Point	   *pt2 = PG_GETARG_POINT_P(1);
 
@@ -1912,7 +1912,7 @@ point_below(PG_FUNCTION_ARGS)
 
 Datum
 point_vert(PG_FUNCTION_ARGS)
-{
+{	StackTrace("point_vert");
 	Point	   *pt1 = PG_GETARG_POINT_P(0);
 	Point	   *pt2 = PG_GETARG_POINT_P(1);
 
@@ -1921,7 +1921,7 @@ point_vert(PG_FUNCTION_ARGS)
 
 Datum
 point_horiz(PG_FUNCTION_ARGS)
-{
+{	StackTrace("point_horiz");
 	Point	   *pt1 = PG_GETARG_POINT_P(0);
 	Point	   *pt2 = PG_GETARG_POINT_P(1);
 
@@ -1930,7 +1930,7 @@ point_horiz(PG_FUNCTION_ARGS)
 
 Datum
 point_eq(PG_FUNCTION_ARGS)
-{
+{	StackTrace("point_eq");
 	Point	   *pt1 = PG_GETARG_POINT_P(0);
 	Point	   *pt2 = PG_GETARG_POINT_P(1);
 
@@ -1939,7 +1939,7 @@ point_eq(PG_FUNCTION_ARGS)
 
 Datum
 point_ne(PG_FUNCTION_ARGS)
-{
+{	StackTrace("point_ne");
 	Point	   *pt1 = PG_GETARG_POINT_P(0);
 	Point	   *pt2 = PG_GETARG_POINT_P(1);
 
@@ -1952,7 +1952,7 @@ point_ne(PG_FUNCTION_ARGS)
 
 Datum
 point_distance(PG_FUNCTION_ARGS)
-{
+{	StackTrace("point_distance");
 	Point	   *pt1 = PG_GETARG_POINT_P(0);
 	Point	   *pt2 = PG_GETARG_POINT_P(1);
 
@@ -1961,7 +1961,7 @@ point_distance(PG_FUNCTION_ARGS)
 
 double
 point_dt(Point *pt1, Point *pt2)
-{
+{	StackTrace("point_dt");
 #ifdef GEODEBUG
 	printf("point_dt- segment (%f,%f),(%f,%f) length is %f\n",
 	pt1->x, pt1->y, pt2->x, pt2->y, HYPOT(pt1->x - pt2->x, pt1->y - pt2->y));
@@ -1971,7 +1971,7 @@ point_dt(Point *pt1, Point *pt2)
 
 Datum
 point_slope(PG_FUNCTION_ARGS)
-{
+{	StackTrace("point_slope");
 	Point	   *pt1 = PG_GETARG_POINT_P(0);
 	Point	   *pt2 = PG_GETARG_POINT_P(1);
 
@@ -1981,7 +1981,7 @@ point_slope(PG_FUNCTION_ARGS)
 
 double
 point_sl(Point *pt1, Point *pt2)
-{
+{	StackTrace("point_sl");
 	return (FPeq(pt1->x, pt2->x)
 			? (double) DBL_MAX
 			: (pt1->y - pt2->y) / (pt1->x - pt2->x));
@@ -2005,7 +2005,7 @@ point_sl(Point *pt1, Point *pt2)
 
 Datum
 lseg_in(PG_FUNCTION_ARGS)
-{
+{	StackTrace("lseg_in");
 	char	   *str = PG_GETARG_CSTRING(0);
 	LSEG	   *lseg;
 	int			isopen;
@@ -2025,7 +2025,7 @@ lseg_in(PG_FUNCTION_ARGS)
 
 Datum
 lseg_out(PG_FUNCTION_ARGS)
-{
+{	StackTrace("lseg_out");
 	LSEG	   *ls = PG_GETARG_LSEG_P(0);
 
 	PG_RETURN_CSTRING(path_encode(PATH_OPEN, 2, (Point *) &(ls->p[0])));
@@ -2036,7 +2036,7 @@ lseg_out(PG_FUNCTION_ARGS)
  */
 Datum
 lseg_recv(PG_FUNCTION_ARGS)
-{
+{	StackTrace("lseg_recv");
 	StringInfo	buf = (StringInfo) PG_GETARG_POINTER(0);
 	LSEG	   *lseg;
 
@@ -2055,7 +2055,7 @@ lseg_recv(PG_FUNCTION_ARGS)
  */
 Datum
 lseg_send(PG_FUNCTION_ARGS)
-{
+{	StackTrace("lseg_send");
 	LSEG	   *ls = PG_GETARG_LSEG_P(0);
 	StringInfoData buf;
 
@@ -2073,7 +2073,7 @@ lseg_send(PG_FUNCTION_ARGS)
  */
 Datum
 lseg_construct(PG_FUNCTION_ARGS)
-{
+{	StackTrace("lseg_construct");
 	Point	   *pt1 = PG_GETARG_POINT_P(0);
 	Point	   *pt2 = PG_GETARG_POINT_P(1);
 	LSEG	   *result = (LSEG *) palloc(sizeof(LSEG));
@@ -2089,7 +2089,7 @@ lseg_construct(PG_FUNCTION_ARGS)
 /* like lseg_construct, but assume space already allocated */
 static void
 statlseg_construct(LSEG *lseg, Point *pt1, Point *pt2)
-{
+{	StackTrace("statlseg_construct");
 	lseg->p[0].x = pt1->x;
 	lseg->p[0].y = pt1->y;
 	lseg->p[1].x = pt2->x;
@@ -2098,7 +2098,7 @@ statlseg_construct(LSEG *lseg, Point *pt1, Point *pt2)
 
 Datum
 lseg_length(PG_FUNCTION_ARGS)
-{
+{	StackTrace("lseg_length");
 	LSEG	   *lseg = PG_GETARG_LSEG_P(0);
 
 	PG_RETURN_FLOAT8(point_dt(&lseg->p[0], &lseg->p[1]));
@@ -2114,7 +2114,7 @@ lseg_length(PG_FUNCTION_ARGS)
  */
 Datum
 lseg_intersect(PG_FUNCTION_ARGS)
-{
+{	StackTrace("lseg_intersect");
 	LSEG	   *l1 = PG_GETARG_LSEG_P(0);
 	LSEG	   *l2 = PG_GETARG_LSEG_P(1);
 
@@ -2123,7 +2123,7 @@ lseg_intersect(PG_FUNCTION_ARGS)
 
 static bool
 lseg_intersect_internal(LSEG *l1, LSEG *l2)
-{
+{	StackTrace("lseg_intersect_internal");
 	LINE		ln;
 	Point	   *interpt;
 	bool		retval;
@@ -2140,7 +2140,7 @@ lseg_intersect_internal(LSEG *l1, LSEG *l2)
 
 Datum
 lseg_parallel(PG_FUNCTION_ARGS)
-{
+{	StackTrace("lseg_parallel");
 	LSEG	   *l1 = PG_GETARG_LSEG_P(0);
 	LSEG	   *l2 = PG_GETARG_LSEG_P(1);
 
@@ -2159,7 +2159,7 @@ lseg_parallel(PG_FUNCTION_ARGS)
  */
 Datum
 lseg_perp(PG_FUNCTION_ARGS)
-{
+{	StackTrace("lseg_perp");
 	LSEG	   *l1 = PG_GETARG_LSEG_P(0);
 	LSEG	   *l2 = PG_GETARG_LSEG_P(1);
 	double		m1,
@@ -2181,7 +2181,7 @@ lseg_perp(PG_FUNCTION_ARGS)
 
 Datum
 lseg_vertical(PG_FUNCTION_ARGS)
-{
+{	StackTrace("lseg_vertical");
 	LSEG	   *lseg = PG_GETARG_LSEG_P(0);
 
 	PG_RETURN_BOOL(FPeq(lseg->p[0].x, lseg->p[1].x));
@@ -2189,7 +2189,7 @@ lseg_vertical(PG_FUNCTION_ARGS)
 
 Datum
 lseg_horizontal(PG_FUNCTION_ARGS)
-{
+{	StackTrace("lseg_horizontal");
 	LSEG	   *lseg = PG_GETARG_LSEG_P(0);
 
 	PG_RETURN_BOOL(FPeq(lseg->p[0].y, lseg->p[1].y));
@@ -2198,7 +2198,7 @@ lseg_horizontal(PG_FUNCTION_ARGS)
 
 Datum
 lseg_eq(PG_FUNCTION_ARGS)
-{
+{	StackTrace("lseg_eq");
 	LSEG	   *l1 = PG_GETARG_LSEG_P(0);
 	LSEG	   *l2 = PG_GETARG_LSEG_P(1);
 
@@ -2210,7 +2210,7 @@ lseg_eq(PG_FUNCTION_ARGS)
 
 Datum
 lseg_ne(PG_FUNCTION_ARGS)
-{
+{	StackTrace("lseg_ne");
 	LSEG	   *l1 = PG_GETARG_LSEG_P(0);
 	LSEG	   *l2 = PG_GETARG_LSEG_P(1);
 
@@ -2222,7 +2222,7 @@ lseg_ne(PG_FUNCTION_ARGS)
 
 Datum
 lseg_lt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("lseg_lt");
 	LSEG	   *l1 = PG_GETARG_LSEG_P(0);
 	LSEG	   *l2 = PG_GETARG_LSEG_P(1);
 
@@ -2232,7 +2232,7 @@ lseg_lt(PG_FUNCTION_ARGS)
 
 Datum
 lseg_le(PG_FUNCTION_ARGS)
-{
+{	StackTrace("lseg_le");
 	LSEG	   *l1 = PG_GETARG_LSEG_P(0);
 	LSEG	   *l2 = PG_GETARG_LSEG_P(1);
 
@@ -2242,7 +2242,7 @@ lseg_le(PG_FUNCTION_ARGS)
 
 Datum
 lseg_gt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("lseg_gt");
 	LSEG	   *l1 = PG_GETARG_LSEG_P(0);
 	LSEG	   *l2 = PG_GETARG_LSEG_P(1);
 
@@ -2252,7 +2252,7 @@ lseg_gt(PG_FUNCTION_ARGS)
 
 Datum
 lseg_ge(PG_FUNCTION_ARGS)
-{
+{	StackTrace("lseg_ge");
 	LSEG	   *l1 = PG_GETARG_LSEG_P(0);
 	LSEG	   *l2 = PG_GETARG_LSEG_P(1);
 
@@ -2272,7 +2272,7 @@ lseg_ge(PG_FUNCTION_ARGS)
  */
 Datum
 lseg_distance(PG_FUNCTION_ARGS)
-{
+{	StackTrace("lseg_distance");
 	LSEG	   *l1 = PG_GETARG_LSEG_P(0);
 	LSEG	   *l2 = PG_GETARG_LSEG_P(1);
 
@@ -2286,7 +2286,7 @@ lseg_distance(PG_FUNCTION_ARGS)
  */
 static double
 lseg_dt(LSEG *l1, LSEG *l2)
-{
+{	StackTrace("lseg_dt");
 	double		result,
 				d;
 
@@ -2308,7 +2308,7 @@ lseg_dt(LSEG *l1, LSEG *l2)
 
 Datum
 lseg_center(PG_FUNCTION_ARGS)
-{
+{	StackTrace("lseg_center");
 	LSEG	   *lseg = PG_GETARG_LSEG_P(0);
 	Point	   *result;
 
@@ -2322,7 +2322,7 @@ lseg_center(PG_FUNCTION_ARGS)
 
 static Point *
 lseg_interpt_internal(LSEG *l1, LSEG *l2)
-{
+{	StackTrace("lseg_interpt_internal");
 	Point	   *result;
 	LINE		tmp1,
 				tmp2;
@@ -2373,7 +2373,7 @@ lseg_interpt_internal(LSEG *l1, LSEG *l2)
  */
 Datum
 lseg_interpt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("lseg_interpt");
 	LSEG	   *l1 = PG_GETARG_LSEG_P(0);
 	LSEG	   *l2 = PG_GETARG_LSEG_P(1);
 	Point	   *result;
@@ -2402,7 +2402,7 @@ lseg_interpt(PG_FUNCTION_ARGS)
  */
 Datum
 dist_pl(PG_FUNCTION_ARGS)
-{
+{	StackTrace("dist_pl");
 	Point	   *pt = PG_GETARG_POINT_P(0);
 	LINE	   *line = PG_GETARG_LINE_P(1);
 
@@ -2411,7 +2411,7 @@ dist_pl(PG_FUNCTION_ARGS)
 
 static double
 dist_pl_internal(Point *pt, LINE *line)
-{
+{	StackTrace("dist_pl_internal");
 	return fabs((line->A * pt->x + line->B * pt->y + line->C) /
 				HYPOT(line->A, line->B));
 }
@@ -2421,7 +2421,7 @@ dist_pl_internal(Point *pt, LINE *line)
  */
 Datum
 dist_ps(PG_FUNCTION_ARGS)
-{
+{	StackTrace("dist_ps");
 	Point	   *pt = PG_GETARG_POINT_P(0);
 	LSEG	   *lseg = PG_GETARG_LSEG_P(1);
 
@@ -2430,7 +2430,7 @@ dist_ps(PG_FUNCTION_ARGS)
 
 static double
 dist_ps_internal(Point *pt, LSEG *lseg)
-{
+{	StackTrace("dist_ps_internal");
 	double		m;				/* slope of perp. */
 	LINE	   *ln;
 	double		result,
@@ -2486,7 +2486,7 @@ dist_ps_internal(Point *pt, LSEG *lseg)
  */
 Datum
 dist_ppath(PG_FUNCTION_ARGS)
-{
+{	StackTrace("dist_ppath");
 	Point	   *pt = PG_GETARG_POINT_P(0);
 	PATH	   *path = PG_GETARG_PATH_P(1);
 	float8		result = 0.0;	/* keep compiler quiet */
@@ -2543,7 +2543,7 @@ dist_ppath(PG_FUNCTION_ARGS)
  */
 Datum
 dist_pb(PG_FUNCTION_ARGS)
-{
+{	StackTrace("dist_pb");
 	Point	   *pt = PG_GETARG_POINT_P(0);
 	BOX		   *box = PG_GETARG_BOX_P(1);
 	float8		result;
@@ -2562,7 +2562,7 @@ dist_pb(PG_FUNCTION_ARGS)
  */
 Datum
 dist_sl(PG_FUNCTION_ARGS)
-{
+{	StackTrace("dist_sl");
 	LSEG	   *lseg = PG_GETARG_LSEG_P(0);
 	LINE	   *line = PG_GETARG_LINE_P(1);
 	float8		result,
@@ -2587,7 +2587,7 @@ dist_sl(PG_FUNCTION_ARGS)
  */
 Datum
 dist_sb(PG_FUNCTION_ARGS)
-{
+{	StackTrace("dist_sb");
 	LSEG	   *lseg = PG_GETARG_LSEG_P(0);
 	BOX		   *box = PG_GETARG_BOX_P(1);
 	Point	   *tmp;
@@ -2608,7 +2608,7 @@ dist_sb(PG_FUNCTION_ARGS)
  */
 Datum
 dist_lb(PG_FUNCTION_ARGS)
-{
+{	StackTrace("dist_lb");
 #ifdef NOT_USED
 	LINE	   *line = PG_GETARG_LINE_P(0);
 	BOX		   *box = PG_GETARG_BOX_P(1);
@@ -2627,7 +2627,7 @@ dist_lb(PG_FUNCTION_ARGS)
  */
 Datum
 dist_cpoly(PG_FUNCTION_ARGS)
-{
+{	StackTrace("dist_cpoly");
 	CIRCLE	   *circle = PG_GETARG_CIRCLE_P(0);
 	POLYGON    *poly = PG_GETARG_POLYGON_P(1);
 	float8		result;
@@ -2647,7 +2647,7 @@ dist_cpoly(PG_FUNCTION_ARGS)
  */
 Datum
 dist_ppoly(PG_FUNCTION_ARGS)
-{
+{	StackTrace("dist_ppoly");
 	Point	   *point = PG_GETARG_POINT_P(0);
 	POLYGON    *poly = PG_GETARG_POLYGON_P(1);
 	float8		result;
@@ -2659,7 +2659,7 @@ dist_ppoly(PG_FUNCTION_ARGS)
 
 Datum
 dist_polyp(PG_FUNCTION_ARGS)
-{
+{	StackTrace("dist_polyp");
 	POLYGON    *poly = PG_GETARG_POLYGON_P(0);
 	Point	   *point = PG_GETARG_POINT_P(1);
 	float8		result;
@@ -2671,7 +2671,7 @@ dist_polyp(PG_FUNCTION_ARGS)
 
 static double
 dist_ppoly_internal(Point *pt, POLYGON *poly)
-{
+{	StackTrace("dist_ppoly_internal");
 	float8		result;
 	float8		d;
 	int			i;
@@ -2724,7 +2724,7 @@ dist_ppoly_internal(Point *pt, POLYGON *poly)
 /* Get intersection point of lseg and line; returns NULL if no intersection */
 static Point *
 interpt_sl(LSEG *lseg, LINE *line)
-{
+{	StackTrace("interpt_sl");
 	LINE		tmp;
 	Point	   *p;
 
@@ -2757,7 +2757,7 @@ interpt_sl(LSEG *lseg, LINE *line)
 /* variant: just indicate if intersection point exists */
 static bool
 has_interpt_sl(LSEG *lseg, LINE *line)
-{
+{	StackTrace("has_interpt_sl");
 	Point	   *tmp;
 
 	tmp = interpt_sl(lseg, line);
@@ -2777,7 +2777,7 @@ has_interpt_sl(LSEG *lseg, LINE *line)
  */
 Datum
 close_pl(PG_FUNCTION_ARGS)
-{
+{	StackTrace("close_pl");
 	Point	   *pt = PG_GETARG_POINT_P(0);
 	LINE	   *line = PG_GETARG_LINE_P(1);
 	Point	   *result;
@@ -2821,7 +2821,7 @@ close_pl(PG_FUNCTION_ARGS)
  */
 Datum
 close_ps(PG_FUNCTION_ARGS)
-{
+{	StackTrace("close_ps");
 	Point	   *pt = PG_GETARG_POINT_P(0);
 	LSEG	   *lseg = PG_GETARG_LSEG_P(1);
 	Point	   *result = NULL;
@@ -2935,7 +2935,7 @@ close_ps(PG_FUNCTION_ARGS)
  */
 Datum
 close_lseg(PG_FUNCTION_ARGS)
-{
+{	StackTrace("close_lseg");
 	LSEG	   *l1 = PG_GETARG_LSEG_P(0);
 	LSEG	   *l2 = PG_GETARG_LSEG_P(1);
 	Point	   *result = NULL;
@@ -2986,7 +2986,7 @@ close_lseg(PG_FUNCTION_ARGS)
  */
 Datum
 close_pb(PG_FUNCTION_ARGS)
-{
+{	StackTrace("close_pb");
 	Point	   *pt = PG_GETARG_POINT_P(0);
 	BOX		   *box = PG_GETARG_BOX_P(1);
 	LSEG		lseg,
@@ -3045,7 +3045,7 @@ close_pb(PG_FUNCTION_ARGS)
  */
 Datum
 close_sl(PG_FUNCTION_ARGS)
-{
+{	StackTrace("close_sl");
 #ifdef NOT_USED
 	LSEG	   *lseg = PG_GETARG_LSEG_P(0);
 	LINE	   *line = PG_GETARG_LINE_P(1);
@@ -3079,7 +3079,7 @@ close_sl(PG_FUNCTION_ARGS)
  */
 Datum
 close_ls(PG_FUNCTION_ARGS)
-{
+{	StackTrace("close_ls");
 	LINE	   *line = PG_GETARG_LINE_P(0);
 	LSEG	   *lseg = PG_GETARG_LSEG_P(1);
 	Point	   *result;
@@ -3105,7 +3105,7 @@ close_ls(PG_FUNCTION_ARGS)
  */
 Datum
 close_sb(PG_FUNCTION_ARGS)
-{
+{	StackTrace("close_sb");
 	LSEG	   *lseg = PG_GETARG_LSEG_P(0);
 	BOX		   *box = PG_GETARG_BOX_P(1);
 	Point		point;
@@ -3162,7 +3162,7 @@ close_sb(PG_FUNCTION_ARGS)
 
 Datum
 close_lb(PG_FUNCTION_ARGS)
-{
+{	StackTrace("close_lb");
 #ifdef NOT_USED
 	LINE	   *line = PG_GETARG_LINE_P(0);
 	BOX		   *box = PG_GETARG_BOX_P(1);
@@ -3186,7 +3186,7 @@ close_lb(PG_FUNCTION_ARGS)
  */
 Datum
 on_pl(PG_FUNCTION_ARGS)
-{
+{	StackTrace("on_pl");
 	Point	   *pt = PG_GETARG_POINT_P(0);
 	LINE	   *line = PG_GETARG_LINE_P(1);
 
@@ -3200,7 +3200,7 @@ on_pl(PG_FUNCTION_ARGS)
  */
 Datum
 on_ps(PG_FUNCTION_ARGS)
-{
+{	StackTrace("on_ps");
 	Point	   *pt = PG_GETARG_POINT_P(0);
 	LSEG	   *lseg = PG_GETARG_LSEG_P(1);
 
@@ -3209,14 +3209,14 @@ on_ps(PG_FUNCTION_ARGS)
 
 static bool
 on_ps_internal(Point *pt, LSEG *lseg)
-{
+{	StackTrace("on_ps_internal");
 	return FPeq(point_dt(pt, &lseg->p[0]) + point_dt(pt, &lseg->p[1]),
 				point_dt(&lseg->p[0], &lseg->p[1]));
 }
 
 Datum
 on_pb(PG_FUNCTION_ARGS)
-{
+{	StackTrace("on_pb");
 	Point	   *pt = PG_GETARG_POINT_P(0);
 	BOX		   *box = PG_GETARG_BOX_P(1);
 
@@ -3226,7 +3226,7 @@ on_pb(PG_FUNCTION_ARGS)
 
 Datum
 box_contain_pt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("box_contain_pt");
 	BOX		   *box = PG_GETARG_BOX_P(0);
 	Point	   *pt = PG_GETARG_POINT_P(1);
 
@@ -3247,7 +3247,7 @@ box_contain_pt(PG_FUNCTION_ARGS)
  */
 Datum
 on_ppath(PG_FUNCTION_ARGS)
-{
+{	StackTrace("on_ppath");
 	Point	   *pt = PG_GETARG_POINT_P(0);
 	PATH	   *path = PG_GETARG_PATH_P(1);
 	int			i,
@@ -3277,7 +3277,7 @@ on_ppath(PG_FUNCTION_ARGS)
 
 Datum
 on_sl(PG_FUNCTION_ARGS)
-{
+{	StackTrace("on_sl");
 	LSEG	   *lseg = PG_GETARG_LSEG_P(0);
 	LINE	   *line = PG_GETARG_LINE_P(1);
 
@@ -3291,7 +3291,7 @@ on_sl(PG_FUNCTION_ARGS)
 
 Datum
 on_sb(PG_FUNCTION_ARGS)
-{
+{	StackTrace("on_sb");
 	LSEG	   *lseg = PG_GETARG_LSEG_P(0);
 	BOX		   *box = PG_GETARG_BOX_P(1);
 
@@ -3310,7 +3310,7 @@ on_sb(PG_FUNCTION_ARGS)
 
 Datum
 inter_sl(PG_FUNCTION_ARGS)
-{
+{	StackTrace("inter_sl");
 	LSEG	   *lseg = PG_GETARG_LSEG_P(0);
 	LINE	   *line = PG_GETARG_LINE_P(1);
 
@@ -3329,7 +3329,7 @@ inter_sl(PG_FUNCTION_ARGS)
  */
 Datum
 inter_sb(PG_FUNCTION_ARGS)
-{
+{	StackTrace("inter_sb");
 	LSEG	   *lseg = PG_GETARG_LSEG_P(0);
 	BOX		   *box = PG_GETARG_BOX_P(1);
 	BOX			lbox;
@@ -3384,7 +3384,7 @@ inter_sb(PG_FUNCTION_ARGS)
  */
 Datum
 inter_lb(PG_FUNCTION_ARGS)
-{
+{	StackTrace("inter_lb");
 	LINE	   *line = PG_GETARG_LINE_P(0);
 	BOX		   *box = PG_GETARG_BOX_P(1);
 	LSEG		bseg;
@@ -3432,7 +3432,7 @@ inter_lb(PG_FUNCTION_ARGS)
  *---------------------------------------------------------------------*/
 static void
 make_bound_box(POLYGON *poly)
-{
+{	StackTrace("make_bound_box");
 	int			i;
 	double		x1,
 				y1,
@@ -3473,7 +3473,7 @@ make_bound_box(POLYGON *poly)
  *------------------------------------------------------------------*/
 Datum
 poly_in(PG_FUNCTION_ARGS)
-{
+{	StackTrace("poly_in");
 	char	   *str = PG_GETARG_CSTRING(0);
 	POLYGON    *poly;
 	int			npts;
@@ -3518,7 +3518,7 @@ poly_in(PG_FUNCTION_ARGS)
  *---------------------------------------------------------------*/
 Datum
 poly_out(PG_FUNCTION_ARGS)
-{
+{	StackTrace("poly_out");
 	POLYGON    *poly = PG_GETARG_POLYGON_P(0);
 
 	PG_RETURN_CSTRING(path_encode(PATH_CLOSED, poly->npts, poly->p));
@@ -3534,7 +3534,7 @@ poly_out(PG_FUNCTION_ARGS)
  */
 Datum
 poly_recv(PG_FUNCTION_ARGS)
-{
+{	StackTrace("poly_recv");
 	StringInfo	buf = (StringInfo) PG_GETARG_POINTER(0);
 	POLYGON    *poly;
 	int32		npts;
@@ -3569,7 +3569,7 @@ poly_recv(PG_FUNCTION_ARGS)
  */
 Datum
 poly_send(PG_FUNCTION_ARGS)
-{
+{	StackTrace("poly_send");
 	POLYGON    *poly = PG_GETARG_POLYGON_P(0);
 	StringInfoData buf;
 	int32		i;
@@ -3592,7 +3592,7 @@ poly_send(PG_FUNCTION_ARGS)
  *-------------------------------------------------------*/
 Datum
 poly_left(PG_FUNCTION_ARGS)
-{
+{	StackTrace("poly_left");
 	POLYGON    *polya = PG_GETARG_POLYGON_P(0);
 	POLYGON    *polyb = PG_GETARG_POLYGON_P(1);
 	bool		result;
@@ -3615,7 +3615,7 @@ poly_left(PG_FUNCTION_ARGS)
  *-------------------------------------------------------*/
 Datum
 poly_overleft(PG_FUNCTION_ARGS)
-{
+{	StackTrace("poly_overleft");
 	POLYGON    *polya = PG_GETARG_POLYGON_P(0);
 	POLYGON    *polyb = PG_GETARG_POLYGON_P(1);
 	bool		result;
@@ -3638,7 +3638,7 @@ poly_overleft(PG_FUNCTION_ARGS)
  *-------------------------------------------------------*/
 Datum
 poly_right(PG_FUNCTION_ARGS)
-{
+{	StackTrace("poly_right");
 	POLYGON    *polya = PG_GETARG_POLYGON_P(0);
 	POLYGON    *polyb = PG_GETARG_POLYGON_P(1);
 	bool		result;
@@ -3661,7 +3661,7 @@ poly_right(PG_FUNCTION_ARGS)
  *-------------------------------------------------------*/
 Datum
 poly_overright(PG_FUNCTION_ARGS)
-{
+{	StackTrace("poly_overright");
 	POLYGON    *polya = PG_GETARG_POLYGON_P(0);
 	POLYGON    *polyb = PG_GETARG_POLYGON_P(1);
 	bool		result;
@@ -3684,7 +3684,7 @@ poly_overright(PG_FUNCTION_ARGS)
  *-------------------------------------------------------*/
 Datum
 poly_below(PG_FUNCTION_ARGS)
-{
+{	StackTrace("poly_below");
 	POLYGON    *polya = PG_GETARG_POLYGON_P(0);
 	POLYGON    *polyb = PG_GETARG_POLYGON_P(1);
 	bool		result;
@@ -3707,7 +3707,7 @@ poly_below(PG_FUNCTION_ARGS)
  *-------------------------------------------------------*/
 Datum
 poly_overbelow(PG_FUNCTION_ARGS)
-{
+{	StackTrace("poly_overbelow");
 	POLYGON    *polya = PG_GETARG_POLYGON_P(0);
 	POLYGON    *polyb = PG_GETARG_POLYGON_P(1);
 	bool		result;
@@ -3730,7 +3730,7 @@ poly_overbelow(PG_FUNCTION_ARGS)
  *-------------------------------------------------------*/
 Datum
 poly_above(PG_FUNCTION_ARGS)
-{
+{	StackTrace("poly_above");
 	POLYGON    *polya = PG_GETARG_POLYGON_P(0);
 	POLYGON    *polyb = PG_GETARG_POLYGON_P(1);
 	bool		result;
@@ -3753,7 +3753,7 @@ poly_above(PG_FUNCTION_ARGS)
  *-------------------------------------------------------*/
 Datum
 poly_overabove(PG_FUNCTION_ARGS)
-{
+{	StackTrace("poly_overabove");
 	POLYGON    *polya = PG_GETARG_POLYGON_P(0);
 	POLYGON    *polyb = PG_GETARG_POLYGON_P(1);
 	bool		result;
@@ -3779,7 +3779,7 @@ poly_overabove(PG_FUNCTION_ARGS)
  *-------------------------------------------------------*/
 Datum
 poly_same(PG_FUNCTION_ARGS)
-{
+{	StackTrace("poly_same");
 	POLYGON    *polya = PG_GETARG_POLYGON_P(0);
 	POLYGON    *polyb = PG_GETARG_POLYGON_P(1);
 	bool		result;
@@ -3803,7 +3803,7 @@ poly_same(PG_FUNCTION_ARGS)
  *-----------------------------------------------------------------*/
 Datum
 poly_overlap(PG_FUNCTION_ARGS)
-{
+{	StackTrace("poly_overlap");
 	POLYGON    *polya = PG_GETARG_POLYGON_P(0);
 	POLYGON    *polyb = PG_GETARG_POLYGON_P(1);
 	bool		result;
@@ -3879,7 +3879,7 @@ poly_overlap(PG_FUNCTION_ARGS)
 
 static bool
 touched_lseg_inside_poly(Point *a, Point *b, LSEG *s, POLYGON *poly, int start)
-{
+{	StackTrace("touched_lseg_inside_poly");
 	/* point a is on s, b is not */
 	LSEG		t;
 
@@ -3916,7 +3916,7 @@ touched_lseg_inside_poly(Point *a, Point *b, LSEG *s, POLYGON *poly, int start)
  */
 static bool
 lseg_inside_poly(Point *a, Point *b, POLYGON *poly, int start)
-{
+{	StackTrace("lseg_inside_poly");
 	LSEG		s,
 				t;
 	int			i;
@@ -3984,7 +3984,7 @@ lseg_inside_poly(Point *a, Point *b, POLYGON *poly, int start)
  *-----------------------------------------------------------------*/
 Datum
 poly_contain(PG_FUNCTION_ARGS)
-{
+{	StackTrace("poly_contain");
 	POLYGON    *polya = PG_GETARG_POLYGON_P(0);
 	POLYGON    *polyb = PG_GETARG_POLYGON_P(1);
 	bool		result;
@@ -4030,7 +4030,7 @@ poly_contain(PG_FUNCTION_ARGS)
  *-----------------------------------------------------------------*/
 Datum
 poly_contained(PG_FUNCTION_ARGS)
-{
+{	StackTrace("poly_contained");
 	Datum		polya = PG_GETARG_DATUM(0);
 	Datum		polyb = PG_GETARG_DATUM(1);
 
@@ -4041,7 +4041,7 @@ poly_contained(PG_FUNCTION_ARGS)
 
 Datum
 poly_contain_pt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("poly_contain_pt");
 	POLYGON    *poly = PG_GETARG_POLYGON_P(0);
 	Point	   *p = PG_GETARG_POINT_P(1);
 
@@ -4050,7 +4050,7 @@ poly_contain_pt(PG_FUNCTION_ARGS)
 
 Datum
 pt_contained_poly(PG_FUNCTION_ARGS)
-{
+{	StackTrace("pt_contained_poly");
 	Point	   *p = PG_GETARG_POINT_P(0);
 	POLYGON    *poly = PG_GETARG_POLYGON_P(1);
 
@@ -4060,7 +4060,7 @@ pt_contained_poly(PG_FUNCTION_ARGS)
 
 Datum
 poly_distance(PG_FUNCTION_ARGS)
-{
+{	StackTrace("poly_distance");
 #ifdef NOT_USED
 	POLYGON    *polya = PG_GETARG_POLYGON_P(0);
 	POLYGON    *polyb = PG_GETARG_POLYGON_P(1);
@@ -4082,7 +4082,7 @@ poly_distance(PG_FUNCTION_ARGS)
 
 Datum
 construct_point(PG_FUNCTION_ARGS)
-{
+{	StackTrace("construct_point");
 	float8		x = PG_GETARG_FLOAT8(0);
 	float8		y = PG_GETARG_FLOAT8(1);
 
@@ -4091,7 +4091,7 @@ construct_point(PG_FUNCTION_ARGS)
 
 Datum
 point_add(PG_FUNCTION_ARGS)
-{
+{	StackTrace("point_add");
 	Point	   *p1 = PG_GETARG_POINT_P(0);
 	Point	   *p2 = PG_GETARG_POINT_P(1);
 	Point	   *result;
@@ -4106,7 +4106,7 @@ point_add(PG_FUNCTION_ARGS)
 
 Datum
 point_sub(PG_FUNCTION_ARGS)
-{
+{	StackTrace("point_sub");
 	Point	   *p1 = PG_GETARG_POINT_P(0);
 	Point	   *p2 = PG_GETARG_POINT_P(1);
 	Point	   *result;
@@ -4121,7 +4121,7 @@ point_sub(PG_FUNCTION_ARGS)
 
 Datum
 point_mul(PG_FUNCTION_ARGS)
-{
+{	StackTrace("point_mul");
 	Point	   *p1 = PG_GETARG_POINT_P(0);
 	Point	   *p2 = PG_GETARG_POINT_P(1);
 	Point	   *result;
@@ -4136,7 +4136,7 @@ point_mul(PG_FUNCTION_ARGS)
 
 Datum
 point_div(PG_FUNCTION_ARGS)
-{
+{	StackTrace("point_div");
 	Point	   *p1 = PG_GETARG_POINT_P(0);
 	Point	   *p2 = PG_GETARG_POINT_P(1);
 	Point	   *result;
@@ -4166,7 +4166,7 @@ point_div(PG_FUNCTION_ARGS)
 
 Datum
 points_box(PG_FUNCTION_ARGS)
-{
+{	StackTrace("points_box");
 	Point	   *p1 = PG_GETARG_POINT_P(0);
 	Point	   *p2 = PG_GETARG_POINT_P(1);
 
@@ -4175,7 +4175,7 @@ points_box(PG_FUNCTION_ARGS)
 
 Datum
 box_add(PG_FUNCTION_ARGS)
-{
+{	StackTrace("box_add");
 	BOX		   *box = PG_GETARG_BOX_P(0);
 	Point	   *p = PG_GETARG_POINT_P(1);
 
@@ -4187,7 +4187,7 @@ box_add(PG_FUNCTION_ARGS)
 
 Datum
 box_sub(PG_FUNCTION_ARGS)
-{
+{	StackTrace("box_sub");
 	BOX		   *box = PG_GETARG_BOX_P(0);
 	Point	   *p = PG_GETARG_POINT_P(1);
 
@@ -4199,7 +4199,7 @@ box_sub(PG_FUNCTION_ARGS)
 
 Datum
 box_mul(PG_FUNCTION_ARGS)
-{
+{	StackTrace("box_mul");
 	BOX		   *box = PG_GETARG_BOX_P(0);
 	Point	   *p = PG_GETARG_POINT_P(1);
 	BOX		   *result;
@@ -4220,7 +4220,7 @@ box_mul(PG_FUNCTION_ARGS)
 
 Datum
 box_div(PG_FUNCTION_ARGS)
-{
+{	StackTrace("box_div");
 	BOX		   *box = PG_GETARG_BOX_P(0);
 	Point	   *p = PG_GETARG_POINT_P(1);
 	BOX		   *result;
@@ -4244,7 +4244,7 @@ box_div(PG_FUNCTION_ARGS)
  */
 Datum
 point_box(PG_FUNCTION_ARGS)
-{
+{	StackTrace("point_box");
 	Point	   *pt = PG_GETARG_POINT_P(0);
 	BOX		   *box;
 
@@ -4263,7 +4263,7 @@ point_box(PG_FUNCTION_ARGS)
  */
 Datum
 boxes_bound_box(PG_FUNCTION_ARGS)
-{
+{	StackTrace("boxes_bound_box");
 	BOX		   *box1 = PG_GETARG_BOX_P(0),
 			   *box2 = PG_GETARG_BOX_P(1),
 			   *container;
@@ -4290,7 +4290,7 @@ boxes_bound_box(PG_FUNCTION_ARGS)
  */
 Datum
 path_add(PG_FUNCTION_ARGS)
-{
+{	StackTrace("path_add");
 	PATH	   *p1 = PG_GETARG_PATH_P(0);
 	PATH	   *p2 = PG_GETARG_PATH_P(1);
 	PATH	   *result;
@@ -4338,7 +4338,7 @@ path_add(PG_FUNCTION_ARGS)
  */
 Datum
 path_add_pt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("path_add_pt");
 	PATH	   *path = PG_GETARG_PATH_P_COPY(0);
 	Point	   *point = PG_GETARG_POINT_P(1);
 	int			i;
@@ -4354,7 +4354,7 @@ path_add_pt(PG_FUNCTION_ARGS)
 
 Datum
 path_sub_pt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("path_sub_pt");
 	PATH	   *path = PG_GETARG_PATH_P_COPY(0);
 	Point	   *point = PG_GETARG_POINT_P(1);
 	int			i;
@@ -4373,7 +4373,7 @@ path_sub_pt(PG_FUNCTION_ARGS)
  */
 Datum
 path_mul_pt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("path_mul_pt");
 	PATH	   *path = PG_GETARG_PATH_P_COPY(0);
 	Point	   *point = PG_GETARG_POINT_P(1);
 	Point	   *p;
@@ -4393,7 +4393,7 @@ path_mul_pt(PG_FUNCTION_ARGS)
 
 Datum
 path_div_pt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("path_div_pt");
 	PATH	   *path = PG_GETARG_PATH_P_COPY(0);
 	Point	   *point = PG_GETARG_POINT_P(1);
 	Point	   *p;
@@ -4414,7 +4414,7 @@ path_div_pt(PG_FUNCTION_ARGS)
 
 Datum
 path_center(PG_FUNCTION_ARGS)
-{
+{	StackTrace("path_center");
 #ifdef NOT_USED
 	PATH	   *path = PG_GETARG_PATH_P(0);
 #endif
@@ -4428,7 +4428,7 @@ path_center(PG_FUNCTION_ARGS)
 
 Datum
 path_poly(PG_FUNCTION_ARGS)
-{
+{	StackTrace("path_poly");
 	PATH	   *path = PG_GETARG_PATH_P(0);
 	POLYGON    *poly;
 	int			size;
@@ -4470,7 +4470,7 @@ path_poly(PG_FUNCTION_ARGS)
 
 Datum
 poly_npoints(PG_FUNCTION_ARGS)
-{
+{	StackTrace("poly_npoints");
 	POLYGON    *poly = PG_GETARG_POLYGON_P(0);
 
 	PG_RETURN_INT32(poly->npts);
@@ -4479,7 +4479,7 @@ poly_npoints(PG_FUNCTION_ARGS)
 
 Datum
 poly_center(PG_FUNCTION_ARGS)
-{
+{	StackTrace("poly_center");
 	POLYGON    *poly = PG_GETARG_POLYGON_P(0);
 	Datum		result;
 	CIRCLE	   *circle;
@@ -4495,7 +4495,7 @@ poly_center(PG_FUNCTION_ARGS)
 
 Datum
 poly_box(PG_FUNCTION_ARGS)
-{
+{	StackTrace("poly_box");
 	POLYGON    *poly = PG_GETARG_POLYGON_P(0);
 	BOX		   *box;
 
@@ -4513,7 +4513,7 @@ poly_box(PG_FUNCTION_ARGS)
  */
 Datum
 box_poly(PG_FUNCTION_ARGS)
-{
+{	StackTrace("box_poly");
 	BOX		   *box = PG_GETARG_BOX_P(0);
 	POLYGON    *poly;
 	int			size;
@@ -4543,7 +4543,7 @@ box_poly(PG_FUNCTION_ARGS)
 
 Datum
 poly_path(PG_FUNCTION_ARGS)
-{
+{	StackTrace("poly_path");
 	POLYGON    *poly = PG_GETARG_POLYGON_P(0);
 	PATH	   *path;
 	int			size;
@@ -4590,7 +4590,7 @@ poly_path(PG_FUNCTION_ARGS)
  */
 Datum
 circle_in(PG_FUNCTION_ARGS)
-{
+{	StackTrace("circle_in");
 	char	   *str = PG_GETARG_CSTRING(0);
 	CIRCLE	   *circle;
 	char	   *s,
@@ -4655,7 +4655,7 @@ circle_in(PG_FUNCTION_ARGS)
  */
 Datum
 circle_out(PG_FUNCTION_ARGS)
-{
+{	StackTrace("circle_out");
 	CIRCLE	   *circle = PG_GETARG_CIRCLE_P(0);
 	char	   *result;
 	char	   *cp;
@@ -4690,7 +4690,7 @@ circle_out(PG_FUNCTION_ARGS)
  */
 Datum
 circle_recv(PG_FUNCTION_ARGS)
-{
+{	StackTrace("circle_recv");
 	StringInfo	buf = (StringInfo) PG_GETARG_POINTER(0);
 	CIRCLE	   *circle;
 
@@ -4713,7 +4713,7 @@ circle_recv(PG_FUNCTION_ARGS)
  */
 Datum
 circle_send(PG_FUNCTION_ARGS)
-{
+{	StackTrace("circle_send");
 	CIRCLE	   *circle = PG_GETARG_CIRCLE_P(0);
 	StringInfoData buf;
 
@@ -4734,7 +4734,7 @@ circle_send(PG_FUNCTION_ARGS)
  */
 Datum
 circle_same(PG_FUNCTION_ARGS)
-{
+{	StackTrace("circle_same");
 	CIRCLE	   *circle1 = PG_GETARG_CIRCLE_P(0);
 	CIRCLE	   *circle2 = PG_GETARG_CIRCLE_P(1);
 
@@ -4747,7 +4747,7 @@ circle_same(PG_FUNCTION_ARGS)
  */
 Datum
 circle_overlap(PG_FUNCTION_ARGS)
-{
+{	StackTrace("circle_overlap");
 	CIRCLE	   *circle1 = PG_GETARG_CIRCLE_P(0);
 	CIRCLE	   *circle2 = PG_GETARG_CIRCLE_P(1);
 
@@ -4760,7 +4760,7 @@ circle_overlap(PG_FUNCTION_ARGS)
  */
 Datum
 circle_overleft(PG_FUNCTION_ARGS)
-{
+{	StackTrace("circle_overleft");
 	CIRCLE	   *circle1 = PG_GETARG_CIRCLE_P(0);
 	CIRCLE	   *circle2 = PG_GETARG_CIRCLE_P(1);
 
@@ -4772,7 +4772,7 @@ circle_overleft(PG_FUNCTION_ARGS)
  */
 Datum
 circle_left(PG_FUNCTION_ARGS)
-{
+{	StackTrace("circle_left");
 	CIRCLE	   *circle1 = PG_GETARG_CIRCLE_P(0);
 	CIRCLE	   *circle2 = PG_GETARG_CIRCLE_P(1);
 
@@ -4784,7 +4784,7 @@ circle_left(PG_FUNCTION_ARGS)
  */
 Datum
 circle_right(PG_FUNCTION_ARGS)
-{
+{	StackTrace("circle_right");
 	CIRCLE	   *circle1 = PG_GETARG_CIRCLE_P(0);
 	CIRCLE	   *circle2 = PG_GETARG_CIRCLE_P(1);
 
@@ -4797,7 +4797,7 @@ circle_right(PG_FUNCTION_ARGS)
  */
 Datum
 circle_overright(PG_FUNCTION_ARGS)
-{
+{	StackTrace("circle_overright");
 	CIRCLE	   *circle1 = PG_GETARG_CIRCLE_P(0);
 	CIRCLE	   *circle2 = PG_GETARG_CIRCLE_P(1);
 
@@ -4809,7 +4809,7 @@ circle_overright(PG_FUNCTION_ARGS)
  */
 Datum
 circle_contained(PG_FUNCTION_ARGS)
-{
+{	StackTrace("circle_contained");
 	CIRCLE	   *circle1 = PG_GETARG_CIRCLE_P(0);
 	CIRCLE	   *circle2 = PG_GETARG_CIRCLE_P(1);
 
@@ -4820,7 +4820,7 @@ circle_contained(PG_FUNCTION_ARGS)
  */
 Datum
 circle_contain(PG_FUNCTION_ARGS)
-{
+{	StackTrace("circle_contain");
 	CIRCLE	   *circle1 = PG_GETARG_CIRCLE_P(0);
 	CIRCLE	   *circle2 = PG_GETARG_CIRCLE_P(1);
 
@@ -4832,7 +4832,7 @@ circle_contain(PG_FUNCTION_ARGS)
  */
 Datum
 circle_below(PG_FUNCTION_ARGS)
-{
+{	StackTrace("circle_below");
 	CIRCLE	   *circle1 = PG_GETARG_CIRCLE_P(0);
 	CIRCLE	   *circle2 = PG_GETARG_CIRCLE_P(1);
 
@@ -4844,7 +4844,7 @@ circle_below(PG_FUNCTION_ARGS)
  */
 Datum
 circle_above(PG_FUNCTION_ARGS)
-{
+{	StackTrace("circle_above");
 	CIRCLE	   *circle1 = PG_GETARG_CIRCLE_P(0);
 	CIRCLE	   *circle2 = PG_GETARG_CIRCLE_P(1);
 
@@ -4857,7 +4857,7 @@ circle_above(PG_FUNCTION_ARGS)
  */
 Datum
 circle_overbelow(PG_FUNCTION_ARGS)
-{
+{	StackTrace("circle_overbelow");
 	CIRCLE	   *circle1 = PG_GETARG_CIRCLE_P(0);
 	CIRCLE	   *circle2 = PG_GETARG_CIRCLE_P(1);
 
@@ -4870,7 +4870,7 @@ circle_overbelow(PG_FUNCTION_ARGS)
  */
 Datum
 circle_overabove(PG_FUNCTION_ARGS)
-{
+{	StackTrace("circle_overabove");
 	CIRCLE	   *circle1 = PG_GETARG_CIRCLE_P(0);
 	CIRCLE	   *circle2 = PG_GETARG_CIRCLE_P(1);
 
@@ -4884,7 +4884,7 @@ circle_overabove(PG_FUNCTION_ARGS)
  */
 Datum
 circle_eq(PG_FUNCTION_ARGS)
-{
+{	StackTrace("circle_eq");
 	CIRCLE	   *circle1 = PG_GETARG_CIRCLE_P(0);
 	CIRCLE	   *circle2 = PG_GETARG_CIRCLE_P(1);
 
@@ -4893,7 +4893,7 @@ circle_eq(PG_FUNCTION_ARGS)
 
 Datum
 circle_ne(PG_FUNCTION_ARGS)
-{
+{	StackTrace("circle_ne");
 	CIRCLE	   *circle1 = PG_GETARG_CIRCLE_P(0);
 	CIRCLE	   *circle2 = PG_GETARG_CIRCLE_P(1);
 
@@ -4902,7 +4902,7 @@ circle_ne(PG_FUNCTION_ARGS)
 
 Datum
 circle_lt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("circle_lt");
 	CIRCLE	   *circle1 = PG_GETARG_CIRCLE_P(0);
 	CIRCLE	   *circle2 = PG_GETARG_CIRCLE_P(1);
 
@@ -4911,7 +4911,7 @@ circle_lt(PG_FUNCTION_ARGS)
 
 Datum
 circle_gt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("circle_gt");
 	CIRCLE	   *circle1 = PG_GETARG_CIRCLE_P(0);
 	CIRCLE	   *circle2 = PG_GETARG_CIRCLE_P(1);
 
@@ -4920,7 +4920,7 @@ circle_gt(PG_FUNCTION_ARGS)
 
 Datum
 circle_le(PG_FUNCTION_ARGS)
-{
+{	StackTrace("circle_le");
 	CIRCLE	   *circle1 = PG_GETARG_CIRCLE_P(0);
 	CIRCLE	   *circle2 = PG_GETARG_CIRCLE_P(1);
 
@@ -4929,7 +4929,7 @@ circle_le(PG_FUNCTION_ARGS)
 
 Datum
 circle_ge(PG_FUNCTION_ARGS)
-{
+{	StackTrace("circle_ge");
 	CIRCLE	   *circle1 = PG_GETARG_CIRCLE_P(0);
 	CIRCLE	   *circle2 = PG_GETARG_CIRCLE_P(1);
 
@@ -4943,7 +4943,7 @@ circle_ge(PG_FUNCTION_ARGS)
 
 static CIRCLE *
 circle_copy(CIRCLE *circle)
-{
+{	StackTrace("circle_copy");
 	CIRCLE	   *result;
 
 	if (!PointerIsValid(circle))
@@ -4960,7 +4960,7 @@ circle_copy(CIRCLE *circle)
  */
 Datum
 circle_add_pt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("circle_add_pt");
 	CIRCLE	   *circle = PG_GETARG_CIRCLE_P(0);
 	Point	   *point = PG_GETARG_POINT_P(1);
 	CIRCLE	   *result;
@@ -4975,7 +4975,7 @@ circle_add_pt(PG_FUNCTION_ARGS)
 
 Datum
 circle_sub_pt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("circle_sub_pt");
 	CIRCLE	   *circle = PG_GETARG_CIRCLE_P(0);
 	Point	   *point = PG_GETARG_POINT_P(1);
 	CIRCLE	   *result;
@@ -4994,7 +4994,7 @@ circle_sub_pt(PG_FUNCTION_ARGS)
  */
 Datum
 circle_mul_pt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("circle_mul_pt");
 	CIRCLE	   *circle = PG_GETARG_CIRCLE_P(0);
 	Point	   *point = PG_GETARG_POINT_P(1);
 	CIRCLE	   *result;
@@ -5014,7 +5014,7 @@ circle_mul_pt(PG_FUNCTION_ARGS)
 
 Datum
 circle_div_pt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("circle_div_pt");
 	CIRCLE	   *circle = PG_GETARG_CIRCLE_P(0);
 	Point	   *point = PG_GETARG_POINT_P(1);
 	CIRCLE	   *result;
@@ -5037,7 +5037,7 @@ circle_div_pt(PG_FUNCTION_ARGS)
  */
 Datum
 circle_area(PG_FUNCTION_ARGS)
-{
+{	StackTrace("circle_area");
 	CIRCLE	   *circle = PG_GETARG_CIRCLE_P(0);
 
 	PG_RETURN_FLOAT8(circle_ar(circle));
@@ -5048,7 +5048,7 @@ circle_area(PG_FUNCTION_ARGS)
  */
 Datum
 circle_diameter(PG_FUNCTION_ARGS)
-{
+{	StackTrace("circle_diameter");
 	CIRCLE	   *circle = PG_GETARG_CIRCLE_P(0);
 
 	PG_RETURN_FLOAT8(2 * circle->radius);
@@ -5059,7 +5059,7 @@ circle_diameter(PG_FUNCTION_ARGS)
  */
 Datum
 circle_radius(PG_FUNCTION_ARGS)
-{
+{	StackTrace("circle_radius");
 	CIRCLE	   *circle = PG_GETARG_CIRCLE_P(0);
 
 	PG_RETURN_FLOAT8(circle->radius);
@@ -5071,7 +5071,7 @@ circle_radius(PG_FUNCTION_ARGS)
  */
 Datum
 circle_distance(PG_FUNCTION_ARGS)
-{
+{	StackTrace("circle_distance");
 	CIRCLE	   *circle1 = PG_GETARG_CIRCLE_P(0);
 	CIRCLE	   *circle2 = PG_GETARG_CIRCLE_P(1);
 	float8		result;
@@ -5086,7 +5086,7 @@ circle_distance(PG_FUNCTION_ARGS)
 
 Datum
 circle_contain_pt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("circle_contain_pt");
 	CIRCLE	   *circle = PG_GETARG_CIRCLE_P(0);
 	Point	   *point = PG_GETARG_POINT_P(1);
 	double		d;
@@ -5098,7 +5098,7 @@ circle_contain_pt(PG_FUNCTION_ARGS)
 
 Datum
 pt_contained_circle(PG_FUNCTION_ARGS)
-{
+{	StackTrace("pt_contained_circle");
 	Point	   *point = PG_GETARG_POINT_P(0);
 	CIRCLE	   *circle = PG_GETARG_CIRCLE_P(1);
 	double		d;
@@ -5113,7 +5113,7 @@ pt_contained_circle(PG_FUNCTION_ARGS)
  */
 Datum
 dist_pc(PG_FUNCTION_ARGS)
-{
+{	StackTrace("dist_pc");
 	Point	   *point = PG_GETARG_POINT_P(0);
 	CIRCLE	   *circle = PG_GETARG_CIRCLE_P(1);
 	float8		result;
@@ -5129,7 +5129,7 @@ dist_pc(PG_FUNCTION_ARGS)
  */
 Datum
 dist_cpoint(PG_FUNCTION_ARGS)
-{
+{	StackTrace("dist_cpoint");
 	CIRCLE	   *circle = PG_GETARG_CIRCLE_P(0);
 	Point	   *point = PG_GETARG_POINT_P(1);
 	float8		result;
@@ -5144,7 +5144,7 @@ dist_cpoint(PG_FUNCTION_ARGS)
  */
 Datum
 circle_center(PG_FUNCTION_ARGS)
-{
+{	StackTrace("circle_center");
 	CIRCLE	   *circle = PG_GETARG_CIRCLE_P(0);
 	Point	   *result;
 
@@ -5160,7 +5160,7 @@ circle_center(PG_FUNCTION_ARGS)
  */
 static double
 circle_ar(CIRCLE *circle)
-{
+{	StackTrace("circle_ar");
 	return M_PI * (circle->radius * circle->radius);
 }
 
@@ -5171,7 +5171,7 @@ circle_ar(CIRCLE *circle)
 
 Datum
 cr_circle(PG_FUNCTION_ARGS)
-{
+{	StackTrace("cr_circle");
 	Point	   *center = PG_GETARG_POINT_P(0);
 	float8		radius = PG_GETARG_FLOAT8(1);
 	CIRCLE	   *result;
@@ -5187,7 +5187,7 @@ cr_circle(PG_FUNCTION_ARGS)
 
 Datum
 circle_box(PG_FUNCTION_ARGS)
-{
+{	StackTrace("circle_box");
 	CIRCLE	   *circle = PG_GETARG_CIRCLE_P(0);
 	BOX		   *box;
 	double		delta;
@@ -5209,7 +5209,7 @@ circle_box(PG_FUNCTION_ARGS)
  */
 Datum
 box_circle(PG_FUNCTION_ARGS)
-{
+{	StackTrace("box_circle");
 	BOX		   *box = PG_GETARG_BOX_P(0);
 	CIRCLE	   *circle;
 
@@ -5226,7 +5226,7 @@ box_circle(PG_FUNCTION_ARGS)
 
 Datum
 circle_poly(PG_FUNCTION_ARGS)
-{
+{	StackTrace("circle_poly");
 	int32		npts = PG_GETARG_INT32(0);
 	CIRCLE	   *circle = PG_GETARG_CIRCLE_P(1);
 	POLYGON    *poly;
@@ -5280,7 +5280,7 @@ circle_poly(PG_FUNCTION_ARGS)
  */
 Datum
 poly_circle(PG_FUNCTION_ARGS)
-{
+{	StackTrace("poly_circle");
 	POLYGON    *poly = PG_GETARG_POLYGON_P(0);
 	CIRCLE	   *circle;
 	int			i;
@@ -5333,7 +5333,7 @@ poly_circle(PG_FUNCTION_ARGS)
 
 static int
 point_inside(Point *p, int npts, Point *plist)
-{
+{	StackTrace("point_inside");
 	double		x0,
 				y0;
 	double		prev_x,
@@ -5391,7 +5391,7 @@ point_inside(Point *p, int npts, Point *plist)
 
 static int
 lseg_crossing(double x, double y, double prev_x, double prev_y)
-{
+{	StackTrace("lseg_crossing");
 	double		z;
 	int			y_sign;
 
@@ -5446,7 +5446,7 @@ lseg_crossing(double x, double y, double prev_x, double prev_y)
 
 static bool
 plist_same(int npts, Point *p1, Point *p2)
-{
+{	StackTrace("plist_same");
 	int			i,
 				ii,
 				j;
@@ -5527,7 +5527,7 @@ plist_same(int npts, Point *p1, Point *p2)
  */
 double
 pg_hypot(double x, double y)
-{
+{	StackTrace("pg_hypot");
 	double		yx;
 
 	/* Handle INF and NaN properly */

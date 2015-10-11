@@ -124,7 +124,7 @@ static AclMode pg_aclmask(AclObjectKind objkind, Oid table_oid, AttrNumber attnu
 #ifdef ACLDEBUG
 static void
 dumpacl(Acl *acl)
-{
+{	StackTrace("dumpacl");
 	int			i;
 	AclItem    *aip;
 
@@ -151,7 +151,7 @@ merge_acl_with_grant(Acl *old_acl, bool is_grant,
 					 bool grant_option, DropBehavior behavior,
 					 List *grantees, AclMode privileges,
 					 Oid grantorId, Oid ownerId)
-{
+{	StackTrace("merge_acl_with_grant");
 	unsigned	modechg;
 	ListCell   *j;
 	Acl		   *new_acl;
@@ -217,7 +217,7 @@ restrict_and_check_grant(bool is_grant, AclMode avail_goptions, bool all_privs,
 						 AclMode privileges, Oid objectId, Oid grantorId,
 						 AclObjectKind objkind, const char *objname,
 						 AttrNumber att_number, const char *colname)
-{
+{	StackTrace("restrict_and_check_grant");
 	AclMode		this_privileges;
 	AclMode		whole_mask;
 
@@ -362,7 +362,7 @@ restrict_and_check_grant(bool is_grant, AclMode avail_goptions, bool all_privs,
  */
 void
 ExecuteGrantStmt(GrantStmt *stmt)
-{
+{	StackTrace("ExecuteGrantStmt");
 	InternalGrant istmt;
 	ListCell   *cell;
 	const char *errormsg;
@@ -542,7 +542,7 @@ ExecuteGrantStmt(GrantStmt *stmt)
  */
 static void
 ExecGrantStmt_oids(InternalGrant *istmt)
-{
+{	StackTrace("ExecGrantStmt_oids");
 	switch (istmt->objtype)
 	{
 		case ACL_OBJECT_RELATION:
@@ -604,7 +604,7 @@ ExecGrantStmt_oids(InternalGrant *istmt)
  */
 static List *
 objectNamesToOids(GrantObjectType objtype, List *objnames)
-{
+{	StackTrace("objectNamesToOids");
 	List	   *objects = NIL;
 	ListCell   *cell;
 
@@ -734,7 +734,7 @@ objectNamesToOids(GrantObjectType objtype, List *objnames)
  */
 static List *
 objectsInSchemaToOids(GrantObjectType objtype, List *nspnames)
-{
+{	StackTrace("objectsInSchemaToOids");
 	List	   *objects = NIL;
 	ListCell   *cell;
 
@@ -803,7 +803,7 @@ objectsInSchemaToOids(GrantObjectType objtype, List *nspnames)
  */
 static List *
 getRelationsInNamespace(Oid namespaceId, char relkind)
-{
+{	StackTrace("getRelationsInNamespace");
 	List	   *relations = NIL;
 	ScanKeyData key[2];
 	Relation	rel;
@@ -839,7 +839,7 @@ getRelationsInNamespace(Oid namespaceId, char relkind)
  */
 void
 ExecAlterDefaultPrivilegesStmt(AlterDefaultPrivilegesStmt *stmt)
-{
+{	StackTrace("ExecAlterDefaultPrivilegesStmt");
 	GrantStmt  *action = stmt->action;
 	InternalDefaultACL iacls;
 	ListCell   *cell;
@@ -1019,7 +1019,7 @@ ExecAlterDefaultPrivilegesStmt(AlterDefaultPrivilegesStmt *stmt)
  */
 static void
 SetDefaultACLsInSchemas(InternalDefaultACL *iacls, List *nspnames)
-{
+{	StackTrace("SetDefaultACLsInSchemas");
 	if (nspnames == NIL)
 	{
 		/* Set database-wide permissions if no schema was specified */
@@ -1061,7 +1061,7 @@ SetDefaultACLsInSchemas(InternalDefaultACL *iacls, List *nspnames)
  */
 static void
 SetDefaultACL(InternalDefaultACL *iacls)
-{
+{	StackTrace("SetDefaultACL");
 	AclMode		this_privileges = iacls->privileges;
 	char		objtype;
 	Relation	rel;
@@ -1303,7 +1303,7 @@ SetDefaultACL(InternalDefaultACL *iacls)
  */
 void
 RemoveRoleFromObjectACL(Oid roleid, Oid classid, Oid objid)
-{
+{	StackTrace("RemoveRoleFromObjectACL");
 	if (classid == DefaultAclRelationId)
 	{
 		InternalDefaultACL iacls;
@@ -1428,7 +1428,7 @@ RemoveRoleFromObjectACL(Oid roleid, Oid classid, Oid objid)
  */
 void
 RemoveDefaultACLById(Oid defaclOid)
-{
+{	StackTrace("RemoveDefaultACLById");
 	Relation	rel;
 	ScanKeyData skey[1];
 	SysScanDesc scan;
@@ -1468,7 +1468,7 @@ expand_col_privileges(List *colnames, Oid table_oid,
 					  AclMode this_privileges,
 					  AclMode *col_privileges,
 					  int num_col_privileges)
-{
+{	StackTrace("expand_col_privileges");
 	ListCell   *cell;
 
 	foreach(cell, colnames)
@@ -1501,7 +1501,7 @@ expand_all_col_privileges(Oid table_oid, Form_pg_class classForm,
 						  AclMode this_privileges,
 						  AclMode *col_privileges,
 						  int num_col_privileges)
-{
+{	StackTrace("expand_all_col_privileges");
 	AttrNumber	curr_att;
 
 	Assert(classForm->relnatts - FirstLowInvalidHeapAttributeNumber < num_col_privileges);
@@ -1550,7 +1550,7 @@ static void
 ExecGrant_Attribute(InternalGrant *istmt, Oid relOid, const char *relname,
 					AttrNumber attnum, Oid ownerId, AclMode col_privileges,
 					Relation attRelation, const Acl *old_rel_acl)
-{
+{	StackTrace("ExecGrant_Attribute");
 	HeapTuple	attr_tuple;
 	Form_pg_attribute pg_attribute_tuple;
 	Acl		   *old_acl;
@@ -1695,7 +1695,7 @@ ExecGrant_Attribute(InternalGrant *istmt, Oid relOid, const char *relname,
  */
 static void
 ExecGrant_Relation(InternalGrant *istmt)
-{
+{	StackTrace("ExecGrant_Relation");
 	Relation	relation;
 	Relation	attRelation;
 	ListCell   *cell;
@@ -2025,7 +2025,7 @@ ExecGrant_Relation(InternalGrant *istmt)
 
 static void
 ExecGrant_Database(InternalGrant *istmt)
-{
+{	StackTrace("ExecGrant_Database");
 	Relation	relation;
 	ListCell   *cell;
 
@@ -2148,7 +2148,7 @@ ExecGrant_Database(InternalGrant *istmt)
 
 static void
 ExecGrant_Fdw(InternalGrant *istmt)
-{
+{	StackTrace("ExecGrant_Fdw");
 	Relation	relation;
 	ListCell   *cell;
 
@@ -2274,7 +2274,7 @@ ExecGrant_Fdw(InternalGrant *istmt)
 
 static void
 ExecGrant_ForeignServer(InternalGrant *istmt)
-{
+{	StackTrace("ExecGrant_ForeignServer");
 	Relation	relation;
 	ListCell   *cell;
 
@@ -2399,7 +2399,7 @@ ExecGrant_ForeignServer(InternalGrant *istmt)
 
 static void
 ExecGrant_Function(InternalGrant *istmt)
-{
+{	StackTrace("ExecGrant_Function");
 	Relation	relation;
 	ListCell   *cell;
 
@@ -2522,7 +2522,7 @@ ExecGrant_Function(InternalGrant *istmt)
 
 static void
 ExecGrant_Language(InternalGrant *istmt)
-{
+{	StackTrace("ExecGrant_Language");
 	Relation	relation;
 	ListCell   *cell;
 
@@ -2652,7 +2652,7 @@ ExecGrant_Language(InternalGrant *istmt)
 
 static void
 ExecGrant_Largeobject(InternalGrant *istmt)
-{
+{	StackTrace("ExecGrant_Largeobject");
 	Relation	relation;
 	ListCell   *cell;
 
@@ -2792,7 +2792,7 @@ ExecGrant_Largeobject(InternalGrant *istmt)
 
 static void
 ExecGrant_Namespace(InternalGrant *istmt)
-{
+{	StackTrace("ExecGrant_Namespace");
 	Relation	relation;
 	ListCell   *cell;
 
@@ -2916,7 +2916,7 @@ ExecGrant_Namespace(InternalGrant *istmt)
 
 static void
 ExecGrant_Tablespace(InternalGrant *istmt)
-{
+{	StackTrace("ExecGrant_Tablespace");
 	Relation	relation;
 	ListCell   *cell;
 
@@ -3039,7 +3039,7 @@ ExecGrant_Tablespace(InternalGrant *istmt)
 
 static void
 ExecGrant_Type(InternalGrant *istmt)
-{
+{	StackTrace("ExecGrant_Type");
 	Relation	relation;
 	ListCell   *cell;
 
@@ -3177,7 +3177,7 @@ ExecGrant_Type(InternalGrant *istmt)
 
 static AclMode
 string_to_privilege(const char *privname)
-{
+{	StackTrace("string_to_privilege");
 	if (strcmp(privname, "insert") == 0)
 		return ACL_INSERT;
 	if (strcmp(privname, "select") == 0)
@@ -3214,7 +3214,7 @@ string_to_privilege(const char *privname)
 
 static const char *
 privilege_to_string(AclMode privilege)
-{
+{	StackTrace("privilege_to_string");
 	switch (privilege)
 	{
 		case ACL_INSERT:
@@ -3350,7 +3350,7 @@ static const char *const not_owner_msg[MAX_ACL_KIND] =
 void
 aclcheck_error(AclResult aclerr, AclObjectKind objectkind,
 			   const char *objectname)
-{
+{	StackTrace("aclcheck_error");
 	switch (aclerr)
 	{
 		case ACLCHECK_OK:
@@ -3376,7 +3376,7 @@ aclcheck_error(AclResult aclerr, AclObjectKind objectkind,
 void
 aclcheck_error_col(AclResult aclerr, AclObjectKind objectkind,
 				   const char *objectname, const char *colname)
-{
+{	StackTrace("aclcheck_error_col");
 	switch (aclerr)
 	{
 		case ACLCHECK_OK:
@@ -3407,7 +3407,7 @@ aclcheck_error_col(AclResult aclerr, AclObjectKind objectkind,
  */
 void
 aclcheck_error_type(AclResult aclerr, Oid typeOid)
-{
+{	StackTrace("aclcheck_error_type");
 	Oid			element_type = get_element_type(typeOid);
 
 	aclcheck_error(aclerr, ACL_KIND_TYPE, format_type_be(element_type ? element_type : typeOid));
@@ -3420,7 +3420,7 @@ aclcheck_error_type(AclResult aclerr, Oid typeOid)
 static AclMode
 pg_aclmask(AclObjectKind objkind, Oid table_oid, AttrNumber attnum, Oid roleid,
 		   AclMode mask, AclMaskHow how)
-{
+{	StackTrace("pg_aclmask");
 	switch (objkind)
 	{
 		case ACL_KIND_COLUMN:
@@ -3484,7 +3484,7 @@ pg_aclmask(AclObjectKind objkind, Oid table_oid, AttrNumber attnum, Oid roleid,
 AclMode
 pg_attribute_aclmask(Oid table_oid, AttrNumber attnum, Oid roleid,
 					 AclMode mask, AclMaskHow how)
-{
+{	StackTrace("pg_attribute_aclmask");
 	AclMode		result;
 	HeapTuple	classTuple;
 	HeapTuple	attTuple;
@@ -3569,7 +3569,7 @@ pg_attribute_aclmask(Oid table_oid, AttrNumber attnum, Oid roleid,
 AclMode
 pg_class_aclmask(Oid table_oid, Oid roleid,
 				 AclMode mask, AclMaskHow how)
-{
+{	StackTrace("pg_class_aclmask");
 	AclMode		result;
 	HeapTuple	tuple;
 	Form_pg_class classForm;
@@ -3665,7 +3665,7 @@ pg_class_aclmask(Oid table_oid, Oid roleid,
 AclMode
 pg_database_aclmask(Oid db_oid, Oid roleid,
 					AclMode mask, AclMaskHow how)
-{
+{	StackTrace("pg_database_aclmask");
 	AclMode		result;
 	HeapTuple	tuple;
 	Datum		aclDatum;
@@ -3719,7 +3719,7 @@ pg_database_aclmask(Oid db_oid, Oid roleid,
 AclMode
 pg_proc_aclmask(Oid proc_oid, Oid roleid,
 				AclMode mask, AclMaskHow how)
-{
+{	StackTrace("pg_proc_aclmask");
 	AclMode		result;
 	HeapTuple	tuple;
 	Datum		aclDatum;
@@ -3773,7 +3773,7 @@ pg_proc_aclmask(Oid proc_oid, Oid roleid,
 AclMode
 pg_language_aclmask(Oid lang_oid, Oid roleid,
 					AclMode mask, AclMaskHow how)
-{
+{	StackTrace("pg_language_aclmask");
 	AclMode		result;
 	HeapTuple	tuple;
 	Datum		aclDatum;
@@ -3837,7 +3837,7 @@ AclMode
 pg_largeobject_aclmask_snapshot(Oid lobj_oid, Oid roleid,
 								AclMode mask, AclMaskHow how,
 								Snapshot snapshot)
-{
+{	StackTrace("pg_largeobject_aclmask_snapshot");
 	AclMode		result;
 	Relation	pg_lo_meta;
 	ScanKeyData entry[1];
@@ -3909,7 +3909,7 @@ pg_largeobject_aclmask_snapshot(Oid lobj_oid, Oid roleid,
 AclMode
 pg_namespace_aclmask(Oid nsp_oid, Oid roleid,
 					 AclMode mask, AclMaskHow how)
-{
+{	StackTrace("pg_namespace_aclmask");
 	AclMode		result;
 	HeapTuple	tuple;
 	Datum		aclDatum;
@@ -3991,7 +3991,7 @@ pg_namespace_aclmask(Oid nsp_oid, Oid roleid,
 AclMode
 pg_tablespace_aclmask(Oid spc_oid, Oid roleid,
 					  AclMode mask, AclMaskHow how)
-{
+{	StackTrace("pg_tablespace_aclmask");
 	AclMode		result;
 	HeapTuple	tuple;
 	Datum		aclDatum;
@@ -4048,7 +4048,7 @@ pg_tablespace_aclmask(Oid spc_oid, Oid roleid,
 AclMode
 pg_foreign_data_wrapper_aclmask(Oid fdw_oid, Oid roleid,
 								AclMode mask, AclMaskHow how)
-{
+{	StackTrace("pg_foreign_data_wrapper_aclmask");
 	AclMode		result;
 	HeapTuple	tuple;
 	Datum		aclDatum;
@@ -4109,7 +4109,7 @@ pg_foreign_data_wrapper_aclmask(Oid fdw_oid, Oid roleid,
 AclMode
 pg_foreign_server_aclmask(Oid srv_oid, Oid roleid,
 						  AclMode mask, AclMaskHow how)
-{
+{	StackTrace("pg_foreign_server_aclmask");
 	AclMode		result;
 	HeapTuple	tuple;
 	Datum		aclDatum;
@@ -4168,7 +4168,7 @@ pg_foreign_server_aclmask(Oid srv_oid, Oid roleid,
  */
 AclMode
 pg_type_aclmask(Oid type_oid, Oid roleid, AclMode mask, AclMaskHow how)
-{
+{	StackTrace("pg_type_aclmask");
 	AclMode		result;
 	HeapTuple	tuple;
 	Datum		aclDatum;
@@ -4250,7 +4250,7 @@ pg_type_aclmask(Oid type_oid, Oid roleid, AclMode mask, AclMaskHow how)
 AclResult
 pg_attribute_aclcheck(Oid table_oid, AttrNumber attnum,
 					  Oid roleid, AclMode mode)
-{
+{	StackTrace("pg_attribute_aclcheck");
 	if (pg_attribute_aclmask(table_oid, attnum, roleid, mode, ACLMASK_ANY) != 0)
 		return ACLCHECK_OK;
 	else
@@ -4279,7 +4279,7 @@ pg_attribute_aclcheck(Oid table_oid, AttrNumber attnum,
 AclResult
 pg_attribute_aclcheck_all(Oid table_oid, Oid roleid, AclMode mode,
 						  AclMaskHow how)
-{
+{	StackTrace("pg_attribute_aclcheck_all");
 	AclResult	result;
 	HeapTuple	classTuple;
 	Form_pg_class classForm;
@@ -4363,7 +4363,7 @@ pg_attribute_aclcheck_all(Oid table_oid, Oid roleid, AclMode mode,
  */
 AclResult
 pg_class_aclcheck(Oid table_oid, Oid roleid, AclMode mode)
-{
+{	StackTrace("pg_class_aclcheck");
 	if (pg_class_aclmask(table_oid, roleid, mode, ACLMASK_ANY) != 0)
 		return ACLCHECK_OK;
 	else
@@ -4375,7 +4375,7 @@ pg_class_aclcheck(Oid table_oid, Oid roleid, AclMode mode)
  */
 AclResult
 pg_database_aclcheck(Oid db_oid, Oid roleid, AclMode mode)
-{
+{	StackTrace("pg_database_aclcheck");
 	if (pg_database_aclmask(db_oid, roleid, mode, ACLMASK_ANY) != 0)
 		return ACLCHECK_OK;
 	else
@@ -4387,7 +4387,7 @@ pg_database_aclcheck(Oid db_oid, Oid roleid, AclMode mode)
  */
 AclResult
 pg_proc_aclcheck(Oid proc_oid, Oid roleid, AclMode mode)
-{
+{	StackTrace("pg_proc_aclcheck");
 	if (pg_proc_aclmask(proc_oid, roleid, mode, ACLMASK_ANY) != 0)
 		return ACLCHECK_OK;
 	else
@@ -4399,7 +4399,7 @@ pg_proc_aclcheck(Oid proc_oid, Oid roleid, AclMode mode)
  */
 AclResult
 pg_language_aclcheck(Oid lang_oid, Oid roleid, AclMode mode)
-{
+{	StackTrace("pg_language_aclcheck");
 	if (pg_language_aclmask(lang_oid, roleid, mode, ACLMASK_ANY) != 0)
 		return ACLCHECK_OK;
 	else
@@ -4412,7 +4412,7 @@ pg_language_aclcheck(Oid lang_oid, Oid roleid, AclMode mode)
 AclResult
 pg_largeobject_aclcheck_snapshot(Oid lobj_oid, Oid roleid, AclMode mode,
 								 Snapshot snapshot)
-{
+{	StackTrace("pg_largeobject_aclcheck_snapshot");
 	if (pg_largeobject_aclmask_snapshot(lobj_oid, roleid, mode,
 										ACLMASK_ANY, snapshot) != 0)
 		return ACLCHECK_OK;
@@ -4425,7 +4425,7 @@ pg_largeobject_aclcheck_snapshot(Oid lobj_oid, Oid roleid, AclMode mode,
  */
 AclResult
 pg_namespace_aclcheck(Oid nsp_oid, Oid roleid, AclMode mode)
-{
+{	StackTrace("pg_namespace_aclcheck");
 	if (pg_namespace_aclmask(nsp_oid, roleid, mode, ACLMASK_ANY) != 0)
 		return ACLCHECK_OK;
 	else
@@ -4437,7 +4437,7 @@ pg_namespace_aclcheck(Oid nsp_oid, Oid roleid, AclMode mode)
  */
 AclResult
 pg_tablespace_aclcheck(Oid spc_oid, Oid roleid, AclMode mode)
-{
+{	StackTrace("pg_tablespace_aclcheck");
 	if (pg_tablespace_aclmask(spc_oid, roleid, mode, ACLMASK_ANY) != 0)
 		return ACLCHECK_OK;
 	else
@@ -4450,7 +4450,7 @@ pg_tablespace_aclcheck(Oid spc_oid, Oid roleid, AclMode mode)
  */
 AclResult
 pg_foreign_data_wrapper_aclcheck(Oid fdw_oid, Oid roleid, AclMode mode)
-{
+{	StackTrace("pg_foreign_data_wrapper_aclcheck");
 	if (pg_foreign_data_wrapper_aclmask(fdw_oid, roleid, mode, ACLMASK_ANY) != 0)
 		return ACLCHECK_OK;
 	else
@@ -4463,7 +4463,7 @@ pg_foreign_data_wrapper_aclcheck(Oid fdw_oid, Oid roleid, AclMode mode)
  */
 AclResult
 pg_foreign_server_aclcheck(Oid srv_oid, Oid roleid, AclMode mode)
-{
+{	StackTrace("pg_foreign_server_aclcheck");
 	if (pg_foreign_server_aclmask(srv_oid, roleid, mode, ACLMASK_ANY) != 0)
 		return ACLCHECK_OK;
 	else
@@ -4475,7 +4475,7 @@ pg_foreign_server_aclcheck(Oid srv_oid, Oid roleid, AclMode mode)
  */
 AclResult
 pg_type_aclcheck(Oid type_oid, Oid roleid, AclMode mode)
-{
+{	StackTrace("pg_type_aclcheck");
 	if (pg_type_aclmask(type_oid, roleid, mode, ACLMASK_ANY) != 0)
 		return ACLCHECK_OK;
 	else
@@ -4487,7 +4487,7 @@ pg_type_aclcheck(Oid type_oid, Oid roleid, AclMode mode)
  */
 bool
 pg_class_ownercheck(Oid class_oid, Oid roleid)
-{
+{	StackTrace("pg_class_ownercheck");
 	HeapTuple	tuple;
 	Oid			ownerId;
 
@@ -4513,7 +4513,7 @@ pg_class_ownercheck(Oid class_oid, Oid roleid)
  */
 bool
 pg_type_ownercheck(Oid type_oid, Oid roleid)
-{
+{	StackTrace("pg_type_ownercheck");
 	HeapTuple	tuple;
 	Oid			ownerId;
 
@@ -4539,7 +4539,7 @@ pg_type_ownercheck(Oid type_oid, Oid roleid)
  */
 bool
 pg_oper_ownercheck(Oid oper_oid, Oid roleid)
-{
+{	StackTrace("pg_oper_ownercheck");
 	HeapTuple	tuple;
 	Oid			ownerId;
 
@@ -4565,7 +4565,7 @@ pg_oper_ownercheck(Oid oper_oid, Oid roleid)
  */
 bool
 pg_proc_ownercheck(Oid proc_oid, Oid roleid)
-{
+{	StackTrace("pg_proc_ownercheck");
 	HeapTuple	tuple;
 	Oid			ownerId;
 
@@ -4591,7 +4591,7 @@ pg_proc_ownercheck(Oid proc_oid, Oid roleid)
  */
 bool
 pg_language_ownercheck(Oid lan_oid, Oid roleid)
-{
+{	StackTrace("pg_language_ownercheck");
 	HeapTuple	tuple;
 	Oid			ownerId;
 
@@ -4620,7 +4620,7 @@ pg_language_ownercheck(Oid lan_oid, Oid roleid)
  */
 bool
 pg_largeobject_ownercheck(Oid lobj_oid, Oid roleid)
-{
+{	StackTrace("pg_largeobject_ownercheck");
 	Relation	pg_lo_meta;
 	ScanKeyData entry[1];
 	SysScanDesc scan;
@@ -4663,7 +4663,7 @@ pg_largeobject_ownercheck(Oid lobj_oid, Oid roleid)
  */
 bool
 pg_namespace_ownercheck(Oid nsp_oid, Oid roleid)
-{
+{	StackTrace("pg_namespace_ownercheck");
 	HeapTuple	tuple;
 	Oid			ownerId;
 
@@ -4689,7 +4689,7 @@ pg_namespace_ownercheck(Oid nsp_oid, Oid roleid)
  */
 bool
 pg_tablespace_ownercheck(Oid spc_oid, Oid roleid)
-{
+{	StackTrace("pg_tablespace_ownercheck");
 	HeapTuple	spctuple;
 	Oid			spcowner;
 
@@ -4716,7 +4716,7 @@ pg_tablespace_ownercheck(Oid spc_oid, Oid roleid)
  */
 bool
 pg_opclass_ownercheck(Oid opc_oid, Oid roleid)
-{
+{	StackTrace("pg_opclass_ownercheck");
 	HeapTuple	tuple;
 	Oid			ownerId;
 
@@ -4743,7 +4743,7 @@ pg_opclass_ownercheck(Oid opc_oid, Oid roleid)
  */
 bool
 pg_opfamily_ownercheck(Oid opf_oid, Oid roleid)
-{
+{	StackTrace("pg_opfamily_ownercheck");
 	HeapTuple	tuple;
 	Oid			ownerId;
 
@@ -4770,7 +4770,7 @@ pg_opfamily_ownercheck(Oid opf_oid, Oid roleid)
  */
 bool
 pg_ts_dict_ownercheck(Oid dict_oid, Oid roleid)
-{
+{	StackTrace("pg_ts_dict_ownercheck");
 	HeapTuple	tuple;
 	Oid			ownerId;
 
@@ -4797,7 +4797,7 @@ pg_ts_dict_ownercheck(Oid dict_oid, Oid roleid)
  */
 bool
 pg_ts_config_ownercheck(Oid cfg_oid, Oid roleid)
-{
+{	StackTrace("pg_ts_config_ownercheck");
 	HeapTuple	tuple;
 	Oid			ownerId;
 
@@ -4824,7 +4824,7 @@ pg_ts_config_ownercheck(Oid cfg_oid, Oid roleid)
  */
 bool
 pg_foreign_data_wrapper_ownercheck(Oid srv_oid, Oid roleid)
-{
+{	StackTrace("pg_foreign_data_wrapper_ownercheck");
 	HeapTuple	tuple;
 	Oid			ownerId;
 
@@ -4851,7 +4851,7 @@ pg_foreign_data_wrapper_ownercheck(Oid srv_oid, Oid roleid)
  */
 bool
 pg_foreign_server_ownercheck(Oid srv_oid, Oid roleid)
-{
+{	StackTrace("pg_foreign_server_ownercheck");
 	HeapTuple	tuple;
 	Oid			ownerId;
 
@@ -4878,7 +4878,7 @@ pg_foreign_server_ownercheck(Oid srv_oid, Oid roleid)
  */
 bool
 pg_event_trigger_ownercheck(Oid et_oid, Oid roleid)
-{
+{	StackTrace("pg_event_trigger_ownercheck");
 	HeapTuple	tuple;
 	Oid			ownerId;
 
@@ -4905,7 +4905,7 @@ pg_event_trigger_ownercheck(Oid et_oid, Oid roleid)
  */
 bool
 pg_database_ownercheck(Oid db_oid, Oid roleid)
-{
+{	StackTrace("pg_database_ownercheck");
 	HeapTuple	tuple;
 	Oid			dba;
 
@@ -4931,7 +4931,7 @@ pg_database_ownercheck(Oid db_oid, Oid roleid)
  */
 bool
 pg_collation_ownercheck(Oid coll_oid, Oid roleid)
-{
+{	StackTrace("pg_collation_ownercheck");
 	HeapTuple	tuple;
 	Oid			ownerId;
 
@@ -4957,7 +4957,7 @@ pg_collation_ownercheck(Oid coll_oid, Oid roleid)
  */
 bool
 pg_conversion_ownercheck(Oid conv_oid, Oid roleid)
-{
+{	StackTrace("pg_conversion_ownercheck");
 	HeapTuple	tuple;
 	Oid			ownerId;
 
@@ -4983,7 +4983,7 @@ pg_conversion_ownercheck(Oid conv_oid, Oid roleid)
  */
 bool
 pg_extension_ownercheck(Oid ext_oid, Oid roleid)
-{
+{	StackTrace("pg_extension_ownercheck");
 	Relation	pg_extension;
 	ScanKeyData entry[1];
 	SysScanDesc scan;
@@ -5033,7 +5033,7 @@ pg_extension_ownercheck(Oid ext_oid, Oid roleid)
  */
 bool
 has_createrole_privilege(Oid roleid)
-{
+{	StackTrace("has_createrole_privilege");
 	bool		result = false;
 	HeapTuple	utup;
 
@@ -5052,7 +5052,7 @@ has_createrole_privilege(Oid roleid)
 
 bool
 has_bypassrls_privilege(Oid roleid)
-{
+{	StackTrace("has_bypassrls_privilege");
 	bool		result = false;
 	HeapTuple	utup;
 
@@ -5076,7 +5076,7 @@ has_bypassrls_privilege(Oid roleid)
  */
 static Acl *
 get_default_acl_internal(Oid roleId, Oid nsp_oid, char objtype)
-{
+{	StackTrace("get_default_acl_internal");
 	Acl		   *result = NULL;
 	HeapTuple	tuple;
 
@@ -5108,7 +5108,7 @@ get_default_acl_internal(Oid roleId, Oid nsp_oid, char objtype)
  */
 Acl *
 get_user_default_acl(GrantObjectType objtype, Oid ownerId, Oid nsp_oid)
-{
+{	StackTrace("get_user_default_acl");
 	Acl		   *result;
 	Acl		   *glob_acl;
 	Acl		   *schema_acl;

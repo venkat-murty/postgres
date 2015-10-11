@@ -669,6 +669,8 @@ usage(void)
 	printf("  -?, --help             show this help, then exit\n");
 }
 
+FunctionStack *mt_current = NULL;
+
 int
 main(int argc, char **argv)
 {

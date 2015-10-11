@@ -1,7 +1,7 @@
 #include "header.h"
 
 extern struct SN_env * SN_create_env(int S_size, int I_size, int B_size)
-{
+{	StackTrace("SN_create_env");
     struct SN_env * z = (struct SN_env *) calloc(1, sizeof(struct SN_env));
     if (z == NULL) return NULL;
     z->p = create_s();
@@ -38,7 +38,7 @@ error:
 }
 
 extern void SN_close_env(struct SN_env * z, int S_size)
-{
+{	StackTrace("SN_close_env");
     if (z == NULL) return;
     if (S_size)
     {
@@ -56,7 +56,7 @@ extern void SN_close_env(struct SN_env * z, int S_size)
 }
 
 extern int SN_set_current(struct SN_env * z, int size, const symbol * s)
-{
+{	StackTrace("SN_set_current");
     int err = replace_s(z, 0, z->l, size, s, NULL);
     z->c = 0;
     return err;

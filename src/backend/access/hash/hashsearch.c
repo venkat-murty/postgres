@@ -32,7 +32,7 @@
  */
 bool
 _hash_next(IndexScanDesc scan, ScanDirection dir)
-{
+{	StackTrace("_hash_next");
 	Relation	rel = scan->indexRelation;
 	HashScanOpaque so = (HashScanOpaque) scan->opaque;
 	Buffer		buf;
@@ -68,7 +68,7 @@ _hash_next(IndexScanDesc scan, ScanDirection dir)
 static void
 _hash_readnext(Relation rel,
 			   Buffer *bufp, Page *pagep, HashPageOpaque *opaquep)
-{
+{	StackTrace("_hash_readnext");
 	BlockNumber blkno;
 
 	blkno = (*opaquep)->hasho_nextblkno;
@@ -90,7 +90,7 @@ _hash_readnext(Relation rel,
 static void
 _hash_readprev(Relation rel,
 			   Buffer *bufp, Page *pagep, HashPageOpaque *opaquep)
-{
+{	StackTrace("_hash_readprev");
 	BlockNumber blkno;
 
 	blkno = (*opaquep)->hasho_prevblkno;
@@ -118,7 +118,7 @@ _hash_readprev(Relation rel,
  */
 bool
 _hash_first(IndexScanDesc scan, ScanDirection dir)
-{
+{	StackTrace("_hash_first");
 	Relation	rel = scan->indexRelation;
 	HashScanOpaque so = (HashScanOpaque) scan->opaque;
 	ScanKey		cur;
@@ -278,7 +278,7 @@ _hash_first(IndexScanDesc scan, ScanDirection dir)
  */
 bool
 _hash_step(IndexScanDesc scan, Buffer *bufP, ScanDirection dir)
-{
+{	StackTrace("_hash_step");
 	Relation	rel = scan->indexRelation;
 	HashScanOpaque so = (HashScanOpaque) scan->opaque;
 	ItemPointer current;

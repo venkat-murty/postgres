@@ -73,7 +73,7 @@ static HeapTuple reorderqueue_pop(IndexScanState *node);
  */
 static TupleTableSlot *
 IndexNext(IndexScanState *node)
-{
+{	StackTrace("IndexNext");
 	EState	   *estate;
 	ExprContext *econtext;
 	ScanDirection direction;
@@ -149,7 +149,7 @@ IndexNext(IndexScanState *node)
  */
 static TupleTableSlot *
 IndexNextWithReorder(IndexScanState *node)
-{
+{	StackTrace("IndexNextWithReorder");
 	ExprContext *econtext;
 	IndexScanDesc scandesc;
 	HeapTuple	tuple;
@@ -321,7 +321,7 @@ next_indextuple:
  */
 static void
 EvalOrderByExpressions(IndexScanState *node, ExprContext *econtext)
-{
+{	StackTrace("EvalOrderByExpressions");
 	int			i;
 	ListCell   *l;
 	MemoryContext oldContext;
@@ -348,7 +348,7 @@ EvalOrderByExpressions(IndexScanState *node, ExprContext *econtext)
  */
 static bool
 IndexRecheck(IndexScanState *node, TupleTableSlot *slot)
-{
+{	StackTrace("IndexRecheck");
 	ExprContext *econtext;
 
 	/*
@@ -372,7 +372,7 @@ static int
 cmp_orderbyvals(const Datum *adist, const bool *anulls,
 				const Datum *bdist, const bool *bnulls,
 				IndexScanState *node)
-{
+{	StackTrace("cmp_orderbyvals");
 	int			i;
 	int			result;
 
@@ -407,7 +407,7 @@ cmp_orderbyvals(const Datum *adist, const bool *anulls,
 static int
 reorderqueue_cmp(const pairingheap_node *a, const pairingheap_node *b,
 				 void *arg)
-{
+{	StackTrace("reorderqueue_cmp");
 	ReorderTuple *rta = (ReorderTuple *) a;
 	ReorderTuple *rtb = (ReorderTuple *) b;
 	IndexScanState *node = (IndexScanState *) arg;
@@ -423,7 +423,7 @@ reorderqueue_cmp(const pairingheap_node *a, const pairingheap_node *b,
 static void
 reorderqueue_push(IndexScanState *node, HeapTuple tuple,
 				  Datum *orderbyvals, bool *orderbynulls)
-{
+{	StackTrace("reorderqueue_push");
 	IndexScanDesc scandesc = node->iss_ScanDesc;
 	EState	   *estate = node->ss.ps.state;
 	MemoryContext oldContext = MemoryContextSwitchTo(estate->es_query_cxt);
@@ -456,7 +456,7 @@ reorderqueue_push(IndexScanState *node, HeapTuple tuple,
  */
 static HeapTuple
 reorderqueue_pop(IndexScanState *node)
-{
+{	StackTrace("reorderqueue_pop");
 	HeapTuple	result;
 	ReorderTuple *topmost;
 	int			i;
@@ -483,7 +483,7 @@ reorderqueue_pop(IndexScanState *node)
  */
 TupleTableSlot *
 ExecIndexScan(IndexScanState *node)
-{
+{	StackTrace("ExecIndexScan");
 	/*
 	 * If we have runtime keys and they've not already been set up, do it now.
 	 */
@@ -513,7 +513,7 @@ ExecIndexScan(IndexScanState *node)
  */
 void
 ExecReScanIndexScan(IndexScanState *node)
-{
+{	StackTrace("ExecReScanIndexScan");
 	/*
 	 * If we are doing runtime key calculations (ie, any of the index key
 	 * values weren't simple Consts), compute the new key values.  But first,
@@ -556,7 +556,7 @@ ExecReScanIndexScan(IndexScanState *node)
 void
 ExecIndexEvalRuntimeKeys(ExprContext *econtext,
 						 IndexRuntimeKeyInfo *runtimeKeys, int numRuntimeKeys)
-{
+{	StackTrace("ExecIndexEvalRuntimeKeys");
 	int			j;
 	MemoryContext oldContext;
 
@@ -619,7 +619,7 @@ ExecIndexEvalRuntimeKeys(ExprContext *econtext,
 bool
 ExecIndexEvalArrayKeys(ExprContext *econtext,
 					   IndexArrayKeyInfo *arrayKeys, int numArrayKeys)
-{
+{	StackTrace("ExecIndexEvalArrayKeys");
 	bool		result = true;
 	int			j;
 	MemoryContext oldContext;
@@ -698,7 +698,7 @@ ExecIndexEvalArrayKeys(ExprContext *econtext,
  */
 bool
 ExecIndexAdvanceArrayKeys(IndexArrayKeyInfo *arrayKeys, int numArrayKeys)
-{
+{	StackTrace("ExecIndexAdvanceArrayKeys");
 	bool		found = false;
 	int			j;
 
@@ -743,7 +743,7 @@ ExecIndexAdvanceArrayKeys(IndexArrayKeyInfo *arrayKeys, int numArrayKeys)
  */
 void
 ExecEndIndexScan(IndexScanState *node)
-{
+{	StackTrace("ExecEndIndexScan");
 	Relation	indexRelationDesc;
 	IndexScanDesc indexScanDesc;
 	Relation	relation;
@@ -790,7 +790,7 @@ ExecEndIndexScan(IndexScanState *node)
  */
 void
 ExecIndexMarkPos(IndexScanState *node)
-{
+{	StackTrace("ExecIndexMarkPos");
 	index_markpos(node->iss_ScanDesc);
 }
 
@@ -800,7 +800,7 @@ ExecIndexMarkPos(IndexScanState *node)
  */
 void
 ExecIndexRestrPos(IndexScanState *node)
-{
+{	StackTrace("ExecIndexRestrPos");
 	index_restrpos(node->iss_ScanDesc);
 }
 
@@ -817,7 +817,7 @@ ExecIndexRestrPos(IndexScanState *node)
  */
 IndexScanState *
 ExecInitIndexScan(IndexScan *node, EState *estate, int eflags)
-{
+{	StackTrace("ExecInitIndexScan");
 	IndexScanState *indexstate;
 	Relation	currentRelation;
 	bool		relistarget;
@@ -1095,7 +1095,7 @@ ExecIndexBuildScanKeys(PlanState *planstate, Relation index,
 					   ScanKey *scanKeys, int *numScanKeys,
 					   IndexRuntimeKeyInfo **runtimeKeys, int *numRuntimeKeys,
 					   IndexArrayKeyInfo **arrayKeys, int *numArrayKeys)
-{
+{	StackTrace("ExecIndexBuildScanKeys");
 	ListCell   *qual_cell;
 	ScanKey		scan_keys;
 	IndexRuntimeKeyInfo *runtime_keys;

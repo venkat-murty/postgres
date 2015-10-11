@@ -46,17 +46,17 @@
  */
 static void
 donothingReceive(TupleTableSlot *slot, DestReceiver *self)
-{
+{	StackTrace("donothingReceive");
 }
 
 static void
 donothingStartup(DestReceiver *self, int operation, TupleDesc typeinfo)
-{
+{	StackTrace("donothingStartup");
 }
 
 static void
 donothingCleanup(DestReceiver *self)
-{
+{	StackTrace("donothingCleanup");
 	/* this is used for both shutdown and destroy methods */
 }
 
@@ -89,7 +89,7 @@ DestReceiver *None_Receiver = &donothingDR;
  */
 void
 BeginCommand(const char *commandTag, CommandDest dest)
-{
+{	StackTrace("BeginCommand");
 	/* Nothing to do at present */
 }
 
@@ -99,7 +99,7 @@ BeginCommand(const char *commandTag, CommandDest dest)
  */
 DestReceiver *
 CreateDestReceiver(CommandDest dest)
-{
+{	StackTrace("CreateDestReceiver");
 	switch (dest)
 	{
 		case DestRemote:
@@ -141,7 +141,7 @@ CreateDestReceiver(CommandDest dest)
  */
 void
 EndCommand(const char *commandTag, CommandDest dest)
-{
+{	StackTrace("EndCommand");
 	switch (dest)
 	{
 		case DestRemote:
@@ -180,7 +180,7 @@ EndCommand(const char *commandTag, CommandDest dest)
  */
 void
 NullCommand(CommandDest dest)
-{
+{	StackTrace("NullCommand");
 	switch (dest)
 	{
 		case DestRemote:
@@ -221,7 +221,7 @@ NullCommand(CommandDest dest)
  */
 void
 ReadyForQuery(CommandDest dest)
-{
+{	StackTrace("ReadyForQuery");
 	switch (dest)
 	{
 		case DestRemote:

@@ -81,7 +81,7 @@ static void DecodeXLogTuple(char *data, Size len, ReorderBufferTupleBuf *tup);
  */
 void
 LogicalDecodingProcessRecord(LogicalDecodingContext *ctx, XLogReaderState *record)
-{
+{	StackTrace("LogicalDecodingProcessRecord");
 	XLogRecordBuffer buf;
 
 	buf.origptr = ctx->reader->ReadRecPtr;
@@ -146,7 +146,7 @@ LogicalDecodingProcessRecord(LogicalDecodingContext *ctx, XLogReaderState *recor
  */
 static void
 DecodeXLogOp(LogicalDecodingContext *ctx, XLogRecordBuffer *buf)
-{
+{	StackTrace("DecodeXLogOp");
 	SnapBuild  *builder = ctx->snapshot_builder;
 	uint8		info = XLogRecGetInfo(buf->record) & ~XLR_INFO_MASK;
 
@@ -185,7 +185,7 @@ DecodeXLogOp(LogicalDecodingContext *ctx, XLogRecordBuffer *buf)
  */
 static void
 DecodeXactOp(LogicalDecodingContext *ctx, XLogRecordBuffer *buf)
-{
+{	StackTrace("DecodeXactOp");
 	SnapBuild  *builder = ctx->snapshot_builder;
 	ReorderBuffer *reorder = ctx->reorder;
 	XLogReaderState *r = buf->record;
@@ -271,7 +271,7 @@ DecodeXactOp(LogicalDecodingContext *ctx, XLogRecordBuffer *buf)
  */
 static void
 DecodeStandbyOp(LogicalDecodingContext *ctx, XLogRecordBuffer *buf)
-{
+{	StackTrace("DecodeStandbyOp");
 	SnapBuild  *builder = ctx->snapshot_builder;
 	XLogReaderState *r = buf->record;
 	uint8		info = XLogRecGetInfo(r) & ~XLR_INFO_MASK;
@@ -308,7 +308,7 @@ DecodeStandbyOp(LogicalDecodingContext *ctx, XLogRecordBuffer *buf)
  */
 static void
 DecodeHeap2Op(LogicalDecodingContext *ctx, XLogRecordBuffer *buf)
-{
+{	StackTrace("DecodeHeap2Op");
 	uint8		info = XLogRecGetInfo(buf->record) & XLOG_HEAP_OPMASK;
 	TransactionId xid = XLogRecGetXid(buf->record);
 	SnapBuild  *builder = ctx->snapshot_builder;
@@ -361,7 +361,7 @@ DecodeHeap2Op(LogicalDecodingContext *ctx, XLogRecordBuffer *buf)
  */
 static void
 DecodeHeapOp(LogicalDecodingContext *ctx, XLogRecordBuffer *buf)
-{
+{	StackTrace("DecodeHeapOp");
 	uint8		info = XLogRecGetInfo(buf->record) & XLOG_HEAP_OPMASK;
 	TransactionId xid = XLogRecGetXid(buf->record);
 	SnapBuild  *builder = ctx->snapshot_builder;
@@ -433,7 +433,7 @@ DecodeHeapOp(LogicalDecodingContext *ctx, XLogRecordBuffer *buf)
 
 static inline bool
 FilterByOrigin(LogicalDecodingContext *ctx, RepOriginId origin_id)
-{
+{	StackTrace("FilterByOrigin");
 	if (ctx->callbacks.filter_by_origin_cb == NULL)
 		return false;
 
@@ -447,7 +447,7 @@ FilterByOrigin(LogicalDecodingContext *ctx, RepOriginId origin_id)
 static void
 DecodeCommit(LogicalDecodingContext *ctx, XLogRecordBuffer *buf,
 			 xl_xact_parsed_commit *parsed, TransactionId xid)
-{
+{	StackTrace("DecodeCommit");
 	XLogRecPtr	origin_lsn = InvalidXLogRecPtr;
 	XLogRecPtr	commit_time = InvalidXLogRecPtr;
 	XLogRecPtr	origin_id = InvalidRepOriginId;
@@ -531,7 +531,7 @@ DecodeCommit(LogicalDecodingContext *ctx, XLogRecordBuffer *buf,
 static void
 DecodeAbort(LogicalDecodingContext *ctx, XLogRecordBuffer *buf,
 			xl_xact_parsed_abort *parsed, TransactionId xid)
-{
+{	StackTrace("DecodeAbort");
 	int			i;
 
 	SnapBuildAbortTxn(ctx->snapshot_builder, buf->record->EndRecPtr, xid,
@@ -553,7 +553,7 @@ DecodeAbort(LogicalDecodingContext *ctx, XLogRecordBuffer *buf,
  */
 static void
 DecodeInsert(LogicalDecodingContext *ctx, XLogRecordBuffer *buf)
-{
+{	StackTrace("DecodeInsert");
 	XLogReaderState *r = buf->record;
 	xl_heap_insert *xlrec;
 	ReorderBufferChange *change;
@@ -602,7 +602,7 @@ DecodeInsert(LogicalDecodingContext *ctx, XLogRecordBuffer *buf)
  */
 static void
 DecodeUpdate(LogicalDecodingContext *ctx, XLogRecordBuffer *buf)
-{
+{	StackTrace("DecodeUpdate");
 	XLogReaderState *r = buf->record;
 	xl_heap_update *xlrec;
 	ReorderBufferChange *change;
@@ -658,7 +658,7 @@ DecodeUpdate(LogicalDecodingContext *ctx, XLogRecordBuffer *buf)
  */
 static void
 DecodeDelete(LogicalDecodingContext *ctx, XLogRecordBuffer *buf)
-{
+{	StackTrace("DecodeDelete");
 	XLogReaderState *r = buf->record;
 	xl_heap_delete *xlrec;
 	ReorderBufferChange *change;
@@ -712,7 +712,7 @@ DecodeDelete(LogicalDecodingContext *ctx, XLogRecordBuffer *buf)
  */
 static void
 DecodeMultiInsert(LogicalDecodingContext *ctx, XLogRecordBuffer *buf)
-{
+{	StackTrace("DecodeMultiInsert");
 	XLogReaderState *r = buf->record;
 	xl_heap_multi_insert *xlrec;
 	int			i;
@@ -813,7 +813,7 @@ DecodeMultiInsert(LogicalDecodingContext *ctx, XLogRecordBuffer *buf)
  */
 static void
 DecodeSpecConfirm(LogicalDecodingContext *ctx, XLogRecordBuffer *buf)
-{
+{	StackTrace("DecodeSpecConfirm");
 	XLogReaderState *r = buf->record;
 	ReorderBufferChange *change;
 	RelFileNode target_node;
@@ -848,7 +848,7 @@ DecodeSpecConfirm(LogicalDecodingContext *ctx, XLogRecordBuffer *buf)
  */
 static void
 DecodeXLogTuple(char *data, Size len, ReorderBufferTupleBuf *tuple)
-{
+{	StackTrace("DecodeXLogTuple");
 	xl_heap_header xlhdr;
 	int			datalen = len - SizeOfHeapHeader;
 

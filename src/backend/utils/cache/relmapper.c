@@ -143,7 +143,7 @@ static void perform_relmap_update(bool shared, const RelMapFile *updates);
  */
 Oid
 RelationMapOidToFilenode(Oid relationId, bool shared)
-{
+{	StackTrace("RelationMapOidToFilenode");
 	const RelMapFile *map;
 	int32		i;
 
@@ -196,7 +196,7 @@ RelationMapOidToFilenode(Oid relationId, bool shared)
  */
 Oid
 RelationMapFilenodeToOid(Oid filenode, bool shared)
-{
+{	StackTrace("RelationMapFilenodeToOid");
 	const RelMapFile *map;
 	int32		i;
 
@@ -246,7 +246,7 @@ RelationMapFilenodeToOid(Oid filenode, bool shared)
 void
 RelationMapUpdateMap(Oid relationId, Oid fileNode, bool shared,
 					 bool immediate)
-{
+{	StackTrace("RelationMapUpdateMap");
 	RelMapFile *map;
 
 	if (IsBootstrapProcessingMode())
@@ -300,7 +300,7 @@ RelationMapUpdateMap(Oid relationId, Oid fileNode, bool shared,
  */
 static void
 apply_map_update(RelMapFile *map, Oid relationId, Oid fileNode, bool add_okay)
-{
+{	StackTrace("apply_map_update");
 	int32		i;
 
 	/* Replace any existing mapping */
@@ -332,7 +332,7 @@ apply_map_update(RelMapFile *map, Oid relationId, Oid fileNode, bool add_okay)
  */
 static void
 merge_map_updates(RelMapFile *map, const RelMapFile *updates, bool add_okay)
-{
+{	StackTrace("merge_map_updates");
 	int32		i;
 
 	for (i = 0; i < updates->num_mappings; i++)
@@ -354,7 +354,7 @@ merge_map_updates(RelMapFile *map, const RelMapFile *updates, bool add_okay)
  */
 void
 RelationMapRemoveMapping(Oid relationId)
-{
+{	StackTrace("RelationMapRemoveMapping");
 	RelMapFile *map = &active_local_updates;
 	int32		i;
 
@@ -384,7 +384,7 @@ RelationMapRemoveMapping(Oid relationId)
  */
 void
 RelationMapInvalidate(bool shared)
-{
+{	StackTrace("RelationMapInvalidate");
 	if (shared)
 	{
 		if (shared_map.magic == RELMAPPER_FILEMAGIC)
@@ -406,7 +406,7 @@ RelationMapInvalidate(bool shared)
  */
 void
 RelationMapInvalidateAll(void)
-{
+{	StackTrace("RelationMapInvalidateAll");
 	if (shared_map.magic == RELMAPPER_FILEMAGIC)
 		load_relmap_file(true);
 	if (local_map.magic == RELMAPPER_FILEMAGIC)
@@ -420,7 +420,7 @@ RelationMapInvalidateAll(void)
  */
 void
 AtCCI_RelationMap(void)
-{
+{	StackTrace("AtCCI_RelationMap");
 	if (pending_shared_updates.num_mappings != 0)
 	{
 		merge_map_updates(&active_shared_updates,
@@ -454,7 +454,7 @@ AtCCI_RelationMap(void)
  */
 void
 AtEOXact_RelationMap(bool isCommit)
-{
+{	StackTrace("AtEOXact_RelationMap");
 	if (isCommit)
 	{
 		/*
@@ -498,7 +498,7 @@ AtEOXact_RelationMap(bool isCommit)
  */
 void
 AtPrepare_RelationMap(void)
-{
+{	StackTrace("AtPrepare_RelationMap");
 	if (active_shared_updates.num_mappings != 0 ||
 		active_local_updates.num_mappings != 0 ||
 		pending_shared_updates.num_mappings != 0 ||
@@ -521,7 +521,7 @@ AtPrepare_RelationMap(void)
  */
 void
 CheckPointRelationMap(void)
-{
+{	StackTrace("CheckPointRelationMap");
 	LWLockAcquire(RelationMappingLock, LW_SHARED);
 	LWLockRelease(RelationMappingLock);
 }
@@ -535,7 +535,7 @@ CheckPointRelationMap(void)
  */
 void
 RelationMapFinishBootstrap(void)
-{
+{	StackTrace("RelationMapFinishBootstrap");
 	Assert(IsBootstrapProcessingMode());
 
 	/* Shouldn't be anything "pending" ... */
@@ -559,7 +559,7 @@ RelationMapFinishBootstrap(void)
  */
 void
 RelationMapInitialize(void)
-{
+{	StackTrace("RelationMapInitialize");
 	/* The static variables should initialize to zeroes, but let's be sure */
 	shared_map.magic = 0;		/* mark it not loaded */
 	local_map.magic = 0;
@@ -579,7 +579,7 @@ RelationMapInitialize(void)
  */
 void
 RelationMapInitializePhase2(void)
-{
+{	StackTrace("RelationMapInitializePhase2");
 	/*
 	 * In bootstrap mode, the map file isn't there yet, so do nothing.
 	 */
@@ -600,7 +600,7 @@ RelationMapInitializePhase2(void)
  */
 void
 RelationMapInitializePhase3(void)
-{
+{	StackTrace("RelationMapInitializePhase3");
 	/*
 	 * In bootstrap mode, the map file isn't there yet, so do nothing.
 	 */
@@ -623,7 +623,7 @@ RelationMapInitializePhase3(void)
  */
 static void
 load_relmap_file(bool shared)
-{
+{	StackTrace("load_relmap_file");
 	RelMapFile *map;
 	char		mapfilename[MAXPGPATH];
 	pg_crc32c	crc;
@@ -709,7 +709,7 @@ static void
 write_relmap_file(bool shared, RelMapFile *newmap,
 				  bool write_wal, bool send_sinval, bool preserve_files,
 				  Oid dbid, Oid tsid, const char *dbpath)
-{
+{	StackTrace("write_relmap_file");
 	int			fd;
 	RelMapFile *realmap;
 	char		mapfilename[MAXPGPATH];
@@ -854,7 +854,7 @@ write_relmap_file(bool shared, RelMapFile *newmap,
  */
 static void
 perform_relmap_update(bool shared, const RelMapFile *updates)
-{
+{	StackTrace("perform_relmap_update");
 	RelMapFile	newmap;
 
 	/*
@@ -902,7 +902,7 @@ perform_relmap_update(bool shared, const RelMapFile *updates)
  */
 void
 relmap_redo(XLogReaderState *record)
-{
+{	StackTrace("relmap_redo");
 	uint8		info = XLogRecGetInfo(record) & ~XLR_INFO_MASK;
 
 	/* Backup blocks are not used in relmap records */

@@ -73,7 +73,7 @@ static bool SubTransPagePrecedes(int page1, int page2);
  */
 void
 SubTransSetParent(TransactionId xid, TransactionId parent, bool overwriteOK)
-{
+{	StackTrace("SubTransSetParent");
 	int			pageno = TransactionIdToPage(xid);
 	int			entryno = TransactionIdToEntry(xid);
 	int			slotno;
@@ -103,7 +103,7 @@ SubTransSetParent(TransactionId xid, TransactionId parent, bool overwriteOK)
  */
 TransactionId
 SubTransGetParent(TransactionId xid)
-{
+{	StackTrace("SubTransGetParent");
 	int			pageno = TransactionIdToPage(xid);
 	int			entryno = TransactionIdToEntry(xid);
 	int			slotno;
@@ -144,7 +144,7 @@ SubTransGetParent(TransactionId xid)
  */
 TransactionId
 SubTransGetTopmostTransaction(TransactionId xid)
-{
+{	StackTrace("SubTransGetTopmostTransaction");
 	TransactionId parentXid = xid,
 				previousXid = xid;
 
@@ -170,13 +170,13 @@ SubTransGetTopmostTransaction(TransactionId xid)
  */
 Size
 SUBTRANSShmemSize(void)
-{
+{	StackTrace("SUBTRANSShmemSize");
 	return SimpleLruShmemSize(NUM_SUBTRANS_BUFFERS, 0);
 }
 
 void
 SUBTRANSShmemInit(void)
-{
+{	StackTrace("SUBTRANSShmemInit");
 	SubTransCtl->PagePrecedes = SubTransPagePrecedes;
 	SimpleLruInit(SubTransCtl, "SUBTRANS Ctl", NUM_SUBTRANS_BUFFERS, 0,
 				  SubtransControlLock, "pg_subtrans");
@@ -196,7 +196,7 @@ SUBTRANSShmemInit(void)
  */
 void
 BootStrapSUBTRANS(void)
-{
+{	StackTrace("BootStrapSUBTRANS");
 	int			slotno;
 
 	LWLockAcquire(SubtransControlLock, LW_EXCLUSIVE);
@@ -221,7 +221,7 @@ BootStrapSUBTRANS(void)
  */
 static int
 ZeroSUBTRANSPage(int pageno)
-{
+{	StackTrace("ZeroSUBTRANSPage");
 	return SimpleLruZeroPage(SubTransCtl, pageno);
 }
 
@@ -234,7 +234,7 @@ ZeroSUBTRANSPage(int pageno)
  */
 void
 StartupSUBTRANS(TransactionId oldestActiveXID)
-{
+{	StackTrace("StartupSUBTRANS");
 	int			startPage;
 	int			endPage;
 
@@ -264,7 +264,7 @@ StartupSUBTRANS(TransactionId oldestActiveXID)
  */
 void
 ShutdownSUBTRANS(void)
-{
+{	StackTrace("ShutdownSUBTRANS");
 	/*
 	 * Flush dirty SUBTRANS pages to disk
 	 *
@@ -305,7 +305,7 @@ CheckPointSUBTRANS(void)
  */
 void
 ExtendSUBTRANS(TransactionId newestXact)
-{
+{	StackTrace("ExtendSUBTRANS");
 	int			pageno;
 
 	/*
@@ -335,7 +335,7 @@ ExtendSUBTRANS(TransactionId newestXact)
  */
 void
 TruncateSUBTRANS(TransactionId oldestXact)
-{
+{	StackTrace("TruncateSUBTRANS");
 	int			cutoffPage;
 
 	/*
@@ -359,7 +359,7 @@ TruncateSUBTRANS(TransactionId oldestXact)
  */
 static bool
 SubTransPagePrecedes(int page1, int page2)
-{
+{	StackTrace("SubTransPagePrecedes");
 	TransactionId xid1;
 	TransactionId xid2;
 

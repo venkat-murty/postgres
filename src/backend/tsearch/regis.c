@@ -29,7 +29,7 @@
  */
 bool
 RS_isRegis(const char *str)
-{
+{	StackTrace("RS_isRegis");
 	int			state = RS_IN_WAIT;
 	const char *c = str;
 
@@ -72,7 +72,7 @@ RS_isRegis(const char *str)
 
 static RegisNode *
 newRegisNode(RegisNode *prev, int len)
-{
+{	StackTrace("newRegisNode");
 	RegisNode  *ptr;
 
 	ptr = (RegisNode *) palloc0(RNHDRSZ + len + 1);
@@ -83,7 +83,7 @@ newRegisNode(RegisNode *prev, int len)
 
 void
 RS_compile(Regis *r, bool issuffix, const char *str)
-{
+{	StackTrace("RS_compile");
 	int			len = strlen(str);
 	int			state = RS_IN_WAIT;
 	const char *c = str;
@@ -164,7 +164,7 @@ RS_compile(Regis *r, bool issuffix, const char *str)
 
 void
 RS_free(Regis *r)
-{
+{	StackTrace("RS_free");
 	RegisNode  *ptr = r->node,
 			   *tmp;
 
@@ -181,7 +181,7 @@ RS_free(Regis *r)
 #ifdef USE_WIDE_UPPER_LOWER
 static bool
 mb_strchr(char *str, char *c)
-{
+{	StackTrace("mb_strchr");
 	int			clen,
 				plen,
 				i;
@@ -216,7 +216,7 @@ mb_strchr(char *str, char *c)
 
 bool
 RS_execute(Regis *r, char *str)
-{
+{	StackTrace("RS_execute");
 	RegisNode  *ptr = r->node;
 	char	   *c = str;
 	int			len = 0;

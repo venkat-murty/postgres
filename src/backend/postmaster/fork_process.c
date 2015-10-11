@@ -29,7 +29,7 @@
  */
 pid_t
 fork_process(void)
-{
+{	StackTrace("fork_process");
 	pid_t		result;
 	const char *oomfilename;
 

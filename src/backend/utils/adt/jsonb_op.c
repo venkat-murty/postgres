@@ -19,7 +19,7 @@
 
 Datum
 jsonb_exists(PG_FUNCTION_ARGS)
-{
+{	StackTrace("jsonb_exists");
 	Jsonb	   *jb = PG_GETARG_JSONB(0);
 	text	   *key = PG_GETARG_TEXT_PP(1);
 	JsonbValue	kval;
@@ -44,7 +44,7 @@ jsonb_exists(PG_FUNCTION_ARGS)
 
 Datum
 jsonb_exists_any(PG_FUNCTION_ARGS)
-{
+{	StackTrace("jsonb_exists_any");
 	Jsonb	   *jb = PG_GETARG_JSONB(0);
 	ArrayType  *keys = PG_GETARG_ARRAYTYPE_P(1);
 	int			i;
@@ -77,7 +77,7 @@ jsonb_exists_any(PG_FUNCTION_ARGS)
 
 Datum
 jsonb_exists_all(PG_FUNCTION_ARGS)
-{
+{	StackTrace("jsonb_exists_all");
 	Jsonb	   *jb = PG_GETARG_JSONB(0);
 	ArrayType  *keys = PG_GETARG_ARRAYTYPE_P(1);
 	int			i;
@@ -110,7 +110,7 @@ jsonb_exists_all(PG_FUNCTION_ARGS)
 
 Datum
 jsonb_contains(PG_FUNCTION_ARGS)
-{
+{	StackTrace("jsonb_contains");
 	Jsonb	   *val = PG_GETARG_JSONB(0);
 	Jsonb	   *tmpl = PG_GETARG_JSONB(1);
 
@@ -128,7 +128,7 @@ jsonb_contains(PG_FUNCTION_ARGS)
 
 Datum
 jsonb_contained(PG_FUNCTION_ARGS)
-{
+{	StackTrace("jsonb_contained");
 	/* Commutator of "contains" */
 	Jsonb	   *tmpl = PG_GETARG_JSONB(0);
 	Jsonb	   *val = PG_GETARG_JSONB(1);
@@ -147,7 +147,7 @@ jsonb_contained(PG_FUNCTION_ARGS)
 
 Datum
 jsonb_ne(PG_FUNCTION_ARGS)
-{
+{	StackTrace("jsonb_ne");
 	Jsonb	   *jba = PG_GETARG_JSONB(0);
 	Jsonb	   *jbb = PG_GETARG_JSONB(1);
 	bool		res;
@@ -164,7 +164,7 @@ jsonb_ne(PG_FUNCTION_ARGS)
  */
 Datum
 jsonb_lt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("jsonb_lt");
 	Jsonb	   *jba = PG_GETARG_JSONB(0);
 	Jsonb	   *jbb = PG_GETARG_JSONB(1);
 	bool		res;
@@ -178,7 +178,7 @@ jsonb_lt(PG_FUNCTION_ARGS)
 
 Datum
 jsonb_gt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("jsonb_gt");
 	Jsonb	   *jba = PG_GETARG_JSONB(0);
 	Jsonb	   *jbb = PG_GETARG_JSONB(1);
 	bool		res;
@@ -192,7 +192,7 @@ jsonb_gt(PG_FUNCTION_ARGS)
 
 Datum
 jsonb_le(PG_FUNCTION_ARGS)
-{
+{	StackTrace("jsonb_le");
 	Jsonb	   *jba = PG_GETARG_JSONB(0);
 	Jsonb	   *jbb = PG_GETARG_JSONB(1);
 	bool		res;
@@ -206,7 +206,7 @@ jsonb_le(PG_FUNCTION_ARGS)
 
 Datum
 jsonb_ge(PG_FUNCTION_ARGS)
-{
+{	StackTrace("jsonb_ge");
 	Jsonb	   *jba = PG_GETARG_JSONB(0);
 	Jsonb	   *jbb = PG_GETARG_JSONB(1);
 	bool		res;
@@ -220,7 +220,7 @@ jsonb_ge(PG_FUNCTION_ARGS)
 
 Datum
 jsonb_eq(PG_FUNCTION_ARGS)
-{
+{	StackTrace("jsonb_eq");
 	Jsonb	   *jba = PG_GETARG_JSONB(0);
 	Jsonb	   *jbb = PG_GETARG_JSONB(1);
 	bool		res;
@@ -234,7 +234,7 @@ jsonb_eq(PG_FUNCTION_ARGS)
 
 Datum
 jsonb_cmp(PG_FUNCTION_ARGS)
-{
+{	StackTrace("jsonb_cmp");
 	Jsonb	   *jba = PG_GETARG_JSONB(0);
 	Jsonb	   *jbb = PG_GETARG_JSONB(1);
 	int			res;
@@ -251,7 +251,7 @@ jsonb_cmp(PG_FUNCTION_ARGS)
  */
 Datum
 jsonb_hash(PG_FUNCTION_ARGS)
-{
+{	StackTrace("jsonb_hash");
 	Jsonb	   *jb = PG_GETARG_JSONB(0);
 	JsonbIterator *it;
 	int32		r;

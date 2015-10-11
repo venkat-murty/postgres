@@ -47,7 +47,7 @@ static int	sort_order_cmp(const void *p1, const void *p2);
  */
 void
 EnumValuesCreate(Oid enumTypeOid, List *vals)
-{
+{	StackTrace("EnumValuesCreate");
 	Relation	pg_enum;
 	NameData	enumlabel;
 	Oid		   *oids;
@@ -143,7 +143,7 @@ EnumValuesCreate(Oid enumTypeOid, List *vals)
  */
 void
 EnumValuesDelete(Oid enumTypeOid)
-{
+{	StackTrace("EnumValuesDelete");
 	Relation	pg_enum;
 	ScanKeyData key[1];
 	SysScanDesc scan;
@@ -182,7 +182,7 @@ AddEnumLabel(Oid enumTypeOid,
 			 const char *neighbor,
 			 bool newValIsAfter,
 			 bool skipIfExists)
-{
+{	StackTrace("AddEnumLabel");
 	Relation	pg_enum;
 	Oid			newOid;
 	Datum		values[Natts_pg_enum];
@@ -487,7 +487,7 @@ restart:
  */
 static void
 RenumberEnumType(Relation pg_enum, HeapTuple *existing, int nelems)
-{
+{	StackTrace("RenumberEnumType");
 	int			i;
 
 	/*
@@ -525,7 +525,7 @@ RenumberEnumType(Relation pg_enum, HeapTuple *existing, int nelems)
 /* qsort comparison function for oids */
 static int
 oid_cmp(const void *p1, const void *p2)
-{
+{	StackTrace("oid_cmp");
 	Oid			v1 = *((const Oid *) p1);
 	Oid			v2 = *((const Oid *) p2);
 
@@ -539,7 +539,7 @@ oid_cmp(const void *p1, const void *p2)
 /* qsort comparison function for tuples by sort order */
 static int
 sort_order_cmp(const void *p1, const void *p2)
-{
+{	StackTrace("sort_order_cmp");
 	HeapTuple	v1 = *((const HeapTuple *) p1);
 	HeapTuple	v2 = *((const HeapTuple *) p2);
 	Form_pg_enum en1 = (Form_pg_enum) GETSTRUCT(v1);

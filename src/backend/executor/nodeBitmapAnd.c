@@ -40,7 +40,7 @@
  */
 BitmapAndState *
 ExecInitBitmapAnd(BitmapAnd *node, EState *estate, int eflags)
-{
+{	StackTrace("ExecInitBitmapAnd");
 	BitmapAndState *bitmapandstate = makeNode(BitmapAndState);
 	PlanState **bitmapplanstates;
 	int			nplans;
@@ -94,7 +94,7 @@ ExecInitBitmapAnd(BitmapAnd *node, EState *estate, int eflags)
  */
 Node *
 MultiExecBitmapAnd(BitmapAndState *node)
-{
+{	StackTrace("MultiExecBitmapAnd");
 	PlanState **bitmapplans;
 	int			nplans;
 	int			i;
@@ -162,7 +162,7 @@ MultiExecBitmapAnd(BitmapAndState *node)
  */
 void
 ExecEndBitmapAnd(BitmapAndState *node)
-{
+{	StackTrace("ExecEndBitmapAnd");
 	PlanState **bitmapplans;
 	int			nplans;
 	int			i;
@@ -185,7 +185,7 @@ ExecEndBitmapAnd(BitmapAndState *node)
 
 void
 ExecReScanBitmapAnd(BitmapAndState *node)
-{
+{	StackTrace("ExecReScanBitmapAnd");
 	int			i;
 
 	for (i = 0; i < node->nplans; i++)

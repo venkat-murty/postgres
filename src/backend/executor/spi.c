@@ -83,7 +83,7 @@ static bool _SPI_checktuples(void);
 
 int
 SPI_connect(void)
-{
+{	StackTrace("SPI_connect");
 	int			newdepth;
 
 	/*
@@ -158,7 +158,7 @@ SPI_connect(void)
 
 int
 SPI_finish(void)
-{
+{	StackTrace("SPI_finish");
 	int			res;
 
 	res = _SPI_begin_call(false);		/* live in procedure memory */
@@ -202,7 +202,7 @@ SPI_finish(void)
  */
 void
 AtEOXact_SPI(bool isCommit)
-{
+{	StackTrace("AtEOXact_SPI");
 	/*
 	 * Note that memory contexts belonging to SPI stack entries will be freed
 	 * automatically, so we can ignore them here.  We just need to restore our
@@ -230,7 +230,7 @@ AtEOXact_SPI(bool isCommit)
  */
 void
 AtEOSubXact_SPI(bool isCommit, SubTransactionId mySubid)
-{
+{	StackTrace("AtEOSubXact_SPI");
 	bool		found = false;
 
 	while (_SPI_connected >= 0)
@@ -320,21 +320,21 @@ AtEOSubXact_SPI(bool isCommit, SubTransactionId mySubid)
 /* Pushes SPI stack to allow recursive SPI calls */
 void
 SPI_push(void)
-{
+{	StackTrace("SPI_push");
 	_SPI_curid++;
 }
 
 /* Pops SPI stack to allow recursive SPI calls */
 void
 SPI_pop(void)
-{
+{	StackTrace("SPI_pop");
 	_SPI_curid--;
 }
 
 /* Conditional push: push only if we're inside a SPI procedure */
 bool
 SPI_push_conditional(void)
-{
+{	StackTrace("SPI_push_conditional");
 	bool		pushed = (_SPI_curid != _SPI_connected);
 
 	if (pushed)
@@ -349,7 +349,7 @@ SPI_push_conditional(void)
 /* Conditional pop: pop only if SPI_push_conditional pushed */
 void
 SPI_pop_conditional(bool pushed)
-{
+{	StackTrace("SPI_pop_conditional");
 	/* We should be in a state where SPI_connect would succeed */
 	Assert(_SPI_curid == _SPI_connected);
 	if (pushed)
@@ -359,7 +359,7 @@ SPI_pop_conditional(bool pushed)
 /* Restore state of SPI stack after aborting a subtransaction */
 void
 SPI_restore_connection(void)
-{
+{	StackTrace("SPI_restore_connection");
 	Assert(_SPI_connected >= 0);
 	_SPI_curid = _SPI_connected - 1;
 }
@@ -367,7 +367,7 @@ SPI_restore_connection(void)
 /* Parse, plan, and execute a query string */
 int
 SPI_execute(const char *src, bool read_only, long tcount)
-{
+{	StackTrace("SPI_execute");
 	_SPI_plan	plan;
 	int			res;
 
@@ -395,7 +395,7 @@ SPI_execute(const char *src, bool read_only, long tcount)
 /* Obsolete version of SPI_execute */
 int
 SPI_exec(const char *src, long tcount)
-{
+{	StackTrace("SPI_exec");
 	return SPI_execute(src, false, tcount);
 }
 
@@ -403,7 +403,7 @@ SPI_exec(const char *src, long tcount)
 int
 SPI_execute_plan(SPIPlanPtr plan, Datum *Values, const char *Nulls,
 				 bool read_only, long tcount)
-{
+{	StackTrace("SPI_execute_plan");
 	int			res;
 
 	if (plan == NULL || plan->magic != _SPI_PLAN_MAGIC || tcount < 0)
@@ -429,7 +429,7 @@ SPI_execute_plan(SPIPlanPtr plan, Datum *Values, const char *Nulls,
 /* Obsolete version of SPI_execute_plan */
 int
 SPI_execp(SPIPlanPtr plan, Datum *Values, const char *Nulls, long tcount)
-{
+{	StackTrace("SPI_execp");
 	return SPI_execute_plan(plan, Values, Nulls, false, tcount);
 }
 
@@ -437,7 +437,7 @@ SPI_execp(SPIPlanPtr plan, Datum *Values, const char *Nulls, long tcount)
 int
 SPI_execute_plan_with_paramlist(SPIPlanPtr plan, ParamListInfo params,
 								bool read_only, long tcount)
-{
+{	StackTrace("SPI_execute_plan_with_paramlist");
 	int			res;
 
 	if (plan == NULL || plan->magic != _SPI_PLAN_MAGIC || tcount < 0)
@@ -473,7 +473,7 @@ SPI_execute_snapshot(SPIPlanPtr plan,
 					 Datum *Values, const char *Nulls,
 					 Snapshot snapshot, Snapshot crosscheck_snapshot,
 					 bool read_only, bool fire_triggers, long tcount)
-{
+{	StackTrace("SPI_execute_snapshot");
 	int			res;
 
 	if (plan == NULL || plan->magic != _SPI_PLAN_MAGIC || tcount < 0)
@@ -507,7 +507,7 @@ SPI_execute_with_args(const char *src,
 					  int nargs, Oid *argtypes,
 					  Datum *Values, const char *Nulls,
 					  bool read_only, long tcount)
-{
+{	StackTrace("SPI_execute_with_args");
 	int			res;
 	_SPI_plan	plan;
 	ParamListInfo paramLI;
@@ -545,14 +545,14 @@ SPI_execute_with_args(const char *src,
 
 SPIPlanPtr
 SPI_prepare(const char *src, int nargs, Oid *argtypes)
-{
+{	StackTrace("SPI_prepare");
 	return SPI_prepare_cursor(src, nargs, argtypes, 0);
 }
 
 SPIPlanPtr
 SPI_prepare_cursor(const char *src, int nargs, Oid *argtypes,
 				   int cursorOptions)
-{
+{	StackTrace("SPI_prepare_cursor");
 	_SPI_plan	plan;
 	SPIPlanPtr	result;
 
@@ -589,7 +589,7 @@ SPI_prepare_params(const char *src,
 				   ParserSetupHook parserSetup,
 				   void *parserSetupArg,
 				   int cursorOptions)
-{
+{	StackTrace("SPI_prepare_params");
 	_SPI_plan	plan;
 	SPIPlanPtr	result;
 
@@ -623,7 +623,7 @@ SPI_prepare_params(const char *src,
 
 int
 SPI_keepplan(SPIPlanPtr plan)
-{
+{	StackTrace("SPI_keepplan");
 	ListCell   *lc;
 
 	if (plan == NULL || plan->magic != _SPI_PLAN_MAGIC ||
@@ -650,7 +650,7 @@ SPI_keepplan(SPIPlanPtr plan)
 
 SPIPlanPtr
 SPI_saveplan(SPIPlanPtr plan)
-{
+{	StackTrace("SPI_saveplan");
 	SPIPlanPtr	newplan;
 
 	if (plan == NULL || plan->magic != _SPI_PLAN_MAGIC)
@@ -672,7 +672,7 @@ SPI_saveplan(SPIPlanPtr plan)
 
 int
 SPI_freeplan(SPIPlanPtr plan)
-{
+{	StackTrace("SPI_freeplan");
 	ListCell   *lc;
 
 	if (plan == NULL || plan->magic != _SPI_PLAN_MAGIC)
@@ -694,7 +694,7 @@ SPI_freeplan(SPIPlanPtr plan)
 
 HeapTuple
 SPI_copytuple(HeapTuple tuple)
-{
+{	StackTrace("SPI_copytuple");
 	MemoryContext oldcxt = NULL;
 	HeapTuple	ctuple;
 
@@ -721,7 +721,7 @@ SPI_copytuple(HeapTuple tuple)
 
 HeapTupleHeader
 SPI_returntuple(HeapTuple tuple, TupleDesc tupdesc)
-{
+{	StackTrace("SPI_returntuple");
 	MemoryContext oldcxt = NULL;
 	HeapTupleHeader dtup;
 
@@ -754,7 +754,7 @@ SPI_returntuple(HeapTuple tuple, TupleDesc tupdesc)
 HeapTuple
 SPI_modifytuple(Relation rel, HeapTuple tuple, int natts, int *attnum,
 				Datum *Values, const char *Nulls)
-{
+{	StackTrace("SPI_modifytuple");
 	MemoryContext oldcxt = NULL;
 	HeapTuple	mtuple;
 	int			numberOfAttributes;
@@ -822,7 +822,7 @@ SPI_modifytuple(Relation rel, HeapTuple tuple, int natts, int *attnum,
 
 int
 SPI_fnumber(TupleDesc tupdesc, const char *fname)
-{
+{	StackTrace("SPI_fnumber");
 	int			res;
 	Form_pg_attribute sysatt;
 
@@ -842,7 +842,7 @@ SPI_fnumber(TupleDesc tupdesc, const char *fname)
 
 char *
 SPI_fname(TupleDesc tupdesc, int fnumber)
-{
+{	StackTrace("SPI_fname");
 	Form_pg_attribute att;
 
 	SPI_result = 0;
@@ -864,7 +864,7 @@ SPI_fname(TupleDesc tupdesc, int fnumber)
 
 char *
 SPI_getvalue(HeapTuple tuple, TupleDesc tupdesc, int fnumber)
-{
+{	StackTrace("SPI_getvalue");
 	Datum		val;
 	bool		isnull;
 	Oid			typoid,
@@ -896,7 +896,7 @@ SPI_getvalue(HeapTuple tuple, TupleDesc tupdesc, int fnumber)
 
 Datum
 SPI_getbinval(HeapTuple tuple, TupleDesc tupdesc, int fnumber, bool *isnull)
-{
+{	StackTrace("SPI_getbinval");
 	SPI_result = 0;
 
 	if (fnumber > tupdesc->natts || fnumber == 0 ||
@@ -912,7 +912,7 @@ SPI_getbinval(HeapTuple tuple, TupleDesc tupdesc, int fnumber, bool *isnull)
 
 char *
 SPI_gettype(TupleDesc tupdesc, int fnumber)
-{
+{	StackTrace("SPI_gettype");
 	Oid			typoid;
 	HeapTuple	typeTuple;
 	char	   *result;
@@ -952,7 +952,7 @@ SPI_gettype(TupleDesc tupdesc, int fnumber)
  */
 Oid
 SPI_gettypeid(TupleDesc tupdesc, int fnumber)
-{
+{	StackTrace("SPI_gettypeid");
 	SPI_result = 0;
 
 	if (fnumber > tupdesc->natts || fnumber == 0 ||
@@ -970,19 +970,19 @@ SPI_gettypeid(TupleDesc tupdesc, int fnumber)
 
 char *
 SPI_getrelname(Relation rel)
-{
+{	StackTrace("SPI_getrelname");
 	return pstrdup(RelationGetRelationName(rel));
 }
 
 char *
 SPI_getnspname(Relation rel)
-{
+{	StackTrace("SPI_getnspname");
 	return get_namespace_name(RelationGetNamespace(rel));
 }
 
 void *
 SPI_palloc(Size size)
-{
+{	StackTrace("SPI_palloc");
 	MemoryContext oldcxt = NULL;
 	void	   *pointer;
 
@@ -1003,21 +1003,21 @@ SPI_palloc(Size size)
 
 void *
 SPI_repalloc(void *pointer, Size size)
-{
+{	StackTrace("SPI_repalloc");
 	/* No longer need to worry which context chunk was in... */
 	return repalloc(pointer, size);
 }
 
 void
 SPI_pfree(void *pointer)
-{
+{	StackTrace("SPI_pfree");
 	/* No longer need to worry which context chunk was in... */
 	pfree(pointer);
 }
 
 Datum
 SPI_datumTransfer(Datum value, bool typByVal, int typLen)
-{
+{	StackTrace("SPI_datumTransfer");
 	MemoryContext oldcxt = NULL;
 	Datum		result;
 
@@ -1038,14 +1038,14 @@ SPI_datumTransfer(Datum value, bool typByVal, int typLen)
 
 void
 SPI_freetuple(HeapTuple tuple)
-{
+{	StackTrace("SPI_freetuple");
 	/* No longer need to worry which context tuple was in... */
 	heap_freetuple(tuple);
 }
 
 void
 SPI_freetuptable(SPITupleTable *tuptable)
-{
+{	StackTrace("SPI_freetuptable");
 	bool		found = false;
 
 	/* ignore call if NULL pointer */
@@ -1111,7 +1111,7 @@ Portal
 SPI_cursor_open(const char *name, SPIPlanPtr plan,
 				Datum *Values, const char *Nulls,
 				bool read_only)
-{
+{	StackTrace("SPI_cursor_open");
 	Portal		portal;
 	ParamListInfo paramLI;
 
@@ -1140,7 +1140,7 @@ SPI_cursor_open_with_args(const char *name,
 						  int nargs, Oid *argtypes,
 						  Datum *Values, const char *Nulls,
 						  bool read_only, int cursorOptions)
-{
+{	StackTrace("SPI_cursor_open_with_args");
 	Portal		result;
 	_SPI_plan	plan;
 	ParamListInfo paramLI;
@@ -1193,7 +1193,7 @@ SPI_cursor_open_with_args(const char *name,
 Portal
 SPI_cursor_open_with_paramlist(const char *name, SPIPlanPtr plan,
 							   ParamListInfo params, bool read_only)
-{
+{	StackTrace("SPI_cursor_open_with_paramlist");
 	return SPI_cursor_open_internal(name, plan, params, read_only);
 }
 
@@ -1206,7 +1206,7 @@ SPI_cursor_open_with_paramlist(const char *name, SPIPlanPtr plan,
 static Portal
 SPI_cursor_open_internal(const char *name, SPIPlanPtr plan,
 						 ParamListInfo paramLI, bool read_only)
-{
+{	StackTrace("SPI_cursor_open_internal");
 	CachedPlanSource *plansource;
 	CachedPlan *cplan;
 	List	   *stmt_list;
@@ -1416,7 +1416,7 @@ SPI_cursor_open_internal(const char *name, SPIPlanPtr plan,
  */
 Portal
 SPI_cursor_find(const char *name)
-{
+{	StackTrace("SPI_cursor_find");
 	return GetPortalByName(name);
 }
 
@@ -1428,7 +1428,7 @@ SPI_cursor_find(const char *name)
  */
 void
 SPI_cursor_fetch(Portal portal, bool forward, long count)
-{
+{	StackTrace("SPI_cursor_fetch");
 	_SPI_cursor_operation(portal,
 						  forward ? FETCH_FORWARD : FETCH_BACKWARD, count,
 						  CreateDestReceiver(DestSPI));
@@ -1443,7 +1443,7 @@ SPI_cursor_fetch(Portal portal, bool forward, long count)
  */
 void
 SPI_cursor_move(Portal portal, bool forward, long count)
-{
+{	StackTrace("SPI_cursor_move");
 	_SPI_cursor_operation(portal,
 						  forward ? FETCH_FORWARD : FETCH_BACKWARD, count,
 						  None_Receiver);
@@ -1457,7 +1457,7 @@ SPI_cursor_move(Portal portal, bool forward, long count)
  */
 void
 SPI_scroll_cursor_fetch(Portal portal, FetchDirection direction, long count)
-{
+{	StackTrace("SPI_scroll_cursor_fetch");
 	_SPI_cursor_operation(portal,
 						  direction, count,
 						  CreateDestReceiver(DestSPI));
@@ -1472,7 +1472,7 @@ SPI_scroll_cursor_fetch(Portal portal, FetchDirection direction, long count)
  */
 void
 SPI_scroll_cursor_move(Portal portal, FetchDirection direction, long count)
-{
+{	StackTrace("SPI_scroll_cursor_move");
 	_SPI_cursor_operation(portal, direction, count, None_Receiver);
 }
 
@@ -1484,7 +1484,7 @@ SPI_scroll_cursor_move(Portal portal, FetchDirection direction, long count)
  */
 void
 SPI_cursor_close(Portal portal)
-{
+{	StackTrace("SPI_cursor_close");
 	if (!PortalIsValid(portal))
 		elog(ERROR, "invalid portal in SPI cursor operation");
 
@@ -1497,7 +1497,7 @@ SPI_cursor_close(Portal portal)
  */
 Oid
 SPI_getargtypeid(SPIPlanPtr plan, int argIndex)
-{
+{	StackTrace("SPI_getargtypeid");
 	if (plan == NULL || plan->magic != _SPI_PLAN_MAGIC ||
 		argIndex < 0 || argIndex >= plan->nargs)
 	{
@@ -1512,7 +1512,7 @@ SPI_getargtypeid(SPIPlanPtr plan, int argIndex)
  */
 int
 SPI_getargcount(SPIPlanPtr plan)
-{
+{	StackTrace("SPI_getargcount");
 	if (plan == NULL || plan->magic != _SPI_PLAN_MAGIC)
 	{
 		SPI_result = SPI_ERROR_ARGUMENT;
@@ -1532,7 +1532,7 @@ SPI_getargcount(SPIPlanPtr plan)
  */
 bool
 SPI_is_cursor_plan(SPIPlanPtr plan)
-{
+{	StackTrace("SPI_is_cursor_plan");
 	CachedPlanSource *plansource;
 
 	if (plan == NULL || plan->magic != _SPI_PLAN_MAGIC)
@@ -1570,7 +1570,7 @@ SPI_is_cursor_plan(SPIPlanPtr plan)
  */
 bool
 SPI_plan_is_valid(SPIPlanPtr plan)
-{
+{	StackTrace("SPI_plan_is_valid");
 	ListCell   *lc;
 
 	Assert(plan->magic == _SPI_PLAN_MAGIC);
@@ -1594,7 +1594,7 @@ SPI_plan_is_valid(SPIPlanPtr plan)
  */
 const char *
 SPI_result_code_string(int code)
-{
+{	StackTrace("SPI_result_code_string");
 	static char buf[64];
 
 	switch (code)
@@ -1663,7 +1663,7 @@ SPI_result_code_string(int code)
  */
 List *
 SPI_plan_get_plan_sources(SPIPlanPtr plan)
-{
+{	StackTrace("SPI_plan_get_plan_sources");
 	Assert(plan->magic == _SPI_PLAN_MAGIC);
 	return plan->plancache_list;
 }
@@ -1679,7 +1679,7 @@ SPI_plan_get_plan_sources(SPIPlanPtr plan)
  */
 CachedPlan *
 SPI_plan_get_cached_plan(SPIPlanPtr plan)
-{
+{	StackTrace("SPI_plan_get_cached_plan");
 	CachedPlanSource *plansource;
 	CachedPlan *cplan;
 	ErrorContextCallback spierrcontext;
@@ -1721,7 +1721,7 @@ SPI_plan_get_cached_plan(SPIPlanPtr plan)
  */
 void
 spi_dest_startup(DestReceiver *self, int operation, TupleDesc typeinfo)
-{
+{	StackTrace("spi_dest_startup");
 	SPITupleTable *tuptable;
 	MemoryContext oldcxt;
 	MemoryContext tuptabcxt;
@@ -1776,7 +1776,7 @@ spi_dest_startup(DestReceiver *self, int operation, TupleDesc typeinfo)
  */
 void
 spi_printtup(TupleTableSlot *slot, DestReceiver *self)
-{
+{	StackTrace("spi_printtup");
 	SPITupleTable *tuptable;
 	MemoryContext oldcxt;
 
@@ -1828,7 +1828,7 @@ spi_printtup(TupleTableSlot *slot, DestReceiver *self)
  */
 static void
 _SPI_prepare_plan(const char *src, SPIPlanPtr plan)
-{
+{	StackTrace("_SPI_prepare_plan");
 	List	   *raw_parsetree_list;
 	List	   *plancache_list;
 	ListCell   *list_item;
@@ -1931,7 +1931,7 @@ _SPI_prepare_plan(const char *src, SPIPlanPtr plan)
  */
 static void
 _SPI_prepare_oneshot_plan(const char *src, SPIPlanPtr plan)
-{
+{	StackTrace("_SPI_prepare_oneshot_plan");
 	List	   *raw_parsetree_list;
 	List	   *plancache_list;
 	ListCell   *list_item;
@@ -1991,7 +1991,7 @@ static int
 _SPI_execute_plan(SPIPlanPtr plan, ParamListInfo paramLI,
 				  Snapshot snapshot, Snapshot crosscheck_snapshot,
 				  bool read_only, bool fire_triggers, long tcount)
-{
+{	StackTrace("_SPI_execute_plan");
 	int			my_res = 0;
 	uint32		my_processed = 0;
 	Oid			my_lastoid = InvalidOid;
@@ -2314,7 +2314,7 @@ fail:
 static ParamListInfo
 _SPI_convert_params(int nargs, Oid *argtypes,
 					Datum *Values, const char *Nulls)
-{
+{	StackTrace("_SPI_convert_params");
 	ParamListInfo paramLI;
 
 	if (nargs > 0)
@@ -2347,7 +2347,7 @@ _SPI_convert_params(int nargs, Oid *argtypes,
 
 static int
 _SPI_pquery(QueryDesc *queryDesc, bool fire_triggers, long tcount)
-{
+{	StackTrace("_SPI_pquery");
 	int			operation = queryDesc->operation;
 	int			eflags;
 	int			res;
@@ -2430,7 +2430,7 @@ _SPI_pquery(QueryDesc *queryDesc, bool fire_triggers, long tcount)
  */
 static void
 _SPI_error_callback(void *arg)
-{
+{	StackTrace("_SPI_error_callback");
 	const char *query = (const char *) arg;
 	int			syntaxerrposition;
 
@@ -2457,7 +2457,7 @@ _SPI_error_callback(void *arg)
 static void
 _SPI_cursor_operation(Portal portal, FetchDirection direction, long count,
 					  DestReceiver *dest)
-{
+{	StackTrace("_SPI_cursor_operation");
 	long		nfetched;
 
 	/* Check that the portal is valid */
@@ -2507,13 +2507,13 @@ _SPI_cursor_operation(Portal portal, FetchDirection direction, long count,
 
 static MemoryContext
 _SPI_execmem(void)
-{
+{	StackTrace("_SPI_execmem");
 	return MemoryContextSwitchTo(_SPI_current->execCxt);
 }
 
 static MemoryContext
 _SPI_procmem(void)
-{
+{	StackTrace("_SPI_procmem");
 	return MemoryContextSwitchTo(_SPI_current->procCxt);
 }
 
@@ -2522,7 +2522,7 @@ _SPI_procmem(void)
  */
 static int
 _SPI_begin_call(bool execmem)
-{
+{	StackTrace("_SPI_begin_call");
 	if (_SPI_curid + 1 != _SPI_connected)
 		return SPI_ERROR_UNCONNECTED;
 	_SPI_curid++;
@@ -2542,7 +2542,7 @@ _SPI_begin_call(bool execmem)
  */
 static int
 _SPI_end_call(bool procmem)
-{
+{	StackTrace("_SPI_end_call");
 	/*
 	 * We're returning to procedure where _SPI_curid == _SPI_connected - 1
 	 */
@@ -2560,7 +2560,7 @@ _SPI_end_call(bool procmem)
 
 static bool
 _SPI_checktuples(void)
-{
+{	StackTrace("_SPI_checktuples");
 	uint32		processed = _SPI_current->processed;
 	SPITupleTable *tuptable = _SPI_current->tuptable;
 	bool		failed = false;
@@ -2584,7 +2584,7 @@ _SPI_checktuples(void)
  */
 static SPIPlanPtr
 _SPI_make_plan_non_temp(SPIPlanPtr plan)
-{
+{	StackTrace("_SPI_make_plan_non_temp");
 	SPIPlanPtr	newplan;
 	MemoryContext parentcxt = _SPI_current->procCxt;
 	MemoryContext plancxt;
@@ -2657,7 +2657,7 @@ _SPI_make_plan_non_temp(SPIPlanPtr plan)
  */
 static SPIPlanPtr
 _SPI_save_plan(SPIPlanPtr plan)
-{
+{	StackTrace("_SPI_save_plan");
 	SPIPlanPtr	newplan;
 	MemoryContext plancxt;
 	MemoryContext oldcxt;

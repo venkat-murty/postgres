@@ -59,7 +59,7 @@
  */
 JunkFilter *
 ExecInitJunkFilter(List *targetList, bool hasoid, TupleTableSlot *slot)
-{
+{	StackTrace("ExecInitJunkFilter");
 	JunkFilter *junkfilter;
 	TupleDesc	cleanTupType;
 	int			cleanLength;
@@ -136,7 +136,7 @@ JunkFilter *
 ExecInitJunkFilterConversion(List *targetList,
 							 TupleDesc cleanTupType,
 							 TupleTableSlot *slot)
-{
+{	StackTrace("ExecInitJunkFilterConversion");
 	JunkFilter *junkfilter;
 	int			cleanLength;
 	AttrNumber *cleanMap;
@@ -207,7 +207,7 @@ ExecInitJunkFilterConversion(List *targetList,
  */
 AttrNumber
 ExecFindJunkAttribute(JunkFilter *junkfilter, const char *attrName)
-{
+{	StackTrace("ExecFindJunkAttribute");
 	return ExecFindJunkAttributeInTlist(junkfilter->jf_targetList, attrName);
 }
 
@@ -219,7 +219,7 @@ ExecFindJunkAttribute(JunkFilter *junkfilter, const char *attrName)
  */
 AttrNumber
 ExecFindJunkAttributeInTlist(List *targetlist, const char *attrName)
-{
+{	StackTrace("ExecFindJunkAttributeInTlist");
 	ListCell   *t;
 
 	foreach(t, targetlist)
@@ -247,7 +247,7 @@ ExecFindJunkAttributeInTlist(List *targetlist, const char *attrName)
 Datum
 ExecGetJunkAttribute(TupleTableSlot *slot, AttrNumber attno,
 					 bool *isNull)
-{
+{	StackTrace("ExecGetJunkAttribute");
 	Assert(attno > 0);
 
 	return slot_getattr(slot, attno, isNull);
@@ -260,7 +260,7 @@ ExecGetJunkAttribute(TupleTableSlot *slot, AttrNumber attno,
  */
 TupleTableSlot *
 ExecFilterJunk(JunkFilter *junkfilter, TupleTableSlot *slot)
-{
+{	StackTrace("ExecFilterJunk");
 	TupleTableSlot *resultSlot;
 	AttrNumber *cleanMap;
 	TupleDesc	cleanTupType;

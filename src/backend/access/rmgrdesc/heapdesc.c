@@ -18,7 +18,7 @@
 
 static void
 out_infobits(StringInfo buf, uint8 infobits)
-{
+{	StackTrace("out_infobits");
 	if (infobits & XLHL_XMAX_IS_MULTI)
 		appendStringInfoString(buf, "IS_MULTI ");
 	if (infobits & XLHL_XMAX_LOCK_ONLY)
@@ -33,7 +33,7 @@ out_infobits(StringInfo buf, uint8 infobits)
 
 void
 heap_desc(StringInfo buf, XLogReaderState *record)
-{
+{	StackTrace("heap_desc");
 	char	   *rec = XLogRecGetData(record);
 	uint8		info = XLogRecGetInfo(record) & ~XLR_INFO_MASK;
 
@@ -97,7 +97,7 @@ heap_desc(StringInfo buf, XLogReaderState *record)
 }
 void
 heap2_desc(StringInfo buf, XLogReaderState *record)
-{
+{	StackTrace("heap2_desc");
 	char	   *rec = XLogRecGetData(record);
 	uint8		info = XLogRecGetInfo(record) & ~XLR_INFO_MASK;
 
@@ -157,7 +157,7 @@ heap2_desc(StringInfo buf, XLogReaderState *record)
 
 const char *
 heap_identify(uint8 info)
-{
+{	StackTrace("heap_identify");
 	const char *id = NULL;
 
 	switch (info & ~XLR_INFO_MASK)
@@ -199,7 +199,7 @@ heap_identify(uint8 info)
 
 const char *
 heap2_identify(uint8 info)
-{
+{	StackTrace("heap2_identify");
 	const char *id = NULL;
 
 	switch (info & ~XLR_INFO_MASK)

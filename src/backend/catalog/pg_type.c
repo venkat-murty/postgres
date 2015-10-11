@@ -54,7 +54,7 @@ Oid			binary_upgrade_next_pg_type_oid = InvalidOid;
  */
 ObjectAddress
 TypeShellMake(const char *typeName, Oid typeNamespace, Oid ownerId)
-{
+{	StackTrace("TypeShellMake");
 	Relation	pg_type_desc;
 	TupleDesc	tupDesc;
 	int			i;
@@ -225,7 +225,7 @@ TypeCreate(Oid newTypeOid,
 		   int32 typNDims,		/* Array dimensions for baseType */
 		   bool typeNotNull,
 		   Oid typeCollation)
-{
+{	StackTrace("TypeCreate");
 	Relation	pg_type_desc;
 	Oid			typeObjectId;
 	bool		rebuildDeps = false;
@@ -532,7 +532,7 @@ GenerateTypeDependencies(Oid typeNamespace,
 						 Oid typeCollation,
 						 Node *defaultExpr,
 						 bool rebuild)
-{
+{	StackTrace("GenerateTypeDependencies");
 	ObjectAddress myself,
 				referenced;
 
@@ -695,7 +695,7 @@ GenerateTypeDependencies(Oid typeNamespace,
  */
 void
 RenameTypeInternal(Oid typeOid, const char *newTypeName, Oid typeNamespace)
-{
+{	StackTrace("RenameTypeInternal");
 	Relation	pg_type_desc;
 	HeapTuple	tuple;
 	Form_pg_type typ;
@@ -753,7 +753,7 @@ RenameTypeInternal(Oid typeOid, const char *newTypeName, Oid typeNamespace)
  */
 char *
 makeArrayTypeName(const char *typeName, Oid typeNamespace)
-{
+{	StackTrace("makeArrayTypeName");
 	char	   *arr = (char *) palloc(NAMEDATALEN);
 	int			namelen = strlen(typeName);
 	Relation	pg_type_desc;
@@ -819,7 +819,7 @@ makeArrayTypeName(const char *typeName, Oid typeNamespace)
  */
 bool
 moveArrayTypeName(Oid typeOid, const char *typeName, Oid typeNamespace)
-{
+{	StackTrace("moveArrayTypeName");
 	Oid			elemOid;
 	char	   *newname;
 

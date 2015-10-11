@@ -47,7 +47,7 @@
  */
 char *
 defGetString(DefElem *def)
-{
+{	StackTrace("defGetString");
 	if (def->arg == NULL)
 		ereport(ERROR,
 				(errcode(ERRCODE_SYNTAX_ERROR),
@@ -83,7 +83,7 @@ defGetString(DefElem *def)
  */
 double
 defGetNumeric(DefElem *def)
-{
+{	StackTrace("defGetNumeric");
 	if (def->arg == NULL)
 		ereport(ERROR,
 				(errcode(ERRCODE_SYNTAX_ERROR),
@@ -109,7 +109,7 @@ defGetNumeric(DefElem *def)
  */
 bool
 defGetBoolean(DefElem *def)
-{
+{	StackTrace("defGetBoolean");
 	/*
 	 * If no parameter given, assume "true" is meant.
 	 */
@@ -164,7 +164,7 @@ defGetBoolean(DefElem *def)
  */
 int32
 defGetInt32(DefElem *def)
-{
+{	StackTrace("defGetInt32");
 	if (def->arg == NULL)
 		ereport(ERROR,
 				(errcode(ERRCODE_SYNTAX_ERROR),
@@ -188,7 +188,7 @@ defGetInt32(DefElem *def)
  */
 int64
 defGetInt64(DefElem *def)
-{
+{	StackTrace("defGetInt64");
 	if (def->arg == NULL)
 		ereport(ERROR,
 				(errcode(ERRCODE_SYNTAX_ERROR),
@@ -221,7 +221,7 @@ defGetInt64(DefElem *def)
  */
 List *
 defGetQualifiedName(DefElem *def)
-{
+{	StackTrace("defGetQualifiedName");
 	if (def->arg == NULL)
 		ereport(ERROR,
 				(errcode(ERRCODE_SYNTAX_ERROR),
@@ -253,7 +253,7 @@ defGetQualifiedName(DefElem *def)
  */
 TypeName *
 defGetTypeName(DefElem *def)
-{
+{	StackTrace("defGetTypeName");
 	if (def->arg == NULL)
 		ereport(ERROR,
 				(errcode(ERRCODE_SYNTAX_ERROR),
@@ -281,7 +281,7 @@ defGetTypeName(DefElem *def)
  */
 int
 defGetTypeLength(DefElem *def)
-{
+{	StackTrace("defGetTypeLength");
 	if (def->arg == NULL)
 		ereport(ERROR,
 				(errcode(ERRCODE_SYNTAX_ERROR),
@@ -325,6 +325,6 @@ defGetTypeLength(DefElem *def)
  */
 DefElem *
 defWithOids(bool value)
-{
+{	StackTrace("defWithOids");
 	return makeDefElem("oids", (Node *) makeInteger(value));
 }

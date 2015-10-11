@@ -72,7 +72,7 @@ CreateConstraintEntry(const char *constraintName,
 					  int conInhCount,
 					  bool conNoInherit,
 					  bool is_internal)
-{
+{	StackTrace("CreateConstraintEntry");
 	Relation	conDesc;
 	Oid			conOid;
 	HeapTuple	tup;
@@ -392,7 +392,7 @@ CreateConstraintEntry(const char *constraintName,
 bool
 ConstraintNameIsUsed(ConstraintCategory conCat, Oid objId,
 					 Oid objNamespace, const char *conname)
-{
+{	StackTrace("ConstraintNameIsUsed");
 	bool		found;
 	Relation	conDesc;
 	SysScanDesc conscan;
@@ -465,7 +465,7 @@ char *
 ChooseConstraintName(const char *name1, const char *name2,
 					 const char *label, Oid namespaceid,
 					 List *others)
-{
+{	StackTrace("ChooseConstraintName");
 	int			pass = 0;
 	char	   *conname = NULL;
 	char		modlabel[NAMEDATALEN];
@@ -533,7 +533,7 @@ ChooseConstraintName(const char *name1, const char *name2,
  */
 void
 RemoveConstraintById(Oid conId)
-{
+{	StackTrace("RemoveConstraintById");
 	Relation	conDesc;
 	HeapTuple	tup;
 	Form_pg_constraint con;
@@ -626,7 +626,7 @@ RemoveConstraintById(Oid conId)
  */
 void
 RenameConstraintById(Oid conId, const char *newname)
-{
+{	StackTrace("RenameConstraintById");
 	Relation	conDesc;
 	HeapTuple	tuple;
 	Form_pg_constraint con;
@@ -685,7 +685,7 @@ RenameConstraintById(Oid conId, const char *newname)
 void
 AlterConstraintNamespaces(Oid ownerId, Oid oldNspId,
 					   Oid newNspId, bool isType, ObjectAddresses *objsMoved)
-{
+{	StackTrace("AlterConstraintNamespaces");
 	Relation	conRel;
 	ScanKeyData key[1];
 	SysScanDesc scan;
@@ -759,7 +759,7 @@ AlterConstraintNamespaces(Oid ownerId, Oid oldNspId,
  */
 void
 get_constraint_relation_oids(Oid constraint_oid, Oid *conrelid, Oid *confrelid)
-{
+{	StackTrace("get_constraint_relation_oids");
 	HeapTuple	tup;
 	Form_pg_constraint con;
 
@@ -779,7 +779,7 @@ get_constraint_relation_oids(Oid constraint_oid, Oid *conrelid, Oid *confrelid)
  */
 Oid
 get_relation_constraint_oid(Oid relid, const char *conname, bool missing_ok)
-{
+{	StackTrace("get_relation_constraint_oid");
 	Relation	pg_constraint;
 	HeapTuple	tuple;
 	SysScanDesc scan;
@@ -837,7 +837,7 @@ get_relation_constraint_oid(Oid relid, const char *conname, bool missing_ok)
  */
 Oid
 get_domain_constraint_oid(Oid typid, const char *conname, bool missing_ok)
-{
+{	StackTrace("get_domain_constraint_oid");
 	Relation	pg_constraint;
 	HeapTuple	tuple;
 	SysScanDesc scan;
@@ -908,7 +908,7 @@ check_functional_grouping(Oid relid,
 						  Index varno, Index varlevelsup,
 						  List *grouping_columns,
 						  List **constraintDeps)
-{
+{	StackTrace("check_functional_grouping");
 	bool		result = false;
 	Relation	pg_constraint;
 	HeapTuple	tuple;

@@ -142,7 +142,7 @@ static void *dsm_control_impl_private = NULL;
  */
 void
 dsm_postmaster_startup(PGShmemHeader *shim)
-{
+{	StackTrace("dsm_postmaster_startup");
 	void	   *dsm_control_address = NULL;
 	uint32		maxitems;
 	Size		segsize;
@@ -207,7 +207,7 @@ dsm_postmaster_startup(PGShmemHeader *shim)
  */
 void
 dsm_cleanup_using_control_segment(dsm_handle old_control_handle)
-{
+{	StackTrace("dsm_cleanup_using_control_segment");
 	void	   *mapped_address = NULL;
 	void	   *junk_mapped_address = NULL;
 	void	   *impl_private = NULL;
@@ -289,7 +289,7 @@ dsm_cleanup_using_control_segment(dsm_handle old_control_handle)
  */
 static void
 dsm_cleanup_for_mmap(void)
-{
+{	StackTrace("dsm_cleanup_for_mmap");
 	DIR		   *dir;
 	struct dirent *dent;
 
@@ -340,7 +340,7 @@ dsm_cleanup_for_mmap(void)
  */
 static void
 dsm_postmaster_shutdown(int code, Datum arg)
-{
+{	StackTrace("dsm_postmaster_shutdown");
 	uint32		nitems;
 	uint32		i;
 	void	   *dsm_control_address;
@@ -402,7 +402,7 @@ dsm_postmaster_shutdown(int code, Datum arg)
  */
 static void
 dsm_backend_startup(void)
-{
+{	StackTrace("dsm_backend_startup");
 	/* If dynamic shared memory is disabled, reject this. */
 	if (dynamic_shared_memory_type == DSM_IMPL_NONE)
 		ereport(ERROR,
@@ -444,7 +444,7 @@ dsm_backend_startup(void)
  */
 void
 dsm_set_control_handle(dsm_handle h)
-{
+{	StackTrace("dsm_set_control_handle");
 	Assert(dsm_control_handle == 0 && h != 0);
 	dsm_control_handle = h;
 }
@@ -455,7 +455,7 @@ dsm_set_control_handle(dsm_handle h)
  */
 dsm_segment *
 dsm_create(Size size, int flags)
-{
+{	StackTrace("dsm_create");
 	dsm_segment *seg;
 	uint32		i;
 	uint32		nitems;
@@ -540,7 +540,7 @@ dsm_create(Size size, int flags)
  */
 dsm_segment *
 dsm_attach(dsm_handle h)
-{
+{	StackTrace("dsm_attach");
 	dsm_segment *seg;
 	dlist_iter	iter;
 	uint32		i;
@@ -627,7 +627,7 @@ dsm_attach(dsm_handle h)
  */
 void
 dsm_backend_shutdown(void)
-{
+{	StackTrace("dsm_backend_shutdown");
 	while (!dlist_is_empty(&dsm_segment_list))
 	{
 		dsm_segment *seg;
@@ -645,7 +645,7 @@ dsm_backend_shutdown(void)
  */
 void
 dsm_detach_all(void)
-{
+{	StackTrace("dsm_detach_all");
 	void	   *control_address = dsm_control;
 
 	while (!dlist_is_empty(&dsm_segment_list))
@@ -670,7 +670,7 @@ dsm_detach_all(void)
  */
 void *
 dsm_resize(dsm_segment *seg, Size size)
-{
+{	StackTrace("dsm_resize");
 	Assert(seg->control_slot != INVALID_CONTROL_SLOT);
 	dsm_impl_op(DSM_OP_RESIZE, seg->handle, size, &seg->impl_private,
 				&seg->mapped_address, &seg->mapped_size, ERROR);
@@ -687,7 +687,7 @@ dsm_resize(dsm_segment *seg, Size size)
  */
 void *
 dsm_remap(dsm_segment *seg)
-{
+{	StackTrace("dsm_remap");
 	dsm_impl_op(DSM_OP_ATTACH, seg->handle, 0, &seg->impl_private,
 				&seg->mapped_address, &seg->mapped_size, ERROR);
 
@@ -705,7 +705,7 @@ dsm_remap(dsm_segment *seg)
  */
 void
 dsm_detach(dsm_segment *seg)
-{
+{	StackTrace("dsm_detach");
 	/*
 	 * Invoke registered callbacks.  Just in case one of those callbacks
 	 * throws a further error that brings us back here, pop the callback
@@ -803,7 +803,7 @@ dsm_detach(dsm_segment *seg)
  */
 void
 dsm_pin_mapping(dsm_segment *seg)
-{
+{	StackTrace("dsm_pin_mapping");
 	if (seg->resowner != NULL)
 	{
 		ResourceOwnerForgetDSM(seg->resowner, seg);
@@ -822,7 +822,7 @@ dsm_pin_mapping(dsm_segment *seg)
  */
 void
 dsm_unpin_mapping(dsm_segment *seg)
-{
+{	StackTrace("dsm_unpin_mapping");
 	Assert(seg->resowner == NULL);
 	ResourceOwnerEnlargeDSMs(CurrentResourceOwner);
 	seg->resowner = CurrentResourceOwner;
@@ -843,7 +843,7 @@ dsm_unpin_mapping(dsm_segment *seg)
  */
 void
 dsm_pin_segment(dsm_segment *seg)
-{
+{	StackTrace("dsm_pin_segment");
 	/*
 	 * Bump reference count for this segment in shared memory. This will
 	 * ensure that even if there is no session which is attached to this
@@ -861,7 +861,7 @@ dsm_pin_segment(dsm_segment *seg)
  */
 dsm_segment *
 dsm_find_mapping(dsm_handle h)
-{
+{	StackTrace("dsm_find_mapping");
 	dlist_iter	iter;
 	dsm_segment *seg;
 
@@ -880,7 +880,7 @@ dsm_find_mapping(dsm_handle h)
  */
 void *
 dsm_segment_address(dsm_segment *seg)
-{
+{	StackTrace("dsm_segment_address");
 	Assert(seg->mapped_address != NULL);
 	return seg->mapped_address;
 }
@@ -890,7 +890,7 @@ dsm_segment_address(dsm_segment *seg)
  */
 Size
 dsm_segment_map_length(dsm_segment *seg)
-{
+{	StackTrace("dsm_segment_map_length");
 	Assert(seg->mapped_address != NULL);
 	return seg->mapped_size;
 }
@@ -908,7 +908,7 @@ dsm_segment_map_length(dsm_segment *seg)
  */
 dsm_handle
 dsm_segment_handle(dsm_segment *seg)
-{
+{	StackTrace("dsm_segment_handle");
 	return seg->handle;
 }
 
@@ -917,7 +917,7 @@ dsm_segment_handle(dsm_segment *seg)
  */
 void
 on_dsm_detach(dsm_segment *seg, on_dsm_detach_callback function, Datum arg)
-{
+{	StackTrace("on_dsm_detach");
 	dsm_segment_detach_callback *cb;
 
 	cb = MemoryContextAlloc(TopMemoryContext,
@@ -933,7 +933,7 @@ on_dsm_detach(dsm_segment *seg, on_dsm_detach_callback function, Datum arg)
 void
 cancel_on_dsm_detach(dsm_segment *seg, on_dsm_detach_callback function,
 					 Datum arg)
-{
+{	StackTrace("cancel_on_dsm_detach");
 	slist_mutable_iter iter;
 
 	slist_foreach_modify(iter, &seg->on_detach)
@@ -955,7 +955,7 @@ cancel_on_dsm_detach(dsm_segment *seg, on_dsm_detach_callback function,
  */
 void
 reset_on_dsm_detach(void)
-{
+{	StackTrace("reset_on_dsm_detach");
 	dlist_iter	iter;
 
 	dlist_foreach(iter, &dsm_segment_list)
@@ -986,7 +986,7 @@ reset_on_dsm_detach(void)
  */
 static dsm_segment *
 dsm_create_descriptor(void)
-{
+{	StackTrace("dsm_create_descriptor");
 	dsm_segment *seg;
 
 	ResourceOwnerEnlargeDSMs(CurrentResourceOwner);
@@ -1020,7 +1020,7 @@ dsm_create_descriptor(void)
  */
 static bool
 dsm_control_segment_sane(dsm_control_header *control, Size mapped_size)
-{
+{	StackTrace("dsm_control_segment_sane");
 	if (mapped_size < offsetof(dsm_control_header, item))
 		return false;			/* Mapped size too short to read header. */
 	if (control->magic != PG_DYNSHMEM_CONTROL_MAGIC)
@@ -1038,7 +1038,7 @@ dsm_control_segment_sane(dsm_control_header *control, Size mapped_size)
  */
 static uint64
 dsm_control_bytes_needed(uint32 nitems)
-{
+{	StackTrace("dsm_control_bytes_needed");
 	return offsetof(dsm_control_header, item)
 		+sizeof(dsm_control_item) * (uint64) nitems;
 }

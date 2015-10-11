@@ -43,7 +43,7 @@ static TupleTableSlot *ValuesNext(ValuesScanState *node);
  */
 static TupleTableSlot *
 ValuesNext(ValuesScanState *node)
-{
+{	StackTrace("ValuesNext");
 	TupleTableSlot *slot;
 	EState	   *estate;
 	ExprContext *econtext;
@@ -158,7 +158,7 @@ ValuesNext(ValuesScanState *node)
  */
 static bool
 ValuesRecheck(ValuesScanState *node, TupleTableSlot *slot)
-{
+{	StackTrace("ValuesRecheck");
 	/* nothing to check */
 	return true;
 }
@@ -174,7 +174,7 @@ ValuesRecheck(ValuesScanState *node, TupleTableSlot *slot)
  */
 TupleTableSlot *
 ExecValuesScan(ValuesScanState *node)
-{
+{	StackTrace("ExecValuesScan");
 	return ExecScan(&node->ss,
 					(ExecScanAccessMtd) ValuesNext,
 					(ExecScanRecheckMtd) ValuesRecheck);
@@ -186,7 +186,7 @@ ExecValuesScan(ValuesScanState *node)
  */
 ValuesScanState *
 ExecInitValuesScan(ValuesScan *node, EState *estate, int eflags)
-{
+{	StackTrace("ExecInitValuesScan");
 	ValuesScanState *scanstate;
 	TupleDesc	tupdesc;
 	ListCell   *vtl;
@@ -277,7 +277,7 @@ ExecInitValuesScan(ValuesScan *node, EState *estate, int eflags)
  */
 void
 ExecEndValuesScan(ValuesScanState *node)
-{
+{	StackTrace("ExecEndValuesScan");
 	/*
 	 * Free both exprcontexts
 	 */
@@ -300,7 +300,7 @@ ExecEndValuesScan(ValuesScanState *node)
  */
 void
 ExecReScanValuesScan(ValuesScanState *node)
-{
+{	StackTrace("ExecReScanValuesScan");
 	ExecClearTuple(node->ss.ps.ps_ResultTupleSlot);
 
 	ExecScanReScan(&node->ss);

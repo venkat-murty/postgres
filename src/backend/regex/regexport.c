@@ -38,7 +38,7 @@ static void scancolormap(struct colormap * cm, int co,
  */
 int
 pg_reg_getnumstates(const regex_t *regex)
-{
+{	StackTrace("pg_reg_getnumstates");
 	struct cnfa *cnfa;
 
 	assert(regex != NULL && regex->re_magic == REMAGIC);
@@ -52,7 +52,7 @@ pg_reg_getnumstates(const regex_t *regex)
  */
 int
 pg_reg_getinitialstate(const regex_t *regex)
-{
+{	StackTrace("pg_reg_getinitialstate");
 	struct cnfa *cnfa;
 
 	assert(regex != NULL && regex->re_magic == REMAGIC);
@@ -66,7 +66,7 @@ pg_reg_getinitialstate(const regex_t *regex)
  */
 int
 pg_reg_getfinalstate(const regex_t *regex)
-{
+{	StackTrace("pg_reg_getfinalstate");
 	struct cnfa *cnfa;
 
 	assert(regex != NULL && regex->re_magic == REMAGIC);
@@ -82,7 +82,7 @@ pg_reg_getfinalstate(const regex_t *regex)
  */
 int
 pg_reg_getnumoutarcs(const regex_t *regex, int st)
-{
+{	StackTrace("pg_reg_getnumoutarcs");
 	struct cnfa *cnfa;
 	struct carc *ca;
 	int			count;
@@ -109,7 +109,7 @@ pg_reg_getnumoutarcs(const regex_t *regex, int st)
 void
 pg_reg_getoutarcs(const regex_t *regex, int st,
 				  regex_arc_t *arcs, int arcs_len)
-{
+{	StackTrace("pg_reg_getoutarcs");
 	struct cnfa *cnfa;
 	struct carc *ca;
 
@@ -136,7 +136,7 @@ pg_reg_getoutarcs(const regex_t *regex, int st,
  */
 int
 pg_reg_getnumcolors(const regex_t *regex)
-{
+{	StackTrace("pg_reg_getnumcolors");
 	struct colormap *cm;
 
 	assert(regex != NULL && regex->re_magic == REMAGIC);
@@ -153,7 +153,7 @@ pg_reg_getnumcolors(const regex_t *regex)
  */
 int
 pg_reg_colorisbegin(const regex_t *regex, int co)
-{
+{	StackTrace("pg_reg_colorisbegin");
 	struct cnfa *cnfa;
 
 	assert(regex != NULL && regex->re_magic == REMAGIC);
@@ -170,7 +170,7 @@ pg_reg_colorisbegin(const regex_t *regex, int co)
  */
 int
 pg_reg_colorisend(const regex_t *regex, int co)
-{
+{	StackTrace("pg_reg_colorisend");
 	struct cnfa *cnfa;
 
 	assert(regex != NULL && regex->re_magic == REMAGIC);
@@ -194,7 +194,7 @@ pg_reg_colorisend(const regex_t *regex, int co)
  */
 int
 pg_reg_getnumcharacters(const regex_t *regex, int co)
-{
+{	StackTrace("pg_reg_getnumcharacters");
 	struct colormap *cm;
 
 	assert(regex != NULL && regex->re_magic == REMAGIC);
@@ -220,7 +220,7 @@ pg_reg_getnumcharacters(const regex_t *regex, int co)
 void
 pg_reg_getcharacters(const regex_t *regex, int co,
 					 pg_wchar *chars, int chars_len)
-{
+{	StackTrace("pg_reg_getcharacters");
 	struct colormap *cm;
 
 	assert(regex != NULL && regex->re_magic == REMAGIC);
@@ -248,7 +248,7 @@ static void
 scancolormap(struct colormap * cm, int co,
 			 union tree * t, int level, chr partial,
 			 pg_wchar **chars, int *chars_len)
-{
+{	StackTrace("scancolormap");
 	int			i;
 
 	if (level < NBYTS - 1)

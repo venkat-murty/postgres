@@ -27,7 +27,7 @@
  */
 bool
 ItemPointerEquals(ItemPointer pointer1, ItemPointer pointer2)
-{
+{	StackTrace("ItemPointerEquals");
 	/*
 	 * We really want ItemPointerData to be exactly 6 bytes.  This is rather a
 	 * random place to check, but there is no better place.
@@ -50,7 +50,7 @@ ItemPointerEquals(ItemPointer pointer1, ItemPointer pointer2)
  */
 int32
 ItemPointerCompare(ItemPointer arg1, ItemPointer arg2)
-{
+{	StackTrace("ItemPointerCompare");
 	/*
 	 * Don't use ItemPointerGetBlockNumber or ItemPointerGetOffsetNumber here,
 	 * because they assert ip_posid != 0 which might not be true for a

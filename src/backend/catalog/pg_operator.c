@@ -75,7 +75,7 @@ static ObjectAddress makeOperatorDependencies(HeapTuple tuple);
  */
 static bool
 validOperatorName(const char *name)
-{
+{	StackTrace("validOperatorName");
 	size_t		len = strlen(name);
 
 	/* Can't be empty or too long */
@@ -135,7 +135,7 @@ OperatorGet(const char *operatorName,
 			Oid leftObjectId,
 			Oid rightObjectId,
 			bool *defined)
-{
+{	StackTrace("OperatorGet");
 	HeapTuple	tup;
 	Oid			operatorObjectId;
 
@@ -174,7 +174,7 @@ OperatorLookup(List *operatorName,
 			   Oid leftObjectId,
 			   Oid rightObjectId,
 			   bool *defined)
-{
+{	StackTrace("OperatorLookup");
 	Oid			operatorObjectId;
 	RegProcedure oprcode;
 
@@ -203,7 +203,7 @@ OperatorShellMake(const char *operatorName,
 				  Oid operatorNamespace,
 				  Oid leftTypeId,
 				  Oid rightTypeId)
-{
+{	StackTrace("OperatorShellMake");
 	Relation	pg_operator_desc;
 	Oid			operatorObjectId;
 	int			i;
@@ -337,7 +337,7 @@ OperatorCreate(const char *operatorName,
 			   Oid joinId,
 			   bool canMerge,
 			   bool canHash)
-{
+{	StackTrace("OperatorCreate");
 	Relation	pg_operator_desc;
 	HeapTuple	tup;
 	bool		nulls[Natts_pg_operator];
@@ -580,7 +580,7 @@ static Oid
 get_other_operator(List *otherOp, Oid otherLeftTypeId, Oid otherRightTypeId,
 				   const char *operatorName, Oid operatorNamespace,
 				   Oid leftTypeId, Oid rightTypeId, bool isCommutator)
-{
+{	StackTrace("get_other_operator");
 	Oid			other_oid;
 	bool		otherDefined;
 	char	   *otherName;
@@ -643,7 +643,7 @@ get_other_operator(List *otherOp, Oid otherLeftTypeId, Oid otherRightTypeId,
  */
 static void
 OperatorUpd(Oid baseId, Oid commId, Oid negId)
-{
+{	StackTrace("OperatorUpd");
 	int			i;
 	Relation	pg_operator_desc;
 	HeapTuple	tup;
@@ -767,7 +767,7 @@ OperatorUpd(Oid baseId, Oid commId, Oid negId)
  */
 static ObjectAddress
 makeOperatorDependencies(HeapTuple tuple)
-{
+{	StackTrace("makeOperatorDependencies");
 	Form_pg_operator oper = (Form_pg_operator) GETSTRUCT(tuple);
 	ObjectAddress myself,
 				referenced;

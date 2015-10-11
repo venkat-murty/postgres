@@ -11,7 +11,7 @@ static char last_dyn_error[512];
 
 static void
 set_dl_error(void)
-{
+{	StackTrace("set_dl_error");
 	DWORD		err = GetLastError();
 
 	if (FormatMessage(FORMAT_MESSAGE_IGNORE_INSERTS |
@@ -30,7 +30,7 @@ set_dl_error(void)
 
 char *
 dlerror(void)
-{
+{	StackTrace("dlerror");
 	if (last_dyn_error[0])
 		return last_dyn_error;
 	else
@@ -39,7 +39,7 @@ dlerror(void)
 
 int
 dlclose(void *handle)
-{
+{	StackTrace("dlclose");
 	if (!FreeLibrary((HMODULE) handle))
 	{
 		set_dl_error();
@@ -51,7 +51,7 @@ dlclose(void *handle)
 
 void *
 dlsym(void *handle, const char *symbol)
-{
+{	StackTrace("dlsym");
 	void	   *ptr;
 
 	ptr = GetProcAddress((HMODULE) handle, symbol);
@@ -66,7 +66,7 @@ dlsym(void *handle, const char *symbol)
 
 void *
 dlopen(const char *path, int mode)
-{
+{	StackTrace("dlopen");
 	HMODULE		h;
 	int			prevmode;
 

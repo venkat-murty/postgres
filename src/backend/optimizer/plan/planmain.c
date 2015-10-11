@@ -54,7 +54,7 @@
 RelOptInfo *
 query_planner(PlannerInfo *root, List *tlist,
 			  query_pathkeys_callback qp_callback, void *qp_extra)
-{
+{	StackTrace("query_planner");
 	Query	   *parse = root->parse;
 	List	   *joinlist;
 	RelOptInfo *final_rel;

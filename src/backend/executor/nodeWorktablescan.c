@@ -28,7 +28,7 @@ static TupleTableSlot *WorkTableScanNext(WorkTableScanState *node);
  */
 static TupleTableSlot *
 WorkTableScanNext(WorkTableScanState *node)
-{
+{	StackTrace("WorkTableScanNext");
 	TupleTableSlot *slot;
 	Tuplestorestate *tuplestorestate;
 
@@ -64,7 +64,7 @@ WorkTableScanNext(WorkTableScanState *node)
  */
 static bool
 WorkTableScanRecheck(WorkTableScanState *node, TupleTableSlot *slot)
-{
+{	StackTrace("WorkTableScanRecheck");
 	/* nothing to check */
 	return true;
 }
@@ -79,7 +79,7 @@ WorkTableScanRecheck(WorkTableScanState *node, TupleTableSlot *slot)
  */
 TupleTableSlot *
 ExecWorkTableScan(WorkTableScanState *node)
-{
+{	StackTrace("ExecWorkTableScan");
 	/*
 	 * On the first call, find the ancestor RecursiveUnion's state via the
 	 * Param slot reserved for it.  (We can't do this during node init because
@@ -126,7 +126,7 @@ ExecWorkTableScan(WorkTableScanState *node)
  */
 WorkTableScanState *
 ExecInitWorkTableScan(WorkTableScan *node, EState *estate, int eflags)
-{
+{	StackTrace("ExecInitWorkTableScan");
 	WorkTableScanState *scanstate;
 
 	/* check for unsupported flags */
@@ -187,7 +187,7 @@ ExecInitWorkTableScan(WorkTableScan *node, EState *estate, int eflags)
  */
 void
 ExecEndWorkTableScan(WorkTableScanState *node)
-{
+{	StackTrace("ExecEndWorkTableScan");
 	/*
 	 * Free exprcontext
 	 */
@@ -208,7 +208,7 @@ ExecEndWorkTableScan(WorkTableScanState *node)
  */
 void
 ExecReScanWorkTableScan(WorkTableScanState *node)
-{
+{	StackTrace("ExecReScanWorkTableScan");
 	ExecClearTuple(node->ss.ps.ps_ResultTupleSlot);
 
 	ExecScanReScan(&node->ss);

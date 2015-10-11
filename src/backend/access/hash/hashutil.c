@@ -26,7 +26,7 @@
  */
 bool
 _hash_checkqual(IndexScanDesc scan, IndexTuple itup)
-{
+{	StackTrace("_hash_checkqual");
 	/*
 	 * Currently, we can't check any of the scan conditions since we do not
 	 * have the original index entry value to supply to the sk_func. Always
@@ -77,7 +77,7 @@ _hash_checkqual(IndexScanDesc scan, IndexTuple itup)
  */
 uint32
 _hash_datum2hashkey(Relation rel, Datum key)
-{
+{	StackTrace("_hash_datum2hashkey");
 	FmgrInfo   *procinfo;
 	Oid			collation;
 
@@ -97,7 +97,7 @@ _hash_datum2hashkey(Relation rel, Datum key)
  */
 uint32
 _hash_datum2hashkey_type(Relation rel, Datum key, Oid keytype)
-{
+{	StackTrace("_hash_datum2hashkey_type");
 	RegProcedure hash_proc;
 	Oid			collation;
 
@@ -121,7 +121,7 @@ _hash_datum2hashkey_type(Relation rel, Datum key, Oid keytype)
 Bucket
 _hash_hashkey2bucket(uint32 hashkey, uint32 maxbucket,
 					 uint32 highmask, uint32 lowmask)
-{
+{	StackTrace("_hash_hashkey2bucket");
 	Bucket		bucket;
 
 	bucket = hashkey & highmask;
@@ -136,7 +136,7 @@ _hash_hashkey2bucket(uint32 hashkey, uint32 maxbucket,
  */
 uint32
 _hash_log2(uint32 num)
-{
+{	StackTrace("_hash_log2");
 	uint32		i,
 				limit;
 
@@ -154,7 +154,7 @@ _hash_log2(uint32 num)
  */
 void
 _hash_checkpage(Relation rel, Buffer buf, int flags)
-{
+{	StackTrace("_hash_checkpage");
 	Page		page = BufferGetPage(buf);
 
 	/*
@@ -219,7 +219,7 @@ _hash_checkpage(Relation rel, Buffer buf, int flags)
 
 Datum
 hashoptions(PG_FUNCTION_ARGS)
-{
+{	StackTrace("hashoptions");
 	Datum		reloptions = PG_GETARG_DATUM(0);
 	bool		validate = PG_GETARG_BOOL(1);
 	bytea	   *result;
@@ -236,7 +236,7 @@ hashoptions(PG_FUNCTION_ARGS)
  */
 uint32
 _hash_get_indextuple_hashkey(IndexTuple itup)
-{
+{	StackTrace("_hash_get_indextuple_hashkey");
 	char	   *attp;
 
 	/*
@@ -252,7 +252,7 @@ _hash_get_indextuple_hashkey(IndexTuple itup)
  */
 IndexTuple
 _hash_form_tuple(Relation index, Datum *values, bool *isnull)
-{
+{	StackTrace("_hash_form_tuple");
 	IndexTuple	itup;
 	uint32		hashkey;
 	Datum		hashkeydatum;
@@ -285,7 +285,7 @@ _hash_form_tuple(Relation index, Datum *values, bool *isnull)
  */
 OffsetNumber
 _hash_binsearch(Page page, uint32 hash_value)
-{
+{	StackTrace("_hash_binsearch");
 	OffsetNumber upper;
 	OffsetNumber lower;
 
@@ -323,7 +323,7 @@ _hash_binsearch(Page page, uint32 hash_value)
  */
 OffsetNumber
 _hash_binsearch_last(Page page, uint32 hash_value)
-{
+{	StackTrace("_hash_binsearch_last");
 	OffsetNumber upper;
 	OffsetNumber lower;
 

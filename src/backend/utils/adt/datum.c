@@ -59,7 +59,7 @@
  */
 Size
 datumGetSize(Datum value, bool typByVal, int typLen)
-{
+{	StackTrace("datumGetSize");
 	Size		size;
 
 	if (typByVal)
@@ -126,7 +126,7 @@ datumGetSize(Datum value, bool typByVal, int typLen)
  */
 Datum
 datumCopy(Datum value, bool typByVal, int typLen)
-{
+{	StackTrace("datumCopy");
 	Datum		res;
 
 	if (typByVal)
@@ -188,7 +188,7 @@ datumCopy(Datum value, bool typByVal, int typLen)
  */
 Datum
 datumTransfer(Datum value, bool typByVal, int typLen)
-{
+{	StackTrace("datumTransfer");
 	if (!typByVal && typLen == -1 &&
 		VARATT_IS_EXTERNAL_EXPANDED_RW(DatumGetPointer(value)))
 		value = TransferExpandedObject(value, CurrentMemoryContext);
@@ -213,7 +213,7 @@ datumTransfer(Datum value, bool typByVal, int typLen)
  */
 bool
 datumIsEqual(Datum value1, Datum value2, bool typByVal, int typLen)
-{
+{	StackTrace("datumIsEqual");
 	bool		res;
 
 	if (typByVal)

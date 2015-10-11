@@ -20,7 +20,7 @@
 
 void
 dbase_desc(StringInfo buf, XLogReaderState *record)
-{
+{	StackTrace("dbase_desc");
 	char	   *rec = XLogRecGetData(record);
 	uint8		info = XLogRecGetInfo(record) & ~XLR_INFO_MASK;
 
@@ -43,7 +43,7 @@ dbase_desc(StringInfo buf, XLogReaderState *record)
 
 const char *
 dbase_identify(uint8 info)
-{
+{	StackTrace("dbase_identify");
 	const char *id = NULL;
 
 	switch (info & ~XLR_INFO_MASK)

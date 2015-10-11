@@ -67,7 +67,7 @@ static Relation lo_index_r = NULL;
  */
 static void
 open_lo_relation(void)
-{
+{	StackTrace("open_lo_relation");
 	ResourceOwner currentOwner;
 
 	if (lo_heap_r && lo_index_r)
@@ -100,7 +100,7 @@ open_lo_relation(void)
  */
 void
 close_lo_relation(bool isCommit)
-{
+{	StackTrace("close_lo_relation");
 	if (lo_heap_r || lo_index_r)
 	{
 		/*
@@ -142,7 +142,7 @@ close_lo_relation(bool isCommit)
  */
 static bool
 myLargeObjectExists(Oid loid, Snapshot snapshot)
-{
+{	StackTrace("myLargeObjectExists");
 	Relation	pg_lo_meta;
 	ScanKeyData skey[1];
 	SysScanDesc sd;
@@ -183,7 +183,7 @@ getdatafield(Form_pg_largeobject tuple,
 			 bytea **pdatafield,
 			 int *plen,
 			 bool *pfreeit)
-{
+{	StackTrace("getdatafield");
 	bytea	   *datafield;
 	int			len;
 	bool		freeit;
@@ -222,7 +222,7 @@ getdatafield(Form_pg_largeobject tuple,
  */
 Oid
 inv_create(Oid lobjId)
-{
+{	StackTrace("inv_create");
 	Oid			lobjId_new;
 
 	/*
@@ -263,7 +263,7 @@ inv_create(Oid lobjId)
  */
 LargeObjectDesc *
 inv_open(Oid lobjId, int flags, MemoryContext mcxt)
-{
+{	StackTrace("inv_open");
 	LargeObjectDesc *retval;
 	Snapshot	snapshot = NULL;
 	int			descflags = 0;
@@ -318,7 +318,7 @@ inv_open(Oid lobjId, int flags, MemoryContext mcxt)
  */
 void
 inv_close(LargeObjectDesc *obj_desc)
-{
+{	StackTrace("inv_close");
 	Assert(PointerIsValid(obj_desc));
 
 	UnregisterSnapshotFromOwner(obj_desc->snapshot,
@@ -334,7 +334,7 @@ inv_close(LargeObjectDesc *obj_desc)
  */
 int
 inv_drop(Oid lobjId)
-{
+{	StackTrace("inv_drop");
 	ObjectAddress object;
 
 	/*
@@ -362,7 +362,7 @@ inv_drop(Oid lobjId)
  */
 static uint64
 inv_getsize(LargeObjectDesc *obj_desc)
-{
+{	StackTrace("inv_getsize");
 	uint64		lastbyte = 0;
 	ScanKeyData skey[1];
 	SysScanDesc sd;
@@ -410,7 +410,7 @@ inv_getsize(LargeObjectDesc *obj_desc)
 
 int64
 inv_seek(LargeObjectDesc *obj_desc, int64 offset, int whence)
-{
+{	StackTrace("inv_seek");
 	int64		newoffset;
 
 	Assert(PointerIsValid(obj_desc));
@@ -454,7 +454,7 @@ inv_seek(LargeObjectDesc *obj_desc, int64 offset, int whence)
 
 int64
 inv_tell(LargeObjectDesc *obj_desc)
-{
+{	StackTrace("inv_tell");
 	Assert(PointerIsValid(obj_desc));
 
 	return obj_desc->offset;
@@ -462,7 +462,7 @@ inv_tell(LargeObjectDesc *obj_desc)
 
 int
 inv_read(LargeObjectDesc *obj_desc, char *buf, int nbytes)
-{
+{	StackTrace("inv_read");
 	int			nread = 0;
 	int64		n;
 	int64		off;
@@ -549,7 +549,7 @@ inv_read(LargeObjectDesc *obj_desc, char *buf, int nbytes)
 
 int
 inv_write(LargeObjectDesc *obj_desc, const char *buf, int nbytes)
-{
+{	StackTrace("inv_write");
 	int			nwritten = 0;
 	int			n;
 	int			off;
@@ -743,7 +743,7 @@ inv_write(LargeObjectDesc *obj_desc, const char *buf, int nbytes)
 
 void
 inv_truncate(LargeObjectDesc *obj_desc, int64 len)
-{
+{	StackTrace("inv_truncate");
 	int32		pageno = (int32) (len / LOBLKSIZE);
 	int32		off;
 	ScanKeyData skey[2];

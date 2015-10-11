@@ -95,7 +95,7 @@ static int	countitem_compare_count(const void *e1, const void *e2);
  */
 Datum
 array_typanalyze(PG_FUNCTION_ARGS)
-{
+{	StackTrace("array_typanalyze");
 	VacAttrStats *stats = (VacAttrStats *) PG_GETARG_POINTER(0);
 	Oid			element_typeid;
 	TypeCacheEntry *typentry;
@@ -213,7 +213,7 @@ array_typanalyze(PG_FUNCTION_ARGS)
 static void
 compute_array_stats(VacAttrStats *stats, AnalyzeAttrFetchFunc fetchfunc,
 					int samplerows, double totalrows)
-{
+{	StackTrace("compute_array_stats");
 	ArrayAnalyzeExtraData *extra_data;
 	int			num_mcelem;
 	int			null_cnt = 0;
@@ -678,7 +678,7 @@ compute_array_stats(VacAttrStats *stats, AnalyzeAttrFetchFunc fetchfunc,
  */
 static void
 prune_element_hashtable(HTAB *elements_tab, int b_current)
-{
+{	StackTrace("prune_element_hashtable");
 	HASH_SEQ_STATUS scan_status;
 	TrackItem  *item;
 
@@ -707,7 +707,7 @@ prune_element_hashtable(HTAB *elements_tab, int b_current)
  */
 static uint32
 element_hash(const void *key, Size keysize)
-{
+{	StackTrace("element_hash");
 	Datum		d = *((const Datum *) key);
 	Datum		h;
 
@@ -720,7 +720,7 @@ element_hash(const void *key, Size keysize)
  */
 static int
 element_match(const void *key1, const void *key2, Size keysize)
-{
+{	StackTrace("element_match");
 	/* The keysize parameter is superfluous here */
 	return element_compare(key1, key2);
 }
@@ -735,7 +735,7 @@ element_match(const void *key1, const void *key2, Size keysize)
  */
 static int
 element_compare(const void *key1, const void *key2)
-{
+{	StackTrace("element_compare");
 	Datum		d1 = *((const Datum *) key1);
 	Datum		d2 = *((const Datum *) key2);
 	Datum		c;
@@ -749,7 +749,7 @@ element_compare(const void *key1, const void *key2)
  */
 static int
 trackitem_compare_frequencies_desc(const void *e1, const void *e2)
-{
+{	StackTrace("trackitem_compare_frequencies_desc");
 	const TrackItem *const * t1 = (const TrackItem *const *) e1;
 	const TrackItem *const * t2 = (const TrackItem *const *) e2;
 
@@ -761,7 +761,7 @@ trackitem_compare_frequencies_desc(const void *e1, const void *e2)
  */
 static int
 trackitem_compare_element(const void *e1, const void *e2)
-{
+{	StackTrace("trackitem_compare_element");
 	const TrackItem *const * t1 = (const TrackItem *const *) e1;
 	const TrackItem *const * t2 = (const TrackItem *const *) e2;
 
@@ -773,7 +773,7 @@ trackitem_compare_element(const void *e1, const void *e2)
  */
 static int
 countitem_compare_count(const void *e1, const void *e2)
-{
+{	StackTrace("countitem_compare_count");
 	const DECountItem *const * t1 = (const DECountItem *const *) e1;
 	const DECountItem *const * t2 = (const DECountItem *const *) e2;
 

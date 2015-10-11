@@ -88,7 +88,7 @@ transformTargetEntry(ParseState *pstate,
 					 ParseExprKind exprKind,
 					 char *colname,
 					 bool resjunk)
-{
+{	StackTrace("transformTargetEntry");
 	/* Transform the node if caller didn't do it already */
 	if (expr == NULL)
 		expr = transformExpr(pstate, node, exprKind);
@@ -120,7 +120,7 @@ transformTargetEntry(ParseState *pstate,
 List *
 transformTargetList(ParseState *pstate, List *targetlist,
 					ParseExprKind exprKind)
-{
+{	StackTrace("transformTargetList");
 	List	   *p_target = NIL;
 	ListCell   *o_target;
 
@@ -203,7 +203,7 @@ transformTargetList(ParseState *pstate, List *targetlist,
 List *
 transformExpressionList(ParseState *pstate, List *exprlist,
 						ParseExprKind exprKind)
-{
+{	StackTrace("transformExpressionList");
 	List	   *result = NIL;
 	ListCell   *lc;
 
@@ -267,7 +267,7 @@ transformExpressionList(ParseState *pstate, List *exprlist,
  */
 void
 markTargetListOrigins(ParseState *pstate, List *targetlist)
-{
+{	StackTrace("markTargetListOrigins");
 	ListCell   *l;
 
 	foreach(l, targetlist)
@@ -290,7 +290,7 @@ markTargetListOrigins(ParseState *pstate, List *targetlist)
 static void
 markTargetListOrigin(ParseState *pstate, TargetEntry *tle,
 					 Var *var, int levelsup)
-{
+{	StackTrace("markTargetListOrigin");
 	int			netlevelsup;
 	RangeTblEntry *rte;
 	AttrNumber	attnum;
@@ -397,7 +397,7 @@ transformAssignedExpr(ParseState *pstate,
 					  int attrno,
 					  List *indirection,
 					  int location)
-{
+{	StackTrace("transformAssignedExpr");
 	Relation	rd = pstate->p_target_relation;
 	Oid			type_id;		/* type of value provided */
 	Oid			attrtype;		/* type of target column */
@@ -558,7 +558,7 @@ updateTargetListEntry(ParseState *pstate,
 					  int attrno,
 					  List *indirection,
 					  int location)
-{
+{	StackTrace("updateTargetListEntry");
 	/* Fix up expression as needed */
 	tle->expr = transformAssignedExpr(pstate,
 									  tle->expr,
@@ -621,7 +621,7 @@ transformAssignmentIndirection(ParseState *pstate,
 							   ListCell *indirection,
 							   Node *rhs,
 							   int location)
-{
+{	StackTrace("transformAssignmentIndirection");
 	Node	   *result;
 	List	   *subscripts = NIL;
 	bool		isSlice = false;
@@ -807,7 +807,7 @@ transformAssignmentSubscripts(ParseState *pstate,
 							  ListCell *next_indirection,
 							  Node *rhs,
 							  int location)
-{
+{	StackTrace("transformAssignmentSubscripts");
 	Node	   *result;
 	Oid			arrayType;
 	int32		arrayTypMod;
@@ -889,7 +889,7 @@ transformAssignmentSubscripts(ParseState *pstate,
  */
 List *
 checkInsertTargets(ParseState *pstate, List *cols, List **attrnos)
-{
+{	StackTrace("checkInsertTargets");
 	*attrnos = NIL;
 
 	if (cols == NIL)
@@ -992,7 +992,7 @@ checkInsertTargets(ParseState *pstate, List *cols, List **attrnos)
 static List *
 ExpandColumnRefStar(ParseState *pstate, ColumnRef *cref,
 					bool make_target_entry)
-{
+{	StackTrace("ExpandColumnRefStar");
 	List	   *fields = cref->fields;
 	int			numnames = list_length(fields);
 
@@ -1161,7 +1161,7 @@ ExpandColumnRefStar(ParseState *pstate, ColumnRef *cref,
  */
 static List *
 ExpandAllTables(ParseState *pstate, int location)
-{
+{	StackTrace("ExpandAllTables");
 	List	   *target = NIL;
 	bool		found_table = false;
 	ListCell   *l;
@@ -1216,7 +1216,7 @@ ExpandAllTables(ParseState *pstate, int location)
 static List *
 ExpandIndirectionStar(ParseState *pstate, A_Indirection *ind,
 					  bool make_target_entry, ParseExprKind exprKind)
-{
+{	StackTrace("ExpandIndirectionStar");
 	Node	   *expr;
 
 	/* Strip off the '*' to create a reference to the rowtype object */
@@ -1243,7 +1243,7 @@ ExpandIndirectionStar(ParseState *pstate, A_Indirection *ind,
 static List *
 ExpandSingleTable(ParseState *pstate, RangeTblEntry *rte,
 				  int location, bool make_target_entry)
-{
+{	StackTrace("ExpandSingleTable");
 	int			sublevels_up;
 	int			rtindex;
 
@@ -1292,7 +1292,7 @@ ExpandSingleTable(ParseState *pstate, RangeTblEntry *rte,
 static List *
 ExpandRowReference(ParseState *pstate, Node *expr,
 				   bool make_target_entry)
-{
+{	StackTrace("ExpandRowReference");
 	List	   *result = NIL;
 	TupleDesc	tupleDesc;
 	int			numAttrs;
@@ -1390,7 +1390,7 @@ ExpandRowReference(ParseState *pstate, Node *expr,
  */
 TupleDesc
 expandRecordVariable(ParseState *pstate, Var *var, int levelsup)
-{
+{	StackTrace("expandRecordVariable");
 	TupleDesc	tupleDesc;
 	int			netlevelsup;
 	RangeTblEntry *rte;
@@ -1562,7 +1562,7 @@ expandRecordVariable(ParseState *pstate, Var *var, int levelsup)
  */
 char *
 FigureColname(Node *node)
-{
+{	StackTrace("FigureColname");
 	char	   *name = NULL;
 
 	(void) FigureColnameInternal(node, &name);
@@ -1581,7 +1581,7 @@ FigureColname(Node *node)
  */
 char *
 FigureIndexColname(Node *node)
-{
+{	StackTrace("FigureIndexColname");
 	char	   *name = NULL;
 
 	(void) FigureColnameInternal(node, &name);
@@ -1601,7 +1601,7 @@ FigureIndexColname(Node *node)
  */
 static int
 FigureColnameInternal(Node *node, char **name)
-{
+{	StackTrace("FigureColnameInternal");
 	int			strength = 0;
 
 	if (node == NULL)

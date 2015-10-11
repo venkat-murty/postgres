@@ -61,7 +61,7 @@ static int	heap_compare_slots(Datum a, Datum b, void *arg);
  */
 MergeAppendState *
 ExecInitMergeAppend(MergeAppend *node, EState *estate, int eflags)
-{
+{	StackTrace("ExecInitMergeAppend");
 	MergeAppendState *mergestate = makeNode(MergeAppendState);
 	PlanState **mergeplanstates;
 	int			nplans;
@@ -165,7 +165,7 @@ ExecInitMergeAppend(MergeAppend *node, EState *estate, int eflags)
  */
 TupleTableSlot *
 ExecMergeAppend(MergeAppendState *node)
-{
+{	StackTrace("ExecMergeAppend");
 	TupleTableSlot *result;
 	SlotNumber	i;
 
@@ -221,7 +221,7 @@ ExecMergeAppend(MergeAppendState *node)
  */
 static int32
 heap_compare_slots(Datum a, Datum b, void *arg)
-{
+{	StackTrace("heap_compare_slots");
 	MergeAppendState *node = (MergeAppendState *) arg;
 	SlotNumber	slot1 = DatumGetInt32(a);
 	SlotNumber	slot2 = DatumGetInt32(b);
@@ -265,7 +265,7 @@ heap_compare_slots(Datum a, Datum b, void *arg)
  */
 void
 ExecEndMergeAppend(MergeAppendState *node)
-{
+{	StackTrace("ExecEndMergeAppend");
 	PlanState **mergeplans;
 	int			nplans;
 	int			i;
@@ -285,7 +285,7 @@ ExecEndMergeAppend(MergeAppendState *node)
 
 void
 ExecReScanMergeAppend(MergeAppendState *node)
-{
+{	StackTrace("ExecReScanMergeAppend");
 	int			i;
 
 	for (i = 0; i < node->ms_nplans; i++)

@@ -40,7 +40,7 @@ static void compute_range_stats(VacAttrStats *stats,
  */
 Datum
 range_typanalyze(PG_FUNCTION_ARGS)
-{
+{	StackTrace("range_typanalyze");
 	VacAttrStats *stats = (VacAttrStats *) PG_GETARG_POINTER(0);
 	TypeCacheEntry *typcache;
 	Form_pg_attribute attr = stats->attr;
@@ -64,7 +64,7 @@ range_typanalyze(PG_FUNCTION_ARGS)
  */
 static int
 float8_qsort_cmp(const void *a1, const void *a2)
-{
+{	StackTrace("float8_qsort_cmp");
 	const float8 *f1 = (const float8 *) a1;
 	const float8 *f2 = (const float8 *) a2;
 
@@ -81,7 +81,7 @@ float8_qsort_cmp(const void *a1, const void *a2)
  */
 static int
 range_bound_qsort_cmp(const void *a1, const void *a2, void *arg)
-{
+{	StackTrace("range_bound_qsort_cmp");
 	RangeBound *b1 = (RangeBound *) a1;
 	RangeBound *b2 = (RangeBound *) a2;
 	TypeCacheEntry *typcache = (TypeCacheEntry *) arg;
@@ -95,7 +95,7 @@ range_bound_qsort_cmp(const void *a1, const void *a2, void *arg)
 static void
 compute_range_stats(VacAttrStats *stats, AnalyzeAttrFetchFunc fetchfunc,
 					int samplerows, double totalrows)
-{
+{	StackTrace("compute_range_stats");
 	TypeCacheEntry *typcache = (TypeCacheEntry *) stats->extra_data;
 	bool		has_subdiff = OidIsValid(typcache->rng_subdiff_finfo.fn_oid);
 	int			null_cnt = 0;

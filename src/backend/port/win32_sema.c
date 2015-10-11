@@ -34,7 +34,7 @@ static void ReleaseSemaphores(int code, Datum arg);
  */
 void
 PGReserveSemaphores(int maxSemas, int port)
-{
+{	StackTrace("PGReserveSemaphores");
 	mySemSet = (HANDLE *) malloc(maxSemas * sizeof(HANDLE));
 	if (mySemSet == NULL)
 		elog(PANIC, "out of memory");
@@ -51,7 +51,7 @@ PGReserveSemaphores(int maxSemas, int port)
  */
 static void
 ReleaseSemaphores(int code, Datum arg)
-{
+{	StackTrace("ReleaseSemaphores");
 	int			i;
 
 	for (i = 0; i < numSems; i++)
@@ -66,7 +66,7 @@ ReleaseSemaphores(int code, Datum arg)
  */
 void
 PGSemaphoreCreate(PGSemaphore sema)
-{
+{	StackTrace("PGSemaphoreCreate");
 	HANDLE		cur_handle;
 	SECURITY_ATTRIBUTES sec_attrs;
 
@@ -101,7 +101,7 @@ PGSemaphoreCreate(PGSemaphore sema)
  */
 void
 PGSemaphoreReset(PGSemaphore sema)
-{
+{	StackTrace("PGSemaphoreReset");
 	/*
 	 * There's no direct API for this in Win32, so we have to ratchet the
 	 * semaphore down to 0 with repeated trylock's.
@@ -117,7 +117,7 @@ PGSemaphoreReset(PGSemaphore sema)
  */
 void
 PGSemaphoreLock(PGSemaphore sema)
-{
+{	StackTrace("PGSemaphoreLock");
 	HANDLE		wh[2];
 	bool		done = false;
 
@@ -181,7 +181,7 @@ PGSemaphoreLock(PGSemaphore sema)
  */
 void
 PGSemaphoreUnlock(PGSemaphore sema)
-{
+{	StackTrace("PGSemaphoreUnlock");
 	if (!ReleaseSemaphore(*sema, 1, NULL))
 		ereport(FATAL,
 				(errmsg("could not unlock semaphore: error code %lu", GetLastError())));
@@ -194,7 +194,7 @@ PGSemaphoreUnlock(PGSemaphore sema)
  */
 bool
 PGSemaphoreTryLock(PGSemaphore sema)
-{
+{	StackTrace("PGSemaphoreTryLock");
 	DWORD		ret;
 
 	ret = WaitForSingleObject(*sema, 0);

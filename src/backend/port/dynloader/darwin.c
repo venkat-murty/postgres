@@ -21,26 +21,26 @@
 
 void *
 pg_dlopen(char *filename)
-{
+{	StackTrace("pg_dlopen");
 	return dlopen(filename, RTLD_NOW | RTLD_GLOBAL);
 }
 
 void
 pg_dlclose(void *handle)
-{
+{	StackTrace("pg_dlclose");
 	dlclose(handle);
 }
 
 PGFunction
 pg_dlsym(void *handle, char *funcname)
-{
+{	StackTrace("pg_dlsym");
 	/* Do not prepend an underscore: see dlopen(3) */
 	return dlsym(handle, funcname);
 }
 
 char *
 pg_dlerror(void)
-{
+{	StackTrace("pg_dlerror");
 	return dlerror();
 }
 #else							/* !HAVE_DLOPEN */
@@ -55,7 +55,7 @@ static NSObjectFileImageReturnCode cofiff_result = NSObjectFileImageFailure;
 
 void *
 pg_dlopen(char *filename)
-{
+{	StackTrace("pg_dlopen");
 	NSObjectFileImage image;
 
 	cofiff_result = NSCreateObjectFileImageFromFile(filename, &image);
@@ -68,13 +68,13 @@ pg_dlopen(char *filename)
 
 void
 pg_dlclose(void *handle)
-{
+{	StackTrace("pg_dlclose");
 	NSUnLinkModule(handle, FALSE);
 }
 
 PGFunction
 pg_dlsym(void *handle, char *funcname)
-{
+{	StackTrace("pg_dlsym");
 	NSSymbol symbol;
 	char	   *symname = (char *) malloc(strlen(funcname) + 2);
 
@@ -95,7 +95,7 @@ pg_dlsym(void *handle, char *funcname)
 
 char *
 pg_dlerror(void)
-{
+{	StackTrace("pg_dlerror");
 	NSLinkEditErrors c;
 	int			errorNumber;
 	const char *fileName;

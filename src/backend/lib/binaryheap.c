@@ -31,7 +31,7 @@ static inline void swap_nodes(binaryheap *heap, int a, int b);
  */
 binaryheap *
 binaryheap_allocate(int capacity, binaryheap_comparator compare, void *arg)
-{
+{	StackTrace("binaryheap_allocate");
 	int			sz;
 	binaryheap *heap;
 
@@ -55,7 +55,7 @@ binaryheap_allocate(int capacity, binaryheap_comparator compare, void *arg)
  */
 void
 binaryheap_reset(binaryheap *heap)
-{
+{	StackTrace("binaryheap_reset");
 	heap->bh_size = 0;
 	heap->bh_has_heap_property = true;
 }
@@ -67,7 +67,7 @@ binaryheap_reset(binaryheap *heap)
  */
 void
 binaryheap_free(binaryheap *heap)
-{
+{	StackTrace("binaryheap_free");
 	pfree(heap);
 }
 
@@ -82,19 +82,19 @@ binaryheap_free(binaryheap *heap)
 
 static inline int
 left_offset(int i)
-{
+{	StackTrace("left_offset");
 	return 2 * i + 1;
 }
 
 static inline int
 right_offset(int i)
-{
+{	StackTrace("right_offset");
 	return 2 * i + 2;
 }
 
 static inline int
 parent_offset(int i)
-{
+{	StackTrace("parent_offset");
 	return (i - 1) / 2;
 }
 
@@ -108,7 +108,7 @@ parent_offset(int i)
  */
 void
 binaryheap_add_unordered(binaryheap *heap, Datum d)
-{
+{	StackTrace("binaryheap_add_unordered");
 	if (heap->bh_size >= heap->bh_space)
 		elog(ERROR, "out of binary heap slots");
 	heap->bh_has_heap_property = false;
@@ -124,7 +124,7 @@ binaryheap_add_unordered(binaryheap *heap, Datum d)
  */
 void
 binaryheap_build(binaryheap *heap)
-{
+{	StackTrace("binaryheap_build");
 	int			i;
 
 	for (i = parent_offset(heap->bh_size - 1); i >= 0; i--)
@@ -140,7 +140,7 @@ binaryheap_build(binaryheap *heap)
  */
 void
 binaryheap_add(binaryheap *heap, Datum d)
-{
+{	StackTrace("binaryheap_add");
 	if (heap->bh_size >= heap->bh_space)
 		elog(ERROR, "out of binary heap slots");
 	heap->bh_nodes[heap->bh_size] = d;
@@ -157,7 +157,7 @@ binaryheap_add(binaryheap *heap, Datum d)
  */
 Datum
 binaryheap_first(binaryheap *heap)
-{
+{	StackTrace("binaryheap_first");
 	Assert(!binaryheap_empty(heap) && heap->bh_has_heap_property);
 	return heap->bh_nodes[0];
 }
@@ -172,7 +172,7 @@ binaryheap_first(binaryheap *heap)
  */
 Datum
 binaryheap_remove_first(binaryheap *heap)
-{
+{	StackTrace("binaryheap_remove_first");
 	Assert(!binaryheap_empty(heap) && heap->bh_has_heap_property);
 
 	if (heap->bh_size == 1)
@@ -202,7 +202,7 @@ binaryheap_remove_first(binaryheap *heap)
  */
 void
 binaryheap_replace_first(binaryheap *heap, Datum d)
-{
+{	StackTrace("binaryheap_replace_first");
 	Assert(!binaryheap_empty(heap) && heap->bh_has_heap_property);
 
 	heap->bh_nodes[0] = d;
@@ -216,7 +216,7 @@ binaryheap_replace_first(binaryheap *heap, Datum d)
  */
 static inline void
 swap_nodes(binaryheap *heap, int a, int b)
-{
+{	StackTrace("swap_nodes");
 	Datum		swap;
 
 	swap = heap->bh_nodes[a];
@@ -230,7 +230,7 @@ swap_nodes(binaryheap *heap, int a, int b)
  */
 static void
 sift_up(binaryheap *heap, int node_off)
-{
+{	StackTrace("sift_up");
 	while (node_off != 0)
 	{
 		int			cmp;
@@ -262,7 +262,7 @@ sift_up(binaryheap *heap, int node_off)
  */
 static void
 sift_down(binaryheap *heap, int node_off)
-{
+{	StackTrace("sift_down");
 	while (true)
 	{
 		int			left_off = left_offset(node_off);

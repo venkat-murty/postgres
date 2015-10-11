@@ -49,7 +49,7 @@ static Oid	distinct_col_search(int colno, List *colnos, List *opids);
  */
 List *
 remove_useless_joins(PlannerInfo *root, List *joinlist)
-{
+{	StackTrace("remove_useless_joins");
 	ListCell   *lc;
 
 	/*
@@ -117,7 +117,7 @@ restart:
 static inline bool
 clause_sides_match_join(RestrictInfo *rinfo, Relids outerrelids,
 						Relids innerrelids)
-{
+{	StackTrace("clause_sides_match_join");
 	if (bms_is_subset(rinfo->left_relids, outerrelids) &&
 		bms_is_subset(rinfo->right_relids, innerrelids))
 	{
@@ -148,7 +148,7 @@ clause_sides_match_join(RestrictInfo *rinfo, Relids outerrelids,
  */
 static bool
 join_is_removable(PlannerInfo *root, SpecialJoinInfo *sjinfo)
-{
+{	StackTrace("join_is_removable");
 	int			innerrelid;
 	RelOptInfo *innerrel;
 	Query	   *subquery = NULL;
@@ -381,7 +381,7 @@ join_is_removable(PlannerInfo *root, SpecialJoinInfo *sjinfo)
  */
 static void
 remove_rel_from_query(PlannerInfo *root, int relid, Relids joinrelids)
-{
+{	StackTrace("remove_rel_from_query");
 	RelOptInfo *rel = find_base_rel(root, relid);
 	List	   *joininfos;
 	Index		rti;
@@ -526,7 +526,7 @@ remove_rel_from_query(PlannerInfo *root, int relid, Relids joinrelids)
  */
 static List *
 remove_rel_from_joinlist(List *joinlist, int relid, int *nremoved)
-{
+{	StackTrace("remove_rel_from_joinlist");
 	List	   *result = NIL;
 	ListCell   *jl;
 
@@ -578,7 +578,7 @@ remove_rel_from_joinlist(List *joinlist, int relid, int *nremoved)
  */
 bool
 query_supports_distinctness(Query *query)
-{
+{	StackTrace("query_supports_distinctness");
 	if (query->distinctClause != NIL ||
 		query->groupClause != NIL ||
 		query->groupingSets != NIL ||
@@ -610,7 +610,7 @@ query_supports_distinctness(Query *query)
  */
 bool
 query_is_distinct_for(Query *query, List *colnos, List *opids)
-{
+{	StackTrace("query_is_distinct_for");
 	ListCell   *l;
 	Oid			opid;
 
@@ -760,7 +760,7 @@ query_is_distinct_for(Query *query, List *colnos, List *opids)
  */
 static Oid
 distinct_col_search(int colno, List *colnos, List *opids)
-{
+{	StackTrace("distinct_col_search");
 	ListCell   *lc1,
 			   *lc2;
 

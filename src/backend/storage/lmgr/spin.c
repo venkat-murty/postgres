@@ -40,7 +40,7 @@ PGSemaphore SpinlockSemaArray;
  */
 Size
 SpinlockSemaSize(void)
-{
+{	StackTrace("SpinlockSemaSize");
 	return SpinlockSemas() * sizeof(PGSemaphoreData);
 }
 
@@ -51,7 +51,7 @@ SpinlockSemaSize(void)
  */
 int
 SpinlockSemas(void)
-{
+{	StackTrace("SpinlockSemas");
 	return 0;
 }
 #else							/* !HAVE_SPINLOCKS */
@@ -66,7 +66,7 @@ SpinlockSemas(void)
  */
 int
 SpinlockSemas(void)
-{
+{	StackTrace("SpinlockSemas");
 	return NUM_SPINLOCK_SEMAPHORES + NUM_ATOMICS_SEMAPHORES;
 }
 
@@ -75,7 +75,7 @@ SpinlockSemas(void)
  */
 extern void
 SpinlockSemaInit(PGSemaphore spinsemas)
-{
+{	StackTrace("SpinlockSemaInit");
 	int			i;
 	int			nsemas = SpinlockSemas();
 
@@ -90,7 +90,7 @@ SpinlockSemaInit(PGSemaphore spinsemas)
 
 void
 s_init_lock_sema(volatile slock_t *lock, bool nested)
-{
+{	StackTrace("s_init_lock_sema");
 	static int	counter = 0;
 
 	*lock = (++counter) % NUM_SPINLOCK_SEMAPHORES;
@@ -98,13 +98,13 @@ s_init_lock_sema(volatile slock_t *lock, bool nested)
 
 void
 s_unlock_sema(volatile slock_t *lock)
-{
+{	StackTrace("s_unlock_sema");
 	PGSemaphoreUnlock(&SpinlockSemaArray[*lock]);
 }
 
 bool
 s_lock_free_sema(volatile slock_t *lock)
-{
+{	StackTrace("s_lock_free_sema");
 	/* We don't currently use S_LOCK_FREE anyway */
 	elog(ERROR, "spin.c does not support S_LOCK_FREE()");
 	return false;
@@ -112,7 +112,7 @@ s_lock_free_sema(volatile slock_t *lock)
 
 int
 tas_sema(volatile slock_t *lock)
-{
+{	StackTrace("tas_sema");
 	/* Note that TAS macros return 0 if *success* */
 	return !PGSemaphoreTryLock(&SpinlockSemaArray[*lock]);
 }

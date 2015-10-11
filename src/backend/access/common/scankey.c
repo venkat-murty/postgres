@@ -37,7 +37,7 @@ ScanKeyEntryInitialize(ScanKey entry,
 					   Oid collation,
 					   RegProcedure procedure,
 					   Datum argument)
-{
+{	StackTrace("ScanKeyEntryInitialize");
 	entry->sk_flags = flags;
 	entry->sk_attno = attributeNumber;
 	entry->sk_strategy = strategy;
@@ -78,7 +78,7 @@ ScanKeyInit(ScanKey entry,
 			StrategyNumber strategy,
 			RegProcedure procedure,
 			Datum argument)
-{
+{	StackTrace("ScanKeyInit");
 	entry->sk_flags = 0;
 	entry->sk_attno = attributeNumber;
 	entry->sk_strategy = strategy;
@@ -106,7 +106,7 @@ ScanKeyEntryInitializeWithInfo(ScanKey entry,
 							   Oid collation,
 							   FmgrInfo *finfo,
 							   Datum argument)
-{
+{	StackTrace("ScanKeyEntryInitializeWithInfo");
 	entry->sk_flags = flags;
 	entry->sk_attno = attributeNumber;
 	entry->sk_strategy = strategy;

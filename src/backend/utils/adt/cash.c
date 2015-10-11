@@ -37,7 +37,7 @@
 
 static const char *
 num_word(Cash value)
-{
+{	StackTrace("num_word");
 	static char buf[128];
 	static const char *small[] = {
 		"zero", "one", "two", "three", "four", "five", "six", "seven",
@@ -95,7 +95,7 @@ num_word(Cash value)
  */
 Datum
 cash_in(PG_FUNCTION_ARGS)
-{
+{	StackTrace("cash_in");
 	char	   *str = PG_GETARG_CSTRING(0);
 	Cash		result;
 	Cash		value = 0;
@@ -263,7 +263,7 @@ cash_in(PG_FUNCTION_ARGS)
  */
 Datum
 cash_out(PG_FUNCTION_ARGS)
-{
+{	StackTrace("cash_out");
 	Cash		value = PG_GETARG_CASH(0);
 	char	   *result;
 	char		buf[128];
@@ -466,7 +466,7 @@ cash_out(PG_FUNCTION_ARGS)
  */
 Datum
 cash_recv(PG_FUNCTION_ARGS)
-{
+{	StackTrace("cash_recv");
 	StringInfo	buf = (StringInfo) PG_GETARG_POINTER(0);
 
 	PG_RETURN_CASH((Cash) pq_getmsgint64(buf));
@@ -477,7 +477,7 @@ cash_recv(PG_FUNCTION_ARGS)
  */
 Datum
 cash_send(PG_FUNCTION_ARGS)
-{
+{	StackTrace("cash_send");
 	Cash		arg1 = PG_GETARG_CASH(0);
 	StringInfoData buf;
 
@@ -492,7 +492,7 @@ cash_send(PG_FUNCTION_ARGS)
 
 Datum
 cash_eq(PG_FUNCTION_ARGS)
-{
+{	StackTrace("cash_eq");
 	Cash		c1 = PG_GETARG_CASH(0);
 	Cash		c2 = PG_GETARG_CASH(1);
 
@@ -501,7 +501,7 @@ cash_eq(PG_FUNCTION_ARGS)
 
 Datum
 cash_ne(PG_FUNCTION_ARGS)
-{
+{	StackTrace("cash_ne");
 	Cash		c1 = PG_GETARG_CASH(0);
 	Cash		c2 = PG_GETARG_CASH(1);
 
@@ -510,7 +510,7 @@ cash_ne(PG_FUNCTION_ARGS)
 
 Datum
 cash_lt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("cash_lt");
 	Cash		c1 = PG_GETARG_CASH(0);
 	Cash		c2 = PG_GETARG_CASH(1);
 
@@ -519,7 +519,7 @@ cash_lt(PG_FUNCTION_ARGS)
 
 Datum
 cash_le(PG_FUNCTION_ARGS)
-{
+{	StackTrace("cash_le");
 	Cash		c1 = PG_GETARG_CASH(0);
 	Cash		c2 = PG_GETARG_CASH(1);
 
@@ -528,7 +528,7 @@ cash_le(PG_FUNCTION_ARGS)
 
 Datum
 cash_gt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("cash_gt");
 	Cash		c1 = PG_GETARG_CASH(0);
 	Cash		c2 = PG_GETARG_CASH(1);
 
@@ -537,7 +537,7 @@ cash_gt(PG_FUNCTION_ARGS)
 
 Datum
 cash_ge(PG_FUNCTION_ARGS)
-{
+{	StackTrace("cash_ge");
 	Cash		c1 = PG_GETARG_CASH(0);
 	Cash		c2 = PG_GETARG_CASH(1);
 
@@ -546,7 +546,7 @@ cash_ge(PG_FUNCTION_ARGS)
 
 Datum
 cash_cmp(PG_FUNCTION_ARGS)
-{
+{	StackTrace("cash_cmp");
 	Cash		c1 = PG_GETARG_CASH(0);
 	Cash		c2 = PG_GETARG_CASH(1);
 
@@ -564,7 +564,7 @@ cash_cmp(PG_FUNCTION_ARGS)
  */
 Datum
 cash_pl(PG_FUNCTION_ARGS)
-{
+{	StackTrace("cash_pl");
 	Cash		c1 = PG_GETARG_CASH(0);
 	Cash		c2 = PG_GETARG_CASH(1);
 	Cash		result;
@@ -580,7 +580,7 @@ cash_pl(PG_FUNCTION_ARGS)
  */
 Datum
 cash_mi(PG_FUNCTION_ARGS)
-{
+{	StackTrace("cash_mi");
 	Cash		c1 = PG_GETARG_CASH(0);
 	Cash		c2 = PG_GETARG_CASH(1);
 	Cash		result;
@@ -596,7 +596,7 @@ cash_mi(PG_FUNCTION_ARGS)
  */
 Datum
 cash_div_cash(PG_FUNCTION_ARGS)
-{
+{	StackTrace("cash_div_cash");
 	Cash		dividend = PG_GETARG_CASH(0);
 	Cash		divisor = PG_GETARG_CASH(1);
 	float8		quotient;
@@ -616,7 +616,7 @@ cash_div_cash(PG_FUNCTION_ARGS)
  */
 Datum
 cash_mul_flt8(PG_FUNCTION_ARGS)
-{
+{	StackTrace("cash_mul_flt8");
 	Cash		c = PG_GETARG_CASH(0);
 	float8		f = PG_GETARG_FLOAT8(1);
 	Cash		result;
@@ -631,7 +631,7 @@ cash_mul_flt8(PG_FUNCTION_ARGS)
  */
 Datum
 flt8_mul_cash(PG_FUNCTION_ARGS)
-{
+{	StackTrace("flt8_mul_cash");
 	float8		f = PG_GETARG_FLOAT8(0);
 	Cash		c = PG_GETARG_CASH(1);
 	Cash		result;
@@ -646,7 +646,7 @@ flt8_mul_cash(PG_FUNCTION_ARGS)
  */
 Datum
 cash_div_flt8(PG_FUNCTION_ARGS)
-{
+{	StackTrace("cash_div_flt8");
 	Cash		c = PG_GETARG_CASH(0);
 	float8		f = PG_GETARG_FLOAT8(1);
 	Cash		result;
@@ -666,7 +666,7 @@ cash_div_flt8(PG_FUNCTION_ARGS)
  */
 Datum
 cash_mul_flt4(PG_FUNCTION_ARGS)
-{
+{	StackTrace("cash_mul_flt4");
 	Cash		c = PG_GETARG_CASH(0);
 	float4		f = PG_GETARG_FLOAT4(1);
 	Cash		result;
@@ -681,7 +681,7 @@ cash_mul_flt4(PG_FUNCTION_ARGS)
  */
 Datum
 flt4_mul_cash(PG_FUNCTION_ARGS)
-{
+{	StackTrace("flt4_mul_cash");
 	float4		f = PG_GETARG_FLOAT4(0);
 	Cash		c = PG_GETARG_CASH(1);
 	Cash		result;
@@ -697,7 +697,7 @@ flt4_mul_cash(PG_FUNCTION_ARGS)
  */
 Datum
 cash_div_flt4(PG_FUNCTION_ARGS)
-{
+{	StackTrace("cash_div_flt4");
 	Cash		c = PG_GETARG_CASH(0);
 	float4		f = PG_GETARG_FLOAT4(1);
 	Cash		result;
@@ -717,7 +717,7 @@ cash_div_flt4(PG_FUNCTION_ARGS)
  */
 Datum
 cash_mul_int8(PG_FUNCTION_ARGS)
-{
+{	StackTrace("cash_mul_int8");
 	Cash		c = PG_GETARG_CASH(0);
 	int64		i = PG_GETARG_INT64(1);
 	Cash		result;
@@ -732,7 +732,7 @@ cash_mul_int8(PG_FUNCTION_ARGS)
  */
 Datum
 int8_mul_cash(PG_FUNCTION_ARGS)
-{
+{	StackTrace("int8_mul_cash");
 	int64		i = PG_GETARG_INT64(0);
 	Cash		c = PG_GETARG_CASH(1);
 	Cash		result;
@@ -746,7 +746,7 @@ int8_mul_cash(PG_FUNCTION_ARGS)
  */
 Datum
 cash_div_int8(PG_FUNCTION_ARGS)
-{
+{	StackTrace("cash_div_int8");
 	Cash		c = PG_GETARG_CASH(0);
 	int64		i = PG_GETARG_INT64(1);
 	Cash		result;
@@ -767,7 +767,7 @@ cash_div_int8(PG_FUNCTION_ARGS)
  */
 Datum
 cash_mul_int4(PG_FUNCTION_ARGS)
-{
+{	StackTrace("cash_mul_int4");
 	Cash		c = PG_GETARG_CASH(0);
 	int32		i = PG_GETARG_INT32(1);
 	Cash		result;
@@ -782,7 +782,7 @@ cash_mul_int4(PG_FUNCTION_ARGS)
  */
 Datum
 int4_mul_cash(PG_FUNCTION_ARGS)
-{
+{	StackTrace("int4_mul_cash");
 	int32		i = PG_GETARG_INT32(0);
 	Cash		c = PG_GETARG_CASH(1);
 	Cash		result;
@@ -798,7 +798,7 @@ int4_mul_cash(PG_FUNCTION_ARGS)
  */
 Datum
 cash_div_int4(PG_FUNCTION_ARGS)
-{
+{	StackTrace("cash_div_int4");
 	Cash		c = PG_GETARG_CASH(0);
 	int32		i = PG_GETARG_INT32(1);
 	Cash		result;
@@ -819,7 +819,7 @@ cash_div_int4(PG_FUNCTION_ARGS)
  */
 Datum
 cash_mul_int2(PG_FUNCTION_ARGS)
-{
+{	StackTrace("cash_mul_int2");
 	Cash		c = PG_GETARG_CASH(0);
 	int16		s = PG_GETARG_INT16(1);
 	Cash		result;
@@ -833,7 +833,7 @@ cash_mul_int2(PG_FUNCTION_ARGS)
  */
 Datum
 int2_mul_cash(PG_FUNCTION_ARGS)
-{
+{	StackTrace("int2_mul_cash");
 	int16		s = PG_GETARG_INT16(0);
 	Cash		c = PG_GETARG_CASH(1);
 	Cash		result;
@@ -867,7 +867,7 @@ cash_div_int2(PG_FUNCTION_ARGS)
  */
 Datum
 cashlarger(PG_FUNCTION_ARGS)
-{
+{	StackTrace("cashlarger");
 	Cash		c1 = PG_GETARG_CASH(0);
 	Cash		c2 = PG_GETARG_CASH(1);
 	Cash		result;
@@ -882,7 +882,7 @@ cashlarger(PG_FUNCTION_ARGS)
  */
 Datum
 cashsmaller(PG_FUNCTION_ARGS)
-{
+{	StackTrace("cashsmaller");
 	Cash		c1 = PG_GETARG_CASH(0);
 	Cash		c2 = PG_GETARG_CASH(1);
 	Cash		result;
@@ -898,7 +898,7 @@ cashsmaller(PG_FUNCTION_ARGS)
  */
 Datum
 cash_words(PG_FUNCTION_ARGS)
-{
+{	StackTrace("cash_words");
 	Cash		value = PG_GETARG_CASH(0);
 	uint64		val;
 	char		buf[256];
@@ -985,7 +985,7 @@ cash_words(PG_FUNCTION_ARGS)
  */
 Datum
 cash_numeric(PG_FUNCTION_ARGS)
-{
+{	StackTrace("cash_numeric");
 	Cash		money = PG_GETARG_CASH(0);
 	Numeric		result;
 	int			fpoint;
@@ -1024,7 +1024,7 @@ cash_numeric(PG_FUNCTION_ARGS)
  */
 Datum
 numeric_cash(PG_FUNCTION_ARGS)
-{
+{	StackTrace("numeric_cash");
 	Datum		amount = PG_GETARG_DATUM(0);
 	Cash		result;
 	int			fpoint;
@@ -1058,7 +1058,7 @@ numeric_cash(PG_FUNCTION_ARGS)
  */
 Datum
 int4_cash(PG_FUNCTION_ARGS)
-{
+{	StackTrace("int4_cash");
 	int32		amount = PG_GETARG_INT32(0);
 	Cash		result;
 	int			fpoint;
@@ -1088,7 +1088,7 @@ int4_cash(PG_FUNCTION_ARGS)
  */
 Datum
 int8_cash(PG_FUNCTION_ARGS)
-{
+{	StackTrace("int8_cash");
 	int64		amount = PG_GETARG_INT64(0);
 	Cash		result;
 	int			fpoint;

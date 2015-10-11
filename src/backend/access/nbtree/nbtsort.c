@@ -150,7 +150,7 @@ static void _bt_load(BTWriteState *wstate,
  */
 BTSpool *
 _bt_spoolinit(Relation heap, Relation index, bool isunique, bool isdead)
-{
+{	StackTrace("_bt_spoolinit");
 	BTSpool    *btspool = (BTSpool *) palloc0(sizeof(BTSpool));
 	int			btKbytes;
 
@@ -178,7 +178,7 @@ _bt_spoolinit(Relation heap, Relation index, bool isunique, bool isdead)
  */
 void
 _bt_spooldestroy(BTSpool *btspool)
-{
+{	StackTrace("_bt_spooldestroy");
 	tuplesort_end(btspool->sortstate);
 	pfree(btspool);
 }
@@ -188,7 +188,7 @@ _bt_spooldestroy(BTSpool *btspool)
  */
 void
 _bt_spool(BTSpool *btspool, ItemPointer self, Datum *values, bool *isnull)
-{
+{	StackTrace("_bt_spool");
 	tuplesort_putindextuplevalues(btspool->sortstate, btspool->index,
 								  self, values, isnull);
 }
@@ -199,7 +199,7 @@ _bt_spool(BTSpool *btspool, ItemPointer self, Datum *values, bool *isnull)
  */
 void
 _bt_leafbuild(BTSpool *btspool, BTSpool *btspool2)
-{
+{	StackTrace("_bt_leafbuild");
 	BTWriteState wstate;
 
 #ifdef BTREE_BUILD_STATS
@@ -242,7 +242,7 @@ _bt_leafbuild(BTSpool *btspool, BTSpool *btspool2)
  */
 static Page
 _bt_blnewpage(uint32 level)
-{
+{	StackTrace("_bt_blnewpage");
 	Page		page;
 	BTPageOpaque opaque;
 
@@ -269,7 +269,7 @@ _bt_blnewpage(uint32 level)
  */
 static void
 _bt_blwritepage(BTWriteState *wstate, Page page, BlockNumber blkno)
-{
+{	StackTrace("_bt_blwritepage");
 	/* Ensure rd_smgr is open (could have been closed by relcache flush!) */
 	RelationOpenSmgr(wstate->index);
 
@@ -327,7 +327,7 @@ _bt_blwritepage(BTWriteState *wstate, Page page, BlockNumber blkno)
  */
 static BTPageState *
 _bt_pagestate(BTWriteState *wstate, uint32 level)
-{
+{	StackTrace("_bt_pagestate");
 	BTPageState *state = (BTPageState *) palloc0(sizeof(BTPageState));
 
 	/* create initial page for level */
@@ -360,7 +360,7 @@ _bt_pagestate(BTWriteState *wstate, uint32 level)
  */
 static void
 _bt_slideleft(Page page)
-{
+{	StackTrace("_bt_slideleft");
 	OffsetNumber off;
 	OffsetNumber maxoff;
 	ItemId		previi;
@@ -398,7 +398,7 @@ _bt_sortaddtup(Page page,
 			   Size itemsize,
 			   IndexTuple itup,
 			   OffsetNumber itup_off)
-{
+{	StackTrace("_bt_sortaddtup");
 	BTPageOpaque opaque = (BTPageOpaque) PageGetSpecialPointer(page);
 	IndexTupleData trunctuple;
 
@@ -450,7 +450,7 @@ _bt_sortaddtup(Page page,
  */
 static void
 _bt_buildadd(BTWriteState *wstate, BTPageState *state, IndexTuple itup)
-{
+{	StackTrace("_bt_buildadd");
 	Page		npage;
 	BlockNumber nblkno;
 	OffsetNumber last_off;
@@ -609,7 +609,7 @@ _bt_buildadd(BTWriteState *wstate, BTPageState *state, IndexTuple itup)
  */
 static void
 _bt_uppershutdown(BTWriteState *wstate, BTPageState *state)
-{
+{	StackTrace("_bt_uppershutdown");
 	BTPageState *s;
 	BlockNumber rootblkno = P_NONE;
 	uint32		rootlevel = 0;
@@ -675,7 +675,7 @@ _bt_uppershutdown(BTWriteState *wstate, BTPageState *state)
  */
 static void
 _bt_load(BTWriteState *wstate, BTSpool *btspool, BTSpool *btspool2)
-{
+{	StackTrace("_bt_load");
 	BTPageState *state = NULL;
 	bool		merge = (btspool2 != NULL);
 	IndexTuple	itup,

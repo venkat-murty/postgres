@@ -154,7 +154,7 @@ static void PrintDSMLeakWarning(dsm_segment *seg);
  */
 ResourceOwner
 ResourceOwnerCreate(ResourceOwner parent, const char *name)
-{
+{	StackTrace("ResourceOwnerCreate");
 	ResourceOwner owner;
 
 	owner = (ResourceOwner) MemoryContextAllocZero(TopMemoryContext,
@@ -202,7 +202,7 @@ ResourceOwnerRelease(ResourceOwner owner,
 					 ResourceReleasePhase phase,
 					 bool isCommit,
 					 bool isTopLevel)
-{
+{	StackTrace("ResourceOwnerRelease");
 	/* Rather than PG_TRY at every level of recursion, set it up once */
 	ResourceOwner save;
 
@@ -225,7 +225,7 @@ ResourceOwnerReleaseInternal(ResourceOwner owner,
 							 ResourceReleasePhase phase,
 							 bool isCommit,
 							 bool isTopLevel)
-{
+{	StackTrace("ResourceOwnerReleaseInternal");
 	ResourceOwner child;
 	ResourceOwner save;
 	ResourceReleaseCallbackItem *item;
@@ -413,7 +413,7 @@ ResourceOwnerReleaseInternal(ResourceOwner owner,
  */
 void
 ResourceOwnerDelete(ResourceOwner owner)
-{
+{	StackTrace("ResourceOwnerDelete");
 	/* We had better not be deleting CurrentResourceOwner ... */
 	Assert(owner != CurrentResourceOwner);
 
@@ -471,7 +471,7 @@ ResourceOwnerDelete(ResourceOwner owner)
  */
 ResourceOwner
 ResourceOwnerGetParent(ResourceOwner owner)
-{
+{	StackTrace("ResourceOwnerGetParent");
 	return owner->parent;
 }
 
@@ -481,7 +481,7 @@ ResourceOwnerGetParent(ResourceOwner owner)
 void
 ResourceOwnerNewParent(ResourceOwner owner,
 					   ResourceOwner newparent)
-{
+{	StackTrace("ResourceOwnerNewParent");
 	ResourceOwner oldparent = owner->parent;
 
 	if (oldparent)
@@ -528,7 +528,7 @@ ResourceOwnerNewParent(ResourceOwner owner,
  */
 void
 RegisterResourceReleaseCallback(ResourceReleaseCallback callback, void *arg)
-{
+{	StackTrace("RegisterResourceReleaseCallback");
 	ResourceReleaseCallbackItem *item;
 
 	item = (ResourceReleaseCallbackItem *)
@@ -542,7 +542,7 @@ RegisterResourceReleaseCallback(ResourceReleaseCallback callback, void *arg)
 
 void
 UnregisterResourceReleaseCallback(ResourceReleaseCallback callback, void *arg)
-{
+{	StackTrace("UnregisterResourceReleaseCallback");
 	ResourceReleaseCallbackItem *item;
 	ResourceReleaseCallbackItem *prev;
 
@@ -574,7 +574,7 @@ UnregisterResourceReleaseCallback(ResourceReleaseCallback callback, void *arg)
  */
 void
 ResourceOwnerEnlargeBuffers(ResourceOwner owner)
-{
+{	StackTrace("ResourceOwnerEnlargeBuffers");
 	int			newmax;
 
 	if (owner == NULL ||
@@ -607,7 +607,7 @@ ResourceOwnerEnlargeBuffers(ResourceOwner owner)
  */
 void
 ResourceOwnerRememberBuffer(ResourceOwner owner, Buffer buffer)
-{
+{	StackTrace("ResourceOwnerRememberBuffer");
 	if (owner != NULL)
 	{
 		Assert(owner->nbuffers < owner->maxbuffers);
@@ -624,7 +624,7 @@ ResourceOwnerRememberBuffer(ResourceOwner owner, Buffer buffer)
  */
 void
 ResourceOwnerForgetBuffer(ResourceOwner owner, Buffer buffer)
-{
+{	StackTrace("ResourceOwnerForgetBuffer");
 	if (owner != NULL)
 	{
 		Buffer	   *buffers = owner->buffers;
@@ -666,7 +666,7 @@ ResourceOwnerForgetBuffer(ResourceOwner owner, Buffer buffer)
  */
 void
 ResourceOwnerRememberLock(ResourceOwner owner, LOCALLOCK *locallock)
-{
+{	StackTrace("ResourceOwnerRememberLock");
 	if (owner->nlocks > MAX_RESOWNER_LOCKS)
 		return;					/* we have already overflowed */
 
@@ -684,7 +684,7 @@ ResourceOwnerRememberLock(ResourceOwner owner, LOCALLOCK *locallock)
  */
 void
 ResourceOwnerForgetLock(ResourceOwner owner, LOCALLOCK *locallock)
-{
+{	StackTrace("ResourceOwnerForgetLock");
 	int			i;
 
 	if (owner->nlocks > MAX_RESOWNER_LOCKS)
@@ -713,7 +713,7 @@ ResourceOwnerForgetLock(ResourceOwner owner, LOCALLOCK *locallock)
  */
 void
 ResourceOwnerEnlargeCatCacheRefs(ResourceOwner owner)
-{
+{	StackTrace("ResourceOwnerEnlargeCatCacheRefs");
 	int			newmax;
 
 	if (owner->ncatrefs < owner->maxcatrefs)
@@ -742,7 +742,7 @@ ResourceOwnerEnlargeCatCacheRefs(ResourceOwner owner)
  */
 void
 ResourceOwnerRememberCatCacheRef(ResourceOwner owner, HeapTuple tuple)
-{
+{	StackTrace("ResourceOwnerRememberCatCacheRef");
 	Assert(owner->ncatrefs < owner->maxcatrefs);
 	owner->catrefs[owner->ncatrefs] = tuple;
 	owner->ncatrefs++;
@@ -753,7 +753,7 @@ ResourceOwnerRememberCatCacheRef(ResourceOwner owner, HeapTuple tuple)
  */
 void
 ResourceOwnerForgetCatCacheRef(ResourceOwner owner, HeapTuple tuple)
-{
+{	StackTrace("ResourceOwnerForgetCatCacheRef");
 	HeapTuple  *catrefs = owner->catrefs;
 	int			nc1 = owner->ncatrefs - 1;
 	int			i;
@@ -784,7 +784,7 @@ ResourceOwnerForgetCatCacheRef(ResourceOwner owner, HeapTuple tuple)
  */
 void
 ResourceOwnerEnlargeCatCacheListRefs(ResourceOwner owner)
-{
+{	StackTrace("ResourceOwnerEnlargeCatCacheListRefs");
 	int			newmax;
 
 	if (owner->ncatlistrefs < owner->maxcatlistrefs)
@@ -813,7 +813,7 @@ ResourceOwnerEnlargeCatCacheListRefs(ResourceOwner owner)
  */
 void
 ResourceOwnerRememberCatCacheListRef(ResourceOwner owner, CatCList *list)
-{
+{	StackTrace("ResourceOwnerRememberCatCacheListRef");
 	Assert(owner->ncatlistrefs < owner->maxcatlistrefs);
 	owner->catlistrefs[owner->ncatlistrefs] = list;
 	owner->ncatlistrefs++;
@@ -824,7 +824,7 @@ ResourceOwnerRememberCatCacheListRef(ResourceOwner owner, CatCList *list)
  */
 void
 ResourceOwnerForgetCatCacheListRef(ResourceOwner owner, CatCList *list)
-{
+{	StackTrace("ResourceOwnerForgetCatCacheListRef");
 	CatCList  **catlistrefs = owner->catlistrefs;
 	int			nc1 = owner->ncatlistrefs - 1;
 	int			i;
@@ -855,7 +855,7 @@ ResourceOwnerForgetCatCacheListRef(ResourceOwner owner, CatCList *list)
  */
 void
 ResourceOwnerEnlargeRelationRefs(ResourceOwner owner)
-{
+{	StackTrace("ResourceOwnerEnlargeRelationRefs");
 	int			newmax;
 
 	if (owner->nrelrefs < owner->maxrelrefs)
@@ -884,7 +884,7 @@ ResourceOwnerEnlargeRelationRefs(ResourceOwner owner)
  */
 void
 ResourceOwnerRememberRelationRef(ResourceOwner owner, Relation rel)
-{
+{	StackTrace("ResourceOwnerRememberRelationRef");
 	Assert(owner->nrelrefs < owner->maxrelrefs);
 	owner->relrefs[owner->nrelrefs] = rel;
 	owner->nrelrefs++;
@@ -895,7 +895,7 @@ ResourceOwnerRememberRelationRef(ResourceOwner owner, Relation rel)
  */
 void
 ResourceOwnerForgetRelationRef(ResourceOwner owner, Relation rel)
-{
+{	StackTrace("ResourceOwnerForgetRelationRef");
 	Relation   *relrefs = owner->relrefs;
 	int			nr1 = owner->nrelrefs - 1;
 	int			i;
@@ -922,7 +922,7 @@ ResourceOwnerForgetRelationRef(ResourceOwner owner, Relation rel)
  */
 static void
 PrintRelCacheLeakWarning(Relation rel)
-{
+{	StackTrace("PrintRelCacheLeakWarning");
 	elog(WARNING, "relcache reference leak: relation \"%s\" not closed",
 		 RelationGetRelationName(rel));
 }
@@ -936,7 +936,7 @@ PrintRelCacheLeakWarning(Relation rel)
  */
 void
 ResourceOwnerEnlargePlanCacheRefs(ResourceOwner owner)
-{
+{	StackTrace("ResourceOwnerEnlargePlanCacheRefs");
 	int			newmax;
 
 	if (owner->nplanrefs < owner->maxplanrefs)
@@ -965,7 +965,7 @@ ResourceOwnerEnlargePlanCacheRefs(ResourceOwner owner)
  */
 void
 ResourceOwnerRememberPlanCacheRef(ResourceOwner owner, CachedPlan *plan)
-{
+{	StackTrace("ResourceOwnerRememberPlanCacheRef");
 	Assert(owner->nplanrefs < owner->maxplanrefs);
 	owner->planrefs[owner->nplanrefs] = plan;
 	owner->nplanrefs++;
@@ -976,7 +976,7 @@ ResourceOwnerRememberPlanCacheRef(ResourceOwner owner, CachedPlan *plan)
  */
 void
 ResourceOwnerForgetPlanCacheRef(ResourceOwner owner, CachedPlan *plan)
-{
+{	StackTrace("ResourceOwnerForgetPlanCacheRef");
 	CachedPlan **planrefs = owner->planrefs;
 	int			np1 = owner->nplanrefs - 1;
 	int			i;
@@ -1003,7 +1003,7 @@ ResourceOwnerForgetPlanCacheRef(ResourceOwner owner, CachedPlan *plan)
  */
 static void
 PrintPlanCacheLeakWarning(CachedPlan *plan)
-{
+{	StackTrace("PrintPlanCacheLeakWarning");
 	elog(WARNING, "plancache reference leak: plan %p not closed", plan);
 }
 
@@ -1016,7 +1016,7 @@ PrintPlanCacheLeakWarning(CachedPlan *plan)
  */
 void
 ResourceOwnerEnlargeTupleDescs(ResourceOwner owner)
-{
+{	StackTrace("ResourceOwnerEnlargeTupleDescs");
 	int			newmax;
 
 	if (owner->ntupdescs < owner->maxtupdescs)
@@ -1045,7 +1045,7 @@ ResourceOwnerEnlargeTupleDescs(ResourceOwner owner)
  */
 void
 ResourceOwnerRememberTupleDesc(ResourceOwner owner, TupleDesc tupdesc)
-{
+{	StackTrace("ResourceOwnerRememberTupleDesc");
 	Assert(owner->ntupdescs < owner->maxtupdescs);
 	owner->tupdescs[owner->ntupdescs] = tupdesc;
 	owner->ntupdescs++;
@@ -1056,7 +1056,7 @@ ResourceOwnerRememberTupleDesc(ResourceOwner owner, TupleDesc tupdesc)
  */
 void
 ResourceOwnerForgetTupleDesc(ResourceOwner owner, TupleDesc tupdesc)
-{
+{	StackTrace("ResourceOwnerForgetTupleDesc");
 	TupleDesc  *tupdescs = owner->tupdescs;
 	int			nt1 = owner->ntupdescs - 1;
 	int			i;
@@ -1083,7 +1083,7 @@ ResourceOwnerForgetTupleDesc(ResourceOwner owner, TupleDesc tupdesc)
  */
 static void
 PrintTupleDescLeakWarning(TupleDesc tupdesc)
-{
+{	StackTrace("PrintTupleDescLeakWarning");
 	elog(WARNING,
 		 "TupleDesc reference leak: TupleDesc %p (%u,%d) still referenced",
 		 tupdesc, tupdesc->tdtypeid, tupdesc->tdtypmod);
@@ -1098,7 +1098,7 @@ PrintTupleDescLeakWarning(TupleDesc tupdesc)
  */
 void
 ResourceOwnerEnlargeSnapshots(ResourceOwner owner)
-{
+{	StackTrace("ResourceOwnerEnlargeSnapshots");
 	int			newmax;
 
 	if (owner->nsnapshots < owner->maxsnapshots)
@@ -1127,7 +1127,7 @@ ResourceOwnerEnlargeSnapshots(ResourceOwner owner)
  */
 void
 ResourceOwnerRememberSnapshot(ResourceOwner owner, Snapshot snapshot)
-{
+{	StackTrace("ResourceOwnerRememberSnapshot");
 	Assert(owner->nsnapshots < owner->maxsnapshots);
 	owner->snapshots[owner->nsnapshots] = snapshot;
 	owner->nsnapshots++;
@@ -1138,7 +1138,7 @@ ResourceOwnerRememberSnapshot(ResourceOwner owner, Snapshot snapshot)
  */
 void
 ResourceOwnerForgetSnapshot(ResourceOwner owner, Snapshot snapshot)
-{
+{	StackTrace("ResourceOwnerForgetSnapshot");
 	Snapshot   *snapshots = owner->snapshots;
 	int			ns1 = owner->nsnapshots - 1;
 	int			i;
@@ -1165,7 +1165,7 @@ ResourceOwnerForgetSnapshot(ResourceOwner owner, Snapshot snapshot)
  */
 static void
 PrintSnapshotLeakWarning(Snapshot snapshot)
-{
+{	StackTrace("PrintSnapshotLeakWarning");
 	elog(WARNING,
 		 "Snapshot reference leak: Snapshot %p still referenced",
 		 snapshot);
@@ -1181,7 +1181,7 @@ PrintSnapshotLeakWarning(Snapshot snapshot)
  */
 void
 ResourceOwnerEnlargeFiles(ResourceOwner owner)
-{
+{	StackTrace("ResourceOwnerEnlargeFiles");
 	int			newmax;
 
 	if (owner->nfiles < owner->maxfiles)
@@ -1210,7 +1210,7 @@ ResourceOwnerEnlargeFiles(ResourceOwner owner)
  */
 void
 ResourceOwnerRememberFile(ResourceOwner owner, File file)
-{
+{	StackTrace("ResourceOwnerRememberFile");
 	Assert(owner->nfiles < owner->maxfiles);
 	owner->files[owner->nfiles] = file;
 	owner->nfiles++;
@@ -1221,7 +1221,7 @@ ResourceOwnerRememberFile(ResourceOwner owner, File file)
  */
 void
 ResourceOwnerForgetFile(ResourceOwner owner, File file)
-{
+{	StackTrace("ResourceOwnerForgetFile");
 	File	   *files = owner->files;
 	int			ns1 = owner->nfiles - 1;
 	int			i;
@@ -1249,7 +1249,7 @@ ResourceOwnerForgetFile(ResourceOwner owner, File file)
  */
 static void
 PrintFileLeakWarning(File file)
-{
+{	StackTrace("PrintFileLeakWarning");
 	elog(WARNING,
 		 "temporary file leak: File %d still referenced",
 		 file);
@@ -1264,7 +1264,7 @@ PrintFileLeakWarning(File file)
  */
 void
 ResourceOwnerEnlargeDSMs(ResourceOwner owner)
-{
+{	StackTrace("ResourceOwnerEnlargeDSMs");
 	int			newmax;
 
 	if (owner->ndsms < owner->maxdsms)
@@ -1294,7 +1294,7 @@ ResourceOwnerEnlargeDSMs(ResourceOwner owner)
  */
 void
 ResourceOwnerRememberDSM(ResourceOwner owner, dsm_segment *seg)
-{
+{	StackTrace("ResourceOwnerRememberDSM");
 	Assert(owner->ndsms < owner->maxdsms);
 	owner->dsms[owner->ndsms] = seg;
 	owner->ndsms++;
@@ -1305,7 +1305,7 @@ ResourceOwnerRememberDSM(ResourceOwner owner, dsm_segment *seg)
  */
 void
 ResourceOwnerForgetDSM(ResourceOwner owner, dsm_segment *seg)
-{
+{	StackTrace("ResourceOwnerForgetDSM");
 	dsm_segment **dsms = owner->dsms;
 	int			ns1 = owner->ndsms - 1;
 	int			i;
@@ -1334,7 +1334,7 @@ ResourceOwnerForgetDSM(ResourceOwner owner, dsm_segment *seg)
  */
 static void
 PrintDSMLeakWarning(dsm_segment *seg)
-{
+{	StackTrace("PrintDSMLeakWarning");
 	elog(WARNING,
 		 "dynamic shared memory leak: segment %u still referenced",
 		 dsm_segment_handle(seg));

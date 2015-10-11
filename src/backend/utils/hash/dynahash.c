@@ -241,7 +241,7 @@ static MemoryContext CurrentDynaHashCxt = NULL;
 
 static void *
 DynaHashAlloc(Size size)
-{
+{	StackTrace("DynaHashAlloc");
 	Assert(MemoryContextIsValid(CurrentDynaHashCxt));
 	return MemoryContextAlloc(CurrentDynaHashCxt, size);
 }
@@ -256,7 +256,7 @@ DynaHashAlloc(Size size)
  */
 static int
 string_compare(const char *key1, const char *key2, Size keysize)
-{
+{	StackTrace("string_compare");
 	return strncmp(key1, key2, keysize - 1);
 }
 
@@ -279,7 +279,7 @@ string_compare(const char *key1, const char *key2, Size keysize)
  */
 HTAB *
 hash_create(const char *tabname, long nelem, HASHCTL *info, int flags)
-{
+{	StackTrace("hash_create");
 	HTAB	   *hashp;
 	HASHHDR    *hctl;
 
@@ -498,7 +498,7 @@ hash_create(const char *tabname, long nelem, HASHCTL *info, int flags)
  */
 static void
 hdefault(HTAB *hashp)
-{
+{	StackTrace("hdefault");
 	HASHHDR    *hctl = hashp->hctl;
 
 	MemSet(hctl, 0, sizeof(HASHHDR));
@@ -534,7 +534,7 @@ hdefault(HTAB *hashp)
  */
 static int
 choose_nelem_alloc(Size entrysize)
-{
+{	StackTrace("choose_nelem_alloc");
 	int			nelem_alloc;
 	Size		elementSize;
 	Size		allocSize;
@@ -567,7 +567,7 @@ choose_nelem_alloc(Size entrysize)
  */
 static bool
 init_htab(HTAB *hashp, long nelem)
-{
+{	StackTrace("init_htab");
 	HASHHDR    *hctl = hashp->hctl;
 	HASHSEGMENT *segp;
 	int			nbuckets;
@@ -662,7 +662,7 @@ init_htab(HTAB *hashp, long nelem)
  */
 Size
 hash_estimate_size(long num_entries, Size entrysize)
-{
+{	StackTrace("hash_estimate_size");
 	Size		size;
 	long		nBuckets,
 				nSegments,
@@ -709,7 +709,7 @@ hash_estimate_size(long num_entries, Size entrysize)
  */
 long
 hash_select_dirsize(long num_entries)
-{
+{	StackTrace("hash_select_dirsize");
 	long		nBuckets,
 				nSegments,
 				nDirEntries;
@@ -733,7 +733,7 @@ hash_select_dirsize(long num_entries)
  */
 Size
 hash_get_shared_size(HASHCTL *info, int flags)
-{
+{	StackTrace("hash_get_shared_size");
 	Assert(flags & HASH_DIRSIZE);
 	Assert(info->dsize == info->max_dsize);
 	return sizeof(HASHHDR) + info->dsize * sizeof(HASHSEGMENT);
@@ -744,7 +744,7 @@ hash_get_shared_size(HASHCTL *info, int flags)
 
 void
 hash_destroy(HTAB *hashp)
-{
+{	StackTrace("hash_destroy");
 	if (hashp != NULL)
 	{
 		/* allocation method must be one we know how to free, too */
@@ -763,7 +763,7 @@ hash_destroy(HTAB *hashp)
 
 void
 hash_stats(const char *where, HTAB *hashp)
-{
+{	StackTrace("hash_stats");
 #if HASH_STATISTICS
 	fprintf(stderr, "%s: this HTAB -- accesses %ld collisions %ld\n",
 			where, hashp->hctl->accesses, hashp->hctl->collisions);
@@ -790,14 +790,14 @@ hash_stats(const char *where, HTAB *hashp)
  */
 uint32
 get_hash_value(HTAB *hashp, const void *keyPtr)
-{
+{	StackTrace("get_hash_value");
 	return hashp->hash(keyPtr, hashp->keysize);
 }
 
 /* Convert a hash value to a bucket number */
 static inline uint32
 calc_bucket(HASHHDR *hctl, uint32 hash_val)
-{
+{	StackTrace("calc_bucket");
 	uint32		bucket;
 
 	bucket = hash_val & hctl->high_mask;
@@ -839,7 +839,7 @@ hash_search(HTAB *hashp,
 			const void *keyPtr,
 			HASHACTION action,
 			bool *foundPtr)
-{
+{	StackTrace("hash_search");
 	return hash_search_with_hash_value(hashp,
 									   keyPtr,
 									   hashp->hash(keyPtr, hashp->keysize),
@@ -853,7 +853,7 @@ hash_search_with_hash_value(HTAB *hashp,
 							uint32 hashvalue,
 							HASHACTION action,
 							bool *foundPtr)
-{
+{	StackTrace("hash_search_with_hash_value");
 	HASHHDR    *hctl = hashp->hctl;
 	Size		keysize;
 	uint32		bucket;
@@ -1048,7 +1048,7 @@ bool
 hash_update_hash_key(HTAB *hashp,
 					 void *existingEntry,
 					 const void *newKeyPtr)
-{
+{	StackTrace("hash_update_hash_key");
 	HASHELEMENT *existingElement = ELEMENT_FROM_KEY(existingEntry);
 	HASHHDR    *hctl = hashp->hctl;
 	uint32		newhashvalue;
@@ -1179,7 +1179,7 @@ hash_update_hash_key(HTAB *hashp,
  */
 static HASHBUCKET
 get_hash_entry(HTAB *hashp)
-{
+{	StackTrace("get_hash_entry");
 	/* use volatile pointer to prevent code rearrangement */
 	volatile HASHHDR *hctlv = hashp->hctl;
 	HASHBUCKET	newElement;
@@ -1221,7 +1221,7 @@ get_hash_entry(HTAB *hashp)
  */
 long
 hash_get_num_entries(HTAB *hashp)
-{
+{	StackTrace("hash_get_num_entries");
 	/*
 	 * We currently don't bother with the mutex; it's only sensible to call
 	 * this function if you've got lock on all partitions of the table.
@@ -1257,7 +1257,7 @@ hash_get_num_entries(HTAB *hashp)
  */
 void
 hash_seq_init(HASH_SEQ_STATUS *status, HTAB *hashp)
-{
+{	StackTrace("hash_seq_init");
 	status->hashp = hashp;
 	status->curBucket = 0;
 	status->curEntry = NULL;
@@ -1267,7 +1267,7 @@ hash_seq_init(HASH_SEQ_STATUS *status, HTAB *hashp)
 
 void *
 hash_seq_search(HASH_SEQ_STATUS *status)
-{
+{	StackTrace("hash_seq_search");
 	HTAB	   *hashp;
 	HASHHDR    *hctl;
 	uint32		max_bucket;
@@ -1343,7 +1343,7 @@ hash_seq_search(HASH_SEQ_STATUS *status)
 
 void
 hash_seq_term(HASH_SEQ_STATUS *status)
-{
+{	StackTrace("hash_seq_term");
 	if (!status->hashp->frozen)
 		deregister_seq_scan(status->hashp);
 }
@@ -1363,7 +1363,7 @@ hash_seq_term(HASH_SEQ_STATUS *status)
  */
 void
 hash_freeze(HTAB *hashp)
-{
+{	StackTrace("hash_freeze");
 	if (hashp->isshared)
 		elog(ERROR, "cannot freeze shared hashtable \"%s\"", hashp->tabname);
 	if (!hashp->frozen && has_seq_scans(hashp))
@@ -1380,7 +1380,7 @@ hash_freeze(HTAB *hashp)
  */
 static bool
 expand_table(HTAB *hashp)
-{
+{	StackTrace("expand_table");
 	HASHHDR    *hctl = hashp->hctl;
 	HASHSEGMENT old_seg,
 				new_seg;
@@ -1477,7 +1477,7 @@ expand_table(HTAB *hashp)
 
 static bool
 dir_realloc(HTAB *hashp)
-{
+{	StackTrace("dir_realloc");
 	HASHSEGMENT *p;
 	HASHSEGMENT *old_p;
 	long		new_dsize;
@@ -1516,7 +1516,7 @@ dir_realloc(HTAB *hashp)
 
 static HASHSEGMENT
 seg_alloc(HTAB *hashp)
-{
+{	StackTrace("seg_alloc");
 	HASHSEGMENT segp;
 
 	CurrentDynaHashCxt = hashp->hcxt;
@@ -1535,7 +1535,7 @@ seg_alloc(HTAB *hashp)
  */
 static bool
 element_alloc(HTAB *hashp, int nelem)
-{
+{	StackTrace("element_alloc");
 	/* use volatile pointer to prevent code rearrangement */
 	volatile HASHHDR *hctlv = hashp->hctl;
 	Size		elementSize;
@@ -1583,7 +1583,7 @@ element_alloc(HTAB *hashp, int nelem)
 /* complain when we have detected a corrupted hashtable */
 static void
 hash_corrupted(HTAB *hashp)
-{
+{	StackTrace("hash_corrupted");
 	/*
 	 * If the corruption is in a shared hashtable, we'd better force a
 	 * systemwide restart.  Otherwise, just shut down this one backend.
@@ -1597,7 +1597,7 @@ hash_corrupted(HTAB *hashp)
 /* calculate ceil(log base 2) of num */
 int
 my_log2(long num)
-{
+{	StackTrace("my_log2");
 	int			i;
 	long		limit;
 
@@ -1613,7 +1613,7 @@ my_log2(long num)
 /* calculate first power of 2 >= num, bounded to what will fit in a long */
 static long
 next_pow2_long(long num)
-{
+{	StackTrace("next_pow2_long");
 	/* my_log2's internal range check is sufficient */
 	return 1L << my_log2(num);
 }
@@ -1621,7 +1621,7 @@ next_pow2_long(long num)
 /* calculate first power of 2 >= num, bounded to what will fit in an int */
 static int
 next_pow2_int(long num)
-{
+{	StackTrace("next_pow2_int");
 	if (num > INT_MAX / 2)
 		num = INT_MAX / 2;
 	return 1 << my_log2(num);
@@ -1666,7 +1666,7 @@ static int	num_seq_scans = 0;
 /* Register a table as having an active hash_seq_search scan */
 static void
 register_seq_scan(HTAB *hashp)
-{
+{	StackTrace("register_seq_scan");
 	if (num_seq_scans >= MAX_SEQ_SCANS)
 		elog(ERROR, "too many active hash_seq_search scans, cannot start one on \"%s\"",
 			 hashp->tabname);
@@ -1678,7 +1678,7 @@ register_seq_scan(HTAB *hashp)
 /* Deregister an active scan */
 static void
 deregister_seq_scan(HTAB *hashp)
-{
+{	StackTrace("deregister_seq_scan");
 	int			i;
 
 	/* Search backward since it's most likely at the stack top */
@@ -1699,7 +1699,7 @@ deregister_seq_scan(HTAB *hashp)
 /* Check if a table has any active scan */
 static bool
 has_seq_scans(HTAB *hashp)
-{
+{	StackTrace("has_seq_scans");
 	int			i;
 
 	for (i = 0; i < num_seq_scans; i++)
@@ -1713,7 +1713,7 @@ has_seq_scans(HTAB *hashp)
 /* Clean up any open scans at end of transaction */
 void
 AtEOXact_HashTables(bool isCommit)
-{
+{	StackTrace("AtEOXact_HashTables");
 	/*
 	 * During abort cleanup, open scans are expected; just silently clean 'em
 	 * out.  An open scan at commit means someone forgot a hash_seq_term()
@@ -1739,7 +1739,7 @@ AtEOXact_HashTables(bool isCommit)
 /* Clean up any open scans at end of subtransaction */
 void
 AtEOSubXact_HashTables(bool isCommit, int nestDepth)
-{
+{	StackTrace("AtEOSubXact_HashTables");
 	int			i;
 
 	/*

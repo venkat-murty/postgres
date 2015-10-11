@@ -148,7 +148,7 @@ static Plan *build_grouping_chain(PlannerInfo *root,
  *****************************************************************************/
 PlannedStmt *
 planner(Query *parse, int cursorOptions, ParamListInfo boundParams)
-{
+{	StackTrace("planner");
 	PlannedStmt *result;
 
 	if (planner_hook)
@@ -160,7 +160,7 @@ planner(Query *parse, int cursorOptions, ParamListInfo boundParams)
 
 PlannedStmt *
 standard_planner(Query *parse, int cursorOptions, ParamListInfo boundParams)
-{
+{	StackTrace("standard_planner");
 	PlannedStmt *result;
 	PlannerGlobal *glob;
 	double		tuple_fraction;
@@ -311,7 +311,7 @@ subquery_planner(PlannerGlobal *glob, Query *parse,
 				 PlannerInfo *parent_root,
 				 bool hasRecursion, double tuple_fraction,
 				 PlannerInfo **subroot)
-{
+{	StackTrace("subquery_planner");
 	int			num_old_subplans = list_length(glob->subplans);
 	PlannerInfo *root;
 	Plan	   *plan;
@@ -684,7 +684,7 @@ subquery_planner(PlannerGlobal *glob, Query *parse,
  */
 static Node *
 preprocess_expression(PlannerInfo *root, Node *expr, int kind)
-{
+{	StackTrace("preprocess_expression");
 	/*
 	 * Fall out quickly if expression is empty.  This occurs often enough to
 	 * be worth checking.  Note that null->null is the correct conversion for
@@ -766,7 +766,7 @@ preprocess_expression(PlannerInfo *root, Node *expr, int kind)
  */
 static void
 preprocess_qual_conditions(PlannerInfo *root, Node *jtnode)
-{
+{	StackTrace("preprocess_qual_conditions");
 	if (jtnode == NULL)
 		return;
 	if (IsA(jtnode, RangeTblRef))
@@ -810,7 +810,7 @@ preprocess_qual_conditions(PlannerInfo *root, Node *jtnode)
  */
 Expr *
 preprocess_phv_expression(PlannerInfo *root, Expr *expr)
-{
+{	StackTrace("preprocess_phv_expression");
 	return (Expr *) preprocess_expression(root, (Node *) expr, EXPRKIND_PHV);
 }
 
@@ -831,7 +831,7 @@ preprocess_phv_expression(PlannerInfo *root, Expr *expr)
  */
 static Plan *
 inheritance_planner(PlannerInfo *root)
-{
+{	StackTrace("inheritance_planner");
 	Query	   *parse = root->parse;
 	int			parentRTindex = parse->resultRelation;
 	Bitmapset  *resultRTindexes;
@@ -1245,7 +1245,7 @@ inheritance_planner(PlannerInfo *root)
  */
 static Plan *
 grouping_planner(PlannerInfo *root, double tuple_fraction)
-{
+{	StackTrace("grouping_planner");
 	Query	   *parse = root->parse;
 	List	   *tlist = parse->targetList;
 	int64		offset_est = 0;
@@ -2345,7 +2345,7 @@ grouping_planner(PlannerInfo *root, double tuple_fraction)
  */
 static AttrNumber *
 remap_groupColIdx(PlannerInfo *root, List *groupClause)
-{
+{	StackTrace("remap_groupColIdx");
 	AttrNumber *grouping_map = root->grouping_map;
 	AttrNumber *new_grpColIdx;
 	ListCell   *lc;
@@ -2394,7 +2394,7 @@ build_grouping_chain(PlannerInfo *root,
 					 AggClauseCosts *agg_costs,
 					 long numGroups,
 					 Plan *result_plan)
-{
+{	StackTrace("build_grouping_chain");
 	AttrNumber *top_grpColIdx = groupColIdx;
 	List	   *chain = NIL;
 
@@ -2556,7 +2556,7 @@ build_grouping_chain(PlannerInfo *root,
  */
 void
 add_tlist_costs_to_plan(PlannerInfo *root, Plan *plan, List *tlist)
-{
+{	StackTrace("add_tlist_costs_to_plan");
 	QualCost	tlist_cost;
 	double		tlist_rows;
 
@@ -2593,7 +2593,7 @@ add_tlist_costs_to_plan(PlannerInfo *root, Plan *plan, List *tlist)
  */
 bool
 is_dummy_plan(Plan *plan)
-{
+{	StackTrace("is_dummy_plan");
 	if (IsA(plan, Result))
 	{
 		List	   *rcqual = (List *) ((Result *) plan)->resconstantqual;
@@ -2622,7 +2622,7 @@ is_dummy_plan(Plan *plan)
  */
 static Bitmapset *
 get_base_rel_indexes(Node *jtnode)
-{
+{	StackTrace("get_base_rel_indexes");
 	Bitmapset  *result;
 
 	if (jtnode == NULL)
@@ -2664,7 +2664,7 @@ get_base_rel_indexes(Node *jtnode)
  */
 static void
 preprocess_rowmarks(PlannerInfo *root)
-{
+{	StackTrace("preprocess_rowmarks");
 	Query	   *parse = root->parse;
 	Bitmapset  *rels;
 	List	   *prowmarks;
@@ -2775,7 +2775,7 @@ preprocess_rowmarks(PlannerInfo *root)
  */
 RowMarkType
 select_rowmark_type(RangeTblEntry *rte, LockClauseStrength strength)
-{
+{	StackTrace("select_rowmark_type");
 	if (rte->rtekind != RTE_RELATION)
 	{
 		/* If it's not a table at all, use ROW_MARK_COPY */
@@ -2851,7 +2851,7 @@ select_rowmark_type(RangeTblEntry *rte, LockClauseStrength strength)
 static double
 preprocess_limit(PlannerInfo *root, double tuple_fraction,
 				 int64 *offset_est, int64 *count_est)
-{
+{	StackTrace("preprocess_limit");
 	Query	   *parse = root->parse;
 	Node	   *est;
 	double		limit_fraction;
@@ -3035,7 +3035,7 @@ preprocess_limit(PlannerInfo *root, double tuple_fraction,
  */
 static bool
 limit_needed(Query *parse)
-{
+{	StackTrace("limit_needed");
 	Node	   *node;
 
 	node = parse->limitCount;
@@ -3096,7 +3096,7 @@ limit_needed(Query *parse)
  */
 static List *
 preprocess_groupclause(PlannerInfo *root, List *force)
-{
+{	StackTrace("preprocess_groupclause");
 	Query	   *parse = root->parse;
 	List	   *new_groupclause = NIL;
 	bool		partial_match;
@@ -3199,7 +3199,7 @@ preprocess_groupclause(PlannerInfo *root, List *force)
  */
 static List *
 extract_rollup_sets(List *groupingSets)
-{
+{	StackTrace("extract_rollup_sets");
 	int			num_sets_raw = list_length(groupingSets);
 	int			num_empty = 0;
 	int			num_sets = 0;	/* distinct sets */
@@ -3410,7 +3410,7 @@ extract_rollup_sets(List *groupingSets)
  */
 static List *
 reorder_grouping_sets(List *groupingsets, List *sortclause)
-{
+{	StackTrace("reorder_grouping_sets");
 	ListCell   *lc;
 	ListCell   *lc2;
 	List	   *previous = NIL;
@@ -3461,7 +3461,7 @@ reorder_grouping_sets(List *groupingsets, List *sortclause)
  */
 static void
 standard_qp_callback(PlannerInfo *root, void *extra)
-{
+{	StackTrace("standard_qp_callback");
 	Query	   *parse = root->parse;
 	standard_qp_extra *qp_extra = (standard_qp_extra *) extra;
 	List	   *tlist = qp_extra->tlist;
@@ -3549,7 +3549,7 @@ choose_hashed_grouping(PlannerInfo *root,
 					   double path_rows, int path_width,
 					   Path *cheapest_path, Path *sorted_path,
 					   double dNumGroups, AggClauseCosts *agg_costs)
-{
+{	StackTrace("choose_hashed_grouping");
 	Query	   *parse = root->parse;
 	int			numGroupCols = list_length(parse->groupClause);
 	bool		can_hash;
@@ -3719,7 +3719,7 @@ choose_hashed_distinct(PlannerInfo *root,
 					   Cost sorted_startup_cost, Cost sorted_total_cost,
 					   List *sorted_pathkeys,
 					   double dNumDistinctRows)
-{
+{	StackTrace("choose_hashed_distinct");
 	Query	   *parse = root->parse;
 	int			numDistinctCols = list_length(parse->distinctClause);
 	bool		can_sort;
@@ -3888,7 +3888,7 @@ make_subplanTargetList(PlannerInfo *root,
 					   List *tlist,
 					   AttrNumber **groupColIdx,
 					   bool *need_tlist_eval)
-{
+{	StackTrace("make_subplanTargetList");
 	Query	   *parse = root->parse;
 	List	   *sub_tlist;
 	List	   *non_group_cols;
@@ -4014,7 +4014,7 @@ make_subplanTargetList(PlannerInfo *root,
  */
 static int
 get_grouping_column_index(Query *parse, TargetEntry *tle)
-{
+{	StackTrace("get_grouping_column_index");
 	int			colno = 0;
 	Index		ressortgroupref = tle->ressortgroupref;
 	ListCell   *gl;
@@ -4049,7 +4049,7 @@ locate_grouping_columns(PlannerInfo *root,
 						List *tlist,
 						List *sub_tlist,
 						AttrNumber *groupColIdx)
-{
+{	StackTrace("locate_grouping_columns");
 	int			keyno = 0;
 	ListCell   *gl;
 
@@ -4100,7 +4100,7 @@ locate_grouping_columns(PlannerInfo *root,
  */
 static List *
 postprocess_setop_tlist(List *new_tlist, List *orig_tlist)
-{
+{	StackTrace("postprocess_setop_tlist");
 	ListCell   *l;
 	ListCell   *orig_tlist_item = list_head(orig_tlist);
 
@@ -4133,7 +4133,7 @@ postprocess_setop_tlist(List *new_tlist, List *orig_tlist)
  */
 static List *
 select_active_windows(PlannerInfo *root, WindowFuncLists *wflists)
-{
+{	StackTrace("select_active_windows");
 	List	   *result;
 	List	   *actives;
 	ListCell   *lc;
@@ -4232,7 +4232,7 @@ static List *
 make_windowInputTargetList(PlannerInfo *root,
 						   List *tlist,
 						   List *activeWindows)
-{
+{	StackTrace("make_windowInputTargetList");
 	Query	   *parse = root->parse;
 	Bitmapset  *sgrefs;
 	List	   *new_tlist;
@@ -4348,7 +4348,7 @@ make_windowInputTargetList(PlannerInfo *root,
 static List *
 make_pathkeys_for_window(PlannerInfo *root, WindowClause *wc,
 						 List *tlist)
-{
+{	StackTrace("make_pathkeys_for_window");
 	List	   *window_pathkeys;
 	List	   *window_sortclauses;
 
@@ -4408,7 +4408,7 @@ get_column_info_for_window(PlannerInfo *root, WindowClause *wc, List *tlist,
 						   int *ordNumCols,
 						   AttrNumber **ordColIdx,
 						   Oid **ordOperators)
-{
+{	StackTrace("get_column_info_for_window");
 	int			numPart = list_length(wc->partitionClause);
 	int			numOrder = list_length(wc->orderClause);
 
@@ -4506,7 +4506,7 @@ get_column_info_for_window(PlannerInfo *root, WindowClause *wc, List *tlist,
  */
 Expr *
 expression_planner(Expr *expr)
-{
+{	StackTrace("expression_planner");
 	Node	   *result;
 
 	/*
@@ -4535,7 +4535,7 @@ expression_planner(Expr *expr)
  */
 bool
 plan_cluster_use_sort(Oid tableOid, Oid indexOid)
-{
+{	StackTrace("plan_cluster_use_sort");
 	PlannerInfo *root;
 	Query	   *query;
 	PlannerGlobal *glob;

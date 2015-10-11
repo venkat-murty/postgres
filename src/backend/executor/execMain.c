@@ -132,7 +132,7 @@ static void EvalPlanQualStart(EPQState *epqstate, EState *parentestate,
  */
 void
 ExecutorStart(QueryDesc *queryDesc, int eflags)
-{
+{	StackTrace("ExecutorStart");
 	if (ExecutorStart_hook)
 		(*ExecutorStart_hook) (queryDesc, eflags);
 	else
@@ -141,7 +141,7 @@ ExecutorStart(QueryDesc *queryDesc, int eflags)
 
 void
 standard_ExecutorStart(QueryDesc *queryDesc, int eflags)
-{
+{	StackTrace("standard_ExecutorStart");
 	EState	   *estate;
 	MemoryContext oldcontext;
 
@@ -278,7 +278,7 @@ standard_ExecutorStart(QueryDesc *queryDesc, int eflags)
 void
 ExecutorRun(QueryDesc *queryDesc,
 			ScanDirection direction, long count)
-{
+{	StackTrace("ExecutorRun");
 	if (ExecutorRun_hook)
 		(*ExecutorRun_hook) (queryDesc, direction, count);
 	else
@@ -288,7 +288,7 @@ ExecutorRun(QueryDesc *queryDesc,
 void
 standard_ExecutorRun(QueryDesc *queryDesc,
 					 ScanDirection direction, long count)
-{
+{	StackTrace("standard_ExecutorRun");
 	EState	   *estate;
 	CmdType		operation;
 	DestReceiver *dest;
@@ -370,7 +370,7 @@ standard_ExecutorRun(QueryDesc *queryDesc,
  */
 void
 ExecutorFinish(QueryDesc *queryDesc)
-{
+{	StackTrace("ExecutorFinish");
 	if (ExecutorFinish_hook)
 		(*ExecutorFinish_hook) (queryDesc);
 	else
@@ -379,7 +379,7 @@ ExecutorFinish(QueryDesc *queryDesc)
 
 void
 standard_ExecutorFinish(QueryDesc *queryDesc)
-{
+{	StackTrace("standard_ExecutorFinish");
 	EState	   *estate;
 	MemoryContext oldcontext;
 
@@ -430,7 +430,7 @@ standard_ExecutorFinish(QueryDesc *queryDesc)
  */
 void
 ExecutorEnd(QueryDesc *queryDesc)
-{
+{	StackTrace("ExecutorEnd");
 	if (ExecutorEnd_hook)
 		(*ExecutorEnd_hook) (queryDesc);
 	else
@@ -439,7 +439,7 @@ ExecutorEnd(QueryDesc *queryDesc)
 
 void
 standard_ExecutorEnd(QueryDesc *queryDesc)
-{
+{	StackTrace("standard_ExecutorEnd");
 	EState	   *estate;
 	MemoryContext oldcontext;
 
@@ -496,7 +496,7 @@ standard_ExecutorEnd(QueryDesc *queryDesc)
  */
 void
 ExecutorRewind(QueryDesc *queryDesc)
-{
+{	StackTrace("ExecutorRewind");
 	EState	   *estate;
 	MemoryContext oldcontext;
 
@@ -539,7 +539,7 @@ ExecutorRewind(QueryDesc *queryDesc)
  */
 bool
 ExecCheckRTPerms(List *rangeTable, bool ereport_on_violation)
-{
+{	StackTrace("ExecCheckRTPerms");
 	ListCell   *l;
 	bool		result = true;
 
@@ -570,7 +570,7 @@ ExecCheckRTPerms(List *rangeTable, bool ereport_on_violation)
  */
 static bool
 ExecCheckRTEPerms(RangeTblEntry *rte)
-{
+{	StackTrace("ExecCheckRTEPerms");
 	AclMode		requiredPerms;
 	AclMode		relPerms;
 	AclMode		remainingPerms;
@@ -691,7 +691,7 @@ ExecCheckRTEPerms(RangeTblEntry *rte)
 static bool
 ExecCheckRTEPermsModified(Oid relOid, Oid userid, Bitmapset *modifiedCols,
 						  AclMode requiredPerms)
-{
+{	StackTrace("ExecCheckRTEPermsModified");
 	int			col = -1;
 
 	/*
@@ -737,7 +737,7 @@ ExecCheckRTEPermsModified(Oid relOid, Oid userid, Bitmapset *modifiedCols,
  */
 static void
 ExecCheckXactReadOnly(PlannedStmt *plannedstmt)
-{
+{	StackTrace("ExecCheckXactReadOnly");
 	ListCell   *l;
 
 	/*
@@ -774,7 +774,7 @@ ExecCheckXactReadOnly(PlannedStmt *plannedstmt)
  */
 static void
 InitPlan(QueryDesc *queryDesc, int eflags)
-{
+{	StackTrace("InitPlan");
 	CmdType		operation = queryDesc->operation;
 	PlannedStmt *plannedstmt = queryDesc->plannedstmt;
 	Plan	   *plan = plannedstmt->planTree;
@@ -1010,7 +1010,7 @@ InitPlan(QueryDesc *queryDesc, int eflags)
  */
 void
 CheckValidResultRel(Relation resultRel, CmdType operation)
-{
+{	StackTrace("CheckValidResultRel");
 	TriggerDesc *trigDesc = resultRel->trigdesc;
 	FdwRoutine *fdwroutine;
 
@@ -1144,7 +1144,7 @@ CheckValidResultRel(Relation resultRel, CmdType operation)
  */
 static void
 CheckValidRowMarkRel(Relation rel, RowMarkType markType)
-{
+{	StackTrace("CheckValidRowMarkRel");
 	FdwRoutine *fdwroutine;
 
 	switch (rel->rd_rel->relkind)
@@ -1211,7 +1211,7 @@ InitResultRelInfo(ResultRelInfo *resultRelInfo,
 				  Relation resultRelationDesc,
 				  Index resultRelationIndex,
 				  int instrument_options)
-{
+{	StackTrace("InitResultRelInfo");
 	MemSet(resultRelInfo, 0, sizeof(ResultRelInfo));
 	resultRelInfo->type = T_ResultRelInfo;
 	resultRelInfo->ri_RangeTableIndex = resultRelationIndex;
@@ -1266,7 +1266,7 @@ InitResultRelInfo(ResultRelInfo *resultRelInfo,
  */
 ResultRelInfo *
 ExecGetTriggerResultRel(EState *estate, Oid relid)
-{
+{	StackTrace("ExecGetTriggerResultRel");
 	ResultRelInfo *rInfo;
 	int			nr;
 	ListCell   *l;
@@ -1355,7 +1355,7 @@ ExecGetTriggerResultRel(EState *estate, Oid relid)
  */
 bool
 ExecContextForcesOids(PlanState *planstate, bool *hasoids)
-{
+{	StackTrace("ExecContextForcesOids");
 	ResultRelInfo *ri = planstate->state->es_result_relation_info;
 
 	if (ri != NULL)
@@ -1391,7 +1391,7 @@ ExecContextForcesOids(PlanState *planstate, bool *hasoids)
  */
 static void
 ExecPostprocessPlan(EState *estate)
-{
+{	StackTrace("ExecPostprocessPlan");
 	ListCell   *lc;
 
 	/*
@@ -1437,7 +1437,7 @@ ExecPostprocessPlan(EState *estate)
  */
 static void
 ExecEndPlan(PlanState *planstate, EState *estate)
-{
+{	StackTrace("ExecEndPlan");
 	ResultRelInfo *resultRelInfo;
 	int			i;
 	ListCell   *l;
@@ -1521,7 +1521,7 @@ ExecutePlan(EState *estate,
 			long numberTuples,
 			ScanDirection direction,
 			DestReceiver *dest)
-{
+{	StackTrace("ExecutePlan");
 	TupleTableSlot *slot;
 	long		current_tuple_count;
 
@@ -1601,7 +1601,7 @@ ExecutePlan(EState *estate,
 static const char *
 ExecRelCheck(ResultRelInfo *resultRelInfo,
 			 TupleTableSlot *slot, EState *estate)
-{
+{	StackTrace("ExecRelCheck");
 	Relation	rel = resultRelInfo->ri_RelationDesc;
 	int			ncheck = rel->rd_att->constr->num_check;
 	ConstrCheck *check = rel->rd_att->constr->check;
@@ -1660,7 +1660,7 @@ ExecRelCheck(ResultRelInfo *resultRelInfo,
 void
 ExecConstraints(ResultRelInfo *resultRelInfo,
 				TupleTableSlot *slot, EState *estate)
-{
+{	StackTrace("ExecConstraints");
 	Relation	rel = resultRelInfo->ri_RelationDesc;
 	TupleDesc	tupdesc = RelationGetDescr(rel);
 	TupleConstr *constr = tupdesc->constr;
@@ -1739,7 +1739,7 @@ ExecConstraints(ResultRelInfo *resultRelInfo,
 void
 ExecWithCheckOptions(WCOKind kind, ResultRelInfo *resultRelInfo,
 					 TupleTableSlot *slot, EState *estate)
-{
+{	StackTrace("ExecWithCheckOptions");
 	Relation	rel = resultRelInfo->ri_RelationDesc;
 	TupleDesc	tupdesc = RelationGetDescr(rel);
 	ExprContext *econtext;
@@ -1859,7 +1859,7 @@ ExecBuildSlotValueDescription(Oid reloid,
 							  TupleDesc tupdesc,
 							  Bitmapset *modifiedCols,
 							  int maxfieldlen)
-{
+{	StackTrace("ExecBuildSlotValueDescription");
 	StringInfoData buf;
 	StringInfoData collist;
 	bool		write_comma = false;
@@ -1991,7 +1991,7 @@ ExecBuildSlotValueDescription(Oid reloid,
  */
 LockTupleMode
 ExecUpdateLockMode(EState *estate, ResultRelInfo *relinfo)
-{
+{	StackTrace("ExecUpdateLockMode");
 	Bitmapset  *keyCols;
 	Bitmapset  *updatedCols;
 
@@ -2017,7 +2017,7 @@ ExecUpdateLockMode(EState *estate, ResultRelInfo *relinfo)
  */
 ExecRowMark *
 ExecFindRowMark(EState *estate, Index rti, bool missing_ok)
-{
+{	StackTrace("ExecFindRowMark");
 	ListCell   *lc;
 
 	foreach(lc, estate->es_rowMarks)
@@ -2041,7 +2041,7 @@ ExecFindRowMark(EState *estate, Index rti, bool missing_ok)
  */
 ExecAuxRowMark *
 ExecBuildAuxRowMark(ExecRowMark *erm, List *targetlist)
-{
+{	StackTrace("ExecBuildAuxRowMark");
 	ExecAuxRowMark *aerm = (ExecAuxRowMark *) palloc0(sizeof(ExecAuxRowMark));
 	char		resname[32];
 
@@ -2114,7 +2114,7 @@ TupleTableSlot *
 EvalPlanQual(EState *estate, EPQState *epqstate,
 			 Relation relation, Index rti, int lockmode,
 			 ItemPointer tid, TransactionId priorXmax)
-{
+{	StackTrace("EvalPlanQual");
 	TupleTableSlot *slot;
 	HeapTuple	copyTuple;
 
@@ -2201,7 +2201,7 @@ HeapTuple
 EvalPlanQualFetch(EState *estate, Relation relation, int lockmode,
 				  LockWaitPolicy wait_policy,
 				  ItemPointer tid, TransactionId priorXmax)
-{
+{	StackTrace("EvalPlanQualFetch");
 	HeapTuple	copyTuple = NULL;
 	HeapTupleData tuple;
 	SnapshotData SnapshotDirty;
@@ -2429,7 +2429,7 @@ EvalPlanQualFetch(EState *estate, Relation relation, int lockmode,
 void
 EvalPlanQualInit(EPQState *epqstate, EState *estate,
 				 Plan *subplan, List *auxrowmarks, int epqParam)
-{
+{	StackTrace("EvalPlanQualInit");
 	/* Mark the EPQ state inactive */
 	epqstate->estate = NULL;
 	epqstate->planstate = NULL;
@@ -2447,7 +2447,7 @@ EvalPlanQualInit(EPQState *epqstate, EState *estate,
  */
 void
 EvalPlanQualSetPlan(EPQState *epqstate, Plan *subplan, List *auxrowmarks)
-{
+{	StackTrace("EvalPlanQualSetPlan");
 	/* If we have a live EPQ query, shut it down */
 	EvalPlanQualEnd(epqstate);
 	/* And set/change the plan pointer */
@@ -2463,7 +2463,7 @@ EvalPlanQualSetPlan(EPQState *epqstate, Plan *subplan, List *auxrowmarks)
  */
 void
 EvalPlanQualSetTuple(EPQState *epqstate, Index rti, HeapTuple tuple)
-{
+{	StackTrace("EvalPlanQualSetTuple");
 	EState	   *estate = epqstate->estate;
 
 	Assert(rti > 0);
@@ -2483,7 +2483,7 @@ EvalPlanQualSetTuple(EPQState *epqstate, Index rti, HeapTuple tuple)
  */
 HeapTuple
 EvalPlanQualGetTuple(EPQState *epqstate, Index rti)
-{
+{	StackTrace("EvalPlanQualGetTuple");
 	EState	   *estate = epqstate->estate;
 
 	Assert(rti > 0);
@@ -2498,7 +2498,7 @@ EvalPlanQualGetTuple(EPQState *epqstate, Index rti)
  */
 void
 EvalPlanQualFetchRowMarks(EPQState *epqstate)
-{
+{	StackTrace("EvalPlanQualFetchRowMarks");
 	ListCell   *l;
 
 	Assert(epqstate->origslot != NULL);
@@ -2633,7 +2633,7 @@ EvalPlanQualFetchRowMarks(EPQState *epqstate)
  */
 TupleTableSlot *
 EvalPlanQualNext(EPQState *epqstate)
-{
+{	StackTrace("EvalPlanQualNext");
 	MemoryContext oldcontext;
 	TupleTableSlot *slot;
 
@@ -2649,7 +2649,7 @@ EvalPlanQualNext(EPQState *epqstate)
  */
 void
 EvalPlanQualBegin(EPQState *epqstate, EState *parentestate)
-{
+{	StackTrace("EvalPlanQualBegin");
 	EState	   *estate = epqstate->estate;
 
 	if (estate == NULL)
@@ -2699,7 +2699,7 @@ EvalPlanQualBegin(EPQState *epqstate, EState *parentestate)
  */
 static void
 EvalPlanQualStart(EPQState *epqstate, EState *parentestate, Plan *planTree)
-{
+{	StackTrace("EvalPlanQualStart");
 	EState	   *estate;
 	int			rtsize;
 	MemoryContext oldcontext;
@@ -2839,7 +2839,7 @@ EvalPlanQualStart(EPQState *epqstate, EState *parentestate, Plan *planTree)
  */
 void
 EvalPlanQualEnd(EPQState *epqstate)
-{
+{	StackTrace("EvalPlanQualEnd");
 	EState	   *estate = epqstate->estate;
 	MemoryContext oldcontext;
 	ListCell   *l;

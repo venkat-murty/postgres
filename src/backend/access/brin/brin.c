@@ -81,7 +81,7 @@ static void union_tuples(BrinDesc *bdesc, BrinMemTuple *a,
  */
 Datum
 brininsert(PG_FUNCTION_ARGS)
-{
+{	StackTrace("brininsert");
 	Relation	idxRel = (Relation) PG_GETARG_POINTER(0);
 	Datum	   *values = (Datum *) PG_GETARG_POINTER(1);
 	bool	   *nulls = (bool *) PG_GETARG_POINTER(2);
@@ -237,7 +237,7 @@ brininsert(PG_FUNCTION_ARGS)
  */
 Datum
 brinbeginscan(PG_FUNCTION_ARGS)
-{
+{	StackTrace("brinbeginscan");
 	Relation	r = (Relation) PG_GETARG_POINTER(0);
 	int			nkeys = PG_GETARG_INT32(1);
 	int			norderbys = PG_GETARG_INT32(2);
@@ -268,7 +268,7 @@ brinbeginscan(PG_FUNCTION_ARGS)
  */
 Datum
 bringetbitmap(PG_FUNCTION_ARGS)
-{
+{	StackTrace("bringetbitmap");
 	IndexScanDesc scan = (IndexScanDesc) PG_GETARG_POINTER(0);
 	TIDBitmap  *tbm = (TIDBitmap *) PG_GETARG_POINTER(1);
 	Relation	idxRel = scan->indexRelation;
@@ -458,7 +458,7 @@ bringetbitmap(PG_FUNCTION_ARGS)
  */
 Datum
 brinrescan(PG_FUNCTION_ARGS)
-{
+{	StackTrace("brinrescan");
 	IndexScanDesc scan = (IndexScanDesc) PG_GETARG_POINTER(0);
 	ScanKey		scankey = (ScanKey) PG_GETARG_POINTER(1);
 
@@ -476,7 +476,7 @@ brinrescan(PG_FUNCTION_ARGS)
  */
 Datum
 brinendscan(PG_FUNCTION_ARGS)
-{
+{	StackTrace("brinendscan");
 	IndexScanDesc scan = (IndexScanDesc) PG_GETARG_POINTER(0);
 	BrinOpaque *opaque = (BrinOpaque *) scan->opaque;
 
@@ -489,14 +489,14 @@ brinendscan(PG_FUNCTION_ARGS)
 
 Datum
 brinmarkpos(PG_FUNCTION_ARGS)
-{
+{	StackTrace("brinmarkpos");
 	elog(ERROR, "BRIN does not support mark/restore");
 	PG_RETURN_VOID();
 }
 
 Datum
 brinrestrpos(PG_FUNCTION_ARGS)
-{
+{	StackTrace("brinrestrpos");
 	elog(ERROR, "BRIN does not support mark/restore");
 	PG_RETURN_VOID();
 }
@@ -515,7 +515,7 @@ brinbuildCallback(Relation index,
 				  bool *isnull,
 				  bool tupleIsAlive,
 				  void *brstate)
-{
+{	StackTrace("brinbuildCallback");
 	BrinBuildState *state = (BrinBuildState *) brstate;
 	BlockNumber thisblock;
 	int			i;
@@ -572,7 +572,7 @@ brinbuildCallback(Relation index,
  */
 Datum
 brinbuild(PG_FUNCTION_ARGS)
-{
+{	StackTrace("brinbuild");
 	Relation	heap = (Relation) PG_GETARG_POINTER(0);
 	Relation	index = (Relation) PG_GETARG_POINTER(1);
 	IndexInfo  *indexInfo = (IndexInfo *) PG_GETARG_POINTER(2);
@@ -659,7 +659,7 @@ brinbuild(PG_FUNCTION_ARGS)
 
 Datum
 brinbuildempty(PG_FUNCTION_ARGS)
-{
+{	StackTrace("brinbuildempty");
 	Relation	index = (Relation) PG_GETARG_POINTER(0);
 	Buffer		metabuf;
 
@@ -692,7 +692,7 @@ brinbuildempty(PG_FUNCTION_ARGS)
  */
 Datum
 brinbulkdelete(PG_FUNCTION_ARGS)
-{
+{	StackTrace("brinbulkdelete");
 	/* other arguments are not currently used */
 	IndexBulkDeleteResult *stats =
 	(IndexBulkDeleteResult *) PG_GETARG_POINTER(1);
@@ -710,7 +710,7 @@ brinbulkdelete(PG_FUNCTION_ARGS)
  */
 Datum
 brinvacuumcleanup(PG_FUNCTION_ARGS)
-{
+{	StackTrace("brinvacuumcleanup");
 	IndexVacuumInfo *info = (IndexVacuumInfo *) PG_GETARG_POINTER(0);
 	IndexBulkDeleteResult *stats =
 	(IndexBulkDeleteResult *) PG_GETARG_POINTER(1);
@@ -741,7 +741,7 @@ brinvacuumcleanup(PG_FUNCTION_ARGS)
  */
 Datum
 brinoptions(PG_FUNCTION_ARGS)
-{
+{	StackTrace("brinoptions");
 	Datum		reloptions = PG_GETARG_DATUM(0);
 	bool		validate = PG_GETARG_BOOL(1);
 	relopt_value *options;
@@ -774,7 +774,7 @@ brinoptions(PG_FUNCTION_ARGS)
  */
 Datum
 brin_summarize_new_values(PG_FUNCTION_ARGS)
-{
+{	StackTrace("brin_summarize_new_values");
 	Oid			indexoid = PG_GETARG_OID(0);
 	Relation	indexRel;
 	Relation	heapRel;
@@ -797,7 +797,7 @@ brin_summarize_new_values(PG_FUNCTION_ARGS)
  */
 BrinDesc *
 brin_build_desc(Relation rel)
-{
+{	StackTrace("brin_build_desc");
 	BrinOpcInfo **opcinfo;
 	BrinDesc   *bdesc;
 	TupleDesc	tupdesc;
@@ -854,7 +854,7 @@ brin_build_desc(Relation rel)
 
 void
 brin_free_desc(BrinDesc *bdesc)
-{
+{	StackTrace("brin_free_desc");
 	/* make sure the tupdesc is still valid */
 	Assert(bdesc->bd_tupdesc->tdrefcount >= 1);
 	/* no need for retail pfree */
@@ -867,7 +867,7 @@ brin_free_desc(BrinDesc *bdesc)
 static BrinBuildState *
 initialize_brin_buildstate(Relation idxRel, BrinRevmap *revmap,
 						   BlockNumber pagesPerRange)
-{
+{	StackTrace("initialize_brin_buildstate");
 	BrinBuildState *state;
 
 	state = palloc(sizeof(BrinBuildState));
@@ -891,7 +891,7 @@ initialize_brin_buildstate(Relation idxRel, BrinRevmap *revmap,
  */
 static void
 terminate_brin_buildstate(BrinBuildState *state)
-{
+{	StackTrace("terminate_brin_buildstate");
 	/* release the last index buffer used */
 	if (!BufferIsInvalid(state->bs_currentInsertBuf))
 	{
@@ -924,7 +924,7 @@ terminate_brin_buildstate(BrinBuildState *state)
 static void
 summarize_range(IndexInfo *indexInfo, BrinBuildState *state, Relation heapRel,
 				BlockNumber heapBlk)
-{
+{	StackTrace("summarize_range");
 	Buffer		phbuf;
 	BrinTuple  *phtup;
 	Size		phsz;
@@ -1015,7 +1015,7 @@ summarize_range(IndexInfo *indexInfo, BrinBuildState *state, Relation heapRel,
 static void
 brinsummarize(Relation index, Relation heapRel, double *numSummarized,
 			  double *numExisting)
-{
+{	StackTrace("brinsummarize");
 	BrinRevmap *revmap;
 	BrinBuildState *state = NULL;
 	IndexInfo  *indexInfo = NULL;
@@ -1112,7 +1112,7 @@ brinsummarize(Relation index, Relation heapRel, double *numSummarized,
  */
 static void
 form_and_insert_tuple(BrinBuildState *state)
-{
+{	StackTrace("form_and_insert_tuple");
 	BrinTuple  *tup;
 	Size		size;
 
@@ -1132,7 +1132,7 @@ form_and_insert_tuple(BrinBuildState *state)
  */
 static void
 union_tuples(BrinDesc *bdesc, BrinMemTuple *a, BrinTuple *b)
-{
+{	StackTrace("union_tuples");
 	int			keyno;
 	BrinMemTuple *db;
 	MemoryContext cxt;

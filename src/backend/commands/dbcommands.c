@@ -97,7 +97,7 @@ static int	errdetail_busy_db(int notherbackends, int npreparedxacts);
  */
 Oid
 createdb(const CreatedbStmt *stmt)
-{
+{	StackTrace("createdb");
 	HeapScanDesc scan;
 	Relation	rel;
 	Oid			src_dboid;
@@ -710,7 +710,7 @@ createdb(const CreatedbStmt *stmt)
  */
 void
 check_encoding_locale_matches(int encoding, const char *collate, const char *ctype)
-{
+{	StackTrace("check_encoding_locale_matches");
 	int			ctype_encoding = pg_get_encoding_from_locale(ctype, true);
 	int			collate_encoding = pg_get_encoding_from_locale(collate, true);
 
@@ -748,7 +748,7 @@ check_encoding_locale_matches(int encoding, const char *collate, const char *cty
 /* Error cleanup callback for createdb */
 static void
 createdb_failure_callback(int code, Datum arg)
-{
+{	StackTrace("createdb_failure_callback");
 	createdb_failure_params *fparms = (createdb_failure_params *) DatumGetPointer(arg);
 
 	/*
@@ -768,7 +768,7 @@ createdb_failure_callback(int code, Datum arg)
  */
 void
 dropdb(const char *dbname, bool missing_ok)
-{
+{	StackTrace("dropdb");
 	Oid			db_id;
 	bool		db_istemplate;
 	Relation	pgdbrel;
@@ -941,7 +941,7 @@ dropdb(const char *dbname, bool missing_ok)
  */
 ObjectAddress
 RenameDatabase(const char *oldname, const char *newname)
-{
+{	StackTrace("RenameDatabase");
 	Oid			db_id;
 	HeapTuple	newtup;
 	Relation	rel;
@@ -1031,7 +1031,7 @@ RenameDatabase(const char *oldname, const char *newname)
  */
 static void
 movedb(const char *dbname, const char *tblspcname)
-{
+{	StackTrace("movedb");
 	Oid			db_id;
 	Relation	pgdbrel;
 	int			notherbackends;
@@ -1349,7 +1349,7 @@ movedb(const char *dbname, const char *tblspcname)
 /* Error cleanup callback for movedb */
 static void
 movedb_failure_callback(int code, Datum arg)
-{
+{	StackTrace("movedb_failure_callback");
 	movedb_failure_params *fparms = (movedb_failure_params *) DatumGetPointer(arg);
 	char	   *dstpath;
 
@@ -1365,7 +1365,7 @@ movedb_failure_callback(int code, Datum arg)
  */
 Oid
 AlterDatabase(AlterDatabaseStmt *stmt, bool isTopLevel)
-{
+{	StackTrace("AlterDatabase");
 	Relation	rel;
 	Oid			dboid;
 	HeapTuple	tuple,
@@ -1540,7 +1540,7 @@ AlterDatabase(AlterDatabaseStmt *stmt, bool isTopLevel)
  */
 Oid
 AlterDatabaseSet(AlterDatabaseSetStmt *stmt)
-{
+{	StackTrace("AlterDatabaseSet");
 	Oid			datid = get_database_oid(stmt->dbname, false);
 
 	/*
@@ -1566,7 +1566,7 @@ AlterDatabaseSet(AlterDatabaseSetStmt *stmt)
  */
 ObjectAddress
 AlterDatabaseOwner(const char *dbname, Oid newOwnerId)
-{
+{	StackTrace("AlterDatabaseOwner");
 	Oid			db_id;
 	HeapTuple	tuple;
 	Relation	rel;
@@ -1696,7 +1696,7 @@ get_db_info(const char *name, LOCKMODE lockmode,
 			Oid *dbLastSysOidP, TransactionId *dbFrozenXidP,
 			MultiXactId *dbMinMultiP,
 			Oid *dbTablespace, char **dbCollate, char **dbCtype)
-{
+{	StackTrace("get_db_info");
 	bool		result = false;
 	Relation	relation;
 
@@ -1812,7 +1812,7 @@ get_db_info(const char *name, LOCKMODE lockmode,
 /* Check if current user has createdb privileges */
 static bool
 have_createdb_privilege(void)
-{
+{	StackTrace("have_createdb_privilege");
 	bool		result = false;
 	HeapTuple	utup;
 
@@ -1837,7 +1837,7 @@ have_createdb_privilege(void)
  */
 static void
 remove_dbtablespaces(Oid db_id)
-{
+{	StackTrace("remove_dbtablespaces");
 	Relation	rel;
 	HeapScanDesc scan;
 	HeapTuple	tuple;
@@ -1903,7 +1903,7 @@ remove_dbtablespaces(Oid db_id)
  */
 static bool
 check_db_file_conflict(Oid db_id)
-{
+{	StackTrace("check_db_file_conflict");
 	bool		result = false;
 	Relation	rel;
 	HeapScanDesc scan;
@@ -1945,7 +1945,7 @@ check_db_file_conflict(Oid db_id)
  */
 static int
 errdetail_busy_db(int notherbackends, int npreparedxacts)
-{
+{	StackTrace("errdetail_busy_db");
 	if (notherbackends > 0 && npreparedxacts > 0)
 
 		/*
@@ -1975,7 +1975,7 @@ errdetail_busy_db(int notherbackends, int npreparedxacts)
  */
 Oid
 get_database_oid(const char *dbname, bool missing_ok)
-{
+{	StackTrace("get_database_oid");
 	Relation	pg_database;
 	ScanKeyData entry[1];
 	SysScanDesc scan;
@@ -2022,7 +2022,7 @@ get_database_oid(const char *dbname, bool missing_ok)
  */
 char *
 get_database_name(Oid dbid)
-{
+{	StackTrace("get_database_name");
 	HeapTuple	dbtuple;
 	char	   *result;
 
@@ -2043,7 +2043,7 @@ get_database_name(Oid dbid)
  */
 void
 dbase_redo(XLogReaderState *record)
-{
+{	StackTrace("dbase_redo");
 	uint8		info = XLogRecGetInfo(record) & ~XLR_INFO_MASK;
 
 	/* Backup blocks are not used in dbase records */

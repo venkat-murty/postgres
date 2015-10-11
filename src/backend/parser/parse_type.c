@@ -57,7 +57,7 @@ static int32 typenameTypeMod(ParseState *pstate, const TypeName *typeName,
 Type
 LookupTypeName(ParseState *pstate, const TypeName *typeName,
 			   int32 *typmod_p, bool missing_ok)
-{
+{	StackTrace("LookupTypeName");
 	Oid			typoid;
 	HeapTuple	tup;
 	int32		typmod;
@@ -214,7 +214,7 @@ LookupTypeName(ParseState *pstate, const TypeName *typeName,
  */
 Oid
 LookupTypeNameOid(ParseState *pstate, const TypeName *typeName, bool missing_ok)
-{
+{	StackTrace("LookupTypeNameOid");
 	Oid			typoid;
 	Type		tup;
 
@@ -246,7 +246,7 @@ LookupTypeNameOid(ParseState *pstate, const TypeName *typeName, bool missing_ok)
  */
 Type
 typenameType(ParseState *pstate, const TypeName *typeName, int32 *typmod_p)
-{
+{	StackTrace("typenameType");
 	Type		tup;
 
 	tup = LookupTypeName(pstate, typeName, typmod_p, false);
@@ -273,7 +273,7 @@ typenameType(ParseState *pstate, const TypeName *typeName, int32 *typmod_p)
  */
 Oid
 typenameTypeId(ParseState *pstate, const TypeName *typeName)
-{
+{	StackTrace("typenameTypeId");
 	Oid			typoid;
 	Type		tup;
 
@@ -293,7 +293,7 @@ typenameTypeId(ParseState *pstate, const TypeName *typeName)
 void
 typenameTypeIdAndMod(ParseState *pstate, const TypeName *typeName,
 					 Oid *typeid_p, int32 *typmod_p)
-{
+{	StackTrace("typenameTypeIdAndMod");
 	Type		tup;
 
 	tup = typenameType(pstate, typeName, typmod_p);
@@ -314,7 +314,7 @@ typenameTypeIdAndMod(ParseState *pstate, const TypeName *typeName,
  */
 static int32
 typenameTypeMod(ParseState *pstate, const TypeName *typeName, Type typ)
-{
+{	StackTrace("typenameTypeMod");
 	int32		result;
 	Oid			typmodin;
 	Datum	   *datums;
@@ -419,7 +419,7 @@ typenameTypeMod(ParseState *pstate, const TypeName *typeName, Type typ)
  */
 static void
 appendTypeNameToBuffer(const TypeName *typeName, StringInfo string)
-{
+{	StackTrace("appendTypeNameToBuffer");
 	if (typeName->names != NIL)
 	{
 		/* Emit possibly-qualified name as-is */
@@ -458,7 +458,7 @@ appendTypeNameToBuffer(const TypeName *typeName, StringInfo string)
  */
 char *
 TypeNameToString(const TypeName *typeName)
-{
+{	StackTrace("TypeNameToString");
 	StringInfoData string;
 
 	initStringInfo(&string);
@@ -472,7 +472,7 @@ TypeNameToString(const TypeName *typeName)
  */
 char *
 TypeNameListToString(List *typenames)
-{
+{	StackTrace("TypeNameListToString");
 	StringInfoData string;
 	ListCell   *l;
 
@@ -496,7 +496,7 @@ TypeNameListToString(List *typenames)
  */
 Oid
 LookupCollation(ParseState *pstate, List *collnames, int location)
-{
+{	StackTrace("LookupCollation");
 	Oid			colloid;
 	ParseCallbackState pcbstate;
 
@@ -521,7 +521,7 @@ LookupCollation(ParseState *pstate, List *collnames, int location)
  */
 Oid
 GetColumnDefCollation(ParseState *pstate, ColumnDef *coldef, Oid typeOid)
-{
+{	StackTrace("GetColumnDefCollation");
 	Oid			result;
 	Oid			typcollation = get_typcollation(typeOid);
 	int			location = coldef->location;
@@ -559,7 +559,7 @@ GetColumnDefCollation(ParseState *pstate, ColumnDef *coldef, Oid typeOid)
 /* NB: caller must ReleaseSysCache the type tuple when done with it */
 Type
 typeidType(Oid id)
-{
+{	StackTrace("typeidType");
 	HeapTuple	tup;
 
 	tup = SearchSysCache1(TYPEOID, ObjectIdGetDatum(id));
@@ -571,7 +571,7 @@ typeidType(Oid id)
 /* given type (as type struct), return the type OID */
 Oid
 typeTypeId(Type tp)
-{
+{	StackTrace("typeTypeId");
 	if (tp == NULL)				/* probably useless */
 		elog(ERROR, "typeTypeId() called with NULL type struct");
 	return HeapTupleGetOid(tp);
@@ -580,7 +580,7 @@ typeTypeId(Type tp)
 /* given type (as type struct), return the length of type */
 int16
 typeLen(Type t)
-{
+{	StackTrace("typeLen");
 	Form_pg_type typ;
 
 	typ = (Form_pg_type) GETSTRUCT(t);
@@ -590,7 +590,7 @@ typeLen(Type t)
 /* given type (as type struct), return its 'byval' attribute */
 bool
 typeByVal(Type t)
-{
+{	StackTrace("typeByVal");
 	Form_pg_type typ;
 
 	typ = (Form_pg_type) GETSTRUCT(t);
@@ -600,7 +600,7 @@ typeByVal(Type t)
 /* given type (as type struct), return the type's name */
 char *
 typeTypeName(Type t)
-{
+{	StackTrace("typeTypeName");
 	Form_pg_type typ;
 
 	typ = (Form_pg_type) GETSTRUCT(t);
@@ -611,7 +611,7 @@ typeTypeName(Type t)
 /* given type (as type struct), return its 'typrelid' attribute */
 Oid
 typeTypeRelid(Type typ)
-{
+{	StackTrace("typeTypeRelid");
 	Form_pg_type typtup;
 
 	typtup = (Form_pg_type) GETSTRUCT(typ);
@@ -621,7 +621,7 @@ typeTypeRelid(Type typ)
 /* given type (as type struct), return its 'typcollation' attribute */
 Oid
 typeTypeCollation(Type typ)
-{
+{	StackTrace("typeTypeCollation");
 	Form_pg_type typtup;
 
 	typtup = (Form_pg_type) GETSTRUCT(typ);
@@ -635,7 +635,7 @@ typeTypeCollation(Type typ)
  */
 Datum
 stringTypeDatum(Type tp, char *string, int32 atttypmod)
-{
+{	StackTrace("stringTypeDatum");
 	Form_pg_type typform = (Form_pg_type) GETSTRUCT(tp);
 	Oid			typinput = typform->typinput;
 	Oid			typioparam = getTypeIOParam(tp);
@@ -674,7 +674,7 @@ stringTypeDatum(Type tp, char *string, int32 atttypmod)
 /* given a typeid, return the type's typrelid (associated relation, if any) */
 Oid
 typeidTypeRelid(Oid type_id)
-{
+{	StackTrace("typeidTypeRelid");
 	HeapTuple	typeTuple;
 	Form_pg_type type;
 	Oid			result;
@@ -694,7 +694,7 @@ typeidTypeRelid(Oid type_id)
  */
 static void
 pts_error_callback(void *arg)
-{
+{	StackTrace("pts_error_callback");
 	const char *str = (const char *) arg;
 
 	errcontext("invalid type name \"%s\"", str);
@@ -715,7 +715,7 @@ pts_error_callback(void *arg)
  */
 TypeName *
 typeStringToTypeName(const char *str)
-{
+{	StackTrace("typeStringToTypeName");
 	StringInfoData buf;
 	List	   *raw_parsetree_list;
 	SelectStmt *stmt;
@@ -809,7 +809,7 @@ fail:
  */
 void
 parseTypeString(const char *str, Oid *typeid_p, int32 *typmod_p, bool missing_ok)
-{
+{	StackTrace("parseTypeString");
 	TypeName   *typeName;
 	Type		tup;
 

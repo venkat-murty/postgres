@@ -404,7 +404,7 @@ static Datum GetAggInitVal(Datum textInitVal, Oid transtype);
  */
 static void
 initialize_phase(AggState *aggstate, int newphase)
-{
+{	StackTrace("initialize_phase");
 	Assert(newphase == 0 || newphase == aggstate->current_phase + 1);
 
 	/*
@@ -471,7 +471,7 @@ initialize_phase(AggState *aggstate, int newphase)
  */
 static TupleTableSlot *
 fetch_input_tuple(AggState *aggstate)
-{
+{	StackTrace("fetch_input_tuple");
 	TupleTableSlot *slot;
 
 	if (aggstate->sort_in)
@@ -500,7 +500,7 @@ fetch_input_tuple(AggState *aggstate)
 static void
 initialize_aggregate(AggState *aggstate, AggStatePerAgg peraggstate,
 					 AggStatePerGroup pergroupstate)
-{
+{	StackTrace("initialize_aggregate");
 	/*
 	 * Start a fresh sort operation for each DISTINCT/ORDER BY aggregate.
 	 */
@@ -583,7 +583,7 @@ initialize_aggregates(AggState *aggstate,
 					  AggStatePerAgg peragg,
 					  AggStatePerGroup pergroup,
 					  int numReset)
-{
+{	StackTrace("initialize_aggregates");
 	int			aggno;
 	int			numGroupingSets = Max(aggstate->phase->numsets, 1);
 	int			setno = 0;
@@ -623,7 +623,7 @@ static void
 advance_transition_function(AggState *aggstate,
 							AggStatePerAgg peraggstate,
 							AggStatePerGroup pergroupstate)
-{
+{	StackTrace("advance_transition_function");
 	FunctionCallInfo fcinfo = &peraggstate->transfn_fcinfo;
 	MemoryContext oldContext;
 	Datum		newVal;
@@ -727,7 +727,7 @@ advance_transition_function(AggState *aggstate,
  */
 static void
 advance_aggregates(AggState *aggstate, AggStatePerGroup pergroup)
-{
+{	StackTrace("advance_aggregates");
 	int			aggno;
 	int			setno = 0;
 	int			numGroupingSets = Max(aggstate->phase->numsets, 1);
@@ -843,7 +843,7 @@ static void
 process_ordered_aggregate_single(AggState *aggstate,
 								 AggStatePerAgg peraggstate,
 								 AggStatePerGroup pergroupstate)
-{
+{	StackTrace("process_ordered_aggregate_single");
 	Datum		oldVal = (Datum) 0;
 	bool		oldIsNull = true;
 	bool		haveOldVal = false;
@@ -932,7 +932,7 @@ static void
 process_ordered_aggregate_multi(AggState *aggstate,
 								AggStatePerAgg peraggstate,
 								AggStatePerGroup pergroupstate)
-{
+{	StackTrace("process_ordered_aggregate_multi");
 	MemoryContext workcontext = aggstate->tmpcontext->ecxt_per_tuple_memory;
 	FunctionCallInfo fcinfo = &peraggstate->transfn_fcinfo;
 	TupleTableSlot *slot1 = peraggstate->evalslot;
@@ -1015,7 +1015,7 @@ finalize_aggregate(AggState *aggstate,
 				   AggStatePerAgg peraggstate,
 				   AggStatePerGroup pergroupstate,
 				   Datum *resultVal, bool *resultIsNull)
-{
+{	StackTrace("finalize_aggregate");
 	FunctionCallInfoData fcinfo;
 	bool		anynull = false;
 	MemoryContext oldContext;
@@ -1130,7 +1130,7 @@ finalize_aggregate(AggState *aggstate,
  */
 static void
 prepare_projection_slot(AggState *aggstate, TupleTableSlot *slot, int currentSet)
-{
+{	StackTrace("prepare_projection_slot");
 	if (aggstate->phase->grouped_cols)
 	{
 		Bitmapset  *grouped_cols = aggstate->phase->grouped_cols[currentSet];
@@ -1176,7 +1176,7 @@ finalize_aggregates(AggState *aggstate,
 					AggStatePerAgg peragg,
 					AggStatePerGroup pergroup,
 					int currentSet)
-{
+{	StackTrace("finalize_aggregates");
 	ExprContext *econtext = aggstate->ss.ps.ps_ExprContext;
 	Datum	   *aggvalues = econtext->ecxt_aggvalues;
 	bool	   *aggnulls = econtext->ecxt_aggnulls;
@@ -1220,7 +1220,7 @@ finalize_aggregates(AggState *aggstate,
  */
 static TupleTableSlot *
 project_aggregates(AggState *aggstate)
-{
+{	StackTrace("project_aggregates");
 	ExprContext *econtext = aggstate->ss.ps.ps_ExprContext;
 
 	/*
@@ -1257,7 +1257,7 @@ project_aggregates(AggState *aggstate)
  */
 static Bitmapset *
 find_unaggregated_cols(AggState *aggstate)
-{
+{	StackTrace("find_unaggregated_cols");
 	Agg		   *node = (Agg *) aggstate->ss.ps.plan;
 	Bitmapset  *colnos;
 
@@ -1271,7 +1271,7 @@ find_unaggregated_cols(AggState *aggstate)
 
 static bool
 find_unaggregated_cols_walker(Node *node, Bitmapset **colnos)
-{
+{	StackTrace("find_unaggregated_cols_walker");
 	if (node == NULL)
 		return false;
 	if (IsA(node, Var))
@@ -1300,7 +1300,7 @@ find_unaggregated_cols_walker(Node *node, Bitmapset **colnos)
  */
 static void
 build_hash_table(AggState *aggstate)
-{
+{	StackTrace("build_hash_table");
 	Agg		   *node = (Agg *) aggstate->ss.ps.plan;
 	MemoryContext tmpmem = aggstate->tmpcontext->ecxt_per_tuple_memory;
 	Size		entrysize;
@@ -1348,7 +1348,7 @@ build_hash_table(AggState *aggstate)
  */
 static List *
 find_hash_columns(AggState *aggstate)
-{
+{	StackTrace("find_hash_columns");
 	Agg		   *node = (Agg *) aggstate->ss.ps.plan;
 	Bitmapset  *colnos;
 	List	   *collist;
@@ -1376,7 +1376,7 @@ find_hash_columns(AggState *aggstate)
  */
 Size
 hash_agg_entry_size(int numAggs)
-{
+{	StackTrace("hash_agg_entry_size");
 	Size		entrysize;
 
 	/* This must match build_hash_table */
@@ -1396,7 +1396,7 @@ hash_agg_entry_size(int numAggs)
  */
 static AggHashEntry
 lookup_hash_entry(AggState *aggstate, TupleTableSlot *inputslot)
-{
+{	StackTrace("lookup_hash_entry");
 	TupleTableSlot *hashslot = aggstate->hashslot;
 	ListCell   *l;
 	AggHashEntry entry;
@@ -1449,7 +1449,7 @@ lookup_hash_entry(AggState *aggstate, TupleTableSlot *inputslot)
  */
 TupleTableSlot *
 ExecAgg(AggState *node)
-{
+{	StackTrace("ExecAgg");
 	TupleTableSlot *result;
 
 	/*
@@ -1500,7 +1500,7 @@ ExecAgg(AggState *node)
  */
 static TupleTableSlot *
 agg_retrieve_direct(AggState *aggstate)
-{
+{	StackTrace("agg_retrieve_direct");
 	Agg		   *node = aggstate->phase->aggnode;
 	ExprContext *econtext;
 	ExprContext *tmpcontext;
@@ -1821,7 +1821,7 @@ agg_retrieve_direct(AggState *aggstate)
  */
 static void
 agg_fill_hash_table(AggState *aggstate)
-{
+{	StackTrace("agg_fill_hash_table");
 	ExprContext *tmpcontext;
 	AggHashEntry entry;
 	TupleTableSlot *outerslot;
@@ -1865,7 +1865,7 @@ agg_fill_hash_table(AggState *aggstate)
  */
 static TupleTableSlot *
 agg_retrieve_hash_table(AggState *aggstate)
-{
+{	StackTrace("agg_retrieve_hash_table");
 	ExprContext *econtext;
 	AggStatePerAgg peragg;
 	AggStatePerGroup pergroup;
@@ -1943,7 +1943,7 @@ agg_retrieve_hash_table(AggState *aggstate)
  */
 AggState *
 ExecInitAgg(Agg *node, EState *estate, int eflags)
-{
+{	StackTrace("ExecInitAgg");
 	AggState   *aggstate;
 	AggStatePerAgg peragg;
 	Plan	   *outerPlan;
@@ -2582,7 +2582,7 @@ ExecInitAgg(Agg *node, EState *estate, int eflags)
 
 static Datum
 GetAggInitVal(Datum textInitVal, Oid transtype)
-{
+{	StackTrace("GetAggInitVal");
 	Oid			typinput,
 				typioparam;
 	char	   *strInitVal;
@@ -2598,7 +2598,7 @@ GetAggInitVal(Datum textInitVal, Oid transtype)
 
 void
 ExecEndAgg(AggState *node)
-{
+{	StackTrace("ExecEndAgg");
 	PlanState  *outerPlan;
 	int			aggno;
 	int			numGroupingSets = Max(node->maxsets, 1);
@@ -2642,7 +2642,7 @@ ExecEndAgg(AggState *node)
 
 void
 ExecReScanAgg(AggState *node)
-{
+{	StackTrace("ExecReScanAgg");
 	ExprContext *econtext = node->ss.ps.ps_ExprContext;
 	PlanState  *outerPlan = outerPlanState(node);
 	Agg		   *aggnode = (Agg *) node->ss.ps.plan;
@@ -2771,7 +2771,7 @@ ExecReScanAgg(AggState *node)
  */
 int
 AggCheckCallContext(FunctionCallInfo fcinfo, MemoryContext *aggcontext)
-{
+{	StackTrace("AggCheckCallContext");
 	if (fcinfo->context && IsA(fcinfo->context, AggState))
 	{
 		if (aggcontext)
@@ -2808,7 +2808,7 @@ AggCheckCallContext(FunctionCallInfo fcinfo, MemoryContext *aggcontext)
  */
 Aggref *
 AggGetAggref(FunctionCallInfo fcinfo)
-{
+{	StackTrace("AggGetAggref");
 	if (fcinfo->context && IsA(fcinfo->context, AggState))
 	{
 		AggStatePerAgg curperagg = ((AggState *) fcinfo->context)->curperagg;
@@ -2831,7 +2831,7 @@ AggGetAggref(FunctionCallInfo fcinfo)
  */
 MemoryContext
 AggGetTempMemoryContext(FunctionCallInfo fcinfo)
-{
+{	StackTrace("AggGetTempMemoryContext");
 	if (fcinfo->context && IsA(fcinfo->context, AggState))
 	{
 		AggState   *aggstate = (AggState *) fcinfo->context;
@@ -2860,7 +2860,7 @@ void
 AggRegisterCallback(FunctionCallInfo fcinfo,
 					ExprContextCallbackFunction func,
 					Datum arg)
-{
+{	StackTrace("AggRegisterCallback");
 	if (fcinfo->context && IsA(fcinfo->context, AggState))
 	{
 		AggState   *aggstate = (AggState *) fcinfo->context;
@@ -2886,7 +2886,7 @@ AggRegisterCallback(FunctionCallInfo fcinfo,
  */
 Datum
 aggregate_dummy(PG_FUNCTION_ARGS)
-{
+{	StackTrace("aggregate_dummy");
 	elog(ERROR, "aggregate function %u called as normal function",
 		 fcinfo->flinfo->fn_oid);
 	return (Datum) 0;			/* keep compiler quiet */

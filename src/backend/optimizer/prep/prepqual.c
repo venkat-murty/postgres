@@ -71,7 +71,7 @@ static Expr *process_duplicate_ors(List *orlist);
  */
 Node *
 negate_clause(Node *node)
-{
+{	StackTrace("negate_clause");
 	if (node == NULL)			/* should not happen */
 		elog(ERROR, "can't negate an empty subexpression");
 	switch (nodeTag(node))
@@ -284,7 +284,7 @@ negate_clause(Node *node)
  */
 Expr *
 canonicalize_qual(Expr *qual)
-{
+{	StackTrace("canonicalize_qual");
 	Expr	   *newqual;
 
 	/* Quick exit for empty qual */
@@ -311,7 +311,7 @@ canonicalize_qual(Expr *qual)
  */
 static List *
 pull_ands(List *andlist)
-{
+{	StackTrace("pull_ands");
 	List	   *out_list = NIL;
 	ListCell   *arg;
 
@@ -343,7 +343,7 @@ pull_ands(List *andlist)
  */
 static List *
 pull_ors(List *orlist)
-{
+{	StackTrace("pull_ors");
 	List	   *out_list = NIL;
 	ListCell   *arg;
 
@@ -405,7 +405,7 @@ pull_ors(List *orlist)
  */
 static Expr *
 find_duplicate_ors(Expr *qual)
-{
+{	StackTrace("find_duplicate_ors");
 	if (or_clause((Node *) qual))
 	{
 		List	   *orlist = NIL;
@@ -494,7 +494,7 @@ find_duplicate_ors(Expr *qual)
  */
 static Expr *
 process_duplicate_ors(List *orlist)
-{
+{	StackTrace("process_duplicate_ors");
 	List	   *reference = NIL;
 	int			num_subclauses = 0;
 	List	   *winners;

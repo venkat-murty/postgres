@@ -37,7 +37,7 @@
  */
 TupleTableSlot *				/* result tuple from subplan */
 ExecMaterial(MaterialState *node)
-{
+{	StackTrace("ExecMaterial");
 	EState	   *estate;
 	ScanDirection dir;
 	bool		forward;
@@ -161,7 +161,7 @@ ExecMaterial(MaterialState *node)
  */
 MaterialState *
 ExecInitMaterial(Material *node, EState *estate, int eflags)
-{
+{	StackTrace("ExecInitMaterial");
 	MaterialState *matstate;
 	Plan	   *outerPlan;
 
@@ -238,7 +238,7 @@ ExecInitMaterial(Material *node, EState *estate, int eflags)
  */
 void
 ExecEndMaterial(MaterialState *node)
-{
+{	StackTrace("ExecEndMaterial");
 	/*
 	 * clean out the tuple table
 	 */
@@ -265,7 +265,7 @@ ExecEndMaterial(MaterialState *node)
  */
 void
 ExecMaterialMarkPos(MaterialState *node)
-{
+{	StackTrace("ExecMaterialMarkPos");
 	Assert(node->eflags & EXEC_FLAG_MARK);
 
 	/*
@@ -293,7 +293,7 @@ ExecMaterialMarkPos(MaterialState *node)
  */
 void
 ExecMaterialRestrPos(MaterialState *node)
-{
+{	StackTrace("ExecMaterialRestrPos");
 	Assert(node->eflags & EXEC_FLAG_MARK);
 
 	/*
@@ -316,7 +316,7 @@ ExecMaterialRestrPos(MaterialState *node)
  */
 void
 ExecReScanMaterial(MaterialState *node)
-{
+{	StackTrace("ExecReScanMaterial");
 	PlanState  *outerPlan = outerPlanState(node);
 
 	ExecClearTuple(node->ss.ps.ps_ResultTupleSlot);

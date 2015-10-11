@@ -97,7 +97,7 @@ static void toast_close_indexes(Relation *toastidxs, int num_indexes,
  */
 struct varlena *
 heap_tuple_fetch_attr(struct varlena * attr)
-{
+{	StackTrace("heap_tuple_fetch_attr");
 	struct varlena *result;
 
 	if (VARATT_IS_EXTERNAL_ONDISK(attr))
@@ -168,7 +168,7 @@ heap_tuple_fetch_attr(struct varlena * attr)
  */
 struct varlena *
 heap_tuple_untoast_attr(struct varlena * attr)
-{
+{	StackTrace("heap_tuple_untoast_attr");
 	if (VARATT_IS_EXTERNAL_ONDISK(attr))
 	{
 		/*
@@ -255,7 +255,7 @@ heap_tuple_untoast_attr(struct varlena * attr)
 struct varlena *
 heap_tuple_untoast_attr_slice(struct varlena * attr,
 							  int32 sliceoffset, int32 slicelength)
-{
+{	StackTrace("heap_tuple_untoast_attr_slice");
 	struct varlena *preslice;
 	struct varlena *result;
 	char	   *attrdata;
@@ -349,7 +349,7 @@ heap_tuple_untoast_attr_slice(struct varlena * attr,
  */
 Size
 toast_raw_datum_size(Datum value)
-{
+{	StackTrace("toast_raw_datum_size");
 	struct varlena *attr = (struct varlena *) DatumGetPointer(value);
 	Size		result;
 
@@ -405,7 +405,7 @@ toast_raw_datum_size(Datum value)
  */
 Size
 toast_datum_size(Datum value)
-{
+{	StackTrace("toast_datum_size");
 	struct varlena *attr = (struct varlena *) DatumGetPointer(value);
 	Size		result;
 
@@ -460,7 +460,7 @@ toast_datum_size(Datum value)
  */
 void
 toast_delete(Relation rel, HeapTuple oldtup)
-{
+{	StackTrace("toast_delete");
 	TupleDesc	tupleDesc;
 	Form_pg_attribute *att;
 	int			numAttrs;
@@ -533,7 +533,7 @@ toast_delete(Relation rel, HeapTuple oldtup)
 HeapTuple
 toast_insert_or_update(Relation rel, HeapTuple newtup, HeapTuple oldtup,
 					   int options)
-{
+{	StackTrace("toast_insert_or_update");
 	HeapTuple	result_tuple;
 	TupleDesc	tupleDesc;
 	Form_pg_attribute *att;
@@ -1080,7 +1080,7 @@ toast_insert_or_update(Relation rel, HeapTuple newtup, HeapTuple oldtup,
  */
 HeapTuple
 toast_flatten_tuple(HeapTuple tup, TupleDesc tupleDesc)
-{
+{	StackTrace("toast_flatten_tuple");
 	HeapTuple	new_tuple;
 	Form_pg_attribute *att = tupleDesc->attrs;
 	int			numAttrs = tupleDesc->natts;
@@ -1185,7 +1185,7 @@ Datum
 toast_flatten_tuple_to_datum(HeapTupleHeader tup,
 							 uint32 tup_len,
 							 TupleDesc tupleDesc)
-{
+{	StackTrace("toast_flatten_tuple_to_datum");
 	HeapTupleHeader new_data;
 	int32		new_header_len;
 	int32		new_data_len;
@@ -1301,7 +1301,7 @@ toast_flatten_tuple_to_datum(HeapTupleHeader tup,
  */
 Datum
 toast_compress_datum(Datum value)
-{
+{	StackTrace("toast_compress_datum");
 	struct varlena *tmp;
 	int32		valsize = VARSIZE_ANY_EXHDR(DatumGetPointer(value));
 	int32		len;
@@ -1359,7 +1359,7 @@ toast_compress_datum(Datum value)
  */
 Oid
 toast_get_valid_index(Oid toastoid, LOCKMODE lock)
-{
+{	StackTrace("toast_get_valid_index");
 	int			num_indexes;
 	int			validIndex;
 	Oid			validIndexOid;
@@ -1399,7 +1399,7 @@ toast_get_valid_index(Oid toastoid, LOCKMODE lock)
 static Datum
 toast_save_datum(Relation rel, Datum value,
 				 struct varlena * oldexternal, int options)
-{
+{	StackTrace("toast_save_datum");
 	Relation	toastrel;
 	Relation   *toastidxs;
 	HeapTuple	toasttup;
@@ -1655,7 +1655,7 @@ toast_save_datum(Relation rel, Datum value,
  */
 static void
 toast_delete_datum(Relation rel, Datum value)
-{
+{	StackTrace("toast_delete_datum");
 	struct varlena *attr = (struct varlena *) DatumGetPointer(value);
 	struct varatt_external toast_pointer;
 	Relation	toastrel;
@@ -1723,7 +1723,7 @@ toast_delete_datum(Relation rel, Datum value)
  */
 static bool
 toastrel_valueid_exists(Relation toastrel, Oid valueid)
-{
+{	StackTrace("toastrel_valueid_exists");
 	bool		result = false;
 	ScanKeyData toastkey;
 	SysScanDesc toastscan;
@@ -1771,7 +1771,7 @@ toastrel_valueid_exists(Relation toastrel, Oid valueid)
  */
 static bool
 toastid_valueid_exists(Oid toastrelid, Oid valueid)
-{
+{	StackTrace("toastid_valueid_exists");
 	bool		result;
 	Relation	toastrel;
 
@@ -1794,7 +1794,7 @@ toastid_valueid_exists(Oid toastrelid, Oid valueid)
  */
 static struct varlena *
 toast_fetch_datum(struct varlena * attr)
-{
+{	StackTrace("toast_fetch_datum");
 	Relation	toastrel;
 	Relation   *toastidxs;
 	ScanKeyData toastkey;
@@ -1963,7 +1963,7 @@ toast_fetch_datum(struct varlena * attr)
  */
 static struct varlena *
 toast_fetch_datum_slice(struct varlena * attr, int32 sliceoffset, int32 length)
-{
+{	StackTrace("toast_fetch_datum_slice");
 	Relation	toastrel;
 	Relation   *toastidxs;
 	ScanKeyData toastkey[3];
@@ -2193,7 +2193,7 @@ toast_fetch_datum_slice(struct varlena * attr, int32 sliceoffset, int32 length)
  */
 static struct varlena *
 toast_decompress_datum(struct varlena * attr)
-{
+{	StackTrace("toast_decompress_datum");
 	struct varlena *result;
 
 	Assert(VARATT_IS_COMPRESSED(attr));
@@ -2225,7 +2225,7 @@ toast_open_indexes(Relation toastrel,
 				   LOCKMODE lock,
 				   Relation **toastidxs,
 				   int *num_indexes)
-{
+{	StackTrace("toast_open_indexes");
 	int			i = 0;
 	int			res = 0;
 	bool		found = false;
@@ -2281,7 +2281,7 @@ toast_open_indexes(Relation toastrel,
  */
 static void
 toast_close_indexes(Relation *toastidxs, int num_indexes, LOCKMODE lock)
-{
+{	StackTrace("toast_close_indexes");
 	int			i;
 
 	/* Close relations and clean up things */

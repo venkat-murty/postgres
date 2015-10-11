@@ -18,7 +18,7 @@
 
 Datum
 tsquery_numnode(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tsquery_numnode");
 	TSQuery		query = PG_GETARG_TSQUERY(0);
 	int			nnode = query->size;
 
@@ -28,7 +28,7 @@ tsquery_numnode(PG_FUNCTION_ARGS)
 
 static QTNode *
 join_tsqueries(TSQuery a, TSQuery b, int8 operator)
-{
+{	StackTrace("join_tsqueries");
 	QTNode	   *res = (QTNode *) palloc0(sizeof(QTNode));
 
 	res->flags |= QTN_NEEDFREE;
@@ -47,7 +47,7 @@ join_tsqueries(TSQuery a, TSQuery b, int8 operator)
 
 Datum
 tsquery_and(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tsquery_and");
 	TSQuery		a = PG_GETARG_TSQUERY_COPY(0);
 	TSQuery		b = PG_GETARG_TSQUERY_COPY(1);
 	QTNode	   *res;
@@ -77,7 +77,7 @@ tsquery_and(PG_FUNCTION_ARGS)
 
 Datum
 tsquery_or(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tsquery_or");
 	TSQuery		a = PG_GETARG_TSQUERY_COPY(0);
 	TSQuery		b = PG_GETARG_TSQUERY_COPY(1);
 	QTNode	   *res;
@@ -107,7 +107,7 @@ tsquery_or(PG_FUNCTION_ARGS)
 
 Datum
 tsquery_not(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tsquery_not");
 	TSQuery		a = PG_GETARG_TSQUERY_COPY(0);
 	QTNode	   *res;
 	TSQuery		query;
@@ -137,7 +137,7 @@ tsquery_not(PG_FUNCTION_ARGS)
 
 static int
 CompareTSQ(TSQuery a, TSQuery b)
-{
+{	StackTrace("CompareTSQ");
 	if (a->size != b->size)
 	{
 		return (a->size < b->size) ? -1 : 1;
@@ -163,7 +163,7 @@ CompareTSQ(TSQuery a, TSQuery b)
 
 Datum
 tsquery_cmp(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tsquery_cmp");
 	TSQuery		a = PG_GETARG_TSQUERY_COPY(0);
 	TSQuery		b = PG_GETARG_TSQUERY_COPY(1);
 	int			res = CompareTSQ(a, b);
@@ -198,7 +198,7 @@ CMPFUNC(tsquery_ne, res != 0);
 
 TSQuerySign
 makeTSQuerySign(TSQuery a)
-{
+{	StackTrace("makeTSQuerySign");
 	int			i;
 	QueryItem  *ptr = GETQUERY(a);
 	TSQuerySign sign = 0;
@@ -215,7 +215,7 @@ makeTSQuerySign(TSQuery a)
 
 static char **
 collectTSQueryValues(TSQuery a, int *nvalues_p)
-{
+{	StackTrace("collectTSQueryValues");
 	QueryItem  *ptr = GETQUERY(a);
 	char	   *operand = GETOPERAND(a);
 	char	  **values;
@@ -246,7 +246,7 @@ collectTSQueryValues(TSQuery a, int *nvalues_p)
 
 static int
 cmp_string(const void *a, const void *b)
-{
+{	StackTrace("cmp_string");
 	const char *sa = *((const char **) a);
 	const char *sb = *((const char **) b);
 
@@ -255,7 +255,7 @@ cmp_string(const void *a, const void *b)
 
 static int
 remove_duplicates(char **strings, int n)
-{
+{	StackTrace("remove_duplicates");
 	if (n <= 1)
 		return n;
 	else
@@ -278,7 +278,7 @@ remove_duplicates(char **strings, int n)
 
 Datum
 tsq_mcontains(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tsq_mcontains");
 	TSQuery		query = PG_GETARG_TSQUERY(0);
 	TSQuery		ex = PG_GETARG_TSQUERY(1);
 	char	  **query_values;
@@ -324,7 +324,7 @@ tsq_mcontains(PG_FUNCTION_ARGS)
 
 Datum
 tsq_mcontained(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tsq_mcontained");
 	PG_RETURN_DATUM(
 					DirectFunctionCall2(
 										tsq_mcontains,

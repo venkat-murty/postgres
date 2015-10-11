@@ -40,7 +40,7 @@
  */
 bool
 check_datestyle(char **newval, void **extra, GucSource source)
-{
+{	StackTrace("check_datestyle");
 	int			newDateStyle = DateStyle;
 	int			newDateOrder = DateOrder;
 	bool		have_style = false;
@@ -232,7 +232,7 @@ check_datestyle(char **newval, void **extra, GucSource source)
  */
 void
 assign_datestyle(const char *newval, void *extra)
-{
+{	StackTrace("assign_datestyle");
 	int		   *myextra = (int *) extra;
 
 	DateStyle = myextra[0];
@@ -249,7 +249,7 @@ assign_datestyle(const char *newval, void *extra)
  */
 bool
 check_timezone(char **newval, void **extra, GucSource source)
-{
+{	StackTrace("check_timezone");
 	pg_tz	   *new_tz;
 	long		gmtoffset;
 	char	   *endptr;
@@ -373,7 +373,7 @@ check_timezone(char **newval, void **extra, GucSource source)
  */
 void
 assign_timezone(const char *newval, void *extra)
-{
+{	StackTrace("assign_timezone");
 	session_timezone = *((pg_tz **) extra);
 }
 
@@ -382,7 +382,7 @@ assign_timezone(const char *newval, void *extra)
  */
 const char *
 show_timezone(void)
-{
+{	StackTrace("show_timezone");
 	const char *tzn;
 
 	/* Always show the zone's canonical name */
@@ -408,7 +408,7 @@ show_timezone(void)
  */
 bool
 check_log_timezone(char **newval, void **extra, GucSource source)
-{
+{	StackTrace("check_log_timezone");
 	pg_tz	   *new_tz;
 
 	/*
@@ -446,7 +446,7 @@ check_log_timezone(char **newval, void **extra, GucSource source)
  */
 void
 assign_log_timezone(const char *newval, void *extra)
-{
+{	StackTrace("assign_log_timezone");
 	log_timezone = *((pg_tz **) extra);
 }
 
@@ -455,7 +455,7 @@ assign_log_timezone(const char *newval, void *extra)
  */
 const char *
 show_log_timezone(void)
-{
+{	StackTrace("show_log_timezone");
 	const char *tzn;
 
 	/* Always show the zone's canonical name */
@@ -484,7 +484,7 @@ show_log_timezone(void)
  */
 bool
 check_transaction_read_only(bool *newval, void **extra, GucSource source)
-{
+{	StackTrace("check_transaction_read_only");
 	if (*newval == false && XactReadOnly && IsTransactionState())
 	{
 		/* Can't go to r/w mode inside a r/o transaction */
@@ -523,7 +523,7 @@ check_transaction_read_only(bool *newval, void **extra, GucSource source)
  */
 bool
 check_XactIsoLevel(char **newval, void **extra, GucSource source)
-{
+{	StackTrace("check_XactIsoLevel");
 	int			newXactIsoLevel;
 
 	if (strcmp(*newval, "serializable") == 0)
@@ -584,13 +584,13 @@ check_XactIsoLevel(char **newval, void **extra, GucSource source)
 
 void
 assign_XactIsoLevel(const char *newval, void *extra)
-{
+{	StackTrace("assign_XactIsoLevel");
 	XactIsoLevel = *((int *) extra);
 }
 
 const char *
 show_XactIsoLevel(void)
-{
+{	StackTrace("show_XactIsoLevel");
 	/* We need this because we don't want to show "default". */
 	switch (XactIsoLevel)
 	{
@@ -613,7 +613,7 @@ show_XactIsoLevel(void)
 
 bool
 check_transaction_deferrable(bool *newval, void **extra, GucSource source)
-{
+{	StackTrace("check_transaction_deferrable");
 	if (IsSubTransaction())
 	{
 		GUC_check_errcode(ERRCODE_ACTIVE_SQL_TRANSACTION);
@@ -641,7 +641,7 @@ check_transaction_deferrable(bool *newval, void **extra, GucSource source)
 
 bool
 check_random_seed(double *newval, void **extra, GucSource source)
-{
+{	StackTrace("check_random_seed");
 	*extra = malloc(sizeof(int));
 	if (!*extra)
 		return false;
@@ -653,7 +653,7 @@ check_random_seed(double *newval, void **extra, GucSource source)
 
 void
 assign_random_seed(double newval, void *extra)
-{
+{	StackTrace("assign_random_seed");
 	/* We'll do this at most once for any setting of the GUC variable */
 	if (*((int *) extra))
 		DirectFunctionCall1(setseed, Float8GetDatum(newval));
@@ -662,7 +662,7 @@ assign_random_seed(double newval, void *extra)
 
 const char *
 show_random_seed(void)
-{
+{	StackTrace("show_random_seed");
 	return "unavailable";
 }
 
@@ -673,7 +673,7 @@ show_random_seed(void)
 
 bool
 check_client_encoding(char **newval, void **extra, GucSource source)
-{
+{	StackTrace("check_client_encoding");
 	int			encoding;
 	const char *canonical_name;
 
@@ -749,7 +749,7 @@ check_client_encoding(char **newval, void **extra, GucSource source)
 
 void
 assign_client_encoding(const char *newval, void *extra)
-{
+{	StackTrace("assign_client_encoding");
 	int			encoding = *((int *) extra);
 
 	/* We do not expect an error if PrepareClientEncoding succeeded */
@@ -771,7 +771,7 @@ typedef struct
 
 bool
 check_session_authorization(char **newval, void **extra, GucSource source)
-{
+{	StackTrace("check_session_authorization");
 	HeapTuple	roleTup;
 	Oid			roleid;
 	bool		is_superuser;
@@ -817,7 +817,7 @@ check_session_authorization(char **newval, void **extra, GucSource source)
 
 void
 assign_session_authorization(const char *newval, void *extra)
-{
+{	StackTrace("assign_session_authorization");
 	role_auth_extra *myextra = (role_auth_extra *) extra;
 
 	/* Do nothing for the boot_val default of NULL */
@@ -839,7 +839,7 @@ extern char *role_string;		/* in guc.c */
 
 bool
 check_role(char **newval, void **extra, GucSource source)
-{
+{	StackTrace("check_role");
 	HeapTuple	roleTup;
 	Oid			roleid;
 	bool		is_superuser;
@@ -901,7 +901,7 @@ check_role(char **newval, void **extra, GucSource source)
 
 void
 assign_role(const char *newval, void *extra)
-{
+{	StackTrace("assign_role");
 	role_auth_extra *myextra = (role_auth_extra *) extra;
 
 	SetCurrentRoleId(myextra->roleid, myextra->is_superuser);
@@ -909,7 +909,7 @@ assign_role(const char *newval, void *extra)
 
 const char *
 show_role(void)
-{
+{	StackTrace("show_role");
 	/*
 	 * Check whether SET ROLE is active; if not return "none".  This is a
 	 * kluge to deal with the fact that SET SESSION AUTHORIZATION logically

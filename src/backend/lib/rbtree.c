@@ -117,7 +117,7 @@ rb_create(Size node_size,
 		  rb_allocfunc allocfunc,
 		  rb_freefunc freefunc,
 		  void *arg)
-{
+{	StackTrace("rb_create");
 	RBTree	   *tree = (RBTree *) palloc(sizeof(RBTree));
 
 	Assert(node_size > sizeof(RBNode));
@@ -139,7 +139,7 @@ rb_create(Size node_size,
 /* Copy the additional data fields from one RBNode to another */
 static inline void
 rb_copy_data(RBTree *rb, RBNode *dest, const RBNode *src)
-{
+{	StackTrace("rb_copy_data");
 	memcpy(dest + 1, src + 1, rb->node_size - sizeof(RBNode));
 }
 
@@ -157,7 +157,7 @@ rb_copy_data(RBTree *rb, RBNode *dest, const RBNode *src)
  */
 RBNode *
 rb_find(RBTree *rb, const RBNode *data)
-{
+{	StackTrace("rb_find");
 	RBNode	   *node = rb->root;
 
 	while (node != RBNIL)
@@ -185,7 +185,7 @@ rb_find(RBTree *rb, const RBNode *data)
  */
 RBNode *
 rb_leftmost(RBTree *rb)
-{
+{	StackTrace("rb_leftmost");
 	RBNode	   *node = rb->root;
 	RBNode	   *leftmost = rb->root;
 
@@ -213,7 +213,7 @@ rb_leftmost(RBTree *rb)
  */
 static void
 rb_rotate_left(RBTree *rb, RBNode *x)
-{
+{	StackTrace("rb_rotate_left");
 	RBNode	   *y = x->right;
 
 	/* establish x->right link */
@@ -250,7 +250,7 @@ rb_rotate_left(RBTree *rb, RBNode *x)
  */
 static void
 rb_rotate_right(RBTree *rb, RBNode *x)
-{
+{	StackTrace("rb_rotate_right");
 	RBNode	   *y = x->left;
 
 	/* establish x->left link */
@@ -294,7 +294,7 @@ rb_rotate_right(RBTree *rb, RBNode *x)
  */
 static void
 rb_insert_fixup(RBTree *rb, RBNode *x)
-{
+{	StackTrace("rb_insert_fixup");
 	/*
 	 * x is always a red node.  Initially, it is the newly inserted node. Each
 	 * iteration of this loop moves it higher up in the tree.
@@ -403,7 +403,7 @@ rb_insert_fixup(RBTree *rb, RBNode *x)
  */
 RBNode *
 rb_insert(RBTree *rb, const RBNode *data, bool *isNew)
-{
+{	StackTrace("rb_insert");
 	RBNode	   *current,
 			   *parent,
 			   *x;
@@ -472,7 +472,7 @@ rb_insert(RBTree *rb, const RBNode *data, bool *isNew)
  */
 static void
 rb_delete_fixup(RBTree *rb, RBNode *x)
-{
+{	StackTrace("rb_delete_fixup");
 	/*
 	 * x is always a black node.  Initially, it is the former child of the
 	 * deleted node.  Each iteration of this loop moves it higher up in the
@@ -570,7 +570,7 @@ rb_delete_fixup(RBTree *rb, RBNode *x)
  */
 static void
 rb_delete_node(RBTree *rb, RBNode *z)
-{
+{	StackTrace("rb_delete_node");
 	RBNode	   *x,
 			   *y;
 
@@ -645,7 +645,7 @@ rb_delete_node(RBTree *rb, RBNode *z)
  */
 void
 rb_delete(RBTree *rb, RBNode *node)
-{
+{	StackTrace("rb_delete");
 	rb_delete_node(rb, node);
 }
 
@@ -674,7 +674,7 @@ rb_delete(RBTree *rb, RBNode *node)
 
 static RBNode *
 rb_left_right_iterator(RBTree *rb)
-{
+{	StackTrace("rb_left_right_iterator");
 	RBNode	   *node = rb->cur;
 
 restart:
@@ -711,7 +711,7 @@ restart:
 
 static RBNode *
 rb_right_left_iterator(RBTree *rb)
-{
+{	StackTrace("rb_right_left_iterator");
 	RBNode	   *node = rb->cur;
 
 restart:
@@ -748,7 +748,7 @@ restart:
 
 static RBNode *
 rb_direct_iterator(RBTree *rb)
-{
+{	StackTrace("rb_direct_iterator");
 	RBNode	   *node = rb->cur;
 
 restart:
@@ -785,7 +785,7 @@ restart:
 
 static RBNode *
 rb_inverted_iterator(RBTree *rb)
-{
+{	StackTrace("rb_inverted_iterator");
 	RBNode	   *node = rb->cur;
 
 restart:
@@ -836,7 +836,7 @@ restart:
  */
 void
 rb_begin_iterate(RBTree *rb, RBOrderControl ctrl)
-{
+{	StackTrace("rb_begin_iterate");
 	rb->cur = rb->root;
 	if (rb->cur != RBNIL)
 		rb->cur->iteratorState = InitialState;
@@ -865,7 +865,7 @@ rb_begin_iterate(RBTree *rb, RBOrderControl ctrl)
  */
 RBNode *
 rb_iterate(RBTree *rb)
-{
+{	StackTrace("rb_iterate");
 	if (rb->cur == RBNIL)
 		return NULL;
 

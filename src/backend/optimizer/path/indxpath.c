@@ -229,7 +229,7 @@ static Const *string_to_const(const char *str, Oid datatype);
  */
 void
 create_index_paths(PlannerInfo *root, RelOptInfo *rel)
-{
+{	StackTrace("create_index_paths");
 	List	   *indexpaths;
 	List	   *bitindexpaths;
 	List	   *bitjoinpaths;
@@ -437,7 +437,7 @@ consider_index_join_clauses(PlannerInfo *root, RelOptInfo *rel,
 							IndexClauseSet *jclauseset,
 							IndexClauseSet *eclauseset,
 							List **bitindexpaths)
-{
+{	StackTrace("consider_index_join_clauses");
 	int			considered_clauses = 0;
 	List	   *considered_relids = NIL;
 	int			indexcol;
@@ -506,7 +506,7 @@ consider_index_join_outer_rels(PlannerInfo *root, RelOptInfo *rel,
 							   List *indexjoinclauses,
 							   int considered_clauses,
 							   List **considered_relids)
-{
+{	StackTrace("consider_index_join_outer_rels");
 	ListCell   *lc;
 
 	/* Examine relids of each joinclause in the given list */
@@ -606,7 +606,7 @@ get_join_index_paths(PlannerInfo *root, RelOptInfo *rel,
 					 List **bitindexpaths,
 					 Relids relids,
 					 List **considered_relids)
-{
+{	StackTrace("get_join_index_paths");
 	IndexClauseSet clauseset;
 	int			indexcol;
 
@@ -679,7 +679,7 @@ get_join_index_paths(PlannerInfo *root, RelOptInfo *rel,
 static bool
 eclass_already_used(EquivalenceClass *parent_ec, Relids oldrelids,
 					List *indexjoinclauses)
-{
+{	StackTrace("eclass_already_used");
 	ListCell   *lc;
 
 	foreach(lc, indexjoinclauses)
@@ -701,7 +701,7 @@ eclass_already_used(EquivalenceClass *parent_ec, Relids oldrelids,
  */
 static bool
 bms_equal_any(Relids relids, List *relids_list)
-{
+{	StackTrace("bms_equal_any");
 	ListCell   *lc;
 
 	foreach(lc, relids_list)
@@ -732,7 +732,7 @@ static void
 get_index_paths(PlannerInfo *root, RelOptInfo *rel,
 				IndexOptInfo *index, IndexClauseSet *clauses,
 				List **bitindexpaths)
-{
+{	StackTrace("get_index_paths");
 	List	   *indexpaths;
 	bool		skip_nonnative_saop = false;
 	bool		skip_lower_saop = false;
@@ -857,7 +857,7 @@ build_index_paths(PlannerInfo *root, RelOptInfo *rel,
 				  ScanTypeControl scantype,
 				  bool *skip_nonnative_saop,
 				  bool *skip_lower_saop)
-{
+{	StackTrace("build_index_paths");
 	List	   *result = NIL;
 	IndexPath  *ipath;
 	List	   *index_clauses;
@@ -1102,7 +1102,7 @@ build_index_paths(PlannerInfo *root, RelOptInfo *rel,
 static List *
 build_paths_for_OR(PlannerInfo *root, RelOptInfo *rel,
 				   List *clauses, List *other_clauses)
-{
+{	StackTrace("build_paths_for_OR");
 	List	   *result = NIL;
 	List	   *all_clauses = NIL;		/* not computed till needed */
 	ListCell   *lc;
@@ -1198,7 +1198,7 @@ build_paths_for_OR(PlannerInfo *root, RelOptInfo *rel,
 static List *
 generate_bitmap_or_paths(PlannerInfo *root, RelOptInfo *rel,
 						 List *clauses, List *other_clauses)
-{
+{	StackTrace("generate_bitmap_or_paths");
 	List	   *result = NIL;
 	List	   *all_clauses;
 	ListCell   *lc;
@@ -1305,7 +1305,7 @@ generate_bitmap_or_paths(PlannerInfo *root, RelOptInfo *rel,
  */
 static Path *
 choose_bitmap_and(PlannerInfo *root, RelOptInfo *rel, List *paths)
-{
+{	StackTrace("choose_bitmap_and");
 	int			npaths = list_length(paths);
 	PathClauseUsage **pathinfoarray;
 	PathClauseUsage *pathinfo;
@@ -1505,7 +1505,7 @@ choose_bitmap_and(PlannerInfo *root, RelOptInfo *rel, List *paths)
 /* qsort comparator to sort in increasing index access cost order */
 static int
 path_usage_comparator(const void *a, const void *b)
-{
+{	StackTrace("path_usage_comparator");
 	PathClauseUsage *pa = *(PathClauseUsage *const *) a;
 	PathClauseUsage *pb = *(PathClauseUsage *const *) b;
 	Cost		acost;
@@ -1539,7 +1539,7 @@ path_usage_comparator(const void *a, const void *b)
  */
 static Cost
 bitmap_scan_cost_est(PlannerInfo *root, RelOptInfo *rel, Path *ipath)
-{
+{	StackTrace("bitmap_scan_cost_est");
 	BitmapHeapPath bpath;
 	Relids		required_outer;
 
@@ -1569,7 +1569,7 @@ bitmap_scan_cost_est(PlannerInfo *root, RelOptInfo *rel, Path *ipath)
  */
 static Cost
 bitmap_and_cost_est(PlannerInfo *root, RelOptInfo *rel, List *paths)
-{
+{	StackTrace("bitmap_and_cost_est");
 	BitmapAndPath apath;
 	BitmapHeapPath bpath;
 	Relids		required_outer;
@@ -1621,7 +1621,7 @@ bitmap_and_cost_est(PlannerInfo *root, RelOptInfo *rel, List *paths)
  */
 static PathClauseUsage *
 classify_index_clause_usage(Path *path, List **clauselist)
-{
+{	StackTrace("classify_index_clause_usage");
 	PathClauseUsage *result;
 	Bitmapset  *clauseids;
 	ListCell   *lc;
@@ -1668,7 +1668,7 @@ classify_index_clause_usage(Path *path, List **clauselist)
  */
 static Relids
 get_bitmap_tree_required_outer(Path *bitmapqual)
-{
+{	StackTrace("get_bitmap_tree_required_outer");
 	Relids		result = NULL;
 	ListCell   *lc;
 
@@ -1716,7 +1716,7 @@ get_bitmap_tree_required_outer(Path *bitmapqual)
  */
 static void
 find_indexpath_quals(Path *bitmapqual, List **quals, List **preds)
-{
+{	StackTrace("find_indexpath_quals");
 	if (IsA(bitmapqual, BitmapAndPath))
 	{
 		BitmapAndPath *apath = (BitmapAndPath *) bitmapqual;
@@ -1757,7 +1757,7 @@ find_indexpath_quals(Path *bitmapqual, List **quals, List **preds)
  */
 static int
 find_list_position(Node *node, List **nodelist)
-{
+{	StackTrace("find_list_position");
 	int			i;
 	ListCell   *lc;
 
@@ -1783,7 +1783,7 @@ find_list_position(Node *node, List **nodelist)
  */
 static bool
 check_index_only(RelOptInfo *rel, IndexOptInfo *index)
-{
+{	StackTrace("check_index_only");
 	bool		result;
 	Bitmapset  *attrs_used = NULL;
 	Bitmapset  *index_canreturn_attrs = NULL;
@@ -1880,7 +1880,7 @@ check_index_only(RelOptInfo *rel, IndexOptInfo *index)
  */
 static double
 get_loop_count(PlannerInfo *root, Index cur_relid, Relids outer_relids)
-{
+{	StackTrace("get_loop_count");
 	double		result;
 	int			outer_relid;
 
@@ -1936,7 +1936,7 @@ adjust_rowcount_for_semijoins(PlannerInfo *root,
 							  Index cur_relid,
 							  Index outer_relid,
 							  double rowcount)
-{
+{	StackTrace("adjust_rowcount_for_semijoins");
 	ListCell   *lc;
 
 	foreach(lc, root->join_info_list)
@@ -1976,7 +1976,7 @@ adjust_rowcount_for_semijoins(PlannerInfo *root,
  */
 static double
 approximate_joinrel_size(PlannerInfo *root, Relids relids)
-{
+{	StackTrace("approximate_joinrel_size");
 	double		rowcount = 1.0;
 	int			relid;
 
@@ -2019,7 +2019,7 @@ approximate_joinrel_size(PlannerInfo *root, Relids relids)
 static void
 match_restriction_clauses_to_index(RelOptInfo *rel, IndexOptInfo *index,
 								   IndexClauseSet *clauseset)
-{
+{	StackTrace("match_restriction_clauses_to_index");
 	match_clauses_to_index(index, rel->baserestrictinfo, clauseset);
 }
 
@@ -2034,7 +2034,7 @@ match_join_clauses_to_index(PlannerInfo *root,
 							RelOptInfo *rel, IndexOptInfo *index,
 							IndexClauseSet *clauseset,
 							List **joinorclauses)
-{
+{	StackTrace("match_join_clauses_to_index");
 	ListCell   *lc;
 
 	/* Scan the rel's join clauses */
@@ -2062,7 +2062,7 @@ match_join_clauses_to_index(PlannerInfo *root,
 static void
 match_eclass_clauses_to_index(PlannerInfo *root, IndexOptInfo *index,
 							  IndexClauseSet *clauseset)
-{
+{	StackTrace("match_eclass_clauses_to_index");
 	int			indexcol;
 
 	/* No work if rel is not in any such ECs */
@@ -2101,7 +2101,7 @@ static void
 match_clauses_to_index(IndexOptInfo *index,
 					   List *clauses,
 					   IndexClauseSet *clauseset)
-{
+{	StackTrace("match_clauses_to_index");
 	ListCell   *lc;
 
 	foreach(lc, clauses)
@@ -2133,7 +2133,7 @@ static void
 match_clause_to_index(IndexOptInfo *index,
 					  RestrictInfo *rinfo,
 					  IndexClauseSet *clauseset)
-{
+{	StackTrace("match_clause_to_index");
 	int			indexcol;
 
 	for (indexcol = 0; indexcol < index->ncolumns; indexcol++)
@@ -2217,7 +2217,7 @@ static bool
 match_clause_to_indexcol(IndexOptInfo *index,
 						 int indexcol,
 						 RestrictInfo *rinfo)
-{
+{	StackTrace("match_clause_to_indexcol");
 	Expr	   *clause = rinfo->clause;
 	Index		index_relid = index->rel->relid;
 	Oid			opfamily = index->opfamily[indexcol];
@@ -2352,7 +2352,7 @@ match_clause_to_indexcol(IndexOptInfo *index,
  */
 static bool
 is_indexable_operator(Oid expr_op, Oid opfamily, bool indexkey_on_left)
-{
+{	StackTrace("is_indexable_operator");
 	/* Get the commuted operator if necessary */
 	if (!indexkey_on_left)
 	{
@@ -2376,7 +2376,7 @@ match_rowcompare_to_indexcol(IndexOptInfo *index,
 							 Oid opfamily,
 							 Oid idxcollation,
 							 RowCompareExpr *clause)
-{
+{	StackTrace("match_rowcompare_to_indexcol");
 	Index		index_relid = index->rel->relid;
 	Node	   *leftop,
 			   *rightop;
@@ -2462,7 +2462,7 @@ static void
 match_pathkeys_to_index(IndexOptInfo *index, List *pathkeys,
 						List **orderby_clauses_p,
 						List **clause_columns_p)
-{
+{	StackTrace("match_pathkeys_to_index");
 	List	   *orderby_clauses = NIL;
 	List	   *clause_columns = NIL;
 	ListCell   *lc1;
@@ -2577,7 +2577,7 @@ match_clause_to_ordering_op(IndexOptInfo *index,
 							int indexcol,
 							Expr *clause,
 							Oid pk_opfamily)
-{
+{	StackTrace("match_clause_to_ordering_op");
 	Oid			opfamily = index->opfamily[indexcol];
 	Oid			idxcollation = index->indexcollations[indexcol];
 	Node	   *leftop,
@@ -2671,7 +2671,7 @@ match_clause_to_ordering_op(IndexOptInfo *index,
  */
 void
 check_partial_indexes(PlannerInfo *root, RelOptInfo *rel)
-{
+{	StackTrace("check_partial_indexes");
 	List	   *clauselist;
 	bool		have_partial;
 	Relids		otherrels;
@@ -2769,7 +2769,7 @@ static bool
 ec_member_matches_indexcol(PlannerInfo *root, RelOptInfo *rel,
 						   EquivalenceClass *ec, EquivalenceMember *em,
 						   void *arg)
-{
+{	StackTrace("ec_member_matches_indexcol");
 	IndexOptInfo *index = ((ec_member_matches_arg *) arg)->index;
 	int			indexcol = ((ec_member_matches_arg *) arg)->indexcol;
 	Oid			curFamily = index->opfamily[indexcol];
@@ -2822,7 +2822,7 @@ bool
 relation_has_unique_index_for(PlannerInfo *root, RelOptInfo *rel,
 							  List *restrictlist,
 							  List *exprlist, List *oprlist)
-{
+{	StackTrace("relation_has_unique_index_for");
 	ListCell   *ic;
 
 	Assert(list_length(exprlist) == list_length(oprlist));
@@ -2996,7 +2996,7 @@ bool
 match_index_to_operand(Node *operand,
 					   int indexcol,
 					   IndexOptInfo *index)
-{
+{	StackTrace("match_index_to_operand");
 	int			indkey;
 
 	/*
@@ -3122,7 +3122,7 @@ static bool
 match_boolean_index_clause(Node *clause,
 						   int indexcol,
 						   IndexOptInfo *index)
-{
+{	StackTrace("match_boolean_index_clause");
 	/* Direct match? */
 	if (match_index_to_operand(clause, indexcol, index))
 		return true;
@@ -3165,7 +3165,7 @@ match_boolean_index_clause(Node *clause,
 static bool
 match_special_index_operator(Expr *clause, Oid opfamily, Oid idxcollation,
 							 bool indexkey_on_left)
-{
+{	StackTrace("match_special_index_operator");
 	bool		isIndexable = false;
 	Node	   *rightop;
 	Oid			expr_op;
@@ -3342,7 +3342,7 @@ void
 expand_indexqual_conditions(IndexOptInfo *index,
 							List *indexclauses, List *indexclausecols,
 							List **indexquals_p, List **indexqualcols_p)
-{
+{	StackTrace("expand_indexqual_conditions");
 	List	   *indexquals = NIL;
 	List	   *indexqualcols = NIL;
 	ListCell   *lcc,
@@ -3427,7 +3427,7 @@ static Expr *
 expand_boolean_index_clause(Node *clause,
 							int indexcol,
 							IndexOptInfo *index)
-{
+{	StackTrace("expand_boolean_index_clause");
 	/* Direct match? */
 	if (match_index_to_operand(clause, indexcol, index))
 	{
@@ -3491,7 +3491,7 @@ expand_boolean_index_clause(Node *clause,
  */
 static List *
 expand_indexqual_opclause(RestrictInfo *rinfo, Oid opfamily, Oid idxcollation)
-{
+{	StackTrace("expand_indexqual_opclause");
 	Expr	   *clause = rinfo->clause;
 
 	/* we know these will succeed */
@@ -3587,7 +3587,7 @@ static RestrictInfo *
 expand_indexqual_rowcompare(RestrictInfo *rinfo,
 							IndexOptInfo *index,
 							int indexcol)
-{
+{	StackTrace("expand_indexqual_rowcompare");
 	RowCompareExpr *clause = (RowCompareExpr *) rinfo->clause;
 	Expr	   *newclause;
 	List	   *indexcolnos;
@@ -3642,7 +3642,7 @@ adjust_rowcompare_for_index(RowCompareExpr *clause,
 							int indexcol,
 							List **indexcolnos,
 							bool *var_on_left_p)
-{
+{	StackTrace("adjust_rowcompare_for_index");
 	bool		var_on_left;
 	int			op_strategy;
 	Oid			op_lefttype;
@@ -3849,7 +3849,7 @@ adjust_rowcompare_for_index(RowCompareExpr *clause,
 static List *
 prefix_quals(Node *leftop, Oid opfamily, Oid collation,
 			 Const *prefix_const, Pattern_Prefix_Status pstatus)
-{
+{	StackTrace("prefix_quals");
 	List	   *result;
 	Oid			datatype;
 	Oid			oproid;
@@ -3974,7 +3974,7 @@ prefix_quals(Node *leftop, Oid opfamily, Oid collation,
  */
 static List *
 network_prefix_quals(Node *leftop, Oid expr_op, Oid opfamily, Datum rightop)
-{
+{	StackTrace("network_prefix_quals");
 	bool		is_eq;
 	Oid			datatype;
 	Oid			opr1oid;
@@ -4061,7 +4061,7 @@ network_prefix_quals(Node *leftop, Oid expr_op, Oid opfamily, Datum rightop)
  */
 static Datum
 string_to_datum(const char *str, Oid datatype)
-{
+{	StackTrace("string_to_datum");
 	/*
 	 * We cheat a little by assuming that CStringGetTextDatum() will do for
 	 * bpchar and varchar constants too...
@@ -4079,7 +4079,7 @@ string_to_datum(const char *str, Oid datatype)
  */
 static Const *
 string_to_const(const char *str, Oid datatype)
-{
+{	StackTrace("string_to_const");
 	Datum		conval = string_to_datum(str, datatype);
 	Oid			collation;
 	int			constlen;

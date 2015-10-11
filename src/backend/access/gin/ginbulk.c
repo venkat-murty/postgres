@@ -26,7 +26,7 @@
 /* Combiner function for rbtree.c */
 static void
 ginCombineData(RBNode *existing, const RBNode *newdata, void *arg)
-{
+{	StackTrace("ginCombineData");
 	GinEntryAccumulator *eo = (GinEntryAccumulator *) existing;
 	const GinEntryAccumulator *en = (const GinEntryAccumulator *) newdata;
 	BuildAccumulator *accum = (BuildAccumulator *) arg;
@@ -62,7 +62,7 @@ ginCombineData(RBNode *existing, const RBNode *newdata, void *arg)
 /* Comparator function for rbtree.c */
 static int
 cmpEntryAccumulator(const RBNode *a, const RBNode *b, void *arg)
-{
+{	StackTrace("cmpEntryAccumulator");
 	const GinEntryAccumulator *ea = (const GinEntryAccumulator *) a;
 	const GinEntryAccumulator *eb = (const GinEntryAccumulator *) b;
 	BuildAccumulator *accum = (BuildAccumulator *) arg;
@@ -75,7 +75,7 @@ cmpEntryAccumulator(const RBNode *a, const RBNode *b, void *arg)
 /* Allocator function for rbtree.c */
 static RBNode *
 ginAllocEntryAccumulator(void *arg)
-{
+{	StackTrace("ginAllocEntryAccumulator");
 	BuildAccumulator *accum = (BuildAccumulator *) arg;
 	GinEntryAccumulator *ea;
 
@@ -99,7 +99,7 @@ ginAllocEntryAccumulator(void *arg)
 
 void
 ginInitBA(BuildAccumulator *accum)
-{
+{	StackTrace("ginInitBA");
 	/* accum->ginstate is intentionally not set here */
 	accum->allocatedMemory = 0;
 	accum->entryallocator = NULL;
@@ -118,7 +118,7 @@ ginInitBA(BuildAccumulator *accum)
  */
 static Datum
 getDatumCopy(BuildAccumulator *accum, OffsetNumber attnum, Datum value)
-{
+{	StackTrace("getDatumCopy");
 	Form_pg_attribute att = accum->ginstate->origTupdesc->attrs[attnum - 1];
 	Datum		res;
 
@@ -139,7 +139,7 @@ static void
 ginInsertBAEntry(BuildAccumulator *accum,
 				 ItemPointer heapptr, OffsetNumber attnum,
 				 Datum key, GinNullCategory category)
-{
+{	StackTrace("ginInsertBAEntry");
 	GinEntryAccumulator eatmp;
 	GinEntryAccumulator *ea;
 	bool		isNew;
@@ -202,7 +202,7 @@ ginInsertBAEntries(BuildAccumulator *accum,
 				   ItemPointer heapptr, OffsetNumber attnum,
 				   Datum *entries, GinNullCategory *categories,
 				   int32 nentries)
-{
+{	StackTrace("ginInsertBAEntries");
 	uint32		step = nentries;
 
 	if (nentries <= 0)
@@ -235,7 +235,7 @@ ginInsertBAEntries(BuildAccumulator *accum,
 
 static int
 qsortCompareItemPointers(const void *a, const void *b)
-{
+{	StackTrace("qsortCompareItemPointers");
 	int			res = ginCompareItemPointers((ItemPointer) a, (ItemPointer) b);
 
 	/* Assert that there are no equal item pointers being sorted */
@@ -246,7 +246,7 @@ qsortCompareItemPointers(const void *a, const void *b)
 /* Prepare to read out the rbtree contents using ginGetBAEntry */
 void
 ginBeginBAScan(BuildAccumulator *accum)
-{
+{	StackTrace("ginBeginBAScan");
 	rb_begin_iterate(accum->tree, LeftRightWalk);
 }
 
@@ -259,7 +259,7 @@ ItemPointerData *
 ginGetBAEntry(BuildAccumulator *accum,
 			  OffsetNumber *attnum, Datum *key, GinNullCategory *category,
 			  uint32 *n)
-{
+{	StackTrace("ginGetBAEntry");
 	GinEntryAccumulator *entry;
 	ItemPointerData *list;
 

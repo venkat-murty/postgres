@@ -314,7 +314,7 @@ static void fsync_fname_ext(const char *fname, bool isdir, int elevel);
  */
 int
 pg_fsync(int fd)
-{
+{	StackTrace("pg_fsync");
 	/* #if is to skip the sync_method test if there's no need for it */
 #if defined(HAVE_FSYNC_WRITETHROUGH) && !defined(FSYNC_WRITETHROUGH_IS_FSYNC)
 	if (sync_method == SYNC_METHOD_FSYNC_WRITETHROUGH)
@@ -331,7 +331,7 @@ pg_fsync(int fd)
  */
 int
 pg_fsync_no_writethrough(int fd)
-{
+{	StackTrace("pg_fsync_no_writethrough");
 	if (enableFsync)
 		return fsync(fd);
 	else
@@ -343,7 +343,7 @@ pg_fsync_no_writethrough(int fd)
  */
 int
 pg_fsync_writethrough(int fd)
-{
+{	StackTrace("pg_fsync_writethrough");
 	if (enableFsync)
 	{
 #ifdef WIN32
@@ -366,7 +366,7 @@ pg_fsync_writethrough(int fd)
  */
 int
 pg_fdatasync(int fd)
-{
+{	StackTrace("pg_fdatasync");
 	if (enableFsync)
 	{
 #ifdef HAVE_FDATASYNC
@@ -389,7 +389,7 @@ pg_fdatasync(int fd)
  */
 int
 pg_flush_data(int fd, off_t offset, off_t amount)
-{
+{	StackTrace("pg_flush_data");
 #ifdef PG_FLUSH_DATA_WORKS
 	if (enableFsync)
 	{
@@ -414,7 +414,7 @@ pg_flush_data(int fd, off_t offset, off_t amount)
  */
 void
 fsync_fname(char *fname, bool isdir)
-{
+{	StackTrace("fsync_fname");
 	int			fd;
 	int			returncode;
 
@@ -470,7 +470,7 @@ fsync_fname(char *fname, bool isdir)
  */
 void
 InitFileAccess(void)
-{
+{	StackTrace("InitFileAccess");
 	Assert(SizeVfdCache == 0);	/* call me only once */
 
 	/* initialize cache header entry */
@@ -503,7 +503,7 @@ InitFileAccess(void)
  */
 static void
 count_usable_fds(int max_to_probe, int *usable_fds, int *already_open)
-{
+{	StackTrace("count_usable_fds");
 	int		   *fd;
 	int			size;
 	int			used = 0;
@@ -587,7 +587,7 @@ count_usable_fds(int max_to_probe, int *usable_fds, int *already_open)
  */
 void
 set_max_safe_fds(void)
-{
+{	StackTrace("set_max_safe_fds");
 	int			usable_fds;
 	int			already_open;
 
@@ -642,7 +642,7 @@ set_max_safe_fds(void)
  */
 int
 BasicOpenFile(FileName fileName, int fileFlags, int fileMode)
-{
+{	StackTrace("BasicOpenFile");
 	int			fd;
 
 tryAgain:
@@ -671,7 +671,7 @@ tryAgain:
 
 static void
 _dump_lru(void)
-{
+{	StackTrace("_dump_lru");
 	int			mru = VfdCache[0].lruLessRecently;
 	Vfd		   *vfdP = &VfdCache[mru];
 	char		buf[2048];
@@ -690,7 +690,7 @@ _dump_lru(void)
 
 static void
 Delete(File file)
-{
+{	StackTrace("Delete");
 	Vfd		   *vfdP;
 
 	Assert(file != 0);
@@ -709,7 +709,7 @@ Delete(File file)
 
 static void
 LruDelete(File file)
-{
+{	StackTrace("LruDelete");
 	Vfd		   *vfdP;
 
 	Assert(file != 0);
@@ -736,7 +736,7 @@ LruDelete(File file)
 
 static void
 Insert(File file)
-{
+{	StackTrace("Insert");
 	Vfd		   *vfdP;
 
 	Assert(file != 0);
@@ -758,7 +758,7 @@ Insert(File file)
 /* returns 0 on success, -1 on re-open failure (with errno set) */
 static int
 LruInsert(File file)
-{
+{	StackTrace("LruInsert");
 	Vfd		   *vfdP;
 
 	Assert(file != 0);
@@ -815,7 +815,7 @@ LruInsert(File file)
  */
 static bool
 ReleaseLruFile(void)
-{
+{	StackTrace("ReleaseLruFile");
 	DO_DB(elog(LOG, "ReleaseLruFile. Opened %d", nfile));
 
 	if (nfile > 0)
@@ -837,7 +837,7 @@ ReleaseLruFile(void)
  */
 static void
 ReleaseLruFiles(void)
-{
+{	StackTrace("ReleaseLruFiles");
 	while (nfile + numAllocatedDescs >= max_safe_fds)
 	{
 		if (!ReleaseLruFile())
@@ -847,7 +847,7 @@ ReleaseLruFiles(void)
 
 static File
 AllocateVfd(void)
-{
+{	StackTrace("AllocateVfd");
 	Index		i;
 	File		file;
 
@@ -905,7 +905,7 @@ AllocateVfd(void)
 
 static void
 FreeVfd(File file)
-{
+{	StackTrace("FreeVfd");
 	Vfd		   *vfdP = &VfdCache[file];
 
 	DO_DB(elog(LOG, "FreeVfd: %d (%s)",
@@ -925,7 +925,7 @@ FreeVfd(File file)
 /* returns 0 on success, -1 on re-open failure (with errno set) */
 static int
 FileAccess(File file)
-{
+{	StackTrace("FileAccess");
 	int			returnValue;
 
 	DO_DB(elog(LOG, "FileAccess %d (%s)",
@@ -962,7 +962,7 @@ FileAccess(File file)
 #ifdef NOT_USED
 void
 FileInvalidate(File file)
-{
+{	StackTrace("FileInvalidate");
 	Assert(FileIsValid(file));
 	if (!FileIsNotOpen(file))
 		LruDelete(file);
@@ -978,7 +978,7 @@ FileInvalidate(File file)
  */
 File
 PathNameOpenFile(FileName fileName, int fileFlags, int fileMode)
-{
+{	StackTrace("PathNameOpenFile");
 	char	   *fnamecopy;
 	File		file;
 	Vfd		   *vfdP;
@@ -1046,7 +1046,7 @@ PathNameOpenFile(FileName fileName, int fileFlags, int fileMode)
  */
 File
 OpenTemporaryFile(bool interXact)
-{
+{	StackTrace("OpenTemporaryFile");
 	File		file = 0;
 
 	/*
@@ -1102,7 +1102,7 @@ OpenTemporaryFile(bool interXact)
  */
 static File
 OpenTemporaryFileInTablespace(Oid tblspcOid, bool rejectError)
-{
+{	StackTrace("OpenTemporaryFileInTablespace");
 	char		tempdirpath[MAXPGPATH];
 	char		tempfilepath[MAXPGPATH];
 	File		file;
@@ -1168,7 +1168,7 @@ OpenTemporaryFileInTablespace(Oid tblspcOid, bool rejectError)
  */
 void
 FileClose(File file)
-{
+{	StackTrace("FileClose");
 	Vfd		   *vfdP;
 
 	Assert(FileIsValid(file));
@@ -1265,7 +1265,7 @@ FileClose(File file)
  */
 int
 FilePrefetch(File file, off_t offset, int amount)
-{
+{	StackTrace("FilePrefetch");
 #if defined(USE_POSIX_FADVISE) && defined(POSIX_FADV_WILLNEED)
 	int			returnCode;
 
@@ -1291,7 +1291,7 @@ FilePrefetch(File file, off_t offset, int amount)
 
 int
 FileRead(File file, char *buffer, int amount)
-{
+{	StackTrace("FileRead");
 	int			returnCode;
 
 	Assert(FileIsValid(file));
@@ -1346,7 +1346,7 @@ retry:
 
 int
 FileWrite(File file, char *buffer, int amount)
-{
+{	StackTrace("FileWrite");
 	int			returnCode;
 
 	Assert(FileIsValid(file));
@@ -1441,7 +1441,7 @@ retry:
 
 int
 FileSync(File file)
-{
+{	StackTrace("FileSync");
 	int			returnCode;
 
 	Assert(FileIsValid(file));
@@ -1458,7 +1458,7 @@ FileSync(File file)
 
 off_t
 FileSeek(File file, off_t offset, int whence)
-{
+{	StackTrace("FileSeek");
 	int			returnCode;
 
 	Assert(FileIsValid(file));
@@ -1528,7 +1528,7 @@ FileSeek(File file, off_t offset, int whence)
 #ifdef NOT_USED
 off_t
 FileTell(File file)
-{
+{	StackTrace("FileTell");
 	Assert(FileIsValid(file));
 	DO_DB(elog(LOG, "FileTell %d (%s)",
 			   file, VfdCache[file].fileName));
@@ -1538,7 +1538,7 @@ FileTell(File file)
 
 int
 FileTruncate(File file, off_t offset)
-{
+{	StackTrace("FileTruncate");
 	int			returnCode;
 
 	Assert(FileIsValid(file));
@@ -1571,7 +1571,7 @@ FileTruncate(File file, off_t offset)
  */
 char *
 FilePathName(File file)
-{
+{	StackTrace("FilePathName");
 	Assert(FileIsValid(file));
 
 	return VfdCache[file].fileName;
@@ -1584,7 +1584,7 @@ FilePathName(File file)
  */
 static bool
 reserveAllocatedDesc(void)
-{
+{	StackTrace("reserveAllocatedDesc");
 	AllocateDesc *newDescs;
 	int			newMax;
 
@@ -1657,7 +1657,7 @@ reserveAllocatedDesc(void)
  */
 FILE *
 AllocateFile(const char *name, const char *mode)
-{
+{	StackTrace("AllocateFile");
 	FILE	   *file;
 
 	DO_DB(elog(LOG, "AllocateFile: Allocated %d (%s)",
@@ -1707,7 +1707,7 @@ TryAgain:
  */
 int
 OpenTransientFile(FileName fileName, int fileFlags, int fileMode)
-{
+{	StackTrace("OpenTransientFile");
 	int			fd;
 
 	DO_DB(elog(LOG, "OpenTransientFile: Allocated %d (%s)",
@@ -1747,7 +1747,7 @@ OpenTransientFile(FileName fileName, int fileFlags, int fileMode)
  */
 FILE *
 OpenPipeStream(const char *command, const char *mode)
-{
+{	StackTrace("OpenPipeStream");
 	FILE	   *file;
 
 	DO_DB(elog(LOG, "OpenPipeStream: Allocated %d (%s)",
@@ -1801,7 +1801,7 @@ TryAgain:
  */
 static int
 FreeDesc(AllocateDesc *desc)
-{
+{	StackTrace("FreeDesc");
 	int			result;
 
 	/* Close the underlying object */
@@ -1840,7 +1840,7 @@ FreeDesc(AllocateDesc *desc)
  */
 int
 FreeFile(FILE *file)
-{
+{	StackTrace("FreeFile");
 	int			i;
 
 	DO_DB(elog(LOG, "FreeFile: Allocated %d", numAllocatedDescs));
@@ -1868,7 +1868,7 @@ FreeFile(FILE *file)
  */
 int
 CloseTransientFile(int fd)
-{
+{	StackTrace("CloseTransientFile");
 	int			i;
 
 	DO_DB(elog(LOG, "CloseTransientFile: Allocated %d", numAllocatedDescs));
@@ -1898,7 +1898,7 @@ CloseTransientFile(int fd)
  */
 DIR *
 AllocateDir(const char *dirname)
-{
+{	StackTrace("AllocateDir");
 	DIR		   *dir;
 
 	DO_DB(elog(LOG, "AllocateDir: Allocated %d (%s)",
@@ -1964,7 +1964,7 @@ TryAgain:
  */
 struct dirent *
 ReadDir(DIR *dir, const char *dirname)
-{
+{	StackTrace("ReadDir");
 	return ReadDirExtended(dir, dirname, ERROR);
 }
 
@@ -1974,7 +1974,7 @@ ReadDir(DIR *dir, const char *dirname)
  */
 static struct dirent *
 ReadDirExtended(DIR *dir, const char *dirname, int elevel)
-{
+{	StackTrace("ReadDirExtended");
 	struct dirent *dent;
 
 	/* Give a generic message for AllocateDir failure, if caller didn't */
@@ -2007,7 +2007,7 @@ ReadDirExtended(DIR *dir, const char *dirname, int elevel)
  */
 int
 FreeDir(DIR *dir)
-{
+{	StackTrace("FreeDir");
 	int			i;
 
 	DO_DB(elog(LOG, "FreeDir: Allocated %d", numAllocatedDescs));
@@ -2033,7 +2033,7 @@ FreeDir(DIR *dir)
  */
 int
 ClosePipeStream(FILE *file)
-{
+{	StackTrace("ClosePipeStream");
 	int			i;
 
 	DO_DB(elog(LOG, "ClosePipeStream: Allocated %d", numAllocatedDescs));
@@ -2062,7 +2062,7 @@ ClosePipeStream(FILE *file)
  */
 void
 closeAllVfds(void)
-{
+{	StackTrace("closeAllVfds");
 	Index		i;
 
 	if (SizeVfdCache > 0)
@@ -2088,7 +2088,7 @@ closeAllVfds(void)
  */
 void
 SetTempTablespaces(Oid *tableSpaces, int numSpaces)
-{
+{	StackTrace("SetTempTablespaces");
 	Assert(numSpaces >= 0);
 	tempTableSpaces = tableSpaces;
 	numTempTableSpaces = numSpaces;
@@ -2116,7 +2116,7 @@ SetTempTablespaces(Oid *tableSpaces, int numSpaces)
  */
 bool
 TempTablespacesAreSet(void)
-{
+{	StackTrace("TempTablespacesAreSet");
 	return (numTempTableSpaces >= 0);
 }
 
@@ -2128,7 +2128,7 @@ TempTablespacesAreSet(void)
  */
 Oid
 GetNextTempTableSpace(void)
-{
+{	StackTrace("GetNextTempTableSpace");
 	if (numTempTableSpaces > 0)
 	{
 		/* Advance nextTempTableSpace counter with wraparound */
@@ -2150,7 +2150,7 @@ GetNextTempTableSpace(void)
 void
 AtEOSubXact_Files(bool isCommit, SubTransactionId mySubid,
 				  SubTransactionId parentSubid)
-{
+{	StackTrace("AtEOSubXact_Files");
 	Index		i;
 
 	for (i = 0; i < numAllocatedDescs; i++)
@@ -2180,7 +2180,7 @@ AtEOSubXact_Files(bool isCommit, SubTransactionId mySubid,
  */
 void
 AtEOXact_Files(void)
-{
+{	StackTrace("AtEOXact_Files");
 	CleanupTempFiles(false);
 	tempTableSpaces = NULL;
 	numTempTableSpaces = -1;
@@ -2194,7 +2194,7 @@ AtEOXact_Files(void)
  */
 static void
 AtProcExit_Files(int code, Datum arg)
-{
+{	StackTrace("AtProcExit_Files");
 	CleanupTempFiles(true);
 }
 
@@ -2209,7 +2209,7 @@ AtProcExit_Files(int code, Datum arg)
  */
 static void
 CleanupTempFiles(bool isProcExit)
-{
+{	StackTrace("CleanupTempFiles");
 	Index		i;
 
 	/*
@@ -2269,7 +2269,7 @@ CleanupTempFiles(bool isProcExit)
  */
 void
 RemovePgTempFiles(void)
-{
+{	StackTrace("RemovePgTempFiles");
 	char		temp_path[MAXPGPATH];
 	DIR		   *spc_dir;
 	struct dirent *spc_de;
@@ -2315,7 +2315,7 @@ RemovePgTempFiles(void)
 /* Process one pgsql_tmp directory for RemovePgTempFiles */
 static void
 RemovePgTempFilesInDir(const char *tmpdirname)
-{
+{	StackTrace("RemovePgTempFilesInDir");
 	DIR		   *temp_dir;
 	struct dirent *temp_de;
 	char		rm_path[MAXPGPATH];
@@ -2356,7 +2356,7 @@ RemovePgTempFilesInDir(const char *tmpdirname)
 /* Process one tablespace directory, look for per-DB subdirectories */
 static void
 RemovePgTempRelationFiles(const char *tsdirname)
-{
+{	StackTrace("RemovePgTempRelationFiles");
 	DIR		   *ts_dir;
 	struct dirent *de;
 	char		dbspace_path[MAXPGPATH];
@@ -2397,7 +2397,7 @@ RemovePgTempRelationFiles(const char *tsdirname)
 /* Process one per-dbspace directory for RemovePgTempRelationFiles */
 static void
 RemovePgTempRelationFilesInDbspace(const char *dbspacedirname)
-{
+{	StackTrace("RemovePgTempRelationFilesInDbspace");
 	DIR		   *dbspace_dir;
 	struct dirent *de;
 	char		rm_path[MAXPGPATH];
@@ -2429,7 +2429,7 @@ RemovePgTempRelationFilesInDbspace(const char *dbspacedirname)
 /* t<digits>_<digits>, or t<digits>_<digits>_<forkname> */
 static bool
 looks_like_temp_rel_name(const char *name)
-{
+{	StackTrace("looks_like_temp_rel_name");
 	int			pos;
 	int			savepos;
 
@@ -2496,7 +2496,7 @@ looks_like_temp_rel_name(const char *name)
  */
 void
 SyncDataDirectory(void)
-{
+{	StackTrace("SyncDataDirectory");
 	bool		xlog_is_symlink;
 
 	/* We can skip this whole thing if fsync is disabled. */
@@ -2572,7 +2572,7 @@ walkdir(const char *path,
 		void (*action) (const char *fname, bool isdir, int elevel),
 		bool process_symlinks,
 		int elevel)
-{
+{	StackTrace("(*action)");
 	DIR		   *dir;
 	struct dirent *de;
 
@@ -2639,7 +2639,7 @@ walkdir(const char *path,
 
 static void
 pre_sync_fname(const char *fname, bool isdir, int elevel)
-{
+{	StackTrace("pre_sync_fname");
 	int			fd;
 
 	fd = OpenTransientFile((char *) fname, O_RDONLY | PG_BINARY, 0);
@@ -2673,7 +2673,7 @@ pre_sync_fname(const char *fname, bool isdir, int elevel)
  */
 static void
 fsync_fname_ext(const char *fname, bool isdir, int elevel)
-{
+{	StackTrace("fsync_fname_ext");
 	int			fd;
 	int			flags;
 	int			returncode;

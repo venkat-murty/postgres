@@ -21,7 +21,7 @@ static MemoryContext opCtx;		/* working memory for operations */
 
 static void
 ginRedoClearIncompleteSplit(XLogReaderState *record, uint8 block_id)
-{
+{	StackTrace("ginRedoClearIncompleteSplit");
 	XLogRecPtr	lsn = record->EndRecPtr;
 	Buffer		buffer;
 	Page		page;
@@ -40,7 +40,7 @@ ginRedoClearIncompleteSplit(XLogReaderState *record, uint8 block_id)
 
 static void
 ginRedoCreateIndex(XLogReaderState *record)
-{
+{	StackTrace("ginRedoCreateIndex");
 	XLogRecPtr	lsn = record->EndRecPtr;
 	Buffer		RootBuffer,
 				MetaBuffer;
@@ -70,7 +70,7 @@ ginRedoCreateIndex(XLogReaderState *record)
 
 static void
 ginRedoCreatePTree(XLogReaderState *record)
-{
+{	StackTrace("ginRedoCreatePTree");
 	XLogRecPtr	lsn = record->EndRecPtr;
 	ginxlogCreatePostingTree *data = (ginxlogCreatePostingTree *) XLogRecGetData(record);
 	char	   *ptr;
@@ -97,7 +97,7 @@ ginRedoCreatePTree(XLogReaderState *record)
 
 static void
 ginRedoInsertEntry(Buffer buffer, bool isLeaf, BlockNumber rightblkno, void *rdata)
-{
+{	StackTrace("ginRedoInsertEntry");
 	Page		page = BufferGetPage(buffer);
 	ginxlogInsertEntry *data = (ginxlogInsertEntry *) rdata;
 	OffsetNumber offset = data->offset;
@@ -135,7 +135,7 @@ ginRedoInsertEntry(Buffer buffer, bool isLeaf, BlockNumber rightblkno, void *rda
 
 static void
 ginRedoRecompress(Page page, ginxlogRecompressDataLeaf *data)
-{
+{	StackTrace("ginRedoRecompress");
 	int			actionno;
 	int			segno;
 	GinPostingList *oldseg;
@@ -292,7 +292,7 @@ ginRedoRecompress(Page page, ginxlogRecompressDataLeaf *data)
 
 static void
 ginRedoInsertData(Buffer buffer, bool isLeaf, BlockNumber rightblkno, void *rdata)
-{
+{	StackTrace("ginRedoInsertData");
 	Page		page = BufferGetPage(buffer);
 
 	if (isLeaf)
@@ -320,7 +320,7 @@ ginRedoInsertData(Buffer buffer, bool isLeaf, BlockNumber rightblkno, void *rdat
 
 static void
 ginRedoInsert(XLogReaderState *record)
-{
+{	StackTrace("ginRedoInsert");
 	XLogRecPtr	lsn = record->EndRecPtr;
 	ginxlogInsert *data = (ginxlogInsert *) XLogRecGetData(record);
 	Buffer		buffer;
@@ -375,7 +375,7 @@ ginRedoInsert(XLogReaderState *record)
 
 static void
 ginRedoSplit(XLogReaderState *record)
-{
+{	StackTrace("ginRedoSplit");
 	ginxlogSplit *data = (ginxlogSplit *) XLogRecGetData(record);
 	Buffer		lbuffer,
 				rbuffer,
@@ -413,7 +413,7 @@ ginRedoSplit(XLogReaderState *record)
  */
 static void
 ginRedoVacuumPage(XLogReaderState *record)
-{
+{	StackTrace("ginRedoVacuumPage");
 	Buffer		buffer;
 
 	if (XLogReadBufferForRedo(record, 0, &buffer) != BLK_RESTORED)
@@ -425,7 +425,7 @@ ginRedoVacuumPage(XLogReaderState *record)
 
 static void
 ginRedoVacuumDataLeafPage(XLogReaderState *record)
-{
+{	StackTrace("ginRedoVacuumDataLeafPage");
 	XLogRecPtr	lsn = record->EndRecPtr;
 	Buffer		buffer;
 
@@ -450,7 +450,7 @@ ginRedoVacuumDataLeafPage(XLogReaderState *record)
 
 static void
 ginRedoDeletePage(XLogReaderState *record)
-{
+{	StackTrace("ginRedoDeletePage");
 	XLogRecPtr	lsn = record->EndRecPtr;
 	ginxlogDeletePage *data = (ginxlogDeletePage *) XLogRecGetData(record);
 	Buffer		dbuffer;
@@ -496,7 +496,7 @@ ginRedoDeletePage(XLogReaderState *record)
 
 static void
 ginRedoUpdateMetapage(XLogReaderState *record)
-{
+{	StackTrace("ginRedoUpdateMetapage");
 	XLogRecPtr	lsn = record->EndRecPtr;
 	ginxlogUpdateMeta *data = (ginxlogUpdateMeta *) XLogRecGetData(record);
 	Buffer		metabuffer;
@@ -588,7 +588,7 @@ ginRedoUpdateMetapage(XLogReaderState *record)
 
 static void
 ginRedoInsertListPage(XLogReaderState *record)
-{
+{	StackTrace("ginRedoInsertListPage");
 	XLogRecPtr	lsn = record->EndRecPtr;
 	ginxlogInsertListPage *data = (ginxlogInsertListPage *) XLogRecGetData(record);
 	Buffer		buffer;
@@ -643,7 +643,7 @@ ginRedoInsertListPage(XLogReaderState *record)
 
 static void
 ginRedoDeleteListPages(XLogReaderState *record)
-{
+{	StackTrace("ginRedoDeleteListPages");
 	XLogRecPtr	lsn = record->EndRecPtr;
 	ginxlogDeleteListPages *data = (ginxlogDeleteListPages *) XLogRecGetData(record);
 	Buffer		metabuffer;
@@ -694,7 +694,7 @@ ginRedoDeleteListPages(XLogReaderState *record)
 
 void
 gin_redo(XLogReaderState *record)
-{
+{	StackTrace("gin_redo");
 	uint8		info = XLogRecGetInfo(record) & ~XLR_INFO_MASK;
 	MemoryContext oldCtx;
 
@@ -746,7 +746,7 @@ gin_redo(XLogReaderState *record)
 
 void
 gin_xlog_startup(void)
-{
+{	StackTrace("gin_xlog_startup");
 	opCtx = AllocSetContextCreate(CurrentMemoryContext,
 								  "GIN recovery temporary context",
 								  ALLOCSET_DEFAULT_MINSIZE,
@@ -756,6 +756,6 @@ gin_xlog_startup(void)
 
 void
 gin_xlog_cleanup(void)
-{
+{	StackTrace("gin_xlog_cleanup");
 	MemoryContextDelete(opCtx);
 }

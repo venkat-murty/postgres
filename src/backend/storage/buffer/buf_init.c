@@ -63,7 +63,7 @@ char	   *BufferBlocks;
  */
 void
 InitBufferPool(void)
-{
+{	StackTrace("InitBufferPool");
 	bool		foundBufs,
 				foundDescs;
 
@@ -130,7 +130,7 @@ InitBufferPool(void)
  */
 Size
 BufferShmemSize(void)
-{
+{	StackTrace("BufferShmemSize");
 	Size		size = 0;
 
 	/* size of buffer descriptors */

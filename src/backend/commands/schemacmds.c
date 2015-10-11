@@ -43,7 +43,7 @@ static void AlterSchemaOwner_internal(HeapTuple tup, Relation rel, Oid newOwnerI
  */
 Oid
 CreateSchemaCommand(CreateSchemaStmt *stmt, const char *queryString)
-{
+{	StackTrace("CreateSchemaCommand");
 	const char *schemaName = stmt->schemaname;
 	Oid			namespaceId;
 	OverrideSearchPath *overridePath;
@@ -198,7 +198,7 @@ CreateSchemaCommand(CreateSchemaStmt *stmt, const char *queryString)
  */
 void
 RemoveSchemaById(Oid schemaOid)
-{
+{	StackTrace("RemoveSchemaById");
 	Relation	relation;
 	HeapTuple	tup;
 
@@ -222,7 +222,7 @@ RemoveSchemaById(Oid schemaOid)
  */
 ObjectAddress
 RenameSchema(const char *oldname, const char *newname)
-{
+{	StackTrace("RenameSchema");
 	Oid			nspOid;
 	HeapTuple	tup;
 	Relation	rel;
@@ -279,7 +279,7 @@ RenameSchema(const char *oldname, const char *newname)
 
 void
 AlterSchemaOwner_oid(Oid oid, Oid newOwnerId)
-{
+{	StackTrace("AlterSchemaOwner_oid");
 	HeapTuple	tup;
 	Relation	rel;
 
@@ -302,7 +302,7 @@ AlterSchemaOwner_oid(Oid oid, Oid newOwnerId)
  */
 ObjectAddress
 AlterSchemaOwner(const char *name, Oid newOwnerId)
-{
+{	StackTrace("AlterSchemaOwner");
 	Oid			nspOid;
 	HeapTuple	tup;
 	Relation	rel;
@@ -331,7 +331,7 @@ AlterSchemaOwner(const char *name, Oid newOwnerId)
 
 static void
 AlterSchemaOwner_internal(HeapTuple tup, Relation rel, Oid newOwnerId)
-{
+{	StackTrace("AlterSchemaOwner_internal");
 	Form_pg_namespace nspForm;
 
 	Assert(tup->t_tableOid == NamespaceRelationId);

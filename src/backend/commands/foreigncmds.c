@@ -63,7 +63,7 @@ static void import_error_callback(void *arg);
  */
 static Datum
 optionListToArray(List *options)
-{
+{	StackTrace("optionListToArray");
 	ArrayBuildState *astate = NULL;
 	ListCell   *cell;
 
@@ -110,7 +110,7 @@ transformGenericOptions(Oid catalogId,
 						Datum oldOptions,
 						List *options,
 						Oid fdwvalidator)
-{
+{	StackTrace("transformGenericOptions");
 	List	   *resultOptions = untransformRelOptions(oldOptions);
 	ListCell   *optcell;
 	Datum		result;
@@ -205,7 +205,7 @@ transformGenericOptions(Oid catalogId,
  */
 static void
 AlterForeignDataWrapperOwner_internal(Relation rel, HeapTuple tup, Oid newOwnerId)
-{
+{	StackTrace("AlterForeignDataWrapperOwner_internal");
 	Form_pg_foreign_data_wrapper form;
 	Datum		repl_val[Natts_pg_foreign_data_wrapper];
 	bool		repl_null[Natts_pg_foreign_data_wrapper];
@@ -276,7 +276,7 @@ AlterForeignDataWrapperOwner_internal(Relation rel, HeapTuple tup, Oid newOwnerI
  */
 ObjectAddress
 AlterForeignDataWrapperOwner(const char *name, Oid newOwnerId)
-{
+{	StackTrace("AlterForeignDataWrapperOwner");
 	Oid			fdwId;
 	HeapTuple	tup;
 	Relation	rel;
@@ -311,7 +311,7 @@ AlterForeignDataWrapperOwner(const char *name, Oid newOwnerId)
  */
 void
 AlterForeignDataWrapperOwner_oid(Oid fwdId, Oid newOwnerId)
-{
+{	StackTrace("AlterForeignDataWrapperOwner_oid");
 	HeapTuple	tup;
 	Relation	rel;
 
@@ -336,7 +336,7 @@ AlterForeignDataWrapperOwner_oid(Oid fwdId, Oid newOwnerId)
  */
 static void
 AlterForeignServerOwner_internal(Relation rel, HeapTuple tup, Oid newOwnerId)
-{
+{	StackTrace("AlterForeignServerOwner_internal");
 	Form_pg_foreign_server form;
 	Datum		repl_val[Natts_pg_foreign_server];
 	bool		repl_null[Natts_pg_foreign_server];
@@ -414,7 +414,7 @@ AlterForeignServerOwner_internal(Relation rel, HeapTuple tup, Oid newOwnerId)
  */
 ObjectAddress
 AlterForeignServerOwner(const char *name, Oid newOwnerId)
-{
+{	StackTrace("AlterForeignServerOwner");
 	Oid			servOid;
 	HeapTuple	tup;
 	Relation	rel;
@@ -447,7 +447,7 @@ AlterForeignServerOwner(const char *name, Oid newOwnerId)
  */
 void
 AlterForeignServerOwner_oid(Oid srvId, Oid newOwnerId)
-{
+{	StackTrace("AlterForeignServerOwner_oid");
 	HeapTuple	tup;
 	Relation	rel;
 
@@ -472,7 +472,7 @@ AlterForeignServerOwner_oid(Oid srvId, Oid newOwnerId)
  */
 static Oid
 lookup_fdw_handler_func(DefElem *handler)
-{
+{	StackTrace("lookup_fdw_handler_func");
 	Oid			handlerOid;
 	Oid			funcargtypes[1];	/* dummy */
 
@@ -497,7 +497,7 @@ lookup_fdw_handler_func(DefElem *handler)
  */
 static Oid
 lookup_fdw_validator_func(DefElem *validator)
-{
+{	StackTrace("lookup_fdw_validator_func");
 	Oid			funcargtypes[2];
 
 	if (validator == NULL || validator->arg == NULL)
@@ -518,7 +518,7 @@ static void
 parse_func_options(List *func_options,
 				   bool *handler_given, Oid *fdwhandler,
 				   bool *validator_given, Oid *fdwvalidator)
-{
+{	StackTrace("parse_func_options");
 	ListCell   *cell;
 
 	*handler_given = false;
@@ -560,7 +560,7 @@ parse_func_options(List *func_options,
  */
 ObjectAddress
 CreateForeignDataWrapper(CreateFdwStmt *stmt)
-{
+{	StackTrace("CreateForeignDataWrapper");
 	Relation	rel;
 	Datum		values[Natts_pg_foreign_data_wrapper];
 	bool		nulls[Natts_pg_foreign_data_wrapper];
@@ -674,7 +674,7 @@ CreateForeignDataWrapper(CreateFdwStmt *stmt)
  */
 ObjectAddress
 AlterForeignDataWrapper(AlterFdwStmt *stmt)
-{
+{	StackTrace("AlterForeignDataWrapper");
 	Relation	rel;
 	HeapTuple	tp;
 	Form_pg_foreign_data_wrapper fdwForm;
@@ -839,7 +839,7 @@ AlterForeignDataWrapper(AlterFdwStmt *stmt)
  */
 void
 RemoveForeignDataWrapperById(Oid fdwId)
-{
+{	StackTrace("RemoveForeignDataWrapperById");
 	HeapTuple	tp;
 	Relation	rel;
 
@@ -863,7 +863,7 @@ RemoveForeignDataWrapperById(Oid fdwId)
  */
 ObjectAddress
 CreateForeignServer(CreateForeignServerStmt *stmt)
-{
+{	StackTrace("CreateForeignServer");
 	Relation	rel;
 	Datum		srvoptions;
 	Datum		values[Natts_pg_foreign_server];
@@ -976,7 +976,7 @@ CreateForeignServer(CreateForeignServerStmt *stmt)
  */
 ObjectAddress
 AlterForeignServer(AlterForeignServerStmt *stmt)
-{
+{	StackTrace("AlterForeignServer");
 	Relation	rel;
 	HeapTuple	tp;
 	Datum		repl_val[Natts_pg_foreign_server];
@@ -1076,7 +1076,7 @@ AlterForeignServer(AlterForeignServerStmt *stmt)
  */
 void
 RemoveForeignServerById(Oid srvId)
-{
+{	StackTrace("RemoveForeignServerById");
 	HeapTuple	tp;
 	Relation	rel;
 
@@ -1102,7 +1102,7 @@ RemoveForeignServerById(Oid srvId)
  */
 static void
 user_mapping_ddl_aclcheck(Oid umuserid, Oid serverid, const char *servername)
-{
+{	StackTrace("user_mapping_ddl_aclcheck");
 	Oid			curuserid = GetUserId();
 
 	if (!pg_foreign_server_ownercheck(serverid, curuserid))
@@ -1127,7 +1127,7 @@ user_mapping_ddl_aclcheck(Oid umuserid, Oid serverid, const char *servername)
  */
 ObjectAddress
 CreateUserMapping(CreateUserMappingStmt *stmt)
-{
+{	StackTrace("CreateUserMapping");
 	Relation	rel;
 	Datum		useoptions;
 	Datum		values[Natts_pg_user_mapping];
@@ -1229,7 +1229,7 @@ CreateUserMapping(CreateUserMappingStmt *stmt)
  */
 ObjectAddress
 AlterUserMapping(AlterUserMappingStmt *stmt)
-{
+{	StackTrace("AlterUserMapping");
 	Relation	rel;
 	HeapTuple	tp;
 	Datum		repl_val[Natts_pg_user_mapping];
@@ -1325,7 +1325,7 @@ AlterUserMapping(AlterUserMappingStmt *stmt)
  */
 Oid
 RemoveUserMapping(DropUserMappingStmt *stmt)
-{
+{	StackTrace("RemoveUserMapping");
 	ObjectAddress object;
 	Oid			useId;
 	Oid			umId;
@@ -1402,7 +1402,7 @@ RemoveUserMapping(DropUserMappingStmt *stmt)
  */
 void
 RemoveUserMappingById(Oid umId)
-{
+{	StackTrace("RemoveUserMappingById");
 	HeapTuple	tp;
 	Relation	rel;
 
@@ -1426,7 +1426,7 @@ RemoveUserMappingById(Oid umId)
  */
 void
 CreateForeignTable(CreateForeignTableStmt *stmt, Oid relid)
-{
+{	StackTrace("CreateForeignTable");
 	Relation	ftrel;
 	Datum		ftoptions;
 	Datum		values[Natts_pg_foreign_table];
@@ -1507,7 +1507,7 @@ CreateForeignTable(CreateForeignTableStmt *stmt, Oid relid)
  */
 void
 ImportForeignSchema(ImportForeignSchemaStmt *stmt)
-{
+{	StackTrace("ImportForeignSchema");
 	ForeignServer *server;
 	ForeignDataWrapper *fdw;
 	FdwRoutine *fdw_routine;
@@ -1614,7 +1614,7 @@ ImportForeignSchema(ImportForeignSchemaStmt *stmt)
  */
 static void
 import_error_callback(void *arg)
-{
+{	StackTrace("import_error_callback");
 	import_error_callback_arg *callback_arg = (import_error_callback_arg *) arg;
 	int			syntaxerrposition;
 

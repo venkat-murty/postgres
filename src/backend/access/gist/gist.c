@@ -58,7 +58,7 @@ static void gistfinishsplit(GISTInsertState *state, GISTInsertStack *stack,
  */
 MemoryContext
 createTempGistContext(void)
-{
+{	StackTrace("createTempGistContext");
 	return AllocSetContextCreate(CurrentMemoryContext,
 								 "GiST temporary context",
 								 ALLOCSET_DEFAULT_MINSIZE,
@@ -71,7 +71,7 @@ createTempGistContext(void)
  */
 Datum
 gistbuildempty(PG_FUNCTION_ARGS)
-{
+{	StackTrace("gistbuildempty");
 	Relation	index = (Relation) PG_GETARG_POINTER(0);
 	Buffer		buffer;
 
@@ -100,7 +100,7 @@ gistbuildempty(PG_FUNCTION_ARGS)
  */
 Datum
 gistinsert(PG_FUNCTION_ARGS)
-{
+{	StackTrace("gistinsert");
 	Relation	r = (Relation) PG_GETARG_POINTER(0);
 	Datum	   *values = (Datum *) PG_GETARG_POINTER(1);
 	bool	   *isnull = (bool *) PG_GETARG_POINTER(2);
@@ -176,7 +176,7 @@ gistplacetopage(Relation rel, Size freespace, GISTSTATE *giststate,
 				Buffer leftchildbuf,
 				List **splitinfo,
 				bool markfollowright)
-{
+{	StackTrace("gistplacetopage");
 	BlockNumber blkno = BufferGetBlockNumber(buffer);
 	Page		page = BufferGetPage(buffer);
 	bool		is_leaf = (GistPageIsLeaf(page)) ? true : false;
@@ -525,7 +525,7 @@ gistplacetopage(Relation rel, Size freespace, GISTSTATE *giststate,
  */
 void
 gistdoinsert(Relation r, IndexTuple itup, Size freespace, GISTSTATE *giststate)
-{
+{	StackTrace("gistdoinsert");
 	ItemId		iid;
 	IndexTuple	idxtuple;
 	GISTInsertStack firststack;
@@ -778,7 +778,7 @@ gistdoinsert(Relation r, IndexTuple itup, Size freespace, GISTSTATE *giststate)
  */
 static GISTInsertStack *
 gistFindPath(Relation r, BlockNumber child, OffsetNumber *downlinkoffnum)
-{
+{	StackTrace("gistFindPath");
 	Page		page;
 	Buffer		buffer;
 	OffsetNumber i,
@@ -888,7 +888,7 @@ gistFindPath(Relation r, BlockNumber child, OffsetNumber *downlinkoffnum)
  */
 static void
 gistFindCorrectParent(Relation r, GISTInsertStack *child)
-{
+{	StackTrace("gistFindCorrectParent");
 	GISTInsertStack *parent = child->parent;
 
 	gistcheckpage(r, parent->buffer);
@@ -978,7 +978,7 @@ gistFindCorrectParent(Relation r, GISTInsertStack *child)
 static IndexTuple
 gistformdownlink(Relation rel, Buffer buf, GISTSTATE *giststate,
 				 GISTInsertStack *stack)
-{
+{	StackTrace("gistformdownlink");
 	Page		page = BufferGetPage(buf);
 	OffsetNumber maxoff;
 	OffsetNumber offset;
@@ -1037,7 +1037,7 @@ gistformdownlink(Relation rel, Buffer buf, GISTSTATE *giststate,
  */
 static void
 gistfixsplit(GISTInsertState *state, GISTSTATE *giststate)
-{
+{	StackTrace("gistfixsplit");
 	GISTInsertStack *stack = state->stack;
 	Buffer		buf;
 	Page		page;
@@ -1097,7 +1097,7 @@ gistfixsplit(GISTInsertState *state, GISTSTATE *giststate)
 static bool
 gistinserttuple(GISTInsertState *state, GISTInsertStack *stack,
 			  GISTSTATE *giststate, IndexTuple tuple, OffsetNumber oldoffnum)
-{
+{	StackTrace("gistinserttuple");
 	return gistinserttuples(state, stack, giststate, &tuple, 1, oldoffnum,
 							InvalidBuffer, InvalidBuffer, false, false);
 }
@@ -1134,7 +1134,7 @@ gistinserttuples(GISTInsertState *state, GISTInsertStack *stack,
 				 IndexTuple *tuples, int ntup, OffsetNumber oldoffnum,
 				 Buffer leftchild, Buffer rightchild,
 				 bool unlockbuf, bool unlockleftchild)
-{
+{	StackTrace("gistinserttuples");
 	List	   *splitinfo;
 	bool		is_split;
 
@@ -1183,7 +1183,7 @@ gistinserttuples(GISTInsertState *state, GISTInsertStack *stack,
 static void
 gistfinishsplit(GISTInsertState *state, GISTInsertStack *stack,
 				GISTSTATE *giststate, List *splitinfo, bool unlockbuf)
-{
+{	StackTrace("gistfinishsplit");
 	ListCell   *lc;
 	List	   *reversed;
 	GISTPageSplitInfo *right;
@@ -1266,7 +1266,7 @@ gistSplit(Relation r,
 		  IndexTuple *itup,		/* contains compressed entry */
 		  int len,
 		  GISTSTATE *giststate)
-{
+{	StackTrace("gistSplit");
 	IndexTuple *lvectup,
 			   *rvectup;
 	GistSplitVector v;
@@ -1347,7 +1347,7 @@ gistSplit(Relation r,
  */
 GISTSTATE *
 initGISTstate(Relation index)
-{
+{	StackTrace("initGISTstate");
 	GISTSTATE  *giststate;
 	MemoryContext scanCxt;
 	MemoryContext oldCxt;
@@ -1436,7 +1436,7 @@ initGISTstate(Relation index)
 
 void
 freeGISTstate(GISTSTATE *giststate)
-{
+{	StackTrace("freeGISTstate");
 	/* It's sufficient to delete the scanCxt */
 	MemoryContextDelete(giststate->scanCxt);
 }

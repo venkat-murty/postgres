@@ -60,7 +60,7 @@ struct TSQueryParserStateData
  */
 static char *
 get_modifiers(char *buf, int16 *weight, bool *prefix)
-{
+{	StackTrace("get_modifiers");
 	*weight = 0;
 	*prefix = false;
 
@@ -123,7 +123,7 @@ static ts_tokentype
 gettoken_query(TSQueryParserState state,
 			   int8 *operator,
 			   int *lenval, char **strval, int16 *weight, bool *prefix)
-{
+{	StackTrace("gettoken_query");
 	*weight = 0;
 	*prefix = false;
 
@@ -224,7 +224,7 @@ gettoken_query(TSQueryParserState state,
  */
 void
 pushOperator(TSQueryParserState state, int8 oper)
-{
+{	StackTrace("pushOperator");
 	QueryOperator *tmp;
 
 	Assert(oper == OP_NOT || oper == OP_AND || oper == OP_OR);
@@ -239,7 +239,7 @@ pushOperator(TSQueryParserState state, int8 oper)
 
 static void
 pushValue_internal(TSQueryParserState state, pg_crc32 valcrc, int distance, int lenval, int weight, bool prefix)
-{
+{	StackTrace("pushValue_internal");
 	QueryOperand *tmp;
 
 	if (distance >= MAXSTRPOS)
@@ -272,7 +272,7 @@ pushValue_internal(TSQueryParserState state, pg_crc32 valcrc, int distance, int 
  */
 void
 pushValue(TSQueryParserState state, char *strval, int lenval, int16 weight, bool prefix)
-{
+{	StackTrace("pushValue");
 	pg_crc32	valcrc;
 
 	if (lenval >= MAXSTRLEN)
@@ -308,7 +308,7 @@ pushValue(TSQueryParserState state, char *strval, int lenval, int16 weight, bool
  */
 void
 pushStop(TSQueryParserState state)
-{
+{	StackTrace("pushStop");
 	QueryOperand *tmp;
 
 	tmp = (QueryOperand *) palloc0(sizeof(QueryOperand));
@@ -329,7 +329,7 @@ static void
 makepol(TSQueryParserState state,
 		PushFunction pushval,
 		Datum opaque)
-{
+{	StackTrace("makepol");
 	int8		operator = 0;
 	ts_tokentype type;
 	int			lenval = 0;
@@ -400,7 +400,7 @@ makepol(TSQueryParserState state,
 
 static void
 findoprnd_recurse(QueryItem *ptr, uint32 *pos, int nnodes)
-{
+{	StackTrace("findoprnd_recurse");
 	/* since this function recurses, it could be driven to stack overflow. */
 	check_stack_depth();
 
@@ -445,7 +445,7 @@ findoprnd_recurse(QueryItem *ptr, uint32 *pos, int nnodes)
  */
 static void
 findoprnd(QueryItem *ptr, int size)
-{
+{	StackTrace("findoprnd");
 	uint32		pos;
 
 	pos = 0;
@@ -475,7 +475,7 @@ parse_tsquery(char *buf,
 			  PushFunction pushval,
 			  Datum opaque,
 			  bool isplain)
-{
+{	StackTrace("parse_tsquery");
 	struct TSQueryParserStateData state;
 	int			i;
 	TSQuery		query;
@@ -563,7 +563,7 @@ parse_tsquery(char *buf,
 static void
 pushval_asis(Datum opaque, TSQueryParserState state, char *strval, int lenval,
 			 int16 weight, bool prefix)
-{
+{	StackTrace("pushval_asis");
 	pushValue(state, strval, lenval, weight, prefix);
 }
 
@@ -572,7 +572,7 @@ pushval_asis(Datum opaque, TSQueryParserState state, char *strval, int lenval,
  */
 Datum
 tsqueryin(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tsqueryin");
 	char	   *in = PG_GETARG_CSTRING(0);
 
 	PG_RETURN_TSQUERY(parse_tsquery(in, pushval_asis, PointerGetDatum(NULL), false));
@@ -606,7 +606,7 @@ while( ( (inf)->cur - (inf)->buf ) + (addsize) + 1 >= (inf)->buflen ) \
  */
 static void
 infix(INFIX *in, bool first)
-{
+{	StackTrace("infix");
 	/* since this function recurses, it could be driven to stack overflow. */
 	check_stack_depth();
 
@@ -752,7 +752,7 @@ infix(INFIX *in, bool first)
 
 Datum
 tsqueryout(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tsqueryout");
 	TSQuery		query = PG_GETARG_TSQUERY(0);
 	INFIX		nrm;
 
@@ -793,7 +793,7 @@ tsqueryout(PG_FUNCTION_ARGS)
  */
 Datum
 tsquerysend(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tsquerysend");
 	TSQuery		query = PG_GETARG_TSQUERY(0);
 	StringInfoData buf;
 	int			i;
@@ -829,7 +829,7 @@ tsquerysend(PG_FUNCTION_ARGS)
 
 Datum
 tsqueryrecv(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tsqueryrecv");
 	StringInfo	buf = (StringInfo) PG_GETARG_POINTER(0);
 	TSQuery		query;
 	int			i,
@@ -958,7 +958,7 @@ tsqueryrecv(PG_FUNCTION_ARGS)
  */
 Datum
 tsquerytree(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tsquerytree");
 	TSQuery		query = PG_GETARG_TSQUERY(0);
 	INFIX		nrm;
 	text	   *res;

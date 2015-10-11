@@ -251,7 +251,7 @@ static void ri_ReportViolation(const RI_ConstraintInfo *riinfo,
  */
 static Datum
 RI_FKey_check(TriggerData *trigdata)
-{
+{	StackTrace("RI_FKey_check");
 	const RI_ConstraintInfo *riinfo;
 	Relation	fk_rel;
 	Relation	pk_rel;
@@ -462,7 +462,7 @@ RI_FKey_check(TriggerData *trigdata)
  */
 Datum
 RI_FKey_check_ins(PG_FUNCTION_ARGS)
-{
+{	StackTrace("RI_FKey_check_ins");
 	/*
 	 * Check that this is a valid trigger call on the right time and event.
 	 */
@@ -483,7 +483,7 @@ RI_FKey_check_ins(PG_FUNCTION_ARGS)
  */
 Datum
 RI_FKey_check_upd(PG_FUNCTION_ARGS)
-{
+{	StackTrace("RI_FKey_check_upd");
 	/*
 	 * Check that this is a valid trigger call on the right time and event.
 	 */
@@ -511,7 +511,7 @@ static bool
 ri_Check_Pk_Match(Relation pk_rel, Relation fk_rel,
 				  HeapTuple old_row,
 				  const RI_ConstraintInfo *riinfo)
-{
+{	StackTrace("ri_Check_Pk_Match");
 	SPIPlanPtr	qplan;
 	RI_QueryKey qkey;
 	int			i;
@@ -597,7 +597,7 @@ ri_Check_Pk_Match(Relation pk_rel, Relation fk_rel,
  */
 Datum
 RI_FKey_noaction_del(PG_FUNCTION_ARGS)
-{
+{	StackTrace("RI_FKey_noaction_del");
 	/*
 	 * Check that this is a valid trigger call on the right time and event.
 	 */
@@ -622,7 +622,7 @@ RI_FKey_noaction_del(PG_FUNCTION_ARGS)
  */
 Datum
 RI_FKey_restrict_del(PG_FUNCTION_ARGS)
-{
+{	StackTrace("RI_FKey_restrict_del");
 	/*
 	 * Check that this is a valid trigger call on the right time and event.
 	 */
@@ -642,7 +642,7 @@ RI_FKey_restrict_del(PG_FUNCTION_ARGS)
  */
 static Datum
 ri_restrict_del(TriggerData *trigdata, bool is_no_action)
-{
+{	StackTrace("ri_restrict_del");
 	const RI_ConstraintInfo *riinfo;
 	Relation	fk_rel;
 	Relation	pk_rel;
@@ -809,7 +809,7 @@ ri_restrict_del(TriggerData *trigdata, bool is_no_action)
  */
 Datum
 RI_FKey_noaction_upd(PG_FUNCTION_ARGS)
-{
+{	StackTrace("RI_FKey_noaction_upd");
 	/*
 	 * Check that this is a valid trigger call on the right time and event.
 	 */
@@ -834,7 +834,7 @@ RI_FKey_noaction_upd(PG_FUNCTION_ARGS)
  */
 Datum
 RI_FKey_restrict_upd(PG_FUNCTION_ARGS)
-{
+{	StackTrace("RI_FKey_restrict_upd");
 	/*
 	 * Check that this is a valid trigger call on the right time and event.
 	 */
@@ -854,7 +854,7 @@ RI_FKey_restrict_upd(PG_FUNCTION_ARGS)
  */
 static Datum
 ri_restrict_upd(TriggerData *trigdata, bool is_no_action)
-{
+{	StackTrace("ri_restrict_upd");
 	const RI_ConstraintInfo *riinfo;
 	Relation	fk_rel;
 	Relation	pk_rel;
@@ -1030,7 +1030,7 @@ ri_restrict_upd(TriggerData *trigdata, bool is_no_action)
  */
 Datum
 RI_FKey_cascade_del(PG_FUNCTION_ARGS)
-{
+{	StackTrace("RI_FKey_cascade_del");
 	TriggerData *trigdata = (TriggerData *) fcinfo->context;
 	const RI_ConstraintInfo *riinfo;
 	Relation	fk_rel;
@@ -1186,7 +1186,7 @@ RI_FKey_cascade_del(PG_FUNCTION_ARGS)
  */
 Datum
 RI_FKey_cascade_upd(PG_FUNCTION_ARGS)
-{
+{	StackTrace("RI_FKey_cascade_upd");
 	TriggerData *trigdata = (TriggerData *) fcinfo->context;
 	const RI_ConstraintInfo *riinfo;
 	Relation	fk_rel;
@@ -1367,7 +1367,7 @@ RI_FKey_cascade_upd(PG_FUNCTION_ARGS)
  */
 Datum
 RI_FKey_setnull_del(PG_FUNCTION_ARGS)
-{
+{	StackTrace("RI_FKey_setnull_del");
 	TriggerData *trigdata = (TriggerData *) fcinfo->context;
 	const RI_ConstraintInfo *riinfo;
 	Relation	fk_rel;
@@ -1532,7 +1532,7 @@ RI_FKey_setnull_del(PG_FUNCTION_ARGS)
  */
 Datum
 RI_FKey_setnull_upd(PG_FUNCTION_ARGS)
-{
+{	StackTrace("RI_FKey_setnull_upd");
 	TriggerData *trigdata = (TriggerData *) fcinfo->context;
 	const RI_ConstraintInfo *riinfo;
 	Relation	fk_rel;
@@ -1708,7 +1708,7 @@ RI_FKey_setnull_upd(PG_FUNCTION_ARGS)
  */
 Datum
 RI_FKey_setdefault_del(PG_FUNCTION_ARGS)
-{
+{	StackTrace("RI_FKey_setdefault_del");
 	TriggerData *trigdata = (TriggerData *) fcinfo->context;
 	const RI_ConstraintInfo *riinfo;
 	Relation	fk_rel;
@@ -1888,7 +1888,7 @@ RI_FKey_setdefault_del(PG_FUNCTION_ARGS)
  */
 Datum
 RI_FKey_setdefault_upd(PG_FUNCTION_ARGS)
-{
+{	StackTrace("RI_FKey_setdefault_upd");
 	TriggerData *trigdata = (TriggerData *) fcinfo->context;
 	const RI_ConstraintInfo *riinfo;
 	Relation	fk_rel;
@@ -2084,7 +2084,7 @@ RI_FKey_setdefault_upd(PG_FUNCTION_ARGS)
 bool
 RI_FKey_pk_upd_check_required(Trigger *trigger, Relation pk_rel,
 							  HeapTuple old_row, HeapTuple new_row)
-{
+{	StackTrace("RI_FKey_pk_upd_check_required");
 	const RI_ConstraintInfo *riinfo;
 
 	/*
@@ -2141,7 +2141,7 @@ RI_FKey_pk_upd_check_required(Trigger *trigger, Relation pk_rel,
 bool
 RI_FKey_fk_upd_check_required(Trigger *trigger, Relation fk_rel,
 							  HeapTuple old_row, HeapTuple new_row)
-{
+{	StackTrace("RI_FKey_fk_upd_check_required");
 	const RI_ConstraintInfo *riinfo;
 
 	/*
@@ -2253,7 +2253,7 @@ RI_FKey_fk_upd_check_required(Trigger *trigger, Relation fk_rel,
  */
 bool
 RI_Initial_Check(Trigger *trigger, Relation fk_rel, Relation pk_rel)
-{
+{	StackTrace("RI_Initial_Check");
 	const RI_ConstraintInfo *riinfo;
 	StringInfoData querybuf;
 	char		pkrelname[MAX_QUOTED_REL_NAME_LEN];
@@ -2528,7 +2528,7 @@ RI_Initial_Check(Trigger *trigger, Relation fk_rel, Relation pk_rel)
  */
 static void
 quoteOneName(char *buffer, const char *name)
-{
+{	StackTrace("quoteOneName");
 	/* Rather than trying to be smart, just always quote it. */
 	*buffer++ = '"';
 	while (*name)
@@ -2548,7 +2548,7 @@ quoteOneName(char *buffer, const char *name)
  */
 static void
 quoteRelationName(char *buffer, Relation rel)
-{
+{	StackTrace("quoteRelationName");
 	quoteOneName(buffer, get_namespace_name(RelationGetNamespace(rel)));
 	buffer += strlen(buffer);
 	*buffer++ = '.';
@@ -2572,7 +2572,7 @@ ri_GenerateQual(StringInfo buf,
 				const char *leftop, Oid leftoptype,
 				Oid opoid,
 				const char *rightop, Oid rightoptype)
-{
+{	StackTrace("ri_GenerateQual");
 	HeapTuple	opertup;
 	Form_pg_operator operform;
 	char	   *oprname;
@@ -2609,7 +2609,7 @@ ri_GenerateQual(StringInfo buf,
  */
 static void
 ri_add_cast_to(StringInfo buf, Oid typid)
-{
+{	StackTrace("ri_add_cast_to");
 	HeapTuple	typetup;
 	Form_pg_type typform;
 	char	   *typname;
@@ -2648,7 +2648,7 @@ ri_add_cast_to(StringInfo buf, Oid typid)
  */
 static void
 ri_GenerateQualCollation(StringInfo buf, Oid collation)
-{
+{	StackTrace("ri_GenerateQualCollation");
 	HeapTuple	tp;
 	Form_pg_collation colltup;
 	char	   *collname;
@@ -2690,7 +2690,7 @@ ri_GenerateQualCollation(StringInfo buf, Oid collation)
 static void
 ri_BuildQueryKey(RI_QueryKey *key, const RI_ConstraintInfo *riinfo,
 				 int32 constr_queryno)
-{
+{	StackTrace("ri_BuildQueryKey");
 	/*
 	 * We assume struct RI_QueryKey contains no padding bytes, else we'd need
 	 * to use memset to clear them.
@@ -2704,7 +2704,7 @@ ri_BuildQueryKey(RI_QueryKey *key, const RI_ConstraintInfo *riinfo,
  */
 static void
 ri_CheckTrigger(FunctionCallInfo fcinfo, const char *funcname, int tgkind)
-{
+{	StackTrace("ri_CheckTrigger");
 	TriggerData *trigdata = (TriggerData *) fcinfo->context;
 
 	if (!CALLED_AS_TRIGGER(fcinfo))
@@ -2750,7 +2750,7 @@ ri_CheckTrigger(FunctionCallInfo fcinfo, const char *funcname, int tgkind)
  */
 static const RI_ConstraintInfo *
 ri_FetchConstraintInfo(Trigger *trigger, Relation trig_rel, bool rel_is_pk)
-{
+{	StackTrace("ri_FetchConstraintInfo");
 	Oid			constraintOid = trigger->tgconstraint;
 	const RI_ConstraintInfo *riinfo;
 
@@ -2793,7 +2793,7 @@ ri_FetchConstraintInfo(Trigger *trigger, Relation trig_rel, bool rel_is_pk)
  */
 static const RI_ConstraintInfo *
 ri_LoadConstraintInfo(Oid constraintOid)
-{
+{	StackTrace("ri_LoadConstraintInfo");
 	RI_ConstraintInfo *riinfo;
 	bool		found;
 	HeapTuple	tup;
@@ -2939,7 +2939,7 @@ ri_LoadConstraintInfo(Oid constraintOid)
  */
 static void
 InvalidateConstraintCacheCallBack(Datum arg, int cacheid, uint32 hashvalue)
-{
+{	StackTrace("InvalidateConstraintCacheCallBack");
 	HASH_SEQ_STATUS status;
 	RI_ConstraintInfo *hentry;
 
@@ -2965,7 +2965,7 @@ static SPIPlanPtr
 ri_PlanCheck(const char *querystr, int nargs, Oid *argtypes,
 			 RI_QueryKey *qkey, Relation fk_rel, Relation pk_rel,
 			 bool cache_plan)
-{
+{	StackTrace("ri_PlanCheck");
 	SPIPlanPtr	qplan;
 	Relation	query_rel;
 	Oid			save_userid;
@@ -3028,7 +3028,7 @@ ri_PerformCheck(const RI_ConstraintInfo *riinfo,
 				Relation fk_rel, Relation pk_rel,
 				HeapTuple old_tuple, HeapTuple new_tuple,
 				bool detectNewRows, int expect_OK)
-{
+{	StackTrace("ri_PerformCheck");
 	Relation	query_rel,
 				source_rel;
 	bool		source_is_pk;
@@ -3160,7 +3160,7 @@ static void
 ri_ExtractValues(Relation rel, HeapTuple tup,
 				 const RI_ConstraintInfo *riinfo, bool rel_is_pk,
 				 Datum *vals, char *nulls)
-{
+{	StackTrace("ri_ExtractValues");
 	TupleDesc	tupdesc = rel->rd_att;
 	const int16 *attnums;
 	int			i;
@@ -3193,7 +3193,7 @@ ri_ReportViolation(const RI_ConstraintInfo *riinfo,
 				   Relation pk_rel, Relation fk_rel,
 				   HeapTuple violator, TupleDesc tupdesc,
 				   int queryno, bool spi_err)
-{
+{	StackTrace("ri_ReportViolation");
 	StringInfoData key_names;
 	StringInfoData key_values;
 	bool		onfk;
@@ -3332,7 +3332,7 @@ ri_ReportViolation(const RI_ConstraintInfo *riinfo,
 static int
 ri_NullCheck(HeapTuple tup,
 			 const RI_ConstraintInfo *riinfo, bool rel_is_pk)
-{
+{	StackTrace("ri_NullCheck");
 	const int16 *attnums;
 	int			i;
 	bool		allnull = true;
@@ -3369,7 +3369,7 @@ ri_NullCheck(HeapTuple tup,
  */
 static void
 ri_InitHashTables(void)
-{
+{	StackTrace("ri_InitHashTables");
 	HASHCTL		ctl;
 
 	memset(&ctl, 0, sizeof(ctl));
@@ -3409,7 +3409,7 @@ ri_InitHashTables(void)
  */
 static SPIPlanPtr
 ri_FetchPreparedPlan(RI_QueryKey *key)
-{
+{	StackTrace("ri_FetchPreparedPlan");
 	RI_QueryHashEntry *entry;
 	SPIPlanPtr	plan;
 
@@ -3462,7 +3462,7 @@ ri_FetchPreparedPlan(RI_QueryKey *key)
  */
 static void
 ri_HashPreparedPlan(RI_QueryKey *key, SPIPlanPtr plan)
-{
+{	StackTrace("ri_HashPreparedPlan");
 	RI_QueryHashEntry *entry;
 	bool		found;
 
@@ -3498,7 +3498,7 @@ ri_HashPreparedPlan(RI_QueryKey *key, SPIPlanPtr plan)
 static bool
 ri_KeysEqual(Relation rel, HeapTuple oldtup, HeapTuple newtup,
 			 const RI_ConstraintInfo *riinfo, bool rel_is_pk)
-{
+{	StackTrace("ri_KeysEqual");
 	TupleDesc	tupdesc = RelationGetDescr(rel);
 	const int16 *attnums;
 	const Oid  *eq_oprs;
@@ -3558,7 +3558,7 @@ ri_KeysEqual(Relation rel, HeapTuple oldtup, HeapTuple newtup,
 static bool
 ri_AttributesEqual(Oid eq_opr, Oid typeid,
 				   Datum oldvalue, Datum newvalue)
-{
+{	StackTrace("ri_AttributesEqual");
 	RI_CompareHashEntry *entry = ri_HashCompareOp(eq_opr, typeid);
 
 	/* Do we need to cast the values? */
@@ -3591,7 +3591,7 @@ ri_AttributesEqual(Oid eq_opr, Oid typeid,
  */
 static RI_CompareHashEntry *
 ri_HashCompareOp(Oid eq_opr, Oid typeid)
-{
+{	StackTrace("ri_HashCompareOp");
 	RI_CompareKey key;
 	RI_CompareHashEntry *entry;
 	bool		found;
@@ -3684,7 +3684,7 @@ ri_HashCompareOp(Oid eq_opr, Oid typeid)
  */
 int
 RI_FKey_trigger_type(Oid tgfoid)
-{
+{	StackTrace("RI_FKey_trigger_type");
 	switch (tgfoid)
 	{
 		case F_RI_FKEY_CASCADE_DEL:

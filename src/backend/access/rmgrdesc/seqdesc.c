@@ -19,7 +19,7 @@
 
 void
 seq_desc(StringInfo buf, XLogReaderState *record)
-{
+{	StackTrace("seq_desc");
 	char	   *rec = XLogRecGetData(record);
 	uint8		info = XLogRecGetInfo(record) & ~XLR_INFO_MASK;
 	xl_seq_rec *xlrec = (xl_seq_rec *) rec;
@@ -32,7 +32,7 @@ seq_desc(StringInfo buf, XLogReaderState *record)
 
 const char *
 seq_identify(uint8 info)
-{
+{	StackTrace("seq_identify");
 	const char *id = NULL;
 
 	switch (info & ~XLR_INFO_MASK)

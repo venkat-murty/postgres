@@ -47,7 +47,7 @@ extern int	check_enable_rls(Oid relid, Oid checkAsUser, bool noError);
  */
 int
 check_enable_rls(Oid relid, Oid checkAsUser, bool noError)
-{
+{	StackTrace("check_enable_rls");
 	HeapTuple	tuple;
 	Form_pg_class classform;
 	bool		relrowsecurity;

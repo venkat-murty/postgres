@@ -62,7 +62,7 @@ InsertRule(char *rulname,
 		   Node *event_qual,
 		   List *action,
 		   bool replace)
-{
+{	StackTrace("InsertRule");
 	char	   *evqual = nodeToString(event_qual);
 	char	   *actiontree = nodeToString((Node *) action);
 	Datum		values[Natts_pg_rewrite];
@@ -193,7 +193,7 @@ InsertRule(char *rulname,
  */
 ObjectAddress
 DefineRule(RuleStmt *stmt, const char *queryString)
-{
+{	StackTrace("DefineRule");
 	List	   *actions;
 	Node	   *whereClause;
 	Oid			relId;
@@ -233,7 +233,7 @@ DefineQueryRewrite(char *rulename,
 				   bool is_instead,
 				   bool replace,
 				   List *action)
-{
+{	StackTrace("DefineQueryRewrite");
 	Relation	event_relation;
 	ListCell   *l;
 	Query	   *query;
@@ -626,7 +626,7 @@ DefineQueryRewrite(char *rulename,
 static void
 checkRuleResultList(List *targetList, TupleDesc resultDesc, bool isSelect,
 					bool requireColumnNameMatch)
-{
+{	StackTrace("checkRuleResultList");
 	ListCell   *tllist;
 	int			i;
 
@@ -745,13 +745,13 @@ checkRuleResultList(List *targetList, TupleDesc resultDesc, bool isSelect,
  */
 void
 setRuleCheckAsUser(Node *node, Oid userid)
-{
+{	StackTrace("setRuleCheckAsUser");
 	(void) setRuleCheckAsUser_walker(node, &userid);
 }
 
 static bool
 setRuleCheckAsUser_walker(Node *node, Oid *context)
-{
+{	StackTrace("setRuleCheckAsUser_walker");
 	if (node == NULL)
 		return false;
 	if (IsA(node, Query))
@@ -765,7 +765,7 @@ setRuleCheckAsUser_walker(Node *node, Oid *context)
 
 static void
 setRuleCheckAsUser_Query(Query *qry, Oid userid)
-{
+{	StackTrace("setRuleCheckAsUser_Query");
 	ListCell   *l;
 
 	/* Set all the RTEs in this query node */
@@ -803,7 +803,7 @@ setRuleCheckAsUser_Query(Query *qry, Oid userid)
 void
 EnableDisableRule(Relation rel, const char *rulename,
 				  char fires_when)
-{
+{	StackTrace("EnableDisableRule");
 	Relation	pg_rewrite_desc;
 	Oid			owningRel = RelationGetRelid(rel);
 	Oid			eventRelationOid;
@@ -870,7 +870,7 @@ EnableDisableRule(Relation rel, const char *rulename,
 static void
 RangeVarCallbackForRenameRule(const RangeVar *rv, Oid relid, Oid oldrelid,
 							  void *arg)
-{
+{	StackTrace("RangeVarCallbackForRenameRule");
 	HeapTuple	tuple;
 	Form_pg_class form;
 
@@ -904,7 +904,7 @@ RangeVarCallbackForRenameRule(const RangeVar *rv, Oid relid, Oid oldrelid,
 ObjectAddress
 RenameRewriteRule(RangeVar *relation, const char *oldName,
 				  const char *newName)
-{
+{	StackTrace("RenameRewriteRule");
 	Oid			relid;
 	Relation	targetrel;
 	Relation	pg_rewrite_desc;

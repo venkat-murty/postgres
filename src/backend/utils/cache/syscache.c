@@ -894,7 +894,7 @@ static int	oid_compare(const void *a, const void *b);
  */
 void
 InitCatalogCache(void)
-{
+{	StackTrace("InitCatalogCache");
 	int			cacheId;
 	int			i,
 				j;
@@ -964,7 +964,7 @@ InitCatalogCache(void)
  */
 void
 InitCatalogCachePhase2(void)
-{
+{	StackTrace("InitCatalogCachePhase2");
 	int			cacheId;
 
 	Assert(CacheInitialized);
@@ -996,7 +996,7 @@ SearchSysCache(int cacheId,
 			   Datum key2,
 			   Datum key3,
 			   Datum key4)
-{
+{	StackTrace("SearchSysCache");
 	if (cacheId < 0 || cacheId >= SysCacheSize ||
 		!PointerIsValid(SysCache[cacheId]))
 		elog(ERROR, "invalid cache ID: %d", cacheId);
@@ -1010,7 +1010,7 @@ SearchSysCache(int cacheId,
  */
 void
 ReleaseSysCache(HeapTuple tuple)
-{
+{	StackTrace("ReleaseSysCache");
 	ReleaseCatCache(tuple);
 }
 
@@ -1028,7 +1028,7 @@ SearchSysCacheCopy(int cacheId,
 				   Datum key2,
 				   Datum key3,
 				   Datum key4)
-{
+{	StackTrace("SearchSysCacheCopy");
 	HeapTuple	tuple,
 				newtuple;
 
@@ -1052,7 +1052,7 @@ SearchSysCacheExists(int cacheId,
 					 Datum key2,
 					 Datum key3,
 					 Datum key4)
-{
+{	StackTrace("SearchSysCacheExists");
 	HeapTuple	tuple;
 
 	tuple = SearchSysCache(cacheId, key1, key2, key3, key4);
@@ -1075,7 +1075,7 @@ GetSysCacheOid(int cacheId,
 			   Datum key2,
 			   Datum key3,
 			   Datum key4)
-{
+{	StackTrace("GetSysCacheOid");
 	HeapTuple	tuple;
 	Oid			result;
 
@@ -1098,7 +1098,7 @@ GetSysCacheOid(int cacheId,
  */
 HeapTuple
 SearchSysCacheAttName(Oid relid, const char *attname)
-{
+{	StackTrace("SearchSysCacheAttName");
 	HeapTuple	tuple;
 
 	tuple = SearchSysCache2(ATTNAME,
@@ -1121,7 +1121,7 @@ SearchSysCacheAttName(Oid relid, const char *attname)
  */
 HeapTuple
 SearchSysCacheCopyAttName(Oid relid, const char *attname)
-{
+{	StackTrace("SearchSysCacheCopyAttName");
 	HeapTuple	tuple,
 				newtuple;
 
@@ -1140,7 +1140,7 @@ SearchSysCacheCopyAttName(Oid relid, const char *attname)
  */
 bool
 SearchSysCacheExistsAttName(Oid relid, const char *attname)
-{
+{	StackTrace("SearchSysCacheExistsAttName");
 	HeapTuple	tuple;
 
 	tuple = SearchSysCacheAttName(relid, attname);
@@ -1174,7 +1174,7 @@ Datum
 SysCacheGetAttr(int cacheId, HeapTuple tup,
 				AttrNumber attributeNumber,
 				bool *isNull)
-{
+{	StackTrace("SysCacheGetAttr");
 	/*
 	 * We just need to get the TupleDesc out of the cache entry, and then we
 	 * can apply heap_getattr().  Normally the cache control data is already
@@ -1211,7 +1211,7 @@ GetSysCacheHashValue(int cacheId,
 					 Datum key2,
 					 Datum key3,
 					 Datum key4)
-{
+{	StackTrace("GetSysCacheHashValue");
 	if (cacheId < 0 || cacheId >= SysCacheSize ||
 		!PointerIsValid(SysCache[cacheId]))
 		elog(ERROR, "invalid cache ID: %d", cacheId);
@@ -1225,7 +1225,7 @@ GetSysCacheHashValue(int cacheId,
 struct catclist *
 SearchSysCacheList(int cacheId, int nkeys,
 				   Datum key1, Datum key2, Datum key3, Datum key4)
-{
+{	StackTrace("SearchSysCacheList");
 	if (cacheId < 0 || cacheId >= SysCacheSize ||
 		!PointerIsValid(SysCache[cacheId]))
 		elog(ERROR, "invalid cache ID: %d", cacheId);
@@ -1247,7 +1247,7 @@ SearchSysCacheList(int cacheId, int nkeys,
  */
 bool
 RelationInvalidatesSnapshotsOnly(Oid relid)
-{
+{	StackTrace("RelationInvalidatesSnapshotsOnly");
 	switch (relid)
 	{
 		case DbRoleSettingRelationId:
@@ -1270,7 +1270,7 @@ RelationInvalidatesSnapshotsOnly(Oid relid)
  */
 bool
 RelationHasSysCache(Oid relid)
-{
+{	StackTrace("RelationHasSysCache");
 	int			low = 0,
 				high = SysCacheRelationOidSize - 1;
 
@@ -1295,7 +1295,7 @@ RelationHasSysCache(Oid relid)
  */
 bool
 RelationSupportsSysCache(Oid relid)
-{
+{	StackTrace("RelationSupportsSysCache");
 	int			low = 0,
 				high = SysCacheSupportingRelOidSize - 1;
 
@@ -1320,7 +1320,7 @@ RelationSupportsSysCache(Oid relid)
  */
 static int
 oid_compare(const void *a, const void *b)
-{
+{	StackTrace("oid_compare");
 	Oid			oa = *((const Oid *) a);
 	Oid			ob = *((const Oid *) b);
 

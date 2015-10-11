@@ -66,7 +66,7 @@ static PGShmemHeader *PGSharedMemoryAttach(IpcMemoryKey key,
  */
 static void *
 InternalIpcMemoryCreate(IpcMemoryKey memKey, Size size)
-{
+{	StackTrace("InternalIpcMemoryCreate");
 	IpcMemoryId shmid;
 	void	   *memAddress;
 
@@ -200,7 +200,7 @@ InternalIpcMemoryCreate(IpcMemoryKey memKey, Size size)
 /****************************************************************************/
 static void
 IpcMemoryDetach(int status, Datum shmaddr)
-{
+{	StackTrace("IpcMemoryDetach");
 	/* Detach System V shared memory block. */
 	if (shmdt(DatumGetPointer(shmaddr)) < 0)
 		elog(LOG, "shmdt(%p) failed: %m", DatumGetPointer(shmaddr));
@@ -216,7 +216,7 @@ IpcMemoryDetach(int status, Datum shmaddr)
 /****************************************************************************/
 static void
 IpcMemoryDelete(int status, Datum shmId)
-{
+{	StackTrace("IpcMemoryDelete");
 	if (shmctl(DatumGetInt32(shmId), IPC_RMID, NULL) < 0)
 		elog(LOG, "shmctl(%d, %d, 0) failed: %m",
 			 DatumGetInt32(shmId), IPC_RMID);
@@ -235,7 +235,7 @@ IpcMemoryDelete(int status, Datum shmId)
  */
 bool
 PGSharedMemoryIsInUse(unsigned long id1, unsigned long id2)
-{
+{	StackTrace("PGSharedMemoryIsInUse");
 	IpcMemoryId shmId = (IpcMemoryId) id2;
 	struct shmid_ds shmStat;
 	struct stat statbuf;
@@ -328,7 +328,7 @@ PGSharedMemoryIsInUse(unsigned long id1, unsigned long id2)
 #ifndef EXEC_BACKEND
 static void *
 CreateAnonymousSegment(Size *size)
-{
+{	StackTrace("CreateAnonymousSegment");
 	Size		allocsize = *size;
 	void	   *ptr = MAP_FAILED;
 	int			mmap_errno = 0;
@@ -424,7 +424,7 @@ CreateAnonymousSegment(Size *size)
 PGShmemHeader *
 PGSharedMemoryCreate(Size size, bool makePrivate, int port,
 					 PGShmemHeader **shim)
-{
+{	StackTrace("PGSharedMemoryCreate");
 	IpcMemoryKey NextShmemSegID;
 	void	   *memAddress;
 	PGShmemHeader *hdr;
@@ -593,7 +593,7 @@ PGSharedMemoryCreate(Size size, bool makePrivate, int port,
  */
 void
 PGSharedMemoryReAttach(void)
-{
+{	StackTrace("PGSharedMemoryReAttach");
 	IpcMemoryId shmid;
 	void	   *hdr;
 	void	   *origUsedShmemSegAddr = UsedShmemSegAddr;
@@ -632,7 +632,7 @@ PGSharedMemoryReAttach(void)
  */
 void
 PGSharedMemoryDetach(void)
-{
+{	StackTrace("PGSharedMemoryDetach");
 	if (UsedShmemSegAddr != NULL)
 	{
 		if ((shmdt(UsedShmemSegAddr) < 0)
@@ -659,7 +659,7 @@ PGSharedMemoryDetach(void)
  */
 static PGShmemHeader *
 PGSharedMemoryAttach(IpcMemoryKey key, IpcMemoryId *shmid)
-{
+{	StackTrace("PGSharedMemoryAttach");
 	PGShmemHeader *hdr;
 
 	if ((*shmid = shmget(key, sizeof(PGShmemHeader), 0)) < 0)

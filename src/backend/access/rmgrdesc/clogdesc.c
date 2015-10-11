@@ -19,7 +19,7 @@
 
 void
 clog_desc(StringInfo buf, XLogReaderState *record)
-{
+{	StackTrace("clog_desc");
 	char	   *rec = XLogRecGetData(record);
 	uint8		info = XLogRecGetInfo(record) & ~XLR_INFO_MASK;
 
@@ -34,7 +34,7 @@ clog_desc(StringInfo buf, XLogReaderState *record)
 
 const char *
 clog_identify(uint8 info)
-{
+{	StackTrace("clog_identify");
 	const char *id = NULL;
 
 	switch (info & ~XLR_INFO_MASK)

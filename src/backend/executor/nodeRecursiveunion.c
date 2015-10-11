@@ -37,7 +37,7 @@ typedef struct RUHashEntryData
  */
 static void
 build_hash_table(RecursiveUnionState *rustate)
-{
+{	StackTrace("build_hash_table");
 	RecursiveUnion *node = (RecursiveUnion *) rustate->ps.plan;
 
 	Assert(node->numCols > 0);
@@ -74,7 +74,7 @@ build_hash_table(RecursiveUnionState *rustate)
  */
 TupleTableSlot *
 ExecRecursiveUnion(RecursiveUnionState *node)
-{
+{	StackTrace("ExecRecursiveUnion");
 	PlanState  *outerPlan = outerPlanState(node);
 	PlanState  *innerPlan = innerPlanState(node);
 	RecursiveUnion *plan = (RecursiveUnion *) node->ps.plan;
@@ -163,7 +163,7 @@ ExecRecursiveUnion(RecursiveUnionState *node)
  */
 RecursiveUnionState *
 ExecInitRecursiveUnion(RecursiveUnion *node, EState *estate, int eflags)
-{
+{	StackTrace("ExecInitRecursiveUnion");
 	RecursiveUnionState *rustate;
 	ParamExecData *prmdata;
 
@@ -272,7 +272,7 @@ ExecInitRecursiveUnion(RecursiveUnion *node, EState *estate, int eflags)
  */
 void
 ExecEndRecursiveUnion(RecursiveUnionState *node)
-{
+{	StackTrace("ExecEndRecursiveUnion");
 	/* Release tuplestores */
 	tuplestore_end(node->working_table);
 	tuplestore_end(node->intermediate_table);
@@ -303,7 +303,7 @@ ExecEndRecursiveUnion(RecursiveUnionState *node)
  */
 void
 ExecReScanRecursiveUnion(RecursiveUnionState *node)
-{
+{	StackTrace("ExecReScanRecursiveUnion");
 	PlanState  *outerPlan = outerPlanState(node);
 	PlanState  *innerPlan = innerPlanState(node);
 	RecursiveUnion *plan = (RecursiveUnion *) node->ps.plan;

@@ -48,7 +48,7 @@ addItemPointersToLeafTuple(GinState *ginstate,
 						   IndexTuple old,
 						   ItemPointerData *items, uint32 nitem,
 						   GinStatsData *buildStats)
-{
+{	StackTrace("addItemPointersToLeafTuple");
 	OffsetNumber attnum;
 	Datum		key;
 	GinNullCategory category;
@@ -127,7 +127,7 @@ buildFreshLeafTuple(GinState *ginstate,
 					OffsetNumber attnum, Datum key, GinNullCategory category,
 					ItemPointerData *items, uint32 nitem,
 					GinStatsData *buildStats)
-{
+{	StackTrace("buildFreshLeafTuple");
 	IndexTuple	res = NULL;
 	GinPostingList *compressedList;
 
@@ -177,7 +177,7 @@ ginEntryInsert(GinState *ginstate,
 			   OffsetNumber attnum, Datum key, GinNullCategory category,
 			   ItemPointerData *items, uint32 nitem,
 			   GinStatsData *buildStats)
-{
+{	StackTrace("ginEntryInsert");
 	GinBtreeData btree;
 	GinBtreeEntryInsertData insertdata;
 	GinBtreeStack *stack;
@@ -245,7 +245,7 @@ static void
 ginHeapTupleBulkInsert(GinBuildState *buildstate, OffsetNumber attnum,
 					   Datum value, bool isNull,
 					   ItemPointer heapptr)
-{
+{	StackTrace("ginHeapTupleBulkInsert");
 	Datum	   *entries;
 	GinNullCategory *categories;
 	int32		nentries;
@@ -268,7 +268,7 @@ ginHeapTupleBulkInsert(GinBuildState *buildstate, OffsetNumber attnum,
 static void
 ginBuildCallback(Relation index, HeapTuple htup, Datum *values,
 				 bool *isnull, bool tupleIsAlive, void *state)
-{
+{	StackTrace("ginBuildCallback");
 	GinBuildState *buildstate = (GinBuildState *) state;
 	MemoryContext oldCtx;
 	int			i;
@@ -308,7 +308,7 @@ ginBuildCallback(Relation index, HeapTuple htup, Datum *values,
 
 Datum
 ginbuild(PG_FUNCTION_ARGS)
-{
+{	StackTrace("ginbuild");
 	Relation	heap = (Relation) PG_GETARG_POINTER(0);
 	Relation	index = (Relation) PG_GETARG_POINTER(1);
 	IndexInfo  *indexInfo = (IndexInfo *) PG_GETARG_POINTER(2);
@@ -437,7 +437,7 @@ ginbuild(PG_FUNCTION_ARGS)
  */
 Datum
 ginbuildempty(PG_FUNCTION_ARGS)
-{
+{	StackTrace("ginbuildempty");
 	Relation	index = (Relation) PG_GETARG_POINTER(0);
 	Buffer		RootBuffer,
 				MetaBuffer;
@@ -475,7 +475,7 @@ static void
 ginHeapTupleInsert(GinState *ginstate, OffsetNumber attnum,
 				   Datum value, bool isNull,
 				   ItemPointer item)
-{
+{	StackTrace("ginHeapTupleInsert");
 	Datum	   *entries;
 	GinNullCategory *categories;
 	int32		i,
@@ -491,7 +491,7 @@ ginHeapTupleInsert(GinState *ginstate, OffsetNumber attnum,
 
 Datum
 gininsert(PG_FUNCTION_ARGS)
-{
+{	StackTrace("gininsert");
 	Relation	index = (Relation) PG_GETARG_POINTER(0);
 	Datum	   *values = (Datum *) PG_GETARG_POINTER(1);
 	bool	   *isnull = (bool *) PG_GETARG_POINTER(2);

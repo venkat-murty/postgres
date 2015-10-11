@@ -60,7 +60,7 @@ static bool ExecHashJoinNewBatch(HashJoinState *hjstate);
  */
 TupleTableSlot *				/* return: a tuple or NULL */
 ExecHashJoin(HashJoinState *node)
-{
+{	StackTrace("ExecHashJoin");
 	PlanState  *outerNode;
 	HashState  *hashNode;
 	List	   *joinqual;
@@ -433,7 +433,7 @@ ExecHashJoin(HashJoinState *node)
  */
 HashJoinState *
 ExecInitHashJoin(HashJoin *node, EState *estate, int eflags)
-{
+{	StackTrace("ExecInitHashJoin");
 	HashJoinState *hjstate;
 	Plan	   *outerNode;
 	Hash	   *hashNode;
@@ -602,7 +602,7 @@ ExecInitHashJoin(HashJoin *node, EState *estate, int eflags)
  */
 void
 ExecEndHashJoin(HashJoinState *node)
-{
+{	StackTrace("ExecEndHashJoin");
 	/*
 	 * Free hash table
 	 */
@@ -647,7 +647,7 @@ static TupleTableSlot *
 ExecHashJoinOuterGetTuple(PlanState *outerNode,
 						  HashJoinState *hjstate,
 						  uint32 *hashvalue)
-{
+{	StackTrace("ExecHashJoinOuterGetTuple");
 	HashJoinTable hashtable = hjstate->hj_HashTable;
 	int			curbatch = hashtable->curbatch;
 	TupleTableSlot *slot;
@@ -722,7 +722,7 @@ ExecHashJoinOuterGetTuple(PlanState *outerNode,
  */
 static bool
 ExecHashJoinNewBatch(HashJoinState *hjstate)
-{
+{	StackTrace("ExecHashJoinNewBatch");
 	HashJoinTable hashtable = hjstate->hj_HashTable;
 	int			nbatch;
 	int			curbatch;
@@ -870,7 +870,7 @@ ExecHashJoinNewBatch(HashJoinState *hjstate)
 void
 ExecHashJoinSaveTuple(MinimalTuple tuple, uint32 hashvalue,
 					  BufFile **fileptr)
-{
+{	StackTrace("ExecHashJoinSaveTuple");
 	BufFile    *file = *fileptr;
 	size_t		written;
 
@@ -906,7 +906,7 @@ ExecHashJoinGetSavedTuple(HashJoinState *hjstate,
 						  BufFile *file,
 						  uint32 *hashvalue,
 						  TupleTableSlot *tupleSlot)
-{
+{	StackTrace("ExecHashJoinGetSavedTuple");
 	uint32		header[2];
 	size_t		nread;
 	MinimalTuple tuple;
@@ -942,7 +942,7 @@ ExecHashJoinGetSavedTuple(HashJoinState *hjstate,
 
 void
 ExecReScanHashJoin(HashJoinState *node)
-{
+{	StackTrace("ExecReScanHashJoin");
 	/*
 	 * In a multi-batch join, we currently have to do rescans the hard way,
 	 * primarily because batch temp files may have already been released. But

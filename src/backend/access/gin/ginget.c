@@ -38,7 +38,7 @@ typedef struct pendingPosition
  */
 static bool
 moveRightIfItNeeded(GinBtreeData *btree, GinBtreeStack *stack)
-{
+{	StackTrace("moveRightIfItNeeded");
 	Page		page = BufferGetPage(stack->buffer);
 
 	if (stack->off > PageGetMaxOffsetNumber(page))
@@ -64,7 +64,7 @@ moveRightIfItNeeded(GinBtreeData *btree, GinBtreeStack *stack)
 static void
 scanPostingTree(Relation index, GinScanEntry scanEntry,
 				BlockNumber rootPostingTree)
-{
+{	StackTrace("scanPostingTree");
 	GinBtreeData btree;
 	GinBtreeStack *stack;
 	Buffer		buffer;
@@ -115,7 +115,7 @@ scanPostingTree(Relation index, GinScanEntry scanEntry,
 static bool
 collectMatchBitmap(GinBtreeData *btree, GinBtreeStack *stack,
 				   GinScanEntry scanEntry)
-{
+{	StackTrace("collectMatchBitmap");
 	OffsetNumber attnum;
 	Form_pg_attribute attr;
 
@@ -292,7 +292,7 @@ collectMatchBitmap(GinBtreeData *btree, GinBtreeStack *stack,
  */
 static void
 startScanEntry(GinState *ginstate, GinScanEntry entry)
-{
+{	StackTrace("startScanEntry");
 	GinBtreeData btreeEntry;
 	GinBtreeStack *stackEntry;
 	Page		page;
@@ -426,7 +426,7 @@ restartScanEntry:
  */
 static int
 entryIndexByFrequencyCmp(const void *a1, const void *a2, void *arg)
-{
+{	StackTrace("entryIndexByFrequencyCmp");
 	const GinScanKey key = (const GinScanKey) arg;
 	int			i1 = *(const int *) a1;
 	int			i2 = *(const int *) a2;
@@ -443,7 +443,7 @@ entryIndexByFrequencyCmp(const void *a1, const void *a2, void *arg)
 
 static void
 startScanKey(GinState *ginstate, GinScanOpaque so, GinScanKey key)
-{
+{	StackTrace("startScanKey");
 	MemoryContext oldCtx = CurrentMemoryContext;
 	int			i;
 	int			j;
@@ -527,7 +527,7 @@ startScanKey(GinState *ginstate, GinScanOpaque so, GinScanKey key)
 
 static void
 startScan(IndexScanDesc scan)
-{
+{	StackTrace("startScan");
 	GinScanOpaque so = (GinScanOpaque) scan->opaque;
 	GinState   *ginstate = &so->ginstate;
 	uint32		i;
@@ -579,7 +579,7 @@ startScan(IndexScanDesc scan)
  */
 static void
 entryLoadMoreItems(GinState *ginstate, GinScanEntry entry, ItemPointerData advancePast)
-{
+{	StackTrace("entryLoadMoreItems");
 	Page		page;
 	int			i;
 	bool		stepright;
@@ -733,7 +733,7 @@ entryLoadMoreItems(GinState *ginstate, GinScanEntry entry, ItemPointerData advan
 static void
 entryGetItem(GinState *ginstate, GinScanEntry entry,
 			 ItemPointerData advancePast)
-{
+{	StackTrace("entryGetItem");
 	Assert(!entry->isFinished);
 
 	Assert(!ItemPointerIsValid(&entry->curItem) ||
@@ -895,7 +895,7 @@ entryGetItem(GinState *ginstate, GinScanEntry entry,
 static void
 keyGetItem(GinState *ginstate, MemoryContext tempCtx, GinScanKey key,
 		   ItemPointerData advancePast)
-{
+{	StackTrace("keyGetItem");
 	ItemPointerData minItem;
 	ItemPointerData curPageLossy;
 	uint32		i;
@@ -1173,7 +1173,7 @@ keyGetItem(GinState *ginstate, MemoryContext tempCtx, GinScanKey key,
 static bool
 scanGetItem(IndexScanDesc scan, ItemPointerData advancePast,
 			ItemPointerData *item, bool *recheck)
-{
+{	StackTrace("scanGetItem");
 	GinScanOpaque so = (GinScanOpaque) scan->opaque;
 	uint32		i;
 	bool		match;
@@ -1321,7 +1321,7 @@ scanGetItem(IndexScanDesc scan, ItemPointerData advancePast,
  */
 static bool
 scanGetCandidate(IndexScanDesc scan, pendingPosition *pos)
-{
+{	StackTrace("scanGetCandidate");
 	OffsetNumber maxoff;
 	Page		page;
 	IndexTuple	itup;
@@ -1412,7 +1412,7 @@ matchPartialInPendingList(GinState *ginstate, Page page,
 						  GinScanEntry entry,
 						  Datum *datum, GinNullCategory *category,
 						  bool *datumExtracted)
-{
+{	StackTrace("matchPartialInPendingList");
 	IndexTuple	itup;
 	int32		cmp;
 
@@ -1476,7 +1476,7 @@ matchPartialInPendingList(GinState *ginstate, Page page,
  */
 static bool
 collectMatchesForHeapRow(IndexScanDesc scan, pendingPosition *pos)
-{
+{	StackTrace("collectMatchesForHeapRow");
 	GinScanOpaque so = (GinScanOpaque) scan->opaque;
 	OffsetNumber attrnum;
 	Page		page;
@@ -1688,7 +1688,7 @@ collectMatchesForHeapRow(IndexScanDesc scan, pendingPosition *pos)
  */
 static void
 scanPendingInsert(IndexScanDesc scan, TIDBitmap *tbm, int64 *ntids)
-{
+{	StackTrace("scanPendingInsert");
 	GinScanOpaque so = (GinScanOpaque) scan->opaque;
 	MemoryContext oldCtx;
 	bool		recheck,
@@ -1774,7 +1774,7 @@ scanPendingInsert(IndexScanDesc scan, TIDBitmap *tbm, int64 *ntids)
 
 Datum
 gingetbitmap(PG_FUNCTION_ARGS)
-{
+{	StackTrace("gingetbitmap");
 	IndexScanDesc scan = (IndexScanDesc) PG_GETARG_POINTER(0);
 	TIDBitmap  *tbm = (TIDBitmap *) PG_GETARG_POINTER(1);
 	GinScanOpaque so = (GinScanOpaque) scan->opaque;

@@ -18,11 +18,11 @@
 
 void
 hash_desc(StringInfo buf, XLogReaderState *record)
-{
+{	StackTrace("hash_desc");
 }
 
 const char *
 hash_identify(uint8 info)
-{
+{	StackTrace("hash_identify");
 	return NULL;
 }

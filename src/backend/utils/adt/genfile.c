@@ -47,7 +47,7 @@ typedef struct
  */
 static char *
 convert_and_check_filename(text *arg)
-{
+{	StackTrace("convert_and_check_filename");
 	char	   *filename;
 
 	filename = text_to_cstring(arg);
@@ -91,7 +91,7 @@ convert_and_check_filename(text *arg)
 static bytea *
 read_binary_file(const char *filename, int64 seek_offset, int64 bytes_to_read,
 				 bool missing_ok)
-{
+{	StackTrace("read_binary_file");
 	bytea	   *buf;
 	size_t		nbytes;
 	FILE	   *file;
@@ -164,7 +164,7 @@ read_binary_file(const char *filename, int64 seek_offset, int64 bytes_to_read,
 static text *
 read_text_file(const char *filename, int64 seek_offset, int64 bytes_to_read,
 			   bool missing_ok)
-{
+{	StackTrace("read_text_file");
 	bytea	   *buf;
 
 	buf = read_binary_file(filename, seek_offset, bytes_to_read, missing_ok);
@@ -186,7 +186,7 @@ read_text_file(const char *filename, int64 seek_offset, int64 bytes_to_read,
  */
 Datum
 pg_read_file(PG_FUNCTION_ARGS)
-{
+{	StackTrace("pg_read_file");
 	text	   *filename_t = PG_GETARG_TEXT_P(0);
 	int64		seek_offset = 0;
 	int64		bytes_to_read = -1;
@@ -227,7 +227,7 @@ pg_read_file(PG_FUNCTION_ARGS)
  */
 Datum
 pg_read_binary_file(PG_FUNCTION_ARGS)
-{
+{	StackTrace("pg_read_binary_file");
 	text	   *filename_t = PG_GETARG_TEXT_P(0);
 	int64		seek_offset = 0;
 	int64		bytes_to_read = -1;
@@ -275,25 +275,25 @@ pg_read_binary_file(PG_FUNCTION_ARGS)
  */
 Datum
 pg_read_file_off_len(PG_FUNCTION_ARGS)
-{
+{	StackTrace("pg_read_file_off_len");
 	return pg_read_file(fcinfo);
 }
 
 Datum
 pg_read_file_all(PG_FUNCTION_ARGS)
-{
+{	StackTrace("pg_read_file_all");
 	return pg_read_file(fcinfo);
 }
 
 Datum
 pg_read_binary_file_off_len(PG_FUNCTION_ARGS)
-{
+{	StackTrace("pg_read_binary_file_off_len");
 	return pg_read_binary_file(fcinfo);
 }
 
 Datum
 pg_read_binary_file_all(PG_FUNCTION_ARGS)
-{
+{	StackTrace("pg_read_binary_file_all");
 	return pg_read_binary_file(fcinfo);
 }
 
@@ -302,7 +302,7 @@ pg_read_binary_file_all(PG_FUNCTION_ARGS)
  */
 Datum
 pg_stat_file(PG_FUNCTION_ARGS)
-{
+{	StackTrace("pg_stat_file");
 	text	   *filename_t = PG_GETARG_TEXT_P(0);
 	char	   *filename;
 	struct stat fst;
@@ -383,7 +383,7 @@ pg_stat_file(PG_FUNCTION_ARGS)
  */
 Datum
 pg_stat_file_1arg(PG_FUNCTION_ARGS)
-{
+{	StackTrace("pg_stat_file_1arg");
 	return pg_stat_file(fcinfo);
 }
 
@@ -392,7 +392,7 @@ pg_stat_file_1arg(PG_FUNCTION_ARGS)
  */
 Datum
 pg_ls_dir(PG_FUNCTION_ARGS)
-{
+{	StackTrace("pg_ls_dir");
 	FuncCallContext *funcctx;
 	struct dirent *de;
 	directory_fctx *fctx;
@@ -470,6 +470,6 @@ pg_ls_dir(PG_FUNCTION_ARGS)
  */
 Datum
 pg_ls_dir_1arg(PG_FUNCTION_ARGS)
-{
+{	StackTrace("pg_ls_dir_1arg");
 	return pg_ls_dir(fcinfo);
 }

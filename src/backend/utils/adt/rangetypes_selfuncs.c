@@ -62,7 +62,7 @@ static double calc_hist_selectivity_contains(TypeCacheEntry *typcache,
  */
 static double
 default_range_selectivity(Oid operator)
-{
+{	StackTrace("default_range_selectivity");
 	switch (operator)
 	{
 		case OID_RANGE_OVERLAP_OP:
@@ -103,7 +103,7 @@ default_range_selectivity(Oid operator)
  */
 Datum
 rangesel(PG_FUNCTION_ARGS)
-{
+{	StackTrace("rangesel");
 	PlannerInfo *root = (PlannerInfo *) PG_GETARG_POINTER(0);
 	Oid			operator = PG_GETARG_OID(1);
 	List	   *args = (List *) PG_GETARG_POINTER(2);
@@ -226,7 +226,7 @@ rangesel(PG_FUNCTION_ARGS)
 static double
 calc_rangesel(TypeCacheEntry *typcache, VariableStatData *vardata,
 			  RangeType *constval, Oid operator)
-{
+{	StackTrace("calc_rangesel");
 	double		hist_selec;
 	double		selec;
 	float4		empty_frac,
@@ -370,7 +370,7 @@ calc_rangesel(TypeCacheEntry *typcache, VariableStatData *vardata,
 static double
 calc_hist_selectivity(TypeCacheEntry *typcache, VariableStatData *vardata,
 					  RangeType *constval, Oid operator)
-{
+{	StackTrace("calc_hist_selectivity");
 	Datum	   *hist_values;
 	int			nhist;
 	Datum	   *length_hist_values;
@@ -571,7 +571,7 @@ calc_hist_selectivity(TypeCacheEntry *typcache, VariableStatData *vardata,
 static double
 calc_hist_selectivity_scalar(TypeCacheEntry *typcache, RangeBound *constbound,
 							 RangeBound *hist, int hist_nvalues, bool equal)
-{
+{	StackTrace("calc_hist_selectivity_scalar");
 	Selectivity selec;
 	int			index;
 
@@ -603,7 +603,7 @@ calc_hist_selectivity_scalar(TypeCacheEntry *typcache, RangeBound *constbound,
 static int
 rbound_bsearch(TypeCacheEntry *typcache, RangeBound *value, RangeBound *hist,
 			   int hist_length, bool equal)
-{
+{	StackTrace("rbound_bsearch");
 	int			lower = -1,
 				upper = hist_length - 1,
 				cmp,
@@ -632,7 +632,7 @@ rbound_bsearch(TypeCacheEntry *typcache, RangeBound *value, RangeBound *hist,
 static int
 length_hist_bsearch(Datum *length_hist_values, int length_hist_nvalues,
 					double value, bool equal)
-{
+{	StackTrace("length_hist_bsearch");
 	int			lower = -1,
 				upper = length_hist_nvalues - 1,
 				middle;
@@ -658,7 +658,7 @@ length_hist_bsearch(Datum *length_hist_values, int length_hist_nvalues,
 static float8
 get_position(TypeCacheEntry *typcache, RangeBound *value, RangeBound *hist1,
 			 RangeBound *hist2)
-{
+{	StackTrace("get_position");
 	bool		has_subdiff = OidIsValid(typcache->rng_subdiff_finfo.fn_oid);
 	float8		position;
 
@@ -734,7 +734,7 @@ get_position(TypeCacheEntry *typcache, RangeBound *value, RangeBound *hist1,
  */
 static double
 get_len_position(double value, double hist1, double hist2)
-{
+{	StackTrace("get_len_position");
 	if (!is_infinite(hist1) && !is_infinite(hist2))
 	{
 		/*
@@ -779,7 +779,7 @@ get_len_position(double value, double hist1, double hist2)
  */
 static float8
 get_distance(TypeCacheEntry *typcache, RangeBound *bound1, RangeBound *bound2)
-{
+{	StackTrace("get_distance");
 	bool		has_subdiff = OidIsValid(typcache->rng_subdiff_finfo.fn_oid);
 
 	if (!bound1->infinite && !bound2->infinite)
@@ -820,7 +820,7 @@ get_distance(TypeCacheEntry *typcache, RangeBound *bound1, RangeBound *bound2)
 static double
 calc_length_hist_frac(Datum *length_hist_values, int length_hist_nvalues,
 					  double length1, double length2, bool equal)
-{
+{	StackTrace("calc_length_hist_frac");
 	double		frac;
 	double		A,
 				B,
@@ -985,7 +985,7 @@ calc_hist_selectivity_contained(TypeCacheEntry *typcache,
 								RangeBound *lower, RangeBound *upper,
 								RangeBound *hist_lower, int hist_nvalues,
 						  Datum *length_hist_values, int length_hist_nvalues)
-{
+{	StackTrace("calc_hist_selectivity_contained");
 	int			i,
 				upper_index;
 	float8		prev_dist;
@@ -1095,7 +1095,7 @@ calc_hist_selectivity_contains(TypeCacheEntry *typcache,
 							   RangeBound *lower, RangeBound *upper,
 							   RangeBound *hist_lower, int hist_nvalues,
 						  Datum *length_hist_values, int length_hist_nvalues)
-{
+{	StackTrace("calc_hist_selectivity_contains");
 	int			i,
 				lower_index;
 	double		bin_width,

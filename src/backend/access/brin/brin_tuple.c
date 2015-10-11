@@ -49,7 +49,7 @@ static inline void brin_deconstruct_tuple(BrinDesc *brdesc,
  */
 static TupleDesc
 brtuple_disk_tupdesc(BrinDesc *brdesc)
-{
+{	StackTrace("brtuple_disk_tupdesc");
 	/* We cache these in the BrinDesc */
 	if (brdesc->bd_disktdesc == NULL)
 	{
@@ -88,7 +88,7 @@ brtuple_disk_tupdesc(BrinDesc *brdesc)
 BrinTuple *
 brin_form_tuple(BrinDesc *brdesc, BlockNumber blkno, BrinMemTuple *tuple,
 				Size *size)
-{
+{	StackTrace("brin_form_tuple");
 	Datum	   *values;
 	bool	   *nulls;
 	bool		anynulls = false;
@@ -261,7 +261,7 @@ brin_form_tuple(BrinDesc *brdesc, BlockNumber blkno, BrinMemTuple *tuple,
  */
 BrinTuple *
 brin_form_placeholder_tuple(BrinDesc *brdesc, BlockNumber blkno, Size *size)
-{
+{	StackTrace("brin_form_placeholder_tuple");
 	Size		len;
 	Size		hoff;
 	BrinTuple  *rettuple;
@@ -306,7 +306,7 @@ brin_form_placeholder_tuple(BrinDesc *brdesc, BlockNumber blkno, Size *size)
  */
 void
 brin_free_tuple(BrinTuple *tuple)
-{
+{	StackTrace("brin_free_tuple");
 	pfree(tuple);
 }
 
@@ -315,7 +315,7 @@ brin_free_tuple(BrinTuple *tuple)
  */
 BrinTuple *
 brin_copy_tuple(BrinTuple *tuple, Size len)
-{
+{	StackTrace("brin_copy_tuple");
 	BrinTuple  *newtup;
 
 	newtup = palloc(len);
@@ -329,7 +329,7 @@ brin_copy_tuple(BrinTuple *tuple, Size len)
  */
 bool
 brin_tuples_equal(const BrinTuple *a, Size alen, const BrinTuple *b, Size blen)
-{
+{	StackTrace("brin_tuples_equal");
 	if (alen != blen)
 		return false;
 	if (memcmp(a, b, alen) != 0)
@@ -346,7 +346,7 @@ brin_tuples_equal(const BrinTuple *a, Size alen, const BrinTuple *b, Size blen)
  */
 BrinMemTuple *
 brin_new_memtuple(BrinDesc *brdesc)
-{
+{	StackTrace("brin_new_memtuple");
 	BrinMemTuple *dtup;
 	char	   *currdatum;
 	long		basesize;
@@ -378,7 +378,7 @@ brin_new_memtuple(BrinDesc *brdesc)
  */
 void
 brin_memtuple_initialize(BrinMemTuple *dtuple, BrinDesc *brdesc)
-{
+{	StackTrace("brin_memtuple_initialize");
 	int			i;
 
 	MemoryContextReset(dtuple->bt_context);
@@ -398,7 +398,7 @@ brin_memtuple_initialize(BrinMemTuple *dtuple, BrinDesc *brdesc)
  */
 BrinMemTuple *
 brin_deform_tuple(BrinDesc *brdesc, BrinTuple *tuple)
-{
+{	StackTrace("brin_deform_tuple");
 	BrinMemTuple *dtup;
 	Datum	   *values;
 	bool	   *allnulls;
@@ -486,7 +486,7 @@ static inline void
 brin_deconstruct_tuple(BrinDesc *brdesc,
 					   char *tp, bits8 *nullbits, bool nulls,
 					   Datum *values, bool *allnulls, bool *hasnulls)
-{
+{	StackTrace("brin_deconstruct_tuple");
 	int			attnum;
 	int			stored;
 	TupleDesc	diskdsc;

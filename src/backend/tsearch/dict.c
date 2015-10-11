@@ -24,7 +24,7 @@
  */
 Datum
 ts_lexize(PG_FUNCTION_ARGS)
-{
+{	StackTrace("ts_lexize");
 	Oid			dictId = PG_GETARG_OID(0);
 	text	   *in = PG_GETARG_TEXT_P(1);
 	ArrayType  *a;

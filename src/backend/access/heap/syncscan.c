@@ -122,7 +122,7 @@ static BlockNumber ss_search(RelFileNode relfilenode,
  */
 Size
 SyncScanShmemSize(void)
-{
+{	StackTrace("SyncScanShmemSize");
 	return SizeOfScanLocations(SYNC_SCAN_NELEM);
 }
 
@@ -131,7 +131,7 @@ SyncScanShmemSize(void)
  */
 void
 SyncScanShmemInit(void)
-{
+{	StackTrace("SyncScanShmemInit");
 	int			i;
 	bool		found;
 
@@ -187,7 +187,7 @@ SyncScanShmemInit(void)
  */
 static BlockNumber
 ss_search(RelFileNode relfilenode, BlockNumber location, bool set)
-{
+{	StackTrace("ss_search");
 	ss_lru_item_t *item;
 
 	item = scan_locations->head;
@@ -249,7 +249,7 @@ ss_search(RelFileNode relfilenode, BlockNumber location, bool set)
  */
 BlockNumber
 ss_get_location(Relation rel, BlockNumber relnblocks)
-{
+{	StackTrace("ss_get_location");
 	BlockNumber startloc;
 
 	LWLockAcquire(SyncScanLock, LW_EXCLUSIVE);
@@ -284,7 +284,7 @@ ss_get_location(Relation rel, BlockNumber relnblocks)
  */
 void
 ss_report_location(Relation rel, BlockNumber location)
-{
+{	StackTrace("ss_report_location");
 #ifdef TRACE_SYNCSCAN
 	if (trace_syncscan)
 	{

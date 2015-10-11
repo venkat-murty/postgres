@@ -69,7 +69,7 @@ static void revmap_physical_extend(BrinRevmap *revmap);
  */
 BrinRevmap *
 brinRevmapInitialize(Relation idxrel, BlockNumber *pagesPerRange)
-{
+{	StackTrace("brinRevmapInitialize");
 	BrinRevmap *revmap;
 	Buffer		meta;
 	BrinMetaPageData *metadata;
@@ -97,7 +97,7 @@ brinRevmapInitialize(Relation idxrel, BlockNumber *pagesPerRange)
  */
 void
 brinRevmapTerminate(BrinRevmap *revmap)
-{
+{	StackTrace("brinRevmapTerminate");
 	ReleaseBuffer(revmap->rm_metaBuf);
 	if (revmap->rm_currBuf != InvalidBuffer)
 		ReleaseBuffer(revmap->rm_currBuf);
@@ -109,7 +109,7 @@ brinRevmapTerminate(BrinRevmap *revmap)
  */
 void
 brinRevmapExtend(BrinRevmap *revmap, BlockNumber heapBlk)
-{
+{	StackTrace("brinRevmapExtend");
 	BlockNumber mapBlk PG_USED_FOR_ASSERTS_ONLY;
 
 	mapBlk = revmap_extend_and_get_blkno(revmap, heapBlk);
@@ -131,7 +131,7 @@ brinRevmapExtend(BrinRevmap *revmap, BlockNumber heapBlk)
  */
 Buffer
 brinLockRevmapPageForUpdate(BrinRevmap *revmap, BlockNumber heapBlk)
-{
+{	StackTrace("brinLockRevmapPageForUpdate");
 	Buffer		rmBuf;
 
 	rmBuf = revmap_get_buffer(revmap, heapBlk);
@@ -153,7 +153,7 @@ brinLockRevmapPageForUpdate(BrinRevmap *revmap, BlockNumber heapBlk)
 void
 brinSetHeapBlockItemptr(Buffer buf, BlockNumber pagesPerRange,
 						BlockNumber heapBlk, ItemPointerData tid)
-{
+{	StackTrace("brinSetHeapBlockItemptr");
 	RevmapContents *contents;
 	ItemPointerData *iptr;
 	Page		page;
@@ -186,7 +186,7 @@ brinSetHeapBlockItemptr(Buffer buf, BlockNumber pagesPerRange,
 BrinTuple *
 brinGetTupleForHeapBlock(BrinRevmap *revmap, BlockNumber heapBlk,
 						 Buffer *buf, OffsetNumber *off, Size *size, int mode)
-{
+{	StackTrace("brinGetTupleForHeapBlock");
 	Relation	idxRel = revmap->rm_irel;
 	BlockNumber mapBlk;
 	RevmapContents *contents;
@@ -297,7 +297,7 @@ brinGetTupleForHeapBlock(BrinRevmap *revmap, BlockNumber heapBlk,
  */
 static BlockNumber
 revmap_get_blkno(BrinRevmap *revmap, BlockNumber heapBlk)
-{
+{	StackTrace("revmap_get_blkno");
 	BlockNumber targetblk;
 
 	/* obtain revmap block number, skip 1 for metapage block */
@@ -318,7 +318,7 @@ revmap_get_blkno(BrinRevmap *revmap, BlockNumber heapBlk)
  */
 static Buffer
 revmap_get_buffer(BrinRevmap *revmap, BlockNumber heapBlk)
-{
+{	StackTrace("revmap_get_buffer");
 	BlockNumber mapBlk;
 
 	/* Translate the heap block number to physical index location. */
@@ -355,7 +355,7 @@ revmap_get_buffer(BrinRevmap *revmap, BlockNumber heapBlk)
  */
 static BlockNumber
 revmap_extend_and_get_blkno(BrinRevmap *revmap, BlockNumber heapBlk)
-{
+{	StackTrace("revmap_extend_and_get_blkno");
 	BlockNumber targetblk;
 
 	/* obtain revmap block number, skip 1 for metapage block */
@@ -377,7 +377,7 @@ revmap_extend_and_get_blkno(BrinRevmap *revmap, BlockNumber heapBlk)
  */
 static void
 revmap_physical_extend(BrinRevmap *revmap)
-{
+{	StackTrace("revmap_physical_extend");
 	Buffer		buf;
 	Page		page;
 	Page		metapage;

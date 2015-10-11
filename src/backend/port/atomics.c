@@ -35,7 +35,7 @@
 #ifdef PG_HAVE_MEMORY_BARRIER_EMULATION
 void
 pg_spinlock_barrier(void)
-{
+{	StackTrace("pg_spinlock_barrier");
 	/*
 	 * NB: we have to be reentrant here, some barriers are placed in signal
 	 * handlers.
@@ -52,7 +52,7 @@ pg_spinlock_barrier(void)
 #ifdef PG_HAVE_COMPILER_BARRIER_EMULATION
 void
 pg_extern_compiler_barrier(void)
-{
+{	StackTrace("pg_extern_compiler_barrier");
 	/* do nothing */
 }
 #endif
@@ -62,7 +62,7 @@ pg_extern_compiler_barrier(void)
 
 void
 pg_atomic_init_flag_impl(volatile pg_atomic_flag *ptr)
-{
+{	StackTrace("pg_atomic_init_flag_impl");
 	StaticAssertStmt(sizeof(ptr->sema) >= sizeof(slock_t),
 					 "size mismatch of atomic_flag vs slock_t");
 
@@ -81,13 +81,13 @@ pg_atomic_init_flag_impl(volatile pg_atomic_flag *ptr)
 
 bool
 pg_atomic_test_set_flag_impl(volatile pg_atomic_flag *ptr)
-{
+{	StackTrace("pg_atomic_test_set_flag_impl");
 	return TAS((slock_t *) &ptr->sema);
 }
 
 void
 pg_atomic_clear_flag_impl(volatile pg_atomic_flag *ptr)
-{
+{	StackTrace("pg_atomic_clear_flag_impl");
 	S_UNLOCK((slock_t *) &ptr->sema);
 }
 
@@ -96,7 +96,7 @@ pg_atomic_clear_flag_impl(volatile pg_atomic_flag *ptr)
 #ifdef PG_HAVE_ATOMIC_U32_SIMULATION
 void
 pg_atomic_init_u32_impl(volatile pg_atomic_uint32 *ptr, uint32 val_)
-{
+{	StackTrace("pg_atomic_init_u32_impl");
 	StaticAssertStmt(sizeof(ptr->sema) >= sizeof(slock_t),
 					 "size mismatch of atomic_flag vs slock_t");
 
@@ -115,7 +115,7 @@ pg_atomic_init_u32_impl(volatile pg_atomic_uint32 *ptr, uint32 val_)
 bool
 pg_atomic_compare_exchange_u32_impl(volatile pg_atomic_uint32 *ptr,
 									uint32 *expected, uint32 newval)
-{
+{	StackTrace("pg_atomic_compare_exchange_u32_impl");
 	bool		ret;
 
 	/*
@@ -142,7 +142,7 @@ pg_atomic_compare_exchange_u32_impl(volatile pg_atomic_uint32 *ptr,
 
 uint32
 pg_atomic_fetch_add_u32_impl(volatile pg_atomic_uint32 *ptr, int32 add_)
-{
+{	StackTrace("pg_atomic_fetch_add_u32_impl");
 	uint32		oldval;
 
 	SpinLockAcquire((slock_t *) &ptr->sema);

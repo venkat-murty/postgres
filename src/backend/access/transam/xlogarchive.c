@@ -52,7 +52,7 @@ bool
 RestoreArchivedFile(char *path, const char *xlogfname,
 					const char *recovername, off_t expectedSize,
 					bool cleanupEnabled)
-{
+{	StackTrace("RestoreArchivedFile");
 	char		xlogpath[MAXPGPATH];
 	char		xlogRestoreCmd[MAXPGPATH];
 	char		lastRestartPointFname[MAXPGPATH];
@@ -328,7 +328,7 @@ not_available:
  */
 void
 ExecuteRecoveryCommand(char *command, char *commandName, bool failOnSignal)
-{
+{	StackTrace("ExecuteRecoveryCommand");
 	char		xlogRecoveryCmd[MAXPGPATH];
 	char		lastRestartPointFname[MAXPGPATH];
 	char	   *dp;
@@ -425,7 +425,7 @@ ExecuteRecoveryCommand(char *command, char *commandName, bool failOnSignal)
  */
 void
 KeepFileRestoredFromArchive(char *path, char *xlogfname)
-{
+{	StackTrace("KeepFileRestoredFromArchive");
 	char		xlogfpath[MAXPGPATH];
 	bool		reload = false;
 	struct stat statbuf;
@@ -515,7 +515,7 @@ KeepFileRestoredFromArchive(char *path, char *xlogfname)
  */
 void
 XLogArchiveNotify(const char *xlog)
-{
+{	StackTrace("XLogArchiveNotify");
 	char		archiveStatusPath[MAXPGPATH];
 	FILE	   *fd;
 
@@ -549,7 +549,7 @@ XLogArchiveNotify(const char *xlog)
  */
 void
 XLogArchiveNotifySeg(XLogSegNo segno)
-{
+{	StackTrace("XLogArchiveNotifySeg");
 	char		xlog[MAXFNAMELEN];
 
 	XLogFileName(xlog, ThisTimeLineID, segno);
@@ -565,7 +565,7 @@ XLogArchiveNotifySeg(XLogSegNo segno)
  */
 void
 XLogArchiveForceDone(const char *xlog)
-{
+{	StackTrace("XLogArchiveForceDone");
 	char		archiveReady[MAXPGPATH];
 	char		archiveDone[MAXPGPATH];
 	struct stat stat_buf;
@@ -625,7 +625,7 @@ XLogArchiveForceDone(const char *xlog)
  */
 bool
 XLogArchiveCheckDone(const char *xlog)
-{
+{	StackTrace("XLogArchiveCheckDone");
 	char		archiveStatusPath[MAXPGPATH];
 	struct stat stat_buf;
 
@@ -665,7 +665,7 @@ XLogArchiveCheckDone(const char *xlog)
  */
 bool
 XLogArchiveIsBusy(const char *xlog)
-{
+{	StackTrace("XLogArchiveIsBusy");
 	char		archiveStatusPath[MAXPGPATH];
 	struct stat stat_buf;
 
@@ -710,7 +710,7 @@ XLogArchiveIsBusy(const char *xlog)
  */
 bool
 XLogArchiveIsReadyOrDone(const char *xlog)
-{
+{	StackTrace("XLogArchiveIsReadyOrDone");
 	char		archiveStatusPath[MAXPGPATH];
 	struct stat stat_buf;
 
@@ -740,7 +740,7 @@ XLogArchiveIsReadyOrDone(const char *xlog)
  */
 bool
 XLogArchiveIsReady(const char *xlog)
-{
+{	StackTrace("XLogArchiveIsReady");
 	char		archiveStatusPath[MAXPGPATH];
 	struct stat stat_buf;
 
@@ -758,7 +758,7 @@ XLogArchiveIsReady(const char *xlog)
  */
 void
 XLogArchiveCleanup(const char *xlog)
-{
+{	StackTrace("XLogArchiveCleanup");
 	char		archiveStatusPath[MAXPGPATH];
 
 	/* Remove the .done file */

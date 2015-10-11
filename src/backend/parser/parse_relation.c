@@ -83,7 +83,7 @@ refnameRangeTblEntry(ParseState *pstate,
 					 const char *refname,
 					 int location,
 					 int *sublevels_up)
-{
+{	StackTrace("refnameRangeTblEntry");
 	Oid			relId = InvalidOid;
 
 	if (sublevels_up)
@@ -150,7 +150,7 @@ refnameRangeTblEntry(ParseState *pstate,
  */
 static RangeTblEntry *
 scanNameSpaceForRefname(ParseState *pstate, const char *refname, int location)
-{
+{	StackTrace("scanNameSpaceForRefname");
 	RangeTblEntry *result = NULL;
 	ListCell   *l;
 
@@ -191,7 +191,7 @@ scanNameSpaceForRefname(ParseState *pstate, const char *refname, int location)
  */
 static RangeTblEntry *
 scanNameSpaceForRelid(ParseState *pstate, Oid relid, int location)
-{
+{	StackTrace("scanNameSpaceForRelid");
 	RangeTblEntry *result = NULL;
 	ListCell   *l;
 
@@ -234,7 +234,7 @@ scanNameSpaceForRelid(ParseState *pstate, Oid relid, int location)
 CommonTableExpr *
 scanNameSpaceForCTE(ParseState *pstate, const char *refname,
 					Index *ctelevelsup)
-{
+{	StackTrace("scanNameSpaceForCTE");
 	Index		levelsup;
 
 	for (levelsup = 0;
@@ -264,7 +264,7 @@ scanNameSpaceForCTE(ParseState *pstate, const char *refname,
  */
 static bool
 isFutureCTE(ParseState *pstate, const char *refname)
-{
+{	StackTrace("isFutureCTE");
 	for (; pstate != NULL; pstate = pstate->parentParseState)
 	{
 		ListCell   *lc;
@@ -297,7 +297,7 @@ isFutureCTE(ParseState *pstate, const char *refname)
  */
 static RangeTblEntry *
 searchRangeTableForRel(ParseState *pstate, RangeVar *relation)
-{
+{	StackTrace("searchRangeTableForRel");
 	const char *refname = relation->relname;
 	Oid			relId = InvalidOid;
 	CommonTableExpr *cte = NULL;
@@ -366,7 +366,7 @@ searchRangeTableForRel(ParseState *pstate, RangeVar *relation)
 void
 checkNameSpaceConflicts(ParseState *pstate, List *namespace1,
 						List *namespace2)
-{
+{	StackTrace("checkNameSpaceConflicts");
 	ListCell   *l1;
 
 	foreach(l1, namespace1)
@@ -412,7 +412,7 @@ checkNameSpaceConflicts(ParseState *pstate, List *namespace1,
 static void
 check_lateral_ref_ok(ParseState *pstate, ParseNamespaceItem *nsitem,
 					 int location)
-{
+{	StackTrace("check_lateral_ref_ok");
 	if (nsitem->p_lateral_only && !nsitem->p_lateral_ok)
 	{
 		/* SQL:2008 demands this be an error, not an invisible item */
@@ -439,7 +439,7 @@ check_lateral_ref_ok(ParseState *pstate, ParseNamespaceItem *nsitem,
  */
 int
 RTERangeTablePosn(ParseState *pstate, RangeTblEntry *rte, int *sublevels_up)
-{
+{	StackTrace("RTERangeTablePosn");
 	int			index;
 	ListCell   *l;
 
@@ -474,7 +474,7 @@ RangeTblEntry *
 GetRTEByRangeTablePosn(ParseState *pstate,
 					   int varno,
 					   int sublevels_up)
-{
+{	StackTrace("GetRTEByRangeTablePosn");
 	while (sublevels_up-- > 0)
 	{
 		pstate = pstate->parentParseState;
@@ -493,7 +493,7 @@ GetRTEByRangeTablePosn(ParseState *pstate,
  */
 CommonTableExpr *
 GetCTEForRTE(ParseState *pstate, RangeTblEntry *rte, int rtelevelsup)
-{
+{	StackTrace("GetCTEForRTE");
 	Index		levelsup;
 	ListCell   *lc;
 
@@ -529,7 +529,7 @@ static void
 updateFuzzyAttrMatchState(int fuzzy_rte_penalty,
 						  FuzzyAttrMatchState *fuzzystate, RangeTblEntry *rte,
 						  const char *actual, const char *match, int attnum)
-{
+{	StackTrace("updateFuzzyAttrMatchState");
 	int			columndistance;
 	int			matchlen;
 
@@ -632,7 +632,7 @@ Node *
 scanRTEForColumn(ParseState *pstate, RangeTblEntry *rte, char *colname,
 				 int location, int fuzzy_rte_penalty,
 				 FuzzyAttrMatchState *fuzzystate)
-{
+{	StackTrace("scanRTEForColumn");
 	Node	   *result = NULL;
 	int			attnum = 0;
 	Var		   *var;
@@ -730,7 +730,7 @@ scanRTEForColumn(ParseState *pstate, RangeTblEntry *rte, char *colname,
 Node *
 colNameToVar(ParseState *pstate, char *colname, bool localonly,
 			 int location)
-{
+{	StackTrace("colNameToVar");
 	Node	   *result = NULL;
 	ParseState *orig_pstate = pstate;
 
@@ -804,7 +804,7 @@ colNameToVar(ParseState *pstate, char *colname, bool localonly,
 static FuzzyAttrMatchState *
 searchRangeTableForCol(ParseState *pstate, const char *alias, char *colname,
 					   int location)
-{
+{	StackTrace("searchRangeTableForCol");
 	ParseState *orig_pstate = pstate;
 	FuzzyAttrMatchState *fuzzystate = palloc(sizeof(FuzzyAttrMatchState));
 
@@ -880,7 +880,7 @@ searchRangeTableForCol(ParseState *pstate, const char *alias, char *colname,
 static void
 markRTEForSelectPriv(ParseState *pstate, RangeTblEntry *rte,
 					 int rtindex, AttrNumber col)
-{
+{	StackTrace("markRTEForSelectPriv");
 	if (rte == NULL)
 		rte = rt_fetch(rtindex, pstate->p_rtable);
 
@@ -974,7 +974,7 @@ markRTEForSelectPriv(ParseState *pstate, RangeTblEntry *rte,
  */
 void
 markVarForSelectPriv(ParseState *pstate, Var *var, RangeTblEntry *rte)
-{
+{	StackTrace("markVarForSelectPriv");
 	Index		lv;
 
 	Assert(IsA(var, Var));
@@ -1001,7 +1001,7 @@ markVarForSelectPriv(ParseState *pstate, Var *var, RangeTblEntry *rte)
  */
 static void
 buildRelationAliases(TupleDesc tupdesc, Alias *alias, Alias *eref)
-{
+{	StackTrace("buildRelationAliases");
 	int			maxattrs = tupdesc->natts;
 	ListCell   *aliaslc;
 	int			numaliases;
@@ -1076,7 +1076,7 @@ buildRelationAliases(TupleDesc tupdesc, Alias *alias, Alias *eref)
 static char *
 chooseScalarFunctionAlias(Node *funcexpr, char *funcname,
 						  Alias *alias, int nfuncs)
-{
+{	StackTrace("chooseScalarFunctionAlias");
 	char	   *pname;
 
 	/*
@@ -1117,7 +1117,7 @@ chooseScalarFunctionAlias(Node *funcexpr, char *funcname,
  */
 Relation
 parserOpenTable(ParseState *pstate, const RangeVar *relation, int lockmode)
-{
+{	StackTrace("parserOpenTable");
 	Relation	rel;
 	ParseCallbackState pcbstate;
 
@@ -1169,7 +1169,7 @@ addRangeTableEntry(ParseState *pstate,
 				   Alias *alias,
 				   bool inh,
 				   bool inFromCl)
-{
+{	StackTrace("addRangeTableEntry");
 	RangeTblEntry *rte = makeNode(RangeTblEntry);
 	char	   *refname = alias ? alias->aliasname : relation->relname;
 	LOCKMODE	lockmode;
@@ -1242,7 +1242,7 @@ addRangeTableEntryForRelation(ParseState *pstate,
 							  Alias *alias,
 							  bool inh,
 							  bool inFromCl)
-{
+{	StackTrace("addRangeTableEntryForRelation");
 	RangeTblEntry *rte = makeNode(RangeTblEntry);
 	char	   *refname = alias ? alias->aliasname : RelationGetRelationName(rel);
 
@@ -1297,7 +1297,7 @@ addRangeTableEntryForSubquery(ParseState *pstate,
 							  Alias *alias,
 							  bool lateral,
 							  bool inFromCl)
-{
+{	StackTrace("addRangeTableEntryForSubquery");
 	RangeTblEntry *rte = makeNode(RangeTblEntry);
 	char	   *refname = alias->aliasname;
 	Alias	   *eref;
@@ -1379,7 +1379,7 @@ addRangeTableEntryForFunction(ParseState *pstate,
 							  RangeFunction *rangefunc,
 							  bool lateral,
 							  bool inFromCl)
-{
+{	StackTrace("addRangeTableEntryForFunction");
 	RangeTblEntry *rte = makeNode(RangeTblEntry);
 	Alias	   *alias = rangefunc->alias;
 	Alias	   *eref;
@@ -1633,7 +1633,7 @@ addRangeTableEntryForValues(ParseState *pstate,
 							Alias *alias,
 							bool lateral,
 							bool inFromCl)
-{
+{	StackTrace("addRangeTableEntryForValues");
 	RangeTblEntry *rte = makeNode(RangeTblEntry);
 	char	   *refname = alias ? alias->aliasname : pstrdup("*VALUES*");
 	Alias	   *eref;
@@ -1707,7 +1707,7 @@ addRangeTableEntryForJoin(ParseState *pstate,
 						  List *aliasvars,
 						  Alias *alias,
 						  bool inFromCl)
-{
+{	StackTrace("addRangeTableEntryForJoin");
 	RangeTblEntry *rte = makeNode(RangeTblEntry);
 	Alias	   *eref;
 	int			numaliases;
@@ -1776,7 +1776,7 @@ addRangeTableEntryForCTE(ParseState *pstate,
 						 Index levelsup,
 						 RangeVar *rv,
 						 bool inFromCl)
-{
+{	StackTrace("addRangeTableEntryForCTE");
 	RangeTblEntry *rte = makeNode(RangeTblEntry);
 	Alias	   *alias = rv->alias;
 	char	   *refname = alias ? alias->aliasname : cte->ctename;
@@ -1879,7 +1879,7 @@ addRangeTableEntryForCTE(ParseState *pstate,
  */
 bool
 isLockedRefname(ParseState *pstate, const char *refname)
-{
+{	StackTrace("isLockedRefname");
 	ListCell   *l;
 
 	/*
@@ -1929,7 +1929,7 @@ void
 addRTEtoQuery(ParseState *pstate, RangeTblEntry *rte,
 			  bool addToJoinList,
 			  bool addToRelNameSpace, bool addToVarNameSpace)
-{
+{	StackTrace("addRTEtoQuery");
 	if (addToJoinList)
 	{
 		int			rtindex = RTERangeTablePosn(pstate, rte, NULL);
@@ -1973,7 +1973,7 @@ void
 expandRTE(RangeTblEntry *rte, int rtindex, int sublevels_up,
 		  int location, bool include_dropped,
 		  List **colnames, List **colvars)
-{
+{	StackTrace("expandRTE");
 	int			varattno;
 
 	if (colnames)
@@ -2307,7 +2307,7 @@ static void
 expandRelation(Oid relid, Alias *eref, int rtindex, int sublevels_up,
 			   int location, bool include_dropped,
 			   List **colnames, List **colvars)
-{
+{	StackTrace("expandRelation");
 	Relation	rel;
 
 	/* Get the tupledesc and turn it over to expandTupleDesc */
@@ -2333,7 +2333,7 @@ expandTupleDesc(TupleDesc tupdesc, Alias *eref, int count, int offset,
 				int rtindex, int sublevels_up,
 				int location, bool include_dropped,
 				List **colnames, List **colvars)
-{
+{	StackTrace("expandTupleDesc");
 	ListCell   *aliascell = list_head(eref->colnames);
 	int			varattno;
 
@@ -2419,7 +2419,7 @@ expandTupleDesc(TupleDesc tupdesc, Alias *eref, int count, int offset,
 List *
 expandRelAttrs(ParseState *pstate, RangeTblEntry *rte,
 			   int rtindex, int sublevels_up, int location)
-{
+{	StackTrace("expandRelAttrs");
 	List	   *names,
 			   *vars;
 	ListCell   *name,
@@ -2470,7 +2470,7 @@ expandRelAttrs(ParseState *pstate, RangeTblEntry *rte,
  */
 char *
 get_rte_attribute_name(RangeTblEntry *rte, AttrNumber attnum)
-{
+{	StackTrace("get_rte_attribute_name");
 	if (attnum == InvalidAttrNumber)
 		return "*";
 
@@ -2509,7 +2509,7 @@ get_rte_attribute_name(RangeTblEntry *rte, AttrNumber attnum)
 void
 get_rte_attribute_type(RangeTblEntry *rte, AttrNumber attnum,
 					   Oid *vartype, int32 *vartypmod, Oid *varcollid)
-{
+{	StackTrace("get_rte_attribute_type");
 	switch (rte->rtekind)
 	{
 		case RTE_RELATION:
@@ -2699,7 +2699,7 @@ get_rte_attribute_type(RangeTblEntry *rte, AttrNumber attnum,
  */
 bool
 get_rte_attribute_is_dropped(RangeTblEntry *rte, AttrNumber attnum)
-{
+{	StackTrace("get_rte_attribute_is_dropped");
 	bool		result;
 
 	switch (rte->rtekind)
@@ -2822,7 +2822,7 @@ get_rte_attribute_is_dropped(RangeTblEntry *rte, AttrNumber attnum)
  */
 TargetEntry *
 get_tle_by_resno(List *tlist, AttrNumber resno)
-{
+{	StackTrace("get_tle_by_resno");
 	ListCell   *l;
 
 	foreach(l, tlist)
@@ -2842,7 +2842,7 @@ get_tle_by_resno(List *tlist, AttrNumber resno)
  */
 RowMarkClause *
 get_parse_rowmark(Query *qry, Index rtindex)
-{
+{	StackTrace("get_parse_rowmark");
 	ListCell   *l;
 
 	foreach(l, qry->rowMarks)
@@ -2866,7 +2866,7 @@ get_parse_rowmark(Query *qry, Index rtindex)
  */
 int
 attnameAttNum(Relation rd, const char *attname, bool sysColOK)
-{
+{	StackTrace("attnameAttNum");
 	int			i;
 
 	for (i = 0; i < rd->rd_rel->relnatts; i++)
@@ -2901,7 +2901,7 @@ attnameAttNum(Relation rd, const char *attname, bool sysColOK)
  */
 static int
 specialAttNum(const char *attname)
-{
+{	StackTrace("specialAttNum");
 	Form_pg_attribute sysatt;
 
 	sysatt = SystemAttributeByName(attname,
@@ -2921,7 +2921,7 @@ specialAttNum(const char *attname)
  */
 Name
 attnumAttName(Relation rd, int attid)
-{
+{	StackTrace("attnumAttName");
 	if (attid <= 0)
 	{
 		Form_pg_attribute sysatt;
@@ -2943,7 +2943,7 @@ attnumAttName(Relation rd, int attid)
  */
 Oid
 attnumTypeId(Relation rd, int attid)
-{
+{	StackTrace("attnumTypeId");
 	if (attid <= 0)
 	{
 		Form_pg_attribute sysatt;
@@ -2963,7 +2963,7 @@ attnumTypeId(Relation rd, int attid)
  */
 Oid
 attnumCollationId(Relation rd, int attid)
-{
+{	StackTrace("attnumCollationId");
 	if (attid <= 0)
 	{
 		/* All system attributes are of noncollatable types. */
@@ -2982,7 +2982,7 @@ attnumCollationId(Relation rd, int attid)
  */
 void
 errorMissingRTE(ParseState *pstate, RangeVar *relation)
-{
+{	StackTrace("errorMissingRTE");
 	RangeTblEntry *rte;
 	int			sublevels_up;
 	const char *badAlias = NULL;
@@ -3039,7 +3039,7 @@ errorMissingRTE(ParseState *pstate, RangeVar *relation)
 void
 errorMissingColumn(ParseState *pstate,
 				   char *relname, char *colname, int location)
-{
+{	StackTrace("errorMissingColumn");
 	FuzzyAttrMatchState *state;
 	char	   *closestfirst = NULL;
 
@@ -3110,13 +3110,13 @@ errorMissingColumn(ParseState *pstate,
  */
 bool
 isQueryUsingTempRelation(Query *query)
-{
+{	StackTrace("isQueryUsingTempRelation");
 	return isQueryUsingTempRelation_walker((Node *) query, NULL);
 }
 
 static bool
 isQueryUsingTempRelation_walker(Node *node, void *context)
-{
+{	StackTrace("isQueryUsingTempRelation_walker");
 	if (node == NULL)
 		return false;
 

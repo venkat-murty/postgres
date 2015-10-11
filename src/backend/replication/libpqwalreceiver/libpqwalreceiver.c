@@ -65,7 +65,7 @@ static PGresult *libpqrcv_PQexec(const char *query);
  */
 void
 _PG_init(void)
-{
+{	StackTrace("_PG_init");
 	/* Tell walreceiver how to reach us */
 	if (walrcv_connect != NULL || walrcv_identify_system != NULL ||
 		walrcv_readtimelinehistoryfile != NULL ||
@@ -88,7 +88,7 @@ _PG_init(void)
  */
 static void
 libpqrcv_connect(char *conninfo)
-{
+{	StackTrace("libpqrcv_connect");
 	const char *keys[5];
 	const char *vals[5];
 
@@ -123,7 +123,7 @@ libpqrcv_connect(char *conninfo)
  */
 static void
 libpqrcv_identify_system(TimeLineID *primary_tli)
-{
+{	StackTrace("libpqrcv_identify_system");
 	PGresult   *res;
 	char	   *primary_sysid;
 	char		standby_sysid[32];
@@ -184,7 +184,7 @@ libpqrcv_identify_system(TimeLineID *primary_tli)
  */
 static bool
 libpqrcv_startstreaming(TimeLineID tli, XLogRecPtr startpoint, char *slotname)
-{
+{	StackTrace("libpqrcv_startstreaming");
 	char		cmd[256];
 	PGresult   *res;
 
@@ -221,7 +221,7 @@ libpqrcv_startstreaming(TimeLineID tli, XLogRecPtr startpoint, char *slotname)
  */
 static void
 libpqrcv_endstreaming(TimeLineID *next_tli)
-{
+{	StackTrace("libpqrcv_endstreaming");
 	PGresult   *res;
 
 	if (PQputCopyEnd(streamConn, NULL) <= 0 || PQflush(streamConn))
@@ -278,7 +278,7 @@ libpqrcv_endstreaming(TimeLineID *next_tli)
 static void
 libpqrcv_readtimelinehistoryfile(TimeLineID tli,
 								 char **filename, char **content, int *len)
-{
+{	StackTrace("libpqrcv_readtimelinehistoryfile");
 	PGresult   *res;
 	char		cmd[64];
 
@@ -324,7 +324,7 @@ libpqrcv_readtimelinehistoryfile(TimeLineID tli,
  */
 static bool
 libpq_select(int timeout_ms)
-{
+{	StackTrace("libpq_select");
 	int			ret;
 
 	Assert(streamConn != NULL);
@@ -393,7 +393,7 @@ libpq_select(int timeout_ms)
  */
 static PGresult *
 libpqrcv_PQexec(const char *query)
-{
+{	StackTrace("libpqrcv_PQexec");
 	PGresult   *result = NULL;
 	PGresult   *lastResult = NULL;
 
@@ -457,7 +457,7 @@ libpqrcv_PQexec(const char *query)
  */
 static void
 libpqrcv_disconnect(void)
-{
+{	StackTrace("libpqrcv_disconnect");
 	PQfinish(streamConn);
 	streamConn = NULL;
 }
@@ -481,7 +481,7 @@ libpqrcv_disconnect(void)
  */
 static int
 libpqrcv_receive(int timeout, char **buffer)
-{
+{	StackTrace("libpqrcv_receive");
 	int			rawlen;
 
 	if (recvBuf != NULL)
@@ -548,7 +548,7 @@ libpqrcv_receive(int timeout, char **buffer)
  */
 static void
 libpqrcv_send(const char *buffer, int nbytes)
-{
+{	StackTrace("libpqrcv_send");
 	if (PQputCopyData(streamConn, buffer, nbytes) <= 0 ||
 		PQflush(streamConn))
 		ereport(ERROR,

@@ -229,7 +229,7 @@ static const unsigned char pg_char_properties[128] = {
  */
 void
 pg_set_regex_collation(Oid collation)
-{
+{	StackTrace("pg_set_regex_collation");
 	if (lc_ctype_is_c(collation))
 	{
 		/* C/POSIX collations use this path regardless of database encoding */
@@ -285,7 +285,7 @@ pg_set_regex_collation(Oid collation)
 
 static int
 pg_wc_isdigit(pg_wchar c)
-{
+{	StackTrace("pg_wc_isdigit");
 	switch (pg_regex_strategy)
 	{
 		case PG_REGEX_LOCALE_C:
@@ -318,7 +318,7 @@ pg_wc_isdigit(pg_wchar c)
 
 static int
 pg_wc_isalpha(pg_wchar c)
-{
+{	StackTrace("pg_wc_isalpha");
 	switch (pg_regex_strategy)
 	{
 		case PG_REGEX_LOCALE_C:
@@ -351,7 +351,7 @@ pg_wc_isalpha(pg_wchar c)
 
 static int
 pg_wc_isalnum(pg_wchar c)
-{
+{	StackTrace("pg_wc_isalnum");
 	switch (pg_regex_strategy)
 	{
 		case PG_REGEX_LOCALE_C:
@@ -384,7 +384,7 @@ pg_wc_isalnum(pg_wchar c)
 
 static int
 pg_wc_isupper(pg_wchar c)
-{
+{	StackTrace("pg_wc_isupper");
 	switch (pg_regex_strategy)
 	{
 		case PG_REGEX_LOCALE_C:
@@ -417,7 +417,7 @@ pg_wc_isupper(pg_wchar c)
 
 static int
 pg_wc_islower(pg_wchar c)
-{
+{	StackTrace("pg_wc_islower");
 	switch (pg_regex_strategy)
 	{
 		case PG_REGEX_LOCALE_C:
@@ -450,7 +450,7 @@ pg_wc_islower(pg_wchar c)
 
 static int
 pg_wc_isgraph(pg_wchar c)
-{
+{	StackTrace("pg_wc_isgraph");
 	switch (pg_regex_strategy)
 	{
 		case PG_REGEX_LOCALE_C:
@@ -483,7 +483,7 @@ pg_wc_isgraph(pg_wchar c)
 
 static int
 pg_wc_isprint(pg_wchar c)
-{
+{	StackTrace("pg_wc_isprint");
 	switch (pg_regex_strategy)
 	{
 		case PG_REGEX_LOCALE_C:
@@ -516,7 +516,7 @@ pg_wc_isprint(pg_wchar c)
 
 static int
 pg_wc_ispunct(pg_wchar c)
-{
+{	StackTrace("pg_wc_ispunct");
 	switch (pg_regex_strategy)
 	{
 		case PG_REGEX_LOCALE_C:
@@ -549,7 +549,7 @@ pg_wc_ispunct(pg_wchar c)
 
 static int
 pg_wc_isspace(pg_wchar c)
-{
+{	StackTrace("pg_wc_isspace");
 	switch (pg_regex_strategy)
 	{
 		case PG_REGEX_LOCALE_C:
@@ -582,7 +582,7 @@ pg_wc_isspace(pg_wchar c)
 
 static pg_wchar
 pg_wc_toupper(pg_wchar c)
-{
+{	StackTrace("pg_wc_toupper");
 	switch (pg_regex_strategy)
 	{
 		case PG_REGEX_LOCALE_C:
@@ -623,7 +623,7 @@ pg_wc_toupper(pg_wchar c)
 
 static pg_wchar
 pg_wc_tolower(pg_wchar c)
-{
+{	StackTrace("pg_wc_tolower");
 	switch (pg_regex_strategy)
 	{
 		case PG_REGEX_LOCALE_C:
@@ -693,7 +693,7 @@ static pg_ctype_cache *pg_ctype_cache_list = NULL;
  */
 static bool
 store_match(pg_ctype_cache *pcc, pg_wchar chr1, int nchrs)
-{
+{	StackTrace("store_match");
 	chr		   *newchrs;
 
 	if (nchrs > 1)
@@ -737,7 +737,7 @@ store_match(pg_ctype_cache *pcc, pg_wchar chr1, int nchrs)
  */
 static struct cvec *
 pg_ctype_get_cache(pg_wc_probefunc probefunc)
-{
+{	StackTrace("pg_ctype_get_cache");
 	pg_ctype_cache *pcc;
 	pg_wchar	max_chr;
 	pg_wchar	cur_chr;

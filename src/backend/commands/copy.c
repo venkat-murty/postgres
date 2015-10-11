@@ -339,7 +339,7 @@ static bool CopyGetInt16(CopyState cstate, int16 *val);
  */
 static void
 SendCopyBegin(CopyState cstate)
-{
+{	StackTrace("SendCopyBegin");
 	if (PG_PROTOCOL_MAJOR(FrontendProtocol) >= 3)
 	{
 		/* new way */
@@ -384,7 +384,7 @@ SendCopyBegin(CopyState cstate)
 
 static void
 ReceiveCopyBegin(CopyState cstate)
-{
+{	StackTrace("ReceiveCopyBegin");
 	if (PG_PROTOCOL_MAJOR(FrontendProtocol) >= 3)
 	{
 		/* new way */
@@ -432,7 +432,7 @@ ReceiveCopyBegin(CopyState cstate)
 
 static void
 SendCopyEnd(CopyState cstate)
-{
+{	StackTrace("SendCopyEnd");
 	if (cstate->copy_dest == COPY_NEW_FE)
 	{
 		/* Shouldn't have any unsent data */
@@ -461,25 +461,25 @@ SendCopyEnd(CopyState cstate)
  */
 static void
 CopySendData(CopyState cstate, const void *databuf, int datasize)
-{
+{	StackTrace("CopySendData");
 	appendBinaryStringInfo(cstate->fe_msgbuf, databuf, datasize);
 }
 
 static void
 CopySendString(CopyState cstate, const char *str)
-{
+{	StackTrace("CopySendString");
 	appendBinaryStringInfo(cstate->fe_msgbuf, str, strlen(str));
 }
 
 static void
 CopySendChar(CopyState cstate, char c)
-{
+{	StackTrace("CopySendChar");
 	appendStringInfoCharMacro(cstate->fe_msgbuf, c);
 }
 
 static void
 CopySendEndOfRow(CopyState cstate)
-{
+{	StackTrace("CopySendEndOfRow");
 	StringInfo	fe_msgbuf = cstate->fe_msgbuf;
 
 	switch (cstate->copy_dest)
@@ -569,7 +569,7 @@ CopySendEndOfRow(CopyState cstate)
  */
 static int
 CopyGetData(CopyState cstate, void *databuf, int minread, int maxread)
-{
+{	StackTrace("CopyGetData");
 	int			bytesread = 0;
 
 	switch (cstate->copy_dest)
@@ -678,7 +678,7 @@ CopyGetData(CopyState cstate, void *databuf, int minread, int maxread)
  */
 static void
 CopySendInt32(CopyState cstate, int32 val)
-{
+{	StackTrace("CopySendInt32");
 	uint32		buf;
 
 	buf = htonl((uint32) val);
@@ -692,7 +692,7 @@ CopySendInt32(CopyState cstate, int32 val)
  */
 static bool
 CopyGetInt32(CopyState cstate, int32 *val)
-{
+{	StackTrace("CopyGetInt32");
 	uint32		buf;
 
 	if (CopyGetData(cstate, &buf, sizeof(buf), sizeof(buf)) != sizeof(buf))
@@ -709,7 +709,7 @@ CopyGetInt32(CopyState cstate, int32 *val)
  */
 static void
 CopySendInt16(CopyState cstate, int16 val)
-{
+{	StackTrace("CopySendInt16");
 	uint16		buf;
 
 	buf = htons((uint16) val);
@@ -721,7 +721,7 @@ CopySendInt16(CopyState cstate, int16 val)
  */
 static bool
 CopyGetInt16(CopyState cstate, int16 *val)
-{
+{	StackTrace("CopyGetInt16");
 	uint16		buf;
 
 	if (CopyGetData(cstate, &buf, sizeof(buf), sizeof(buf)) != sizeof(buf))
@@ -746,7 +746,7 @@ CopyGetInt16(CopyState cstate, int16 *val)
  */
 static bool
 CopyLoadRawBuf(CopyState cstate)
-{
+{	StackTrace("CopyLoadRawBuf");
 	int			nbytes;
 	int			inbytes;
 
@@ -790,7 +790,7 @@ CopyLoadRawBuf(CopyState cstate)
  */
 Oid
 DoCopy(const CopyStmt *stmt, const char *queryString, uint64 *processed)
-{
+{	StackTrace("DoCopy");
 	CopyState	cstate;
 	bool		is_from = stmt->is_from;
 	bool		pipe = (stmt->filename == NULL);
@@ -976,7 +976,7 @@ void
 ProcessCopyOptions(CopyState cstate,
 				   bool is_from,
 				   List *options)
-{
+{	StackTrace("ProcessCopyOptions");
 	bool		format_specified = false;
 	ListCell   *option;
 
@@ -1318,7 +1318,7 @@ BeginCopy(bool is_from,
 		  const Oid queryRelId,
 		  List *attnamelist,
 		  List *options)
-{
+{	StackTrace("BeginCopy");
 	CopyState	cstate;
 	TupleDesc	tupDesc;
 	int			num_phys_attrs;
@@ -1586,7 +1586,7 @@ BeginCopy(bool is_from,
  */
 static void
 ClosePipeToProgram(CopyState cstate)
-{
+{	StackTrace("ClosePipeToProgram");
 	int			pclose_rc;
 
 	Assert(cstate->is_program);
@@ -1607,7 +1607,7 @@ ClosePipeToProgram(CopyState cstate)
  */
 static void
 EndCopy(CopyState cstate)
-{
+{	StackTrace("EndCopy");
 	if (cstate->is_program)
 	{
 		ClosePipeToProgram(cstate);
@@ -1637,7 +1637,7 @@ BeginCopyTo(Relation rel,
 			bool is_program,
 			List *attnamelist,
 			List *options)
-{
+{	StackTrace("BeginCopyTo");
 	CopyState	cstate;
 	bool		pipe = (filename == NULL);
 	MemoryContext oldcontext;
@@ -1741,7 +1741,7 @@ BeginCopyTo(Relation rel,
  */
 static uint64
 DoCopyTo(CopyState cstate)
-{
+{	StackTrace("DoCopyTo");
 	bool		pipe = (cstate->filename == NULL);
 	bool		fe_copy = (pipe && whereToSendOutput == DestRemote);
 	uint64		processed;
@@ -1776,7 +1776,7 @@ DoCopyTo(CopyState cstate)
  */
 static void
 EndCopyTo(CopyState cstate)
-{
+{	StackTrace("EndCopyTo");
 	if (cstate->queryDesc != NULL)
 	{
 		/* Close down the query and free resources. */
@@ -1795,7 +1795,7 @@ EndCopyTo(CopyState cstate)
  */
 static uint64
 CopyTo(CopyState cstate)
-{
+{	StackTrace("CopyTo");
 	TupleDesc	tupDesc;
 	int			num_phys_attrs;
 	Form_pg_attribute *attr;
@@ -1950,7 +1950,7 @@ CopyTo(CopyState cstate)
  */
 static void
 CopyOneRowTo(CopyState cstate, Oid tupleOid, Datum *values, bool *nulls)
-{
+{	StackTrace("CopyOneRowTo");
 	bool		need_delim = false;
 	FmgrInfo   *out_functions = cstate->out_functions;
 	MemoryContext oldcontext;
@@ -2044,7 +2044,7 @@ CopyOneRowTo(CopyState cstate, Oid tupleOid, Datum *values, bool *nulls)
  */
 void
 CopyFromErrorCallback(void *arg)
-{
+{	StackTrace("CopyFromErrorCallback");
 	CopyState	cstate = (CopyState) arg;
 
 	if (cstate->binary)
@@ -2120,7 +2120,7 @@ CopyFromErrorCallback(void *arg)
  */
 static char *
 limit_printout_length(const char *str)
-{
+{	StackTrace("limit_printout_length");
 #define MAX_COPY_DATA_DISPLAY 100
 
 	int			slen = strlen(str);
@@ -2149,7 +2149,7 @@ limit_printout_length(const char *str)
  */
 static uint64
 CopyFrom(CopyState cstate)
-{
+{	StackTrace("CopyFrom");
 	HeapTuple	tuple;
 	TupleDesc	tupDesc;
 	Datum	   *values;
@@ -2516,7 +2516,7 @@ CopyFromInsertBatch(CopyState cstate, EState *estate, CommandId mycid,
 					TupleTableSlot *myslot, BulkInsertState bistate,
 					int nBufferedTuples, HeapTuple *bufferedTuples,
 					int firstBufferedLineNo)
-{
+{	StackTrace("CopyFromInsertBatch");
 	MemoryContext oldcontext;
 	int			i;
 	int			save_cur_lineno;
@@ -2599,7 +2599,7 @@ BeginCopyFrom(Relation rel,
 			  bool is_program,
 			  List *attnamelist,
 			  List *options)
-{
+{	StackTrace("BeginCopyFrom");
 	CopyState	cstate;
 	bool		pipe = (filename == NULL);
 	TupleDesc	tupDesc;
@@ -2831,7 +2831,7 @@ BeginCopyFrom(Relation rel,
  */
 bool
 NextCopyFromRawFields(CopyState cstate, char ***fields, int *nfields)
-{
+{	StackTrace("NextCopyFromRawFields");
 	int			fldct;
 	bool		done;
 
@@ -2884,7 +2884,7 @@ NextCopyFromRawFields(CopyState cstate, char ***fields, int *nfields)
 bool
 NextCopyFrom(CopyState cstate, ExprContext *econtext,
 			 Datum *values, bool *nulls, Oid *tupleOid)
-{
+{	StackTrace("NextCopyFrom");
 	TupleDesc	tupDesc;
 	Form_pg_attribute *attr;
 	AttrNumber	num_phys_attrs,
@@ -3124,7 +3124,7 @@ NextCopyFrom(CopyState cstate, ExprContext *econtext,
  */
 void
 EndCopyFrom(CopyState cstate)
-{
+{	StackTrace("EndCopyFrom");
 	/* No COPY FROM related resources except memory. */
 
 	EndCopy(cstate);
@@ -3140,7 +3140,7 @@ EndCopyFrom(CopyState cstate)
  */
 static bool
 CopyReadLine(CopyState cstate)
-{
+{	StackTrace("CopyReadLine");
 	bool		result;
 
 	resetStringInfo(&cstate->line_buf);
@@ -3229,7 +3229,7 @@ CopyReadLine(CopyState cstate)
  */
 static bool
 CopyReadLineText(CopyState cstate)
-{
+{	StackTrace("CopyReadLineText");
 	char	   *copy_raw_buf;
 	int			raw_buf_ptr;
 	int			copy_buf_len;
@@ -3588,7 +3588,7 @@ not_end_of_copy:
  */
 static int
 GetDecimalFromHex(char hex)
-{
+{	StackTrace("GetDecimalFromHex");
 	if (isdigit((unsigned char) hex))
 		return hex - '0';
 	else
@@ -3616,7 +3616,7 @@ GetDecimalFromHex(char hex)
  */
 static int
 CopyReadAttributesText(CopyState cstate)
-{
+{	StackTrace("CopyReadAttributesText");
 	char		delimc = cstate->delim[0];
 	int			fieldno;
 	char	   *output_ptr;
@@ -3844,7 +3844,7 @@ CopyReadAttributesText(CopyState cstate)
  */
 static int
 CopyReadAttributesCSV(CopyState cstate)
-{
+{	StackTrace("CopyReadAttributesCSV");
 	char		delimc = cstate->delim[0];
 	char		quotec = cstate->quote[0];
 	char		escapec = cstate->escape[0];
@@ -4016,7 +4016,7 @@ CopyReadBinaryAttribute(CopyState cstate,
 						int column_no, FmgrInfo *flinfo,
 						Oid typioparam, int32 typmod,
 						bool *isnull)
-{
+{	StackTrace("CopyReadBinaryAttribute");
 	int32		fld_size;
 	Datum		result;
 
@@ -4072,7 +4072,7 @@ CopyReadBinaryAttribute(CopyState cstate,
 
 static void
 CopyAttributeOutText(CopyState cstate, char *string)
-{
+{	StackTrace("CopyAttributeOutText");
 	char	   *ptr;
 	char	   *start;
 	char		c;
@@ -4226,7 +4226,7 @@ CopyAttributeOutText(CopyState cstate, char *string)
 static void
 CopyAttributeOutCSV(CopyState cstate, char *string,
 					bool use_quote, bool single_attr)
-{
+{	StackTrace("CopyAttributeOutCSV");
 	char	   *ptr;
 	char	   *start;
 	char		c;
@@ -4316,7 +4316,7 @@ CopyAttributeOutCSV(CopyState cstate, char *string,
  */
 static List *
 CopyGetAttnums(TupleDesc tupDesc, Relation rel, List *attnamelist)
-{
+{	StackTrace("CopyGetAttnums");
 	List	   *attnums = NIL;
 
 	if (attnamelist == NIL)
@@ -4388,7 +4388,7 @@ CopyGetAttnums(TupleDesc tupDesc, Relation rel, List *attnamelist)
  */
 static void
 copy_dest_startup(DestReceiver *self, int operation, TupleDesc typeinfo)
-{
+{	StackTrace("copy_dest_startup");
 	/* no-op */
 }
 
@@ -4397,7 +4397,7 @@ copy_dest_startup(DestReceiver *self, int operation, TupleDesc typeinfo)
  */
 static void
 copy_dest_receive(TupleTableSlot *slot, DestReceiver *self)
-{
+{	StackTrace("copy_dest_receive");
 	DR_copy    *myState = (DR_copy *) self;
 	CopyState	cstate = myState->cstate;
 
@@ -4414,7 +4414,7 @@ copy_dest_receive(TupleTableSlot *slot, DestReceiver *self)
  */
 static void
 copy_dest_shutdown(DestReceiver *self)
-{
+{	StackTrace("copy_dest_shutdown");
 	/* no-op */
 }
 
@@ -4423,7 +4423,7 @@ copy_dest_shutdown(DestReceiver *self)
  */
 static void
 copy_dest_destroy(DestReceiver *self)
-{
+{	StackTrace("copy_dest_destroy");
 	pfree(self);
 }
 
@@ -4432,7 +4432,7 @@ copy_dest_destroy(DestReceiver *self)
  */
 DestReceiver *
 CreateCopyDestReceiver(void)
-{
+{	StackTrace("CreateCopyDestReceiver");
 	DR_copy    *self = (DR_copy *) palloc(sizeof(DR_copy));
 
 	self->pub.receiveSlot = copy_dest_receive;

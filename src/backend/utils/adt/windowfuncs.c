@@ -45,7 +45,7 @@ static Datum leadlag_common(FunctionCallInfo fcinfo,
  */
 static bool
 rank_up(WindowObject winobj)
-{
+{	StackTrace("rank_up");
 	bool		up = false;		/* should rank increase? */
 	int64		curpos = WinGetCurrentPosition(winobj);
 	rank_context *context;
@@ -80,7 +80,7 @@ rank_up(WindowObject winobj)
  */
 Datum
 window_row_number(PG_FUNCTION_ARGS)
-{
+{	StackTrace("window_row_number");
 	WindowObject winobj = PG_WINDOW_OBJECT();
 	int64		curpos = WinGetCurrentPosition(winobj);
 
@@ -96,7 +96,7 @@ window_row_number(PG_FUNCTION_ARGS)
  */
 Datum
 window_rank(PG_FUNCTION_ARGS)
-{
+{	StackTrace("window_rank");
 	WindowObject winobj = PG_WINDOW_OBJECT();
 	rank_context *context;
 	bool		up;
@@ -116,7 +116,7 @@ window_rank(PG_FUNCTION_ARGS)
  */
 Datum
 window_dense_rank(PG_FUNCTION_ARGS)
-{
+{	StackTrace("window_dense_rank");
 	WindowObject winobj = PG_WINDOW_OBJECT();
 	rank_context *context;
 	bool		up;
@@ -138,7 +138,7 @@ window_dense_rank(PG_FUNCTION_ARGS)
  */
 Datum
 window_percent_rank(PG_FUNCTION_ARGS)
-{
+{	StackTrace("window_percent_rank");
 	WindowObject winobj = PG_WINDOW_OBJECT();
 	rank_context *context;
 	bool		up;
@@ -167,7 +167,7 @@ window_percent_rank(PG_FUNCTION_ARGS)
  */
 Datum
 window_cume_dist(PG_FUNCTION_ARGS)
-{
+{	StackTrace("window_cume_dist");
 	WindowObject winobj = PG_WINDOW_OBJECT();
 	rank_context *context;
 	bool		up;
@@ -209,7 +209,7 @@ window_cume_dist(PG_FUNCTION_ARGS)
  */
 Datum
 window_ntile(PG_FUNCTION_ARGS)
-{
+{	StackTrace("window_ntile");
 	WindowObject winobj = PG_WINDOW_OBJECT();
 	ntile_context *context;
 
@@ -285,7 +285,7 @@ window_ntile(PG_FUNCTION_ARGS)
 static Datum
 leadlag_common(FunctionCallInfo fcinfo,
 			   bool forward, bool withoffset, bool withdefault)
-{
+{	StackTrace("leadlag_common");
 	WindowObject winobj = PG_WINDOW_OBJECT();
 	int32		offset;
 	bool		const_offset;
@@ -336,7 +336,7 @@ leadlag_common(FunctionCallInfo fcinfo,
  */
 Datum
 window_lag(PG_FUNCTION_ARGS)
-{
+{	StackTrace("window_lag");
 	return leadlag_common(fcinfo, false, false, false);
 }
 
@@ -348,7 +348,7 @@ window_lag(PG_FUNCTION_ARGS)
  */
 Datum
 window_lag_with_offset(PG_FUNCTION_ARGS)
-{
+{	StackTrace("window_lag_with_offset");
 	return leadlag_common(fcinfo, false, true, false);
 }
 
@@ -359,7 +359,7 @@ window_lag_with_offset(PG_FUNCTION_ARGS)
  */
 Datum
 window_lag_with_offset_and_default(PG_FUNCTION_ARGS)
-{
+{	StackTrace("window_lag_with_offset_and_default");
 	return leadlag_common(fcinfo, false, true, true);
 }
 
@@ -371,7 +371,7 @@ window_lag_with_offset_and_default(PG_FUNCTION_ARGS)
  */
 Datum
 window_lead(PG_FUNCTION_ARGS)
-{
+{	StackTrace("window_lead");
 	return leadlag_common(fcinfo, true, false, false);
 }
 
@@ -383,7 +383,7 @@ window_lead(PG_FUNCTION_ARGS)
  */
 Datum
 window_lead_with_offset(PG_FUNCTION_ARGS)
-{
+{	StackTrace("window_lead_with_offset");
 	return leadlag_common(fcinfo, true, true, false);
 }
 
@@ -394,7 +394,7 @@ window_lead_with_offset(PG_FUNCTION_ARGS)
  */
 Datum
 window_lead_with_offset_and_default(PG_FUNCTION_ARGS)
-{
+{	StackTrace("window_lead_with_offset_and_default");
 	return leadlag_common(fcinfo, true, true, true);
 }
 
@@ -405,7 +405,7 @@ window_lead_with_offset_and_default(PG_FUNCTION_ARGS)
  */
 Datum
 window_first_value(PG_FUNCTION_ARGS)
-{
+{	StackTrace("window_first_value");
 	WindowObject winobj = PG_WINDOW_OBJECT();
 	Datum		result;
 	bool		isnull;
@@ -426,7 +426,7 @@ window_first_value(PG_FUNCTION_ARGS)
  */
 Datum
 window_last_value(PG_FUNCTION_ARGS)
-{
+{	StackTrace("window_last_value");
 	WindowObject winobj = PG_WINDOW_OBJECT();
 	Datum		result;
 	bool		isnull;
@@ -447,7 +447,7 @@ window_last_value(PG_FUNCTION_ARGS)
  */
 Datum
 window_nth_value(PG_FUNCTION_ARGS)
-{
+{	StackTrace("window_nth_value");
 	WindowObject winobj = PG_WINDOW_OBJECT();
 	bool		const_offset;
 	Datum		result;

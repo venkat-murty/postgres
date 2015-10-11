@@ -52,7 +52,7 @@ static List *subbuild_joinrel_joinlist(RelOptInfo *joinrel,
  */
 void
 setup_simple_rel_arrays(PlannerInfo *root)
-{
+{	StackTrace("setup_simple_rel_arrays");
 	Index		rti;
 	ListCell   *lc;
 
@@ -81,7 +81,7 @@ setup_simple_rel_arrays(PlannerInfo *root)
  */
 RelOptInfo *
 build_simple_rel(PlannerInfo *root, int relid, RelOptKind reloptkind)
-{
+{	StackTrace("build_simple_rel");
 	RelOptInfo *rel;
 	RangeTblEntry *rte;
 
@@ -197,7 +197,7 @@ build_simple_rel(PlannerInfo *root, int relid, RelOptKind reloptkind)
  */
 RelOptInfo *
 find_base_rel(PlannerInfo *root, int relid)
-{
+{	StackTrace("find_base_rel");
 	RelOptInfo *rel;
 
 	Assert(relid > 0);
@@ -220,7 +220,7 @@ find_base_rel(PlannerInfo *root, int relid)
  */
 static void
 build_join_rel_hash(PlannerInfo *root)
-{
+{	StackTrace("build_join_rel_hash");
 	HTAB	   *hashtab;
 	HASHCTL		hash_ctl;
 	ListCell   *l;
@@ -262,7 +262,7 @@ build_join_rel_hash(PlannerInfo *root)
  */
 RelOptInfo *
 find_join_rel(PlannerInfo *root, Relids relids)
-{
+{	StackTrace("find_join_rel");
 	/*
 	 * Switch to using hash lookup when list grows "too long".  The threshold
 	 * is arbitrary and is known only here.
@@ -329,7 +329,7 @@ build_join_rel(PlannerInfo *root,
 			   RelOptInfo *inner_rel,
 			   SpecialJoinInfo *sjinfo,
 			   List **restrictlist_ptr)
-{
+{	StackTrace("build_join_rel");
 	RelOptInfo *joinrel;
 	List	   *restrictlist;
 
@@ -493,7 +493,7 @@ build_join_rel(PlannerInfo *root,
 static void
 build_joinrel_tlist(PlannerInfo *root, RelOptInfo *joinrel,
 					RelOptInfo *input_rel)
-{
+{	StackTrace("build_joinrel_tlist");
 	Relids		relids = joinrel->relids;
 	ListCell   *vars;
 
@@ -580,7 +580,7 @@ build_joinrel_restrictlist(PlannerInfo *root,
 						   RelOptInfo *joinrel,
 						   RelOptInfo *outer_rel,
 						   RelOptInfo *inner_rel)
-{
+{	StackTrace("build_joinrel_restrictlist");
 	List	   *result;
 
 	/*
@@ -609,7 +609,7 @@ static void
 build_joinrel_joinlist(RelOptInfo *joinrel,
 					   RelOptInfo *outer_rel,
 					   RelOptInfo *inner_rel)
-{
+{	StackTrace("build_joinrel_joinlist");
 	List	   *result;
 
 	/*
@@ -627,7 +627,7 @@ static List *
 subbuild_joinrel_restrictlist(RelOptInfo *joinrel,
 							  List *joininfo_list,
 							  List *new_restrictlist)
-{
+{	StackTrace("subbuild_joinrel_restrictlist");
 	ListCell   *l;
 
 	foreach(l, joininfo_list)
@@ -661,7 +661,7 @@ static List *
 subbuild_joinrel_joinlist(RelOptInfo *joinrel,
 						  List *joininfo_list,
 						  List *new_joininfo)
-{
+{	StackTrace("subbuild_joinrel_joinlist");
 	ListCell   *l;
 
 	foreach(l, joininfo_list)
@@ -704,7 +704,7 @@ subbuild_joinrel_joinlist(RelOptInfo *joinrel,
  */
 RelOptInfo *
 build_empty_join_rel(PlannerInfo *root)
-{
+{	StackTrace("build_empty_join_rel");
 	RelOptInfo *joinrel;
 
 	/* The dummy join relation should be the only one ... */
@@ -733,7 +733,7 @@ build_empty_join_rel(PlannerInfo *root)
  */
 AppendRelInfo *
 find_childrel_appendrelinfo(PlannerInfo *root, RelOptInfo *rel)
-{
+{	StackTrace("find_childrel_appendrelinfo");
 	Index		relid = rel->relid;
 	ListCell   *lc;
 
@@ -763,7 +763,7 @@ find_childrel_appendrelinfo(PlannerInfo *root, RelOptInfo *rel)
  */
 RelOptInfo *
 find_childrel_top_parent(PlannerInfo *root, RelOptInfo *rel)
-{
+{	StackTrace("find_childrel_top_parent");
 	do
 	{
 		AppendRelInfo *appinfo = find_childrel_appendrelinfo(root, rel);
@@ -789,7 +789,7 @@ find_childrel_top_parent(PlannerInfo *root, RelOptInfo *rel)
  */
 Relids
 find_childrel_parents(PlannerInfo *root, RelOptInfo *rel)
-{
+{	StackTrace("find_childrel_parents");
 	Relids		result = NULL;
 
 	do
@@ -823,7 +823,7 @@ find_childrel_parents(PlannerInfo *root, RelOptInfo *rel)
 ParamPathInfo *
 get_baserel_parampathinfo(PlannerInfo *root, RelOptInfo *baserel,
 						  Relids required_outer)
-{
+{	StackTrace("get_baserel_parampathinfo");
 	ParamPathInfo *ppi;
 	Relids		joinrelids;
 	List	   *pclauses;
@@ -918,7 +918,7 @@ get_joinrel_parampathinfo(PlannerInfo *root, RelOptInfo *joinrel,
 						  SpecialJoinInfo *sjinfo,
 						  Relids required_outer,
 						  List **restrict_clauses)
-{
+{	StackTrace("get_joinrel_parampathinfo");
 	ParamPathInfo *ppi;
 	Relids		join_and_req;
 	Relids		outer_and_req;
@@ -1044,7 +1044,7 @@ get_joinrel_parampathinfo(PlannerInfo *root, RelOptInfo *joinrel,
  */
 ParamPathInfo *
 get_appendrel_parampathinfo(RelOptInfo *appendrel, Relids required_outer)
-{
+{	StackTrace("get_appendrel_parampathinfo");
 	ParamPathInfo *ppi;
 	ListCell   *lc;
 

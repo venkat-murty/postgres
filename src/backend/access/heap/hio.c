@@ -37,7 +37,7 @@ RelationPutHeapTuple(Relation relation,
 					 Buffer buffer,
 					 HeapTuple tuple,
 					 bool token)
-{
+{	StackTrace("RelationPutHeapTuple");
 	Page		pageHeader;
 	OffsetNumber offnum;
 
@@ -79,7 +79,7 @@ RelationPutHeapTuple(Relation relation,
 static Buffer
 ReadBufferBI(Relation relation, BlockNumber targetBlock,
 			 BulkInsertState bistate)
-{
+{	StackTrace("ReadBufferBI");
 	Buffer		buffer;
 
 	/* If not bulk-insert, exactly like ReadBuffer */
@@ -122,7 +122,7 @@ static void
 GetVisibilityMapPins(Relation relation, Buffer buffer1, Buffer buffer2,
 					 BlockNumber block1, BlockNumber block2,
 					 Buffer *vmbuffer1, Buffer *vmbuffer2)
-{
+{	StackTrace("GetVisibilityMapPins");
 	bool		need_to_pin_buffer1;
 	bool		need_to_pin_buffer2;
 
@@ -229,7 +229,7 @@ RelationGetBufferForTuple(Relation relation, Size len,
 						  Buffer otherBuffer, int options,
 						  BulkInsertState bistate,
 						  Buffer *vmbuffer, Buffer *vmbuffer_other)
-{
+{	StackTrace("RelationGetBufferForTuple");
 	bool		use_fsm = !(options & HEAP_INSERT_SKIP_FSM);
 	Buffer		buffer = InvalidBuffer;
 	Page		page;

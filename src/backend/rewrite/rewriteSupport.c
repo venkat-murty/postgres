@@ -32,7 +32,7 @@
  */
 bool
 IsDefinedRewriteRule(Oid owningRel, const char *ruleName)
-{
+{	StackTrace("IsDefinedRewriteRule");
 	return SearchSysCacheExists2(RULERELNAME,
 								 ObjectIdGetDatum(owningRel),
 								 PointerGetDatum(ruleName));
@@ -53,7 +53,7 @@ IsDefinedRewriteRule(Oid owningRel, const char *ruleName)
  */
 void
 SetRelationRuleStatus(Oid relationId, bool relHasRules)
-{
+{	StackTrace("SetRelationRuleStatus");
 	Relation	relationRelation;
 	HeapTuple	tuple;
 	Form_pg_class classForm;
@@ -95,7 +95,7 @@ SetRelationRuleStatus(Oid relationId, bool relHasRules)
  */
 Oid
 get_rewrite_oid(Oid relid, const char *rulename, bool missing_ok)
-{
+{	StackTrace("get_rewrite_oid");
 	HeapTuple	tuple;
 	Oid			ruleoid;
 
@@ -129,7 +129,7 @@ get_rewrite_oid(Oid relid, const char *rulename, bool missing_ok)
 Oid
 get_rewrite_oid_without_relid(const char *rulename,
 							  Oid *reloid, bool missing_ok)
-{
+{	StackTrace("get_rewrite_oid_without_relid");
 	Relation	RewriteRelation;
 	HeapScanDesc scanDesc;
 	ScanKeyData scanKeyData;

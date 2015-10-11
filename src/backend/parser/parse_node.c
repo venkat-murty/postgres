@@ -42,7 +42,7 @@ static void pcb_error_callback(void *arg);
  */
 ParseState *
 make_parsestate(ParseState *parentParseState)
-{
+{	StackTrace("make_parsestate");
 	ParseState *pstate;
 
 	pstate = palloc0(sizeof(ParseState));
@@ -72,7 +72,7 @@ make_parsestate(ParseState *parentParseState)
  */
 void
 free_parsestate(ParseState *pstate)
-{
+{	StackTrace("free_parsestate");
 	/*
 	 * Check that we did not produce too many resnos; at the very least we
 	 * cannot allow more than 2^16, since that would exceed the range of a
@@ -106,7 +106,7 @@ free_parsestate(ParseState *pstate)
  */
 int
 parser_errposition(ParseState *pstate, int location)
-{
+{	StackTrace("parser_errposition");
 	int			pos;
 
 	/* No-op if location was not provided */
@@ -141,7 +141,7 @@ parser_errposition(ParseState *pstate, int location)
 void
 setup_parser_errposition_callback(ParseCallbackState *pcbstate,
 								  ParseState *pstate, int location)
-{
+{	StackTrace("setup_parser_errposition_callback");
 	/* Setup error traceback support for ereport() */
 	pcbstate->pstate = pstate;
 	pcbstate->location = location;
@@ -156,7 +156,7 @@ setup_parser_errposition_callback(ParseCallbackState *pcbstate,
  */
 void
 cancel_parser_errposition_callback(ParseCallbackState *pcbstate)
-{
+{	StackTrace("cancel_parser_errposition_callback");
 	/* Pop the error context stack */
 	error_context_stack = pcbstate->errcallback.previous;
 }
@@ -170,7 +170,7 @@ cancel_parser_errposition_callback(ParseCallbackState *pcbstate)
  */
 static void
 pcb_error_callback(void *arg)
-{
+{	StackTrace("pcb_error_callback");
 	ParseCallbackState *pcbstate = (ParseCallbackState *) arg;
 
 	if (geterrcode() != ERRCODE_QUERY_CANCELED)
@@ -184,7 +184,7 @@ pcb_error_callback(void *arg)
  */
 Var *
 make_var(ParseState *pstate, RangeTblEntry *rte, int attrno, int location)
-{
+{	StackTrace("make_var");
 	Var		   *result;
 	int			vnum,
 				sublevels_up;
@@ -211,7 +211,7 @@ make_var(ParseState *pstate, RangeTblEntry *rte, int attrno, int location)
  */
 Oid
 transformArrayType(Oid *arrayType, int32 *arrayTypmod)
-{
+{	StackTrace("transformArrayType");
 	Oid			origArrayType = *arrayType;
 	Oid			elementType;
 	HeapTuple	type_tuple_array;
@@ -295,7 +295,7 @@ transformArraySubscripts(ParseState *pstate,
 						 int32 arrayTypMod,
 						 List *indirection,
 						 Node *assignFrom)
-{
+{	StackTrace("transformArraySubscripts");
 	bool		isSlice = false;
 	List	   *upperIndexpr = NIL;
 	List	   *lowerIndexpr = NIL;
@@ -449,7 +449,7 @@ transformArraySubscripts(ParseState *pstate,
  */
 Const *
 make_const(ParseState *pstate, Value *value, int location)
-{
+{	StackTrace("make_const");
 	Const	   *con;
 	Datum		val;
 	int64		val64;

@@ -52,7 +52,7 @@ static int	trackitem_compare_lexemes(const void *e1, const void *e2);
  */
 Datum
 ts_typanalyze(PG_FUNCTION_ARGS)
-{
+{	StackTrace("ts_typanalyze");
 	VacAttrStats *stats = (VacAttrStats *) PG_GETARG_POINTER(0);
 	Form_pg_attribute attr = stats->attr;
 
@@ -140,7 +140,7 @@ compute_tsvector_stats(VacAttrStats *stats,
 					   AnalyzeAttrFetchFunc fetchfunc,
 					   int samplerows,
 					   double totalrows)
-{
+{	StackTrace("compute_tsvector_stats");
 	int			num_mcelem;
 	int			null_cnt = 0;
 	double		total_width = 0;
@@ -438,7 +438,7 @@ compute_tsvector_stats(VacAttrStats *stats,
  */
 static void
 prune_lexemes_hashtable(HTAB *lexemes_tab, int b_current)
-{
+{	StackTrace("prune_lexemes_hashtable");
 	HASH_SEQ_STATUS scan_status;
 	TrackItem  *item;
 
@@ -460,7 +460,7 @@ prune_lexemes_hashtable(HTAB *lexemes_tab, int b_current)
  */
 static uint32
 lexeme_hash(const void *key, Size keysize)
-{
+{	StackTrace("lexeme_hash");
 	const LexemeHashKey *l = (const LexemeHashKey *) key;
 
 	return DatumGetUInt32(hash_any((const unsigned char *) l->lexeme,
@@ -472,7 +472,7 @@ lexeme_hash(const void *key, Size keysize)
  */
 static int
 lexeme_match(const void *key1, const void *key2, Size keysize)
-{
+{	StackTrace("lexeme_match");
 	/* The keysize parameter is superfluous, the keys store their lengths */
 	return lexeme_compare(key1, key2);
 }
@@ -482,7 +482,7 @@ lexeme_match(const void *key1, const void *key2, Size keysize)
  */
 static int
 lexeme_compare(const void *key1, const void *key2)
-{
+{	StackTrace("lexeme_compare");
 	const LexemeHashKey *d1 = (const LexemeHashKey *) key1;
 	const LexemeHashKey *d2 = (const LexemeHashKey *) key2;
 
@@ -500,7 +500,7 @@ lexeme_compare(const void *key1, const void *key2)
  */
 static int
 trackitem_compare_frequencies_desc(const void *e1, const void *e2)
-{
+{	StackTrace("trackitem_compare_frequencies_desc");
 	const TrackItem *const * t1 = (const TrackItem *const *) e1;
 	const TrackItem *const * t2 = (const TrackItem *const *) e2;
 
@@ -512,7 +512,7 @@ trackitem_compare_frequencies_desc(const void *e1, const void *e2)
  */
 static int
 trackitem_compare_lexemes(const void *e1, const void *e2)
-{
+{	StackTrace("trackitem_compare_lexemes");
 	const TrackItem *const * t1 = (const TrackItem *const *) e1;
 	const TrackItem *const * t2 = (const TrackItem *const *) e2;
 

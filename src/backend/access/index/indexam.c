@@ -161,7 +161,7 @@ static IndexScanDesc index_beginscan_internal(Relation indexRelation,
  */
 Relation
 index_open(Oid relationId, LOCKMODE lockmode)
-{
+{	StackTrace("index_open");
 	Relation	r;
 
 	r = relation_open(relationId, lockmode);
@@ -186,7 +186,7 @@ index_open(Oid relationId, LOCKMODE lockmode)
  */
 void
 index_close(Relation relation, LOCKMODE lockmode)
-{
+{	StackTrace("index_close");
 	LockRelId	relid = relation->rd_lockInfo.lockRelId;
 
 	Assert(lockmode >= NoLock && lockmode < MAX_LOCKMODES);
@@ -209,7 +209,7 @@ index_insert(Relation indexRelation,
 			 ItemPointer heap_t_ctid,
 			 Relation heapRelation,
 			 IndexUniqueCheck checkUnique)
-{
+{	StackTrace("index_insert");
 	FmgrInfo   *procedure;
 
 	RELATION_CHECKS;
@@ -242,7 +242,7 @@ index_beginscan(Relation heapRelation,
 				Relation indexRelation,
 				Snapshot snapshot,
 				int nkeys, int norderbys)
-{
+{	StackTrace("index_beginscan");
 	IndexScanDesc scan;
 
 	scan = index_beginscan_internal(indexRelation, nkeys, norderbys, snapshot);
@@ -267,7 +267,7 @@ IndexScanDesc
 index_beginscan_bitmap(Relation indexRelation,
 					   Snapshot snapshot,
 					   int nkeys)
-{
+{	StackTrace("index_beginscan_bitmap");
 	IndexScanDesc scan;
 
 	scan = index_beginscan_internal(indexRelation, nkeys, 0, snapshot);
@@ -287,7 +287,7 @@ index_beginscan_bitmap(Relation indexRelation,
 static IndexScanDesc
 index_beginscan_internal(Relation indexRelation,
 						 int nkeys, int norderbys, Snapshot snapshot)
-{
+{	StackTrace("index_beginscan_internal");
 	IndexScanDesc scan;
 	FmgrInfo   *procedure;
 
@@ -330,7 +330,7 @@ void
 index_rescan(IndexScanDesc scan,
 			 ScanKey keys, int nkeys,
 			 ScanKey orderbys, int norderbys)
-{
+{	StackTrace("index_rescan");
 	FmgrInfo   *procedure;
 
 	SCAN_CHECKS;
@@ -364,7 +364,7 @@ index_rescan(IndexScanDesc scan,
  */
 void
 index_endscan(IndexScanDesc scan)
-{
+{	StackTrace("index_endscan");
 	FmgrInfo   *procedure;
 
 	SCAN_CHECKS;
@@ -393,7 +393,7 @@ index_endscan(IndexScanDesc scan)
  */
 void
 index_markpos(IndexScanDesc scan)
-{
+{	StackTrace("index_markpos");
 	FmgrInfo   *procedure;
 
 	SCAN_CHECKS;
@@ -420,7 +420,7 @@ index_markpos(IndexScanDesc scan)
  */
 void
 index_restrpos(IndexScanDesc scan)
-{
+{	StackTrace("index_restrpos");
 	FmgrInfo   *procedure;
 
 	Assert(IsMVCCSnapshot(scan->xs_snapshot));
@@ -444,7 +444,7 @@ index_restrpos(IndexScanDesc scan)
  */
 ItemPointer
 index_getnext_tid(IndexScanDesc scan, ScanDirection direction)
-{
+{	StackTrace("index_getnext_tid");
 	FmgrInfo   *procedure;
 	bool		found;
 
@@ -504,7 +504,7 @@ index_getnext_tid(IndexScanDesc scan, ScanDirection direction)
  */
 HeapTuple
 index_fetch_heap(IndexScanDesc scan)
-{
+{	StackTrace("index_fetch_heap");
 	ItemPointer tid = &scan->xs_ctup.t_self;
 	bool		all_dead = false;
 	bool		got_heap_tuple;
@@ -580,7 +580,7 @@ index_fetch_heap(IndexScanDesc scan)
  */
 HeapTuple
 index_getnext(IndexScanDesc scan, ScanDirection direction)
-{
+{	StackTrace("index_getnext");
 	HeapTuple	heapTuple;
 	ItemPointer tid;
 
@@ -634,7 +634,7 @@ index_getnext(IndexScanDesc scan, ScanDirection direction)
  */
 int64
 index_getbitmap(IndexScanDesc scan, TIDBitmap *bitmap)
-{
+{	StackTrace("index_getbitmap");
 	FmgrInfo   *procedure;
 	int64		ntids;
 	Datum		d;
@@ -678,7 +678,7 @@ index_bulk_delete(IndexVacuumInfo *info,
 				  IndexBulkDeleteResult *stats,
 				  IndexBulkDeleteCallback callback,
 				  void *callback_state)
-{
+{	StackTrace("index_bulk_delete");
 	Relation	indexRelation = info->index;
 	FmgrInfo	procedure;
 	IndexBulkDeleteResult *result;
@@ -705,7 +705,7 @@ index_bulk_delete(IndexVacuumInfo *info,
 IndexBulkDeleteResult *
 index_vacuum_cleanup(IndexVacuumInfo *info,
 					 IndexBulkDeleteResult *stats)
-{
+{	StackTrace("index_vacuum_cleanup");
 	Relation	indexRelation = info->index;
 	FmgrInfo	procedure;
 	IndexBulkDeleteResult *result;
@@ -730,7 +730,7 @@ index_vacuum_cleanup(IndexVacuumInfo *info,
  */
 bool
 index_can_return(Relation indexRelation, int attno)
-{
+{	StackTrace("index_can_return");
 	FmgrInfo   *procedure;
 
 	RELATION_CHECKS;
@@ -776,7 +776,7 @@ RegProcedure
 index_getprocid(Relation irel,
 				AttrNumber attnum,
 				uint16 procnum)
-{
+{	StackTrace("index_getprocid");
 	RegProcedure *loc;
 	int			nproc;
 	int			procindex;
@@ -810,7 +810,7 @@ FmgrInfo *
 index_getprocinfo(Relation irel,
 				  AttrNumber attnum,
 				  uint16 procnum)
-{
+{	StackTrace("index_getprocinfo");
 	FmgrInfo   *locinfo;
 	int			nproc;
 	int			procindex;

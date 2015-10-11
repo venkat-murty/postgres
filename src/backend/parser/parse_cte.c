@@ -103,7 +103,7 @@ static void checkWellFormedSelectStmt(SelectStmt *stmt, CteState *cstate);
  */
 List *
 transformWithClause(ParseState *pstate, WithClause *withClause)
-{
+{	StackTrace("transformWithClause");
 	ListCell   *lc;
 
 	/* Only one WITH clause per query level */
@@ -235,7 +235,7 @@ transformWithClause(ParseState *pstate, WithClause *withClause)
  */
 static void
 analyzeCTE(ParseState *pstate, CommonTableExpr *cte)
-{
+{	StackTrace("analyzeCTE");
 	Query	   *query;
 
 	/* Analysis not done already */
@@ -350,7 +350,7 @@ analyzeCTE(ParseState *pstate, CommonTableExpr *cte)
  */
 void
 analyzeCTETargetList(ParseState *pstate, CommonTableExpr *cte, List *tlist)
-{
+{	StackTrace("analyzeCTETargetList");
 	int			numaliases;
 	int			varattno;
 	ListCell   *tlistitem;
@@ -428,7 +428,7 @@ analyzeCTETargetList(ParseState *pstate, CommonTableExpr *cte, List *tlist)
  */
 static void
 makeDependencyGraph(CteState *cstate)
-{
+{	StackTrace("makeDependencyGraph");
 	int			i;
 
 	for (i = 0; i < cstate->numitems; i++)
@@ -450,7 +450,7 @@ makeDependencyGraph(CteState *cstate)
  */
 static bool
 makeDependencyGraphWalker(Node *node, CteState *cstate)
-{
+{	StackTrace("makeDependencyGraphWalker");
 	if (node == NULL)
 		return false;
 	if (IsA(node, RangeVar))
@@ -578,7 +578,7 @@ makeDependencyGraphWalker(Node *node, CteState *cstate)
  */
 static void
 TopologicalSort(ParseState *pstate, CteItem *items, int numitems)
-{
+{	StackTrace("TopologicalSort");
 	int			i,
 				j;
 
@@ -630,7 +630,7 @@ TopologicalSort(ParseState *pstate, CteItem *items, int numitems)
  */
 static void
 checkWellFormedRecursion(CteState *cstate)
-{
+{	StackTrace("checkWellFormedRecursion");
 	int			i;
 
 	for (i = 0; i < cstate->numitems; i++)
@@ -729,7 +729,7 @@ checkWellFormedRecursion(CteState *cstate)
  */
 static bool
 checkWellFormedRecursionWalker(Node *node, CteState *cstate)
-{
+{	StackTrace("checkWellFormedRecursionWalker");
 	RecursionContext save_context = cstate->context;
 
 	if (node == NULL)
@@ -909,7 +909,7 @@ checkWellFormedRecursionWalker(Node *node, CteState *cstate)
  */
 static void
 checkWellFormedSelectStmt(SelectStmt *stmt, CteState *cstate)
-{
+{	StackTrace("checkWellFormedSelectStmt");
 	RecursionContext save_context = cstate->context;
 
 	if (save_context != RECURSION_OK)

@@ -59,7 +59,7 @@ static bool security_barrier_replace_vars_walker(Node *node,
  */
 void
 expand_security_quals(PlannerInfo *root, List *tlist)
-{
+{	StackTrace("expand_security_quals");
 	Query	   *parse = root->parse;
 	int			rt_index;
 	ListCell   *cell;
@@ -173,7 +173,7 @@ expand_security_quals(PlannerInfo *root, List *tlist)
 static void
 expand_security_qual(PlannerInfo *root, List *tlist, int rt_index,
 					 RangeTblEntry *rte, Node *qual, bool targetRelation)
-{
+{	StackTrace("expand_security_qual");
 	Query	   *parse = root->parse;
 	Oid			relid = rte->relid;
 	Query	   *subquery;
@@ -347,7 +347,7 @@ expand_security_qual(PlannerInfo *root, List *tlist, int rt_index,
 static void
 security_barrier_replace_vars(Node *node,
 							  security_barrier_replace_vars_context *context)
-{
+{	StackTrace("security_barrier_replace_vars");
 	/*
 	 * Must be prepared to start with a Query or a bare expression tree; if
 	 * it's a Query, go straight to query_tree_walker to make sure that
@@ -364,7 +364,7 @@ security_barrier_replace_vars(Node *node,
 static bool
 security_barrier_replace_vars_walker(Node *node,
 							  security_barrier_replace_vars_context *context)
-{
+{	StackTrace("security_barrier_replace_vars_walker");
 	if (node == NULL)
 		return false;
 

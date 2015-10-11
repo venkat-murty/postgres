@@ -74,7 +74,7 @@ static void LoadOutputPlugin(OutputPluginCallbacks *callbacks, char *plugin);
  */
 void
 CheckLogicalDecodingRequirements(void)
-{
+{	StackTrace("CheckLogicalDecodingRequirements");
 	CheckSlotRequirements();
 
 	if (wal_level < WAL_LEVEL_LOGICAL)
@@ -117,7 +117,7 @@ StartupDecodingContext(List *output_plugin_options,
 					   XLogPageReadCB read_page,
 					   LogicalOutputPluginWriterPrepareWrite prepare_write,
 					   LogicalOutputPluginWriterWrite do_write)
-{
+{	StackTrace("StartupDecodingContext");
 	ReplicationSlot *slot;
 	MemoryContext context,
 				old_context;
@@ -214,7 +214,7 @@ CreateInitDecodingContext(char *plugin,
 						  XLogPageReadCB read_page,
 						  LogicalOutputPluginWriterPrepareWrite prepare_write,
 						  LogicalOutputPluginWriterWrite do_write)
-{
+{	StackTrace("CreateInitDecodingContext");
 	TransactionId xmin_horizon = InvalidTransactionId;
 	ReplicationSlot *slot;
 	LogicalDecodingContext *ctx;
@@ -367,7 +367,7 @@ CreateDecodingContext(XLogRecPtr start_lsn,
 					  XLogPageReadCB read_page,
 					  LogicalOutputPluginWriterPrepareWrite prepare_write,
 					  LogicalOutputPluginWriterWrite do_write)
-{
+{	StackTrace("CreateDecodingContext");
 	LogicalDecodingContext *ctx;
 	ReplicationSlot *slot;
 	MemoryContext old_context;
@@ -440,7 +440,7 @@ CreateDecodingContext(XLogRecPtr start_lsn,
  */
 bool
 DecodingContextReady(LogicalDecodingContext *ctx)
-{
+{	StackTrace("DecodingContextReady");
 	return SnapBuildCurrentState(ctx->snapshot_builder) == SNAPBUILD_CONSISTENT;
 }
 
@@ -449,7 +449,7 @@ DecodingContextReady(LogicalDecodingContext *ctx)
  */
 void
 DecodingContextFindStartpoint(LogicalDecodingContext *ctx)
-{
+{	StackTrace("DecodingContextFindStartpoint");
 	XLogRecPtr	startptr;
 
 	/* Initialize from where to start reading WAL. */
@@ -492,7 +492,7 @@ DecodingContextFindStartpoint(LogicalDecodingContext *ctx)
  */
 void
 FreeDecodingContext(LogicalDecodingContext *ctx)
-{
+{	StackTrace("FreeDecodingContext");
 	if (ctx->callbacks.shutdown_cb != NULL)
 		shutdown_cb_wrapper(ctx);
 
@@ -507,7 +507,7 @@ FreeDecodingContext(LogicalDecodingContext *ctx)
  */
 void
 OutputPluginPrepareWrite(struct LogicalDecodingContext *ctx, bool last_write)
-{
+{	StackTrace("OutputPluginPrepareWrite");
 	if (!ctx->accept_writes)
 		elog(ERROR, "writes are only accepted in commit, begin and change callbacks");
 
@@ -520,7 +520,7 @@ OutputPluginPrepareWrite(struct LogicalDecodingContext *ctx, bool last_write)
  */
 void
 OutputPluginWrite(struct LogicalDecodingContext *ctx, bool last_write)
-{
+{	StackTrace("OutputPluginWrite");
 	if (!ctx->prepared_write)
 		elog(ERROR, "OutputPluginPrepareWrite needs to be called before OutputPluginWrite");
 
@@ -534,7 +534,7 @@ OutputPluginWrite(struct LogicalDecodingContext *ctx, bool last_write)
  */
 static void
 LoadOutputPlugin(OutputPluginCallbacks *callbacks, char *plugin)
-{
+{	StackTrace("LoadOutputPlugin");
 	LogicalOutputPluginInit plugin_init;
 
 	plugin_init = (LogicalOutputPluginInit)
@@ -556,7 +556,7 @@ LoadOutputPlugin(OutputPluginCallbacks *callbacks, char *plugin)
 
 static void
 output_plugin_error_callback(void *arg)
-{
+{	StackTrace("output_plugin_error_callback");
 	LogicalErrorCallbackState *state = (LogicalErrorCallbackState *) arg;
 
 	/* not all callbacks have an associated LSN  */
@@ -576,7 +576,7 @@ output_plugin_error_callback(void *arg)
 
 static void
 startup_cb_wrapper(LogicalDecodingContext *ctx, OutputPluginOptions *opt, bool is_init)
-{
+{	StackTrace("startup_cb_wrapper");
 	LogicalErrorCallbackState state;
 	ErrorContextCallback errcallback;
 
@@ -601,7 +601,7 @@ startup_cb_wrapper(LogicalDecodingContext *ctx, OutputPluginOptions *opt, bool i
 
 static void
 shutdown_cb_wrapper(LogicalDecodingContext *ctx)
-{
+{	StackTrace("shutdown_cb_wrapper");
 	LogicalErrorCallbackState state;
 	ErrorContextCallback errcallback;
 
@@ -631,7 +631,7 @@ shutdown_cb_wrapper(LogicalDecodingContext *ctx)
  */
 static void
 begin_cb_wrapper(ReorderBuffer *cache, ReorderBufferTXN *txn)
-{
+{	StackTrace("begin_cb_wrapper");
 	LogicalDecodingContext *ctx = cache->private_data;
 	LogicalErrorCallbackState state;
 	ErrorContextCallback errcallback;
@@ -660,7 +660,7 @@ begin_cb_wrapper(ReorderBuffer *cache, ReorderBufferTXN *txn)
 static void
 commit_cb_wrapper(ReorderBuffer *cache, ReorderBufferTXN *txn,
 				  XLogRecPtr commit_lsn)
-{
+{	StackTrace("commit_cb_wrapper");
 	LogicalDecodingContext *ctx = cache->private_data;
 	LogicalErrorCallbackState state;
 	ErrorContextCallback errcallback;
@@ -689,7 +689,7 @@ commit_cb_wrapper(ReorderBuffer *cache, ReorderBufferTXN *txn,
 static void
 change_cb_wrapper(ReorderBuffer *cache, ReorderBufferTXN *txn,
 				  Relation relation, ReorderBufferChange *change)
-{
+{	StackTrace("change_cb_wrapper");
 	LogicalDecodingContext *ctx = cache->private_data;
 	LogicalErrorCallbackState state;
 	ErrorContextCallback errcallback;
@@ -723,7 +723,7 @@ change_cb_wrapper(ReorderBuffer *cache, ReorderBufferTXN *txn,
 
 bool
 filter_by_origin_cb_wrapper(LogicalDecodingContext *ctx, RepOriginId origin_id)
-{
+{	StackTrace("filter_by_origin_cb_wrapper");
 	LogicalErrorCallbackState state;
 	ErrorContextCallback errcallback;
 	bool		ret;
@@ -759,7 +759,7 @@ filter_by_origin_cb_wrapper(LogicalDecodingContext *ctx, RepOriginId origin_id)
  */
 void
 LogicalIncreaseXminForSlot(XLogRecPtr current_lsn, TransactionId xmin)
-{
+{	StackTrace("LogicalIncreaseXminForSlot");
 	bool		updated_xmin = false;
 	ReplicationSlot *slot;
 
@@ -816,7 +816,7 @@ LogicalIncreaseXminForSlot(XLogRecPtr current_lsn, TransactionId xmin)
  */
 void
 LogicalIncreaseRestartDecodingForSlot(XLogRecPtr current_lsn, XLogRecPtr restart_lsn)
-{
+{	StackTrace("LogicalIncreaseRestartDecodingForSlot");
 	bool		updated_lsn = false;
 	ReplicationSlot *slot;
 
@@ -885,7 +885,7 @@ LogicalIncreaseRestartDecodingForSlot(XLogRecPtr current_lsn, XLogRecPtr restart
  */
 void
 LogicalConfirmReceivedLocation(XLogRecPtr lsn)
-{
+{	StackTrace("LogicalConfirmReceivedLocation");
 	Assert(lsn != InvalidXLogRecPtr);
 
 	/* Do an unlocked check for candidate_lsn first. */

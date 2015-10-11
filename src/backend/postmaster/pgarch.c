@@ -116,7 +116,7 @@ static void pgarch_archiveDone(char *xlog);
  */
 int
 pgarch_start(void)
-{
+{	StackTrace("pgarch_start");
 	time_t		curtime;
 	pid_t		pgArchPid;
 
@@ -188,7 +188,7 @@ pgarch_start(void)
  */
 static pid_t
 pgarch_forkexec(void)
-{
+{	StackTrace("pgarch_forkexec");
 	char	   *av[10];
 	int			ac = 0;
 
@@ -214,7 +214,7 @@ pgarch_forkexec(void)
  */
 NON_EXEC_STATIC void
 PgArchiverMain(int argc, char *argv[])
-{
+{	StackTrace("PgArchiverMain");
 	/*
 	 * Ignore all signals usually bound to some action in the postmaster,
 	 * except for SIGHUP, SIGTERM, SIGUSR1, SIGUSR2, and SIGQUIT.
@@ -247,7 +247,7 @@ PgArchiverMain(int argc, char *argv[])
 /* SIGQUIT signal handler for archiver process */
 static void
 pgarch_exit(SIGNAL_ARGS)
-{
+{	StackTrace("pgarch_exit");
 	/* SIGQUIT means curl up and die ... */
 	exit(1);
 }
@@ -255,7 +255,7 @@ pgarch_exit(SIGNAL_ARGS)
 /* SIGHUP signal handler for archiver process */
 static void
 ArchSigHupHandler(SIGNAL_ARGS)
-{
+{	StackTrace("ArchSigHupHandler");
 	int			save_errno = errno;
 
 	/* set flag to re-read config file at next convenient time */
@@ -268,7 +268,7 @@ ArchSigHupHandler(SIGNAL_ARGS)
 /* SIGTERM signal handler for archiver process */
 static void
 ArchSigTermHandler(SIGNAL_ARGS)
-{
+{	StackTrace("ArchSigTermHandler");
 	int			save_errno = errno;
 
 	/*
@@ -286,7 +286,7 @@ ArchSigTermHandler(SIGNAL_ARGS)
 /* SIGUSR1 signal handler for archiver process */
 static void
 pgarch_waken(SIGNAL_ARGS)
-{
+{	StackTrace("pgarch_waken");
 	int			save_errno = errno;
 
 	/* set flag that there is work to be done */
@@ -299,7 +299,7 @@ pgarch_waken(SIGNAL_ARGS)
 /* SIGUSR2 signal handler for archiver process */
 static void
 pgarch_waken_stop(SIGNAL_ARGS)
-{
+{	StackTrace("pgarch_waken_stop");
 	int			save_errno = errno;
 
 	/* set flag to do a final cycle and shut down afterwards */
@@ -316,7 +316,7 @@ pgarch_waken_stop(SIGNAL_ARGS)
  */
 static void
 pgarch_MainLoop(void)
-{
+{	StackTrace("pgarch_MainLoop");
 	pg_time_t	last_copy_time = 0;
 	bool		time_to_stop;
 
@@ -413,7 +413,7 @@ pgarch_MainLoop(void)
  */
 static void
 pgarch_ArchiverCopyLoop(void)
-{
+{	StackTrace("pgarch_ArchiverCopyLoop");
 	char		xlog[MAX_XFN_CHARS + 1];
 
 	/*
@@ -500,7 +500,7 @@ pgarch_ArchiverCopyLoop(void)
  */
 static bool
 pgarch_archiveXlog(char *xlog)
-{
+{	StackTrace("pgarch_archiveXlog");
 	char		xlogarchcmd[MAXPGPATH];
 	char		pathname[MAXPGPATH];
 	char		activitymsg[MAXFNAMELEN + 16];
@@ -659,7 +659,7 @@ pgarch_archiveXlog(char *xlog)
  */
 static bool
 pgarch_readyXlog(char *xlog)
-{
+{	StackTrace("pgarch_readyXlog");
 	/*
 	 * open xlog status directory and read through list of xlogs that have the
 	 * .ready suffix, looking for earliest file. It is possible to optimise
@@ -722,7 +722,7 @@ pgarch_readyXlog(char *xlog)
  */
 static void
 pgarch_archiveDone(char *xlog)
-{
+{	StackTrace("pgarch_archiveDone");
 	char		rlogready[MAXPGPATH];
 	char		rlogdone[MAXPGPATH];
 

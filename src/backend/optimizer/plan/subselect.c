@@ -90,7 +90,7 @@ static bool finalize_primnode(Node *node, finalize_primnode_context *context);
  */
 static int
 assign_param_for_var(PlannerInfo *root, Var *var)
-{
+{	StackTrace("assign_param_for_var");
 	ListCell   *ppl;
 	PlannerParamItem *pitem;
 	Index		levelsup;
@@ -141,7 +141,7 @@ assign_param_for_var(PlannerInfo *root, Var *var)
  */
 static Param *
 replace_outer_var(PlannerInfo *root, Var *var)
-{
+{	StackTrace("replace_outer_var");
 	Param	   *retval;
 	int			i;
 
@@ -170,7 +170,7 @@ replace_outer_var(PlannerInfo *root, Var *var)
  */
 Param *
 assign_nestloop_param_var(PlannerInfo *root, Var *var)
-{
+{	StackTrace("assign_nestloop_param_var");
 	Param	   *retval;
 	int			i;
 
@@ -198,7 +198,7 @@ assign_nestloop_param_var(PlannerInfo *root, Var *var)
  */
 static int
 assign_param_for_placeholdervar(PlannerInfo *root, PlaceHolderVar *phv)
-{
+{	StackTrace("assign_param_for_placeholdervar");
 	ListCell   *ppl;
 	PlannerParamItem *pitem;
 	Index		levelsup;
@@ -274,7 +274,7 @@ replace_outer_placeholdervar(PlannerInfo *root, PlaceHolderVar *phv)
  */
 Param *
 assign_nestloop_param_placeholdervar(PlannerInfo *root, PlaceHolderVar *phv)
-{
+{	StackTrace("assign_nestloop_param_placeholdervar");
 	Param	   *retval;
 	int			i;
 
@@ -299,7 +299,7 @@ assign_nestloop_param_placeholdervar(PlannerInfo *root, PlaceHolderVar *phv)
  */
 static Param *
 replace_outer_agg(PlannerInfo *root, Aggref *agg)
-{
+{	StackTrace("replace_outer_agg");
 	Param	   *retval;
 	PlannerParamItem *pitem;
 	Index		levelsup;
@@ -341,7 +341,7 @@ replace_outer_agg(PlannerInfo *root, Aggref *agg)
  */
 static Param *
 replace_outer_grouping(PlannerInfo *root, GroupingFunc *grp)
-{
+{	StackTrace("replace_outer_grouping");
 	Param	   *retval;
 	PlannerParamItem *pitem;
 	Index		levelsup;
@@ -387,7 +387,7 @@ replace_outer_grouping(PlannerInfo *root, GroupingFunc *grp)
 static Param *
 generate_new_param(PlannerInfo *root, Oid paramtype, int32 paramtypmod,
 				   Oid paramcollation)
-{
+{	StackTrace("generate_new_param");
 	Param	   *retval;
 
 	retval = makeNode(Param);
@@ -411,7 +411,7 @@ generate_new_param(PlannerInfo *root, Oid paramtype, int32 paramtypmod,
  */
 int
 SS_assign_special_param(PlannerInfo *root)
-{
+{	StackTrace("SS_assign_special_param");
 	return root->glob->nParamExec++;
 }
 
@@ -427,7 +427,7 @@ SS_assign_special_param(PlannerInfo *root)
 static void
 get_first_col_type(Plan *plan, Oid *coltype, int32 *coltypmod,
 				   Oid *colcollation)
-{
+{	StackTrace("get_first_col_type");
 	/* In cases such as EXISTS, tlist might be empty; arbitrarily use VOID */
 	if (plan->targetlist)
 	{
@@ -473,7 +473,7 @@ static Node *
 make_subplan(PlannerInfo *root, Query *orig_subquery,
 			 SubLinkType subLinkType, int subLinkId,
 			 Node *testexpr, bool isTopQual)
-{
+{	StackTrace("make_subplan");
 	Query	   *subquery;
 	bool		simple_exists = false;
 	double		tuple_fraction;
@@ -619,7 +619,7 @@ build_subplan(PlannerInfo *root, Plan *plan, PlannerInfo *subroot,
 			  SubLinkType subLinkType, int subLinkId,
 			  Node *testexpr, bool adjust_testexpr,
 			  bool unknownEqFalse)
-{
+{	StackTrace("build_subplan");
 	Node	   *result;
 	SubPlan    *splan;
 	bool		isInitPlan;
@@ -882,7 +882,7 @@ build_subplan(PlannerInfo *root, Plan *plan, PlannerInfo *subroot,
  */
 static List *
 generate_subquery_params(PlannerInfo *root, List *tlist, List **paramIds)
-{
+{	StackTrace("generate_subquery_params");
 	List	   *result;
 	List	   *ids;
 	ListCell   *lc;
@@ -915,7 +915,7 @@ generate_subquery_params(PlannerInfo *root, List *tlist, List **paramIds)
  */
 static List *
 generate_subquery_vars(PlannerInfo *root, List *tlist, Index varno)
-{
+{	StackTrace("generate_subquery_vars");
 	List	   *result;
 	ListCell   *lc;
 
@@ -946,7 +946,7 @@ static Node *
 convert_testexpr(PlannerInfo *root,
 				 Node *testexpr,
 				 List *subst_nodes)
-{
+{	StackTrace("convert_testexpr");
 	convert_testexpr_context context;
 
 	context.root = root;
@@ -957,7 +957,7 @@ convert_testexpr(PlannerInfo *root,
 static Node *
 convert_testexpr_mutator(Node *node,
 						 convert_testexpr_context *context)
-{
+{	StackTrace("convert_testexpr_mutator");
 	if (node == NULL)
 		return NULL;
 	if (IsA(node, Param))
@@ -1011,7 +1011,7 @@ convert_testexpr_mutator(Node *node,
  */
 static bool
 subplan_is_hashable(Plan *plan)
-{
+{	StackTrace("subplan_is_hashable");
 	double		subquery_size;
 
 	/*
@@ -1033,7 +1033,7 @@ subplan_is_hashable(Plan *plan)
  */
 static bool
 testexpr_is_hashable(Node *testexpr)
-{
+{	StackTrace("testexpr_is_hashable");
 	/*
 	 * The testexpr must be a single OpExpr, or an AND-clause containing only
 	 * OpExprs.
@@ -1077,7 +1077,7 @@ testexpr_is_hashable(Node *testexpr)
  */
 static bool
 hash_ok_operator(OpExpr *expr)
-{
+{	StackTrace("hash_ok_operator");
 	Oid			opid = expr->opno;
 
 	/* quick out if not a binary operator */
@@ -1122,7 +1122,7 @@ hash_ok_operator(OpExpr *expr)
  */
 void
 SS_process_ctes(PlannerInfo *root)
-{
+{	StackTrace("SS_process_ctes");
 	ListCell   *lc;
 
 	Assert(root->cte_plan_ids == NIL);
@@ -1265,7 +1265,7 @@ SS_process_ctes(PlannerInfo *root)
 JoinExpr *
 convert_ANY_sublink_to_join(PlannerInfo *root, SubLink *sublink,
 							Relids available_rels)
-{
+{	StackTrace("convert_ANY_sublink_to_join");
 	JoinExpr   *result;
 	Query	   *parse = root->parse;
 	Query	   *subselect = (Query *) sublink->subselect;
@@ -1370,7 +1370,7 @@ convert_ANY_sublink_to_join(PlannerInfo *root, SubLink *sublink,
 JoinExpr *
 convert_EXISTS_sublink_to_join(PlannerInfo *root, SubLink *sublink,
 							   bool under_not, Relids available_rels)
-{
+{	StackTrace("convert_EXISTS_sublink_to_join");
 	JoinExpr   *result;
 	Query	   *parse = root->parse;
 	Query	   *subselect = (Query *) sublink->subselect;
@@ -1533,7 +1533,7 @@ convert_EXISTS_sublink_to_join(PlannerInfo *root, SubLink *sublink,
  */
 static bool
 simplify_EXISTS_query(PlannerInfo *root, Query *query)
-{
+{	StackTrace("simplify_EXISTS_query");
 	/*
 	 * We don't try to simplify at all if the query uses set operations,
 	 * aggregates, grouping sets, modifying CTEs, HAVING, OFFSET, or FOR
@@ -1628,7 +1628,7 @@ simplify_EXISTS_query(PlannerInfo *root, Query *query)
 static Query *
 convert_EXISTS_to_ANY(PlannerInfo *root, Query *subselect,
 					  Node **testexpr, List **paramIds)
-{
+{	StackTrace("convert_EXISTS_to_ANY");
 	Node	   *whereClause;
 	List	   *leftargs,
 			   *rightargs,
@@ -1869,14 +1869,14 @@ convert_EXISTS_to_ANY(PlannerInfo *root, Query *subselect,
  */
 Node *
 SS_replace_correlation_vars(PlannerInfo *root, Node *expr)
-{
+{	StackTrace("SS_replace_correlation_vars");
 	/* No setup needed for tree walk, so away we go */
 	return replace_correlation_vars_mutator(expr, root);
 }
 
 static Node *
 replace_correlation_vars_mutator(Node *node, PlannerInfo *root)
-{
+{	StackTrace("replace_correlation_vars_mutator");
 	if (node == NULL)
 		return NULL;
 	if (IsA(node, Var))
@@ -1914,7 +1914,7 @@ replace_correlation_vars_mutator(Node *node, PlannerInfo *root)
  */
 Node *
 SS_process_sublinks(PlannerInfo *root, Node *expr, bool isQual)
-{
+{	StackTrace("SS_process_sublinks");
 	process_sublinks_context context;
 
 	context.root = root;
@@ -1924,7 +1924,7 @@ SS_process_sublinks(PlannerInfo *root, Node *expr, bool isQual)
 
 static Node *
 process_sublinks_mutator(Node *node, process_sublinks_context *context)
-{
+{	StackTrace("process_sublinks_mutator");
 	process_sublinks_context locContext;
 
 	locContext.root = context->root;
@@ -2058,7 +2058,7 @@ process_sublinks_mutator(Node *node, process_sublinks_context *context)
  */
 void
 SS_finalize_plan(PlannerInfo *root, Plan *plan, bool attach_initplans)
-{
+{	StackTrace("SS_finalize_plan");
 	Bitmapset  *valid_params,
 			   *initExtParam,
 			   *initSetParam;
@@ -2182,7 +2182,7 @@ SS_finalize_plan(PlannerInfo *root, Plan *plan, bool attach_initplans)
 static Bitmapset *
 finalize_plan(PlannerInfo *root, Plan *plan, Bitmapset *valid_params,
 			  Bitmapset *scan_params)
-{
+{	StackTrace("finalize_plan");
 	finalize_primnode_context context;
 	int			locally_added_param;
 	Bitmapset  *nestloop_params;
@@ -2639,7 +2639,7 @@ finalize_plan(PlannerInfo *root, Plan *plan, Bitmapset *valid_params,
  */
 static bool
 finalize_primnode(Node *node, finalize_primnode_context *context)
-{
+{	StackTrace("finalize_primnode");
 	if (node == NULL)
 		return false;
 	if (IsA(node, Param))
@@ -2710,7 +2710,7 @@ Param *
 SS_make_initplan_from_plan(PlannerInfo *root, Plan *plan,
 						   Oid resulttype, int32 resulttypmod,
 						   Oid resultcollation)
-{
+{	StackTrace("SS_make_initplan_from_plan");
 	SubPlan    *node;
 	Param	   *prm;
 

@@ -18,7 +18,7 @@
 
 static void
 standby_desc_running_xacts(StringInfo buf, xl_running_xacts *xlrec)
-{
+{	StackTrace("standby_desc_running_xacts");
 	int			i;
 
 	appendStringInfo(buf, "nextXid %u latestCompletedXid %u oldestRunningXid %u",
@@ -38,7 +38,7 @@ standby_desc_running_xacts(StringInfo buf, xl_running_xacts *xlrec)
 
 void
 standby_desc(StringInfo buf, XLogReaderState *record)
-{
+{	StackTrace("standby_desc");
 	char	   *rec = XLogRecGetData(record);
 	uint8		info = XLogRecGetInfo(record) & ~XLR_INFO_MASK;
 
@@ -62,7 +62,7 @@ standby_desc(StringInfo buf, XLogReaderState *record)
 
 const char *
 standby_identify(uint8 info)
-{
+{	StackTrace("standby_identify");
 	const char *id = NULL;
 
 	switch (info & ~XLR_INFO_MASK)

@@ -90,7 +90,7 @@ static TupleTableSlot *setop_retrieve_hash_table(SetOpState *setopstate);
  */
 static inline void
 initialize_counts(SetOpStatePerGroup pergroup)
-{
+{	StackTrace("initialize_counts");
 	pergroup->numLeft = pergroup->numRight = 0;
 }
 
@@ -99,7 +99,7 @@ initialize_counts(SetOpStatePerGroup pergroup)
  */
 static inline void
 advance_counts(SetOpStatePerGroup pergroup, int flag)
-{
+{	StackTrace("advance_counts");
 	if (flag)
 		pergroup->numRight++;
 	else
@@ -112,7 +112,7 @@ advance_counts(SetOpStatePerGroup pergroup, int flag)
  */
 static int
 fetch_tuple_flag(SetOpState *setopstate, TupleTableSlot *inputslot)
-{
+{	StackTrace("fetch_tuple_flag");
 	SetOp	   *node = (SetOp *) setopstate->ps.plan;
 	int			flag;
 	bool		isNull;
@@ -130,7 +130,7 @@ fetch_tuple_flag(SetOpState *setopstate, TupleTableSlot *inputslot)
  */
 static void
 build_hash_table(SetOpState *setopstate)
-{
+{	StackTrace("build_hash_table");
 	SetOp	   *node = (SetOp *) setopstate->ps.plan;
 
 	Assert(node->strategy == SETOP_HASHED);
@@ -153,7 +153,7 @@ build_hash_table(SetOpState *setopstate)
  */
 static void
 set_output_count(SetOpState *setopstate, SetOpStatePerGroup pergroup)
-{
+{	StackTrace("set_output_count");
 	SetOp	   *plannode = (SetOp *) setopstate->ps.plan;
 
 	switch (plannode->cmd)
@@ -193,7 +193,7 @@ set_output_count(SetOpState *setopstate, SetOpStatePerGroup pergroup)
  */
 TupleTableSlot *				/* return: a tuple or NULL */
 ExecSetOp(SetOpState *node)
-{
+{	StackTrace("ExecSetOp");
 	SetOp	   *plannode = (SetOp *) node->ps.plan;
 	TupleTableSlot *resultTupleSlot = node->ps.ps_ResultTupleSlot;
 
@@ -227,7 +227,7 @@ ExecSetOp(SetOpState *node)
  */
 static TupleTableSlot *
 setop_retrieve_direct(SetOpState *setopstate)
-{
+{	StackTrace("setop_retrieve_direct");
 	SetOp	   *node = (SetOp *) setopstate->ps.plan;
 	PlanState  *outerPlan;
 	SetOpStatePerGroup pergroup;
@@ -341,7 +341,7 @@ setop_retrieve_direct(SetOpState *setopstate)
  */
 static void
 setop_fill_hash_table(SetOpState *setopstate)
-{
+{	StackTrace("setop_fill_hash_table");
 	SetOp	   *node = (SetOp *) setopstate->ps.plan;
 	PlanState  *outerPlan;
 	int			firstFlag;
@@ -421,7 +421,7 @@ setop_fill_hash_table(SetOpState *setopstate)
  */
 static TupleTableSlot *
 setop_retrieve_hash_table(SetOpState *setopstate)
-{
+{	StackTrace("setop_retrieve_hash_table");
 	SetOpHashEntry entry;
 	TupleTableSlot *resultTupleSlot;
 
@@ -475,7 +475,7 @@ setop_retrieve_hash_table(SetOpState *setopstate)
  */
 SetOpState *
 ExecInitSetOp(SetOp *node, EState *estate, int eflags)
-{
+{	StackTrace("ExecInitSetOp");
 	SetOpState *setopstate;
 
 	/* check for unsupported flags */
@@ -584,7 +584,7 @@ ExecInitSetOp(SetOp *node, EState *estate, int eflags)
  */
 void
 ExecEndSetOp(SetOpState *node)
-{
+{	StackTrace("ExecEndSetOp");
 	/* clean up tuple table */
 	ExecClearTuple(node->ps.ps_ResultTupleSlot);
 
@@ -599,7 +599,7 @@ ExecEndSetOp(SetOpState *node)
 
 void
 ExecReScanSetOp(SetOpState *node)
-{
+{	StackTrace("ExecReScanSetOp");
 	ExecClearTuple(node->ps.ps_ResultTupleSlot);
 	node->setop_done = false;
 	node->numOutput = 0;

@@ -111,7 +111,7 @@ static BlockNumber gistGetParent(GISTBuildState *buildstate, BlockNumber child);
  */
 Datum
 gistbuild(PG_FUNCTION_ARGS)
-{
+{	StackTrace("gistbuild");
 	Relation	heap = (Relation) PG_GETARG_POINTER(0);
 	Relation	index = (Relation) PG_GETARG_POINTER(1);
 	IndexInfo  *indexInfo = (IndexInfo *) PG_GETARG_POINTER(2);
@@ -241,7 +241,7 @@ gistbuild(PG_FUNCTION_ARGS)
  */
 void
 gistValidateBufferingOption(char *value)
-{
+{	StackTrace("gistValidateBufferingOption");
 	if (value == NULL ||
 		(strcmp(value, "on") != 0 &&
 		 strcmp(value, "off") != 0 &&
@@ -264,7 +264,7 @@ gistValidateBufferingOption(char *value)
  */
 static void
 gistInitBuffering(GISTBuildState *buildstate)
-{
+{	StackTrace("gistInitBuffering");
 	Relation	index = buildstate->indexrel;
 	int			pagesPerBuffer;
 	Size		pageFreeSpace;
@@ -425,7 +425,7 @@ gistInitBuffering(GISTBuildState *buildstate)
  */
 static int
 calculatePagesPerBuffer(GISTBuildState *buildstate, int levelStep)
-{
+{	StackTrace("calculatePagesPerBuffer");
 	double		pagesPerBuffer;
 	double		avgIndexTuplesPerPage;
 	double		itupAvgSize;
@@ -463,7 +463,7 @@ gistBuildCallback(Relation index,
 				  bool *isnull,
 				  bool tupleIsAlive,
 				  void *state)
-{
+{	StackTrace("gistBuildCallback");
 	GISTBuildState *buildstate = (GISTBuildState *) state;
 	IndexTuple	itup;
 	MemoryContext oldCtx;
@@ -530,7 +530,7 @@ gistBuildCallback(Relation index,
  */
 static void
 gistBufferingBuildInsert(GISTBuildState *buildstate, IndexTuple itup)
-{
+{	StackTrace("gistBufferingBuildInsert");
 	/* Insert the tuple to buffers. */
 	gistProcessItup(buildstate, itup, 0, buildstate->gfbb->rootlevel);
 
@@ -547,7 +547,7 @@ gistBufferingBuildInsert(GISTBuildState *buildstate, IndexTuple itup)
 static bool
 gistProcessItup(GISTBuildState *buildstate, IndexTuple itup,
 				BlockNumber startblkno, int startlevel)
-{
+{	StackTrace("gistProcessItup");
 	GISTSTATE  *giststate = buildstate->giststate;
 	GISTBuildBuffers *gfbb = buildstate->gfbb;
 	Relation	indexrel = buildstate->indexrel;
@@ -679,7 +679,7 @@ static BlockNumber
 gistbufferinginserttuples(GISTBuildState *buildstate, Buffer buffer, int level,
 						  IndexTuple *itup, int ntup, OffsetNumber oldoffnum,
 						  BlockNumber parentblk, OffsetNumber downlinkoffnum)
-{
+{	StackTrace("gistbufferinginserttuples");
 	GISTBuildBuffers *gfbb = buildstate->gfbb;
 	List	   *splitinfo;
 	bool		is_split;
@@ -848,7 +848,7 @@ gistBufferingFindCorrectParent(GISTBuildState *buildstate,
 							   BlockNumber childblkno, int level,
 							   BlockNumber *parentblkno,
 							   OffsetNumber *downlinkoffnum)
-{
+{	StackTrace("gistBufferingFindCorrectParent");
 	BlockNumber parent;
 	Buffer		buffer;
 	Page		page;
@@ -919,7 +919,7 @@ gistBufferingFindCorrectParent(GISTBuildState *buildstate,
  */
 static void
 gistProcessEmptyingQueue(GISTBuildState *buildstate)
-{
+{	StackTrace("gistProcessEmptyingQueue");
 	GISTBuildBuffers *gfbb = buildstate->gfbb;
 
 	/* Iterate while we have elements in buffers emptying stack. */
@@ -992,7 +992,7 @@ gistProcessEmptyingQueue(GISTBuildState *buildstate)
  */
 static void
 gistEmptyAllBuffers(GISTBuildState *buildstate)
-{
+{	StackTrace("gistEmptyAllBuffers");
 	GISTBuildBuffers *gfbb = buildstate->gfbb;
 	MemoryContext oldCtx;
 	int			i;
@@ -1047,7 +1047,7 @@ gistEmptyAllBuffers(GISTBuildState *buildstate)
  */
 static int
 gistGetMaxLevel(Relation index)
-{
+{	StackTrace("gistGetMaxLevel");
 	int			maxLevel;
 	BlockNumber blkno;
 
@@ -1136,7 +1136,7 @@ typedef struct
 
 static void
 gistInitParentMap(GISTBuildState *buildstate)
-{
+{	StackTrace("gistInitParentMap");
 	HASHCTL		hashCtl;
 
 	hashCtl.keysize = sizeof(BlockNumber);
@@ -1150,7 +1150,7 @@ gistInitParentMap(GISTBuildState *buildstate)
 
 static void
 gistMemorizeParent(GISTBuildState *buildstate, BlockNumber child, BlockNumber parent)
-{
+{	StackTrace("gistMemorizeParent");
 	ParentMapEntry *entry;
 	bool		found;
 
@@ -1166,7 +1166,7 @@ gistMemorizeParent(GISTBuildState *buildstate, BlockNumber child, BlockNumber pa
  */
 static void
 gistMemorizeAllDownlinks(GISTBuildState *buildstate, Buffer parentbuf)
-{
+{	StackTrace("gistMemorizeAllDownlinks");
 	OffsetNumber maxoff;
 	OffsetNumber off;
 	BlockNumber parentblkno = BufferGetBlockNumber(parentbuf);
@@ -1187,7 +1187,7 @@ gistMemorizeAllDownlinks(GISTBuildState *buildstate, Buffer parentbuf)
 
 static BlockNumber
 gistGetParent(GISTBuildState *buildstate, BlockNumber child)
-{
+{	StackTrace("gistGetParent");
 	ParentMapEntry *entry;
 	bool		found;
 

@@ -63,7 +63,7 @@ newcvec(int nchrs,				/* to hold this many chrs... */
  */
 static struct cvec *
 clearcvec(struct cvec * cv)
-{
+{	StackTrace("clearcvec");
 	assert(cv != NULL);
 	cv->nchrs = 0;
 	cv->nranges = 0;
@@ -131,6 +131,6 @@ getcvec(struct vars * v,		/* context */
  */
 static void
 freecvec(struct cvec * cv)
-{
+{	StackTrace("freecvec");
 	FREE(cv);
 }

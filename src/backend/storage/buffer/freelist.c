@@ -110,7 +110,7 @@ static void AddBufferToRing(BufferAccessStrategy strategy,
  */
 static inline uint32
 ClockSweepTick(void)
-{
+{	StackTrace("ClockSweepTick");
 	uint32		victim;
 
 	/*
@@ -181,7 +181,7 @@ ClockSweepTick(void)
  */
 volatile BufferDesc *
 StrategyGetBuffer(BufferAccessStrategy strategy)
-{
+{	StackTrace("StrategyGetBuffer");
 	volatile BufferDesc *buf;
 	int			bgwprocno;
 	int			trycounter;
@@ -339,7 +339,7 @@ StrategyGetBuffer(BufferAccessStrategy strategy)
  */
 void
 StrategyFreeBuffer(volatile BufferDesc *buf)
-{
+{	StackTrace("StrategyFreeBuffer");
 	SpinLockAcquire(&StrategyControl->buffer_strategy_lock);
 
 	/*
@@ -370,7 +370,7 @@ StrategyFreeBuffer(volatile BufferDesc *buf)
  */
 int
 StrategySyncStart(uint32 *complete_passes, uint32 *num_buf_alloc)
-{
+{	StackTrace("StrategySyncStart");
 	uint32		nextVictimBuffer;
 	int			result;
 
@@ -407,7 +407,7 @@ StrategySyncStart(uint32 *complete_passes, uint32 *num_buf_alloc)
  */
 void
 StrategyNotifyBgWriter(int bgwprocno)
-{
+{	StackTrace("StrategyNotifyBgWriter");
 	/*
 	 * We acquire buffer_strategy_lock just to ensure that the store appears
 	 * atomic to StrategyGetBuffer.  The bgwriter should call this rather
@@ -429,7 +429,7 @@ StrategyNotifyBgWriter(int bgwprocno)
  */
 Size
 StrategyShmemSize(void)
-{
+{	StackTrace("StrategyShmemSize");
 	Size		size = 0;
 
 	/* size of lookup hash table ... see comment in StrategyInitialize */
@@ -450,7 +450,7 @@ StrategyShmemSize(void)
  */
 void
 StrategyInitialize(bool init)
-{
+{	StackTrace("StrategyInitialize");
 	bool		found;
 
 	/*
@@ -517,7 +517,7 @@ StrategyInitialize(bool init)
  */
 BufferAccessStrategy
 GetAccessStrategy(BufferAccessStrategyType btype)
-{
+{	StackTrace("GetAccessStrategy");
 	BufferAccessStrategy strategy;
 	int			ring_size;
 
@@ -572,7 +572,7 @@ GetAccessStrategy(BufferAccessStrategyType btype)
  */
 void
 FreeAccessStrategy(BufferAccessStrategy strategy)
-{
+{	StackTrace("FreeAccessStrategy");
 	/* don't crash if called on a "default" strategy */
 	if (strategy != NULL)
 		pfree(strategy);
@@ -586,7 +586,7 @@ FreeAccessStrategy(BufferAccessStrategy strategy)
  */
 static volatile BufferDesc *
 GetBufferFromRing(BufferAccessStrategy strategy)
-{
+{	StackTrace("GetBufferFromRing");
 	volatile BufferDesc *buf;
 	Buffer		bufnum;
 
@@ -640,7 +640,7 @@ GetBufferFromRing(BufferAccessStrategy strategy)
  */
 static void
 AddBufferToRing(BufferAccessStrategy strategy, volatile BufferDesc *buf)
-{
+{	StackTrace("AddBufferToRing");
 	strategy->buffers[strategy->current] = BufferDescriptorGetBuffer(buf);
 }
 
@@ -657,7 +657,7 @@ AddBufferToRing(BufferAccessStrategy strategy, volatile BufferDesc *buf)
  */
 bool
 StrategyRejectBuffer(BufferAccessStrategy strategy, volatile BufferDesc *buf)
-{
+{	StackTrace("StrategyRejectBuffer");
 	/* We only do this in bulkread mode */
 	if (strategy->btype != BAS_BULKREAD)
 		return false;

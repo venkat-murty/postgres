@@ -110,7 +110,7 @@ static TupleDesc ExecTypeFromTLInternal(List *targetList,
  */
 TupleTableSlot *
 MakeTupleTableSlot(void)
-{
+{	StackTrace("MakeTupleTableSlot");
 	TupleTableSlot *slot = makeNode(TupleTableSlot);
 
 	slot->tts_isempty = true;
@@ -136,7 +136,7 @@ MakeTupleTableSlot(void)
  */
 TupleTableSlot *
 ExecAllocTableSlot(List **tupleTable)
-{
+{	StackTrace("ExecAllocTableSlot");
 	TupleTableSlot *slot = MakeTupleTableSlot();
 
 	*tupleTable = lappend(*tupleTable, slot);
@@ -201,7 +201,7 @@ ExecResetTupleTable(List *tupleTable,	/* tuple table */
  */
 TupleTableSlot *
 MakeSingleTupleTableSlot(TupleDesc tupdesc)
-{
+{	StackTrace("MakeSingleTupleTableSlot");
 	TupleTableSlot *slot = MakeTupleTableSlot();
 
 	ExecSetSlotDescriptor(slot, tupdesc);
@@ -218,7 +218,7 @@ MakeSingleTupleTableSlot(TupleDesc tupdesc)
  */
 void
 ExecDropSingleTupleTableSlot(TupleTableSlot *slot)
-{
+{	StackTrace("ExecDropSingleTupleTableSlot");
 	/* This should match ExecResetTupleTable's processing of one slot */
 	Assert(IsA(slot, TupleTableSlot));
 	ExecClearTuple(slot);
@@ -325,7 +325,7 @@ ExecStoreTuple(HeapTuple tuple,
 			   TupleTableSlot *slot,
 			   Buffer buffer,
 			   bool shouldFree)
-{
+{	StackTrace("ExecStoreTuple");
 	/*
 	 * sanity checks
 	 */
@@ -388,7 +388,7 @@ TupleTableSlot *
 ExecStoreMinimalTuple(MinimalTuple mtup,
 					  TupleTableSlot *slot,
 					  bool shouldFree)
-{
+{	StackTrace("ExecStoreMinimalTuple");
 	/*
 	 * sanity checks
 	 */
@@ -490,7 +490,7 @@ ExecClearTuple(TupleTableSlot *slot)	/* slot in which to store tuple */
  */
 TupleTableSlot *
 ExecStoreVirtualTuple(TupleTableSlot *slot)
-{
+{	StackTrace("ExecStoreVirtualTuple");
 	/*
 	 * sanity checks
 	 */
@@ -514,7 +514,7 @@ ExecStoreVirtualTuple(TupleTableSlot *slot)
  */
 TupleTableSlot *
 ExecStoreAllNullTuple(TupleTableSlot *slot)
-{
+{	StackTrace("ExecStoreAllNullTuple");
 	/*
 	 * sanity checks
 	 */
@@ -547,7 +547,7 @@ ExecStoreAllNullTuple(TupleTableSlot *slot)
  */
 HeapTuple
 ExecCopySlotTuple(TupleTableSlot *slot)
-{
+{	StackTrace("ExecCopySlotTuple");
 	/*
 	 * sanity checks
 	 */
@@ -579,7 +579,7 @@ ExecCopySlotTuple(TupleTableSlot *slot)
  */
 MinimalTuple
 ExecCopySlotMinimalTuple(TupleTableSlot *slot)
-{
+{	StackTrace("ExecCopySlotMinimalTuple");
 	/*
 	 * sanity checks
 	 */
@@ -620,7 +620,7 @@ ExecCopySlotMinimalTuple(TupleTableSlot *slot)
  */
 HeapTuple
 ExecFetchSlotTuple(TupleTableSlot *slot)
-{
+{	StackTrace("ExecFetchSlotTuple");
 	/*
 	 * sanity checks
 	 */
@@ -654,7 +654,7 @@ ExecFetchSlotTuple(TupleTableSlot *slot)
  */
 MinimalTuple
 ExecFetchSlotMinimalTuple(TupleTableSlot *slot)
-{
+{	StackTrace("ExecFetchSlotMinimalTuple");
 	MemoryContext oldContext;
 
 	/*
@@ -700,7 +700,7 @@ ExecFetchSlotMinimalTuple(TupleTableSlot *slot)
  */
 Datum
 ExecFetchSlotTupleDatum(TupleTableSlot *slot)
-{
+{	StackTrace("ExecFetchSlotTupleDatum");
 	HeapTuple	tup;
 	TupleDesc	tupdesc;
 
@@ -727,7 +727,7 @@ ExecFetchSlotTupleDatum(TupleTableSlot *slot)
  */
 HeapTuple
 ExecMaterializeSlot(TupleTableSlot *slot)
-{
+{	StackTrace("ExecMaterializeSlot");
 	MemoryContext oldContext;
 
 	/*
@@ -797,7 +797,7 @@ ExecMaterializeSlot(TupleTableSlot *slot)
  */
 TupleTableSlot *
 ExecCopySlot(TupleTableSlot *dstslot, TupleTableSlot *srcslot)
-{
+{	StackTrace("ExecCopySlot");
 	HeapTuple	newTuple;
 	MemoryContext oldContext;
 
@@ -828,7 +828,7 @@ ExecCopySlot(TupleTableSlot *dstslot, TupleTableSlot *srcslot)
  */
 TupleTableSlot *
 ExecMakeSlotContentsReadOnly(TupleTableSlot *slot)
-{
+{	StackTrace("ExecMakeSlotContentsReadOnly");
 	/*
 	 * sanity checks
 	 */
@@ -880,7 +880,7 @@ ExecMakeSlotContentsReadOnly(TupleTableSlot *slot)
  */
 void
 ExecInitResultTupleSlot(EState *estate, PlanState *planstate)
-{
+{	StackTrace("ExecInitResultTupleSlot");
 	planstate->ps_ResultTupleSlot = ExecAllocTableSlot(&estate->es_tupleTable);
 }
 
@@ -890,7 +890,7 @@ ExecInitResultTupleSlot(EState *estate, PlanState *planstate)
  */
 void
 ExecInitScanTupleSlot(EState *estate, ScanState *scanstate)
-{
+{	StackTrace("ExecInitScanTupleSlot");
 	scanstate->ss_ScanTupleSlot = ExecAllocTableSlot(&estate->es_tupleTable);
 }
 
@@ -914,7 +914,7 @@ ExecInitExtraTupleSlot(EState *estate)
  */
 TupleTableSlot *
 ExecInitNullTupleSlot(EState *estate, TupleDesc tupType)
-{
+{	StackTrace("ExecInitNullTupleSlot");
 	TupleTableSlot *slot = ExecInitExtraTupleSlot(estate);
 
 	ExecSetSlotDescriptor(slot, tupType);
@@ -936,7 +936,7 @@ ExecInitNullTupleSlot(EState *estate, TupleDesc tupType)
  */
 TupleDesc
 ExecTypeFromTL(List *targetList, bool hasoid)
-{
+{	StackTrace("ExecTypeFromTL");
 	return ExecTypeFromTLInternal(targetList, hasoid, false);
 }
 
@@ -948,13 +948,13 @@ ExecTypeFromTL(List *targetList, bool hasoid)
  */
 TupleDesc
 ExecCleanTypeFromTL(List *targetList, bool hasoid)
-{
+{	StackTrace("ExecCleanTypeFromTL");
 	return ExecTypeFromTLInternal(targetList, hasoid, true);
 }
 
 static TupleDesc
 ExecTypeFromTLInternal(List *targetList, bool hasoid, bool skipjunk)
-{
+{	StackTrace("ExecTypeFromTLInternal");
 	TupleDesc	typeInfo;
 	ListCell   *l;
 	int			len;
@@ -995,7 +995,7 @@ ExecTypeFromTLInternal(List *targetList, bool hasoid, bool skipjunk)
  */
 TupleDesc
 ExecTypeFromExprList(List *exprList)
-{
+{	StackTrace("ExecTypeFromExprList");
 	TupleDesc	typeInfo;
 	ListCell   *lc;
 	int			cur_resno = 1;
@@ -1034,7 +1034,7 @@ ExecTypeFromExprList(List *exprList)
  */
 void
 ExecTypeSetColNames(TupleDesc typeInfo, List *namesList)
-{
+{	StackTrace("ExecTypeSetColNames");
 	bool		modified = false;
 	int			colno = 0;
 	ListCell   *lc;
@@ -1079,7 +1079,7 @@ ExecTypeSetColNames(TupleDesc typeInfo, List *namesList)
  */
 TupleDesc
 BlessTupleDesc(TupleDesc tupdesc)
-{
+{	StackTrace("BlessTupleDesc");
 	if (tupdesc->tdtypeid == RECORDOID &&
 		tupdesc->tdtypmod < 0)
 		assign_record_type_typmod(tupdesc);
@@ -1096,7 +1096,7 @@ BlessTupleDesc(TupleDesc tupdesc)
  */
 TupleTableSlot *
 TupleDescGetSlot(TupleDesc tupdesc)
-{
+{	StackTrace("TupleDescGetSlot");
 	TupleTableSlot *slot;
 
 	/* The useful work is here */
@@ -1116,7 +1116,7 @@ TupleDescGetSlot(TupleDesc tupdesc)
  */
 AttInMetadata *
 TupleDescGetAttInMetadata(TupleDesc tupdesc)
-{
+{	StackTrace("TupleDescGetAttInMetadata");
 	int			natts = tupdesc->natts;
 	int			i;
 	Oid			atttypeid;
@@ -1163,7 +1163,7 @@ TupleDescGetAttInMetadata(TupleDesc tupdesc)
  */
 HeapTuple
 BuildTupleFromCStrings(AttInMetadata *attinmeta, char **values)
-{
+{	StackTrace("BuildTupleFromCStrings");
 	TupleDesc	tupdesc = attinmeta->tupdesc;
 	int			natts = tupdesc->natts;
 	Datum	   *dvalues;
@@ -1249,7 +1249,7 @@ BuildTupleFromCStrings(AttInMetadata *attinmeta, char **values)
  */
 Datum
 HeapTupleHeaderGetDatum(HeapTupleHeader tuple)
-{
+{	StackTrace("HeapTupleHeaderGetDatum");
 	Datum		result;
 	TupleDesc	tupDesc;
 
@@ -1280,7 +1280,7 @@ HeapTupleHeaderGetDatum(HeapTupleHeader tuple)
  */
 TupOutputState *
 begin_tup_output_tupdesc(DestReceiver *dest, TupleDesc tupdesc)
-{
+{	StackTrace("begin_tup_output_tupdesc");
 	TupOutputState *tstate;
 
 	tstate = (TupOutputState *) palloc(sizeof(TupOutputState));
@@ -1298,7 +1298,7 @@ begin_tup_output_tupdesc(DestReceiver *dest, TupleDesc tupdesc)
  */
 void
 do_tup_output(TupOutputState *tstate, Datum *values, bool *isnull)
-{
+{	StackTrace("do_tup_output");
 	TupleTableSlot *slot = tstate->slot;
 	int			natts = slot->tts_tupleDescriptor->natts;
 
@@ -1326,7 +1326,7 @@ do_tup_output(TupOutputState *tstate, Datum *values, bool *isnull)
  */
 void
 do_text_output_multiline(TupOutputState *tstate, char *text)
-{
+{	StackTrace("do_text_output_multiline");
 	Datum		values[1];
 	bool		isnull[1] = {false};
 
@@ -1357,7 +1357,7 @@ do_text_output_multiline(TupOutputState *tstate, char *text)
 
 void
 end_tup_output(TupOutputState *tstate)
-{
+{	StackTrace("end_tup_output");
 	(*tstate->dest->rShutdown) (tstate->dest);
 	/* note that destroying the dest is not ours to do */
 	ExecDropSingleTupleTableSlot(tstate->slot);

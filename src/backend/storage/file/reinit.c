@@ -47,7 +47,7 @@ typedef struct
  */
 void
 ResetUnloggedRelations(int op)
-{
+{	StackTrace("ResetUnloggedRelations");
 	char		temp_path[MAXPGPATH];
 	DIR		   *spc_dir;
 	struct dirent *spc_de;
@@ -103,7 +103,7 @@ ResetUnloggedRelations(int op)
 /* Process one tablespace directory for ResetUnloggedRelations */
 static void
 ResetUnloggedRelationsInTablespaceDir(const char *tsdirname, int op)
-{
+{	StackTrace("ResetUnloggedRelationsInTablespaceDir");
 	DIR		   *ts_dir;
 	struct dirent *de;
 	char		dbspace_path[MAXPGPATH];
@@ -144,7 +144,7 @@ ResetUnloggedRelationsInTablespaceDir(const char *tsdirname, int op)
 /* Process one per-dbspace directory for ResetUnloggedRelations */
 static void
 ResetUnloggedRelationsInDbspaceDir(const char *dbspacedirname, int op)
-{
+{	StackTrace("ResetUnloggedRelationsInDbspaceDir");
 	DIR		   *dbspace_dir;
 	struct dirent *de;
 	char		rm_path[MAXPGPATH];
@@ -404,7 +404,7 @@ ResetUnloggedRelationsInDbspaceDir(const char *dbspacedirname, int op)
 static bool
 parse_filename_for_nontemp_relation(const char *name, int *oidchars,
 									ForkNumber *fork)
-{
+{	StackTrace("parse_filename_for_nontemp_relation");
 	int			pos;
 
 	/* Look for a non-empty string of digits (that isn't too long). */

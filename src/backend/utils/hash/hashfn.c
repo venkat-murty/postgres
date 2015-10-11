@@ -31,7 +31,7 @@
  */
 uint32
 string_hash(const void *key, Size keysize)
-{
+{	StackTrace("string_hash");
 	/*
 	 * If the string exceeds keysize-1 bytes, we want to hash only that many,
 	 * because when it is copied into the hash table it will be truncated at
@@ -49,7 +49,7 @@ string_hash(const void *key, Size keysize)
  */
 uint32
 tag_hash(const void *key, Size keysize)
-{
+{	StackTrace("tag_hash");
 	return DatumGetUInt32(hash_any((const unsigned char *) key,
 								   (int) keysize));
 }
@@ -61,7 +61,7 @@ tag_hash(const void *key, Size keysize)
  */
 uint32
 uint32_hash(const void *key, Size keysize)
-{
+{	StackTrace("uint32_hash");
 	Assert(keysize == sizeof(uint32));
 	return DatumGetUInt32(hash_uint32(*((const uint32 *) key)));
 }
@@ -73,7 +73,7 @@ uint32_hash(const void *key, Size keysize)
  */
 uint32
 bitmap_hash(const void *key, Size keysize)
-{
+{	StackTrace("bitmap_hash");
 	Assert(keysize == sizeof(Bitmapset *));
 	return bms_hash_value(*((const Bitmapset *const *) key));
 }
@@ -83,7 +83,7 @@ bitmap_hash(const void *key, Size keysize)
  */
 int
 bitmap_match(const void *key1, const void *key2, Size keysize)
-{
+{	StackTrace("bitmap_match");
 	Assert(keysize == sizeof(Bitmapset *));
 	return !bms_equal(*((const Bitmapset *const *) key1),
 					  *((const Bitmapset *const *) key2));

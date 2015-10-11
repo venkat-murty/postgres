@@ -110,7 +110,7 @@ static bool XidInMVCCSnapshot(TransactionId xid, Snapshot snapshot);
 static inline void
 SetHintBits(HeapTupleHeader tuple, Buffer buffer,
 			uint16 infomask, TransactionId xid)
-{
+{	StackTrace("SetHintBits");
 	if (TransactionIdIsValid(xid))
 	{
 		/* NB: xid must be known committed here! */
@@ -133,7 +133,7 @@ SetHintBits(HeapTupleHeader tuple, Buffer buffer,
 void
 HeapTupleSetHintBits(HeapTupleHeader tuple, Buffer buffer,
 					 uint16 infomask, TransactionId xid)
-{
+{	StackTrace("HeapTupleSetHintBits");
 	SetHintBits(tuple, buffer, infomask, xid);
 }
 
@@ -164,7 +164,7 @@ HeapTupleSetHintBits(HeapTupleHeader tuple, Buffer buffer,
  */
 bool
 HeapTupleSatisfiesSelf(HeapTuple htup, Snapshot snapshot, Buffer buffer)
-{
+{	StackTrace("HeapTupleSatisfiesSelf");
 	HeapTupleHeader tuple = htup->t_data;
 
 	Assert(ItemPointerIsValid(&htup->t_self));
@@ -334,7 +334,7 @@ HeapTupleSatisfiesSelf(HeapTuple htup, Snapshot snapshot, Buffer buffer)
  */
 bool
 HeapTupleSatisfiesAny(HeapTuple htup, Snapshot snapshot, Buffer buffer)
-{
+{	StackTrace("HeapTupleSatisfiesAny");
 	return true;
 }
 
@@ -355,7 +355,7 @@ HeapTupleSatisfiesAny(HeapTuple htup, Snapshot snapshot, Buffer buffer)
 bool
 HeapTupleSatisfiesToast(HeapTuple htup, Snapshot snapshot,
 						Buffer buffer)
-{
+{	StackTrace("HeapTupleSatisfiesToast");
 	HeapTupleHeader tuple = htup->t_data;
 
 	Assert(ItemPointerIsValid(&htup->t_self));
@@ -449,7 +449,7 @@ HeapTupleSatisfiesToast(HeapTuple htup, Snapshot snapshot,
 HTSU_Result
 HeapTupleSatisfiesUpdate(HeapTuple htup, CommandId curcid,
 						 Buffer buffer)
-{
+{	StackTrace("HeapTupleSatisfiesUpdate");
 	HeapTupleHeader tuple = htup->t_data;
 
 	Assert(ItemPointerIsValid(&htup->t_self));
@@ -731,7 +731,7 @@ HeapTupleSatisfiesUpdate(HeapTuple htup, CommandId curcid,
 bool
 HeapTupleSatisfiesDirty(HeapTuple htup, Snapshot snapshot,
 						Buffer buffer)
-{
+{	StackTrace("HeapTupleSatisfiesDirty");
 	HeapTupleHeader tuple = htup->t_data;
 
 	Assert(ItemPointerIsValid(&htup->t_self));
@@ -943,7 +943,7 @@ HeapTupleSatisfiesDirty(HeapTuple htup, Snapshot snapshot,
 bool
 HeapTupleSatisfiesMVCC(HeapTuple htup, Snapshot snapshot,
 					   Buffer buffer)
-{
+{	StackTrace("HeapTupleSatisfiesMVCC");
 	HeapTupleHeader tuple = htup->t_data;
 
 	Assert(ItemPointerIsValid(&htup->t_self));
@@ -1146,7 +1146,7 @@ HeapTupleSatisfiesMVCC(HeapTuple htup, Snapshot snapshot,
 HTSV_Result
 HeapTupleSatisfiesVacuum(HeapTuple htup, TransactionId OldestXmin,
 						 Buffer buffer)
-{
+{	StackTrace("HeapTupleSatisfiesVacuum");
 	HeapTupleHeader tuple = htup->t_data;
 
 	Assert(ItemPointerIsValid(&htup->t_self));
@@ -1394,7 +1394,7 @@ HeapTupleSatisfiesVacuum(HeapTuple htup, TransactionId OldestXmin,
  */
 bool
 HeapTupleIsSurelyDead(HeapTuple htup, TransactionId OldestXmin)
-{
+{	StackTrace("HeapTupleIsSurelyDead");
 	HeapTupleHeader tuple = htup->t_data;
 
 	Assert(ItemPointerIsValid(&htup->t_self));
@@ -1448,7 +1448,7 @@ HeapTupleIsSurelyDead(HeapTuple htup, TransactionId OldestXmin)
  */
 static bool
 XidInMVCCSnapshot(TransactionId xid, Snapshot snapshot)
-{
+{	StackTrace("XidInMVCCSnapshot");
 	uint32		i;
 
 	/*
@@ -1563,7 +1563,7 @@ XidInMVCCSnapshot(TransactionId xid, Snapshot snapshot)
  */
 bool
 HeapTupleHeaderIsOnlyLocked(HeapTupleHeader tuple)
-{
+{	StackTrace("HeapTupleHeaderIsOnlyLocked");
 	TransactionId xmax;
 
 	/* if there's no valid Xmax, then there's obviously no update either */
@@ -1609,7 +1609,7 @@ HeapTupleHeaderIsOnlyLocked(HeapTupleHeader tuple)
  */
 static bool
 TransactionIdInArray(TransactionId xid, TransactionId *xip, Size num)
-{
+{	StackTrace("TransactionIdInArray");
 	return bsearch(&xid, xip, num,
 				   sizeof(TransactionId), xidComparator) != NULL;
 }
@@ -1631,7 +1631,7 @@ TransactionIdInArray(TransactionId xid, TransactionId *xip, Size num)
 bool
 HeapTupleSatisfiesHistoricMVCC(HeapTuple htup, Snapshot snapshot,
 							   Buffer buffer)
-{
+{	StackTrace("HeapTupleSatisfiesHistoricMVCC");
 	HeapTupleHeader tuple = htup->t_data;
 	TransactionId xmin = HeapTupleHeaderGetXmin(tuple);
 	TransactionId xmax = HeapTupleHeaderGetRawXmax(tuple);

@@ -113,7 +113,7 @@ static void PlanCacheSysCallback(Datum arg, int cacheid, uint32 hashvalue);
  */
 void
 InitPlanCache(void)
-{
+{	StackTrace("InitPlanCache");
 	CacheRegisterRelcacheCallback(PlanCacheRelCallback, (Datum) 0);
 	CacheRegisterSyscacheCallback(PROCOID, PlanCacheFuncCallback, (Datum) 0);
 	CacheRegisterSyscacheCallback(NAMESPACEOID, PlanCacheSysCallback, (Datum) 0);
@@ -149,7 +149,7 @@ CachedPlanSource *
 CreateCachedPlan(Node *raw_parse_tree,
 				 const char *query_string,
 				 const char *commandTag)
-{
+{	StackTrace("CreateCachedPlan");
 	CachedPlanSource *plansource;
 	MemoryContext source_context;
 	MemoryContext oldcxt;
@@ -240,7 +240,7 @@ CachedPlanSource *
 CreateOneShotCachedPlan(Node *raw_parse_tree,
 						const char *query_string,
 						const char *commandTag)
-{
+{	StackTrace("CreateOneShotCachedPlan");
 	CachedPlanSource *plansource;
 
 	Assert(query_string != NULL);		/* required as of 8.4 */
@@ -333,7 +333,7 @@ CompleteCachedPlan(CachedPlanSource *plansource,
 				   void *parserSetupArg,
 				   int cursor_options,
 				   bool fixed_result)
-{
+{	StackTrace("CompleteCachedPlan");
 	MemoryContext source_context = plansource->context;
 	MemoryContext oldcxt = CurrentMemoryContext;
 
@@ -439,7 +439,7 @@ CompleteCachedPlan(CachedPlanSource *plansource,
  */
 void
 SaveCachedPlan(CachedPlanSource *plansource)
-{
+{	StackTrace("SaveCachedPlan");
 	/* Assert caller is doing things in a sane order */
 	Assert(plansource->magic == CACHEDPLANSOURCE_MAGIC);
 	Assert(plansource->is_complete);
@@ -484,7 +484,7 @@ SaveCachedPlan(CachedPlanSource *plansource)
  */
 void
 DropCachedPlan(CachedPlanSource *plansource)
-{
+{	StackTrace("DropCachedPlan");
 	Assert(plansource->magic == CACHEDPLANSOURCE_MAGIC);
 
 	/* If it's been saved, remove it from the list */
@@ -527,7 +527,7 @@ DropCachedPlan(CachedPlanSource *plansource)
  */
 static void
 ReleaseGenericPlan(CachedPlanSource *plansource)
-{
+{	StackTrace("ReleaseGenericPlan");
 	/* Be paranoid about the possibility that ReleaseCachedPlan fails */
 	if (plansource->gplan)
 	{
@@ -555,7 +555,7 @@ ReleaseGenericPlan(CachedPlanSource *plansource)
  */
 static List *
 RevalidateCachedQuery(CachedPlanSource *plansource)
-{
+{	StackTrace("RevalidateCachedQuery");
 	bool		snapshot_set;
 	Node	   *rawtree;
 	List	   *tlist;			/* transient query-tree list */
@@ -809,7 +809,7 @@ RevalidateCachedQuery(CachedPlanSource *plansource)
  */
 static bool
 CheckCachedPlan(CachedPlanSource *plansource)
-{
+{	StackTrace("CheckCachedPlan");
 	CachedPlan *plan = plansource->gplan;
 
 	/* Assert that caller checked the querytree */
@@ -887,7 +887,7 @@ CheckCachedPlan(CachedPlanSource *plansource)
 static CachedPlan *
 BuildCachedPlan(CachedPlanSource *plansource, List *qlist,
 				ParamListInfo boundParams)
-{
+{	StackTrace("BuildCachedPlan");
 	CachedPlan *plan;
 	List	   *plist;
 	bool		snapshot_set;
@@ -1016,7 +1016,7 @@ BuildCachedPlan(CachedPlanSource *plansource, List *qlist,
  */
 static bool
 choose_custom_plan(CachedPlanSource *plansource, ParamListInfo boundParams)
-{
+{	StackTrace("choose_custom_plan");
 	double		avg_custom_cost;
 
 	/* One-shot plans will always be considered custom */
@@ -1067,7 +1067,7 @@ choose_custom_plan(CachedPlanSource *plansource, ParamListInfo boundParams)
  */
 static double
 cached_plan_cost(CachedPlan *plan, bool include_planner)
-{
+{	StackTrace("cached_plan_cost");
 	double		result = 0;
 	ListCell   *lc;
 
@@ -1133,7 +1133,7 @@ cached_plan_cost(CachedPlan *plan, bool include_planner)
 CachedPlan *
 GetCachedPlan(CachedPlanSource *plansource, ParamListInfo boundParams,
 			  bool useResOwner)
-{
+{	StackTrace("GetCachedPlan");
 	CachedPlan *plan;
 	List	   *qlist;
 	bool		customplan;
@@ -1251,7 +1251,7 @@ GetCachedPlan(CachedPlanSource *plansource, ParamListInfo boundParams,
  */
 void
 ReleaseCachedPlan(CachedPlan *plan, bool useResOwner)
-{
+{	StackTrace("ReleaseCachedPlan");
 	Assert(plan->magic == CACHEDPLAN_MAGIC);
 	if (useResOwner)
 	{
@@ -1280,7 +1280,7 @@ ReleaseCachedPlan(CachedPlan *plan, bool useResOwner)
 void
 CachedPlanSetParentContext(CachedPlanSource *plansource,
 						   MemoryContext newcontext)
-{
+{	StackTrace("CachedPlanSetParentContext");
 	/* Assert caller is doing things in a sane order */
 	Assert(plansource->magic == CACHEDPLANSOURCE_MAGIC);
 	Assert(plansource->is_complete);
@@ -1317,7 +1317,7 @@ CachedPlanSetParentContext(CachedPlanSource *plansource,
  */
 CachedPlanSource *
 CopyCachedPlan(CachedPlanSource *plansource)
-{
+{	StackTrace("CopyCachedPlan");
 	CachedPlanSource *newsource;
 	MemoryContext source_context;
 	MemoryContext querytree_context;
@@ -1408,7 +1408,7 @@ CopyCachedPlan(CachedPlanSource *plansource)
  */
 bool
 CachedPlanIsValid(CachedPlanSource *plansource)
-{
+{	StackTrace("CachedPlanIsValid");
 	Assert(plansource->magic == CACHEDPLANSOURCE_MAGIC);
 	return plansource->is_valid;
 }
@@ -1421,7 +1421,7 @@ CachedPlanIsValid(CachedPlanSource *plansource)
  */
 List *
 CachedPlanGetTargetList(CachedPlanSource *plansource)
-{
+{	StackTrace("CachedPlanGetTargetList");
 	Node	   *pstmt;
 
 	/* Assert caller is doing things in a sane order */
@@ -1450,7 +1450,7 @@ CachedPlanGetTargetList(CachedPlanSource *plansource)
  */
 static void
 AcquireExecutorLocks(List *stmt_list, bool acquire)
-{
+{	StackTrace("AcquireExecutorLocks");
 	ListCell   *lc1;
 
 	foreach(lc1, stmt_list)
@@ -1520,7 +1520,7 @@ AcquireExecutorLocks(List *stmt_list, bool acquire)
  */
 static void
 AcquirePlannerLocks(List *stmt_list, bool acquire)
-{
+{	StackTrace("AcquirePlannerLocks");
 	ListCell   *lc;
 
 	foreach(lc, stmt_list)
@@ -1547,7 +1547,7 @@ AcquirePlannerLocks(List *stmt_list, bool acquire)
  */
 static void
 ScanQueryForLocks(Query *parsetree, bool acquire)
-{
+{	StackTrace("ScanQueryForLocks");
 	ListCell   *lc;
 	int			rt_index;
 
@@ -1616,7 +1616,7 @@ ScanQueryForLocks(Query *parsetree, bool acquire)
  */
 static bool
 ScanQueryWalker(Node *node, bool *acquire)
-{
+{	StackTrace("ScanQueryWalker");
 	if (node == NULL)
 		return false;
 	if (IsA(node, SubLink))
@@ -1641,7 +1641,7 @@ ScanQueryWalker(Node *node, bool *acquire)
  */
 static bool
 plan_list_is_transient(List *stmt_list)
-{
+{	StackTrace("plan_list_is_transient");
 	ListCell   *lc;
 
 	foreach(lc, stmt_list)
@@ -1667,7 +1667,7 @@ plan_list_is_transient(List *stmt_list)
  */
 static TupleDesc
 PlanCacheComputeResultDesc(List *stmt_list)
-{
+{	StackTrace("PlanCacheComputeResultDesc");
 	Query	   *query;
 
 	switch (ChoosePortalStrategy(stmt_list))
@@ -1706,7 +1706,7 @@ PlanCacheComputeResultDesc(List *stmt_list)
  */
 static void
 PlanCacheRelCallback(Datum arg, Oid relid)
-{
+{	StackTrace("PlanCacheRelCallback");
 	CachedPlanSource *plansource;
 
 	for (plansource = first_saved_plan; plansource; plansource = plansource->next_saved)
@@ -1772,7 +1772,7 @@ PlanCacheRelCallback(Datum arg, Oid relid)
  */
 static void
 PlanCacheFuncCallback(Datum arg, int cacheid, uint32 hashvalue)
-{
+{	StackTrace("PlanCacheFuncCallback");
 	CachedPlanSource *plansource;
 
 	for (plansource = first_saved_plan; plansource; plansource = plansource->next_saved)
@@ -1852,7 +1852,7 @@ PlanCacheFuncCallback(Datum arg, int cacheid, uint32 hashvalue)
  */
 static void
 PlanCacheSysCallback(Datum arg, int cacheid, uint32 hashvalue)
-{
+{	StackTrace("PlanCacheSysCallback");
 	ResetPlanCache();
 }
 
@@ -1861,7 +1861,7 @@ PlanCacheSysCallback(Datum arg, int cacheid, uint32 hashvalue)
  */
 void
 ResetPlanCache(void)
-{
+{	StackTrace("ResetPlanCache");
 	CachedPlanSource *plansource;
 
 	for (plansource = first_saved_plan; plansource; plansource = plansource->next_saved)

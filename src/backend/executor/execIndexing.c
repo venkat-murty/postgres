@@ -147,7 +147,7 @@ static bool index_recheck_constraint(Relation index, Oid *constr_procs,
  */
 void
 ExecOpenIndices(ResultRelInfo *resultRelInfo, bool speculative)
-{
+{	StackTrace("ExecOpenIndices");
 	Relation	resultRelation = resultRelInfo->ri_RelationDesc;
 	List	   *indexoidlist;
 	ListCell   *l;
@@ -222,7 +222,7 @@ ExecOpenIndices(ResultRelInfo *resultRelInfo, bool speculative)
  */
 void
 ExecCloseIndices(ResultRelInfo *resultRelInfo)
-{
+{	StackTrace("ExecCloseIndices");
 	int			i;
 	int			numIndices;
 	RelationPtr indexDescs;
@@ -271,7 +271,7 @@ ExecInsertIndexTuples(TupleTableSlot *slot,
 					  bool noDupErr,
 					  bool *specConflict,
 					  List *arbiterIndexes)
-{
+{	StackTrace("ExecInsertIndexTuples");
 	List	   *result = NIL;
 	ResultRelInfo *resultRelInfo;
 	int			i;
@@ -471,7 +471,7 @@ bool
 ExecCheckIndexConstraints(TupleTableSlot *slot,
 						  EState *estate, ItemPointer conflictTid,
 						  List *arbiterIndexes)
-{
+{	StackTrace("ExecCheckIndexConstraints");
 	ResultRelInfo *resultRelInfo;
 	int			i;
 	int			numIndices;
@@ -642,7 +642,7 @@ check_exclusion_or_unique_constraint(Relation heap, Relation index,
 									 CEOUC_WAIT_MODE waitMode,
 									 bool violationOK,
 									 ItemPointer conflictTid)
-{
+{	StackTrace("check_exclusion_or_unique_constraint");
 	Oid		   *constr_procs;
 	uint16	   *constr_strats;
 	Oid		   *index_collations = index->rd_indcollation;
@@ -861,7 +861,7 @@ check_exclusion_constraint(Relation heap, Relation index,
 						   ItemPointer tupleid,
 						   Datum *values, bool *isnull,
 						   EState *estate, bool newIndex)
-{
+{	StackTrace("check_exclusion_constraint");
 	(void) check_exclusion_or_unique_constraint(heap, index, indexInfo, tupleid,
 												values, isnull,
 												estate, newIndex,
@@ -876,7 +876,7 @@ static bool
 index_recheck_constraint(Relation index, Oid *constr_procs,
 						 Datum *existing_values, bool *existing_isnull,
 						 Datum *new_values)
-{
+{	StackTrace("index_recheck_constraint");
 	int			index_natts = index->rd_index->indnatts;
 	int			i;
 

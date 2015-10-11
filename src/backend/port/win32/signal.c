@@ -50,7 +50,7 @@ static BOOL WINAPI pg_console_handler(DWORD dwCtrlType);
  */
 void
 pg_usleep(long microsec)
-{
+{	StackTrace("pg_usleep");
 	if (WaitForSingleObject(pgwin32_signal_event,
 							(microsec < 500 ? 1 : (microsec + 500) / 1000))
 		== WAIT_OBJECT_0)
@@ -65,7 +65,7 @@ pg_usleep(long microsec)
 /* Initialization */
 void
 pgwin32_signal_initialize(void)
-{
+{	StackTrace("pgwin32_signal_initialize");
 	int			i;
 	HANDLE		signal_thread_handle;
 
@@ -104,7 +104,7 @@ pgwin32_signal_initialize(void)
  */
 void
 pgwin32_dispatch_queued_signals(void)
-{
+{	StackTrace("pgwin32_dispatch_queued_signals");
 	int			i;
 
 	EnterCriticalSection(&pg_signal_crit_sec);
@@ -142,7 +142,7 @@ pgwin32_dispatch_queued_signals(void)
 /* signal masking. Only called on main thread, no sync required */
 int
 pqsigsetmask(int mask)
-{
+{	StackTrace("pqsigsetmask");
 	int			prevmask;
 
 	prevmask = pg_signal_mask;
@@ -165,7 +165,7 @@ pqsigsetmask(int mask)
  */
 pqsigfunc
 pqsignal(int signum, pqsigfunc handler)
-{
+{	StackTrace("pqsignal");
 	pqsigfunc	prevfunc;
 
 	if (signum >= PG_SIGNAL_COUNT || signum < 0)
@@ -178,7 +178,7 @@ pqsignal(int signum, pqsigfunc handler)
 /* Create the signal listener pipe for specified PID */
 HANDLE
 pgwin32_create_signal_listener(pid_t pid)
-{
+{	StackTrace("pgwin32_create_signal_listener");
 	char		pipename[128];
 	HANDLE		pipe;
 
@@ -207,7 +207,7 @@ pgwin32_create_signal_listener(pid_t pid)
 
 void
 pg_queue_signal(int signum)
-{
+{	StackTrace("pg_queue_signal");
 	if (signum >= PG_SIGNAL_COUNT || signum <= 0)
 		return;
 
@@ -221,7 +221,7 @@ pg_queue_signal(int signum)
 /* Signal dispatching thread */
 static DWORD WINAPI
 pg_signal_dispatch_thread(LPVOID param)
-{
+{	StackTrace("pg_signal_dispatch_thread");
 	HANDLE		pipe = (HANDLE) param;
 	BYTE		sigNum;
 	DWORD		bytes;
@@ -251,7 +251,7 @@ pg_signal_dispatch_thread(LPVOID param)
 /* Signal handling thread */
 static DWORD WINAPI
 pg_signal_thread(LPVOID param)
-{
+{	StackTrace("pg_signal_thread");
 	char		pipename[128];
 	HANDLE		pipe = pgwin32_initial_signal_pipe;
 
@@ -345,7 +345,7 @@ pg_signal_thread(LPVOID param)
    by the OS at the time of invocation */
 static BOOL WINAPI
 pg_console_handler(DWORD dwCtrlType)
-{
+{	StackTrace("pg_console_handler");
 	if (dwCtrlType == CTRL_C_EVENT ||
 		dwCtrlType == CTRL_BREAK_EVENT ||
 		dwCtrlType == CTRL_CLOSE_EVENT ||

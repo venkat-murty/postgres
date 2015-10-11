@@ -194,7 +194,7 @@ static BlockNumber _mdnblocks(SMgrRelation reln, ForkNumber forknum,
  */
 void
 mdinit(void)
-{
+{	StackTrace("mdinit");
 	MdCxt = AllocSetContextCreate(TopMemoryContext,
 								  "MdSmgr",
 								  ALLOCSET_DEFAULT_MINSIZE,
@@ -246,7 +246,7 @@ mdinit(void)
  */
 void
 SetForwardFsyncRequests(void)
-{
+{	StackTrace("SetForwardFsyncRequests");
 	/* Perform any pending fsyncs we may have queued up, then drop table */
 	if (pendingOpsTable)
 	{
@@ -269,7 +269,7 @@ SetForwardFsyncRequests(void)
  */
 bool
 mdexists(SMgrRelation reln, ForkNumber forkNum)
-{
+{	StackTrace("mdexists");
 	/*
 	 * Close it first, to ensure that we notice if the fork has been unlinked
 	 * since we opened it.
@@ -286,7 +286,7 @@ mdexists(SMgrRelation reln, ForkNumber forkNum)
  */
 void
 mdcreate(SMgrRelation reln, ForkNumber forkNum, bool isRedo)
-{
+{	StackTrace("mdcreate");
 	char	   *path;
 	File		fd;
 
@@ -379,7 +379,7 @@ mdcreate(SMgrRelation reln, ForkNumber forkNum, bool isRedo)
  */
 void
 mdunlink(RelFileNodeBackend rnode, ForkNumber forkNum, bool isRedo)
-{
+{	StackTrace("mdunlink");
 	/*
 	 * We have to clean out any pending fsync requests for the doomed
 	 * relation, else the next mdsync() will fail.  There can't be any such
@@ -402,7 +402,7 @@ mdunlink(RelFileNodeBackend rnode, ForkNumber forkNum, bool isRedo)
 
 static void
 mdunlinkfork(RelFileNodeBackend rnode, ForkNumber forkNum, bool isRedo)
-{
+{	StackTrace("mdunlinkfork");
 	char	   *path;
 	int			ret;
 
@@ -488,7 +488,7 @@ mdunlinkfork(RelFileNodeBackend rnode, ForkNumber forkNum, bool isRedo)
 void
 mdextend(SMgrRelation reln, ForkNumber forknum, BlockNumber blocknum,
 		 char *buffer, bool skipFsync)
-{
+{	StackTrace("mdextend");
 	off_t		seekpos;
 	int			nbytes;
 	MdfdVec    *v;
@@ -566,7 +566,7 @@ mdextend(SMgrRelation reln, ForkNumber forknum, BlockNumber blocknum,
  */
 static MdfdVec *
 mdopen(SMgrRelation reln, ForkNumber forknum, ExtensionBehavior behavior)
-{
+{	StackTrace("mdopen");
 	MdfdVec    *mdfd;
 	char	   *path;
 	File		fd;
@@ -620,7 +620,7 @@ mdopen(SMgrRelation reln, ForkNumber forknum, ExtensionBehavior behavior)
  */
 void
 mdclose(SMgrRelation reln, ForkNumber forknum)
-{
+{	StackTrace("mdclose");
 	MdfdVec    *v = reln->md_fd[forknum];
 
 	/* No work if already closed */
@@ -647,7 +647,7 @@ mdclose(SMgrRelation reln, ForkNumber forknum)
  */
 void
 mdprefetch(SMgrRelation reln, ForkNumber forknum, BlockNumber blocknum)
-{
+{	StackTrace("mdprefetch");
 #ifdef USE_PREFETCH
 	off_t		seekpos;
 	MdfdVec    *v;
@@ -669,7 +669,7 @@ mdprefetch(SMgrRelation reln, ForkNumber forknum, BlockNumber blocknum)
 void
 mdread(SMgrRelation reln, ForkNumber forknum, BlockNumber blocknum,
 	   char *buffer)
-{
+{	StackTrace("mdread");
 	off_t		seekpos;
 	int			nbytes;
 	MdfdVec    *v;
@@ -739,7 +739,7 @@ mdread(SMgrRelation reln, ForkNumber forknum, BlockNumber blocknum,
 void
 mdwrite(SMgrRelation reln, ForkNumber forknum, BlockNumber blocknum,
 		char *buffer, bool skipFsync)
-{
+{	StackTrace("mdwrite");
 	off_t		seekpos;
 	int			nbytes;
 	MdfdVec    *v;
@@ -808,7 +808,7 @@ mdwrite(SMgrRelation reln, ForkNumber forknum, BlockNumber blocknum,
  */
 BlockNumber
 mdnblocks(SMgrRelation reln, ForkNumber forknum)
-{
+{	StackTrace("mdnblocks");
 	MdfdVec    *v = mdopen(reln, forknum, EXTENSION_FAIL);
 	BlockNumber nblocks;
 	BlockNumber segno = 0;
@@ -870,7 +870,7 @@ mdnblocks(SMgrRelation reln, ForkNumber forknum)
  */
 void
 mdtruncate(SMgrRelation reln, ForkNumber forknum, BlockNumber nblocks)
-{
+{	StackTrace("mdtruncate");
 	MdfdVec    *v;
 	BlockNumber curnblk;
 	BlockNumber priorblocks;
@@ -963,7 +963,7 @@ mdtruncate(SMgrRelation reln, ForkNumber forknum, BlockNumber nblocks)
  */
 void
 mdimmedsync(SMgrRelation reln, ForkNumber forknum)
-{
+{	StackTrace("mdimmedsync");
 	MdfdVec    *v;
 
 	/*
@@ -990,7 +990,7 @@ mdimmedsync(SMgrRelation reln, ForkNumber forknum)
  */
 void
 mdsync(void)
-{
+{	StackTrace("mdsync");
 	static bool mdsync_in_progress = false;
 
 	HASH_SEQ_STATUS hstat;
@@ -1280,7 +1280,7 @@ mdsync(void)
  */
 void
 mdpreckpt(void)
-{
+{	StackTrace("mdpreckpt");
 	/*
 	 * Any unlink requests arriving after this point will be assigned the next
 	 * cycle counter, and won't be unlinked until next checkpoint.
@@ -1295,7 +1295,7 @@ mdpreckpt(void)
  */
 void
 mdpostckpt(void)
-{
+{	StackTrace("mdpostckpt");
 	int			absorb_counter;
 
 	absorb_counter = UNLINKS_PER_ABSORB;
@@ -1363,7 +1363,7 @@ mdpostckpt(void)
  */
 static void
 register_dirty_segment(SMgrRelation reln, ForkNumber forknum, MdfdVec *seg)
-{
+{	StackTrace("register_dirty_segment");
 	/* Temp relations should never be fsync'd */
 	Assert(!SmgrIsTemp(reln));
 
@@ -1399,7 +1399,7 @@ register_dirty_segment(SMgrRelation reln, ForkNumber forknum, MdfdVec *seg)
  */
 static void
 register_unlink(RelFileNodeBackend rnode)
-{
+{	StackTrace("register_unlink");
 	/* Should never be used with temp relations */
 	Assert(!RelFileNodeBackendIsTemp(rnode));
 
@@ -1448,7 +1448,7 @@ register_unlink(RelFileNodeBackend rnode)
  */
 void
 RememberFsyncRequest(RelFileNode rnode, ForkNumber forknum, BlockNumber segno)
-{
+{	StackTrace("RememberFsyncRequest");
 	Assert(pendingOpsTable);
 
 	if (segno == FORGET_RELATION_FSYNC)
@@ -1586,7 +1586,7 @@ RememberFsyncRequest(RelFileNode rnode, ForkNumber forknum, BlockNumber segno)
  */
 void
 ForgetRelationFsyncRequests(RelFileNode rnode, ForkNumber forknum)
-{
+{	StackTrace("ForgetRelationFsyncRequests");
 	if (pendingOpsTable)
 	{
 		/* standalone backend or startup process: fsync state is local */
@@ -1619,7 +1619,7 @@ ForgetRelationFsyncRequests(RelFileNode rnode, ForkNumber forknum)
  */
 void
 ForgetDatabaseFsyncRequests(Oid dbid)
-{
+{	StackTrace("ForgetDatabaseFsyncRequests");
 	RelFileNode rnode;
 
 	rnode.dbNode = dbid;
@@ -1646,7 +1646,7 @@ ForgetDatabaseFsyncRequests(Oid dbid)
  */
 static MdfdVec *
 _fdvec_alloc(void)
-{
+{	StackTrace("_fdvec_alloc");
 	return (MdfdVec *) MemoryContextAlloc(MdCxt, sizeof(MdfdVec));
 }
 
@@ -1656,7 +1656,7 @@ _fdvec_alloc(void)
  */
 static char *
 _mdfd_segpath(SMgrRelation reln, ForkNumber forknum, BlockNumber segno)
-{
+{	StackTrace("_mdfd_segpath");
 	char	   *path,
 			   *fullpath;
 
@@ -1680,7 +1680,7 @@ _mdfd_segpath(SMgrRelation reln, ForkNumber forknum, BlockNumber segno)
 static MdfdVec *
 _mdfd_openseg(SMgrRelation reln, ForkNumber forknum, BlockNumber segno,
 			  int oflags)
-{
+{	StackTrace("_mdfd_openseg");
 	MdfdVec    *v;
 	int			fd;
 	char	   *fullpath;
@@ -1719,7 +1719,7 @@ _mdfd_openseg(SMgrRelation reln, ForkNumber forknum, BlockNumber segno,
 static MdfdVec *
 _mdfd_getseg(SMgrRelation reln, ForkNumber forknum, BlockNumber blkno,
 			 bool skipFsync, ExtensionBehavior behavior)
-{
+{	StackTrace("_mdfd_getseg");
 	MdfdVec    *v = mdopen(reln, forknum, behavior);
 	BlockNumber targetseg;
 	BlockNumber nextsegno;
@@ -1788,7 +1788,7 @@ _mdfd_getseg(SMgrRelation reln, ForkNumber forknum, BlockNumber blkno,
  */
 static BlockNumber
 _mdnblocks(SMgrRelation reln, ForkNumber forknum, MdfdVec *seg)
-{
+{	StackTrace("_mdnblocks");
 	off_t		len;
 
 	len = FileSeek(seg->mdfd_vfd, 0L, SEEK_END);

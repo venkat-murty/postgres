@@ -23,7 +23,7 @@
 
 Datum
 ginbeginscan(PG_FUNCTION_ARGS)
-{
+{	StackTrace("ginbeginscan");
 	Relation	rel = (Relation) PG_GETARG_POINTER(0);
 	int			nkeys = PG_GETARG_INT32(1);
 	int			norderbys = PG_GETARG_INT32(2);
@@ -65,7 +65,7 @@ ginFillScanEntry(GinScanOpaque so, OffsetNumber attnum,
 				 StrategyNumber strategy, int32 searchMode,
 				 Datum queryKey, GinNullCategory queryCategory,
 				 bool isPartialMatch, Pointer extra_data)
-{
+{	StackTrace("ginFillScanEntry");
 	GinState   *ginstate = &so->ginstate;
 	GinScanEntry scanEntry;
 	uint32		i;
@@ -141,7 +141,7 @@ ginFillScanKey(GinScanOpaque so, OffsetNumber attnum,
 			   Datum query, uint32 nQueryValues,
 			   Datum *queryValues, GinNullCategory *queryCategories,
 			   bool *partial_matches, Pointer *extra_data)
-{
+{	StackTrace("ginFillScanKey");
 	GinScanKey	key = &(so->keys[so->nkeys++]);
 	GinState   *ginstate = &so->ginstate;
 	uint32		nUserQueryValues = nQueryValues;
@@ -237,7 +237,7 @@ ginFillScanKey(GinScanOpaque so, OffsetNumber attnum,
  */
 void
 ginFreeScanKeys(GinScanOpaque so)
-{
+{	StackTrace("ginFreeScanKeys");
 	uint32		i;
 
 	if (so->keys == NULL)
@@ -265,7 +265,7 @@ ginFreeScanKeys(GinScanOpaque so)
 
 void
 ginNewScanKey(IndexScanDesc scan)
-{
+{	StackTrace("ginNewScanKey");
 	ScanKey		scankey = scan->keyData;
 	GinScanOpaque so = (GinScanOpaque) scan->opaque;
 	int			i;
@@ -419,7 +419,7 @@ ginNewScanKey(IndexScanDesc scan)
 
 Datum
 ginrescan(PG_FUNCTION_ARGS)
-{
+{	StackTrace("ginrescan");
 	IndexScanDesc scan = (IndexScanDesc) PG_GETARG_POINTER(0);
 	ScanKey		scankey = (ScanKey) PG_GETARG_POINTER(1);
 
@@ -440,7 +440,7 @@ ginrescan(PG_FUNCTION_ARGS)
 
 Datum
 ginendscan(PG_FUNCTION_ARGS)
-{
+{	StackTrace("ginendscan");
 	IndexScanDesc scan = (IndexScanDesc) PG_GETARG_POINTER(0);
 	GinScanOpaque so = (GinScanOpaque) scan->opaque;
 
@@ -456,14 +456,14 @@ ginendscan(PG_FUNCTION_ARGS)
 
 Datum
 ginmarkpos(PG_FUNCTION_ARGS)
-{
+{	StackTrace("ginmarkpos");
 	elog(ERROR, "GIN does not support mark/restore");
 	PG_RETURN_VOID();
 }
 
 Datum
 ginrestrpos(PG_FUNCTION_ARGS)
-{
+{	StackTrace("ginrestrpos");
 	elog(ERROR, "GIN does not support mark/restore");
 	PG_RETURN_VOID();
 }

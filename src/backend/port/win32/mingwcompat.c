@@ -35,7 +35,7 @@ static HMODULE kernel32 = NULL;
  */
 static void
 LoadKernel32()
-{
+{	StackTrace("LoadKernel32");
 	if (kernel32 != NULL)
 		return;
 
@@ -63,7 +63,7 @@ RegisterWaitForSingleObject(PHANDLE phNewWaitObject,
 							PVOID Context,
 							ULONG dwMilliseconds,
 							ULONG dwFlags)
-{
+{	StackTrace("RegisterWaitForSingleObject");
 	if (_RegisterWaitForSingleObject == NULL)
 	{
 		LoadKernel32();

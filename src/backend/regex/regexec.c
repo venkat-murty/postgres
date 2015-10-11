@@ -172,7 +172,7 @@ pg_regexec(regex_t *re,
 		   size_t nmatch,
 		   regmatch_t pmatch[],
 		   int flags)
-{
+{	StackTrace("pg_regexec");
 	struct vars var;
 	register struct vars *v = &var;
 	int			st;
@@ -280,7 +280,7 @@ pg_regexec(regex_t *re,
 static struct dfa *
 getsubdfa(struct vars * v,
 		  struct subre * t)
-{
+{	StackTrace("getsubdfa");
 	if (v->subdfas[t->id] == NULL)
 	{
 		v->subdfas[t->id] = newdfa(v, &t->cnfa, &v->g->cmap, DOMALLOC);
@@ -297,7 +297,7 @@ static int
 find(struct vars * v,
 	 struct cnfa * cnfa,
 	 struct colormap * cm)
-{
+{	StackTrace("find");
 	struct dfa *s;
 	struct dfa *d;
 	chr		   *begin;
@@ -384,7 +384,7 @@ static int
 cfind(struct vars * v,
 	  struct cnfa * cnfa,
 	  struct colormap * cm)
-{
+{	StackTrace("cfind");
 	struct dfa *s;
 	struct dfa *d;
 	chr		   *cold;
@@ -515,7 +515,7 @@ cfindloop(struct vars * v,
 static void
 zapallsubs(regmatch_t *p,
 		   size_t n)
-{
+{	StackTrace("zapallsubs");
 	size_t		i;
 
 	for (i = n - 1; i > 0; i--)
@@ -531,7 +531,7 @@ zapallsubs(regmatch_t *p,
 static void
 zaptreesubs(struct vars * v,
 			struct subre * t)
-{
+{	StackTrace("zaptreesubs");
 	if (t->op == '(')
 	{
 		int			n = t->subno;
@@ -558,7 +558,7 @@ subset(struct vars * v,
 	   struct subre * sub,
 	   chr *begin,
 	   chr *end)
-{
+{	StackTrace("subset");
 	int			n = sub->subno;
 
 	assert(n > 0);

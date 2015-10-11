@@ -76,7 +76,7 @@ static PendingRelDelete *pendingDeletes = NULL; /* head of linked list */
  */
 void
 RelationCreateStorage(RelFileNode rnode, char relpersistence)
-{
+{	StackTrace("RelationCreateStorage");
 	PendingRelDelete *pending;
 	SMgrRelation srel;
 	BackendId	backend;
@@ -123,7 +123,7 @@ RelationCreateStorage(RelFileNode rnode, char relpersistence)
  */
 void
 log_smgrcreate(RelFileNode *rnode, ForkNumber forkNum)
-{
+{	StackTrace("log_smgrcreate");
 	xl_smgr_create xlrec;
 
 	/*
@@ -143,7 +143,7 @@ log_smgrcreate(RelFileNode *rnode, ForkNumber forkNum)
  */
 void
 RelationDropStorage(Relation rel)
-{
+{	StackTrace("RelationDropStorage");
 	PendingRelDelete *pending;
 
 	/* Add the relation to the list of stuff to delete at commit */
@@ -188,7 +188,7 @@ RelationDropStorage(Relation rel)
  */
 void
 RelationPreserveStorage(RelFileNode rnode, bool atCommit)
-{
+{	StackTrace("RelationPreserveStorage");
 	PendingRelDelete *pending;
 	PendingRelDelete *prev;
 	PendingRelDelete *next;
@@ -225,7 +225,7 @@ RelationPreserveStorage(RelFileNode rnode, bool atCommit)
  */
 void
 RelationTruncate(Relation rel, BlockNumber nblocks)
-{
+{	StackTrace("RelationTruncate");
 	bool		fsm;
 	bool		vm;
 
@@ -303,7 +303,7 @@ RelationTruncate(Relation rel, BlockNumber nblocks)
  */
 void
 smgrDoPendingDeletes(bool isCommit)
-{
+{	StackTrace("smgrDoPendingDeletes");
 	int			nestLevel = GetCurrentTransactionNestLevel();
 	PendingRelDelete *pending;
 	PendingRelDelete *prev;
@@ -386,7 +386,7 @@ smgrDoPendingDeletes(bool isCommit)
  */
 int
 smgrGetPendingDeletes(bool forCommit, RelFileNode **ptr)
-{
+{	StackTrace("smgrGetPendingDeletes");
 	int			nestLevel = GetCurrentTransactionNestLevel();
 	int			nrels;
 	RelFileNode *rptr;
@@ -427,7 +427,7 @@ smgrGetPendingDeletes(bool forCommit, RelFileNode **ptr)
  */
 void
 PostPrepare_smgr(void)
-{
+{	StackTrace("PostPrepare_smgr");
 	PendingRelDelete *pending;
 	PendingRelDelete *next;
 
@@ -448,7 +448,7 @@ PostPrepare_smgr(void)
  */
 void
 AtSubCommit_smgr(void)
-{
+{	StackTrace("AtSubCommit_smgr");
 	int			nestLevel = GetCurrentTransactionNestLevel();
 	PendingRelDelete *pending;
 
@@ -468,13 +468,13 @@ AtSubCommit_smgr(void)
  */
 void
 AtSubAbort_smgr(void)
-{
+{	StackTrace("AtSubAbort_smgr");
 	smgrDoPendingDeletes(false);
 }
 
 void
 smgr_redo(XLogReaderState *record)
-{
+{	StackTrace("smgr_redo");
 	XLogRecPtr	lsn = record->EndRecPtr;
 	uint8		info = XLogRecGetInfo(record) & ~XLR_INFO_MASK;
 

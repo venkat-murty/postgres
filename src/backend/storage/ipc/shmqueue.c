@@ -34,7 +34,7 @@
  */
 void
 SHMQueueInit(SHM_QUEUE *queue)
-{
+{	StackTrace("SHMQueueInit");
 	Assert(ShmemAddrIsValid(queue));
 	queue->prev = queue->next = queue;
 }
@@ -45,7 +45,7 @@ SHMQueueInit(SHM_QUEUE *queue)
  */
 bool
 SHMQueueIsDetached(const SHM_QUEUE *queue)
-{
+{	StackTrace("SHMQueueIsDetached");
 	Assert(ShmemAddrIsValid(queue));
 	return (queue->prev == NULL);
 }
@@ -55,7 +55,7 @@ SHMQueueIsDetached(const SHM_QUEUE *queue)
  */
 void
 SHMQueueElemInit(SHM_QUEUE *queue)
-{
+{	StackTrace("SHMQueueElemInit");
 	Assert(ShmemAddrIsValid(queue));
 	queue->prev = queue->next = NULL;
 }
@@ -66,7 +66,7 @@ SHMQueueElemInit(SHM_QUEUE *queue)
  */
 void
 SHMQueueDelete(SHM_QUEUE *queue)
-{
+{	StackTrace("SHMQueueDelete");
 	SHM_QUEUE  *nextElem = queue->next;
 	SHM_QUEUE  *prevElem = queue->prev;
 
@@ -87,7 +87,7 @@ SHMQueueDelete(SHM_QUEUE *queue)
  */
 void
 SHMQueueInsertBefore(SHM_QUEUE *queue, SHM_QUEUE *elem)
-{
+{	StackTrace("SHMQueueInsertBefore");
 	SHM_QUEUE  *prevPtr = queue->prev;
 
 	Assert(ShmemAddrIsValid(queue));
@@ -106,7 +106,7 @@ SHMQueueInsertBefore(SHM_QUEUE *queue, SHM_QUEUE *elem)
  */
 void
 SHMQueueInsertAfter(SHM_QUEUE *queue, SHM_QUEUE *elem)
-{
+{	StackTrace("SHMQueueInsertAfter");
 	SHM_QUEUE  *nextPtr = queue->next;
 
 	Assert(ShmemAddrIsValid(queue));
@@ -143,7 +143,7 @@ SHMQueueInsertAfter(SHM_QUEUE *queue, SHM_QUEUE *elem)
  */
 Pointer
 SHMQueueNext(const SHM_QUEUE *queue, const SHM_QUEUE *curElem, Size linkOffset)
-{
+{	StackTrace("SHMQueueNext");
 	SHM_QUEUE  *elemPtr = curElem->next;
 
 	Assert(ShmemAddrIsValid(curElem));
@@ -162,7 +162,7 @@ SHMQueueNext(const SHM_QUEUE *queue, const SHM_QUEUE *curElem, Size linkOffset)
  */
 Pointer
 SHMQueuePrev(const SHM_QUEUE *queue, const SHM_QUEUE *curElem, Size linkOffset)
-{
+{	StackTrace("SHMQueuePrev");
 	SHM_QUEUE  *elemPtr = curElem->prev;
 
 	Assert(ShmemAddrIsValid(curElem));
@@ -178,7 +178,7 @@ SHMQueuePrev(const SHM_QUEUE *queue, const SHM_QUEUE *curElem, Size linkOffset)
  */
 bool
 SHMQueueEmpty(const SHM_QUEUE *queue)
-{
+{	StackTrace("SHMQueueEmpty");
 	Assert(ShmemAddrIsValid(queue));
 
 	if (queue->prev == queue)

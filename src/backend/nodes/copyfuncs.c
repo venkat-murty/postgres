@@ -74,7 +74,7 @@
  */
 static PlannedStmt *
 _copyPlannedStmt(const PlannedStmt *from)
-{
+{	StackTrace("_copyPlannedStmt");
 	PlannedStmt *newnode = makeNode(PlannedStmt);
 
 	COPY_SCALAR_FIELD(commandType);
@@ -106,7 +106,7 @@ _copyPlannedStmt(const PlannedStmt *from)
  */
 static void
 CopyPlanFields(const Plan *from, Plan *newnode)
-{
+{	StackTrace("CopyPlanFields");
 	COPY_SCALAR_FIELD(startup_cost);
 	COPY_SCALAR_FIELD(total_cost);
 	COPY_SCALAR_FIELD(plan_rows);
@@ -125,7 +125,7 @@ CopyPlanFields(const Plan *from, Plan *newnode)
  */
 static Plan *
 _copyPlan(const Plan *from)
-{
+{	StackTrace("_copyPlan");
 	Plan	   *newnode = makeNode(Plan);
 
 	/*
@@ -142,7 +142,7 @@ _copyPlan(const Plan *from)
  */
 static Result *
 _copyResult(const Result *from)
-{
+{	StackTrace("_copyResult");
 	Result	   *newnode = makeNode(Result);
 
 	/*
@@ -163,7 +163,7 @@ _copyResult(const Result *from)
  */
 static ModifyTable *
 _copyModifyTable(const ModifyTable *from)
-{
+{	StackTrace("_copyModifyTable");
 	ModifyTable *newnode = makeNode(ModifyTable);
 
 	/*
@@ -200,7 +200,7 @@ _copyModifyTable(const ModifyTable *from)
  */
 static Append *
 _copyAppend(const Append *from)
-{
+{	StackTrace("_copyAppend");
 	Append	   *newnode = makeNode(Append);
 
 	/*
@@ -221,7 +221,7 @@ _copyAppend(const Append *from)
  */
 static MergeAppend *
 _copyMergeAppend(const MergeAppend *from)
-{
+{	StackTrace("_copyMergeAppend");
 	MergeAppend *newnode = makeNode(MergeAppend);
 
 	/*
@@ -247,7 +247,7 @@ _copyMergeAppend(const MergeAppend *from)
  */
 static RecursiveUnion *
 _copyRecursiveUnion(const RecursiveUnion *from)
-{
+{	StackTrace("_copyRecursiveUnion");
 	RecursiveUnion *newnode = makeNode(RecursiveUnion);
 
 	/*
@@ -275,7 +275,7 @@ _copyRecursiveUnion(const RecursiveUnion *from)
  */
 static BitmapAnd *
 _copyBitmapAnd(const BitmapAnd *from)
-{
+{	StackTrace("_copyBitmapAnd");
 	BitmapAnd  *newnode = makeNode(BitmapAnd);
 
 	/*
@@ -296,7 +296,7 @@ _copyBitmapAnd(const BitmapAnd *from)
  */
 static BitmapOr *
 _copyBitmapOr(const BitmapOr *from)
-{
+{	StackTrace("_copyBitmapOr");
 	BitmapOr   *newnode = makeNode(BitmapOr);
 
 	/*
@@ -321,7 +321,7 @@ _copyBitmapOr(const BitmapOr *from)
  */
 static void
 CopyScanFields(const Scan *from, Scan *newnode)
-{
+{	StackTrace("CopyScanFields");
 	CopyPlanFields((const Plan *) from, (Plan *) newnode);
 
 	COPY_SCALAR_FIELD(scanrelid);
@@ -332,7 +332,7 @@ CopyScanFields(const Scan *from, Scan *newnode)
  */
 static Scan *
 _copyScan(const Scan *from)
-{
+{	StackTrace("_copyScan");
 	Scan	   *newnode = makeNode(Scan);
 
 	/*
@@ -348,7 +348,7 @@ _copyScan(const Scan *from)
  */
 static SeqScan *
 _copySeqScan(const SeqScan *from)
-{
+{	StackTrace("_copySeqScan");
 	SeqScan    *newnode = makeNode(SeqScan);
 
 	/*
@@ -364,7 +364,7 @@ _copySeqScan(const SeqScan *from)
  */
 static IndexScan *
 _copyIndexScan(const IndexScan *from)
-{
+{	StackTrace("_copyIndexScan");
 	IndexScan  *newnode = makeNode(IndexScan);
 
 	/*
@@ -391,7 +391,7 @@ _copyIndexScan(const IndexScan *from)
  */
 static IndexOnlyScan *
 _copyIndexOnlyScan(const IndexOnlyScan *from)
-{
+{	StackTrace("_copyIndexOnlyScan");
 	IndexOnlyScan *newnode = makeNode(IndexOnlyScan);
 
 	/*
@@ -416,7 +416,7 @@ _copyIndexOnlyScan(const IndexOnlyScan *from)
  */
 static BitmapIndexScan *
 _copyBitmapIndexScan(const BitmapIndexScan *from)
-{
+{	StackTrace("_copyBitmapIndexScan");
 	BitmapIndexScan *newnode = makeNode(BitmapIndexScan);
 
 	/*
@@ -439,7 +439,7 @@ _copyBitmapIndexScan(const BitmapIndexScan *from)
  */
 static BitmapHeapScan *
 _copyBitmapHeapScan(const BitmapHeapScan *from)
-{
+{	StackTrace("_copyBitmapHeapScan");
 	BitmapHeapScan *newnode = makeNode(BitmapHeapScan);
 
 	/*
@@ -460,7 +460,7 @@ _copyBitmapHeapScan(const BitmapHeapScan *from)
  */
 static TidScan *
 _copyTidScan(const TidScan *from)
-{
+{	StackTrace("_copyTidScan");
 	TidScan    *newnode = makeNode(TidScan);
 
 	/*
@@ -481,7 +481,7 @@ _copyTidScan(const TidScan *from)
  */
 static SubqueryScan *
 _copySubqueryScan(const SubqueryScan *from)
-{
+{	StackTrace("_copySubqueryScan");
 	SubqueryScan *newnode = makeNode(SubqueryScan);
 
 	/*
@@ -502,7 +502,7 @@ _copySubqueryScan(const SubqueryScan *from)
  */
 static FunctionScan *
 _copyFunctionScan(const FunctionScan *from)
-{
+{	StackTrace("_copyFunctionScan");
 	FunctionScan *newnode = makeNode(FunctionScan);
 
 	/*
@@ -524,7 +524,7 @@ _copyFunctionScan(const FunctionScan *from)
  */
 static ValuesScan *
 _copyValuesScan(const ValuesScan *from)
-{
+{	StackTrace("_copyValuesScan");
 	ValuesScan *newnode = makeNode(ValuesScan);
 
 	/*
@@ -545,7 +545,7 @@ _copyValuesScan(const ValuesScan *from)
  */
 static CteScan *
 _copyCteScan(const CteScan *from)
-{
+{	StackTrace("_copyCteScan");
 	CteScan    *newnode = makeNode(CteScan);
 
 	/*
@@ -567,7 +567,7 @@ _copyCteScan(const CteScan *from)
  */
 static WorkTableScan *
 _copyWorkTableScan(const WorkTableScan *from)
-{
+{	StackTrace("_copyWorkTableScan");
 	WorkTableScan *newnode = makeNode(WorkTableScan);
 
 	/*
@@ -588,7 +588,7 @@ _copyWorkTableScan(const WorkTableScan *from)
  */
 static ForeignScan *
 _copyForeignScan(const ForeignScan *from)
-{
+{	StackTrace("_copyForeignScan");
 	ForeignScan *newnode = makeNode(ForeignScan);
 
 	/*
@@ -614,7 +614,7 @@ _copyForeignScan(const ForeignScan *from)
  */
 static CustomScan *
 _copyCustomScan(const CustomScan *from)
-{
+{	StackTrace("_copyCustomScan");
 	CustomScan *newnode = makeNode(CustomScan);
 
 	/*
@@ -646,7 +646,7 @@ _copyCustomScan(const CustomScan *from)
  */
 static SampleScan *
 _copySampleScan(const SampleScan *from)
-{
+{	StackTrace("_copySampleScan");
 	SampleScan *newnode = makeNode(SampleScan);
 
 	/*
@@ -665,7 +665,7 @@ _copySampleScan(const SampleScan *from)
  */
 static void
 CopyJoinFields(const Join *from, Join *newnode)
-{
+{	StackTrace("CopyJoinFields");
 	CopyPlanFields((const Plan *) from, (Plan *) newnode);
 
 	COPY_SCALAR_FIELD(jointype);
@@ -678,7 +678,7 @@ CopyJoinFields(const Join *from, Join *newnode)
  */
 static Join *
 _copyJoin(const Join *from)
-{
+{	StackTrace("_copyJoin");
 	Join	   *newnode = makeNode(Join);
 
 	/*
@@ -695,7 +695,7 @@ _copyJoin(const Join *from)
  */
 static NestLoop *
 _copyNestLoop(const NestLoop *from)
-{
+{	StackTrace("_copyNestLoop");
 	NestLoop   *newnode = makeNode(NestLoop);
 
 	/*
@@ -717,7 +717,7 @@ _copyNestLoop(const NestLoop *from)
  */
 static MergeJoin *
 _copyMergeJoin(const MergeJoin *from)
-{
+{	StackTrace("_copyMergeJoin");
 	MergeJoin  *newnode = makeNode(MergeJoin);
 	int			numCols;
 
@@ -747,7 +747,7 @@ _copyMergeJoin(const MergeJoin *from)
  */
 static HashJoin *
 _copyHashJoin(const HashJoin *from)
-{
+{	StackTrace("_copyHashJoin");
 	HashJoin   *newnode = makeNode(HashJoin);
 
 	/*
@@ -769,7 +769,7 @@ _copyHashJoin(const HashJoin *from)
  */
 static Material *
 _copyMaterial(const Material *from)
-{
+{	StackTrace("_copyMaterial");
 	Material   *newnode = makeNode(Material);
 
 	/*
@@ -786,7 +786,7 @@ _copyMaterial(const Material *from)
  */
 static Sort *
 _copySort(const Sort *from)
-{
+{	StackTrace("_copySort");
 	Sort	   *newnode = makeNode(Sort);
 
 	/*
@@ -809,7 +809,7 @@ _copySort(const Sort *from)
  */
 static Group *
 _copyGroup(const Group *from)
-{
+{	StackTrace("_copyGroup");
 	Group	   *newnode = makeNode(Group);
 
 	CopyPlanFields((const Plan *) from, (Plan *) newnode);
@@ -826,7 +826,7 @@ _copyGroup(const Group *from)
  */
 static Agg *
 _copyAgg(const Agg *from)
-{
+{	StackTrace("_copyAgg");
 	Agg		   *newnode = makeNode(Agg);
 
 	CopyPlanFields((const Plan *) from, (Plan *) newnode);
@@ -850,7 +850,7 @@ _copyAgg(const Agg *from)
  */
 static WindowAgg *
 _copyWindowAgg(const WindowAgg *from)
-{
+{	StackTrace("_copyWindowAgg");
 	WindowAgg  *newnode = makeNode(WindowAgg);
 
 	CopyPlanFields((const Plan *) from, (Plan *) newnode);
@@ -880,7 +880,7 @@ _copyWindowAgg(const WindowAgg *from)
  */
 static Unique *
 _copyUnique(const Unique *from)
-{
+{	StackTrace("_copyUnique");
 	Unique	   *newnode = makeNode(Unique);
 
 	/*
@@ -903,7 +903,7 @@ _copyUnique(const Unique *from)
  */
 static Hash *
 _copyHash(const Hash *from)
-{
+{	StackTrace("_copyHash");
 	Hash	   *newnode = makeNode(Hash);
 
 	/*
@@ -928,7 +928,7 @@ _copyHash(const Hash *from)
  */
 static SetOp *
 _copySetOp(const SetOp *from)
-{
+{	StackTrace("_copySetOp");
 	SetOp	   *newnode = makeNode(SetOp);
 
 	/*
@@ -956,7 +956,7 @@ _copySetOp(const SetOp *from)
  */
 static LockRows *
 _copyLockRows(const LockRows *from)
-{
+{	StackTrace("_copyLockRows");
 	LockRows   *newnode = makeNode(LockRows);
 
 	/*
@@ -978,7 +978,7 @@ _copyLockRows(const LockRows *from)
  */
 static Limit *
 _copyLimit(const Limit *from)
-{
+{	StackTrace("_copyLimit");
 	Limit	   *newnode = makeNode(Limit);
 
 	/*
@@ -1000,7 +1000,7 @@ _copyLimit(const Limit *from)
  */
 static NestLoopParam *
 _copyNestLoopParam(const NestLoopParam *from)
-{
+{	StackTrace("_copyNestLoopParam");
 	NestLoopParam *newnode = makeNode(NestLoopParam);
 
 	COPY_SCALAR_FIELD(paramno);
@@ -1014,7 +1014,7 @@ _copyNestLoopParam(const NestLoopParam *from)
  */
 static PlanRowMark *
 _copyPlanRowMark(const PlanRowMark *from)
-{
+{	StackTrace("_copyPlanRowMark");
 	PlanRowMark *newnode = makeNode(PlanRowMark);
 
 	COPY_SCALAR_FIELD(rti);
@@ -1034,7 +1034,7 @@ _copyPlanRowMark(const PlanRowMark *from)
  */
 static PlanInvalItem *
 _copyPlanInvalItem(const PlanInvalItem *from)
-{
+{	StackTrace("_copyPlanInvalItem");
 	PlanInvalItem *newnode = makeNode(PlanInvalItem);
 
 	COPY_SCALAR_FIELD(cacheId);
@@ -1053,7 +1053,7 @@ _copyPlanInvalItem(const PlanInvalItem *from)
  */
 static Alias *
 _copyAlias(const Alias *from)
-{
+{	StackTrace("_copyAlias");
 	Alias	   *newnode = makeNode(Alias);
 
 	COPY_STRING_FIELD(aliasname);
@@ -1067,7 +1067,7 @@ _copyAlias(const Alias *from)
  */
 static RangeVar *
 _copyRangeVar(const RangeVar *from)
-{
+{	StackTrace("_copyRangeVar");
 	RangeVar   *newnode = makeNode(RangeVar);
 
 	COPY_STRING_FIELD(catalogname);
@@ -1086,7 +1086,7 @@ _copyRangeVar(const RangeVar *from)
  */
 static IntoClause *
 _copyIntoClause(const IntoClause *from)
-{
+{	StackTrace("_copyIntoClause");
 	IntoClause *newnode = makeNode(IntoClause);
 
 	COPY_NODE_FIELD(rel);
@@ -1112,7 +1112,7 @@ _copyIntoClause(const IntoClause *from)
  */
 static Var *
 _copyVar(const Var *from)
-{
+{	StackTrace("_copyVar");
 	Var		   *newnode = makeNode(Var);
 
 	COPY_SCALAR_FIELD(varno);
@@ -1133,7 +1133,7 @@ _copyVar(const Var *from)
  */
 static Const *
 _copyConst(const Const *from)
-{
+{	StackTrace("_copyConst");
 	Const	   *newnode = makeNode(Const);
 
 	COPY_SCALAR_FIELD(consttype);
@@ -1171,7 +1171,7 @@ _copyConst(const Const *from)
  */
 static Param *
 _copyParam(const Param *from)
-{
+{	StackTrace("_copyParam");
 	Param	   *newnode = makeNode(Param);
 
 	COPY_SCALAR_FIELD(paramkind);
@@ -1189,7 +1189,7 @@ _copyParam(const Param *from)
  */
 static Aggref *
 _copyAggref(const Aggref *from)
-{
+{	StackTrace("_copyAggref");
 	Aggref	   *newnode = makeNode(Aggref);
 
 	COPY_SCALAR_FIELD(aggfnoid);
@@ -1215,7 +1215,7 @@ _copyAggref(const Aggref *from)
  */
 static GroupingFunc *
 _copyGroupingFunc(const GroupingFunc *from)
-{
+{	StackTrace("_copyGroupingFunc");
 	GroupingFunc *newnode = makeNode(GroupingFunc);
 
 	COPY_NODE_FIELD(args);
@@ -1232,7 +1232,7 @@ _copyGroupingFunc(const GroupingFunc *from)
  */
 static WindowFunc *
 _copyWindowFunc(const WindowFunc *from)
-{
+{	StackTrace("_copyWindowFunc");
 	WindowFunc *newnode = makeNode(WindowFunc);
 
 	COPY_SCALAR_FIELD(winfnoid);
@@ -1254,7 +1254,7 @@ _copyWindowFunc(const WindowFunc *from)
  */
 static ArrayRef *
 _copyArrayRef(const ArrayRef *from)
-{
+{	StackTrace("_copyArrayRef");
 	ArrayRef   *newnode = makeNode(ArrayRef);
 
 	COPY_SCALAR_FIELD(refarraytype);
@@ -1274,7 +1274,7 @@ _copyArrayRef(const ArrayRef *from)
  */
 static FuncExpr *
 _copyFuncExpr(const FuncExpr *from)
-{
+{	StackTrace("_copyFuncExpr");
 	FuncExpr   *newnode = makeNode(FuncExpr);
 
 	COPY_SCALAR_FIELD(funcid);
@@ -1295,7 +1295,7 @@ _copyFuncExpr(const FuncExpr *from)
  */
 static NamedArgExpr *
 _copyNamedArgExpr(const NamedArgExpr *from)
-{
+{	StackTrace("_copyNamedArgExpr");
 	NamedArgExpr *newnode = makeNode(NamedArgExpr);
 
 	COPY_NODE_FIELD(arg);
@@ -1311,7 +1311,7 @@ _copyNamedArgExpr(const NamedArgExpr *from)
  */
 static OpExpr *
 _copyOpExpr(const OpExpr *from)
-{
+{	StackTrace("_copyOpExpr");
 	OpExpr	   *newnode = makeNode(OpExpr);
 
 	COPY_SCALAR_FIELD(opno);
@@ -1331,7 +1331,7 @@ _copyOpExpr(const OpExpr *from)
  */
 static DistinctExpr *
 _copyDistinctExpr(const DistinctExpr *from)
-{
+{	StackTrace("_copyDistinctExpr");
 	DistinctExpr *newnode = makeNode(DistinctExpr);
 
 	COPY_SCALAR_FIELD(opno);
@@ -1351,7 +1351,7 @@ _copyDistinctExpr(const DistinctExpr *from)
  */
 static NullIfExpr *
 _copyNullIfExpr(const NullIfExpr *from)
-{
+{	StackTrace("_copyNullIfExpr");
 	NullIfExpr *newnode = makeNode(NullIfExpr);
 
 	COPY_SCALAR_FIELD(opno);
@@ -1371,7 +1371,7 @@ _copyNullIfExpr(const NullIfExpr *from)
  */
 static ScalarArrayOpExpr *
 _copyScalarArrayOpExpr(const ScalarArrayOpExpr *from)
-{
+{	StackTrace("_copyScalarArrayOpExpr");
 	ScalarArrayOpExpr *newnode = makeNode(ScalarArrayOpExpr);
 
 	COPY_SCALAR_FIELD(opno);
@@ -1389,7 +1389,7 @@ _copyScalarArrayOpExpr(const ScalarArrayOpExpr *from)
  */
 static BoolExpr *
 _copyBoolExpr(const BoolExpr *from)
-{
+{	StackTrace("_copyBoolExpr");
 	BoolExpr   *newnode = makeNode(BoolExpr);
 
 	COPY_SCALAR_FIELD(boolop);
@@ -1404,7 +1404,7 @@ _copyBoolExpr(const BoolExpr *from)
  */
 static SubLink *
 _copySubLink(const SubLink *from)
-{
+{	StackTrace("_copySubLink");
 	SubLink    *newnode = makeNode(SubLink);
 
 	COPY_SCALAR_FIELD(subLinkType);
@@ -1422,7 +1422,7 @@ _copySubLink(const SubLink *from)
  */
 static SubPlan *
 _copySubPlan(const SubPlan *from)
-{
+{	StackTrace("_copySubPlan");
 	SubPlan    *newnode = makeNode(SubPlan);
 
 	COPY_SCALAR_FIELD(subLinkType);
@@ -1449,7 +1449,7 @@ _copySubPlan(const SubPlan *from)
  */
 static AlternativeSubPlan *
 _copyAlternativeSubPlan(const AlternativeSubPlan *from)
-{
+{	StackTrace("_copyAlternativeSubPlan");
 	AlternativeSubPlan *newnode = makeNode(AlternativeSubPlan);
 
 	COPY_NODE_FIELD(subplans);
@@ -1462,7 +1462,7 @@ _copyAlternativeSubPlan(const AlternativeSubPlan *from)
  */
 static FieldSelect *
 _copyFieldSelect(const FieldSelect *from)
-{
+{	StackTrace("_copyFieldSelect");
 	FieldSelect *newnode = makeNode(FieldSelect);
 
 	COPY_NODE_FIELD(arg);
@@ -1479,7 +1479,7 @@ _copyFieldSelect(const FieldSelect *from)
  */
 static FieldStore *
 _copyFieldStore(const FieldStore *from)
-{
+{	StackTrace("_copyFieldStore");
 	FieldStore *newnode = makeNode(FieldStore);
 
 	COPY_NODE_FIELD(arg);
@@ -1495,7 +1495,7 @@ _copyFieldStore(const FieldStore *from)
  */
 static RelabelType *
 _copyRelabelType(const RelabelType *from)
-{
+{	StackTrace("_copyRelabelType");
 	RelabelType *newnode = makeNode(RelabelType);
 
 	COPY_NODE_FIELD(arg);
@@ -1513,7 +1513,7 @@ _copyRelabelType(const RelabelType *from)
  */
 static CoerceViaIO *
 _copyCoerceViaIO(const CoerceViaIO *from)
-{
+{	StackTrace("_copyCoerceViaIO");
 	CoerceViaIO *newnode = makeNode(CoerceViaIO);
 
 	COPY_NODE_FIELD(arg);
@@ -1530,7 +1530,7 @@ _copyCoerceViaIO(const CoerceViaIO *from)
  */
 static ArrayCoerceExpr *
 _copyArrayCoerceExpr(const ArrayCoerceExpr *from)
-{
+{	StackTrace("_copyArrayCoerceExpr");
 	ArrayCoerceExpr *newnode = makeNode(ArrayCoerceExpr);
 
 	COPY_NODE_FIELD(arg);
@@ -1550,7 +1550,7 @@ _copyArrayCoerceExpr(const ArrayCoerceExpr *from)
  */
 static ConvertRowtypeExpr *
 _copyConvertRowtypeExpr(const ConvertRowtypeExpr *from)
-{
+{	StackTrace("_copyConvertRowtypeExpr");
 	ConvertRowtypeExpr *newnode = makeNode(ConvertRowtypeExpr);
 
 	COPY_NODE_FIELD(arg);
@@ -1566,7 +1566,7 @@ _copyConvertRowtypeExpr(const ConvertRowtypeExpr *from)
  */
 static CollateExpr *
 _copyCollateExpr(const CollateExpr *from)
-{
+{	StackTrace("_copyCollateExpr");
 	CollateExpr *newnode = makeNode(CollateExpr);
 
 	COPY_NODE_FIELD(arg);
@@ -1581,7 +1581,7 @@ _copyCollateExpr(const CollateExpr *from)
  */
 static CaseExpr *
 _copyCaseExpr(const CaseExpr *from)
-{
+{	StackTrace("_copyCaseExpr");
 	CaseExpr   *newnode = makeNode(CaseExpr);
 
 	COPY_SCALAR_FIELD(casetype);
@@ -1599,7 +1599,7 @@ _copyCaseExpr(const CaseExpr *from)
  */
 static CaseWhen *
 _copyCaseWhen(const CaseWhen *from)
-{
+{	StackTrace("_copyCaseWhen");
 	CaseWhen   *newnode = makeNode(CaseWhen);
 
 	COPY_NODE_FIELD(expr);
@@ -1614,7 +1614,7 @@ _copyCaseWhen(const CaseWhen *from)
  */
 static CaseTestExpr *
 _copyCaseTestExpr(const CaseTestExpr *from)
-{
+{	StackTrace("_copyCaseTestExpr");
 	CaseTestExpr *newnode = makeNode(CaseTestExpr);
 
 	COPY_SCALAR_FIELD(typeId);
@@ -1629,7 +1629,7 @@ _copyCaseTestExpr(const CaseTestExpr *from)
  */
 static ArrayExpr *
 _copyArrayExpr(const ArrayExpr *from)
-{
+{	StackTrace("_copyArrayExpr");
 	ArrayExpr  *newnode = makeNode(ArrayExpr);
 
 	COPY_SCALAR_FIELD(array_typeid);
@@ -1647,7 +1647,7 @@ _copyArrayExpr(const ArrayExpr *from)
  */
 static RowExpr *
 _copyRowExpr(const RowExpr *from)
-{
+{	StackTrace("_copyRowExpr");
 	RowExpr    *newnode = makeNode(RowExpr);
 
 	COPY_NODE_FIELD(args);
@@ -1664,7 +1664,7 @@ _copyRowExpr(const RowExpr *from)
  */
 static RowCompareExpr *
 _copyRowCompareExpr(const RowCompareExpr *from)
-{
+{	StackTrace("_copyRowCompareExpr");
 	RowCompareExpr *newnode = makeNode(RowCompareExpr);
 
 	COPY_SCALAR_FIELD(rctype);
@@ -1682,7 +1682,7 @@ _copyRowCompareExpr(const RowCompareExpr *from)
  */
 static CoalesceExpr *
 _copyCoalesceExpr(const CoalesceExpr *from)
-{
+{	StackTrace("_copyCoalesceExpr");
 	CoalesceExpr *newnode = makeNode(CoalesceExpr);
 
 	COPY_SCALAR_FIELD(coalescetype);
@@ -1698,7 +1698,7 @@ _copyCoalesceExpr(const CoalesceExpr *from)
  */
 static MinMaxExpr *
 _copyMinMaxExpr(const MinMaxExpr *from)
-{
+{	StackTrace("_copyMinMaxExpr");
 	MinMaxExpr *newnode = makeNode(MinMaxExpr);
 
 	COPY_SCALAR_FIELD(minmaxtype);
@@ -1716,7 +1716,7 @@ _copyMinMaxExpr(const MinMaxExpr *from)
  */
 static XmlExpr *
 _copyXmlExpr(const XmlExpr *from)
-{
+{	StackTrace("_copyXmlExpr");
 	XmlExpr    *newnode = makeNode(XmlExpr);
 
 	COPY_SCALAR_FIELD(op);
@@ -1737,7 +1737,7 @@ _copyXmlExpr(const XmlExpr *from)
  */
 static NullTest *
 _copyNullTest(const NullTest *from)
-{
+{	StackTrace("_copyNullTest");
 	NullTest   *newnode = makeNode(NullTest);
 
 	COPY_NODE_FIELD(arg);
@@ -1753,7 +1753,7 @@ _copyNullTest(const NullTest *from)
  */
 static BooleanTest *
 _copyBooleanTest(const BooleanTest *from)
-{
+{	StackTrace("_copyBooleanTest");
 	BooleanTest *newnode = makeNode(BooleanTest);
 
 	COPY_NODE_FIELD(arg);
@@ -1768,7 +1768,7 @@ _copyBooleanTest(const BooleanTest *from)
  */
 static CoerceToDomain *
 _copyCoerceToDomain(const CoerceToDomain *from)
-{
+{	StackTrace("_copyCoerceToDomain");
 	CoerceToDomain *newnode = makeNode(CoerceToDomain);
 
 	COPY_NODE_FIELD(arg);
@@ -1786,7 +1786,7 @@ _copyCoerceToDomain(const CoerceToDomain *from)
  */
 static CoerceToDomainValue *
 _copyCoerceToDomainValue(const CoerceToDomainValue *from)
-{
+{	StackTrace("_copyCoerceToDomainValue");
 	CoerceToDomainValue *newnode = makeNode(CoerceToDomainValue);
 
 	COPY_SCALAR_FIELD(typeId);
@@ -1802,7 +1802,7 @@ _copyCoerceToDomainValue(const CoerceToDomainValue *from)
  */
 static SetToDefault *
 _copySetToDefault(const SetToDefault *from)
-{
+{	StackTrace("_copySetToDefault");
 	SetToDefault *newnode = makeNode(SetToDefault);
 
 	COPY_SCALAR_FIELD(typeId);
@@ -1818,7 +1818,7 @@ _copySetToDefault(const SetToDefault *from)
  */
 static CurrentOfExpr *
 _copyCurrentOfExpr(const CurrentOfExpr *from)
-{
+{	StackTrace("_copyCurrentOfExpr");
 	CurrentOfExpr *newnode = makeNode(CurrentOfExpr);
 
 	COPY_SCALAR_FIELD(cvarno);
@@ -1833,7 +1833,7 @@ _copyCurrentOfExpr(const CurrentOfExpr *from)
  */
 static InferenceElem *
 _copyInferenceElem(const InferenceElem *from)
-{
+{	StackTrace("_copyInferenceElem");
 	InferenceElem *newnode = makeNode(InferenceElem);
 
 	COPY_NODE_FIELD(expr);
@@ -1848,7 +1848,7 @@ _copyInferenceElem(const InferenceElem *from)
  */
 static TargetEntry *
 _copyTargetEntry(const TargetEntry *from)
-{
+{	StackTrace("_copyTargetEntry");
 	TargetEntry *newnode = makeNode(TargetEntry);
 
 	COPY_NODE_FIELD(expr);
@@ -1867,7 +1867,7 @@ _copyTargetEntry(const TargetEntry *from)
  */
 static RangeTblRef *
 _copyRangeTblRef(const RangeTblRef *from)
-{
+{	StackTrace("_copyRangeTblRef");
 	RangeTblRef *newnode = makeNode(RangeTblRef);
 
 	COPY_SCALAR_FIELD(rtindex);
@@ -1880,7 +1880,7 @@ _copyRangeTblRef(const RangeTblRef *from)
  */
 static JoinExpr *
 _copyJoinExpr(const JoinExpr *from)
-{
+{	StackTrace("_copyJoinExpr");
 	JoinExpr   *newnode = makeNode(JoinExpr);
 
 	COPY_SCALAR_FIELD(jointype);
@@ -1900,7 +1900,7 @@ _copyJoinExpr(const JoinExpr *from)
  */
 static FromExpr *
 _copyFromExpr(const FromExpr *from)
-{
+{	StackTrace("_copyFromExpr");
 	FromExpr   *newnode = makeNode(FromExpr);
 
 	COPY_NODE_FIELD(fromlist);
@@ -1914,7 +1914,7 @@ _copyFromExpr(const FromExpr *from)
  */
 static OnConflictExpr *
 _copyOnConflictExpr(const OnConflictExpr *from)
-{
+{	StackTrace("_copyOnConflictExpr");
 	OnConflictExpr *newnode = makeNode(OnConflictExpr);
 
 	COPY_SCALAR_FIELD(action);
@@ -1942,7 +1942,7 @@ _copyOnConflictExpr(const OnConflictExpr *from)
  */
 static PathKey *
 _copyPathKey(const PathKey *from)
-{
+{	StackTrace("_copyPathKey");
 	PathKey    *newnode = makeNode(PathKey);
 
 	/* EquivalenceClasses are never moved, so just shallow-copy the pointer */
@@ -1959,7 +1959,7 @@ _copyPathKey(const PathKey *from)
  */
 static RestrictInfo *
 _copyRestrictInfo(const RestrictInfo *from)
-{
+{	StackTrace("_copyRestrictInfo");
 	RestrictInfo *newnode = makeNode(RestrictInfo);
 
 	COPY_NODE_FIELD(clause);
@@ -2000,7 +2000,7 @@ _copyRestrictInfo(const RestrictInfo *from)
  */
 static PlaceHolderVar *
 _copyPlaceHolderVar(const PlaceHolderVar *from)
-{
+{	StackTrace("_copyPlaceHolderVar");
 	PlaceHolderVar *newnode = makeNode(PlaceHolderVar);
 
 	COPY_NODE_FIELD(phexpr);
@@ -2016,7 +2016,7 @@ _copyPlaceHolderVar(const PlaceHolderVar *from)
  */
 static SpecialJoinInfo *
 _copySpecialJoinInfo(const SpecialJoinInfo *from)
-{
+{	StackTrace("_copySpecialJoinInfo");
 	SpecialJoinInfo *newnode = makeNode(SpecialJoinInfo);
 
 	COPY_BITMAPSET_FIELD(min_lefthand);
@@ -2039,7 +2039,7 @@ _copySpecialJoinInfo(const SpecialJoinInfo *from)
  */
 static LateralJoinInfo *
 _copyLateralJoinInfo(const LateralJoinInfo *from)
-{
+{	StackTrace("_copyLateralJoinInfo");
 	LateralJoinInfo *newnode = makeNode(LateralJoinInfo);
 
 	COPY_BITMAPSET_FIELD(lateral_lhs);
@@ -2053,7 +2053,7 @@ _copyLateralJoinInfo(const LateralJoinInfo *from)
  */
 static AppendRelInfo *
 _copyAppendRelInfo(const AppendRelInfo *from)
-{
+{	StackTrace("_copyAppendRelInfo");
 	AppendRelInfo *newnode = makeNode(AppendRelInfo);
 
 	COPY_SCALAR_FIELD(parent_relid);
@@ -2071,7 +2071,7 @@ _copyAppendRelInfo(const AppendRelInfo *from)
  */
 static PlaceHolderInfo *
 _copyPlaceHolderInfo(const PlaceHolderInfo *from)
-{
+{	StackTrace("_copyPlaceHolderInfo");
 	PlaceHolderInfo *newnode = makeNode(PlaceHolderInfo);
 
 	COPY_SCALAR_FIELD(phid);
@@ -2091,7 +2091,7 @@ _copyPlaceHolderInfo(const PlaceHolderInfo *from)
 
 static RangeTblEntry *
 _copyRangeTblEntry(const RangeTblEntry *from)
-{
+{	StackTrace("_copyRangeTblEntry");
 	RangeTblEntry *newnode = makeNode(RangeTblEntry);
 
 	COPY_SCALAR_FIELD(rtekind);
@@ -2129,7 +2129,7 @@ _copyRangeTblEntry(const RangeTblEntry *from)
 
 static RangeTblFunction *
 _copyRangeTblFunction(const RangeTblFunction *from)
-{
+{	StackTrace("_copyRangeTblFunction");
 	RangeTblFunction *newnode = makeNode(RangeTblFunction);
 
 	COPY_NODE_FIELD(funcexpr);
@@ -2145,7 +2145,7 @@ _copyRangeTblFunction(const RangeTblFunction *from)
 
 static WithCheckOption *
 _copyWithCheckOption(const WithCheckOption *from)
-{
+{	StackTrace("_copyWithCheckOption");
 	WithCheckOption *newnode = makeNode(WithCheckOption);
 
 	COPY_SCALAR_FIELD(kind);
@@ -2158,7 +2158,7 @@ _copyWithCheckOption(const WithCheckOption *from)
 
 static SortGroupClause *
 _copySortGroupClause(const SortGroupClause *from)
-{
+{	StackTrace("_copySortGroupClause");
 	SortGroupClause *newnode = makeNode(SortGroupClause);
 
 	COPY_SCALAR_FIELD(tleSortGroupRef);
@@ -2172,7 +2172,7 @@ _copySortGroupClause(const SortGroupClause *from)
 
 static GroupingSet *
 _copyGroupingSet(const GroupingSet *from)
-{
+{	StackTrace("_copyGroupingSet");
 	GroupingSet *newnode = makeNode(GroupingSet);
 
 	COPY_SCALAR_FIELD(kind);
@@ -2184,7 +2184,7 @@ _copyGroupingSet(const GroupingSet *from)
 
 static WindowClause *
 _copyWindowClause(const WindowClause *from)
-{
+{	StackTrace("_copyWindowClause");
 	WindowClause *newnode = makeNode(WindowClause);
 
 	COPY_STRING_FIELD(name);
@@ -2202,7 +2202,7 @@ _copyWindowClause(const WindowClause *from)
 
 static RowMarkClause *
 _copyRowMarkClause(const RowMarkClause *from)
-{
+{	StackTrace("_copyRowMarkClause");
 	RowMarkClause *newnode = makeNode(RowMarkClause);
 
 	COPY_SCALAR_FIELD(rti);
@@ -2215,7 +2215,7 @@ _copyRowMarkClause(const RowMarkClause *from)
 
 static WithClause *
 _copyWithClause(const WithClause *from)
-{
+{	StackTrace("_copyWithClause");
 	WithClause *newnode = makeNode(WithClause);
 
 	COPY_NODE_FIELD(ctes);
@@ -2227,7 +2227,7 @@ _copyWithClause(const WithClause *from)
 
 static InferClause *
 _copyInferClause(const InferClause *from)
-{
+{	StackTrace("_copyInferClause");
 	InferClause *newnode = makeNode(InferClause);
 
 	COPY_NODE_FIELD(indexElems);
@@ -2240,7 +2240,7 @@ _copyInferClause(const InferClause *from)
 
 static OnConflictClause *
 _copyOnConflictClause(const OnConflictClause *from)
-{
+{	StackTrace("_copyOnConflictClause");
 	OnConflictClause *newnode = makeNode(OnConflictClause);
 
 	COPY_SCALAR_FIELD(action);
@@ -2254,7 +2254,7 @@ _copyOnConflictClause(const OnConflictClause *from)
 
 static CommonTableExpr *
 _copyCommonTableExpr(const CommonTableExpr *from)
-{
+{	StackTrace("_copyCommonTableExpr");
 	CommonTableExpr *newnode = makeNode(CommonTableExpr);
 
 	COPY_STRING_FIELD(ctename);
@@ -2273,7 +2273,7 @@ _copyCommonTableExpr(const CommonTableExpr *from)
 
 static RangeTableSample *
 _copyRangeTableSample(const RangeTableSample *from)
-{
+{	StackTrace("_copyRangeTableSample");
 	RangeTableSample *newnode = makeNode(RangeTableSample);
 
 	COPY_NODE_FIELD(relation);
@@ -2286,7 +2286,7 @@ _copyRangeTableSample(const RangeTableSample *from)
 
 static TableSampleClause *
 _copyTableSampleClause(const TableSampleClause *from)
-{
+{	StackTrace("_copyTableSampleClause");
 	TableSampleClause *newnode = makeNode(TableSampleClause);
 
 	COPY_SCALAR_FIELD(tsmid);
@@ -2307,7 +2307,7 @@ _copyTableSampleClause(const TableSampleClause *from)
 
 static A_Expr *
 _copyAExpr(const A_Expr *from)
-{
+{	StackTrace("_copyAExpr");
 	A_Expr	   *newnode = makeNode(A_Expr);
 
 	COPY_SCALAR_FIELD(kind);
@@ -2321,7 +2321,7 @@ _copyAExpr(const A_Expr *from)
 
 static ColumnRef *
 _copyColumnRef(const ColumnRef *from)
-{
+{	StackTrace("_copyColumnRef");
 	ColumnRef  *newnode = makeNode(ColumnRef);
 
 	COPY_NODE_FIELD(fields);
@@ -2332,7 +2332,7 @@ _copyColumnRef(const ColumnRef *from)
 
 static ParamRef *
 _copyParamRef(const ParamRef *from)
-{
+{	StackTrace("_copyParamRef");
 	ParamRef   *newnode = makeNode(ParamRef);
 
 	COPY_SCALAR_FIELD(number);
@@ -2343,7 +2343,7 @@ _copyParamRef(const ParamRef *from)
 
 static A_Const *
 _copyAConst(const A_Const *from)
-{
+{	StackTrace("_copyAConst");
 	A_Const    *newnode = makeNode(A_Const);
 
 	/* This part must duplicate _copyValue */
@@ -2374,7 +2374,7 @@ _copyAConst(const A_Const *from)
 
 static FuncCall *
 _copyFuncCall(const FuncCall *from)
-{
+{	StackTrace("_copyFuncCall");
 	FuncCall   *newnode = makeNode(FuncCall);
 
 	COPY_NODE_FIELD(funcname);
@@ -2393,7 +2393,7 @@ _copyFuncCall(const FuncCall *from)
 
 static A_Star *
 _copyAStar(const A_Star *from)
-{
+{	StackTrace("_copyAStar");
 	A_Star	   *newnode = makeNode(A_Star);
 
 	return newnode;
@@ -2401,7 +2401,7 @@ _copyAStar(const A_Star *from)
 
 static A_Indices *
 _copyAIndices(const A_Indices *from)
-{
+{	StackTrace("_copyAIndices");
 	A_Indices  *newnode = makeNode(A_Indices);
 
 	COPY_NODE_FIELD(lidx);
@@ -2412,7 +2412,7 @@ _copyAIndices(const A_Indices *from)
 
 static A_Indirection *
 _copyA_Indirection(const A_Indirection *from)
-{
+{	StackTrace("_copyA_Indirection");
 	A_Indirection *newnode = makeNode(A_Indirection);
 
 	COPY_NODE_FIELD(arg);
@@ -2423,7 +2423,7 @@ _copyA_Indirection(const A_Indirection *from)
 
 static A_ArrayExpr *
 _copyA_ArrayExpr(const A_ArrayExpr *from)
-{
+{	StackTrace("_copyA_ArrayExpr");
 	A_ArrayExpr *newnode = makeNode(A_ArrayExpr);
 
 	COPY_NODE_FIELD(elements);
@@ -2434,7 +2434,7 @@ _copyA_ArrayExpr(const A_ArrayExpr *from)
 
 static ResTarget *
 _copyResTarget(const ResTarget *from)
-{
+{	StackTrace("_copyResTarget");
 	ResTarget  *newnode = makeNode(ResTarget);
 
 	COPY_STRING_FIELD(name);
@@ -2447,7 +2447,7 @@ _copyResTarget(const ResTarget *from)
 
 static MultiAssignRef *
 _copyMultiAssignRef(const MultiAssignRef *from)
-{
+{	StackTrace("_copyMultiAssignRef");
 	MultiAssignRef *newnode = makeNode(MultiAssignRef);
 
 	COPY_NODE_FIELD(source);
@@ -2459,7 +2459,7 @@ _copyMultiAssignRef(const MultiAssignRef *from)
 
 static TypeName *
 _copyTypeName(const TypeName *from)
-{
+{	StackTrace("_copyTypeName");
 	TypeName   *newnode = makeNode(TypeName);
 
 	COPY_NODE_FIELD(names);
@@ -2476,7 +2476,7 @@ _copyTypeName(const TypeName *from)
 
 static SortBy *
 _copySortBy(const SortBy *from)
-{
+{	StackTrace("_copySortBy");
 	SortBy	   *newnode = makeNode(SortBy);
 
 	COPY_NODE_FIELD(node);
@@ -2490,7 +2490,7 @@ _copySortBy(const SortBy *from)
 
 static WindowDef *
 _copyWindowDef(const WindowDef *from)
-{
+{	StackTrace("_copyWindowDef");
 	WindowDef  *newnode = makeNode(WindowDef);
 
 	COPY_STRING_FIELD(name);
@@ -2507,7 +2507,7 @@ _copyWindowDef(const WindowDef *from)
 
 static RangeSubselect *
 _copyRangeSubselect(const RangeSubselect *from)
-{
+{	StackTrace("_copyRangeSubselect");
 	RangeSubselect *newnode = makeNode(RangeSubselect);
 
 	COPY_SCALAR_FIELD(lateral);
@@ -2519,7 +2519,7 @@ _copyRangeSubselect(const RangeSubselect *from)
 
 static RangeFunction *
 _copyRangeFunction(const RangeFunction *from)
-{
+{	StackTrace("_copyRangeFunction");
 	RangeFunction *newnode = makeNode(RangeFunction);
 
 	COPY_SCALAR_FIELD(lateral);
@@ -2534,7 +2534,7 @@ _copyRangeFunction(const RangeFunction *from)
 
 static TypeCast *
 _copyTypeCast(const TypeCast *from)
-{
+{	StackTrace("_copyTypeCast");
 	TypeCast   *newnode = makeNode(TypeCast);
 
 	COPY_NODE_FIELD(arg);
@@ -2546,7 +2546,7 @@ _copyTypeCast(const TypeCast *from)
 
 static CollateClause *
 _copyCollateClause(const CollateClause *from)
-{
+{	StackTrace("_copyCollateClause");
 	CollateClause *newnode = makeNode(CollateClause);
 
 	COPY_NODE_FIELD(arg);
@@ -2558,7 +2558,7 @@ _copyCollateClause(const CollateClause *from)
 
 static IndexElem *
 _copyIndexElem(const IndexElem *from)
-{
+{	StackTrace("_copyIndexElem");
 	IndexElem  *newnode = makeNode(IndexElem);
 
 	COPY_STRING_FIELD(name);
@@ -2574,7 +2574,7 @@ _copyIndexElem(const IndexElem *from)
 
 static ColumnDef *
 _copyColumnDef(const ColumnDef *from)
-{
+{	StackTrace("_copyColumnDef");
 	ColumnDef  *newnode = makeNode(ColumnDef);
 
 	COPY_STRING_FIELD(colname);
@@ -2597,7 +2597,7 @@ _copyColumnDef(const ColumnDef *from)
 
 static Constraint *
 _copyConstraint(const Constraint *from)
-{
+{	StackTrace("_copyConstraint");
 	Constraint *newnode = makeNode(Constraint);
 
 	COPY_SCALAR_FIELD(contype);
@@ -2631,7 +2631,7 @@ _copyConstraint(const Constraint *from)
 
 static DefElem *
 _copyDefElem(const DefElem *from)
-{
+{	StackTrace("_copyDefElem");
 	DefElem    *newnode = makeNode(DefElem);
 
 	COPY_STRING_FIELD(defnamespace);
@@ -2644,7 +2644,7 @@ _copyDefElem(const DefElem *from)
 
 static LockingClause *
 _copyLockingClause(const LockingClause *from)
-{
+{	StackTrace("_copyLockingClause");
 	LockingClause *newnode = makeNode(LockingClause);
 
 	COPY_NODE_FIELD(lockedRels);
@@ -2656,7 +2656,7 @@ _copyLockingClause(const LockingClause *from)
 
 static XmlSerialize *
 _copyXmlSerialize(const XmlSerialize *from)
-{
+{	StackTrace("_copyXmlSerialize");
 	XmlSerialize *newnode = makeNode(XmlSerialize);
 
 	COPY_SCALAR_FIELD(xmloption);
@@ -2669,7 +2669,7 @@ _copyXmlSerialize(const XmlSerialize *from)
 
 static RoleSpec *
 _copyRoleSpec(const RoleSpec *from)
-{
+{	StackTrace("_copyRoleSpec");
 	RoleSpec   *newnode = makeNode(RoleSpec);
 
 	COPY_SCALAR_FIELD(roletype);
@@ -2681,7 +2681,7 @@ _copyRoleSpec(const RoleSpec *from)
 
 static Query *
 _copyQuery(const Query *from)
-{
+{	StackTrace("_copyQuery");
 	Query	   *newnode = makeNode(Query);
 
 	COPY_SCALAR_FIELD(commandType);
@@ -2722,7 +2722,7 @@ _copyQuery(const Query *from)
 
 static InsertStmt *
 _copyInsertStmt(const InsertStmt *from)
-{
+{	StackTrace("_copyInsertStmt");
 	InsertStmt *newnode = makeNode(InsertStmt);
 
 	COPY_NODE_FIELD(relation);
@@ -2737,7 +2737,7 @@ _copyInsertStmt(const InsertStmt *from)
 
 static DeleteStmt *
 _copyDeleteStmt(const DeleteStmt *from)
-{
+{	StackTrace("_copyDeleteStmt");
 	DeleteStmt *newnode = makeNode(DeleteStmt);
 
 	COPY_NODE_FIELD(relation);
@@ -2751,7 +2751,7 @@ _copyDeleteStmt(const DeleteStmt *from)
 
 static UpdateStmt *
 _copyUpdateStmt(const UpdateStmt *from)
-{
+{	StackTrace("_copyUpdateStmt");
 	UpdateStmt *newnode = makeNode(UpdateStmt);
 
 	COPY_NODE_FIELD(relation);
@@ -2766,7 +2766,7 @@ _copyUpdateStmt(const UpdateStmt *from)
 
 static SelectStmt *
 _copySelectStmt(const SelectStmt *from)
-{
+{	StackTrace("_copySelectStmt");
 	SelectStmt *newnode = makeNode(SelectStmt);
 
 	COPY_NODE_FIELD(distinctClause);
@@ -2793,7 +2793,7 @@ _copySelectStmt(const SelectStmt *from)
 
 static SetOperationStmt *
 _copySetOperationStmt(const SetOperationStmt *from)
-{
+{	StackTrace("_copySetOperationStmt");
 	SetOperationStmt *newnode = makeNode(SetOperationStmt);
 
 	COPY_SCALAR_FIELD(op);
@@ -2810,7 +2810,7 @@ _copySetOperationStmt(const SetOperationStmt *from)
 
 static AlterTableStmt *
 _copyAlterTableStmt(const AlterTableStmt *from)
-{
+{	StackTrace("_copyAlterTableStmt");
 	AlterTableStmt *newnode = makeNode(AlterTableStmt);
 
 	COPY_NODE_FIELD(relation);
@@ -2823,7 +2823,7 @@ _copyAlterTableStmt(const AlterTableStmt *from)
 
 static AlterTableCmd *
 _copyAlterTableCmd(const AlterTableCmd *from)
-{
+{	StackTrace("_copyAlterTableCmd");
 	AlterTableCmd *newnode = makeNode(AlterTableCmd);
 
 	COPY_SCALAR_FIELD(subtype);
@@ -2838,7 +2838,7 @@ _copyAlterTableCmd(const AlterTableCmd *from)
 
 static AlterDomainStmt *
 _copyAlterDomainStmt(const AlterDomainStmt *from)
-{
+{	StackTrace("_copyAlterDomainStmt");
 	AlterDomainStmt *newnode = makeNode(AlterDomainStmt);
 
 	COPY_SCALAR_FIELD(subtype);
@@ -2853,7 +2853,7 @@ _copyAlterDomainStmt(const AlterDomainStmt *from)
 
 static GrantStmt *
 _copyGrantStmt(const GrantStmt *from)
-{
+{	StackTrace("_copyGrantStmt");
 	GrantStmt  *newnode = makeNode(GrantStmt);
 
 	COPY_SCALAR_FIELD(is_grant);
@@ -2870,7 +2870,7 @@ _copyGrantStmt(const GrantStmt *from)
 
 static FuncWithArgs *
 _copyFuncWithArgs(const FuncWithArgs *from)
-{
+{	StackTrace("_copyFuncWithArgs");
 	FuncWithArgs *newnode = makeNode(FuncWithArgs);
 
 	COPY_NODE_FIELD(funcname);
@@ -2881,7 +2881,7 @@ _copyFuncWithArgs(const FuncWithArgs *from)
 
 static AccessPriv *
 _copyAccessPriv(const AccessPriv *from)
-{
+{	StackTrace("_copyAccessPriv");
 	AccessPriv *newnode = makeNode(AccessPriv);
 
 	COPY_STRING_FIELD(priv_name);
@@ -2892,7 +2892,7 @@ _copyAccessPriv(const AccessPriv *from)
 
 static GrantRoleStmt *
 _copyGrantRoleStmt(const GrantRoleStmt *from)
-{
+{	StackTrace("_copyGrantRoleStmt");
 	GrantRoleStmt *newnode = makeNode(GrantRoleStmt);
 
 	COPY_NODE_FIELD(granted_roles);
@@ -2907,7 +2907,7 @@ _copyGrantRoleStmt(const GrantRoleStmt *from)
 
 static AlterDefaultPrivilegesStmt *
 _copyAlterDefaultPrivilegesStmt(const AlterDefaultPrivilegesStmt *from)
-{
+{	StackTrace("_copyAlterDefaultPrivilegesStmt");
 	AlterDefaultPrivilegesStmt *newnode = makeNode(AlterDefaultPrivilegesStmt);
 
 	COPY_NODE_FIELD(options);
@@ -2918,7 +2918,7 @@ _copyAlterDefaultPrivilegesStmt(const AlterDefaultPrivilegesStmt *from)
 
 static DeclareCursorStmt *
 _copyDeclareCursorStmt(const DeclareCursorStmt *from)
-{
+{	StackTrace("_copyDeclareCursorStmt");
 	DeclareCursorStmt *newnode = makeNode(DeclareCursorStmt);
 
 	COPY_STRING_FIELD(portalname);
@@ -2930,7 +2930,7 @@ _copyDeclareCursorStmt(const DeclareCursorStmt *from)
 
 static ClosePortalStmt *
 _copyClosePortalStmt(const ClosePortalStmt *from)
-{
+{	StackTrace("_copyClosePortalStmt");
 	ClosePortalStmt *newnode = makeNode(ClosePortalStmt);
 
 	COPY_STRING_FIELD(portalname);
@@ -2940,7 +2940,7 @@ _copyClosePortalStmt(const ClosePortalStmt *from)
 
 static ClusterStmt *
 _copyClusterStmt(const ClusterStmt *from)
-{
+{	StackTrace("_copyClusterStmt");
 	ClusterStmt *newnode = makeNode(ClusterStmt);
 
 	COPY_NODE_FIELD(relation);
@@ -2952,7 +2952,7 @@ _copyClusterStmt(const ClusterStmt *from)
 
 static CopyStmt *
 _copyCopyStmt(const CopyStmt *from)
-{
+{	StackTrace("_copyCopyStmt");
 	CopyStmt   *newnode = makeNode(CopyStmt);
 
 	COPY_NODE_FIELD(relation);
@@ -2974,7 +2974,7 @@ _copyCopyStmt(const CopyStmt *from)
  */
 static void
 CopyCreateStmtFields(const CreateStmt *from, CreateStmt *newnode)
-{
+{	StackTrace("CopyCreateStmtFields");
 	COPY_NODE_FIELD(relation);
 	COPY_NODE_FIELD(tableElts);
 	COPY_NODE_FIELD(inhRelations);
@@ -2988,7 +2988,7 @@ CopyCreateStmtFields(const CreateStmt *from, CreateStmt *newnode)
 
 static CreateStmt *
 _copyCreateStmt(const CreateStmt *from)
-{
+{	StackTrace("_copyCreateStmt");
 	CreateStmt *newnode = makeNode(CreateStmt);
 
 	CopyCreateStmtFields(from, newnode);
@@ -2998,7 +2998,7 @@ _copyCreateStmt(const CreateStmt *from)
 
 static TableLikeClause *
 _copyTableLikeClause(const TableLikeClause *from)
-{
+{	StackTrace("_copyTableLikeClause");
 	TableLikeClause *newnode = makeNode(TableLikeClause);
 
 	COPY_NODE_FIELD(relation);
@@ -3009,7 +3009,7 @@ _copyTableLikeClause(const TableLikeClause *from)
 
 static DefineStmt *
 _copyDefineStmt(const DefineStmt *from)
-{
+{	StackTrace("_copyDefineStmt");
 	DefineStmt *newnode = makeNode(DefineStmt);
 
 	COPY_SCALAR_FIELD(kind);
@@ -3023,7 +3023,7 @@ _copyDefineStmt(const DefineStmt *from)
 
 static DropStmt *
 _copyDropStmt(const DropStmt *from)
-{
+{	StackTrace("_copyDropStmt");
 	DropStmt   *newnode = makeNode(DropStmt);
 
 	COPY_NODE_FIELD(objects);
@@ -3038,7 +3038,7 @@ _copyDropStmt(const DropStmt *from)
 
 static TruncateStmt *
 _copyTruncateStmt(const TruncateStmt *from)
-{
+{	StackTrace("_copyTruncateStmt");
 	TruncateStmt *newnode = makeNode(TruncateStmt);
 
 	COPY_NODE_FIELD(relations);
@@ -3050,7 +3050,7 @@ _copyTruncateStmt(const TruncateStmt *from)
 
 static CommentStmt *
 _copyCommentStmt(const CommentStmt *from)
-{
+{	StackTrace("_copyCommentStmt");
 	CommentStmt *newnode = makeNode(CommentStmt);
 
 	COPY_SCALAR_FIELD(objtype);
@@ -3063,7 +3063,7 @@ _copyCommentStmt(const CommentStmt *from)
 
 static SecLabelStmt *
 _copySecLabelStmt(const SecLabelStmt *from)
-{
+{	StackTrace("_copySecLabelStmt");
 	SecLabelStmt *newnode = makeNode(SecLabelStmt);
 
 	COPY_SCALAR_FIELD(objtype);
@@ -3077,7 +3077,7 @@ _copySecLabelStmt(const SecLabelStmt *from)
 
 static FetchStmt *
 _copyFetchStmt(const FetchStmt *from)
-{
+{	StackTrace("_copyFetchStmt");
 	FetchStmt  *newnode = makeNode(FetchStmt);
 
 	COPY_SCALAR_FIELD(direction);
@@ -3090,7 +3090,7 @@ _copyFetchStmt(const FetchStmt *from)
 
 static IndexStmt *
 _copyIndexStmt(const IndexStmt *from)
-{
+{	StackTrace("_copyIndexStmt");
 	IndexStmt  *newnode = makeNode(IndexStmt);
 
 	COPY_STRING_FIELD(idxname);
@@ -3118,7 +3118,7 @@ _copyIndexStmt(const IndexStmt *from)
 
 static CreateFunctionStmt *
 _copyCreateFunctionStmt(const CreateFunctionStmt *from)
-{
+{	StackTrace("_copyCreateFunctionStmt");
 	CreateFunctionStmt *newnode = makeNode(CreateFunctionStmt);
 
 	COPY_SCALAR_FIELD(replace);
@@ -3133,7 +3133,7 @@ _copyCreateFunctionStmt(const CreateFunctionStmt *from)
 
 static FunctionParameter *
 _copyFunctionParameter(const FunctionParameter *from)
-{
+{	StackTrace("_copyFunctionParameter");
 	FunctionParameter *newnode = makeNode(FunctionParameter);
 
 	COPY_STRING_FIELD(name);
@@ -3146,7 +3146,7 @@ _copyFunctionParameter(const FunctionParameter *from)
 
 static AlterFunctionStmt *
 _copyAlterFunctionStmt(const AlterFunctionStmt *from)
-{
+{	StackTrace("_copyAlterFunctionStmt");
 	AlterFunctionStmt *newnode = makeNode(AlterFunctionStmt);
 
 	COPY_NODE_FIELD(func);
@@ -3157,7 +3157,7 @@ _copyAlterFunctionStmt(const AlterFunctionStmt *from)
 
 static DoStmt *
 _copyDoStmt(const DoStmt *from)
-{
+{	StackTrace("_copyDoStmt");
 	DoStmt	   *newnode = makeNode(DoStmt);
 
 	COPY_NODE_FIELD(args);
@@ -3167,7 +3167,7 @@ _copyDoStmt(const DoStmt *from)
 
 static RenameStmt *
 _copyRenameStmt(const RenameStmt *from)
-{
+{	StackTrace("_copyRenameStmt");
 	RenameStmt *newnode = makeNode(RenameStmt);
 
 	COPY_SCALAR_FIELD(renameType);
@@ -3185,7 +3185,7 @@ _copyRenameStmt(const RenameStmt *from)
 
 static AlterObjectSchemaStmt *
 _copyAlterObjectSchemaStmt(const AlterObjectSchemaStmt *from)
-{
+{	StackTrace("_copyAlterObjectSchemaStmt");
 	AlterObjectSchemaStmt *newnode = makeNode(AlterObjectSchemaStmt);
 
 	COPY_SCALAR_FIELD(objectType);
@@ -3200,7 +3200,7 @@ _copyAlterObjectSchemaStmt(const AlterObjectSchemaStmt *from)
 
 static AlterOwnerStmt *
 _copyAlterOwnerStmt(const AlterOwnerStmt *from)
-{
+{	StackTrace("_copyAlterOwnerStmt");
 	AlterOwnerStmt *newnode = makeNode(AlterOwnerStmt);
 
 	COPY_SCALAR_FIELD(objectType);
@@ -3214,7 +3214,7 @@ _copyAlterOwnerStmt(const AlterOwnerStmt *from)
 
 static RuleStmt *
 _copyRuleStmt(const RuleStmt *from)
-{
+{	StackTrace("_copyRuleStmt");
 	RuleStmt   *newnode = makeNode(RuleStmt);
 
 	COPY_NODE_FIELD(relation);
@@ -3230,7 +3230,7 @@ _copyRuleStmt(const RuleStmt *from)
 
 static NotifyStmt *
 _copyNotifyStmt(const NotifyStmt *from)
-{
+{	StackTrace("_copyNotifyStmt");
 	NotifyStmt *newnode = makeNode(NotifyStmt);
 
 	COPY_STRING_FIELD(conditionname);
@@ -3241,7 +3241,7 @@ _copyNotifyStmt(const NotifyStmt *from)
 
 static ListenStmt *
 _copyListenStmt(const ListenStmt *from)
-{
+{	StackTrace("_copyListenStmt");
 	ListenStmt *newnode = makeNode(ListenStmt);
 
 	COPY_STRING_FIELD(conditionname);
@@ -3251,7 +3251,7 @@ _copyListenStmt(const ListenStmt *from)
 
 static UnlistenStmt *
 _copyUnlistenStmt(const UnlistenStmt *from)
-{
+{	StackTrace("_copyUnlistenStmt");
 	UnlistenStmt *newnode = makeNode(UnlistenStmt);
 
 	COPY_STRING_FIELD(conditionname);
@@ -3261,7 +3261,7 @@ _copyUnlistenStmt(const UnlistenStmt *from)
 
 static TransactionStmt *
 _copyTransactionStmt(const TransactionStmt *from)
-{
+{	StackTrace("_copyTransactionStmt");
 	TransactionStmt *newnode = makeNode(TransactionStmt);
 
 	COPY_SCALAR_FIELD(kind);
@@ -3273,7 +3273,7 @@ _copyTransactionStmt(const TransactionStmt *from)
 
 static CompositeTypeStmt *
 _copyCompositeTypeStmt(const CompositeTypeStmt *from)
-{
+{	StackTrace("_copyCompositeTypeStmt");
 	CompositeTypeStmt *newnode = makeNode(CompositeTypeStmt);
 
 	COPY_NODE_FIELD(typevar);
@@ -3284,7 +3284,7 @@ _copyCompositeTypeStmt(const CompositeTypeStmt *from)
 
 static CreateEnumStmt *
 _copyCreateEnumStmt(const CreateEnumStmt *from)
-{
+{	StackTrace("_copyCreateEnumStmt");
 	CreateEnumStmt *newnode = makeNode(CreateEnumStmt);
 
 	COPY_NODE_FIELD(typeName);
@@ -3295,7 +3295,7 @@ _copyCreateEnumStmt(const CreateEnumStmt *from)
 
 static CreateRangeStmt *
 _copyCreateRangeStmt(const CreateRangeStmt *from)
-{
+{	StackTrace("_copyCreateRangeStmt");
 	CreateRangeStmt *newnode = makeNode(CreateRangeStmt);
 
 	COPY_NODE_FIELD(typeName);
@@ -3306,7 +3306,7 @@ _copyCreateRangeStmt(const CreateRangeStmt *from)
 
 static AlterEnumStmt *
 _copyAlterEnumStmt(const AlterEnumStmt *from)
-{
+{	StackTrace("_copyAlterEnumStmt");
 	AlterEnumStmt *newnode = makeNode(AlterEnumStmt);
 
 	COPY_NODE_FIELD(typeName);
@@ -3320,7 +3320,7 @@ _copyAlterEnumStmt(const AlterEnumStmt *from)
 
 static ViewStmt *
 _copyViewStmt(const ViewStmt *from)
-{
+{	StackTrace("_copyViewStmt");
 	ViewStmt   *newnode = makeNode(ViewStmt);
 
 	COPY_NODE_FIELD(view);
@@ -3335,7 +3335,7 @@ _copyViewStmt(const ViewStmt *from)
 
 static LoadStmt *
 _copyLoadStmt(const LoadStmt *from)
-{
+{	StackTrace("_copyLoadStmt");
 	LoadStmt   *newnode = makeNode(LoadStmt);
 
 	COPY_STRING_FIELD(filename);
@@ -3345,7 +3345,7 @@ _copyLoadStmt(const LoadStmt *from)
 
 static CreateDomainStmt *
 _copyCreateDomainStmt(const CreateDomainStmt *from)
-{
+{	StackTrace("_copyCreateDomainStmt");
 	CreateDomainStmt *newnode = makeNode(CreateDomainStmt);
 
 	COPY_NODE_FIELD(domainname);
@@ -3358,7 +3358,7 @@ _copyCreateDomainStmt(const CreateDomainStmt *from)
 
 static CreateOpClassStmt *
 _copyCreateOpClassStmt(const CreateOpClassStmt *from)
-{
+{	StackTrace("_copyCreateOpClassStmt");
 	CreateOpClassStmt *newnode = makeNode(CreateOpClassStmt);
 
 	COPY_NODE_FIELD(opclassname);
@@ -3373,7 +3373,7 @@ _copyCreateOpClassStmt(const CreateOpClassStmt *from)
 
 static CreateOpClassItem *
 _copyCreateOpClassItem(const CreateOpClassItem *from)
-{
+{	StackTrace("_copyCreateOpClassItem");
 	CreateOpClassItem *newnode = makeNode(CreateOpClassItem);
 
 	COPY_SCALAR_FIELD(itemtype);
@@ -3389,7 +3389,7 @@ _copyCreateOpClassItem(const CreateOpClassItem *from)
 
 static CreateOpFamilyStmt *
 _copyCreateOpFamilyStmt(const CreateOpFamilyStmt *from)
-{
+{	StackTrace("_copyCreateOpFamilyStmt");
 	CreateOpFamilyStmt *newnode = makeNode(CreateOpFamilyStmt);
 
 	COPY_NODE_FIELD(opfamilyname);
@@ -3400,7 +3400,7 @@ _copyCreateOpFamilyStmt(const CreateOpFamilyStmt *from)
 
 static AlterOpFamilyStmt *
 _copyAlterOpFamilyStmt(const AlterOpFamilyStmt *from)
-{
+{	StackTrace("_copyAlterOpFamilyStmt");
 	AlterOpFamilyStmt *newnode = makeNode(AlterOpFamilyStmt);
 
 	COPY_NODE_FIELD(opfamilyname);
@@ -3413,7 +3413,7 @@ _copyAlterOpFamilyStmt(const AlterOpFamilyStmt *from)
 
 static CreatedbStmt *
 _copyCreatedbStmt(const CreatedbStmt *from)
-{
+{	StackTrace("_copyCreatedbStmt");
 	CreatedbStmt *newnode = makeNode(CreatedbStmt);
 
 	COPY_STRING_FIELD(dbname);
@@ -3424,7 +3424,7 @@ _copyCreatedbStmt(const CreatedbStmt *from)
 
 static AlterDatabaseStmt *
 _copyAlterDatabaseStmt(const AlterDatabaseStmt *from)
-{
+{	StackTrace("_copyAlterDatabaseStmt");
 	AlterDatabaseStmt *newnode = makeNode(AlterDatabaseStmt);
 
 	COPY_STRING_FIELD(dbname);
@@ -3435,7 +3435,7 @@ _copyAlterDatabaseStmt(const AlterDatabaseStmt *from)
 
 static AlterDatabaseSetStmt *
 _copyAlterDatabaseSetStmt(const AlterDatabaseSetStmt *from)
-{
+{	StackTrace("_copyAlterDatabaseSetStmt");
 	AlterDatabaseSetStmt *newnode = makeNode(AlterDatabaseSetStmt);
 
 	COPY_STRING_FIELD(dbname);
@@ -3446,7 +3446,7 @@ _copyAlterDatabaseSetStmt(const AlterDatabaseSetStmt *from)
 
 static DropdbStmt *
 _copyDropdbStmt(const DropdbStmt *from)
-{
+{	StackTrace("_copyDropdbStmt");
 	DropdbStmt *newnode = makeNode(DropdbStmt);
 
 	COPY_STRING_FIELD(dbname);
@@ -3457,7 +3457,7 @@ _copyDropdbStmt(const DropdbStmt *from)
 
 static VacuumStmt *
 _copyVacuumStmt(const VacuumStmt *from)
-{
+{	StackTrace("_copyVacuumStmt");
 	VacuumStmt *newnode = makeNode(VacuumStmt);
 
 	COPY_SCALAR_FIELD(options);
@@ -3469,7 +3469,7 @@ _copyVacuumStmt(const VacuumStmt *from)
 
 static ExplainStmt *
 _copyExplainStmt(const ExplainStmt *from)
-{
+{	StackTrace("_copyExplainStmt");
 	ExplainStmt *newnode = makeNode(ExplainStmt);
 
 	COPY_NODE_FIELD(query);
@@ -3480,7 +3480,7 @@ _copyExplainStmt(const ExplainStmt *from)
 
 static CreateTableAsStmt *
 _copyCreateTableAsStmt(const CreateTableAsStmt *from)
-{
+{	StackTrace("_copyCreateTableAsStmt");
 	CreateTableAsStmt *newnode = makeNode(CreateTableAsStmt);
 
 	COPY_NODE_FIELD(query);
@@ -3494,7 +3494,7 @@ _copyCreateTableAsStmt(const CreateTableAsStmt *from)
 
 static RefreshMatViewStmt *
 _copyRefreshMatViewStmt(const RefreshMatViewStmt *from)
-{
+{	StackTrace("_copyRefreshMatViewStmt");
 	RefreshMatViewStmt *newnode = makeNode(RefreshMatViewStmt);
 
 	COPY_SCALAR_FIELD(concurrent);
@@ -3506,7 +3506,7 @@ _copyRefreshMatViewStmt(const RefreshMatViewStmt *from)
 
 static ReplicaIdentityStmt *
 _copyReplicaIdentityStmt(const ReplicaIdentityStmt *from)
-{
+{	StackTrace("_copyReplicaIdentityStmt");
 	ReplicaIdentityStmt *newnode = makeNode(ReplicaIdentityStmt);
 
 	COPY_SCALAR_FIELD(identity_type);
@@ -3517,7 +3517,7 @@ _copyReplicaIdentityStmt(const ReplicaIdentityStmt *from)
 
 static AlterSystemStmt *
 _copyAlterSystemStmt(const AlterSystemStmt *from)
-{
+{	StackTrace("_copyAlterSystemStmt");
 	AlterSystemStmt *newnode = makeNode(AlterSystemStmt);
 
 	COPY_NODE_FIELD(setstmt);
@@ -3527,7 +3527,7 @@ _copyAlterSystemStmt(const AlterSystemStmt *from)
 
 static CreateSeqStmt *
 _copyCreateSeqStmt(const CreateSeqStmt *from)
-{
+{	StackTrace("_copyCreateSeqStmt");
 	CreateSeqStmt *newnode = makeNode(CreateSeqStmt);
 
 	COPY_NODE_FIELD(sequence);
@@ -3540,7 +3540,7 @@ _copyCreateSeqStmt(const CreateSeqStmt *from)
 
 static AlterSeqStmt *
 _copyAlterSeqStmt(const AlterSeqStmt *from)
-{
+{	StackTrace("_copyAlterSeqStmt");
 	AlterSeqStmt *newnode = makeNode(AlterSeqStmt);
 
 	COPY_NODE_FIELD(sequence);
@@ -3552,7 +3552,7 @@ _copyAlterSeqStmt(const AlterSeqStmt *from)
 
 static VariableSetStmt *
 _copyVariableSetStmt(const VariableSetStmt *from)
-{
+{	StackTrace("_copyVariableSetStmt");
 	VariableSetStmt *newnode = makeNode(VariableSetStmt);
 
 	COPY_SCALAR_FIELD(kind);
@@ -3565,7 +3565,7 @@ _copyVariableSetStmt(const VariableSetStmt *from)
 
 static VariableShowStmt *
 _copyVariableShowStmt(const VariableShowStmt *from)
-{
+{	StackTrace("_copyVariableShowStmt");
 	VariableShowStmt *newnode = makeNode(VariableShowStmt);
 
 	COPY_STRING_FIELD(name);
@@ -3575,7 +3575,7 @@ _copyVariableShowStmt(const VariableShowStmt *from)
 
 static DiscardStmt *
 _copyDiscardStmt(const DiscardStmt *from)
-{
+{	StackTrace("_copyDiscardStmt");
 	DiscardStmt *newnode = makeNode(DiscardStmt);
 
 	COPY_SCALAR_FIELD(target);
@@ -3585,7 +3585,7 @@ _copyDiscardStmt(const DiscardStmt *from)
 
 static CreateTableSpaceStmt *
 _copyCreateTableSpaceStmt(const CreateTableSpaceStmt *from)
-{
+{	StackTrace("_copyCreateTableSpaceStmt");
 	CreateTableSpaceStmt *newnode = makeNode(CreateTableSpaceStmt);
 
 	COPY_STRING_FIELD(tablespacename);
@@ -3598,7 +3598,7 @@ _copyCreateTableSpaceStmt(const CreateTableSpaceStmt *from)
 
 static DropTableSpaceStmt *
 _copyDropTableSpaceStmt(const DropTableSpaceStmt *from)
-{
+{	StackTrace("_copyDropTableSpaceStmt");
 	DropTableSpaceStmt *newnode = makeNode(DropTableSpaceStmt);
 
 	COPY_STRING_FIELD(tablespacename);
@@ -3609,7 +3609,7 @@ _copyDropTableSpaceStmt(const DropTableSpaceStmt *from)
 
 static AlterTableSpaceOptionsStmt *
 _copyAlterTableSpaceOptionsStmt(const AlterTableSpaceOptionsStmt *from)
-{
+{	StackTrace("_copyAlterTableSpaceOptionsStmt");
 	AlterTableSpaceOptionsStmt *newnode = makeNode(AlterTableSpaceOptionsStmt);
 
 	COPY_STRING_FIELD(tablespacename);
@@ -3621,7 +3621,7 @@ _copyAlterTableSpaceOptionsStmt(const AlterTableSpaceOptionsStmt *from)
 
 static AlterTableMoveAllStmt *
 _copyAlterTableMoveAllStmt(const AlterTableMoveAllStmt *from)
-{
+{	StackTrace("_copyAlterTableMoveAllStmt");
 	AlterTableMoveAllStmt *newnode = makeNode(AlterTableMoveAllStmt);
 
 	COPY_STRING_FIELD(orig_tablespacename);
@@ -3635,7 +3635,7 @@ _copyAlterTableMoveAllStmt(const AlterTableMoveAllStmt *from)
 
 static CreateExtensionStmt *
 _copyCreateExtensionStmt(const CreateExtensionStmt *from)
-{
+{	StackTrace("_copyCreateExtensionStmt");
 	CreateExtensionStmt *newnode = makeNode(CreateExtensionStmt);
 
 	COPY_STRING_FIELD(extname);
@@ -3647,7 +3647,7 @@ _copyCreateExtensionStmt(const CreateExtensionStmt *from)
 
 static AlterExtensionStmt *
 _copyAlterExtensionStmt(const AlterExtensionStmt *from)
-{
+{	StackTrace("_copyAlterExtensionStmt");
 	AlterExtensionStmt *newnode = makeNode(AlterExtensionStmt);
 
 	COPY_STRING_FIELD(extname);
@@ -3658,7 +3658,7 @@ _copyAlterExtensionStmt(const AlterExtensionStmt *from)
 
 static AlterExtensionContentsStmt *
 _copyAlterExtensionContentsStmt(const AlterExtensionContentsStmt *from)
-{
+{	StackTrace("_copyAlterExtensionContentsStmt");
 	AlterExtensionContentsStmt *newnode = makeNode(AlterExtensionContentsStmt);
 
 	COPY_STRING_FIELD(extname);
@@ -3672,7 +3672,7 @@ _copyAlterExtensionContentsStmt(const AlterExtensionContentsStmt *from)
 
 static CreateFdwStmt *
 _copyCreateFdwStmt(const CreateFdwStmt *from)
-{
+{	StackTrace("_copyCreateFdwStmt");
 	CreateFdwStmt *newnode = makeNode(CreateFdwStmt);
 
 	COPY_STRING_FIELD(fdwname);
@@ -3684,7 +3684,7 @@ _copyCreateFdwStmt(const CreateFdwStmt *from)
 
 static AlterFdwStmt *
 _copyAlterFdwStmt(const AlterFdwStmt *from)
-{
+{	StackTrace("_copyAlterFdwStmt");
 	AlterFdwStmt *newnode = makeNode(AlterFdwStmt);
 
 	COPY_STRING_FIELD(fdwname);
@@ -3696,7 +3696,7 @@ _copyAlterFdwStmt(const AlterFdwStmt *from)
 
 static CreateForeignServerStmt *
 _copyCreateForeignServerStmt(const CreateForeignServerStmt *from)
-{
+{	StackTrace("_copyCreateForeignServerStmt");
 	CreateForeignServerStmt *newnode = makeNode(CreateForeignServerStmt);
 
 	COPY_STRING_FIELD(servername);
@@ -3710,7 +3710,7 @@ _copyCreateForeignServerStmt(const CreateForeignServerStmt *from)
 
 static AlterForeignServerStmt *
 _copyAlterForeignServerStmt(const AlterForeignServerStmt *from)
-{
+{	StackTrace("_copyAlterForeignServerStmt");
 	AlterForeignServerStmt *newnode = makeNode(AlterForeignServerStmt);
 
 	COPY_STRING_FIELD(servername);
@@ -3723,7 +3723,7 @@ _copyAlterForeignServerStmt(const AlterForeignServerStmt *from)
 
 static CreateUserMappingStmt *
 _copyCreateUserMappingStmt(const CreateUserMappingStmt *from)
-{
+{	StackTrace("_copyCreateUserMappingStmt");
 	CreateUserMappingStmt *newnode = makeNode(CreateUserMappingStmt);
 
 	COPY_NODE_FIELD(user);
@@ -3735,7 +3735,7 @@ _copyCreateUserMappingStmt(const CreateUserMappingStmt *from)
 
 static AlterUserMappingStmt *
 _copyAlterUserMappingStmt(const AlterUserMappingStmt *from)
-{
+{	StackTrace("_copyAlterUserMappingStmt");
 	AlterUserMappingStmt *newnode = makeNode(AlterUserMappingStmt);
 
 	COPY_NODE_FIELD(user);
@@ -3747,7 +3747,7 @@ _copyAlterUserMappingStmt(const AlterUserMappingStmt *from)
 
 static DropUserMappingStmt *
 _copyDropUserMappingStmt(const DropUserMappingStmt *from)
-{
+{	StackTrace("_copyDropUserMappingStmt");
 	DropUserMappingStmt *newnode = makeNode(DropUserMappingStmt);
 
 	COPY_NODE_FIELD(user);
@@ -3759,7 +3759,7 @@ _copyDropUserMappingStmt(const DropUserMappingStmt *from)
 
 static CreateForeignTableStmt *
 _copyCreateForeignTableStmt(const CreateForeignTableStmt *from)
-{
+{	StackTrace("_copyCreateForeignTableStmt");
 	CreateForeignTableStmt *newnode = makeNode(CreateForeignTableStmt);
 
 	CopyCreateStmtFields((const CreateStmt *) from, (CreateStmt *) newnode);
@@ -3772,7 +3772,7 @@ _copyCreateForeignTableStmt(const CreateForeignTableStmt *from)
 
 static ImportForeignSchemaStmt *
 _copyImportForeignSchemaStmt(const ImportForeignSchemaStmt *from)
-{
+{	StackTrace("_copyImportForeignSchemaStmt");
 	ImportForeignSchemaStmt *newnode = makeNode(ImportForeignSchemaStmt);
 
 	COPY_STRING_FIELD(server_name);
@@ -3787,7 +3787,7 @@ _copyImportForeignSchemaStmt(const ImportForeignSchemaStmt *from)
 
 static CreateTransformStmt *
 _copyCreateTransformStmt(const CreateTransformStmt *from)
-{
+{	StackTrace("_copyCreateTransformStmt");
 	CreateTransformStmt *newnode = makeNode(CreateTransformStmt);
 
 	COPY_SCALAR_FIELD(replace);
@@ -3801,7 +3801,7 @@ _copyCreateTransformStmt(const CreateTransformStmt *from)
 
 static CreateTrigStmt *
 _copyCreateTrigStmt(const CreateTrigStmt *from)
-{
+{	StackTrace("_copyCreateTrigStmt");
 	CreateTrigStmt *newnode = makeNode(CreateTrigStmt);
 
 	COPY_STRING_FIELD(trigname);
@@ -3823,7 +3823,7 @@ _copyCreateTrigStmt(const CreateTrigStmt *from)
 
 static CreateEventTrigStmt *
 _copyCreateEventTrigStmt(const CreateEventTrigStmt *from)
-{
+{	StackTrace("_copyCreateEventTrigStmt");
 	CreateEventTrigStmt *newnode = makeNode(CreateEventTrigStmt);
 
 	COPY_STRING_FIELD(trigname);
@@ -3836,7 +3836,7 @@ _copyCreateEventTrigStmt(const CreateEventTrigStmt *from)
 
 static AlterEventTrigStmt *
 _copyAlterEventTrigStmt(const AlterEventTrigStmt *from)
-{
+{	StackTrace("_copyAlterEventTrigStmt");
 	AlterEventTrigStmt *newnode = makeNode(AlterEventTrigStmt);
 
 	COPY_STRING_FIELD(trigname);
@@ -3847,7 +3847,7 @@ _copyAlterEventTrigStmt(const AlterEventTrigStmt *from)
 
 static CreatePLangStmt *
 _copyCreatePLangStmt(const CreatePLangStmt *from)
-{
+{	StackTrace("_copyCreatePLangStmt");
 	CreatePLangStmt *newnode = makeNode(CreatePLangStmt);
 
 	COPY_SCALAR_FIELD(replace);
@@ -3862,7 +3862,7 @@ _copyCreatePLangStmt(const CreatePLangStmt *from)
 
 static CreateRoleStmt *
 _copyCreateRoleStmt(const CreateRoleStmt *from)
-{
+{	StackTrace("_copyCreateRoleStmt");
 	CreateRoleStmt *newnode = makeNode(CreateRoleStmt);
 
 	COPY_SCALAR_FIELD(stmt_type);
@@ -3874,7 +3874,7 @@ _copyCreateRoleStmt(const CreateRoleStmt *from)
 
 static AlterRoleStmt *
 _copyAlterRoleStmt(const AlterRoleStmt *from)
-{
+{	StackTrace("_copyAlterRoleStmt");
 	AlterRoleStmt *newnode = makeNode(AlterRoleStmt);
 
 	COPY_NODE_FIELD(role);
@@ -3886,7 +3886,7 @@ _copyAlterRoleStmt(const AlterRoleStmt *from)
 
 static AlterRoleSetStmt *
 _copyAlterRoleSetStmt(const AlterRoleSetStmt *from)
-{
+{	StackTrace("_copyAlterRoleSetStmt");
 	AlterRoleSetStmt *newnode = makeNode(AlterRoleSetStmt);
 
 	COPY_NODE_FIELD(role);
@@ -3898,7 +3898,7 @@ _copyAlterRoleSetStmt(const AlterRoleSetStmt *from)
 
 static DropRoleStmt *
 _copyDropRoleStmt(const DropRoleStmt *from)
-{
+{	StackTrace("_copyDropRoleStmt");
 	DropRoleStmt *newnode = makeNode(DropRoleStmt);
 
 	COPY_NODE_FIELD(roles);
@@ -3909,7 +3909,7 @@ _copyDropRoleStmt(const DropRoleStmt *from)
 
 static LockStmt *
 _copyLockStmt(const LockStmt *from)
-{
+{	StackTrace("_copyLockStmt");
 	LockStmt   *newnode = makeNode(LockStmt);
 
 	COPY_NODE_FIELD(relations);
@@ -3921,7 +3921,7 @@ _copyLockStmt(const LockStmt *from)
 
 static ConstraintsSetStmt *
 _copyConstraintsSetStmt(const ConstraintsSetStmt *from)
-{
+{	StackTrace("_copyConstraintsSetStmt");
 	ConstraintsSetStmt *newnode = makeNode(ConstraintsSetStmt);
 
 	COPY_NODE_FIELD(constraints);
@@ -3932,7 +3932,7 @@ _copyConstraintsSetStmt(const ConstraintsSetStmt *from)
 
 static ReindexStmt *
 _copyReindexStmt(const ReindexStmt *from)
-{
+{	StackTrace("_copyReindexStmt");
 	ReindexStmt *newnode = makeNode(ReindexStmt);
 
 	COPY_SCALAR_FIELD(kind);
@@ -3945,7 +3945,7 @@ _copyReindexStmt(const ReindexStmt *from)
 
 static CreateSchemaStmt *
 _copyCreateSchemaStmt(const CreateSchemaStmt *from)
-{
+{	StackTrace("_copyCreateSchemaStmt");
 	CreateSchemaStmt *newnode = makeNode(CreateSchemaStmt);
 
 	COPY_STRING_FIELD(schemaname);
@@ -3958,7 +3958,7 @@ _copyCreateSchemaStmt(const CreateSchemaStmt *from)
 
 static CreateConversionStmt *
 _copyCreateConversionStmt(const CreateConversionStmt *from)
-{
+{	StackTrace("_copyCreateConversionStmt");
 	CreateConversionStmt *newnode = makeNode(CreateConversionStmt);
 
 	COPY_NODE_FIELD(conversion_name);
@@ -3972,7 +3972,7 @@ _copyCreateConversionStmt(const CreateConversionStmt *from)
 
 static CreateCastStmt *
 _copyCreateCastStmt(const CreateCastStmt *from)
-{
+{	StackTrace("_copyCreateCastStmt");
 	CreateCastStmt *newnode = makeNode(CreateCastStmt);
 
 	COPY_NODE_FIELD(sourcetype);
@@ -3986,7 +3986,7 @@ _copyCreateCastStmt(const CreateCastStmt *from)
 
 static PrepareStmt *
 _copyPrepareStmt(const PrepareStmt *from)
-{
+{	StackTrace("_copyPrepareStmt");
 	PrepareStmt *newnode = makeNode(PrepareStmt);
 
 	COPY_STRING_FIELD(name);
@@ -3998,7 +3998,7 @@ _copyPrepareStmt(const PrepareStmt *from)
 
 static ExecuteStmt *
 _copyExecuteStmt(const ExecuteStmt *from)
-{
+{	StackTrace("_copyExecuteStmt");
 	ExecuteStmt *newnode = makeNode(ExecuteStmt);
 
 	COPY_STRING_FIELD(name);
@@ -4009,7 +4009,7 @@ _copyExecuteStmt(const ExecuteStmt *from)
 
 static DeallocateStmt *
 _copyDeallocateStmt(const DeallocateStmt *from)
-{
+{	StackTrace("_copyDeallocateStmt");
 	DeallocateStmt *newnode = makeNode(DeallocateStmt);
 
 	COPY_STRING_FIELD(name);
@@ -4019,7 +4019,7 @@ _copyDeallocateStmt(const DeallocateStmt *from)
 
 static DropOwnedStmt *
 _copyDropOwnedStmt(const DropOwnedStmt *from)
-{
+{	StackTrace("_copyDropOwnedStmt");
 	DropOwnedStmt *newnode = makeNode(DropOwnedStmt);
 
 	COPY_NODE_FIELD(roles);
@@ -4030,7 +4030,7 @@ _copyDropOwnedStmt(const DropOwnedStmt *from)
 
 static ReassignOwnedStmt *
 _copyReassignOwnedStmt(const ReassignOwnedStmt *from)
-{
+{	StackTrace("_copyReassignOwnedStmt");
 	ReassignOwnedStmt *newnode = makeNode(ReassignOwnedStmt);
 
 	COPY_NODE_FIELD(roles);
@@ -4041,7 +4041,7 @@ _copyReassignOwnedStmt(const ReassignOwnedStmt *from)
 
 static AlterTSDictionaryStmt *
 _copyAlterTSDictionaryStmt(const AlterTSDictionaryStmt *from)
-{
+{	StackTrace("_copyAlterTSDictionaryStmt");
 	AlterTSDictionaryStmt *newnode = makeNode(AlterTSDictionaryStmt);
 
 	COPY_NODE_FIELD(dictname);
@@ -4052,7 +4052,7 @@ _copyAlterTSDictionaryStmt(const AlterTSDictionaryStmt *from)
 
 static AlterTSConfigurationStmt *
 _copyAlterTSConfigurationStmt(const AlterTSConfigurationStmt *from)
-{
+{	StackTrace("_copyAlterTSConfigurationStmt");
 	AlterTSConfigurationStmt *newnode = makeNode(AlterTSConfigurationStmt);
 
 	COPY_SCALAR_FIELD(kind);
@@ -4068,7 +4068,7 @@ _copyAlterTSConfigurationStmt(const AlterTSConfigurationStmt *from)
 
 static CreatePolicyStmt *
 _copyCreatePolicyStmt(const CreatePolicyStmt *from)
-{
+{	StackTrace("_copyCreatePolicyStmt");
 	CreatePolicyStmt *newnode = makeNode(CreatePolicyStmt);
 
 	COPY_STRING_FIELD(policy_name);
@@ -4083,7 +4083,7 @@ _copyCreatePolicyStmt(const CreatePolicyStmt *from)
 
 static AlterPolicyStmt *
 _copyAlterPolicyStmt(const AlterPolicyStmt *from)
-{
+{	StackTrace("_copyAlterPolicyStmt");
 	AlterPolicyStmt *newnode = makeNode(AlterPolicyStmt);
 
 	COPY_STRING_FIELD(policy_name);
@@ -4111,7 +4111,7 @@ _copyAlterPolicyStmt(const AlterPolicyStmt *from)
 
 static List *
 _copyList(const List *from)
-{
+{	StackTrace("_copyList");
 	List	   *new;
 	ListCell   *curr_old;
 	ListCell   *prev_new;
@@ -4143,7 +4143,7 @@ _copyList(const List *from)
  */
 static Value *
 _copyValue(const Value *from)
-{
+{	StackTrace("_copyValue");
 	Value	   *newnode = makeNode(Value);
 
 	/* See also _copyAConst when changing this code! */
@@ -4178,7 +4178,7 @@ _copyValue(const Value *from)
  */
 void *
 copyObject(const void *from)
-{
+{	StackTrace("copyObject");
 	void	   *retval;
 
 	if (from == NULL)

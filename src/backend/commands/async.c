@@ -390,7 +390,7 @@ static void ClearPendingActionsAndNotifies(void);
  */
 static bool
 asyncQueuePagePrecedes(int p, int q)
-{
+{	StackTrace("asyncQueuePagePrecedes");
 	int			diff;
 
 	/*
@@ -413,7 +413,7 @@ asyncQueuePagePrecedes(int p, int q)
  */
 Size
 AsyncShmemSize(void)
-{
+{	StackTrace("AsyncShmemSize");
 	Size		size;
 
 	/* This had better match AsyncShmemInit */
@@ -430,7 +430,7 @@ AsyncShmemSize(void)
  */
 void
 AsyncShmemInit(void)
-{
+{	StackTrace("AsyncShmemInit");
 	bool		found;
 	int			slotno;
 	Size		size;
@@ -495,7 +495,7 @@ AsyncShmemInit(void)
  */
 Datum
 pg_notify(PG_FUNCTION_ARGS)
-{
+{	StackTrace("pg_notify");
 	const char *channel;
 	const char *payload;
 
@@ -529,7 +529,7 @@ pg_notify(PG_FUNCTION_ARGS)
  */
 void
 Async_Notify(const char *channel, const char *payload)
-{
+{	StackTrace("Async_Notify");
 	Notification *n;
 	MemoryContext oldcontext;
 
@@ -591,7 +591,7 @@ Async_Notify(const char *channel, const char *payload)
  */
 static void
 queue_listen(ListenActionKind action, const char *channel)
-{
+{	StackTrace("queue_listen");
 	MemoryContext oldcontext;
 	ListenAction *actrec;
 
@@ -621,7 +621,7 @@ queue_listen(ListenActionKind action, const char *channel)
  */
 void
 Async_Listen(const char *channel)
-{
+{	StackTrace("Async_Listen");
 	if (Trace_notify)
 		elog(DEBUG1, "Async_Listen(%s,%d)", channel, MyProcPid);
 
@@ -635,7 +635,7 @@ Async_Listen(const char *channel)
  */
 void
 Async_Unlisten(const char *channel)
-{
+{	StackTrace("Async_Unlisten");
 	if (Trace_notify)
 		elog(DEBUG1, "Async_Unlisten(%s,%d)", channel, MyProcPid);
 
@@ -653,7 +653,7 @@ Async_Unlisten(const char *channel)
  */
 void
 Async_UnlistenAll(void)
-{
+{	StackTrace("Async_UnlistenAll");
 	if (Trace_notify)
 		elog(DEBUG1, "Async_UnlistenAll(%d)", MyProcPid);
 
@@ -673,7 +673,7 @@ Async_UnlistenAll(void)
  */
 Datum
 pg_listening_channels(PG_FUNCTION_ARGS)
-{
+{	StackTrace("pg_listening_channels");
 	FuncCallContext *funcctx;
 	ListCell  **lcp;
 
@@ -720,7 +720,7 @@ pg_listening_channels(PG_FUNCTION_ARGS)
  */
 static void
 Async_UnlistenOnExit(int code, Datum arg)
-{
+{	StackTrace("Async_UnlistenOnExit");
 	Exec_UnlistenAllCommit();
 	asyncQueueUnregister();
 }
@@ -733,7 +733,7 @@ Async_UnlistenOnExit(int code, Datum arg)
  */
 void
 AtPrepare_Notify(void)
-{
+{	StackTrace("AtPrepare_Notify");
 	/* It's not allowed to have any pending LISTEN/UNLISTEN/NOTIFY actions */
 	if (pendingActions || pendingNotifies)
 		ereport(ERROR,
@@ -758,7 +758,7 @@ AtPrepare_Notify(void)
  */
 void
 PreCommit_Notify(void)
-{
+{	StackTrace("PreCommit_Notify");
 	ListCell   *p;
 
 	if (pendingActions == NIL && pendingNotifies == NIL)
@@ -857,7 +857,7 @@ PreCommit_Notify(void)
  */
 void
 AtCommit_Notify(void)
-{
+{	StackTrace("AtCommit_Notify");
 	ListCell   *p;
 
 	/*
@@ -904,7 +904,7 @@ AtCommit_Notify(void)
  */
 static void
 Exec_ListenPreCommit(void)
-{
+{	StackTrace("Exec_ListenPreCommit");
 	/*
 	 * Nothing to do if we are already listening to something, nor if we
 	 * already ran this routine in this transaction.
@@ -961,7 +961,7 @@ Exec_ListenPreCommit(void)
  */
 static void
 Exec_ListenCommit(const char *channel)
-{
+{	StackTrace("Exec_ListenCommit");
 	MemoryContext oldcontext;
 
 	/* Do nothing if we are already listening on this channel */
@@ -988,7 +988,7 @@ Exec_ListenCommit(const char *channel)
  */
 static void
 Exec_UnlistenCommit(const char *channel)
-{
+{	StackTrace("Exec_UnlistenCommit");
 	ListCell   *q;
 	ListCell   *prev;
 
@@ -1022,7 +1022,7 @@ Exec_UnlistenCommit(const char *channel)
  */
 static void
 Exec_UnlistenAllCommit(void)
-{
+{	StackTrace("Exec_UnlistenAllCommit");
 	if (Trace_notify)
 		elog(DEBUG1, "Exec_UnlistenAllCommit(%d)", MyProcPid);
 
@@ -1053,7 +1053,7 @@ Exec_UnlistenAllCommit(void)
  */
 void
 ProcessCompletedNotifies(void)
-{
+{	StackTrace("ProcessCompletedNotifies");
 	MemoryContext caller_context;
 	bool		signalled;
 
@@ -1121,7 +1121,7 @@ ProcessCompletedNotifies(void)
  */
 static bool
 IsListeningOn(const char *channel)
-{
+{	StackTrace("IsListeningOn");
 	ListCell   *p;
 
 	foreach(p, listenChannels)
@@ -1140,7 +1140,7 @@ IsListeningOn(const char *channel)
  */
 static void
 asyncQueueUnregister(void)
-{
+{	StackTrace("asyncQueueUnregister");
 	bool		advanceTail;
 
 	Assert(listenChannels == NIL);		/* else caller error */
@@ -1171,7 +1171,7 @@ asyncQueueUnregister(void)
  */
 static bool
 asyncQueueIsFull(void)
-{
+{	StackTrace("asyncQueueIsFull");
 	int			nexthead;
 	int			boundary;
 
@@ -1202,7 +1202,7 @@ asyncQueueIsFull(void)
  */
 static bool
 asyncQueueAdvance(volatile QueuePosition *position, int entryLength)
-{
+{	StackTrace("asyncQueueAdvance");
 	int			pageno = QUEUE_POS_PAGE(*position);
 	int			offset = QUEUE_POS_OFFSET(*position);
 	bool		pageJump = false;
@@ -1237,7 +1237,7 @@ asyncQueueAdvance(volatile QueuePosition *position, int entryLength)
  */
 static void
 asyncQueueNotificationToEntry(Notification *n, AsyncQueueEntry *qe)
-{
+{	StackTrace("asyncQueueNotificationToEntry");
 	size_t		channellen = strlen(n->channel);
 	size_t		payloadlen = strlen(n->payload);
 	int			entryLength;
@@ -1274,7 +1274,7 @@ asyncQueueNotificationToEntry(Notification *n, AsyncQueueEntry *qe)
  */
 static ListCell *
 asyncQueueAddEntries(ListCell *nextNotify)
-{
+{	StackTrace("asyncQueueAddEntries");
 	AsyncQueueEntry qe;
 	QueuePosition queue_head;
 	int			pageno;
@@ -1371,7 +1371,7 @@ asyncQueueAddEntries(ListCell *nextNotify)
  */
 static void
 asyncQueueFillWarning(void)
-{
+{	StackTrace("asyncQueueFillWarning");
 	int			headPage = QUEUE_POS_PAGE(QUEUE_HEAD);
 	int			tailPage = QUEUE_POS_PAGE(QUEUE_TAIL);
 	int			occupied;
@@ -1441,7 +1441,7 @@ asyncQueueFillWarning(void)
  */
 static bool
 SignalBackends(void)
-{
+{	StackTrace("SignalBackends");
 	bool		signalled = false;
 	int32	   *pids;
 	BackendId  *ids;
@@ -1513,7 +1513,7 @@ SignalBackends(void)
  */
 void
 AtAbort_Notify(void)
-{
+{	StackTrace("AtAbort_Notify");
 	/*
 	 * If we LISTEN but then roll back the transaction after PreCommit_Notify,
 	 * we have registered as a listener but have not made any entry in
@@ -1533,7 +1533,7 @@ AtAbort_Notify(void)
  */
 void
 AtSubStart_Notify(void)
-{
+{	StackTrace("AtSubStart_Notify");
 	MemoryContext old_cxt;
 
 	/* Keep the list-of-lists in TopTransactionContext for simplicity */
@@ -1563,7 +1563,7 @@ AtSubStart_Notify(void)
  */
 void
 AtSubCommit_Notify(void)
-{
+{	StackTrace("AtSubCommit_Notify");
 	List	   *parentPendingActions;
 	List	   *parentPendingNotifies;
 
@@ -1595,7 +1595,7 @@ AtSubCommit_Notify(void)
  */
 void
 AtSubAbort_Notify(void)
-{
+{	StackTrace("AtSubAbort_Notify");
 	int			my_level = GetCurrentTransactionNestLevel();
 
 	/*
@@ -1631,7 +1631,7 @@ AtSubAbort_Notify(void)
  */
 void
 HandleNotifyInterrupt(void)
-{
+{	StackTrace("HandleNotifyInterrupt");
 	/*
 	 * Note: this is called by a SIGNAL HANDLER. You must be very wary what
 	 * you do here.
@@ -1671,7 +1671,7 @@ ProcessNotifyInterrupt(void)
  */
 static void
 asyncQueueReadAllNotifications(void)
-{
+{	StackTrace("asyncQueueReadAllNotifications");
 	volatile QueuePosition pos;
 	QueuePosition oldpos;
 	QueuePosition head;
@@ -1835,7 +1835,7 @@ static bool
 asyncQueueProcessPageEntries(volatile QueuePosition *current,
 							 QueuePosition stop,
 							 char *page_buffer)
-{
+{	StackTrace("asyncQueueProcessPageEntries");
 	bool		reachedStop = false;
 	bool		reachedEndOfPage;
 	AsyncQueueEntry *qe;
@@ -1916,7 +1916,7 @@ asyncQueueProcessPageEntries(volatile QueuePosition *current,
  */
 static void
 asyncQueueAdvanceTail(void)
-{
+{	StackTrace("asyncQueueAdvanceTail");
 	QueuePosition min;
 	int			i;
 	int			oldtailpage;
@@ -1967,7 +1967,7 @@ asyncQueueAdvanceTail(void)
  */
 static void
 ProcessIncomingNotify(void)
-{
+{	StackTrace("ProcessIncomingNotify");
 	/* We *must* reset the flag */
 	notifyInterruptPending = false;
 
@@ -2006,7 +2006,7 @@ ProcessIncomingNotify(void)
  */
 static void
 NotifyMyFrontEnd(const char *channel, const char *payload, int32 srcPid)
-{
+{	StackTrace("NotifyMyFrontEnd");
 	if (whereToSendOutput == DestRemote)
 	{
 		StringInfoData buf;
@@ -2031,7 +2031,7 @@ NotifyMyFrontEnd(const char *channel, const char *payload, int32 srcPid)
 /* Does pendingNotifies include the given channel/payload? */
 static bool
 AsyncExistsPendingNotify(const char *channel, const char *payload)
-{
+{	StackTrace("AsyncExistsPendingNotify");
 	ListCell   *p;
 	Notification *n;
 
@@ -2079,7 +2079,7 @@ AsyncExistsPendingNotify(const char *channel, const char *payload)
 /* Clear the pendingActions and pendingNotifies lists. */
 static void
 ClearPendingActionsAndNotifies(void)
-{
+{	StackTrace("ClearPendingActionsAndNotifies");
 	/*
 	 * We used to have to explicitly deallocate the list members and nodes,
 	 * because they were malloc'd.  Now, since we know they are palloc'd in

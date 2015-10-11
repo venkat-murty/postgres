@@ -99,7 +99,7 @@ static List *expand_groupingset_node(GroupingSet *gs);
 void
 transformAggregateCall(ParseState *pstate, Aggref *agg,
 					   List *args, List *aggorder, bool agg_distinct)
-{
+{	StackTrace("transformAggregateCall");
 	List	   *tlist = NIL;
 	List	   *torder = NIL;
 	List	   *tdistinct = NIL;
@@ -232,7 +232,7 @@ transformAggregateCall(ParseState *pstate, Aggref *agg,
  */
 Node *
 transformGroupingFunc(ParseState *pstate, GroupingFunc *p)
-{
+{	StackTrace("transformGroupingFunc");
 	ListCell   *lc;
 	List	   *args = p->args;
 	List	   *result_list = NIL;
@@ -271,7 +271,7 @@ transformGroupingFunc(ParseState *pstate, GroupingFunc *p)
  */
 static void
 check_agglevels_and_constraints(ParseState *pstate, Node *expr)
-{
+{	StackTrace("check_agglevels_and_constraints");
 	List	   *directargs = NIL;
 	List	   *args = NIL;
 	Expr	   *filter = NULL;
@@ -541,7 +541,7 @@ check_agg_arguments(ParseState *pstate,
 					List *directargs,
 					List *args,
 					Expr *filter)
-{
+{	StackTrace("check_agg_arguments");
 	int			agglevel;
 	check_agg_arguments_context context;
 
@@ -627,7 +627,7 @@ check_agg_arguments(ParseState *pstate,
 static bool
 check_agg_arguments_walker(Node *node,
 						   check_agg_arguments_context *context)
-{
+{	StackTrace("check_agg_arguments_walker");
 	if (node == NULL)
 		return false;
 	if (IsA(node, Var))
@@ -716,7 +716,7 @@ check_agg_arguments_walker(Node *node,
 void
 transformWindowFuncCall(ParseState *pstate, WindowFunc *wfunc,
 						WindowDef *windef)
-{
+{	StackTrace("transformWindowFuncCall");
 	const char *err;
 	bool		errkind;
 
@@ -939,7 +939,7 @@ transformWindowFuncCall(ParseState *pstate, WindowFunc *wfunc,
  */
 void
 parseCheckAggregates(ParseState *pstate, Query *qry)
-{
+{	StackTrace("parseCheckAggregates");
 	List	   *gset_common = NIL;
 	List	   *groupClauses = NIL;
 	List	   *groupClauseCommonVars = NIL;
@@ -1149,7 +1149,7 @@ check_ungrouped_columns(Node *node, ParseState *pstate, Query *qry,
 						List *groupClauses, List *groupClauseCommonVars,
 						bool have_non_var_grouping,
 						List **func_grouped_rels)
-{
+{	StackTrace("check_ungrouped_columns");
 	check_ungrouped_columns_context context;
 
 	context.pstate = pstate;
@@ -1167,7 +1167,7 @@ check_ungrouped_columns(Node *node, ParseState *pstate, Query *qry,
 static bool
 check_ungrouped_columns_walker(Node *node,
 							   check_ungrouped_columns_context *context)
-{
+{	StackTrace("check_ungrouped_columns_walker");
 	ListCell   *gl;
 
 	if (node == NULL)
@@ -1356,7 +1356,7 @@ static void
 finalize_grouping_exprs(Node *node, ParseState *pstate, Query *qry,
 						List *groupClauses, PlannerInfo *root,
 						bool have_non_var_grouping)
-{
+{	StackTrace("finalize_grouping_exprs");
 	check_ungrouped_columns_context context;
 
 	context.pstate = pstate;
@@ -1374,7 +1374,7 @@ finalize_grouping_exprs(Node *node, ParseState *pstate, Query *qry,
 static bool
 finalize_grouping_exprs_walker(Node *node,
 							   check_ungrouped_columns_context *context)
-{
+{	StackTrace("finalize_grouping_exprs_walker");
 	ListCell   *gl;
 
 	if (node == NULL)
@@ -1528,7 +1528,7 @@ finalize_grouping_exprs_walker(Node *node,
  */
 static List *
 expand_groupingset_node(GroupingSet *gs)
-{
+{	StackTrace("expand_groupingset_node");
 	List	   *result = NIL;
 
 	switch (gs->kind)
@@ -1633,7 +1633,7 @@ expand_groupingset_node(GroupingSet *gs)
 
 static int
 cmp_list_len_asc(const void *a, const void *b)
-{
+{	StackTrace("cmp_list_len_asc");
 	int			la = list_length(*(List *const *) a);
 	int			lb = list_length(*(List *const *) b);
 
@@ -1649,7 +1649,7 @@ cmp_list_len_asc(const void *a, const void *b)
  */
 List *
 expand_grouping_sets(List *groupingSets, int limit)
-{
+{	StackTrace("expand_grouping_sets");
 	List	   *expanded_groups = NIL;
 	List	   *result = NIL;
 	double		numsets = 1;
@@ -1748,7 +1748,7 @@ expand_grouping_sets(List *groupingSets, int limit)
  */
 int
 get_aggregate_argtypes(Aggref *aggref, Oid *inputTypes)
-{
+{	StackTrace("get_aggregate_argtypes");
 	int			numArguments = 0;
 	ListCell   *lc;
 
@@ -1792,7 +1792,7 @@ resolve_aggregate_transtype(Oid aggfuncid,
 							Oid aggtranstype,
 							Oid *inputTypes,
 							int numArguments)
-{
+{	StackTrace("resolve_aggregate_transtype");
 	/* resolve actual type of transition state, if polymorphic */
 	if (IsPolymorphicType(aggtranstype))
 	{
@@ -1857,7 +1857,7 @@ build_aggregate_fnexprs(Oid *agg_input_types,
 						Expr **transfnexpr,
 						Expr **invtransfnexpr,
 						Expr **finalfnexpr)
-{
+{	StackTrace("build_aggregate_fnexprs");
 	Param	   *argp;
 	List	   *args;
 	FuncExpr   *fexpr;

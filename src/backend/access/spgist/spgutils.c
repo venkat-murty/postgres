@@ -29,7 +29,7 @@
 /* Fill in a SpGistTypeDesc struct with info about the specified data type */
 static void
 fillTypeDesc(SpGistTypeDesc *desc, Oid type)
-{
+{	StackTrace("fillTypeDesc");
 	desc->type = type;
 	get_typlenbyval(type, &desc->attlen, &desc->attbyval);
 }
@@ -40,7 +40,7 @@ fillTypeDesc(SpGistTypeDesc *desc, Oid type)
  */
 SpGistCache *
 spgGetCache(Relation index)
-{
+{	StackTrace("spgGetCache");
 	SpGistCache *cache;
 
 	if (index->rd_amcache == NULL)
@@ -106,7 +106,7 @@ spgGetCache(Relation index)
 /* Initialize SpGistState for working with the given index */
 void
 initSpGistState(SpGistState *state, Relation index)
-{
+{	StackTrace("initSpGistState");
 	SpGistCache *cache;
 
 	/* Get cached static information about index */
@@ -135,7 +135,7 @@ initSpGistState(SpGistState *state, Relation index)
  */
 Buffer
 SpGistNewBuffer(Relation index)
-{
+{	StackTrace("SpGistNewBuffer");
 	Buffer		buffer;
 	bool		needLock;
 
@@ -200,7 +200,7 @@ SpGistNewBuffer(Relation index)
  */
 void
 SpGistUpdateMetaPage(Relation index)
-{
+{	StackTrace("SpGistUpdateMetaPage");
 	SpGistCache *cache = (SpGistCache *) index->rd_amcache;
 
 	if (cache != NULL)
@@ -251,7 +251,7 @@ SpGistUpdateMetaPage(Relation index)
  */
 static Buffer
 allocNewBuffer(Relation index, int flags)
-{
+{	StackTrace("allocNewBuffer");
 	SpGistCache *cache = spgGetCache(index);
 	uint16		pageflags = 0;
 
@@ -307,7 +307,7 @@ allocNewBuffer(Relation index, int flags)
  */
 Buffer
 SpGistGetBuffer(Relation index, int flags, int needSpace, bool *isNew)
-{
+{	StackTrace("SpGistGetBuffer");
 	SpGistCache *cache = spgGetCache(index);
 	SpGistLastUsedPage *lup;
 
@@ -412,7 +412,7 @@ SpGistGetBuffer(Relation index, int flags, int needSpace, bool *isNew)
  */
 void
 SpGistSetLastUsedPage(Relation index, Buffer buffer)
-{
+{	StackTrace("SpGistSetLastUsedPage");
 	SpGistCache *cache = spgGetCache(index);
 	SpGistLastUsedPage *lup;
 	int			freeSpace;
@@ -447,7 +447,7 @@ SpGistSetLastUsedPage(Relation index, Buffer buffer)
  */
 void
 SpGistInitPage(Page page, uint16 f)
-{
+{	StackTrace("SpGistInitPage");
 	SpGistPageOpaque opaque;
 
 	PageInit(page, BLCKSZ, MAXALIGN(sizeof(SpGistPageOpaqueData)));
@@ -462,7 +462,7 @@ SpGistInitPage(Page page, uint16 f)
  */
 void
 SpGistInitBuffer(Buffer b, uint16 f)
-{
+{	StackTrace("SpGistInitBuffer");
 	Assert(BufferGetPageSize(b) == BLCKSZ);
 	SpGistInitPage(BufferGetPage(b), f);
 }
@@ -472,7 +472,7 @@ SpGistInitBuffer(Buffer b, uint16 f)
  */
 void
 SpGistInitMetapage(Page page)
-{
+{	StackTrace("SpGistInitMetapage");
 	SpGistMetaPageData *metadata;
 	int			i;
 
@@ -491,7 +491,7 @@ SpGistInitMetapage(Page page)
  */
 Datum
 spgoptions(PG_FUNCTION_ARGS)
-{
+{	StackTrace("spgoptions");
 	Datum		reloptions = PG_GETARG_DATUM(0);
 	bool		validate = PG_GETARG_BOOL(1);
 	bytea	   *result;
@@ -511,7 +511,7 @@ spgoptions(PG_FUNCTION_ARGS)
  */
 unsigned int
 SpGistGetTypeSize(SpGistTypeDesc *att, Datum datum)
-{
+{	StackTrace("SpGistGetTypeSize");
 	unsigned int size;
 
 	if (att->attbyval)
@@ -529,7 +529,7 @@ SpGistGetTypeSize(SpGistTypeDesc *att, Datum datum)
  */
 static void
 memcpyDatum(void *target, SpGistTypeDesc *att, Datum datum)
-{
+{	StackTrace("memcpyDatum");
 	unsigned int size;
 
 	if (att->attbyval)
@@ -549,7 +549,7 @@ memcpyDatum(void *target, SpGistTypeDesc *att, Datum datum)
 SpGistLeafTuple
 spgFormLeafTuple(SpGistState *state, ItemPointer heapPtr,
 				 Datum datum, bool isnull)
-{
+{	StackTrace("spgFormLeafTuple");
 	SpGistLeafTuple tup;
 	unsigned int size;
 
@@ -585,7 +585,7 @@ spgFormLeafTuple(SpGistState *state, ItemPointer heapPtr,
  */
 SpGistNodeTuple
 spgFormNodeTuple(SpGistState *state, Datum label, bool isnull)
-{
+{	StackTrace("spgFormNodeTuple");
 	SpGistNodeTuple tup;
 	unsigned int size;
 	unsigned short infomask = 0;
@@ -628,7 +628,7 @@ spgFormNodeTuple(SpGistState *state, Datum label, bool isnull)
 SpGistInnerTuple
 spgFormInnerTuple(SpGistState *state, bool hasPrefix, Datum prefix,
 				  int nNodes, SpGistNodeTuple *nodes)
-{
+{	StackTrace("spgFormInnerTuple");
 	SpGistInnerTuple tup;
 	unsigned int size;
 	unsigned int prefixSize;
@@ -711,7 +711,7 @@ spgFormInnerTuple(SpGistState *state, bool hasPrefix, Datum prefix,
 SpGistDeadTuple
 spgFormDeadTuple(SpGistState *state, int tupstate,
 				 BlockNumber blkno, OffsetNumber offnum)
-{
+{	StackTrace("spgFormDeadTuple");
 	SpGistDeadTuple tuple = (SpGistDeadTuple) state->deadTupleStorage;
 
 	tuple->tupstate = tupstate;
@@ -740,7 +740,7 @@ spgFormDeadTuple(SpGistState *state, int tupstate,
  */
 Datum *
 spgExtractNodeLabels(SpGistState *state, SpGistInnerTuple innerTuple)
-{
+{	StackTrace("spgExtractNodeLabels");
 	Datum	   *nodeLabels;
 	int			i;
 	SpGistNodeTuple node;
@@ -784,7 +784,7 @@ spgExtractNodeLabels(SpGistState *state, SpGistInnerTuple innerTuple)
 OffsetNumber
 SpGistPageAddNewItem(SpGistState *state, Page page, Item item, Size size,
 					 OffsetNumber *startOffset, bool errorOK)
-{
+{	StackTrace("SpGistPageAddNewItem");
 	SpGistPageOpaque opaque = SpGistPageGetOpaque(page);
 	OffsetNumber i,
 				maxoff,

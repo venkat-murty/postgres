@@ -38,7 +38,7 @@ typedef struct ScanStackEntry
 /* Free a ScanStackEntry */
 static void
 freeScanStackEntry(SpGistScanOpaque so, ScanStackEntry *stackEntry)
-{
+{	StackTrace("freeScanStackEntry");
 	if (!so->state.attType.attbyval &&
 		DatumGetPointer(stackEntry->reconstructedValue) != NULL)
 		pfree(DatumGetPointer(stackEntry->reconstructedValue));
@@ -48,7 +48,7 @@ freeScanStackEntry(SpGistScanOpaque so, ScanStackEntry *stackEntry)
 /* Free the entire stack */
 static void
 freeScanStack(SpGistScanOpaque so)
-{
+{	StackTrace("freeScanStack");
 	ListCell   *lc;
 
 	foreach(lc, so->scanStack)
@@ -65,7 +65,7 @@ freeScanStack(SpGistScanOpaque so)
  */
 static void
 resetSpGistScanOpaque(SpGistScanOpaque so)
-{
+{	StackTrace("resetSpGistScanOpaque");
 	ScanStackEntry *startEntry;
 
 	freeScanStack(so);
@@ -110,7 +110,7 @@ resetSpGistScanOpaque(SpGistScanOpaque so)
  */
 static void
 spgPrepareScanKeys(IndexScanDesc scan)
-{
+{	StackTrace("spgPrepareScanKeys");
 	SpGistScanOpaque so = (SpGistScanOpaque) scan->opaque;
 	bool		qual_ok;
 	bool		haveIsNull;
@@ -175,7 +175,7 @@ spgPrepareScanKeys(IndexScanDesc scan)
 
 Datum
 spgbeginscan(PG_FUNCTION_ARGS)
-{
+{	StackTrace("spgbeginscan");
 	Relation	rel = (Relation) PG_GETARG_POINTER(0);
 	int			keysz = PG_GETARG_INT32(1);
 
@@ -207,7 +207,7 @@ spgbeginscan(PG_FUNCTION_ARGS)
 
 Datum
 spgrescan(PG_FUNCTION_ARGS)
-{
+{	StackTrace("spgrescan");
 	IndexScanDesc scan = (IndexScanDesc) PG_GETARG_POINTER(0);
 	SpGistScanOpaque so = (SpGistScanOpaque) scan->opaque;
 	ScanKey		scankey = (ScanKey) PG_GETARG_POINTER(1);
@@ -230,7 +230,7 @@ spgrescan(PG_FUNCTION_ARGS)
 
 Datum
 spgendscan(PG_FUNCTION_ARGS)
-{
+{	StackTrace("spgendscan");
 	IndexScanDesc scan = (IndexScanDesc) PG_GETARG_POINTER(0);
 	SpGistScanOpaque so = (SpGistScanOpaque) scan->opaque;
 
@@ -241,14 +241,14 @@ spgendscan(PG_FUNCTION_ARGS)
 
 Datum
 spgmarkpos(PG_FUNCTION_ARGS)
-{
+{	StackTrace("spgmarkpos");
 	elog(ERROR, "SPGiST does not support mark/restore");
 	PG_RETURN_VOID();
 }
 
 Datum
 spgrestrpos(PG_FUNCTION_ARGS)
-{
+{	StackTrace("spgrestrpos");
 	elog(ERROR, "SPGiST does not support mark/restore");
 	PG_RETURN_VOID();
 }
@@ -264,7 +264,7 @@ spgLeafTest(Relation index, SpGistScanOpaque so,
 			SpGistLeafTuple leafTuple, bool isnull,
 			int level, Datum reconstructedValue,
 			Datum *leafValue, bool *recheck)
-{
+{	StackTrace("spgLeafTest");
 	bool		result;
 	Datum		leafDatum;
 	spgLeafConsistentIn in;
@@ -320,7 +320,7 @@ spgLeafTest(Relation index, SpGistScanOpaque so,
 static void
 spgWalk(Relation index, SpGistScanOpaque so, bool scanWholeIndex,
 		storeRes_func storeRes)
-{
+{	StackTrace("spgWalk");
 	Buffer		buffer = InvalidBuffer;
 	bool		reportedSome = false;
 
@@ -566,14 +566,14 @@ redirect:
 static void
 storeBitmap(SpGistScanOpaque so, ItemPointer heapPtr,
 			Datum leafValue, bool isnull, bool recheck)
-{
+{	StackTrace("storeBitmap");
 	tbm_add_tuples(so->tbm, heapPtr, 1, recheck);
 	so->ntids++;
 }
 
 Datum
 spggetbitmap(PG_FUNCTION_ARGS)
-{
+{	StackTrace("spggetbitmap");
 	IndexScanDesc scan = (IndexScanDesc) PG_GETARG_POINTER(0);
 	TIDBitmap  *tbm = (TIDBitmap *) PG_GETARG_POINTER(1);
 	SpGistScanOpaque so = (SpGistScanOpaque) scan->opaque;
@@ -593,7 +593,7 @@ spggetbitmap(PG_FUNCTION_ARGS)
 static void
 storeGettuple(SpGistScanOpaque so, ItemPointer heapPtr,
 			  Datum leafValue, bool isnull, bool recheck)
-{
+{	StackTrace("storeGettuple");
 	Assert(so->nPtrs < MaxIndexTuplesPerPage);
 	so->heapPtrs[so->nPtrs] = *heapPtr;
 	so->recheck[so->nPtrs] = recheck;
@@ -612,7 +612,7 @@ storeGettuple(SpGistScanOpaque so, ItemPointer heapPtr,
 
 Datum
 spggettuple(PG_FUNCTION_ARGS)
-{
+{	StackTrace("spggettuple");
 	IndexScanDesc scan = (IndexScanDesc) PG_GETARG_POINTER(0);
 	ScanDirection dir = (ScanDirection) PG_GETARG_INT32(1);
 	SpGistScanOpaque so = (SpGistScanOpaque) scan->opaque;
@@ -656,7 +656,7 @@ spggettuple(PG_FUNCTION_ARGS)
 
 Datum
 spgcanreturn(PG_FUNCTION_ARGS)
-{
+{	StackTrace("spgcanreturn");
 	Relation	index = (Relation) PG_GETARG_POINTER(0);
 
 	/* int			i = PG_GETARG_INT32(1); */

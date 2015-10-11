@@ -27,7 +27,7 @@
  */
 Datum
 suppress_redundant_updates_trigger(PG_FUNCTION_ARGS)
-{
+{	StackTrace("suppress_redundant_updates_trigger");
 	TriggerData *trigdata = (TriggerData *) fcinfo->context;
 	HeapTuple	newtuple,
 				oldtuple,

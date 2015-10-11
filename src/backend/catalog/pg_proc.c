@@ -92,7 +92,7 @@ ProcedureCreate(const char *procedureName,
 				Datum proconfig,
 				float4 procost,
 				float4 prorows)
-{
+{	StackTrace("ProcedureCreate");
 	Oid			retval;
 	int			parameterCount;
 	int			allParamCount;
@@ -742,7 +742,7 @@ ProcedureCreate(const char *procedureName,
  */
 Datum
 fmgr_internal_validator(PG_FUNCTION_ARGS)
-{
+{	StackTrace("fmgr_internal_validator");
 	Oid			funcoid = PG_GETARG_OID(0);
 	HeapTuple	tuple;
 	bool		isnull;
@@ -788,7 +788,7 @@ fmgr_internal_validator(PG_FUNCTION_ARGS)
  */
 Datum
 fmgr_c_validator(PG_FUNCTION_ARGS)
-{
+{	StackTrace("fmgr_c_validator");
 	Oid			funcoid = PG_GETARG_OID(0);
 	void	   *libraryhandle;
 	HeapTuple	tuple;
@@ -836,7 +836,7 @@ fmgr_c_validator(PG_FUNCTION_ARGS)
  */
 Datum
 fmgr_sql_validator(PG_FUNCTION_ARGS)
-{
+{	StackTrace("fmgr_sql_validator");
 	Oid			funcoid = PG_GETARG_OID(0);
 	HeapTuple	tuple;
 	Form_pg_proc proc;
@@ -961,7 +961,7 @@ fmgr_sql_validator(PG_FUNCTION_ARGS)
  */
 static void
 sql_function_parse_error_callback(void *arg)
-{
+{	StackTrace("sql_function_parse_error_callback");
 	parse_error_callback_arg *callback_arg = (parse_error_callback_arg *) arg;
 
 	/* See if it's a syntax error; if so, transpose to CREATE FUNCTION */
@@ -985,7 +985,7 @@ sql_function_parse_error_callback(void *arg)
  */
 bool
 function_parse_error_transpose(const char *prosrc)
-{
+{	StackTrace("function_parse_error_transpose");
 	int			origerrposition;
 	int			newerrposition;
 	const char *queryText;
@@ -1043,7 +1043,7 @@ function_parse_error_transpose(const char *prosrc)
 static int
 match_prosrc_to_query(const char *prosrc, const char *queryText,
 					  int cursorpos)
-{
+{	StackTrace("match_prosrc_to_query");
 	/*
 	 * Rather than fully parsing the original command, we just scan the
 	 * command looking for $prosrc$ or 'prosrc'.  This could be fooled (though
@@ -1101,7 +1101,7 @@ match_prosrc_to_query(const char *prosrc, const char *queryText,
 static bool
 match_prosrc_to_literal(const char *prosrc, const char *literal,
 						int cursorpos, int *newcursorpos)
-{
+{	StackTrace("match_prosrc_to_literal");
 	int			newcp = cursorpos;
 	int			chlen;
 
@@ -1157,7 +1157,7 @@ fail:
 
 List *
 oid_array_to_list(Datum datum)
-{
+{	StackTrace("oid_array_to_list");
 	ArrayType  *array = DatumGetArrayTypeP(datum);
 	Datum	   *values;
 	int			nelems;

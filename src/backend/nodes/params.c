@@ -32,7 +32,7 @@
  */
 ParamListInfo
 copyParamList(ParamListInfo from)
-{
+{	StackTrace("copyParamList");
 	ParamListInfo retval;
 	Size		size;
 	int			i;

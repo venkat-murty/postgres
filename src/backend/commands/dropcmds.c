@@ -52,7 +52,7 @@ static bool type_in_list_does_not_exist_skipping(List *typenames,
  */
 void
 RemoveObjects(DropStmt *stmt)
-{
+{	StackTrace("RemoveObjects");
 	ObjectAddresses *objects;
 	ListCell   *cell1;
 	ListCell   *cell2 = NULL;
@@ -148,7 +148,7 @@ RemoveObjects(DropStmt *stmt)
  */
 static bool
 owningrel_does_not_exist_skipping(List *objname, const char **msg, char **name)
-{
+{	StackTrace("owningrel_does_not_exist_skipping");
 	List	   *parent_objname;
 	RangeVar   *parent_rel;
 
@@ -184,7 +184,7 @@ owningrel_does_not_exist_skipping(List *objname, const char **msg, char **name)
  */
 static bool
 schema_does_not_exist_skipping(List *objname, const char **msg, char **name)
-{
+{	StackTrace("schema_does_not_exist_skipping");
 	RangeVar   *rel;
 
 	rel = makeRangeVarFromNameList(objname);
@@ -217,7 +217,7 @@ schema_does_not_exist_skipping(List *objname, const char **msg, char **name)
 static bool
 type_in_list_does_not_exist_skipping(List *typenames, const char **msg,
 									 char **name)
-{
+{	StackTrace("type_in_list_does_not_exist_skipping");
 	ListCell   *l;
 
 	foreach(l, typenames)
@@ -255,7 +255,7 @@ type_in_list_does_not_exist_skipping(List *typenames, const char **msg,
  */
 static void
 does_not_exist_skipping(ObjectType objtype, List *objname, List *objargs)
-{
+{	StackTrace("does_not_exist_skipping");
 	const char *msg = NULL;
 	char	   *name = NULL;
 	char	   *args = NULL;

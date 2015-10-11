@@ -281,7 +281,7 @@ SnapBuild *
 AllocateSnapshotBuilder(ReorderBuffer *reorder,
 						TransactionId xmin_horizon,
 						XLogRecPtr start_lsn)
-{
+{	StackTrace("AllocateSnapshotBuilder");
 	MemoryContext context;
 	MemoryContext oldcontext;
 	SnapBuild  *builder;
@@ -320,7 +320,7 @@ AllocateSnapshotBuilder(ReorderBuffer *reorder,
  */
 void
 FreeSnapshotBuilder(SnapBuild *builder)
-{
+{	StackTrace("FreeSnapshotBuilder");
 	MemoryContext context = builder->context;
 
 	/* free snapshot explicitly, that contains some error checking */
@@ -339,7 +339,7 @@ FreeSnapshotBuilder(SnapBuild *builder)
  */
 static void
 SnapBuildFreeSnapshot(Snapshot snap)
-{
+{	StackTrace("SnapBuildFreeSnapshot");
 	/* make sure we don't get passed an external snapshot */
 	Assert(snap->satisfies == HeapTupleSatisfiesHistoricMVCC);
 
@@ -364,7 +364,7 @@ SnapBuildFreeSnapshot(Snapshot snap)
  */
 SnapBuildState
 SnapBuildCurrentState(SnapBuild *builder)
-{
+{	StackTrace("SnapBuildCurrentState");
 	return builder->state;
 }
 
@@ -373,7 +373,7 @@ SnapBuildCurrentState(SnapBuild *builder)
  */
 bool
 SnapBuildXactNeedsSkip(SnapBuild *builder, XLogRecPtr ptr)
-{
+{	StackTrace("SnapBuildXactNeedsSkip");
 	return ptr < builder->start_decoding_at;
 }
 
@@ -385,7 +385,7 @@ SnapBuildXactNeedsSkip(SnapBuild *builder, XLogRecPtr ptr)
  */
 static void
 SnapBuildSnapIncRefcount(Snapshot snap)
-{
+{	StackTrace("SnapBuildSnapIncRefcount");
 	snap->active_count++;
 }
 
@@ -397,7 +397,7 @@ SnapBuildSnapIncRefcount(Snapshot snap)
  */
 void
 SnapBuildSnapDecRefcount(Snapshot snap)
-{
+{	StackTrace("SnapBuildSnapDecRefcount");
 	/* make sure we don't get passed an external snapshot */
 	Assert(snap->satisfies == HeapTupleSatisfiesHistoricMVCC);
 
@@ -429,7 +429,7 @@ SnapBuildSnapDecRefcount(Snapshot snap)
  */
 static Snapshot
 SnapBuildBuildSnapshot(SnapBuild *builder, TransactionId xid)
-{
+{	StackTrace("SnapBuildBuildSnapshot");
 	Snapshot	snapshot;
 	Size		ssize;
 
@@ -512,7 +512,7 @@ SnapBuildBuildSnapshot(SnapBuild *builder, TransactionId xid)
  */
 const char *
 SnapBuildExportSnapshot(SnapBuild *builder)
-{
+{	StackTrace("SnapBuildExportSnapshot");
 	Snapshot	snap;
 	char	   *snapname;
 	TransactionId xid;
@@ -611,7 +611,7 @@ SnapBuildExportSnapshot(SnapBuild *builder)
  */
 void
 SnapBuildClearExportedSnapshot()
-{
+{	StackTrace("SnapBuildClearExportedSnapshot");
 	/* nothing exported, thats the usual case */
 	if (!ExportInProgress)
 		return;
@@ -634,7 +634,7 @@ SnapBuildClearExportedSnapshot()
  */
 bool
 SnapBuildProcessChange(SnapBuild *builder, TransactionId xid, XLogRecPtr lsn)
-{
+{	StackTrace("SnapBuildProcessChange");
 	bool		is_old_tx;
 
 	/*
@@ -689,7 +689,7 @@ SnapBuildProcessChange(SnapBuild *builder, TransactionId xid, XLogRecPtr lsn)
 void
 SnapBuildProcessNewCid(SnapBuild *builder, TransactionId xid,
 					   XLogRecPtr lsn, xl_heap_new_cid *xlrec)
-{
+{	StackTrace("SnapBuildProcessNewCid");
 	CommandId	cid;
 
 	/*
@@ -729,7 +729,7 @@ SnapBuildProcessNewCid(SnapBuild *builder, TransactionId xid,
  */
 static bool
 SnapBuildTxnIsRunning(SnapBuild *builder, TransactionId xid)
-{
+{	StackTrace("SnapBuildTxnIsRunning");
 	Assert(builder->state < SNAPBUILD_CONSISTENT);
 	Assert(TransactionIdIsNormal(builder->running.xmin));
 	Assert(TransactionIdIsNormal(builder->running.xmax));
@@ -762,7 +762,7 @@ SnapBuildTxnIsRunning(SnapBuild *builder, TransactionId xid)
  */
 static void
 SnapBuildDistributeNewCatalogSnapshot(SnapBuild *builder, XLogRecPtr lsn)
-{
+{	StackTrace("SnapBuildDistributeNewCatalogSnapshot");
 	dlist_iter	txn_i;
 	ReorderBufferTXN *txn;
 
@@ -808,7 +808,7 @@ SnapBuildDistributeNewCatalogSnapshot(SnapBuild *builder, XLogRecPtr lsn)
  */
 static void
 SnapBuildAddCommittedTxn(SnapBuild *builder, TransactionId xid)
-{
+{	StackTrace("SnapBuildAddCommittedTxn");
 	Assert(TransactionIdIsValid(xid));
 
 	if (builder->committed.xcnt == builder->committed.xcnt_space)
@@ -837,7 +837,7 @@ SnapBuildAddCommittedTxn(SnapBuild *builder, TransactionId xid)
  */
 static void
 SnapBuildPurgeCommittedTxn(SnapBuild *builder)
-{
+{	StackTrace("SnapBuildPurgeCommittedTxn");
 	int			off;
 	TransactionId *workspace;
 	int			surviving_xids = 0;
@@ -879,7 +879,7 @@ SnapBuildPurgeCommittedTxn(SnapBuild *builder)
  */
 static void
 SnapBuildEndTxn(SnapBuild *builder, XLogRecPtr lsn, TransactionId xid)
-{
+{	StackTrace("SnapBuildEndTxn");
 	if (builder->state == SNAPBUILD_CONSISTENT)
 		return;
 
@@ -917,7 +917,7 @@ void
 SnapBuildAbortTxn(SnapBuild *builder, XLogRecPtr lsn,
 				  TransactionId xid,
 				  int nsubxacts, TransactionId *subxacts)
-{
+{	StackTrace("SnapBuildAbortTxn");
 	int			i;
 
 	for (i = 0; i < nsubxacts; i++)
@@ -936,7 +936,7 @@ SnapBuildAbortTxn(SnapBuild *builder, XLogRecPtr lsn,
 void
 SnapBuildCommitTxn(SnapBuild *builder, XLogRecPtr lsn, TransactionId xid,
 				   int nsubxacts, TransactionId *subxacts)
-{
+{	StackTrace("SnapBuildCommitTxn");
 	int			nxact;
 
 	bool		forced_timetravel = false;
@@ -1100,7 +1100,7 @@ SnapBuildCommitTxn(SnapBuild *builder, XLogRecPtr lsn, TransactionId xid,
  */
 void
 SnapBuildProcessRunningXacts(SnapBuild *builder, XLogRecPtr lsn, xl_running_xacts *running)
-{
+{	StackTrace("SnapBuildProcessRunningXacts");
 	ReorderBufferTXN *txn;
 
 	/*
@@ -1195,7 +1195,7 @@ SnapBuildProcessRunningXacts(SnapBuild *builder, XLogRecPtr lsn, xl_running_xact
  */
 static bool
 SnapBuildFindSnapshot(SnapBuild *builder, XLogRecPtr lsn, xl_running_xacts *running)
-{
+{	StackTrace("SnapBuildFindSnapshot");
 	/* ---
 	 * Build catalog decoding snapshot incrementally using information about
 	 * the currently running transactions. There are several ways to do that:
@@ -1422,7 +1422,7 @@ typedef struct SnapBuildOnDisk
  */
 void
 SnapBuildSerializationPoint(SnapBuild *builder, XLogRecPtr lsn)
-{
+{	StackTrace("SnapBuildSerializationPoint");
 	if (builder->state < SNAPBUILD_CONSISTENT)
 		SnapBuildRestore(builder, lsn);
 	else
@@ -1435,7 +1435,7 @@ SnapBuildSerializationPoint(SnapBuild *builder, XLogRecPtr lsn)
  */
 static void
 SnapBuildSerialize(SnapBuild *builder, XLogRecPtr lsn)
-{
+{	StackTrace("SnapBuildSerialize");
 	Size		needed_length;
 	SnapBuildOnDisk *ondisk;
 	char	   *ondisk_c;
@@ -1628,7 +1628,7 @@ out:
  */
 static bool
 SnapBuildRestore(SnapBuild *builder, XLogRecPtr lsn)
-{
+{	StackTrace("SnapBuildRestore");
 	SnapBuildOnDisk ondisk;
 	int			fd;
 	char		path[MAXPGPATH];
@@ -1820,7 +1820,7 @@ snapshot_not_interesting:
  */
 void
 CheckPointSnapBuild(void)
-{
+{	StackTrace("CheckPointSnapBuild");
 	XLogRecPtr	cutoff;
 	XLogRecPtr	redo;
 	DIR		   *snap_dir;

@@ -50,7 +50,7 @@
  */
 Datum
 tidin(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tidin");
 	char	   *str = PG_GETARG_CSTRING(0);
 	char	   *p,
 			   *coord[NTIDARGS];
@@ -102,7 +102,7 @@ tidin(PG_FUNCTION_ARGS)
  */
 Datum
 tidout(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tidout");
 	ItemPointer itemPtr = PG_GETARG_ITEMPOINTER(0);
 	BlockNumber blockNumber;
 	OffsetNumber offsetNumber;
@@ -122,7 +122,7 @@ tidout(PG_FUNCTION_ARGS)
  */
 Datum
 tidrecv(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tidrecv");
 	StringInfo	buf = (StringInfo) PG_GETARG_POINTER(0);
 	ItemPointer result;
 	BlockNumber blockNumber;
@@ -143,7 +143,7 @@ tidrecv(PG_FUNCTION_ARGS)
  */
 Datum
 tidsend(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tidsend");
 	ItemPointer itemPtr = PG_GETARG_ITEMPOINTER(0);
 	BlockId		blockId;
 	BlockNumber blockNumber;
@@ -166,7 +166,7 @@ tidsend(PG_FUNCTION_ARGS)
 
 Datum
 tideq(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tideq");
 	ItemPointer arg1 = PG_GETARG_ITEMPOINTER(0);
 	ItemPointer arg2 = PG_GETARG_ITEMPOINTER(1);
 
@@ -175,7 +175,7 @@ tideq(PG_FUNCTION_ARGS)
 
 Datum
 tidne(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tidne");
 	ItemPointer arg1 = PG_GETARG_ITEMPOINTER(0);
 	ItemPointer arg2 = PG_GETARG_ITEMPOINTER(1);
 
@@ -184,7 +184,7 @@ tidne(PG_FUNCTION_ARGS)
 
 Datum
 tidlt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tidlt");
 	ItemPointer arg1 = PG_GETARG_ITEMPOINTER(0);
 	ItemPointer arg2 = PG_GETARG_ITEMPOINTER(1);
 
@@ -193,7 +193,7 @@ tidlt(PG_FUNCTION_ARGS)
 
 Datum
 tidle(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tidle");
 	ItemPointer arg1 = PG_GETARG_ITEMPOINTER(0);
 	ItemPointer arg2 = PG_GETARG_ITEMPOINTER(1);
 
@@ -202,7 +202,7 @@ tidle(PG_FUNCTION_ARGS)
 
 Datum
 tidgt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tidgt");
 	ItemPointer arg1 = PG_GETARG_ITEMPOINTER(0);
 	ItemPointer arg2 = PG_GETARG_ITEMPOINTER(1);
 
@@ -211,7 +211,7 @@ tidgt(PG_FUNCTION_ARGS)
 
 Datum
 tidge(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tidge");
 	ItemPointer arg1 = PG_GETARG_ITEMPOINTER(0);
 	ItemPointer arg2 = PG_GETARG_ITEMPOINTER(1);
 
@@ -220,7 +220,7 @@ tidge(PG_FUNCTION_ARGS)
 
 Datum
 bttidcmp(PG_FUNCTION_ARGS)
-{
+{	StackTrace("bttidcmp");
 	ItemPointer arg1 = PG_GETARG_ITEMPOINTER(0);
 	ItemPointer arg2 = PG_GETARG_ITEMPOINTER(1);
 
@@ -229,7 +229,7 @@ bttidcmp(PG_FUNCTION_ARGS)
 
 Datum
 tidlarger(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tidlarger");
 	ItemPointer arg1 = PG_GETARG_ITEMPOINTER(0);
 	ItemPointer arg2 = PG_GETARG_ITEMPOINTER(1);
 
@@ -238,7 +238,7 @@ tidlarger(PG_FUNCTION_ARGS)
 
 Datum
 tidsmaller(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tidsmaller");
 	ItemPointer arg1 = PG_GETARG_ITEMPOINTER(0);
 	ItemPointer arg2 = PG_GETARG_ITEMPOINTER(1);
 
@@ -256,7 +256,7 @@ static ItemPointerData Current_last_tid = {{0, 0}, 0};
 
 void
 setLastTid(const ItemPointer tid)
-{
+{	StackTrace("setLastTid");
 	Current_last_tid = *tid;
 }
 
@@ -267,7 +267,7 @@ setLastTid(const ItemPointer tid)
  */
 static Datum
 currtid_for_view(Relation viewrel, ItemPointer tid)
-{
+{	StackTrace("currtid_for_view");
 	TupleDesc	att = RelationGetDescr(viewrel);
 	RuleLock   *rulelock;
 	RewriteRule *rewrite;
@@ -327,7 +327,7 @@ currtid_for_view(Relation viewrel, ItemPointer tid)
 
 Datum
 currtid_byreloid(PG_FUNCTION_ARGS)
-{
+{	StackTrace("currtid_byreloid");
 	Oid			reloid = PG_GETARG_OID(0);
 	ItemPointer tid = PG_GETARG_ITEMPOINTER(1);
 	ItemPointer result;
@@ -366,7 +366,7 @@ currtid_byreloid(PG_FUNCTION_ARGS)
 
 Datum
 currtid_byrelname(PG_FUNCTION_ARGS)
-{
+{	StackTrace("currtid_byrelname");
 	text	   *relname = PG_GETARG_TEXT_P(0);
 	ItemPointer tid = PG_GETARG_ITEMPOINTER(1);
 	ItemPointer result;

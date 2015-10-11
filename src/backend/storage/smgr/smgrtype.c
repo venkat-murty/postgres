@@ -34,7 +34,7 @@ static const int NStorageManagers = lengthof(StorageManager);
 
 Datum
 smgrin(PG_FUNCTION_ARGS)
-{
+{	StackTrace("smgrin");
 	char	   *s = PG_GETARG_CSTRING(0);
 	int16		i;
 
@@ -49,7 +49,7 @@ smgrin(PG_FUNCTION_ARGS)
 
 Datum
 smgrout(PG_FUNCTION_ARGS)
-{
+{	StackTrace("smgrout");
 	int16		i = PG_GETARG_INT16(0);
 	char	   *s;
 
@@ -62,7 +62,7 @@ smgrout(PG_FUNCTION_ARGS)
 
 Datum
 smgreq(PG_FUNCTION_ARGS)
-{
+{	StackTrace("smgreq");
 	int16		a = PG_GETARG_INT16(0);
 	int16		b = PG_GETARG_INT16(1);
 
@@ -71,7 +71,7 @@ smgreq(PG_FUNCTION_ARGS)
 
 Datum
 smgrne(PG_FUNCTION_ARGS)
-{
+{	StackTrace("smgrne");
 	int16		a = PG_GETARG_INT16(0);
 	int16		b = PG_GETARG_INT16(1);
 

@@ -91,7 +91,7 @@ static FmgrInfo *inclusion_get_strategy_procinfo(BrinDesc *bdesc, uint16 attno,
  */
 Datum
 brin_inclusion_opcinfo(PG_FUNCTION_ARGS)
-{
+{	StackTrace("brin_inclusion_opcinfo");
 	Oid			typoid = PG_GETARG_OID(0);
 	BrinOpcInfo *result;
 	TypeCacheEntry *bool_typcache = lookup_type_cache(BOOLOID, 0);
@@ -134,7 +134,7 @@ brin_inclusion_opcinfo(PG_FUNCTION_ARGS)
  */
 Datum
 brin_inclusion_add_value(PG_FUNCTION_ARGS)
-{
+{	StackTrace("brin_inclusion_add_value");
 	BrinDesc   *bdesc = (BrinDesc *) PG_GETARG_POINTER(0);
 	BrinValues *column = (BrinValues *) PG_GETARG_POINTER(1);
 	Datum		newval = PG_GETARG_DATUM(2);
@@ -248,7 +248,7 @@ brin_inclusion_add_value(PG_FUNCTION_ARGS)
  */
 Datum
 brin_inclusion_consistent(PG_FUNCTION_ARGS)
-{
+{	StackTrace("brin_inclusion_consistent");
 	BrinDesc   *bdesc = (BrinDesc *) PG_GETARG_POINTER(0);
 	BrinValues *column = (BrinValues *) PG_GETARG_POINTER(1);
 	ScanKey		key = (ScanKey) PG_GETARG_POINTER(2);
@@ -492,7 +492,7 @@ brin_inclusion_consistent(PG_FUNCTION_ARGS)
  */
 Datum
 brin_inclusion_union(PG_FUNCTION_ARGS)
-{
+{	StackTrace("brin_inclusion_union");
 	BrinDesc   *bdesc = (BrinDesc *) PG_GETARG_POINTER(0);
 	BrinValues *col_a = (BrinValues *) PG_GETARG_POINTER(1);
 	BrinValues *col_b = (BrinValues *) PG_GETARG_POINTER(2);
@@ -582,7 +582,7 @@ brin_inclusion_union(PG_FUNCTION_ARGS)
  */
 static FmgrInfo *
 inclusion_get_procinfo(BrinDesc *bdesc, uint16 attno, uint16 procnum)
-{
+{	StackTrace("inclusion_get_procinfo");
 	InclusionOpaque *opaque;
 	uint16		basenum = procnum - PROCNUM_BASE;
 
@@ -641,7 +641,7 @@ inclusion_get_procinfo(BrinDesc *bdesc, uint16 attno, uint16 procnum)
 static FmgrInfo *
 inclusion_get_strategy_procinfo(BrinDesc *bdesc, uint16 attno, Oid subtype,
 								uint16 strategynum)
-{
+{	StackTrace("inclusion_get_strategy_procinfo");
 	InclusionOpaque *opaque;
 
 	Assert(strategynum >= 1 &&

@@ -41,7 +41,7 @@ WalRcvData *WalRcv = NULL;
 /* Report shared memory space needed by WalRcvShmemInit */
 Size
 WalRcvShmemSize(void)
-{
+{	StackTrace("WalRcvShmemSize");
 	Size		size = 0;
 
 	size = add_size(size, sizeof(WalRcvData));
@@ -52,7 +52,7 @@ WalRcvShmemSize(void)
 /* Allocate and initialize walreceiver-related shared memory */
 void
 WalRcvShmemInit(void)
-{
+{	StackTrace("WalRcvShmemInit");
 	bool		found;
 
 	WalRcv = (WalRcvData *)
@@ -71,7 +71,7 @@ WalRcvShmemInit(void)
 /* Is walreceiver running (or starting up)? */
 bool
 WalRcvRunning(void)
-{
+{	StackTrace("WalRcvRunning");
 	/* use volatile pointer to prevent code rearrangement */
 	volatile WalRcvData *walrcv = WalRcv;
 	WalRcvState state;
@@ -117,7 +117,7 @@ WalRcvRunning(void)
  */
 bool
 WalRcvStreaming(void)
-{
+{	StackTrace("WalRcvStreaming");
 	/* use volatile pointer to prevent code rearrangement */
 	volatile WalRcvData *walrcv = WalRcv;
 	WalRcvState state;
@@ -164,7 +164,7 @@ WalRcvStreaming(void)
  */
 void
 ShutdownWalRcv(void)
-{
+{	StackTrace("ShutdownWalRcv");
 	/* use volatile pointer to prevent code rearrangement */
 	volatile WalRcvData *walrcv = WalRcv;
 	pid_t		walrcvpid = 0;
@@ -226,7 +226,7 @@ ShutdownWalRcv(void)
 void
 RequestXLogStreaming(TimeLineID tli, XLogRecPtr recptr, const char *conninfo,
 					 const char *slotname)
-{
+{	StackTrace("RequestXLogStreaming");
 	/* use volatile pointer to prevent code rearrangement */
 	volatile WalRcvData *walrcv = WalRcv;
 	bool		launch = false;
@@ -297,7 +297,7 @@ RequestXLogStreaming(TimeLineID tli, XLogRecPtr recptr, const char *conninfo,
  */
 XLogRecPtr
 GetWalRcvWriteRecPtr(XLogRecPtr *latestChunkStart, TimeLineID *receiveTLI)
-{
+{	StackTrace("GetWalRcvWriteRecPtr");
 	/* use volatile pointer to prevent code rearrangement */
 	volatile WalRcvData *walrcv = WalRcv;
 	XLogRecPtr	recptr;
@@ -319,7 +319,7 @@ GetWalRcvWriteRecPtr(XLogRecPtr *latestChunkStart, TimeLineID *receiveTLI)
  */
 int
 GetReplicationApplyDelay(void)
-{
+{	StackTrace("GetReplicationApplyDelay");
 	/* use volatile pointer to prevent code rearrangement */
 	volatile WalRcvData *walrcv = WalRcv;
 
@@ -358,7 +358,7 @@ GetReplicationApplyDelay(void)
  */
 int
 GetReplicationTransferLatency(void)
-{
+{	StackTrace("GetReplicationTransferLatency");
 	/* use volatile pointer to prevent code rearrangement */
 	volatile WalRcvData *walrcv = WalRcv;
 

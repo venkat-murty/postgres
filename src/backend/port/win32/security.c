@@ -27,7 +27,7 @@ static BOOL pgwin32_get_dynamic_tokeninfo(HANDLE token,
  */
 int
 pgwin32_is_admin(void)
-{
+{	StackTrace("pgwin32_is_admin");
 	HANDLE		AccessToken;
 	char	   *InfoBuffer = NULL;
 	char		errbuf[256];
@@ -111,7 +111,7 @@ pgwin32_is_admin(void)
  */
 int
 pgwin32_is_service(void)
-{
+{	StackTrace("pgwin32_is_service");
 	static int	_is_service = -1;
 	HANDLE		AccessToken;
 	char	   *InfoBuffer = NULL;
@@ -212,7 +212,7 @@ pgwin32_is_service(void)
 static BOOL
 pgwin32_get_dynamic_tokeninfo(HANDLE token, TOKEN_INFORMATION_CLASS class,
 							  char **InfoBuffer, char *errbuf, int errsize)
-{
+{	StackTrace("pgwin32_get_dynamic_tokeninfo");
 	DWORD		InfoBufferSize;
 
 	if (GetTokenInformation(token, class, NULL, 0, &InfoBufferSize))

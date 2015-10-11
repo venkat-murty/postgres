@@ -76,7 +76,7 @@ static bool ExecOnConflictUpdate(ModifyTableState *mtstate,
  */
 static void
 ExecCheckPlanOutput(Relation resultRel, List *targetList)
-{
+{	StackTrace("ExecCheckPlanOutput");
 	TupleDesc	resultDesc = RelationGetDescr(resultRel);
 	int			attno = 0;
 	ListCell   *lc;
@@ -144,7 +144,7 @@ static TupleTableSlot *
 ExecProcessReturning(ProjectionInfo *projectReturning,
 					 TupleTableSlot *tupleSlot,
 					 TupleTableSlot *planSlot)
-{
+{	StackTrace("ExecProcessReturning");
 	ExprContext *econtext = projectReturning->pi_exprContext;
 
 	/*
@@ -173,7 +173,7 @@ static void
 ExecCheckHeapTupleVisible(EState *estate,
 						  HeapTuple tuple,
 						  Buffer buffer)
-{
+{	StackTrace("ExecCheckHeapTupleVisible");
 	if (!IsolationUsesXactSnapshot())
 		return;
 
@@ -190,7 +190,7 @@ static void
 ExecCheckTIDVisible(EState *estate,
 					ResultRelInfo *relinfo,
 					ItemPointer tid)
-{
+{	StackTrace("ExecCheckTIDVisible");
 	Relation	rel = relinfo->ri_RelationDesc;
 	Buffer		buffer;
 	HeapTupleData tuple;
@@ -223,7 +223,7 @@ ExecInsert(ModifyTableState *mtstate,
 		   OnConflictAction onconflict,
 		   EState *estate,
 		   bool canSetTag)
-{
+{	StackTrace("ExecInsert");
 	HeapTuple	tuple;
 	ResultRelInfo *resultRelInfo;
 	Relation	resultRelationDesc;
@@ -522,7 +522,7 @@ ExecDelete(ItemPointer tupleid,
 		   EPQState *epqstate,
 		   EState *estate,
 		   bool canSetTag)
-{
+{	StackTrace("ExecDelete");
 	ResultRelInfo *resultRelInfo;
 	Relation	resultRelationDesc;
 	HTSU_Result result;
@@ -771,7 +771,7 @@ ExecUpdate(ItemPointer tupleid,
 		   EPQState *epqstate,
 		   EState *estate,
 		   bool canSetTag)
-{
+{	StackTrace("ExecUpdate");
 	HeapTuple	tuple;
 	ResultRelInfo *resultRelInfo;
 	Relation	resultRelationDesc;
@@ -1028,7 +1028,7 @@ ExecOnConflictUpdate(ModifyTableState *mtstate,
 					 EState *estate,
 					 bool canSetTag,
 					 TupleTableSlot **returning)
-{
+{	StackTrace("ExecOnConflictUpdate");
 	ExprContext *econtext = mtstate->ps.ps_ExprContext;
 	Relation	relation = resultRelInfo->ri_RelationDesc;
 	List	   *onConflictSetWhere = resultRelInfo->ri_onConflictSetWhere;
@@ -1198,7 +1198,7 @@ ExecOnConflictUpdate(ModifyTableState *mtstate,
  */
 static void
 fireBSTriggers(ModifyTableState *node)
-{
+{	StackTrace("fireBSTriggers");
 	switch (node->operation)
 	{
 		case CMD_INSERT:
@@ -1224,7 +1224,7 @@ fireBSTriggers(ModifyTableState *node)
  */
 static void
 fireASTriggers(ModifyTableState *node)
-{
+{	StackTrace("fireASTriggers");
 	switch (node->operation)
 	{
 		case CMD_INSERT:
@@ -1255,7 +1255,7 @@ fireASTriggers(ModifyTableState *node)
  */
 TupleTableSlot *
 ExecModifyTable(ModifyTableState *node)
-{
+{	StackTrace("ExecModifyTable");
 	EState	   *estate = node->ps.state;
 	CmdType		operation = node->operation;
 	ResultRelInfo *saved_resultRelInfo;
@@ -1475,7 +1475,7 @@ ExecModifyTable(ModifyTableState *node)
  */
 ModifyTableState *
 ExecInitModifyTable(ModifyTable *node, EState *estate, int eflags)
-{
+{	StackTrace("ExecInitModifyTable");
 	ModifyTableState *mtstate;
 	CmdType		operation = node->operation;
 	int			nplans = list_length(node->plans);
@@ -1869,7 +1869,7 @@ ExecInitModifyTable(ModifyTable *node, EState *estate, int eflags)
  */
 void
 ExecEndModifyTable(ModifyTableState *node)
-{
+{	StackTrace("ExecEndModifyTable");
 	int			i;
 
 	/*
@@ -1909,7 +1909,7 @@ ExecEndModifyTable(ModifyTableState *node)
 
 void
 ExecReScanModifyTable(ModifyTableState *node)
-{
+{	StackTrace("ExecReScanModifyTable");
 	/*
 	 * Currently, we don't need to support rescan on ModifyTable nodes. The
 	 * semantics of that would be a bit debatable anyway.

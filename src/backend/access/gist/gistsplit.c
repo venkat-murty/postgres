@@ -46,7 +46,7 @@ typedef struct
 static void
 gistunionsubkeyvec(GISTSTATE *giststate, IndexTuple *itvec,
 				   GistSplitUnion *gsvp)
-{
+{	StackTrace("gistunionsubkeyvec");
 	IndexTuple *cleanedItVec;
 	int			i,
 				cleanedLen = 0;
@@ -78,7 +78,7 @@ gistunionsubkeyvec(GISTSTATE *giststate, IndexTuple *itvec,
  */
 static void
 gistunionsubkey(GISTSTATE *giststate, IndexTuple *itvec, GistSplitVector *spl)
-{
+{	StackTrace("gistunionsubkey");
 	GistSplitUnion gsvp;
 
 	gsvp.dontcare = spl->spl_dontcare;
@@ -112,7 +112,7 @@ gistunionsubkey(GISTSTATE *giststate, IndexTuple *itvec, GistSplitVector *spl)
 static int
 findDontCares(Relation r, GISTSTATE *giststate, GISTENTRY *valvec,
 			  GistSplitVector *spl, int attno)
-{
+{	StackTrace("findDontCares");
 	int			i;
 	GISTENTRY	entry;
 	int			NumDontCare = 0;
@@ -165,7 +165,7 @@ findDontCares(Relation r, GISTSTATE *giststate, GISTENTRY *valvec,
  */
 static void
 removeDontCares(OffsetNumber *a, int *len, const bool *dontcare)
-{
+{	StackTrace("removeDontCares");
 	int			origlen,
 				newlen,
 				i;
@@ -199,7 +199,7 @@ removeDontCares(OffsetNumber *a, int *len, const bool *dontcare)
 static void
 placeOne(Relation r, GISTSTATE *giststate, GistSplitVector *v,
 		 IndexTuple itup, OffsetNumber off, int attno)
-{
+{	StackTrace("placeOne");
 	GISTENTRY	identry[INDEX_MAX_KEYS];
 	bool		isnull[INDEX_MAX_KEYS];
 	bool		toLeft = true;
@@ -257,7 +257,7 @@ do {	\
 static void
 supportSecondarySplit(Relation r, GISTSTATE *giststate, int attno,
 					  GIST_SPLITVEC *sv, Datum oldL, Datum oldR)
-{
+{	StackTrace("supportSecondarySplit");
 	bool		leaveOnLeft = true,
 				tmpBool;
 	GISTENTRY	entryL,
@@ -342,7 +342,7 @@ supportSecondarySplit(Relation r, GISTSTATE *giststate, int attno,
  */
 static void
 genericPickSplit(GISTSTATE *giststate, GistEntryVector *entryvec, GIST_SPLITVEC *v, int attno)
-{
+{	StackTrace("genericPickSplit");
 	OffsetNumber i,
 				maxoff;
 	int			nbytes;
@@ -414,7 +414,7 @@ genericPickSplit(GISTSTATE *giststate, GistEntryVector *entryvec, GIST_SPLITVEC 
 static bool
 gistUserPicksplit(Relation r, GistEntryVector *entryvec, int attno, GistSplitVector *v,
 				  IndexTuple *itup, int len, GISTSTATE *giststate)
-{
+{	StackTrace("gistUserPicksplit");
 	GIST_SPLITVEC *sv = &v->splitVector;
 
 	/*
@@ -583,7 +583,7 @@ gistUserPicksplit(Relation r, GistEntryVector *entryvec, int attno, GistSplitVec
  */
 static void
 gistSplitHalf(GIST_SPLITVEC *v, int len)
-{
+{	StackTrace("gistSplitHalf");
 	int			i;
 
 	v->spl_nright = v->spl_nleft = 0;
@@ -622,7 +622,7 @@ gistSplitHalf(GIST_SPLITVEC *v, int len)
 void
 gistSplitByKey(Relation r, Page page, IndexTuple *itup, int len,
 			   GISTSTATE *giststate, GistSplitVector *v, int attno)
-{
+{	StackTrace("gistSplitByKey");
 	GistEntryVector *entryvec;
 	OffsetNumber *offNullTuples;
 	int			nOffNullTuples = 0;

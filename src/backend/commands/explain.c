@@ -139,7 +139,7 @@ static void escape_yaml(StringInfo buf, const char *str);
 void
 ExplainQuery(ExplainStmt *stmt, const char *queryString,
 			 ParamListInfo params, DestReceiver *dest)
-{
+{	StackTrace("ExplainQuery");
 	ExplainState *es = NewExplainState();
 	TupOutputState *tstate;
 	List	   *rewritten;
@@ -269,7 +269,7 @@ ExplainQuery(ExplainStmt *stmt, const char *queryString,
  */
 ExplainState *
 NewExplainState(void)
-{
+{	StackTrace("NewExplainState");
 	ExplainState *es = (ExplainState *) palloc0(sizeof(ExplainState));
 
 	/* Set default options (most fields can be left as zeroes). */
@@ -286,7 +286,7 @@ NewExplainState(void)
  */
 TupleDesc
 ExplainResultDesc(ExplainStmt *stmt)
-{
+{	StackTrace("ExplainResultDesc");
 	TupleDesc	tupdesc;
 	ListCell   *lc;
 	Oid			result_type = TEXTOID;
@@ -326,7 +326,7 @@ ExplainResultDesc(ExplainStmt *stmt)
 static void
 ExplainOneQuery(Query *query, IntoClause *into, ExplainState *es,
 				const char *queryString, ParamListInfo params)
-{
+{	StackTrace("ExplainOneQuery");
 	/* planner will not cope with utility statements */
 	if (query->commandType == CMD_UTILITY)
 	{
@@ -370,7 +370,7 @@ ExplainOneQuery(Query *query, IntoClause *into, ExplainState *es,
 void
 ExplainOneUtility(Node *utilityStmt, IntoClause *into, ExplainState *es,
 				  const char *queryString, ParamListInfo params)
-{
+{	StackTrace("ExplainOneUtility");
 	if (utilityStmt == NULL)
 		return;
 
@@ -431,7 +431,7 @@ void
 ExplainOnePlan(PlannedStmt *plannedstmt, IntoClause *into, ExplainState *es,
 			   const char *queryString, ParamListInfo params,
 			   const instr_time *planduration)
-{
+{	StackTrace("ExplainOnePlan");
 	DestReceiver *dest;
 	QueryDesc  *queryDesc;
 	instr_time	starttime;
@@ -570,7 +570,7 @@ ExplainOnePlan(PlannedStmt *plannedstmt, IntoClause *into, ExplainState *es,
  */
 void
 ExplainPrintPlan(ExplainState *es, QueryDesc *queryDesc)
-{
+{	StackTrace("ExplainPrintPlan");
 	Bitmapset  *rels_used = NULL;
 
 	Assert(queryDesc->plannedstmt != NULL);
@@ -594,7 +594,7 @@ ExplainPrintPlan(ExplainState *es, QueryDesc *queryDesc)
  */
 void
 ExplainPrintTriggers(ExplainState *es, QueryDesc *queryDesc)
-{
+{	StackTrace("ExplainPrintTriggers");
 	ResultRelInfo *rInfo;
 	bool		show_relname;
 	int			numrels = queryDesc->estate->es_num_result_relations;
@@ -628,7 +628,7 @@ ExplainPrintTriggers(ExplainState *es, QueryDesc *queryDesc)
  */
 void
 ExplainQueryText(ExplainState *es, QueryDesc *queryDesc)
-{
+{	StackTrace("ExplainQueryText");
 	if (queryDesc->sourceText)
 		ExplainPropertyText("Query Text", queryDesc->sourceText, es);
 }
@@ -639,7 +639,7 @@ ExplainQueryText(ExplainState *es, QueryDesc *queryDesc)
  */
 static void
 report_triggers(ResultRelInfo *rInfo, bool show_relname, ExplainState *es)
-{
+{	StackTrace("report_triggers");
 	int			nt;
 
 	if (!rInfo->ri_TrigDesc || !rInfo->ri_TrigInstrument)
@@ -705,7 +705,7 @@ report_triggers(ResultRelInfo *rInfo, bool show_relname, ExplainState *es)
 /* Compute elapsed time in seconds since given timestamp */
 static double
 elapsed_time(instr_time *starttime)
-{
+{	StackTrace("elapsed_time");
 	instr_time	endtime;
 
 	INSTR_TIME_SET_CURRENT(endtime);
@@ -724,7 +724,7 @@ elapsed_time(instr_time *starttime)
  */
 static void
 ExplainPreScanNode(PlanState *planstate, Bitmapset **rels_used)
-{
+{	StackTrace("ExplainPreScanNode");
 	Plan	   *plan = planstate->plan;
 
 	switch (nodeTag(plan))
@@ -825,7 +825,7 @@ ExplainPreScanNode(PlanState *planstate, Bitmapset **rels_used)
 static void
 ExplainPreScanMemberNodes(List *plans, PlanState **planstates,
 						  Bitmapset **rels_used)
-{
+{	StackTrace("ExplainPreScanMemberNodes");
 	int			nplans = list_length(plans);
 	int			j;
 
@@ -838,7 +838,7 @@ ExplainPreScanMemberNodes(List *plans, PlanState **planstates,
  */
 static void
 ExplainPreScanSubPlans(List *plans, Bitmapset **rels_used)
-{
+{	StackTrace("ExplainPreScanSubPlans");
 	ListCell   *lst;
 
 	foreach(lst, plans)
@@ -873,7 +873,7 @@ static void
 ExplainNode(PlanState *planstate, List *ancestors,
 			const char *relationship, const char *plan_name,
 			ExplainState *es)
-{
+{	StackTrace("ExplainNode");
 	Plan	   *plan = planstate->plan;
 	const char *pname;			/* node type name for text output */
 	const char *sname;			/* node type name for non-text output */
@@ -1715,7 +1715,7 @@ ExplainNode(PlanState *planstate, List *ancestors,
  */
 static void
 show_plan_tlist(PlanState *planstate, List *ancestors, ExplainState *es)
-{
+{	StackTrace("show_plan_tlist");
 	Plan	   *plan = planstate->plan;
 	List	   *context;
 	List	   *result = NIL;
@@ -1761,7 +1761,7 @@ static void
 show_expression(Node *node, const char *qlabel,
 				PlanState *planstate, List *ancestors,
 				bool useprefix, ExplainState *es)
-{
+{	StackTrace("show_expression");
 	List	   *context;
 	char	   *exprstr;
 
@@ -1784,7 +1784,7 @@ static void
 show_qual(List *qual, const char *qlabel,
 		  PlanState *planstate, List *ancestors,
 		  bool useprefix, ExplainState *es)
-{
+{	StackTrace("show_qual");
 	Node	   *node;
 
 	/* No work if empty qual */
@@ -1805,7 +1805,7 @@ static void
 show_scan_qual(List *qual, const char *qlabel,
 			   PlanState *planstate, List *ancestors,
 			   ExplainState *es)
-{
+{	StackTrace("show_scan_qual");
 	bool		useprefix;
 
 	useprefix = (IsA(planstate->plan, SubqueryScan) ||es->verbose);
@@ -1819,7 +1819,7 @@ static void
 show_upper_qual(List *qual, const char *qlabel,
 				PlanState *planstate, List *ancestors,
 				ExplainState *es)
-{
+{	StackTrace("show_upper_qual");
 	bool		useprefix;
 
 	useprefix = (list_length(es->rtable) > 1 || es->verbose);
@@ -1831,7 +1831,7 @@ show_upper_qual(List *qual, const char *qlabel,
  */
 static void
 show_sort_keys(SortState *sortstate, List *ancestors, ExplainState *es)
-{
+{	StackTrace("show_sort_keys");
 	Sort	   *plan = (Sort *) sortstate->ss.ps.plan;
 
 	show_sort_group_keys((PlanState *) sortstate, "Sort Key",
@@ -1847,7 +1847,7 @@ show_sort_keys(SortState *sortstate, List *ancestors, ExplainState *es)
 static void
 show_merge_append_keys(MergeAppendState *mstate, List *ancestors,
 					   ExplainState *es)
-{
+{	StackTrace("show_merge_append_keys");
 	MergeAppend *plan = (MergeAppend *) mstate->ps.plan;
 
 	show_sort_group_keys((PlanState *) mstate, "Sort Key",
@@ -1863,7 +1863,7 @@ show_merge_append_keys(MergeAppendState *mstate, List *ancestors,
 static void
 show_agg_keys(AggState *astate, List *ancestors,
 			  ExplainState *es)
-{
+{	StackTrace("show_agg_keys");
 	Agg		   *plan = (Agg *) astate->ss.ps.plan;
 
 	if (plan->numCols > 0 || plan->groupingSets)
@@ -1886,7 +1886,7 @@ show_agg_keys(AggState *astate, List *ancestors,
 static void
 show_grouping_sets(PlanState *planstate, Agg *agg,
 				   List *ancestors, ExplainState *es)
-{
+{	StackTrace("show_grouping_sets");
 	List	   *context;
 	bool		useprefix;
 	ListCell   *lc;
@@ -1919,7 +1919,7 @@ show_grouping_set_keys(PlanState *planstate,
 					   Agg *aggnode, Sort *sortnode,
 					   List *context, bool useprefix,
 					   List *ancestors, ExplainState *es)
-{
+{	StackTrace("show_grouping_set_keys");
 	Plan	   *plan = planstate->plan;
 	char	   *exprstr;
 	ListCell   *lc;
@@ -1982,7 +1982,7 @@ show_grouping_set_keys(PlanState *planstate,
 static void
 show_group_keys(GroupState *gstate, List *ancestors,
 				ExplainState *es)
-{
+{	StackTrace("show_group_keys");
 	Group	   *plan = (Group *) gstate->ss.ps.plan;
 
 	/* The key columns refer to the tlist of the child plan */
@@ -2004,7 +2004,7 @@ show_sort_group_keys(PlanState *planstate, const char *qlabel,
 					 int nkeys, AttrNumber *keycols,
 					 Oid *sortOperators, Oid *collations, bool *nullsFirst,
 					 List *ancestors, ExplainState *es)
-{
+{	StackTrace("show_sort_group_keys");
 	Plan	   *plan = planstate->plan;
 	List	   *context;
 	List	   *result = NIL;
@@ -2059,7 +2059,7 @@ show_sort_group_keys(PlanState *planstate, const char *qlabel,
 static void
 show_sortorder_options(StringInfo buf, Node *sortexpr,
 					   Oid sortOperator, Oid collation, bool nullsFirst)
-{
+{	StackTrace("show_sortorder_options");
 	Oid			sortcoltype = exprType(sortexpr);
 	bool		reverse = false;
 	TypeCacheEntry *typentry;
@@ -2114,7 +2114,7 @@ show_sortorder_options(StringInfo buf, Node *sortexpr,
  */
 static void
 show_sort_info(SortState *sortstate, ExplainState *es)
-{
+{	StackTrace("show_sort_info");
 	Assert(IsA(sortstate, SortState));
 	if (es->analyze && sortstate->sort_Done &&
 		sortstate->tuplesortstate != NULL)
@@ -2146,7 +2146,7 @@ show_sort_info(SortState *sortstate, ExplainState *es)
  */
 static void
 show_hash_info(HashState *hashstate, ExplainState *es)
-{
+{	StackTrace("show_hash_info");
 	HashJoinTable hashtable;
 
 	Assert(IsA(hashstate, HashState));
@@ -2194,7 +2194,7 @@ show_hash_info(HashState *hashstate, ExplainState *es)
  */
 static void
 show_tidbitmap_info(BitmapHeapScanState *planstate, ExplainState *es)
-{
+{	StackTrace("show_tidbitmap_info");
 	if (es->format != EXPLAIN_FORMAT_TEXT)
 	{
 		ExplainPropertyLong("Exact Heap Blocks", planstate->exact_pages, es);
@@ -2223,7 +2223,7 @@ show_tidbitmap_info(BitmapHeapScanState *planstate, ExplainState *es)
 static void
 show_instrumentation_count(const char *qlabel, int which,
 						   PlanState *planstate, ExplainState *es)
-{
+{	StackTrace("show_instrumentation_count");
 	double		nfiltered;
 	double		nloops;
 
@@ -2251,7 +2251,7 @@ show_instrumentation_count(const char *qlabel, int which,
  */
 static void
 show_foreignscan_info(ForeignScanState *fsstate, ExplainState *es)
-{
+{	StackTrace("show_foreignscan_info");
 	FdwRoutine *fdwroutine = fsstate->fdwroutine;
 
 	/* Let the FDW emit whatever fields it wants */
@@ -2267,7 +2267,7 @@ show_foreignscan_info(ForeignScanState *fsstate, ExplainState *es)
  */
 static const char *
 explain_get_index_name(Oid indexId)
-{
+{	StackTrace("explain_get_index_name");
 	const char *result;
 
 	if (explain_get_index_name_hook)
@@ -2291,7 +2291,7 @@ explain_get_index_name(Oid indexId)
 static void
 ExplainIndexScanDetails(Oid indexid, ScanDirection indexorderdir,
 						ExplainState *es)
-{
+{	StackTrace("ExplainIndexScanDetails");
 	const char *indexname = explain_get_index_name(indexid);
 
 	if (es->format == EXPLAIN_FORMAT_TEXT)
@@ -2329,7 +2329,7 @@ ExplainIndexScanDetails(Oid indexid, ScanDirection indexorderdir,
  */
 static void
 ExplainScanTarget(Scan *plan, ExplainState *es)
-{
+{	StackTrace("ExplainScanTarget");
 	ExplainTargetRel((Plan *) plan, plan->scanrelid, es);
 }
 
@@ -2342,7 +2342,7 @@ ExplainScanTarget(Scan *plan, ExplainState *es)
  */
 static void
 ExplainModifyTarget(ModifyTable *plan, ExplainState *es)
-{
+{	StackTrace("ExplainModifyTarget");
 	ExplainTargetRel((Plan *) plan, plan->nominalRelation, es);
 }
 
@@ -2351,7 +2351,7 @@ ExplainModifyTarget(ModifyTable *plan, ExplainState *es)
  */
 static void
 ExplainTargetRel(Plan *plan, Index rti, ExplainState *es)
-{
+{	StackTrace("ExplainTargetRel");
 	char	   *objectname = NULL;
 	char	   *namespace = NULL;
 	const char *objecttag = NULL;
@@ -2465,7 +2465,7 @@ ExplainTargetRel(Plan *plan, Index rti, ExplainState *es)
 static void
 show_modifytable_info(ModifyTableState *mtstate, List *ancestors,
 					  ExplainState *es)
-{
+{	StackTrace("show_modifytable_info");
 	ModifyTable *node = (ModifyTable *) mtstate->ps.plan;
 	const char *operation;
 	const char *foperation;
@@ -2624,7 +2624,7 @@ show_modifytable_info(ModifyTableState *mtstate, List *ancestors,
 static void
 ExplainMemberNodes(List *plans, PlanState **planstates,
 				   List *ancestors, ExplainState *es)
-{
+{	StackTrace("ExplainMemberNodes");
 	int			nplans = list_length(plans);
 	int			j;
 
@@ -2642,7 +2642,7 @@ ExplainMemberNodes(List *plans, PlanState **planstates,
 static void
 ExplainSubPlans(List *plans, List *ancestors,
 				const char *relationship, ExplainState *es)
-{
+{	StackTrace("ExplainSubPlans");
 	ListCell   *lst;
 
 	foreach(lst, plans)
@@ -2660,7 +2660,7 @@ ExplainSubPlans(List *plans, List *ancestors,
  */
 static void
 ExplainCustomChildren(CustomScanState *css, List *ancestors, ExplainState *es)
-{
+{	StackTrace("ExplainCustomChildren");
 	ListCell   *cell;
 	const char *label =
 		(list_length(css->custom_ps) != 1 ? "children" : "child");
@@ -2675,7 +2675,7 @@ ExplainCustomChildren(CustomScanState *css, List *ancestors, ExplainState *es)
  */
 void
 ExplainPropertyList(const char *qlabel, List *data, ExplainState *es)
-{
+{	StackTrace("ExplainPropertyList");
 	ListCell   *lc;
 	bool		first = true;
 
@@ -2745,7 +2745,7 @@ ExplainPropertyList(const char *qlabel, List *data, ExplainState *es)
  */
 void
 ExplainPropertyListNested(const char *qlabel, List *data, ExplainState *es)
-{
+{	StackTrace("ExplainPropertyListNested");
 	ListCell   *lc;
 	bool		first = true;
 
@@ -2797,7 +2797,7 @@ ExplainPropertyListNested(const char *qlabel, List *data, ExplainState *es)
 static void
 ExplainProperty(const char *qlabel, const char *value, bool numeric,
 				ExplainState *es)
-{
+{	StackTrace("ExplainProperty");
 	switch (es->format)
 	{
 		case EXPLAIN_FORMAT_TEXT:
@@ -2846,7 +2846,7 @@ ExplainProperty(const char *qlabel, const char *value, bool numeric,
  */
 void
 ExplainPropertyText(const char *qlabel, const char *value, ExplainState *es)
-{
+{	StackTrace("ExplainPropertyText");
 	ExplainProperty(qlabel, value, false, es);
 }
 
@@ -2855,7 +2855,7 @@ ExplainPropertyText(const char *qlabel, const char *value, ExplainState *es)
  */
 void
 ExplainPropertyInteger(const char *qlabel, int value, ExplainState *es)
-{
+{	StackTrace("ExplainPropertyInteger");
 	char		buf[32];
 
 	snprintf(buf, sizeof(buf), "%d", value);
@@ -2867,7 +2867,7 @@ ExplainPropertyInteger(const char *qlabel, int value, ExplainState *es)
  */
 void
 ExplainPropertyLong(const char *qlabel, long value, ExplainState *es)
-{
+{	StackTrace("ExplainPropertyLong");
 	char		buf[32];
 
 	snprintf(buf, sizeof(buf), "%ld", value);
@@ -2881,7 +2881,7 @@ ExplainPropertyLong(const char *qlabel, long value, ExplainState *es)
 void
 ExplainPropertyFloat(const char *qlabel, double value, int ndigits,
 					 ExplainState *es)
-{
+{	StackTrace("ExplainPropertyFloat");
 	char		buf[256];
 
 	snprintf(buf, sizeof(buf), "%.*f", ndigits, value);
@@ -2900,7 +2900,7 @@ ExplainPropertyFloat(const char *qlabel, double value, int ndigits,
 static void
 ExplainOpenGroup(const char *objtype, const char *labelname,
 				 bool labeled, ExplainState *es)
-{
+{	StackTrace("ExplainOpenGroup");
 	switch (es->format)
 	{
 		case EXPLAIN_FORMAT_TEXT:
@@ -2963,7 +2963,7 @@ ExplainOpenGroup(const char *objtype, const char *labelname,
 static void
 ExplainCloseGroup(const char *objtype, const char *labelname,
 				  bool labeled, ExplainState *es)
-{
+{	StackTrace("ExplainCloseGroup");
 	switch (es->format)
 	{
 		case EXPLAIN_FORMAT_TEXT:
@@ -2998,7 +2998,7 @@ ExplainCloseGroup(const char *objtype, const char *labelname,
  */
 static void
 ExplainDummyGroup(const char *objtype, const char *labelname, ExplainState *es)
-{
+{	StackTrace("ExplainDummyGroup");
 	switch (es->format)
 	{
 		case EXPLAIN_FORMAT_TEXT:
@@ -3044,7 +3044,7 @@ ExplainDummyGroup(const char *objtype, const char *labelname, ExplainState *es)
  */
 void
 ExplainBeginOutput(ExplainState *es)
-{
+{	StackTrace("ExplainBeginOutput");
 	switch (es->format)
 	{
 		case EXPLAIN_FORMAT_TEXT:
@@ -3075,7 +3075,7 @@ ExplainBeginOutput(ExplainState *es)
  */
 void
 ExplainEndOutput(ExplainState *es)
-{
+{	StackTrace("ExplainEndOutput");
 	switch (es->format)
 	{
 		case EXPLAIN_FORMAT_TEXT:
@@ -3104,7 +3104,7 @@ ExplainEndOutput(ExplainState *es)
  */
 void
 ExplainSeparatePlans(ExplainState *es)
-{
+{	StackTrace("ExplainSeparatePlans");
 	switch (es->format)
 	{
 		case EXPLAIN_FORMAT_TEXT:
@@ -3132,7 +3132,7 @@ ExplainSeparatePlans(ExplainState *es)
  */
 static void
 ExplainXMLTag(const char *tagname, int flags, ExplainState *es)
-{
+{	StackTrace("ExplainXMLTag");
 	const char *s;
 
 	if ((flags & X_NOWHITESPACE) == 0)
@@ -3158,7 +3158,7 @@ ExplainXMLTag(const char *tagname, int flags, ExplainState *es)
  */
 static void
 ExplainJSONLineEnding(ExplainState *es)
-{
+{	StackTrace("ExplainJSONLineEnding");
 	Assert(es->format == EXPLAIN_FORMAT_JSON);
 	if (linitial_int(es->grouping_stack) != 0)
 		appendStringInfoChar(es->str, ',');
@@ -3178,7 +3178,7 @@ ExplainJSONLineEnding(ExplainState *es)
  */
 static void
 ExplainYAMLLineStarting(ExplainState *es)
-{
+{	StackTrace("ExplainYAMLLineStarting");
 	Assert(es->format == EXPLAIN_FORMAT_YAML);
 	if (linitial_int(es->grouping_stack) == 0)
 	{
@@ -3203,6 +3203,6 @@ ExplainYAMLLineStarting(ExplainState *es)
  */
 static void
 escape_yaml(StringInfo buf, const char *str)
-{
+{	StackTrace("escape_yaml");
 	escape_json(buf, str);
 }

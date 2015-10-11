@@ -23,6 +23,7 @@
 #include "miscadmin.h"
 #include "storage/backendid.h"
 
+FunctionStack *mt_current = NULL;
 
 ProtocolVersion FrontendProtocol;
 

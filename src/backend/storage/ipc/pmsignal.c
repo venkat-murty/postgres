@@ -78,7 +78,7 @@ NON_EXEC_STATIC volatile PMSignalData *PMSignalState = NULL;
  */
 Size
 PMSignalShmemSize(void)
-{
+{	StackTrace("PMSignalShmemSize");
 	Size		size;
 
 	size = offsetof(PMSignalData, PMChildFlags);
@@ -93,7 +93,7 @@ PMSignalShmemSize(void)
  */
 void
 PMSignalShmemInit(void)
-{
+{	StackTrace("PMSignalShmemInit");
 	bool		found;
 
 	PMSignalState = (PMSignalData *)
@@ -111,7 +111,7 @@ PMSignalShmemInit(void)
  */
 void
 SendPostmasterSignal(PMSignalReason reason)
-{
+{	StackTrace("SendPostmasterSignal");
 	/* If called in a standalone backend, do nothing */
 	if (!IsUnderPostmaster)
 		return;
@@ -128,7 +128,7 @@ SendPostmasterSignal(PMSignalReason reason)
  */
 bool
 CheckPostmasterSignal(PMSignalReason reason)
-{
+{	StackTrace("CheckPostmasterSignal");
 	/* Careful here --- don't clear flag if we haven't seen it set */
 	if (PMSignalState->PMSignalFlags[reason])
 	{
@@ -149,7 +149,7 @@ CheckPostmasterSignal(PMSignalReason reason)
  */
 int
 AssignPostmasterChildSlot(void)
-{
+{	StackTrace("AssignPostmasterChildSlot");
 	int			slot = PMSignalState->next_child_flag;
 	int			n;
 
@@ -183,7 +183,7 @@ AssignPostmasterChildSlot(void)
  */
 bool
 ReleasePostmasterChildSlot(int slot)
-{
+{	StackTrace("ReleasePostmasterChildSlot");
 	bool		result;
 
 	Assert(slot > 0 && slot <= PMSignalState->num_child_flags);
@@ -205,7 +205,7 @@ ReleasePostmasterChildSlot(int slot)
  */
 bool
 IsPostmasterChildWalSender(int slot)
-{
+{	StackTrace("IsPostmasterChildWalSender");
 	Assert(slot > 0 && slot <= PMSignalState->num_child_flags);
 	slot--;
 
@@ -221,7 +221,7 @@ IsPostmasterChildWalSender(int slot)
  */
 void
 MarkPostmasterChildActive(void)
-{
+{	StackTrace("MarkPostmasterChildActive");
 	int			slot = MyPMChildSlot;
 
 	Assert(slot > 0 && slot <= PMSignalState->num_child_flags);
@@ -237,7 +237,7 @@ MarkPostmasterChildActive(void)
  */
 void
 MarkPostmasterChildWalSender(void)
-{
+{	StackTrace("MarkPostmasterChildWalSender");
 	int			slot = MyPMChildSlot;
 
 	Assert(am_walsender);
@@ -254,7 +254,7 @@ MarkPostmasterChildWalSender(void)
  */
 void
 MarkPostmasterChildInactive(void)
-{
+{	StackTrace("MarkPostmasterChildInactive");
 	int			slot = MyPMChildSlot;
 
 	Assert(slot > 0 && slot <= PMSignalState->num_child_flags);
@@ -270,7 +270,7 @@ MarkPostmasterChildInactive(void)
  */
 bool
 PostmasterIsAlive(void)
-{
+{	StackTrace("PostmasterIsAlive");
 #ifndef WIN32
 	char		c;
 	ssize_t		rc;

@@ -93,7 +93,7 @@ static void add_indent(StringInfo out, bool indent, int level);
  */
 Datum
 jsonb_in(PG_FUNCTION_ARGS)
-{
+{	StackTrace("jsonb_in");
 	char	   *json = PG_GETARG_CSTRING(0);
 
 	return jsonb_from_cstring(json, strlen(json));
@@ -109,7 +109,7 @@ jsonb_in(PG_FUNCTION_ARGS)
  */
 Datum
 jsonb_recv(PG_FUNCTION_ARGS)
-{
+{	StackTrace("jsonb_recv");
 	StringInfo	buf = (StringInfo) PG_GETARG_POINTER(0);
 	int			version = pq_getmsgint(buf, 1);
 	char	   *str;
@@ -128,7 +128,7 @@ jsonb_recv(PG_FUNCTION_ARGS)
  */
 Datum
 jsonb_out(PG_FUNCTION_ARGS)
-{
+{	StackTrace("jsonb_out");
 	Jsonb	   *jb = PG_GETARG_JSONB(0);
 	char	   *out;
 
@@ -144,7 +144,7 @@ jsonb_out(PG_FUNCTION_ARGS)
  */
 Datum
 jsonb_send(PG_FUNCTION_ARGS)
-{
+{	StackTrace("jsonb_send");
 	Jsonb	   *jb = PG_GETARG_JSONB(0);
 	StringInfoData buf;
 	StringInfo	jtext = makeStringInfo();
@@ -169,7 +169,7 @@ jsonb_send(PG_FUNCTION_ARGS)
  */
 Datum
 jsonb_typeof(PG_FUNCTION_ARGS)
-{
+{	StackTrace("jsonb_typeof");
 	Jsonb	   *in = PG_GETARG_JSONB(0);
 	JsonbIterator *it;
 	JsonbValue	v;
@@ -223,7 +223,7 @@ jsonb_typeof(PG_FUNCTION_ARGS)
  */
 static inline Datum
 jsonb_from_cstring(char *json, int len)
-{
+{	StackTrace("jsonb_from_cstring");
 	JsonLexContext *lex;
 	JsonbInState state;
 	JsonSemAction sem;
@@ -249,7 +249,7 @@ jsonb_from_cstring(char *json, int len)
 
 static size_t
 checkStringLen(size_t len)
-{
+{	StackTrace("checkStringLen");
 	if (len > JENTRY_OFFLENMASK)
 		ereport(ERROR,
 				(errcode(ERRCODE_PROGRAM_LIMIT_EXCEEDED),
@@ -262,7 +262,7 @@ checkStringLen(size_t len)
 
 static void
 jsonb_in_object_start(void *pstate)
-{
+{	StackTrace("jsonb_in_object_start");
 	JsonbInState *_state = (JsonbInState *) pstate;
 
 	_state->res = pushJsonbValue(&_state->parseState, WJB_BEGIN_OBJECT, NULL);
@@ -270,7 +270,7 @@ jsonb_in_object_start(void *pstate)
 
 static void
 jsonb_in_object_end(void *pstate)
-{
+{	StackTrace("jsonb_in_object_end");
 	JsonbInState *_state = (JsonbInState *) pstate;
 
 	_state->res = pushJsonbValue(&_state->parseState, WJB_END_OBJECT, NULL);
@@ -278,7 +278,7 @@ jsonb_in_object_end(void *pstate)
 
 static void
 jsonb_in_array_start(void *pstate)
-{
+{	StackTrace("jsonb_in_array_start");
 	JsonbInState *_state = (JsonbInState *) pstate;
 
 	_state->res = pushJsonbValue(&_state->parseState, WJB_BEGIN_ARRAY, NULL);
@@ -286,7 +286,7 @@ jsonb_in_array_start(void *pstate)
 
 static void
 jsonb_in_array_end(void *pstate)
-{
+{	StackTrace("jsonb_in_array_end");
 	JsonbInState *_state = (JsonbInState *) pstate;
 
 	_state->res = pushJsonbValue(&_state->parseState, WJB_END_ARRAY, NULL);
@@ -294,7 +294,7 @@ jsonb_in_array_end(void *pstate)
 
 static void
 jsonb_in_object_field_start(void *pstate, char *fname, bool isnull)
-{
+{	StackTrace("jsonb_in_object_field_start");
 	JsonbInState *_state = (JsonbInState *) pstate;
 	JsonbValue	v;
 
@@ -308,7 +308,7 @@ jsonb_in_object_field_start(void *pstate, char *fname, bool isnull)
 
 static void
 jsonb_put_escaped_value(StringInfo out, JsonbValue *scalarVal)
-{
+{	StackTrace("jsonb_put_escaped_value");
 	switch (scalarVal->type)
 	{
 		case jbvNull:
@@ -338,7 +338,7 @@ jsonb_put_escaped_value(StringInfo out, JsonbValue *scalarVal)
  */
 static void
 jsonb_in_scalar(void *pstate, char *token, JsonTokenType tokentype)
-{
+{	StackTrace("jsonb_in_scalar");
 	JsonbInState *_state = (JsonbInState *) pstate;
 	JsonbValue	v;
 
@@ -425,7 +425,7 @@ jsonb_in_scalar(void *pstate, char *token, JsonTokenType tokentype)
  */
 char *
 JsonbToCString(StringInfo out, JsonbContainer *in, int estimated_len)
-{
+{	StackTrace("JsonbToCString");
 	return JsonbToCStringWorker(out, in, estimated_len, false);
 }
 
@@ -434,7 +434,7 @@ JsonbToCString(StringInfo out, JsonbContainer *in, int estimated_len)
  */
 char *
 JsonbToCStringIndent(StringInfo out, JsonbContainer *in, int estimated_len)
-{
+{	StackTrace("JsonbToCStringIndent");
 	return JsonbToCStringWorker(out, in, estimated_len, true);
 }
 
@@ -443,7 +443,7 @@ JsonbToCStringIndent(StringInfo out, JsonbContainer *in, int estimated_len)
  */
 static char *
 JsonbToCStringWorker(StringInfo out, JsonbContainer *in, int estimated_len, bool indent)
-{
+{	StackTrace("JsonbToCStringWorker");
 	bool		first = true;
 	JsonbIterator *it;
 	JsonbIteratorToken type = WJB_DONE;
@@ -567,7 +567,7 @@ JsonbToCStringWorker(StringInfo out, JsonbContainer *in, int estimated_len, bool
 
 static void
 add_indent(StringInfo out, bool indent, int level)
-{
+{	StackTrace("add_indent");
 	if (indent)
 	{
 		int			i;
@@ -590,7 +590,7 @@ static void
 jsonb_categorize_type(Oid typoid,
 					  JsonbTypeCategory *tcategory,
 					  Oid *outfuncoid)
-{
+{	StackTrace("jsonb_categorize_type");
 	bool		typisvarlena;
 
 	/* Look through any domain */
@@ -697,7 +697,7 @@ static void
 datum_to_jsonb(Datum val, bool is_null, JsonbInState *result,
 			   JsonbTypeCategory tcategory, Oid outfuncoid,
 			   bool key_scalar)
-{
+{	StackTrace("datum_to_jsonb");
 	char	   *outputstr;
 	bool		numeric_error;
 	JsonbValue	jb;
@@ -971,7 +971,7 @@ static void
 array_dim_to_jsonb(JsonbInState *result, int dim, int ndims, int *dims, Datum *vals,
 				   bool *nulls, int *valcount, JsonbTypeCategory tcategory,
 				   Oid outfuncoid)
-{
+{	StackTrace("array_dim_to_jsonb");
 	int			i;
 
 	Assert(dim < ndims);
@@ -1001,7 +1001,7 @@ array_dim_to_jsonb(JsonbInState *result, int dim, int ndims, int *dims, Datum *v
  */
 static void
 array_to_jsonb_internal(Datum array, JsonbInState *result)
-{
+{	StackTrace("array_to_jsonb_internal");
 	ArrayType  *v = DatumGetArrayTypeP(array);
 	Oid			element_type = ARR_ELEMTYPE(v);
 	int		   *dim;
@@ -1049,7 +1049,7 @@ array_to_jsonb_internal(Datum array, JsonbInState *result)
  */
 static void
 composite_to_jsonb(Datum composite, JsonbInState *result)
-{
+{	StackTrace("composite_to_jsonb");
 	HeapTupleHeader td;
 	Oid			tupType;
 	int32		tupTypmod;
@@ -1122,7 +1122,7 @@ composite_to_jsonb(Datum composite, JsonbInState *result)
 static void
 add_jsonb(Datum val, bool is_null, JsonbInState *result,
 		  Oid val_type, bool key_scalar)
-{
+{	StackTrace("add_jsonb");
 	JsonbTypeCategory tcategory;
 	Oid			outfuncoid;
 
@@ -1148,7 +1148,7 @@ add_jsonb(Datum val, bool is_null, JsonbInState *result,
  */
 Datum
 to_jsonb(PG_FUNCTION_ARGS)
-{
+{	StackTrace("to_jsonb");
 	Datum		val = PG_GETARG_DATUM(0);
 	Oid			val_type = get_fn_expr_argtype(fcinfo->flinfo, 0);
 	JsonbInState result;
@@ -1175,7 +1175,7 @@ to_jsonb(PG_FUNCTION_ARGS)
  */
 Datum
 jsonb_build_object(PG_FUNCTION_ARGS)
-{
+{	StackTrace("jsonb_build_object");
 	int			nargs = PG_NARGS();
 	int			i;
 	Datum		arg;
@@ -1259,7 +1259,7 @@ jsonb_build_object(PG_FUNCTION_ARGS)
  */
 Datum
 jsonb_build_object_noargs(PG_FUNCTION_ARGS)
-{
+{	StackTrace("jsonb_build_object_noargs");
 	JsonbInState result;
 
 	memset(&result, 0, sizeof(JsonbInState));
@@ -1275,7 +1275,7 @@ jsonb_build_object_noargs(PG_FUNCTION_ARGS)
  */
 Datum
 jsonb_build_array(PG_FUNCTION_ARGS)
-{
+{	StackTrace("jsonb_build_array");
 	int			nargs = PG_NARGS();
 	int			i;
 	Datum		arg;
@@ -1320,7 +1320,7 @@ jsonb_build_array(PG_FUNCTION_ARGS)
  */
 Datum
 jsonb_build_array_noargs(PG_FUNCTION_ARGS)
-{
+{	StackTrace("jsonb_build_array_noargs");
 	JsonbInState result;
 
 	memset(&result, 0, sizeof(JsonbInState));
@@ -1341,7 +1341,7 @@ jsonb_build_array_noargs(PG_FUNCTION_ARGS)
  */
 Datum
 jsonb_object(PG_FUNCTION_ARGS)
-{
+{	StackTrace("jsonb_object");
 	ArrayType  *in_array = PG_GETARG_ARRAYTYPE_P(0);
 	int			ndims = ARR_NDIM(in_array);
 	Datum	   *in_datums;
@@ -1443,7 +1443,7 @@ close_object:
  */
 Datum
 jsonb_object_two_arg(PG_FUNCTION_ARGS)
-{
+{	StackTrace("jsonb_object_two_arg");
 	ArrayType  *key_array = PG_GETARG_ARRAYTYPE_P(0);
 	ArrayType  *val_array = PG_GETARG_ARRAYTYPE_P(1);
 	int			nkdims = ARR_NDIM(key_array);
@@ -1539,7 +1539,7 @@ jsonb_object_two_arg(PG_FUNCTION_ARGS)
  */
 static JsonbParseState *
 clone_parse_state(JsonbParseState *state)
-{
+{	StackTrace("clone_parse_state");
 	JsonbParseState *result,
 			   *icursor,
 			   *ocursor;
@@ -1571,7 +1571,7 @@ clone_parse_state(JsonbParseState *state)
  */
 Datum
 jsonb_agg_transfn(PG_FUNCTION_ARGS)
-{
+{	StackTrace("jsonb_agg_transfn");
 	Oid			val_type = get_fn_expr_argtype(fcinfo->flinfo, 1);
 	MemoryContext oldcontext,
 				aggcontext;
@@ -1685,7 +1685,7 @@ jsonb_agg_transfn(PG_FUNCTION_ARGS)
 
 Datum
 jsonb_agg_finalfn(PG_FUNCTION_ARGS)
-{
+{	StackTrace("jsonb_agg_finalfn");
 	JsonbInState *arg;
 	JsonbInState result;
 	Jsonb	   *out;
@@ -1721,7 +1721,7 @@ jsonb_agg_finalfn(PG_FUNCTION_ARGS)
  */
 Datum
 jsonb_object_agg_transfn(PG_FUNCTION_ARGS)
-{
+{	StackTrace("jsonb_object_agg_transfn");
 	Oid			val_type;
 	MemoryContext oldcontext,
 				aggcontext;
@@ -1907,7 +1907,7 @@ jsonb_object_agg_transfn(PG_FUNCTION_ARGS)
 
 Datum
 jsonb_object_agg_finalfn(PG_FUNCTION_ARGS)
-{
+{	StackTrace("jsonb_object_agg_finalfn");
 	JsonbInState *arg;
 	JsonbInState result;
 	Jsonb	   *out;

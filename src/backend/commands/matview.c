@@ -80,7 +80,7 @@ static void CloseMatViewIncrementalMaintenance(void);
  */
 void
 SetMatViewPopulatedState(Relation relation, bool newstate)
-{
+{	StackTrace("SetMatViewPopulatedState");
 	Relation	pgrel;
 	HeapTuple	tuple;
 
@@ -137,7 +137,7 @@ SetMatViewPopulatedState(Relation relation, bool newstate)
 ObjectAddress
 ExecRefreshMatView(RefreshMatViewStmt *stmt, const char *queryString,
 				   ParamListInfo params, char *completionTag)
-{
+{	StackTrace("ExecRefreshMatView");
 	Oid			matviewOid;
 	Relation	matviewRel;
 	RewriteRule *rule;
@@ -323,7 +323,7 @@ ExecRefreshMatView(RefreshMatViewStmt *stmt, const char *queryString,
 static void
 refresh_matview_datafill(DestReceiver *dest, Query *query,
 						 const char *queryString)
-{
+{	StackTrace("refresh_matview_datafill");
 	List	   *rewritten;
 	PlannedStmt *plan;
 	QueryDesc  *queryDesc;
@@ -376,7 +376,7 @@ refresh_matview_datafill(DestReceiver *dest, Query *query,
 
 DestReceiver *
 CreateTransientRelDestReceiver(Oid transientoid)
-{
+{	StackTrace("CreateTransientRelDestReceiver");
 	DR_transientrel *self = (DR_transientrel *) palloc0(sizeof(DR_transientrel));
 
 	self->pub.receiveSlot = transientrel_receive;
@@ -394,7 +394,7 @@ CreateTransientRelDestReceiver(Oid transientoid)
  */
 static void
 transientrel_startup(DestReceiver *self, int operation, TupleDesc typeinfo)
-{
+{	StackTrace("transientrel_startup");
 	DR_transientrel *myState = (DR_transientrel *) self;
 	Relation	transientrel;
 
@@ -424,7 +424,7 @@ transientrel_startup(DestReceiver *self, int operation, TupleDesc typeinfo)
  */
 static void
 transientrel_receive(TupleTableSlot *slot, DestReceiver *self)
-{
+{	StackTrace("transientrel_receive");
 	DR_transientrel *myState = (DR_transientrel *) self;
 	HeapTuple	tuple;
 
@@ -448,7 +448,7 @@ transientrel_receive(TupleTableSlot *slot, DestReceiver *self)
  */
 static void
 transientrel_shutdown(DestReceiver *self)
-{
+{	StackTrace("transientrel_shutdown");
 	DR_transientrel *myState = (DR_transientrel *) self;
 
 	FreeBulkInsertState(myState->bistate);
@@ -467,7 +467,7 @@ transientrel_shutdown(DestReceiver *self)
  */
 static void
 transientrel_destroy(DestReceiver *self)
-{
+{	StackTrace("transientrel_destroy");
 	pfree(self);
 }
 
@@ -481,7 +481,7 @@ transientrel_destroy(DestReceiver *self)
  */
 static char *
 make_temptable_name_n(char *tempname, int n)
-{
+{	StackTrace("make_temptable_name_n");
 	StringInfoData namebuf;
 
 	initStringInfo(&namebuf);
@@ -492,7 +492,7 @@ make_temptable_name_n(char *tempname, int n)
 
 static void
 mv_GenerateOper(StringInfo buf, Oid opoid)
-{
+{	StackTrace("mv_GenerateOper");
 	HeapTuple	opertup;
 	Form_pg_operator operform;
 
@@ -544,7 +544,7 @@ mv_GenerateOper(StringInfo buf, Oid opoid)
 static void
 refresh_by_match_merge(Oid matviewOid, Oid tempOid, Oid relowner,
 					   int save_sec_context)
-{
+{	StackTrace("refresh_by_match_merge");
 	StringInfoData querybuf;
 	Relation	matviewRel;
 	Relation	tempRel;
@@ -770,7 +770,7 @@ refresh_by_match_merge(Oid matviewOid, Oid tempOid, Oid relowner,
  */
 static void
 refresh_by_heap_swap(Oid matviewOid, Oid OIDNewHeap, char relpersistence)
-{
+{	StackTrace("refresh_by_heap_swap");
 	finish_heap_swap(matviewOid, OIDNewHeap, false, false, true, true,
 					 RecentXmin, ReadNextMultiXactId(), relpersistence);
 }
@@ -789,19 +789,19 @@ refresh_by_heap_swap(Oid matviewOid, Oid OIDNewHeap, char relpersistence)
  */
 bool
 MatViewIncrementalMaintenanceIsEnabled(void)
-{
+{	StackTrace("MatViewIncrementalMaintenanceIsEnabled");
 	return matview_maintenance_depth > 0;
 }
 
 static void
 OpenMatViewIncrementalMaintenance(void)
-{
+{	StackTrace("OpenMatViewIncrementalMaintenance");
 	matview_maintenance_depth++;
 }
 
 static void
 CloseMatViewIncrementalMaintenance(void)
-{
+{	StackTrace("CloseMatViewIncrementalMaintenance");
 	matview_maintenance_depth--;
 	Assert(matview_maintenance_depth >= 0);
 }

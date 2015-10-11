@@ -36,7 +36,7 @@
  */
 void
 RemoveRewriteRuleById(Oid ruleOid)
-{
+{	StackTrace("RemoveRewriteRuleById");
 	Relation	RewriteRelation;
 	ScanKeyData skey[1];
 	SysScanDesc rcscan;

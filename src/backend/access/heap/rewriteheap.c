@@ -246,7 +246,7 @@ RewriteState
 begin_heap_rewrite(Relation old_heap, Relation new_heap, TransactionId oldest_xmin,
 				   TransactionId freeze_xid, MultiXactId cutoff_multi,
 				   bool use_wal)
-{
+{	StackTrace("begin_heap_rewrite");
 	RewriteState state;
 	MemoryContext rw_cxt;
 	MemoryContext old_cxt;
@@ -312,7 +312,7 @@ begin_heap_rewrite(Relation old_heap, Relation new_heap, TransactionId oldest_xm
  */
 void
 end_heap_rewrite(RewriteState state)
-{
+{	StackTrace("end_heap_rewrite");
 	HASH_SEQ_STATUS seq_status;
 	UnresolvedTup unresolved;
 
@@ -379,7 +379,7 @@ end_heap_rewrite(RewriteState state)
 void
 rewrite_heap_tuple(RewriteState state,
 				   HeapTuple old_tuple, HeapTuple new_tuple)
-{
+{	StackTrace("rewrite_heap_tuple");
 	MemoryContext old_cxt;
 	ItemPointerData old_tid;
 	TidHashKey	hashkey;
@@ -576,7 +576,7 @@ rewrite_heap_tuple(RewriteState state,
  */
 bool
 rewrite_heap_dead_tuple(RewriteState state, HeapTuple old_tuple)
-{
+{	StackTrace("rewrite_heap_dead_tuple");
 	/*
 	 * If we have already seen an earlier tuple in the update chain that
 	 * points to this tuple, let's forget about that earlier tuple. It's in
@@ -626,7 +626,7 @@ rewrite_heap_dead_tuple(RewriteState state, HeapTuple old_tuple)
  */
 static void
 raw_heap_insert(RewriteState state, HeapTuple tup)
-{
+{	StackTrace("raw_heap_insert");
 	Page		page = state->rs_buffer;
 	Size		pageFreeSpace,
 				saveFreeSpace;
@@ -797,7 +797,7 @@ raw_heap_insert(RewriteState state, HeapTuple tup)
  */
 static void
 logical_begin_heap_rewrite(RewriteState state)
-{
+{	StackTrace("logical_begin_heap_rewrite");
 	HASHCTL		hash_ctl;
 	TransactionId logical_xmin;
 
@@ -846,7 +846,7 @@ logical_begin_heap_rewrite(RewriteState state)
  */
 static void
 logical_heap_rewrite_flush_mappings(RewriteState state)
-{
+{	StackTrace("logical_heap_rewrite_flush_mappings");
 	HASH_SEQ_STATUS seq_status;
 	RewriteMappingFile *src;
 	dlist_mutable_iter iter;
@@ -943,7 +943,7 @@ logical_heap_rewrite_flush_mappings(RewriteState state)
  */
 static void
 logical_end_heap_rewrite(RewriteState state)
-{
+{	StackTrace("logical_end_heap_rewrite");
 	HASH_SEQ_STATUS seq_status;
 	RewriteMappingFile *src;
 
@@ -974,7 +974,7 @@ logical_end_heap_rewrite(RewriteState state)
 static void
 logical_rewrite_log_mapping(RewriteState state, TransactionId xid,
 							LogicalRewriteMappingData *map)
-{
+{	StackTrace("logical_rewrite_log_mapping");
 	RewriteMappingFile *src;
 	RewriteMappingDataEntry *pmap;
 	Oid			relid;
@@ -1042,7 +1042,7 @@ logical_rewrite_log_mapping(RewriteState state, TransactionId xid,
 static void
 logical_rewrite_heap_tuple(RewriteState state, ItemPointerData old_tid,
 						   HeapTuple new_tuple)
-{
+{	StackTrace("logical_rewrite_heap_tuple");
 	ItemPointerData new_tid = new_tuple->t_self;
 	TransactionId cutoff = state->rs_logical_xmin;
 	TransactionId xmin;
@@ -1115,7 +1115,7 @@ logical_rewrite_heap_tuple(RewriteState state, ItemPointerData old_tid,
  */
 void
 heap_xlog_logical_rewrite(XLogReaderState *r)
-{
+{	StackTrace("heap_xlog_logical_rewrite");
 	char		path[MAXPGPATH];
 	int			fd;
 	xl_heap_rewrite_mapping *xlrec;
@@ -1191,7 +1191,7 @@ heap_xlog_logical_rewrite(XLogReaderState *r)
  */
 void
 CheckPointLogicalRewriteHeap(void)
-{
+{	StackTrace("CheckPointLogicalRewriteHeap");
 	XLogRecPtr	cutoff;
 	XLogRecPtr	redo;
 	DIR		   *mappings_dir;

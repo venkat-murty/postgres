@@ -102,7 +102,7 @@ static int	BufFileFlush(BufFile *file);
  */
 static BufFile *
 makeBufFile(File firstfile)
-{
+{	StackTrace("makeBufFile");
 	BufFile    *file = (BufFile *) palloc(sizeof(BufFile));
 
 	file->numFiles = 1;
@@ -127,7 +127,7 @@ makeBufFile(File firstfile)
  */
 static void
 extendBufFile(BufFile *file)
-{
+{	StackTrace("extendBufFile");
 	File		pfile;
 	ResourceOwner oldowner;
 
@@ -164,7 +164,7 @@ extendBufFile(BufFile *file)
  */
 BufFile *
 BufFileCreateTemp(bool interXact)
-{
+{	StackTrace("BufFileCreateTemp");
 	BufFile    *file;
 	File		pfile;
 
@@ -188,7 +188,7 @@ BufFileCreateTemp(bool interXact)
  */
 BufFile *
 BufFileCreate(File file)
-{
+{	StackTrace("BufFileCreate");
 	return makeBufFile(file);
 }
 #endif
@@ -200,7 +200,7 @@ BufFileCreate(File file)
  */
 void
 BufFileClose(BufFile *file)
-{
+{	StackTrace("BufFileClose");
 	int			i;
 
 	/* flush any unwritten data */
@@ -223,7 +223,7 @@ BufFileClose(BufFile *file)
  */
 static void
 BufFileLoadBuffer(BufFile *file)
-{
+{	StackTrace("BufFileLoadBuffer");
 	File		thisfile;
 
 	/*
@@ -272,7 +272,7 @@ BufFileLoadBuffer(BufFile *file)
  */
 static void
 BufFileDumpBuffer(BufFile *file)
-{
+{	StackTrace("BufFileDumpBuffer");
 	int			wpos = 0;
 	int			bytestowrite;
 	File		thisfile;
@@ -356,7 +356,7 @@ BufFileDumpBuffer(BufFile *file)
  */
 size_t
 BufFileRead(BufFile *file, void *ptr, size_t size)
-{
+{	StackTrace("BufFileRead");
 	size_t		nread = 0;
 	size_t		nthistime;
 
@@ -403,7 +403,7 @@ BufFileRead(BufFile *file, void *ptr, size_t size)
  */
 size_t
 BufFileWrite(BufFile *file, void *ptr, size_t size)
-{
+{	StackTrace("BufFileWrite");
 	size_t		nwritten = 0;
 	size_t		nthistime;
 
@@ -453,7 +453,7 @@ BufFileWrite(BufFile *file, void *ptr, size_t size)
  */
 static int
 BufFileFlush(BufFile *file)
-{
+{	StackTrace("BufFileFlush");
 	if (file->dirty)
 	{
 		BufFileDumpBuffer(file);
@@ -476,7 +476,7 @@ BufFileFlush(BufFile *file)
  */
 int
 BufFileSeek(BufFile *file, int fileno, off_t offset, int whence)
-{
+{	StackTrace("BufFileSeek");
 	int			newFile;
 	off_t		newOffset;
 
@@ -562,7 +562,7 @@ BufFileSeek(BufFile *file, int fileno, off_t offset, int whence)
 
 void
 BufFileTell(BufFile *file, int *fileno, off_t *offset)
-{
+{	StackTrace("BufFileTell");
 	*fileno = file->curFile;
 	*offset = file->curOffset + file->pos;
 }
@@ -580,7 +580,7 @@ BufFileTell(BufFile *file, int *fileno, off_t *offset)
  */
 int
 BufFileSeekBlock(BufFile *file, long blknum)
-{
+{	StackTrace("BufFileSeekBlock");
 	return BufFileSeek(file,
 					   (int) (blknum / BUFFILE_SEG_SIZE),
 					   (off_t) (blknum % BUFFILE_SEG_SIZE) * BLCKSZ,
@@ -595,7 +595,7 @@ BufFileSeekBlock(BufFile *file, long blknum)
  */
 long
 BufFileTellBlock(BufFile *file)
-{
+{	StackTrace("BufFileTellBlock");
 	long		blknum;
 
 	blknum = (file->curOffset + file->pos) / BLCKSZ;

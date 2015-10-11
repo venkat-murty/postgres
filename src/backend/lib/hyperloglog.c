@@ -63,7 +63,7 @@ static inline uint8 rho(uint32 x, uint8 b);
  */
 void
 initHyperLogLog(hyperLogLogState *cState, uint8 bwidth)
-{
+{	StackTrace("initHyperLogLog");
 	double		alpha;
 
 	if (bwidth < 4 || bwidth > 16)
@@ -118,7 +118,7 @@ initHyperLogLog(hyperLogLogState *cState, uint8 bwidth)
  */
 void
 addHyperLogLog(hyperLogLogState *cState, uint32 hash)
-{
+{	StackTrace("addHyperLogLog");
 	uint8		count;
 	uint32		index;
 
@@ -137,7 +137,7 @@ addHyperLogLog(hyperLogLogState *cState, uint32 hash)
  */
 double
 estimateHyperLogLog(hyperLogLogState *cState)
-{
+{	StackTrace("estimateHyperLogLog");
 	double		result;
 	double		sum = 0.0;
 	int			i;
@@ -182,7 +182,7 @@ estimateHyperLogLog(hyperLogLogState *cState)
  */
 void
 mergeHyperLogLog(hyperLogLogState *cState, const hyperLogLogState *oState)
-{
+{	StackTrace("mergeHyperLogLog");
 	int			r;
 
 	if (cState->nRegisters != oState->nRegisters)
@@ -215,7 +215,7 @@ mergeHyperLogLog(hyperLogLogState *cState, const hyperLogLogState *oState)
  */
 static inline uint8
 rho(uint32 x, uint8 b)
-{
+{	StackTrace("rho");
 	uint8		j = 1;
 
 	while (j <= b && !(x & 0x80000000))

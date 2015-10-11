@@ -178,7 +178,7 @@ static int	tbm_comparator(const void *left, const void *right);
  */
 TIDBitmap *
 tbm_create(long maxbytes)
-{
+{	StackTrace("tbm_create");
 	TIDBitmap  *tbm;
 	long		nbuckets;
 
@@ -211,7 +211,7 @@ tbm_create(long maxbytes)
  */
 static void
 tbm_create_pagetable(TIDBitmap *tbm)
-{
+{	StackTrace("tbm_create_pagetable");
 	HASHCTL		hash_ctl;
 
 	Assert(tbm->status != TBM_HASH);
@@ -248,7 +248,7 @@ tbm_create_pagetable(TIDBitmap *tbm)
  */
 void
 tbm_free(TIDBitmap *tbm)
-{
+{	StackTrace("tbm_free");
 	if (tbm->pagetable)
 		hash_destroy(tbm->pagetable);
 	if (tbm->spages)
@@ -267,7 +267,7 @@ tbm_free(TIDBitmap *tbm)
 void
 tbm_add_tuples(TIDBitmap *tbm, const ItemPointer tids, int ntids,
 			   bool recheck)
-{
+{	StackTrace("tbm_add_tuples");
 	BlockNumber currblk = InvalidBlockNumber;
 	PagetableEntry *page = NULL;	/* only valid when currblk is valid */
 	int			i;
@@ -332,7 +332,7 @@ tbm_add_tuples(TIDBitmap *tbm, const ItemPointer tids, int ntids,
  */
 void
 tbm_add_page(TIDBitmap *tbm, BlockNumber pageno)
-{
+{	StackTrace("tbm_add_page");
 	/* Enter the page in the bitmap, or mark it lossy if already present */
 	tbm_mark_page_lossy(tbm, pageno);
 	/* If we went over the memory limit, lossify some more pages */
@@ -347,7 +347,7 @@ tbm_add_page(TIDBitmap *tbm, BlockNumber pageno)
  */
 void
 tbm_union(TIDBitmap *a, const TIDBitmap *b)
-{
+{	StackTrace("tbm_union");
 	Assert(!a->iterating);
 	/* Nothing to do if b is empty */
 	if (b->nentries == 0)
@@ -370,7 +370,7 @@ tbm_union(TIDBitmap *a, const TIDBitmap *b)
 /* Process one page of b during a union op */
 static void
 tbm_union_page(TIDBitmap *a, const PagetableEntry *bpage)
-{
+{	StackTrace("tbm_union_page");
 	PagetableEntry *apage;
 	int			wordnum;
 
@@ -429,7 +429,7 @@ tbm_union_page(TIDBitmap *a, const PagetableEntry *bpage)
  */
 void
 tbm_intersect(TIDBitmap *a, const TIDBitmap *b)
-{
+{	StackTrace("tbm_intersect");
 	Assert(!a->iterating);
 	/* Nothing to do if a is empty */
 	if (a->nentries == 0)
@@ -480,7 +480,7 @@ tbm_intersect(TIDBitmap *a, const TIDBitmap *b)
  */
 static bool
 tbm_intersect_page(TIDBitmap *a, PagetableEntry *apage, const TIDBitmap *b)
-{
+{	StackTrace("tbm_intersect_page");
 	const PagetableEntry *bpage;
 	int			wordnum;
 
@@ -561,7 +561,7 @@ tbm_intersect_page(TIDBitmap *a, PagetableEntry *apage, const TIDBitmap *b)
  */
 bool
 tbm_is_empty(const TIDBitmap *tbm)
-{
+{	StackTrace("tbm_is_empty");
 	return (tbm->nentries == 0);
 }
 
@@ -580,7 +580,7 @@ tbm_is_empty(const TIDBitmap *tbm)
  */
 TBMIterator *
 tbm_begin_iterate(TIDBitmap *tbm)
-{
+{	StackTrace("tbm_begin_iterate");
 	TBMIterator *iterator;
 
 	/*
@@ -658,7 +658,7 @@ tbm_begin_iterate(TIDBitmap *tbm)
  */
 TBMIterateResult *
 tbm_iterate(TBMIterator *iterator)
-{
+{	StackTrace("tbm_iterate");
 	TIDBitmap  *tbm = iterator->tbm;
 	TBMIterateResult *output = &(iterator->output);
 
@@ -765,7 +765,7 @@ tbm_iterate(TBMIterator *iterator)
  */
 void
 tbm_end_iterate(TBMIterator *iterator)
-{
+{	StackTrace("tbm_end_iterate");
 	pfree(iterator);
 }
 
@@ -776,7 +776,7 @@ tbm_end_iterate(TBMIterator *iterator)
  */
 static const PagetableEntry *
 tbm_find_pageentry(const TIDBitmap *tbm, BlockNumber pageno)
-{
+{	StackTrace("tbm_find_pageentry");
 	const PagetableEntry *page;
 
 	if (tbm->nentries == 0)		/* in case pagetable doesn't exist */
@@ -811,7 +811,7 @@ tbm_find_pageentry(const TIDBitmap *tbm, BlockNumber pageno)
  */
 static PagetableEntry *
 tbm_get_pageentry(TIDBitmap *tbm, BlockNumber pageno)
-{
+{	StackTrace("tbm_get_pageentry");
 	PagetableEntry *page;
 	bool		found;
 
@@ -857,7 +857,7 @@ tbm_get_pageentry(TIDBitmap *tbm, BlockNumber pageno)
  */
 static bool
 tbm_page_is_lossy(const TIDBitmap *tbm, BlockNumber pageno)
-{
+{	StackTrace("tbm_page_is_lossy");
 	PagetableEntry *page;
 	BlockNumber chunk_pageno;
 	int			bitno;
@@ -891,7 +891,7 @@ tbm_page_is_lossy(const TIDBitmap *tbm, BlockNumber pageno)
  */
 static void
 tbm_mark_page_lossy(TIDBitmap *tbm, BlockNumber pageno)
-{
+{	StackTrace("tbm_mark_page_lossy");
 	PagetableEntry *page;
 	bool		found;
 	BlockNumber chunk_pageno;
@@ -961,7 +961,7 @@ tbm_mark_page_lossy(TIDBitmap *tbm, BlockNumber pageno)
  */
 static void
 tbm_lossify(TIDBitmap *tbm)
-{
+{	StackTrace("tbm_lossify");
 	HASH_SEQ_STATUS status;
 	PagetableEntry *page;
 
@@ -1026,7 +1026,7 @@ tbm_lossify(TIDBitmap *tbm)
  */
 static int
 tbm_comparator(const void *left, const void *right)
-{
+{	StackTrace("tbm_comparator");
 	BlockNumber l = (*((PagetableEntry *const *) left))->blockno;
 	BlockNumber r = (*((PagetableEntry *const *) right))->blockno;
 

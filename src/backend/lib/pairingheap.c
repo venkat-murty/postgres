@@ -40,7 +40,7 @@ static pairingheap_node *merge_children(pairingheap *heap,
  */
 pairingheap *
 pairingheap_allocate(pairingheap_comparator compare, void *arg)
-{
+{	StackTrace("pairingheap_allocate");
 	pairingheap *heap;
 
 	heap = (pairingheap *) palloc(sizeof(pairingheap));
@@ -61,7 +61,7 @@ pairingheap_allocate(pairingheap_comparator compare, void *arg)
  */
 void
 pairingheap_free(pairingheap *heap)
-{
+{	StackTrace("pairingheap_free");
 	pfree(heap);
 }
 
@@ -77,7 +77,7 @@ pairingheap_free(pairingheap *heap)
  */
 static pairingheap_node *
 merge(pairingheap *heap, pairingheap_node *a, pairingheap_node *b)
-{
+{	StackTrace("merge");
 	if (a == NULL)
 		return b;
 	if (b == NULL)
@@ -110,7 +110,7 @@ merge(pairingheap *heap, pairingheap_node *a, pairingheap_node *b)
  */
 void
 pairingheap_add(pairingheap *heap, pairingheap_node *node)
-{
+{	StackTrace("pairingheap_add");
 	node->first_child = NULL;
 
 	/* Link the new node as a new tree */
@@ -128,7 +128,7 @@ pairingheap_add(pairingheap *heap, pairingheap_node *node)
  */
 pairingheap_node *
 pairingheap_first(pairingheap *heap)
-{
+{	StackTrace("pairingheap_first");
 	Assert(!pairingheap_is_empty(heap));
 
 	return heap->ph_root;
@@ -143,7 +143,7 @@ pairingheap_first(pairingheap *heap)
  */
 pairingheap_node *
 pairingheap_remove_first(pairingheap *heap)
-{
+{	StackTrace("pairingheap_remove_first");
 	pairingheap_node *result;
 	pairingheap_node *children;
 
@@ -168,7 +168,7 @@ pairingheap_remove_first(pairingheap *heap)
  */
 void
 pairingheap_remove(pairingheap *heap, pairingheap_node *node)
-{
+{	StackTrace("pairingheap_remove");
 	pairingheap_node *children;
 	pairingheap_node *replacement;
 	pairingheap_node *next_sibling;
@@ -232,7 +232,7 @@ pairingheap_remove(pairingheap *heap, pairingheap_node *node)
  */
 static pairingheap_node *
 merge_children(pairingheap *heap, pairingheap_node *children)
-{
+{	StackTrace("merge_children");
 	pairingheap_node *curr,
 			   *next;
 	pairingheap_node *pairs;
@@ -299,7 +299,7 @@ pairingheap_dump_recurse(StringInfo buf,
 						 void *opaque,
 						 int depth,
 						 pairingheap_node *prev_or_parent)
-{
+{	StackTrace("(*dumpfunc)");
 	while (node)
 	{
 		Assert(node->prev_or_parent == prev_or_parent);
@@ -318,7 +318,7 @@ char *
 pairingheap_dump(pairingheap *heap,
 	 void (*dumpfunc) (pairingheap_node *node, StringInfo buf, void *opaque),
 				 void *opaque)
-{
+{	StackTrace("(*dumpfunc)");
 	StringInfoData buf;
 
 	if (!heap->ph_root)

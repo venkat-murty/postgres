@@ -256,7 +256,7 @@ static const datetkn *abbrevcache[MAXDATEFIELDS] = {NULL};
  */
 static int
 strtoi(const char *nptr, char **endptr, int base)
-{
+{	StackTrace("strtoi");
 	long		val;
 
 	val = strtol(nptr, endptr, base);
@@ -288,7 +288,7 @@ strtoi(const char *nptr, char **endptr, int base)
 
 int
 date2j(int y, int m, int d)
-{
+{	StackTrace("date2j");
 	int			julian;
 	int			century;
 
@@ -313,7 +313,7 @@ date2j(int y, int m, int d)
 
 void
 j2date(int jd, int *year, int *month, int *day)
-{
+{	StackTrace("j2date");
 	unsigned int julian;
 	unsigned int quad;
 	unsigned int extra;
@@ -348,7 +348,7 @@ j2date(int jd, int *year, int *month, int *day)
  */
 int
 j2day(int date)
-{
+{	StackTrace("j2day");
 	unsigned int day;
 
 	day = date;
@@ -367,7 +367,7 @@ j2day(int date)
  */
 void
 GetCurrentDateTime(struct pg_tm * tm)
-{
+{	StackTrace("GetCurrentDateTime");
 	int			tz;
 	fsec_t		fsec;
 
@@ -384,7 +384,7 @@ GetCurrentDateTime(struct pg_tm * tm)
  */
 void
 GetCurrentTimeUsec(struct pg_tm * tm, fsec_t *fsec, int *tzp)
-{
+{	StackTrace("GetCurrentTimeUsec");
 	int			tz;
 
 	timestamp2tm(GetCurrentTransactionStartTimestamp(), &tz, tm, fsec,
@@ -404,7 +404,7 @@ GetCurrentTimeUsec(struct pg_tm * tm, fsec_t *fsec, int *tzp)
  */
 static void
 TrimTrailingZeros(char *str)
-{
+{	StackTrace("TrimTrailingZeros");
 	int			len = strlen(str);
 
 	while (len > 1 && *(str + len - 1) == '0' && *(str + len - 2) != '.')
@@ -422,7 +422,7 @@ TrimTrailingZeros(char *str)
  */
 static void
 AppendSeconds(char *cp, int sec, fsec_t fsec, int precision, bool fillzeros)
-{
+{	StackTrace("AppendSeconds");
 	if (fsec == 0)
 	{
 		if (fillzeros)
@@ -450,7 +450,7 @@ AppendSeconds(char *cp, int sec, fsec_t fsec, int precision, bool fillzeros)
 /* Variant of above that's specialized to timestamp case */
 static void
 AppendTimestampSeconds(char *cp, struct pg_tm * tm, fsec_t fsec)
-{
+{	StackTrace("AppendTimestampSeconds");
 	/*
 	 * In float mode, don't print fractional seconds before 1 AD, since it's
 	 * unlikely there's any precision left ...
@@ -468,7 +468,7 @@ AppendTimestampSeconds(char *cp, struct pg_tm * tm, fsec_t fsec)
  */
 static void
 AdjustFractSeconds(double frac, struct pg_tm * tm, fsec_t *fsec, int scale)
-{
+{	StackTrace("AdjustFractSeconds");
 	int			sec;
 
 	if (frac == 0)
@@ -487,7 +487,7 @@ AdjustFractSeconds(double frac, struct pg_tm * tm, fsec_t *fsec, int scale)
 /* As above, but initial scale produces days */
 static void
 AdjustFractDays(double frac, struct pg_tm * tm, fsec_t *fsec, int scale)
-{
+{	StackTrace("AdjustFractDays");
 	int			extra_days;
 
 	if (frac == 0)
@@ -502,7 +502,7 @@ AdjustFractDays(double frac, struct pg_tm * tm, fsec_t *fsec, int scale)
 /* Fetch a fractional-second value with suitable error checking */
 static int
 ParseFractionalSecond(char *cp, fsec_t *fsec)
-{
+{	StackTrace("ParseFractionalSecond");
 	double		frac;
 
 	/* Caller should always pass the start of the fraction part */
@@ -555,7 +555,7 @@ ParseFractionalSecond(char *cp, fsec_t *fsec)
 int
 ParseDateTime(const char *timestr, char *workbuf, size_t buflen,
 			  char **field, int *ftype, int maxfields, int *numfields)
-{
+{	StackTrace("ParseDateTime");
 	int			nf = 0;
 	const char *cp = timestr;
 	char	   *bufp = workbuf;
@@ -776,7 +776,7 @@ ParseDateTime(const char *timestr, char *workbuf, size_t buflen,
 int
 DecodeDateTime(char **field, int *ftype, int nf,
 			   int *dtype, struct pg_tm * tm, fsec_t *fsec, int *tzp)
-{
+{	StackTrace("DecodeDateTime");
 	int			fmask = 0,
 				tmask,
 				type;
@@ -1468,7 +1468,7 @@ DecodeDateTime(char **field, int *ftype, int nf,
  */
 int
 DetermineTimeZoneOffset(struct pg_tm * tm, pg_tz *tzp)
-{
+{	StackTrace("DetermineTimeZoneOffset");
 	pg_time_t	t;
 
 	return DetermineTimeZoneOffsetInternal(tm, tzp, &t);
@@ -1490,7 +1490,7 @@ DetermineTimeZoneOffset(struct pg_tm * tm, pg_tz *tzp)
  */
 static int
 DetermineTimeZoneOffsetInternal(struct pg_tm * tm, pg_tz *tzp, pg_time_t *tp)
-{
+{	StackTrace("DetermineTimeZoneOffsetInternal");
 	int			date,
 				sec;
 	pg_time_t	day,
@@ -1623,7 +1623,7 @@ overflow:
  */
 int
 DetermineTimeZoneAbbrevOffset(struct pg_tm * tm, const char *abbr, pg_tz *tzp)
-{
+{	StackTrace("DetermineTimeZoneAbbrevOffset");
 	pg_time_t	t;
 
 	/*
@@ -1644,7 +1644,7 @@ DetermineTimeZoneAbbrevOffset(struct pg_tm * tm, const char *abbr, pg_tz *tzp)
 int
 DetermineTimeZoneAbbrevOffsetTS(TimestampTz ts, const char *abbr,
 								pg_tz *tzp, int *isdst)
-{
+{	StackTrace("DetermineTimeZoneAbbrevOffsetTS");
 	pg_time_t	t = timestamptz_to_time_t(ts);
 
 	return DetermineTimeZoneAbbrevOffsetInternal(t, abbr, tzp, isdst);
@@ -1659,7 +1659,7 @@ DetermineTimeZoneAbbrevOffsetTS(TimestampTz ts, const char *abbr,
 static int
 DetermineTimeZoneAbbrevOffsetInternal(pg_time_t t, const char *abbr,
 									  pg_tz *tzp, int *isdst)
-{
+{	StackTrace("DetermineTimeZoneAbbrevOffsetInternal");
 	char		upabbr[TZ_STRLEN_MAX + 1];
 	unsigned char *p;
 	long int	gmtoff;
@@ -1700,7 +1700,7 @@ DetermineTimeZoneAbbrevOffsetInternal(pg_time_t t, const char *abbr,
 int
 DecodeTimeOnly(char **field, int *ftype, int nf,
 			   int *dtype, struct pg_tm * tm, fsec_t *fsec, int *tzp)
-{
+{	StackTrace("DecodeTimeOnly");
 	int			fmask = 0,
 				tmask,
 				type;
@@ -2335,7 +2335,7 @@ DecodeTimeOnly(char **field, int *ftype, int nf,
 static int
 DecodeDate(char *str, int fmask, int *tmask, bool *is2digits,
 		   struct pg_tm * tm)
-{
+{	StackTrace("DecodeDate");
 	fsec_t		fsec;
 	int			nf = 0;
 	int			i,
@@ -2445,7 +2445,7 @@ DecodeDate(char *str, int fmask, int *tmask, bool *is2digits,
 int
 ValidateDate(int fmask, bool isjulian, bool is2digits, bool bc,
 			 struct pg_tm * tm)
-{
+{	StackTrace("ValidateDate");
 	if (fmask & DTK_M(YEAR))
 	{
 		if (isjulian)
@@ -2524,7 +2524,7 @@ ValidateDate(int fmask, bool isjulian, bool is2digits, bool bc,
 static int
 DecodeTime(char *str, int fmask, int range,
 		   int *tmask, struct pg_tm * tm, fsec_t *fsec)
-{
+{	StackTrace("DecodeTime");
 	char	   *cp;
 	int			dterr;
 
@@ -2607,7 +2607,7 @@ DecodeTime(char *str, int fmask, int range,
 static int
 DecodeNumber(int flen, char *str, bool haveTextMonth, int fmask,
 			 int *tmask, struct pg_tm * tm, fsec_t *fsec, bool *is2digits)
-{
+{	StackTrace("DecodeNumber");
 	int			val;
 	char	   *cp;
 	int			dterr;
@@ -2792,7 +2792,7 @@ DecodeNumber(int flen, char *str, bool haveTextMonth, int fmask,
 static int
 DecodeNumberField(int len, char *str, int fmask,
 				int *tmask, struct pg_tm * tm, fsec_t *fsec, bool *is2digits)
-{
+{	StackTrace("DecodeNumberField");
 	char	   *cp;
 
 	/*
@@ -2882,7 +2882,7 @@ DecodeNumberField(int len, char *str, int fmask,
  */
 int
 DecodeTimezone(char *str, int *tzp)
-{
+{	StackTrace("DecodeTimezone");
 	int			tz;
 	int			hr,
 				min,
@@ -2961,7 +2961,7 @@ DecodeTimezone(char *str, int *tzp)
 int
 DecodeTimezoneAbbrev(int field, char *lowtoken,
 					 int *offset, pg_tz **tz)
-{
+{	StackTrace("DecodeTimezoneAbbrev");
 	int			type;
 	const datetkn *tp;
 
@@ -3015,7 +3015,7 @@ DecodeTimezoneAbbrev(int field, char *lowtoken,
  */
 int
 DecodeSpecial(int field, char *lowtoken, int *val)
-{
+{	StackTrace("DecodeSpecial");
 	int			type;
 	const datetkn *tp;
 
@@ -3047,7 +3047,7 @@ DecodeSpecial(int field, char *lowtoken, int *val)
  */
 static inline void
 ClearPgTm(struct pg_tm * tm, fsec_t *fsec)
-{
+{	StackTrace("ClearPgTm");
 	tm->tm_year = 0;
 	tm->tm_mon = 0;
 	tm->tm_mday = 0;
@@ -3072,7 +3072,7 @@ ClearPgTm(struct pg_tm * tm, fsec_t *fsec)
 int
 DecodeInterval(char **field, int *ftype, int nf, int range,
 			   int *dtype, struct pg_tm * tm, fsec_t *fsec)
-{
+{	StackTrace("DecodeInterval");
 	bool		is_before = FALSE;
 	char	   *cp;
 	int			fmask = 0,
@@ -3458,7 +3458,7 @@ DecodeInterval(char **field, int *ftype, int nf, int range,
  */
 static int
 ParseISO8601Number(char *str, char **endptr, int *ipart, double *fpart)
-{
+{	StackTrace("ParseISO8601Number");
 	double		val;
 
 	if (!(isdigit((unsigned char) *str) || *str == '-' || *str == '.'))
@@ -3486,7 +3486,7 @@ ParseISO8601Number(char *str, char **endptr, int *ipart, double *fpart)
  */
 static int
 ISO8601IntegerWidth(char *fieldstart)
-{
+{	StackTrace("ISO8601IntegerWidth");
 	/* We might have had a leading '-' */
 	if (*fieldstart == '-')
 		fieldstart++;
@@ -3514,7 +3514,7 @@ ISO8601IntegerWidth(char *fieldstart)
 int
 DecodeISO8601Interval(char *str,
 					  int *dtype, struct pg_tm * tm, fsec_t *fsec)
-{
+{	StackTrace("DecodeISO8601Interval");
 	bool		datepart = true;
 	bool		havefield = false;
 
@@ -3720,7 +3720,7 @@ DecodeISO8601Interval(char *str,
  */
 int
 DecodeUnits(int field, char *lowtoken, int *val)
-{
+{	StackTrace("DecodeUnits");
 	int			type;
 	const datetkn *tp;
 
@@ -3757,7 +3757,7 @@ DecodeUnits(int field, char *lowtoken, int *val)
  */
 void
 DateTimeParseError(int dterr, const char *str, const char *datatype)
-{
+{	StackTrace("DateTimeParseError");
 	switch (dterr)
 	{
 		case DTERR_FIELD_OVERFLOW:
@@ -3802,7 +3802,7 @@ DateTimeParseError(int dterr, const char *str, const char *datatype)
  */
 static const datetkn *
 datebsearch(const char *key, const datetkn *base, int nel)
-{
+{	StackTrace("datebsearch");
 	if (nel > 0)
 	{
 		const datetkn *last = base + nel - 1,
@@ -3835,7 +3835,7 @@ datebsearch(const char *key, const datetkn *base, int nel)
  */
 static void
 EncodeTimezone(char *str, int tz, int style)
-{
+{	StackTrace("EncodeTimezone");
 	int			hour,
 				min,
 				sec;
@@ -3863,7 +3863,7 @@ EncodeTimezone(char *str, int tz, int style)
  */
 void
 EncodeDateOnly(struct pg_tm * tm, int style, char *str)
-{
+{	StackTrace("EncodeDateOnly");
 	Assert(tm->tm_mon >= 1 && tm->tm_mon <= MONTHS_PER_YEAR);
 
 	switch (style)
@@ -3926,7 +3926,7 @@ EncodeDateOnly(struct pg_tm * tm, int style, char *str)
  */
 void
 EncodeTimeOnly(struct pg_tm * tm, fsec_t fsec, bool print_tz, int tz, int style, char *str)
-{
+{	StackTrace("EncodeTimeOnly");
 	sprintf(str, "%02d:%02d:", tm->tm_hour, tm->tm_min);
 	str += strlen(str);
 
@@ -3955,7 +3955,7 @@ EncodeTimeOnly(struct pg_tm * tm, fsec_t fsec, bool print_tz, int tz, int style,
  */
 void
 EncodeDateTime(struct pg_tm * tm, fsec_t fsec, bool print_tz, int tz, const char *tzn, int style, char *str)
-{
+{	StackTrace("EncodeDateTime");
 	int			day;
 
 	Assert(tm->tm_mon >= 1 && tm->tm_mon <= MONTHS_PER_YEAR);
@@ -4098,7 +4098,7 @@ EncodeDateTime(struct pg_tm * tm, fsec_t fsec, bool print_tz, int tz, const char
 /* Append an ISO-8601-style interval field, but only if value isn't zero */
 static char *
 AddISO8601IntPart(char *cp, int value, char units)
-{
+{	StackTrace("AddISO8601IntPart");
 	if (value == 0)
 		return cp;
 	sprintf(cp, "%d%c", value, units);
@@ -4109,7 +4109,7 @@ AddISO8601IntPart(char *cp, int value, char units)
 static char *
 AddPostgresIntPart(char *cp, int value, const char *units,
 				   bool *is_zero, bool *is_before)
-{
+{	StackTrace("AddPostgresIntPart");
 	if (value == 0)
 		return cp;
 	sprintf(cp, "%s%s%d %s%s",
@@ -4132,7 +4132,7 @@ AddPostgresIntPart(char *cp, int value, const char *units,
 static char *
 AddVerboseIntPart(char *cp, int value, const char *units,
 				  bool *is_zero, bool *is_before)
-{
+{	StackTrace("AddVerboseIntPart");
 	if (value == 0)
 		return cp;
 	/* first nonzero value sets is_before */
@@ -4170,7 +4170,7 @@ AddVerboseIntPart(char *cp, int value, const char *units,
  */
 void
 EncodeInterval(struct pg_tm * tm, fsec_t fsec, int style, char *str)
-{
+{	StackTrace("EncodeInterval");
 	char	   *cp = str;
 	int			year = tm->tm_year;
 	int			mon = tm->tm_mon;
@@ -4359,7 +4359,7 @@ EncodeInterval(struct pg_tm * tm, fsec_t fsec, int style, char *str)
  */
 static bool
 CheckDateTokenTable(const char *tablename, const datetkn *base, int nel)
-{
+{	StackTrace("CheckDateTokenTable");
 	bool		ok = true;
 	int			i;
 
@@ -4391,7 +4391,7 @@ CheckDateTokenTable(const char *tablename, const datetkn *base, int nel)
 
 bool
 CheckDateTokenTables(void)
-{
+{	StackTrace("CheckDateTokenTables");
 	bool		ok = true;
 
 	Assert(UNIX_EPOCH_JDATE == date2j(1970, 1, 1));
@@ -4413,7 +4413,7 @@ CheckDateTokenTables(void)
  */
 Node *
 TemporalTransform(int32 max_precis, Node *node)
-{
+{	StackTrace("TemporalTransform");
 	FuncExpr   *expr = (FuncExpr *) node;
 	Node	   *ret = NULL;
 	Node	   *typmod;
@@ -4447,7 +4447,7 @@ TemporalTransform(int32 max_precis, Node *node)
  */
 TimeZoneAbbrevTable *
 ConvertTimeZoneAbbrevs(struct tzEntry *abbrevs, int n)
-{
+{	StackTrace("ConvertTimeZoneAbbrevs");
 	TimeZoneAbbrevTable *tbl;
 	Size		tbl_size;
 	int			i;
@@ -4531,7 +4531,7 @@ ConvertTimeZoneAbbrevs(struct tzEntry *abbrevs, int n)
  */
 void
 InstallTimeZoneAbbrevs(TimeZoneAbbrevTable *tbl)
-{
+{	StackTrace("InstallTimeZoneAbbrevs");
 	zoneabbrevtbl = tbl;
 	/* reset abbrevcache, which may contain pointers into old table */
 	memset(abbrevcache, 0, sizeof(abbrevcache));
@@ -4542,7 +4542,7 @@ InstallTimeZoneAbbrevs(TimeZoneAbbrevTable *tbl)
  */
 static pg_tz *
 FetchDynamicTimeZone(TimeZoneAbbrevTable *tbl, const datetkn *tp)
-{
+{	StackTrace("FetchDynamicTimeZone");
 	DynamicZoneAbbrev *dtza;
 
 	/* Just some sanity checks to prevent indexing off into nowhere */
@@ -4578,7 +4578,7 @@ FetchDynamicTimeZone(TimeZoneAbbrevTable *tbl, const datetkn *tp)
  */
 Datum
 pg_timezone_abbrevs(PG_FUNCTION_ARGS)
-{
+{	StackTrace("pg_timezone_abbrevs");
 	FuncCallContext *funcctx;
 	int		   *pindex;
 	Datum		result;
@@ -4706,7 +4706,7 @@ pg_timezone_abbrevs(PG_FUNCTION_ARGS)
  */
 Datum
 pg_timezone_names(PG_FUNCTION_ARGS)
-{
+{	StackTrace("pg_timezone_names");
 	MemoryContext oldcontext;
 	FuncCallContext *funcctx;
 	pg_tzenum  *tzenum;

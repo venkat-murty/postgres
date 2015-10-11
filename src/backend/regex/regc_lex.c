@@ -68,7 +68,7 @@
  */
 static void
 lexstart(struct vars * v)
-{
+{	StackTrace("lexstart");
 	prefixes(v);				/* may turn on new type bits etc. */
 	NOERR();
 
@@ -97,7 +97,7 @@ lexstart(struct vars * v)
  */
 static void
 prefixes(struct vars * v)
-{
+{	StackTrace("prefixes");
 	/* literal string doesn't get any of this stuff */
 	if (v->cflags & REG_QUOTE)
 		return;
@@ -266,7 +266,7 @@ static const chr brbackw[] = {	/* \w within brackets */
  */
 static void
 lexword(struct vars * v)
-{
+{	StackTrace("lexword");
 	lexnest(v, backw, ENDOF(backw));
 }
 
@@ -275,7 +275,7 @@ lexword(struct vars * v)
  */
 static int						/* 1 normal, 0 failure */
 next(struct vars * v)
-{
+{	StackTrace("next");
 	chr			c;
 
 	/* errors yield an infinite sequence of failures */
@@ -714,7 +714,7 @@ next(struct vars * v)
  */
 static int						/* not actually used, but convenient for RETV */
 lexescape(struct vars * v)
-{
+{	StackTrace("lexescape");
 	chr			c;
 	static const chr alert[] = {
 		CHR('a'), CHR('l'), CHR('e'), CHR('r'), CHR('t')
@@ -878,7 +878,7 @@ lexdigits(struct vars * v,
 		  int base,
 		  int minlen,
 		  int maxlen)
-{
+{	StackTrace("lexdigits");
 	uchr		n;				/* unsigned to avoid overflow misbehavior */
 	int			len;
 	chr			c;
@@ -957,7 +957,7 @@ lexdigits(struct vars * v,
 static int						/* 1 normal, 0 failure */
 brenext(struct vars * v,
 		chr pc)
-{
+{	StackTrace("brenext");
 	chr			c = (chr) pc;
 
 	switch (c)
@@ -1079,7 +1079,7 @@ brenext(struct vars * v,
  */
 static void
 skip(struct vars * v)
-{
+{	StackTrace("skip");
 	const chr  *start = v->now;
 
 	assert(v->cflags & REG_EXPANDED);
@@ -1107,7 +1107,7 @@ skip(struct vars * v)
  */
 static chr
 newline(void)
-{
+{	StackTrace("newline");
 	return CHR('\n');
 }
 

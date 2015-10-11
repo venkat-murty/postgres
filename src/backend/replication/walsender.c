@@ -221,7 +221,7 @@ static void XLogRead(char *buf, XLogRecPtr startptr, Size count);
 /* Initialize walsender process before entering the main command loop */
 void
 InitWalSender(void)
-{
+{	StackTrace("InitWalSender");
 	am_cascading_walsender = RecoveryInProgress();
 
 	/* Create a per-walsender data structure in shared memory */
@@ -250,7 +250,7 @@ InitWalSender(void)
  */
 void
 WalSndErrorCleanup()
-{
+{	StackTrace("WalSndErrorCleanup");
 	LWLockReleaseAll();
 
 	if (sendFile >= 0)
@@ -275,7 +275,7 @@ WalSndErrorCleanup()
  */
 static void
 WalSndShutdown(void)
-{
+{	StackTrace("WalSndShutdown");
 	/*
 	 * Reset whereToSendOutput to prevent ereport from attempting to send any
 	 * more messages to the standby.
@@ -292,7 +292,7 @@ WalSndShutdown(void)
  */
 static void
 IdentifySystem(void)
-{
+{	StackTrace("IdentifySystem");
 	StringInfoData buf;
 	char		sysid[32];
 	char		tli[11];
@@ -406,7 +406,7 @@ IdentifySystem(void)
  */
 static void
 SendTimeLineHistory(TimeLineHistoryCmd *cmd)
-{
+{	StackTrace("SendTimeLineHistory");
 	StringInfoData buf;
 	char		histfname[MAXFNAMELEN];
 	char		path[MAXPGPATH];
@@ -498,7 +498,7 @@ SendTimeLineHistory(TimeLineHistoryCmd *cmd)
  */
 static void
 StartReplication(StartReplicationCmd *cmd)
-{
+{	StackTrace("StartReplication");
 	StringInfoData buf;
 	XLogRecPtr	FlushPtr;
 
@@ -734,7 +734,7 @@ StartReplication(StartReplicationCmd *cmd)
 static int
 logical_read_xlog_page(XLogReaderState *state, XLogRecPtr targetPagePtr, int reqLen,
 				XLogRecPtr targetRecPtr, char *cur_page, TimeLineID *pageTLI)
-{
+{	StackTrace("logical_read_xlog_page");
 	XLogRecPtr	flushptr;
 	int			count;
 
@@ -762,7 +762,7 @@ logical_read_xlog_page(XLogReaderState *state, XLogRecPtr targetPagePtr, int req
  */
 static void
 CreateReplicationSlot(CreateReplicationSlotCmd *cmd)
-{
+{	StackTrace("CreateReplicationSlot");
 	const char *slot_name;
 	const char *snapshot_name = NULL;
 	char		xpos[MAXFNAMELEN];
@@ -916,7 +916,7 @@ CreateReplicationSlot(CreateReplicationSlotCmd *cmd)
  */
 static void
 DropReplicationSlot(DropReplicationSlotCmd *cmd)
-{
+{	StackTrace("DropReplicationSlot");
 	ReplicationSlotDrop(cmd->slotname);
 	EndCommand("DROP_REPLICATION_SLOT", DestRemote);
 }
@@ -927,7 +927,7 @@ DropReplicationSlot(DropReplicationSlotCmd *cmd)
  */
 static void
 StartLogicalReplication(StartReplicationCmd *cmd)
-{
+{	StackTrace("StartLogicalReplication");
 	StringInfoData buf;
 
 	/* make sure that our requirements are still fulfilled */
@@ -1019,7 +1019,7 @@ StartLogicalReplication(StartReplicationCmd *cmd)
  */
 static void
 WalSndPrepareWrite(LogicalDecodingContext *ctx, XLogRecPtr lsn, TransactionId xid, bool last_write)
-{
+{	StackTrace("WalSndPrepareWrite");
 	/* can't have sync rep confused by sending the same LSN several times */
 	if (!last_write)
 		lsn = InvalidXLogRecPtr;
@@ -1047,7 +1047,7 @@ WalSndPrepareWrite(LogicalDecodingContext *ctx, XLogRecPtr lsn, TransactionId xi
 static void
 WalSndWriteData(LogicalDecodingContext *ctx, XLogRecPtr lsn, TransactionId xid,
 				bool last_write)
-{
+{	StackTrace("WalSndWriteData");
 	/* output previously gathered data in a CopyData packet */
 	pq_putmessage_noblock('d', ctx->out->data, ctx->out->len);
 
@@ -1133,7 +1133,7 @@ WalSndWriteData(LogicalDecodingContext *ctx, XLogRecPtr lsn, TransactionId xid,
  */
 static XLogRecPtr
 WalSndWaitForWal(XLogRecPtr loc)
-{
+{	StackTrace("WalSndWaitForWal");
 	int			wakeEvents;
 	static XLogRecPtr RecentFlushPtr = InvalidXLogRecPtr;
 
@@ -1260,7 +1260,7 @@ WalSndWaitForWal(XLogRecPtr loc)
  */
 void
 exec_replication_command(const char *cmd_string)
-{
+{	StackTrace("exec_replication_command");
 	int			parse_rc;
 	Node	   *cmd_node;
 	MemoryContext cmd_context;
@@ -1351,7 +1351,7 @@ exec_replication_command(const char *cmd_string)
  */
 static void
 ProcessRepliesIfAny(void)
-{
+{	StackTrace("ProcessRepliesIfAny");
 	unsigned char firstchar;
 	int			r;
 	bool		received = false;
@@ -1453,7 +1453,7 @@ ProcessRepliesIfAny(void)
  */
 static void
 ProcessStandbyMessage(void)
-{
+{	StackTrace("ProcessStandbyMessage");
 	char		msgtype;
 
 	/*
@@ -1484,7 +1484,7 @@ ProcessStandbyMessage(void)
  */
 static void
 PhysicalConfirmReceivedLocation(XLogRecPtr lsn)
-{
+{	StackTrace("PhysicalConfirmReceivedLocation");
 	bool		changed = false;
 
 	/* use volatile pointer to prevent code rearrangement */
@@ -1518,7 +1518,7 @@ PhysicalConfirmReceivedLocation(XLogRecPtr lsn)
  */
 static void
 ProcessStandbyReplyMessage(void)
-{
+{	StackTrace("ProcessStandbyReplyMessage");
 	XLogRecPtr	writePtr,
 				flushPtr,
 				applyPtr;
@@ -1574,7 +1574,7 @@ ProcessStandbyReplyMessage(void)
 /* compute new replication slot xmin horizon if needed */
 static void
 PhysicalReplicationSlotNewXmin(TransactionId feedbackXmin)
-{
+{	StackTrace("PhysicalReplicationSlotNewXmin");
 	bool		changed = false;
 	volatile ReplicationSlot *slot = MyReplicationSlot;
 
@@ -1608,7 +1608,7 @@ PhysicalReplicationSlotNewXmin(TransactionId feedbackXmin)
  */
 static void
 ProcessStandbyHSFeedbackMessage(void)
-{
+{	StackTrace("ProcessStandbyHSFeedbackMessage");
 	TransactionId nextXid;
 	uint32		nextEpoch;
 	TransactionId feedbackXmin;
@@ -1701,7 +1701,7 @@ ProcessStandbyHSFeedbackMessage(void)
  */
 static long
 WalSndComputeSleeptime(TimestampTz now)
-{
+{	StackTrace("WalSndComputeSleeptime");
 	long		sleeptime = 10000;		/* 10 s */
 
 	if (wal_sender_timeout > 0 && last_reply_timestamp > 0)
@@ -1743,7 +1743,7 @@ WalSndComputeSleeptime(TimestampTz now)
  */
 static void
 WalSndCheckTimeOut(TimestampTz now)
-{
+{	StackTrace("WalSndCheckTimeOut");
 	TimestampTz timeout;
 
 	/* don't bail out if we're doing something that doesn't require timeouts */
@@ -1770,7 +1770,7 @@ WalSndCheckTimeOut(TimestampTz now)
 /* Main loop of walsender process that streams the WAL over Copy messages. */
 static void
 WalSndLoop(WalSndSendDataCallback send_data)
-{
+{	StackTrace("WalSndLoop");
 	/*
 	 * Allocate buffers that will be used for each outgoing and incoming
 	 * message.  We do this just once to reduce palloc overhead.
@@ -1910,7 +1910,7 @@ WalSndLoop(WalSndSendDataCallback send_data)
 /* Initialize a per-walsender data structure for this walsender process */
 static void
 InitWalSenderSlot(void)
-{
+{	StackTrace("InitWalSenderSlot");
 	int			i;
 
 	/*
@@ -1966,7 +1966,7 @@ InitWalSenderSlot(void)
 /* Destroy the per-walsender data structure for this walsender process */
 static void
 WalSndKill(int code, Datum arg)
-{
+{	StackTrace("WalSndKill");
 	WalSnd	   *walsnd = MyWalSnd;
 
 	Assert(walsnd != NULL);
@@ -1994,7 +1994,7 @@ WalSndKill(int code, Datum arg)
  */
 static void
 XLogRead(char *buf, XLogRecPtr startptr, Size count)
-{
+{	StackTrace("XLogRead");
 	char	   *p;
 	XLogRecPtr	recptr;
 	Size		nbytes;
@@ -2168,7 +2168,7 @@ retry:
  */
 static void
 XLogSendPhysical(void)
-{
+{	StackTrace("XLogSendPhysical");
 	XLogRecPtr	SendRqstPtr;
 	XLogRecPtr	startptr;
 	XLogRecPtr	endptr;
@@ -2402,7 +2402,7 @@ XLogSendPhysical(void)
  */
 static void
 XLogSendLogical(void)
-{
+{	StackTrace("XLogSendLogical");
 	XLogRecord *record;
 	char	   *errm;
 
@@ -2459,7 +2459,7 @@ XLogSendLogical(void)
  */
 static void
 WalSndDone(WalSndSendDataCallback send_data)
-{
+{	StackTrace("WalSndDone");
 	XLogRecPtr	replicatedPtr;
 
 	/* ... let's just be real sure we're caught up ... */
@@ -2496,7 +2496,7 @@ WalSndDone(WalSndSendDataCallback send_data)
  */
 static XLogRecPtr
 GetStandbyFlushRecPtr(void)
-{
+{	StackTrace("GetStandbyFlushRecPtr");
 	XLogRecPtr	replayPtr;
 	TimeLineID	replayTLI;
 	XLogRecPtr	receivePtr;
@@ -2526,7 +2526,7 @@ GetStandbyFlushRecPtr(void)
  */
 void
 WalSndRqstFileReload(void)
-{
+{	StackTrace("WalSndRqstFileReload");
 	int			i;
 
 	for (i = 0; i < max_wal_senders; i++)
@@ -2546,7 +2546,7 @@ WalSndRqstFileReload(void)
 /* SIGHUP: set flag to re-read config file at next convenient time */
 static void
 WalSndSigHupHandler(SIGNAL_ARGS)
-{
+{	StackTrace("WalSndSigHupHandler");
 	int			save_errno = errno;
 
 	got_SIGHUP = true;
@@ -2559,7 +2559,7 @@ WalSndSigHupHandler(SIGNAL_ARGS)
 /* SIGUSR1: set flag to send WAL records */
 static void
 WalSndXLogSendHandler(SIGNAL_ARGS)
-{
+{	StackTrace("WalSndXLogSendHandler");
 	int			save_errno = errno;
 
 	latch_sigusr1_handler();
@@ -2570,7 +2570,7 @@ WalSndXLogSendHandler(SIGNAL_ARGS)
 /* SIGUSR2: set flag to do a last cycle and shut down afterwards */
 static void
 WalSndLastCycleHandler(SIGNAL_ARGS)
-{
+{	StackTrace("WalSndLastCycleHandler");
 	int			save_errno = errno;
 
 	/*
@@ -2591,7 +2591,7 @@ WalSndLastCycleHandler(SIGNAL_ARGS)
 /* Set up signal handlers */
 void
 WalSndSignals(void)
-{
+{	StackTrace("WalSndSignals");
 	/* Set up signal handlers */
 	pqsignal(SIGHUP, WalSndSigHupHandler);		/* set flag to read config
 												 * file */
@@ -2615,7 +2615,7 @@ WalSndSignals(void)
 /* Report shared-memory space needed by WalSndShmemInit */
 Size
 WalSndShmemSize(void)
-{
+{	StackTrace("WalSndShmemSize");
 	Size		size = 0;
 
 	size = offsetof(WalSndCtlData, walsnds);
@@ -2627,7 +2627,7 @@ WalSndShmemSize(void)
 /* Allocate and initialize walsender-related shared memory */
 void
 WalSndShmemInit(void)
-{
+{	StackTrace("WalSndShmemInit");
 	bool		found;
 	int			i;
 
@@ -2659,7 +2659,7 @@ WalSndShmemInit(void)
  */
 void
 WalSndWakeup(void)
-{
+{	StackTrace("WalSndWakeup");
 	int			i;
 
 	for (i = 0; i < max_wal_senders; i++)
@@ -2683,7 +2683,7 @@ WalSndWakeup(void)
 /* Set state for current walsender (only called in walsender) */
 void
 WalSndSetState(WalSndState state)
-{
+{	StackTrace("WalSndSetState");
 	/* use volatile pointer to prevent code rearrangement */
 	volatile WalSnd *walsnd = MyWalSnd;
 
@@ -2703,7 +2703,7 @@ WalSndSetState(WalSndState state)
  */
 static const char *
 WalSndGetStateString(WalSndState state)
-{
+{	StackTrace("WalSndGetStateString");
 	switch (state)
 	{
 		case WALSNDSTATE_STARTUP:
@@ -2725,7 +2725,7 @@ WalSndGetStateString(WalSndState state)
  */
 Datum
 pg_stat_get_wal_senders(PG_FUNCTION_ARGS)
-{
+{	StackTrace("pg_stat_get_wal_senders");
 #define PG_STAT_GET_WAL_SENDERS_COLS	8
 	ReturnSetInfo *rsinfo = (ReturnSetInfo *) fcinfo->resultinfo;
 	TupleDesc	tupdesc;
@@ -2857,7 +2857,7 @@ pg_stat_get_wal_senders(PG_FUNCTION_ARGS)
   */
 static void
 WalSndKeepalive(bool requestReply)
-{
+{	StackTrace("WalSndKeepalive");
 	elog(DEBUG2, "sending replication keepalive");
 
 	/* construct the message... */
@@ -2876,7 +2876,7 @@ WalSndKeepalive(bool requestReply)
  */
 static void
 WalSndKeepaliveIfNecessary(TimestampTz now)
-{
+{	StackTrace("WalSndKeepaliveIfNecessary");
 	TimestampTz ping_time;
 
 	/*
@@ -2919,7 +2919,7 @@ WalSndKeepaliveIfNecessary(TimestampTz now)
  */
 XLogRecPtr
 GetOldestWALSendPointer(void)
-{
+{	StackTrace("GetOldestWALSendPointer");
 	XLogRecPtr	oldest = {0, 0};
 	int			i;
 	bool		found = false;

@@ -93,7 +93,7 @@ static void walwriter_sigusr1_handler(SIGNAL_ARGS);
  */
 void
 WalWriterMain(void)
-{
+{	StackTrace("WalWriterMain");
 	sigjmp_buf	local_sigjmp_buf;
 	MemoryContext walwriter_context;
 	int			left_till_hibernate;
@@ -314,7 +314,7 @@ WalWriterMain(void)
  */
 static void
 wal_quickdie(SIGNAL_ARGS)
-{
+{	StackTrace("wal_quickdie");
 	PG_SETMASK(&BlockSig);
 
 	/*
@@ -341,7 +341,7 @@ wal_quickdie(SIGNAL_ARGS)
 /* SIGHUP: set flag to re-read config file at next convenient time */
 static void
 WalSigHupHandler(SIGNAL_ARGS)
-{
+{	StackTrace("WalSigHupHandler");
 	int			save_errno = errno;
 
 	got_SIGHUP = true;
@@ -353,7 +353,7 @@ WalSigHupHandler(SIGNAL_ARGS)
 /* SIGTERM: set flag to exit normally */
 static void
 WalShutdownHandler(SIGNAL_ARGS)
-{
+{	StackTrace("WalShutdownHandler");
 	int			save_errno = errno;
 
 	shutdown_requested = true;
@@ -365,7 +365,7 @@ WalShutdownHandler(SIGNAL_ARGS)
 /* SIGUSR1: used for latch wakeups */
 static void
 walwriter_sigusr1_handler(SIGNAL_ARGS)
-{
+{	StackTrace("walwriter_sigusr1_handler");
 	int			save_errno = errno;
 
 	latch_sigusr1_handler();

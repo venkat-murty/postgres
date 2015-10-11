@@ -95,7 +95,7 @@ static HTAB *ShmemIndex = NULL; /* primary index hashtable for shmem */
  */
 void
 InitShmemAccess(void *seghdr)
-{
+{	StackTrace("InitShmemAccess");
 	PGShmemHeader *shmhdr = (PGShmemHeader *) seghdr;
 
 	ShmemSegHdr = shmhdr;
@@ -110,7 +110,7 @@ InitShmemAccess(void *seghdr)
  */
 void
 InitShmemAllocation(void)
-{
+{	StackTrace("InitShmemAllocation");
 	PGShmemHeader *shmhdr = ShmemSegHdr;
 
 	Assert(shmhdr != NULL);
@@ -165,7 +165,7 @@ InitShmemAllocation(void)
  */
 void *
 ShmemAlloc(Size size)
-{
+{	StackTrace("ShmemAlloc");
 	Size		newStart;
 	Size		newFree;
 	void	   *newSpace;
@@ -214,7 +214,7 @@ ShmemAlloc(Size size)
  */
 bool
 ShmemAddrIsValid(const void *addr)
-{
+{	StackTrace("ShmemAddrIsValid");
 	return (addr >= ShmemBase) && (addr < ShmemEnd);
 }
 
@@ -223,7 +223,7 @@ ShmemAddrIsValid(const void *addr)
  */
 void
 InitShmemIndex(void)
-{
+{	StackTrace("InitShmemIndex");
 	HASHCTL		info;
 	int			hash_flags;
 
@@ -323,7 +323,7 @@ ShmemInitHash(const char *name, /* table string name for shmem index */
  */
 void *
 ShmemInitStruct(const char *name, Size size, bool *foundPtr)
-{
+{	StackTrace("ShmemInitStruct");
 	ShmemIndexEnt *result;
 	void	   *structPtr;
 
@@ -429,7 +429,7 @@ ShmemInitStruct(const char *name, Size size, bool *foundPtr)
  */
 Size
 add_size(Size s1, Size s2)
-{
+{	StackTrace("add_size");
 	Size		result;
 
 	result = s1 + s2;
@@ -446,7 +446,7 @@ add_size(Size s1, Size s2)
  */
 Size
 mul_size(Size s1, Size s2)
-{
+{	StackTrace("mul_size");
 	Size		result;
 
 	if (s1 == 0 || s2 == 0)

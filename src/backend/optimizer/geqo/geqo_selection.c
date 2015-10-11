@@ -53,7 +53,7 @@ static int	linear_rand(PlannerInfo *root, int max, double bias);
 void
 geqo_selection(PlannerInfo *root, Chromosome *momma, Chromosome *daddy,
 			   Pool *pool, double bias)
-{
+{	StackTrace("geqo_selection");
 	int			first,
 				second;
 
@@ -90,7 +90,7 @@ geqo_selection(PlannerInfo *root, Chromosome *momma, Chromosome *daddy,
  */
 static int
 linear_rand(PlannerInfo *root, int pool_size, double bias)
-{
+{	StackTrace("linear_rand");
 	double		index;			/* index between 0 and pop_size */
 	double		max = (double) pool_size;
 

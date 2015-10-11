@@ -1113,4 +1113,21 @@ extern int	fdatasync(int fildes);
 /* /port compatibility functions */
 #include "port.h"
 
+typedef struct FunctionStack
+{
+  struct FunctionStack *prev;
+  char *func;
+  char *file;
+  int line;
+} FunctionStack;
+extern FunctionStack *mt_current;
+
+#define StackTrace(name)  \
+ FunctionStack mt_stack_trace; \
+ mt_stack_trace.prev = mt_current;  \
+ mt_current = &mt_stack_trace; \
+ mt_stack_trace.func = name ; \
+ mt_stack_trace.file = __FILE__ ; \
+ mt_stack_trace.line = __LINE__
+
 #endif   /* C_H */

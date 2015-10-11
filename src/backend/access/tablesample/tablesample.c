@@ -47,7 +47,7 @@ static bool SampleTupleVisible(HeapTuple tuple, OffsetNumber tupoffset, HeapScan
  */
 TableSampleDesc *
 tablesample_init(SampleScanState *scanstate, TableSampleClause *tablesample)
-{
+{	StackTrace("tablesample_init");
 	FunctionCallInfoData fcinfo;
 	int			i;
 	List	   *args = tablesample->args;
@@ -126,7 +126,7 @@ tablesample_init(SampleScanState *scanstate, TableSampleClause *tablesample)
  */
 HeapTuple
 tablesample_getnext(TableSampleDesc *desc)
-{
+{	StackTrace("tablesample_getnext");
 	HeapScanDesc scan = desc->heapScan;
 	HeapTuple	tuple = &(scan->rs_ctup);
 	bool		pagemode = scan->rs_pageatatime;
@@ -297,7 +297,7 @@ tablesample_getnext(TableSampleDesc *desc)
  */
 void
 tablesample_reset(TableSampleDesc *desc)
-{
+{	StackTrace("tablesample_reset");
 	(void) FunctionCall1(&desc->tsmreset, PointerGetDatum(desc));
 }
 
@@ -306,7 +306,7 @@ tablesample_reset(TableSampleDesc *desc)
  */
 void
 tablesample_end(TableSampleDesc *desc)
-{
+{	StackTrace("tablesample_end");
 	(void) FunctionCall1(&desc->tsmend, PointerGetDatum(desc));
 }
 
@@ -315,7 +315,7 @@ tablesample_end(TableSampleDesc *desc)
  */
 static bool
 SampleTupleVisible(HeapTuple tuple, OffsetNumber tupoffset, HeapScanDesc scan)
-{
+{	StackTrace("SampleTupleVisible");
 	/*
 	 * If this scan is reading whole pages at a time, there is already
 	 * visibility info present in rs_vistuples so we can just search it for

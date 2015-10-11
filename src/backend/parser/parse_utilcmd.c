@@ -141,7 +141,7 @@ static void setSchemaName(char *context_schema, char **stmt_schema_name);
  */
 List *
 transformCreateStmt(CreateStmt *stmt, const char *queryString)
-{
+{	StackTrace("transformCreateStmt");
 	ParseState *pstate;
 	CreateStmtContext cxt;
 	List	   *result;
@@ -308,7 +308,7 @@ transformCreateStmt(CreateStmt *stmt, const char *queryString)
  */
 static void
 transformColumnDefinition(CreateStmtContext *cxt, ColumnDef *column)
-{
+{	StackTrace("transformColumnDefinition");
 	bool		is_serial;
 	bool		saw_nullable;
 	bool		saw_default;
@@ -622,7 +622,7 @@ transformColumnDefinition(CreateStmtContext *cxt, ColumnDef *column)
  */
 static void
 transformTableConstraint(CreateStmtContext *cxt, Constraint *constraint)
-{
+{	StackTrace("transformTableConstraint");
 	switch (constraint->contype)
 	{
 		case CONSTR_PRIMARY:
@@ -696,7 +696,7 @@ transformTableConstraint(CreateStmtContext *cxt, Constraint *constraint)
  */
 static void
 transformTableLikeClause(CreateStmtContext *cxt, TableLikeClause *table_like_clause)
-{
+{	StackTrace("transformTableLikeClause");
 	AttrNumber	parent_attno;
 	Relation	relation;
 	TupleDesc	tupleDesc;
@@ -976,7 +976,7 @@ transformTableLikeClause(CreateStmtContext *cxt, TableLikeClause *table_like_cla
 
 static void
 transformOfType(CreateStmtContext *cxt, TypeName *ofTypename)
-{
+{	StackTrace("transformOfType");
 	HeapTuple	tuple;
 	TupleDesc	tupdesc;
 	int			i;
@@ -1026,7 +1026,7 @@ transformOfType(CreateStmtContext *cxt, TypeName *ofTypename)
 static IndexStmt *
 generateClonedIndexStmt(CreateStmtContext *cxt, Relation source_idx,
 						const AttrNumber *attmap, int attmap_length)
-{
+{	StackTrace("generateClonedIndexStmt");
 	Oid			source_relid = RelationGetRelid(source_idx);
 	Form_pg_attribute *attrs = RelationGetDescr(source_idx)->attrs;
 	HeapTuple	ht_idxrel;
@@ -1332,7 +1332,7 @@ generateClonedIndexStmt(CreateStmtContext *cxt, Relation source_idx,
  */
 static List *
 get_collation(Oid collation, Oid actual_datatype)
-{
+{	StackTrace("get_collation");
 	List	   *result;
 	HeapTuple	ht_coll;
 	Form_pg_collation coll_rec;
@@ -1366,7 +1366,7 @@ get_collation(Oid collation, Oid actual_datatype)
  */
 static List *
 get_opclass(Oid opclass, Oid actual_datatype)
-{
+{	StackTrace("get_opclass");
 	List	   *result = NIL;
 	HeapTuple	ht_opc;
 	Form_pg_opclass opc_rec;
@@ -1398,7 +1398,7 @@ get_opclass(Oid opclass, Oid actual_datatype)
  */
 static void
 transformIndexConstraints(CreateStmtContext *cxt)
-{
+{	StackTrace("transformIndexConstraints");
 	IndexStmt  *index;
 	List	   *indexlist = NIL;
 	ListCell   *lc;
@@ -1506,7 +1506,7 @@ transformIndexConstraints(CreateStmtContext *cxt)
  */
 static IndexStmt *
 transformIndexConstraint(Constraint *constraint, CreateStmtContext *cxt)
-{
+{	StackTrace("transformIndexConstraint");
 	IndexStmt  *index;
 	ListCell   *lc;
 
@@ -1887,7 +1887,7 @@ transformIndexConstraint(Constraint *constraint, CreateStmtContext *cxt)
 static void
 transformFKConstraints(CreateStmtContext *cxt,
 					   bool skipValidation, bool isAddConstraint)
-{
+{	StackTrace("transformFKConstraints");
 	ListCell   *fkclist;
 
 	if (cxt->fkconstraints == NIL)
@@ -1957,7 +1957,7 @@ transformFKConstraints(CreateStmtContext *cxt,
  */
 IndexStmt *
 transformIndexStmt(Oid relid, IndexStmt *stmt, const char *queryString)
-{
+{	StackTrace("transformIndexStmt");
 	ParseState *pstate;
 	RangeTblEntry *rte;
 	ListCell   *l;
@@ -2069,7 +2069,7 @@ transformIndexStmt(Oid relid, IndexStmt *stmt, const char *queryString)
 void
 transformRuleStmt(RuleStmt *stmt, const char *queryString,
 				  List **actions, Node **whereClause)
-{
+{	StackTrace("transformRuleStmt");
 	Relation	rel;
 	ParseState *pstate;
 	RangeTblEntry *oldrte;
@@ -2374,7 +2374,7 @@ transformRuleStmt(RuleStmt *stmt, const char *queryString,
 List *
 transformAlterTableStmt(Oid relid, AlterTableStmt *stmt,
 						const char *queryString)
-{
+{	StackTrace("transformAlterTableStmt");
 	Relation	rel;
 	ParseState *pstate;
 	CreateStmtContext cxt;
@@ -2600,7 +2600,7 @@ transformAlterTableStmt(Oid relid, AlterTableStmt *stmt,
  */
 static void
 transformConstraintAttrs(CreateStmtContext *cxt, List *constraintList)
-{
+{	StackTrace("transformConstraintAttrs");
 	Constraint *lastprimarycon = NULL;
 	bool		saw_deferrability = false;
 	bool		saw_initially = false;
@@ -2715,7 +2715,7 @@ transformConstraintAttrs(CreateStmtContext *cxt, List *constraintList)
  */
 static void
 transformColumnType(CreateStmtContext *cxt, ColumnDef *column)
-{
+{	StackTrace("transformColumnType");
 	/*
 	 * All we really need to do here is verify that the type is valid,
 	 * including any collation spec that might be present.
@@ -2768,7 +2768,7 @@ transformColumnType(CreateStmtContext *cxt, ColumnDef *column)
  */
 List *
 transformCreateSchemaStmt(CreateSchemaStmt *stmt)
-{
+{	StackTrace("transformCreateSchemaStmt");
 	CreateSchemaStmtContext cxt;
 	List	   *result;
 	ListCell   *elements;
@@ -2873,7 +2873,7 @@ transformCreateSchemaStmt(CreateSchemaStmt *stmt)
  */
 static void
 setSchemaName(char *context_schema, char **stmt_schema_name)
-{
+{	StackTrace("setSchemaName");
 	if (*stmt_schema_name == NULL)
 		*stmt_schema_name = context_schema;
 	else if (strcmp(context_schema, *stmt_schema_name) != 0)

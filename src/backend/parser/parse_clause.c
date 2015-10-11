@@ -104,7 +104,7 @@ static Node *transformFrameOffset(ParseState *pstate, int frameOptions,
  */
 void
 transformFromClause(ParseState *pstate, List *frmList)
-{
+{	StackTrace("transformFromClause");
 	ListCell   *fl;
 
 	/*
@@ -171,7 +171,7 @@ transformFromClause(ParseState *pstate, List *frmList)
 int
 setTargetTable(ParseState *pstate, RangeVar *relation,
 			   bool inh, bool alsoSource, AclMode requiredPerms)
-{
+{	StackTrace("setTargetTable");
 	RangeTblEntry *rte;
 	int			rtindex;
 
@@ -234,7 +234,7 @@ setTargetTable(ParseState *pstate, RangeVar *relation,
  */
 bool
 interpretInhOption(InhOption inhOpt)
-{
+{	StackTrace("interpretInhOption");
 	switch (inhOpt)
 	{
 		case INH_NO:
@@ -260,7 +260,7 @@ interpretInhOption(InhOption inhOpt)
  */
 bool
 interpretOidsOption(List *defList, bool allowOids)
-{
+{	StackTrace("interpretOidsOption");
 	ListCell   *cell;
 
 	/* Scan list to see if OIDS was included */
@@ -295,7 +295,7 @@ static void
 extractRemainingColumns(List *common_colnames,
 						List *src_colnames, List *src_colvars,
 						List **res_colnames, List **res_colvars)
-{
+{	StackTrace("extractRemainingColumns");
 	List	   *new_colnames = NIL;
 	List	   *new_colvars = NIL;
 	ListCell   *lnames,
@@ -340,7 +340,7 @@ static Node *
 transformJoinUsingClause(ParseState *pstate,
 						 RangeTblEntry *leftRTE, RangeTblEntry *rightRTE,
 						 List *leftVars, List *rightVars)
-{
+{	StackTrace("transformJoinUsingClause");
 	Node	   *result;
 	List	   *andargs = NIL;
 	ListCell   *lvars,
@@ -398,7 +398,7 @@ transformJoinUsingClause(ParseState *pstate,
  */
 static Node *
 transformJoinOnClause(ParseState *pstate, JoinExpr *j, List *namespace)
-{
+{	StackTrace("transformJoinOnClause");
 	Node	   *result;
 	List	   *save_namespace;
 
@@ -425,7 +425,7 @@ transformJoinOnClause(ParseState *pstate, JoinExpr *j, List *namespace)
 
 static RangeTblEntry *
 transformTableSampleEntry(ParseState *pstate, RangeTableSample *rv)
-{
+{	StackTrace("transformTableSampleEntry");
 	RangeTblEntry *rte = NULL;
 	CommonTableExpr *cte = NULL;
 	TableSampleClause *tablesample = NULL;
@@ -462,7 +462,7 @@ transformTableSampleEntry(ParseState *pstate, RangeTableSample *rv)
  */
 static RangeTblEntry *
 transformTableEntry(ParseState *pstate, RangeVar *r)
-{
+{	StackTrace("transformTableEntry");
 	RangeTblEntry *rte;
 
 	/* We need only build a range table entry */
@@ -479,7 +479,7 @@ transformTableEntry(ParseState *pstate, RangeVar *r)
 static RangeTblEntry *
 transformCTEReference(ParseState *pstate, RangeVar *r,
 					  CommonTableExpr *cte, Index levelsup)
-{
+{	StackTrace("transformCTEReference");
 	RangeTblEntry *rte;
 
 	rte = addRangeTableEntryForCTE(pstate, cte, levelsup, r, true);
@@ -492,7 +492,7 @@ transformCTEReference(ParseState *pstate, RangeVar *r,
  */
 static RangeTblEntry *
 transformRangeSubselect(ParseState *pstate, RangeSubselect *r)
-{
+{	StackTrace("transformRangeSubselect");
 	Query	   *query;
 	RangeTblEntry *rte;
 
@@ -559,7 +559,7 @@ transformRangeSubselect(ParseState *pstate, RangeSubselect *r)
  */
 static RangeTblEntry *
 transformRangeFunction(ParseState *pstate, RangeFunction *r)
-{
+{	StackTrace("transformRangeFunction");
 	List	   *funcexprs = NIL;
 	List	   *funcnames = NIL;
 	List	   *coldeflists = NIL;
@@ -774,7 +774,7 @@ static Node *
 transformFromClauseItem(ParseState *pstate, Node *n,
 						RangeTblEntry **top_rte, int *top_rti,
 						List **namespace)
-{
+{	StackTrace("transformFromClauseItem");
 	if (IsA(n, RangeVar))
 	{
 		/* Plain relation reference, or perhaps a CTE reference */
@@ -1197,7 +1197,7 @@ transformFromClauseItem(ParseState *pstate, Node *n,
 static Node *
 buildMergedJoinVar(ParseState *pstate, JoinType jointype,
 				   Var *l_colvar, Var *r_colvar)
-{
+{	StackTrace("buildMergedJoinVar");
 	Oid			outcoltype;
 	int32		outcoltypmod;
 	Node	   *l_node,
@@ -1316,7 +1316,7 @@ buildMergedJoinVar(ParseState *pstate, JoinType jointype,
 static ParseNamespaceItem *
 makeNamespaceItem(RangeTblEntry *rte, bool rel_visible, bool cols_visible,
 				  bool lateral_only, bool lateral_ok)
-{
+{	StackTrace("makeNamespaceItem");
 	ParseNamespaceItem *nsitem;
 
 	nsitem = (ParseNamespaceItem *) palloc(sizeof(ParseNamespaceItem));
@@ -1334,7 +1334,7 @@ makeNamespaceItem(RangeTblEntry *rte, bool rel_visible, bool cols_visible,
  */
 static void
 setNamespaceColumnVisibility(List *namespace, bool cols_visible)
-{
+{	StackTrace("setNamespaceColumnVisibility");
 	ListCell   *lc;
 
 	foreach(lc, namespace)
@@ -1351,7 +1351,7 @@ setNamespaceColumnVisibility(List *namespace, bool cols_visible)
  */
 static void
 setNamespaceLateralState(List *namespace, bool lateral_only, bool lateral_ok)
-{
+{	StackTrace("setNamespaceLateralState");
 	ListCell   *lc;
 
 	foreach(lc, namespace)
@@ -1374,7 +1374,7 @@ setNamespaceLateralState(List *namespace, bool lateral_only, bool lateral_ok)
 Node *
 transformWhereClause(ParseState *pstate, Node *clause,
 					 ParseExprKind exprKind, const char *constructName)
-{
+{	StackTrace("transformWhereClause");
 	Node	   *qual;
 
 	if (clause == NULL)
@@ -1401,7 +1401,7 @@ transformWhereClause(ParseState *pstate, Node *clause,
 Node *
 transformLimitClause(ParseState *pstate, Node *clause,
 					 ParseExprKind exprKind, const char *constructName)
-{
+{	StackTrace("transformLimitClause");
 	Node	   *qual;
 
 	if (clause == NULL)
@@ -1431,7 +1431,7 @@ transformLimitClause(ParseState *pstate, Node *clause,
  */
 static void
 checkExprIsVarFree(ParseState *pstate, Node *n, const char *constructName)
-{
+{	StackTrace("checkExprIsVarFree");
 	if (contain_vars_of_level(n, 0))
 	{
 		ereport(ERROR,
@@ -1457,7 +1457,7 @@ checkExprIsVarFree(ParseState *pstate, Node *n, const char *constructName)
 static void
 checkTargetlistEntrySQL92(ParseState *pstate, TargetEntry *tle,
 						  ParseExprKind exprKind)
-{
+{	StackTrace("checkTargetlistEntrySQL92");
 	switch (exprKind)
 	{
 		case EXPR_KIND_GROUP_BY:
@@ -1513,7 +1513,7 @@ checkTargetlistEntrySQL92(ParseState *pstate, TargetEntry *tle,
 static TargetEntry *
 findTargetlistEntrySQL92(ParseState *pstate, Node *node, List **tlist,
 						 ParseExprKind exprKind)
-{
+{	StackTrace("findTargetlistEntrySQL92");
 	ListCell   *tl;
 
 	/*----------
@@ -1680,7 +1680,7 @@ findTargetlistEntrySQL92(ParseState *pstate, Node *node, List **tlist,
 static TargetEntry *
 findTargetlistEntrySQL99(ParseState *pstate, Node *node, List **tlist,
 						 ParseExprKind exprKind)
-{
+{	StackTrace("findTargetlistEntrySQL99");
 	TargetEntry *target_result;
 	ListCell   *tl;
 	Node	   *expr;
@@ -1765,7 +1765,7 @@ findTargetlistEntrySQL99(ParseState *pstate, Node *node, List **tlist,
  */
 static Node *
 flatten_grouping_sets(Node *expr, bool toplevel, bool *hasGroupingSets)
-{
+{	StackTrace("flatten_grouping_sets");
 	/* just in case of pathological input */
 	check_stack_depth();
 
@@ -1872,7 +1872,7 @@ transformGroupClauseExpr(List **flatresult, Bitmapset *seen_local,
 						 ParseState *pstate, Node *gexpr,
 						 List **targetlist, List *sortClause,
 						 ParseExprKind exprKind, bool useSQL99, bool toplevel)
-{
+{	StackTrace("transformGroupClauseExpr");
 	TargetEntry *tle;
 	bool		found = false;
 
@@ -1981,7 +1981,7 @@ transformGroupClauseList(List **flatresult,
 						 ParseState *pstate, List *list,
 						 List **targetlist, List *sortClause,
 						 ParseExprKind exprKind, bool useSQL99, bool toplevel)
-{
+{	StackTrace("transformGroupClauseList");
 	Bitmapset  *seen_local = NULL;
 	List	   *result = NIL;
 	ListCell   *gl;
@@ -2034,7 +2034,7 @@ transformGroupingSet(List **flatresult,
 					 ParseState *pstate, GroupingSet *gset,
 					 List **targetlist, List *sortClause,
 					 ParseExprKind exprKind, bool useSQL99, bool toplevel)
-{
+{	StackTrace("transformGroupingSet");
 	ListCell   *gl;
 	List	   *content = NIL;
 
@@ -2137,7 +2137,7 @@ List *
 transformGroupClause(ParseState *pstate, List *grouplist, List **groupingSets,
 					 List **targetlist, List *sortClause,
 					 ParseExprKind exprKind, bool useSQL99)
-{
+{	StackTrace("transformGroupClause");
 	List	   *result = NIL;
 	List	   *flat_grouplist;
 	List	   *gsets = NIL;
@@ -2240,7 +2240,7 @@ transformSortClause(ParseState *pstate,
 					ParseExprKind exprKind,
 					bool resolveUnknown,
 					bool useSQL99)
-{
+{	StackTrace("transformSortClause");
 	List	   *sortlist = NIL;
 	ListCell   *olitem;
 
@@ -2272,7 +2272,7 @@ List *
 transformWindowDefinitions(ParseState *pstate,
 						   List *windowdefs,
 						   List **targetlist)
-{
+{	StackTrace("transformWindowDefinitions");
 	List	   *result = NIL;
 	Index		winref = 0;
 	ListCell   *lc;
@@ -2443,7 +2443,7 @@ transformWindowDefinitions(ParseState *pstate,
 List *
 transformDistinctClause(ParseState *pstate,
 						List **targetlist, List *sortClause, bool is_agg)
-{
+{	StackTrace("transformDistinctClause");
 	List	   *result = NIL;
 	ListCell   *slitem;
 	ListCell   *tlitem;
@@ -2528,7 +2528,7 @@ transformDistinctClause(ParseState *pstate,
 List *
 transformDistinctOnClause(ParseState *pstate, List *distinctlist,
 						  List **targetlist, List *sortClause)
-{
+{	StackTrace("transformDistinctOnClause");
 	List	   *result = NIL;
 	List	   *sortgrouprefs = NIL;
 	bool		skipped_sortitem;
@@ -2635,7 +2635,7 @@ transformDistinctOnClause(ParseState *pstate, List *distinctlist,
  */
 static int
 get_matching_location(int sortgroupref, List *sortgrouprefs, List *exprs)
-{
+{	StackTrace("get_matching_location");
 	ListCell   *lcs;
 	ListCell   *lce;
 
@@ -2661,7 +2661,7 @@ get_matching_location(int sortgroupref, List *sortgrouprefs, List *exprs)
 static List *
 resolve_unique_index_expr(ParseState *pstate, InferClause *infer,
 						  Relation heapRel)
-{
+{	StackTrace("resolve_unique_index_expr");
 	List	   *result = NIL;
 	ListCell   *l;
 
@@ -2760,7 +2760,7 @@ transformOnConflictArbiter(ParseState *pstate,
 						   OnConflictClause *onConflictClause,
 						   List **arbiterExpr, Node **arbiterWhere,
 						   Oid *constraint)
-{
+{	StackTrace("transformOnConflictArbiter");
 	InferClause *infer = onConflictClause->infer;
 
 	*arbiterExpr = NIL;
@@ -2855,7 +2855,7 @@ List *
 addTargetToSortList(ParseState *pstate, TargetEntry *tle,
 					List *sortlist, List *targetlist, SortBy *sortby,
 					bool resolveUnknown)
-{
+{	StackTrace("addTargetToSortList");
 	Oid			restype = exprType((Node *) tle->expr);
 	Oid			sortop;
 	Oid			eqop;
@@ -3004,7 +3004,7 @@ static List *
 addTargetToGroupList(ParseState *pstate, TargetEntry *tle,
 					 List *grouplist, List *targetlist, int location,
 					 bool resolveUnknown)
-{
+{	StackTrace("addTargetToGroupList");
 	Oid			restype = exprType((Node *) tle->expr);
 
 	/* if tlist item is an UNKNOWN literal, change it to TEXT */
@@ -3058,7 +3058,7 @@ addTargetToGroupList(ParseState *pstate, TargetEntry *tle,
  */
 Index
 assignSortGroupRef(TargetEntry *tle, List *tlist)
-{
+{	StackTrace("assignSortGroupRef");
 	Index		maxRef;
 	ListCell   *l;
 
@@ -3099,7 +3099,7 @@ assignSortGroupRef(TargetEntry *tle, List *tlist)
  */
 bool
 targetIsInSortList(TargetEntry *tle, Oid sortop, List *sortList)
-{
+{	StackTrace("targetIsInSortList");
 	Index		ref = tle->ressortgroupref;
 	ListCell   *l;
 
@@ -3126,7 +3126,7 @@ targetIsInSortList(TargetEntry *tle, Oid sortop, List *sortList)
  */
 static WindowClause *
 findWindowClause(List *wclist, const char *name)
-{
+{	StackTrace("findWindowClause");
 	ListCell   *l;
 
 	foreach(l, wclist)
@@ -3146,7 +3146,7 @@ findWindowClause(List *wclist, const char *name)
  */
 static Node *
 transformFrameOffset(ParseState *pstate, int frameOptions, Node *clause)
-{
+{	StackTrace("transformFrameOffset");
 	const char *constructName = NULL;
 	Node	   *node;
 

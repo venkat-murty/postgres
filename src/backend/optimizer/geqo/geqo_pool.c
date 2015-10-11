@@ -40,7 +40,7 @@ static int	compare(const void *arg1, const void *arg2);
  */
 Pool *
 alloc_pool(PlannerInfo *root, int pool_size, int string_length)
-{
+{	StackTrace("alloc_pool");
 	Pool	   *new_pool;
 	Chromosome *chromo;
 	int			i;
@@ -67,7 +67,7 @@ alloc_pool(PlannerInfo *root, int pool_size, int string_length)
  */
 void
 free_pool(PlannerInfo *root, Pool *pool)
-{
+{	StackTrace("free_pool");
 	Chromosome *chromo;
 	int			i;
 
@@ -89,7 +89,7 @@ free_pool(PlannerInfo *root, Pool *pool)
  */
 void
 random_init_pool(PlannerInfo *root, Pool *pool)
-{
+{	StackTrace("random_init_pool");
 	Chromosome *chromo = (Chromosome *) pool->data;
 	int			i;
 	int			bad = 0;
@@ -133,7 +133,7 @@ random_init_pool(PlannerInfo *root, Pool *pool)
  */
 void
 sort_pool(PlannerInfo *root, Pool *pool)
-{
+{	StackTrace("sort_pool");
 	qsort(pool->data, pool->size, sizeof(Chromosome), compare);
 }
 
@@ -143,7 +143,7 @@ sort_pool(PlannerInfo *root, Pool *pool)
  */
 static int
 compare(const void *arg1, const void *arg2)
-{
+{	StackTrace("compare");
 	const Chromosome *chromo1 = (const Chromosome *) arg1;
 	const Chromosome *chromo2 = (const Chromosome *) arg2;
 
@@ -160,7 +160,7 @@ compare(const void *arg1, const void *arg2)
  */
 Chromosome *
 alloc_chromo(PlannerInfo *root, int string_length)
-{
+{	StackTrace("alloc_chromo");
 	Chromosome *chromo;
 
 	chromo = (Chromosome *) palloc(sizeof(Chromosome));
@@ -174,7 +174,7 @@ alloc_chromo(PlannerInfo *root, int string_length)
  */
 void
 free_chromo(PlannerInfo *root, Chromosome *chromo)
-{
+{	StackTrace("free_chromo");
 	pfree(chromo->string);
 	pfree(chromo);
 }
@@ -185,7 +185,7 @@ free_chromo(PlannerInfo *root, Chromosome *chromo)
  */
 void
 spread_chromo(PlannerInfo *root, Chromosome *chromo, Pool *pool)
-{
+{	StackTrace("spread_chromo");
 	int			top,
 				mid,
 				bot;

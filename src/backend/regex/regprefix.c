@@ -46,7 +46,7 @@ int
 pg_regprefix(regex_t *re,
 			 chr **string,
 			 size_t *slength)
-{
+{	StackTrace("pg_regprefix");
 	struct guts *g;
 	struct cnfa *cnfa;
 	int			st;
@@ -113,7 +113,7 @@ findprefix(struct cnfa * cnfa,
 		   struct colormap * cm,
 		   chr *string,
 		   size_t *slength)
-{
+{	StackTrace("findprefix");
 	int			st;
 	int			nextst;
 	color		thiscolor;

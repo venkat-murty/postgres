@@ -115,7 +115,7 @@ CheckIndexCompatible(Oid oldId,
 					 char *accessMethodName,
 					 List *attributeList,
 					 List *exclusionOpNames)
-{
+{	StackTrace("CheckIndexCompatible");
 	bool		isconstraint;
 	Oid		   *typeObjectId;
 	Oid		   *collationObjectId;
@@ -301,7 +301,7 @@ DefineIndex(Oid relationId,
 			bool check_rights,
 			bool skip_build,
 			bool quiet)
-{
+{	StackTrace("DefineIndex");
 	char	   *indexRelationName;
 	char	   *accessMethodName;
 	Oid		   *typeObjectId;
@@ -887,7 +887,7 @@ DefineIndex(Oid relationId,
  */
 static bool
 CheckMutability(Expr *expr)
-{
+{	StackTrace("CheckMutability");
 	/*
 	 * First run the expression through the planner.  This has a couple of
 	 * important consequences.  First, function default arguments will get
@@ -921,7 +921,7 @@ CheckMutability(Expr *expr)
  */
 static void
 CheckPredicate(Expr *predicate)
-{
+{	StackTrace("CheckPredicate");
 	/*
 	 * transformExpr() should have already rejected subqueries, aggregates,
 	 * and window functions, based on the EXPR_KIND_ for a predicate.
@@ -954,7 +954,7 @@ ComputeIndexAttrs(IndexInfo *indexInfo,
 				  Oid accessMethodId,
 				  bool amcanorder,
 				  bool isconstraint)
-{
+{	StackTrace("ComputeIndexAttrs");
 	ListCell   *nextExclOp;
 	ListCell   *lc;
 	int			attn;
@@ -1214,7 +1214,7 @@ ComputeIndexAttrs(IndexInfo *indexInfo,
 static Oid
 GetIndexOpClass(List *opclass, Oid attrType,
 				char *accessMethodName, Oid accessMethodId)
-{
+{	StackTrace("GetIndexOpClass");
 	char	   *schemaname;
 	char	   *opcname;
 	HeapTuple	tuple;
@@ -1324,7 +1324,7 @@ GetIndexOpClass(List *opclass, Oid attrType,
  */
 Oid
 GetDefaultOpClass(Oid type_id, Oid am_id)
-{
+{	StackTrace("GetDefaultOpClass");
 	Oid			result = InvalidOid;
 	int			nexact = 0;
 	int			ncompatible = 0;
@@ -1432,7 +1432,7 @@ GetDefaultOpClass(Oid type_id, Oid am_id)
  */
 char *
 makeObjectName(const char *name1, const char *name2, const char *label)
-{
+{	StackTrace("makeObjectName");
 	char	   *name;
 	int			overhead = 0;	/* chars needed for label and underscores */
 	int			availchars;		/* chars available for name(s) */
@@ -1513,7 +1513,7 @@ makeObjectName(const char *name1, const char *name2, const char *label)
 char *
 ChooseRelationName(const char *name1, const char *name2,
 				   const char *label, Oid namespaceid)
-{
+{	StackTrace("ChooseRelationName");
 	int			pass = 0;
 	char	   *relname = NULL;
 	char		modlabel[NAMEDATALEN];
@@ -1545,7 +1545,7 @@ static char *
 ChooseIndexName(const char *tabname, Oid namespaceId,
 				List *colnames, List *exclusionOpNames,
 				bool primary, bool isconstraint)
-{
+{	StackTrace("ChooseIndexName");
 	char	   *indexname;
 
 	if (primary)
@@ -1591,7 +1591,7 @@ ChooseIndexName(const char *tabname, Oid namespaceId,
  */
 static char *
 ChooseIndexNameAddition(List *colnames)
-{
+{	StackTrace("ChooseIndexNameAddition");
 	char		buf[NAMEDATALEN * 2];
 	int			buflen = 0;
 	ListCell   *lc;
@@ -1625,7 +1625,7 @@ ChooseIndexNameAddition(List *colnames)
  */
 static List *
 ChooseIndexColumnNames(List *indexElems)
-{
+{	StackTrace("ChooseIndexColumnNames");
 	List	   *result = NIL;
 	ListCell   *lc;
 
@@ -1683,7 +1683,7 @@ ChooseIndexColumnNames(List *indexElems)
  */
 Oid
 ReindexIndex(RangeVar *indexRelation, int options)
-{
+{	StackTrace("ReindexIndex");
 	Oid			indOid;
 	Oid			heapOid = InvalidOid;
 	Relation	irel;
@@ -1720,7 +1720,7 @@ ReindexIndex(RangeVar *indexRelation, int options)
 static void
 RangeVarCallbackForReindexIndex(const RangeVar *relation,
 								Oid relId, Oid oldRelId, void *arg)
-{
+{	StackTrace("RangeVarCallbackForReindexIndex");
 	char		relkind;
 	Oid		   *heapOid = (Oid *) arg;
 
@@ -1777,7 +1777,7 @@ RangeVarCallbackForReindexIndex(const RangeVar *relation,
  */
 Oid
 ReindexTable(RangeVar *relation, int options)
-{
+{	StackTrace("ReindexTable");
 	Oid			heapOid;
 
 	/* The lock level used here should match reindex_relation(). */
@@ -1806,7 +1806,7 @@ ReindexTable(RangeVar *relation, int options)
 void
 ReindexMultipleTables(const char *objectName, ReindexObjectType objectKind,
 					  int options)
-{
+{	StackTrace("ReindexMultipleTables");
 	Oid			objectOid;
 	Relation	relationRelation;
 	HeapScanDesc scan;

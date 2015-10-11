@@ -42,7 +42,7 @@ ConversionCreate(const char *conname, Oid connamespace,
 				 Oid conowner,
 				 int32 conforencoding, int32 contoencoding,
 				 Oid conproc, bool def)
-{
+{	StackTrace("ConversionCreate");
 	int			i;
 	Relation	rel;
 	TupleDesc	tupDesc;
@@ -150,7 +150,7 @@ ConversionCreate(const char *conname, Oid connamespace,
  */
 void
 RemoveConversionById(Oid conversionOid)
-{
+{	StackTrace("RemoveConversionById");
 	Relation	rel;
 	HeapTuple	tuple;
 	HeapScanDesc scan;
@@ -186,7 +186,7 @@ RemoveConversionById(Oid conversionOid)
  */
 Oid
 FindDefaultConversion(Oid name_space, int32 for_encoding, int32 to_encoding)
-{
+{	StackTrace("FindDefaultConversion");
 	CatCList   *catlist;
 	HeapTuple	tuple;
 	Form_pg_conversion body;

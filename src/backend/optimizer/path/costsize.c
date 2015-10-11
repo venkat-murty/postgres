@@ -153,7 +153,7 @@ static double page_size(double tuples, int width);
  */
 double
 clamp_row_est(double nrows)
-{
+{	StackTrace("clamp_row_est");
 	/*
 	 * Force estimate to be at least one row, to make explain output look
 	 * better and to avoid possible divide-by-zero when interpolating costs.
@@ -178,7 +178,7 @@ clamp_row_est(double nrows)
 void
 cost_seqscan(Path *path, PlannerInfo *root,
 			 RelOptInfo *baserel, ParamPathInfo *param_info)
-{
+{	StackTrace("cost_seqscan");
 	Cost		startup_cost = 0;
 	Cost		run_cost = 0;
 	double		spc_seq_page_cost;
@@ -232,7 +232,7 @@ cost_seqscan(Path *path, PlannerInfo *root,
  */
 void
 cost_samplescan(Path *path, PlannerInfo *root, RelOptInfo *baserel)
-{
+{	StackTrace("cost_samplescan");
 	Cost		startup_cost = 0;
 	Cost		run_cost = 0;
 	double		spc_seq_page_cost,
@@ -306,7 +306,7 @@ cost_samplescan(Path *path, PlannerInfo *root, RelOptInfo *baserel)
  */
 void
 cost_index(IndexPath *path, PlannerInfo *root, double loop_count)
-{
+{	StackTrace("cost_index");
 	IndexOptInfo *index = path->indexinfo;
 	RelOptInfo *baserel = index->rel;
 	bool		indexonly = (path->path.pathtype == T_IndexOnlyScan);
@@ -540,7 +540,7 @@ cost_index(IndexPath *path, PlannerInfo *root, double loop_count)
  */
 static List *
 extract_nonindex_conditions(List *qual_clauses, List *indexquals)
-{
+{	StackTrace("extract_nonindex_conditions");
 	List	   *result = NIL;
 	ListCell   *lc;
 
@@ -602,7 +602,7 @@ extract_nonindex_conditions(List *qual_clauses, List *indexquals)
 double
 index_pages_fetched(double tuples_fetched, BlockNumber pages,
 					double index_pages, PlannerInfo *root)
-{
+{	StackTrace("index_pages_fetched");
 	double		pages_fetched;
 	double		total_pages;
 	double		T,
@@ -666,7 +666,7 @@ index_pages_fetched(double tuples_fetched, BlockNumber pages,
  */
 static double
 get_indexpath_pages(Path *bitmapqual)
-{
+{	StackTrace("get_indexpath_pages");
 	double		result = 0;
 	ListCell   *l;
 
@@ -718,7 +718,7 @@ void
 cost_bitmap_heap_scan(Path *path, PlannerInfo *root, RelOptInfo *baserel,
 					  ParamPathInfo *param_info,
 					  Path *bitmapqual, double loop_count)
-{
+{	StackTrace("cost_bitmap_heap_scan");
 	Cost		startup_cost = 0;
 	Cost		run_cost = 0;
 	Cost		indexTotalCost;
@@ -836,7 +836,7 @@ cost_bitmap_heap_scan(Path *path, PlannerInfo *root, RelOptInfo *baserel,
  */
 void
 cost_bitmap_tree_node(Path *path, Cost *cost, Selectivity *selec)
-{
+{	StackTrace("cost_bitmap_tree_node");
 	if (IsA(path, IndexPath))
 	{
 		*cost = ((IndexPath *) path)->indextotalcost;
@@ -879,7 +879,7 @@ cost_bitmap_tree_node(Path *path, Cost *cost, Selectivity *selec)
  */
 void
 cost_bitmap_and_node(BitmapAndPath *path, PlannerInfo *root)
-{
+{	StackTrace("cost_bitmap_and_node");
 	Cost		totalCost;
 	Selectivity selec;
 	ListCell   *l;
@@ -923,7 +923,7 @@ cost_bitmap_and_node(BitmapAndPath *path, PlannerInfo *root)
  */
 void
 cost_bitmap_or_node(BitmapOrPath *path, PlannerInfo *root)
-{
+{	StackTrace("cost_bitmap_or_node");
 	Cost		totalCost;
 	Selectivity selec;
 	ListCell   *l;
@@ -972,7 +972,7 @@ cost_bitmap_or_node(BitmapOrPath *path, PlannerInfo *root)
 void
 cost_tidscan(Path *path, PlannerInfo *root,
 			 RelOptInfo *baserel, List *tidquals, ParamPathInfo *param_info)
-{
+{	StackTrace("cost_tidscan");
 	Cost		startup_cost = 0;
 	Cost		run_cost = 0;
 	bool		isCurrentOf = false;
@@ -1071,7 +1071,7 @@ cost_tidscan(Path *path, PlannerInfo *root,
 void
 cost_subqueryscan(Path *path, PlannerInfo *root,
 				  RelOptInfo *baserel, ParamPathInfo *param_info)
-{
+{	StackTrace("cost_subqueryscan");
 	Cost		startup_cost;
 	Cost		run_cost;
 	QualCost	qpqual_cost;
@@ -1115,7 +1115,7 @@ cost_subqueryscan(Path *path, PlannerInfo *root,
 void
 cost_functionscan(Path *path, PlannerInfo *root,
 				  RelOptInfo *baserel, ParamPathInfo *param_info)
-{
+{	StackTrace("cost_functionscan");
 	Cost		startup_cost = 0;
 	Cost		run_cost = 0;
 	QualCost	qpqual_cost;
@@ -1172,7 +1172,7 @@ cost_functionscan(Path *path, PlannerInfo *root,
 void
 cost_valuesscan(Path *path, PlannerInfo *root,
 				RelOptInfo *baserel, ParamPathInfo *param_info)
-{
+{	StackTrace("cost_valuesscan");
 	Cost		startup_cost = 0;
 	Cost		run_cost = 0;
 	QualCost	qpqual_cost;
@@ -1218,7 +1218,7 @@ cost_valuesscan(Path *path, PlannerInfo *root,
 void
 cost_ctescan(Path *path, PlannerInfo *root,
 			 RelOptInfo *baserel, ParamPathInfo *param_info)
-{
+{	StackTrace("cost_ctescan");
 	Cost		startup_cost = 0;
 	Cost		run_cost = 0;
 	QualCost	qpqual_cost;
@@ -1261,7 +1261,7 @@ cost_ctescan(Path *path, PlannerInfo *root,
  */
 void
 cost_recursive_union(Plan *runion, Plan *nrterm, Plan *rterm)
-{
+{	StackTrace("cost_recursive_union");
 	Cost		startup_cost;
 	Cost		total_cost;
 	double		total_rows;
@@ -1343,7 +1343,7 @@ cost_sort(Path *path, PlannerInfo *root,
 		  List *pathkeys, Cost input_cost, double tuples, int width,
 		  Cost comparison_cost, int sort_mem,
 		  double limit_tuples)
-{
+{	StackTrace("cost_sort");
 	Cost		startup_cost = input_cost;
 	Cost		run_cost = 0;
 	double		input_bytes = relation_byte_size(tuples, width);
@@ -1468,7 +1468,7 @@ cost_merge_append(Path *path, PlannerInfo *root,
 				  List *pathkeys, int n_streams,
 				  Cost input_startup_cost, Cost input_total_cost,
 				  double tuples)
-{
+{	StackTrace("cost_merge_append");
 	Cost		startup_cost = 0;
 	Cost		run_cost = 0;
 	Cost		comparison_cost;
@@ -1518,7 +1518,7 @@ void
 cost_material(Path *path,
 			  Cost input_startup_cost, Cost input_total_cost,
 			  double tuples, int width)
-{
+{	StackTrace("cost_material");
 	Cost		startup_cost = input_startup_cost;
 	Cost		run_cost = input_total_cost - input_startup_cost;
 	double		nbytes = relation_byte_size(tuples, width);
@@ -1574,7 +1574,7 @@ cost_agg(Path *path, PlannerInfo *root,
 		 int numGroupCols, double numGroups,
 		 Cost input_startup_cost, Cost input_total_cost,
 		 double input_tuples)
-{
+{	StackTrace("cost_agg");
 	double		output_tuples;
 	Cost		startup_cost;
 	Cost		total_cost;
@@ -1663,7 +1663,7 @@ cost_windowagg(Path *path, PlannerInfo *root,
 			   List *windowFuncs, int numPartCols, int numOrderCols,
 			   Cost input_startup_cost, Cost input_total_cost,
 			   double input_tuples)
-{
+{	StackTrace("cost_windowagg");
 	Cost		startup_cost;
 	Cost		total_cost;
 	ListCell   *lc;
@@ -1735,7 +1735,7 @@ cost_group(Path *path, PlannerInfo *root,
 		   int numGroupCols, double numGroups,
 		   Cost input_startup_cost, Cost input_total_cost,
 		   double input_tuples)
-{
+{	StackTrace("cost_group");
 	Cost		startup_cost;
 	Cost		total_cost;
 
@@ -1784,7 +1784,7 @@ initial_cost_nestloop(PlannerInfo *root, JoinCostWorkspace *workspace,
 					  Path *outer_path, Path *inner_path,
 					  SpecialJoinInfo *sjinfo,
 					  SemiAntiJoinFactors *semifactors)
-{
+{	StackTrace("initial_cost_nestloop");
 	Cost		startup_cost = 0;
 	Cost		run_cost = 0;
 	double		outer_path_rows = outer_path->rows;
@@ -1858,7 +1858,7 @@ final_cost_nestloop(PlannerInfo *root, NestPath *path,
 					JoinCostWorkspace *workspace,
 					SpecialJoinInfo *sjinfo,
 					SemiAntiJoinFactors *semifactors)
-{
+{	StackTrace("final_cost_nestloop");
 	Path	   *outer_path = path->outerjoinpath;
 	Path	   *inner_path = path->innerjoinpath;
 	double		outer_path_rows = outer_path->rows;
@@ -2037,7 +2037,7 @@ initial_cost_mergejoin(PlannerInfo *root, JoinCostWorkspace *workspace,
 					   Path *outer_path, Path *inner_path,
 					   List *outersortkeys, List *innersortkeys,
 					   SpecialJoinInfo *sjinfo)
-{
+{	StackTrace("initial_cost_mergejoin");
 	Cost		startup_cost = 0;
 	Cost		run_cost = 0;
 	double		outer_path_rows = outer_path->rows;
@@ -2257,7 +2257,7 @@ void
 final_cost_mergejoin(PlannerInfo *root, MergePath *path,
 					 JoinCostWorkspace *workspace,
 					 SpecialJoinInfo *sjinfo)
-{
+{	StackTrace("final_cost_mergejoin");
 	Path	   *outer_path = path->jpath.outerjoinpath;
 	Path	   *inner_path = path->jpath.innerjoinpath;
 	double		inner_path_rows = inner_path->rows;
@@ -2464,7 +2464,7 @@ final_cost_mergejoin(PlannerInfo *root, MergePath *path,
  */
 static MergeScanSelCache *
 cached_scansel(PlannerInfo *root, RestrictInfo *rinfo, PathKey *pathkey)
-{
+{	StackTrace("cached_scansel");
 	MergeScanSelCache *cache;
 	ListCell   *lc;
 	Selectivity leftstartsel,
@@ -2547,7 +2547,7 @@ initial_cost_hashjoin(PlannerInfo *root, JoinCostWorkspace *workspace,
 					  Path *outer_path, Path *inner_path,
 					  SpecialJoinInfo *sjinfo,
 					  SemiAntiJoinFactors *semifactors)
-{
+{	StackTrace("initial_cost_hashjoin");
 	Cost		startup_cost = 0;
 	Cost		run_cost = 0;
 	double		outer_path_rows = outer_path->rows;
@@ -2639,7 +2639,7 @@ final_cost_hashjoin(PlannerInfo *root, HashPath *path,
 					JoinCostWorkspace *workspace,
 					SpecialJoinInfo *sjinfo,
 					SemiAntiJoinFactors *semifactors)
-{
+{	StackTrace("final_cost_hashjoin");
 	Path	   *outer_path = path->jpath.outerjoinpath;
 	Path	   *inner_path = path->jpath.innerjoinpath;
 	double		outer_path_rows = outer_path->rows;
@@ -2849,7 +2849,7 @@ final_cost_hashjoin(PlannerInfo *root, HashPath *path,
  */
 void
 cost_subplan(PlannerInfo *root, SubPlan *subplan, Plan *plan)
-{
+{	StackTrace("cost_subplan");
 	QualCost	sp_cost;
 
 	/* Figure any cost for evaluating the testexpr */
@@ -2944,7 +2944,7 @@ static void
 cost_rescan(PlannerInfo *root, Path *path,
 			Cost *rescan_startup_cost,	/* output parameters */
 			Cost *rescan_total_cost)
-{
+{	StackTrace("cost_rescan");
 	switch (path->pathtype)
 	{
 		case T_FunctionScan:
@@ -3039,7 +3039,7 @@ cost_rescan(PlannerInfo *root, Path *path,
  */
 void
 cost_qual_eval(QualCost *cost, List *quals, PlannerInfo *root)
-{
+{	StackTrace("cost_qual_eval");
 	cost_qual_eval_context context;
 	ListCell   *l;
 
@@ -3065,7 +3065,7 @@ cost_qual_eval(QualCost *cost, List *quals, PlannerInfo *root)
  */
 void
 cost_qual_eval_node(QualCost *cost, Node *qual, PlannerInfo *root)
-{
+{	StackTrace("cost_qual_eval_node");
 	cost_qual_eval_context context;
 
 	context.root = root;
@@ -3079,7 +3079,7 @@ cost_qual_eval_node(QualCost *cost, Node *qual, PlannerInfo *root)
 
 static bool
 cost_qual_eval_walker(Node *node, cost_qual_eval_context *context)
-{
+{	StackTrace("cost_qual_eval_walker");
 	if (node == NULL)
 		return false;
 
@@ -3294,7 +3294,7 @@ static void
 get_restriction_qual_cost(PlannerInfo *root, RelOptInfo *baserel,
 						  ParamPathInfo *param_info,
 						  QualCost *qpqual_cost)
-{
+{	StackTrace("get_restriction_qual_cost");
 	if (param_info)
 	{
 		/* Include costs of pushed-down clauses */
@@ -3338,7 +3338,7 @@ compute_semi_anti_join_factors(PlannerInfo *root,
 							   SpecialJoinInfo *sjinfo,
 							   List *restrictlist,
 							   SemiAntiJoinFactors *semifactors)
-{
+{	StackTrace("compute_semi_anti_join_factors");
 	Selectivity jselec;
 	Selectivity nselec;
 	Selectivity avgmatch;
@@ -3443,7 +3443,7 @@ compute_semi_anti_join_factors(PlannerInfo *root,
  */
 static bool
 has_indexed_join_quals(NestPath *joinpath)
-{
+{	StackTrace("has_indexed_join_quals");
 	Relids		joinrelids = joinpath->path.parent->relids;
 	Path	   *innerpath = joinpath->innerjoinpath;
 	List	   *indexclauses;
@@ -3536,7 +3536,7 @@ has_indexed_join_quals(NestPath *joinpath)
  */
 static double
 approx_tuple_count(PlannerInfo *root, JoinPath *path, List *quals)
-{
+{	StackTrace("approx_tuple_count");
 	double		tuples;
 	double		outer_tuples = path->outerjoinpath->rows;
 	double		inner_tuples = path->innerjoinpath->rows;
@@ -3592,7 +3592,7 @@ approx_tuple_count(PlannerInfo *root, JoinPath *path, List *quals)
  */
 void
 set_baserel_size_estimates(PlannerInfo *root, RelOptInfo *rel)
-{
+{	StackTrace("set_baserel_size_estimates");
 	double		nrows;
 
 	/* Should only be applied to base relations */
@@ -3623,7 +3623,7 @@ set_baserel_size_estimates(PlannerInfo *root, RelOptInfo *rel)
 double
 get_parameterized_baserel_size(PlannerInfo *root, RelOptInfo *rel,
 							   List *param_clauses)
-{
+{	StackTrace("get_parameterized_baserel_size");
 	List	   *allclauses;
 	double		nrows;
 
@@ -3676,7 +3676,7 @@ set_joinrel_size_estimates(PlannerInfo *root, RelOptInfo *rel,
 						   RelOptInfo *inner_rel,
 						   SpecialJoinInfo *sjinfo,
 						   List *restrictlist)
-{
+{	StackTrace("set_joinrel_size_estimates");
 	rel->rows = calc_joinrel_size_estimate(root,
 										   outer_rel->rows,
 										   inner_rel->rows,
@@ -3705,7 +3705,7 @@ get_parameterized_joinrel_size(PlannerInfo *root, RelOptInfo *rel,
 							   double inner_rows,
 							   SpecialJoinInfo *sjinfo,
 							   List *restrict_clauses)
-{
+{	StackTrace("get_parameterized_joinrel_size");
 	double		nrows;
 
 	/*
@@ -3739,7 +3739,7 @@ calc_joinrel_size_estimate(PlannerInfo *root,
 						   double inner_rows,
 						   SpecialJoinInfo *sjinfo,
 						   List *restrictlist)
-{
+{	StackTrace("calc_joinrel_size_estimate");
 	JoinType	jointype = sjinfo->jointype;
 	Selectivity jselec;
 	Selectivity pselec;
@@ -3860,7 +3860,7 @@ calc_joinrel_size_estimate(PlannerInfo *root,
  */
 void
 set_subquery_size_estimates(PlannerInfo *root, RelOptInfo *rel)
-{
+{	StackTrace("set_subquery_size_estimates");
 	PlannerInfo *subroot = rel->subroot;
 	RangeTblEntry *rte PG_USED_FOR_ASSERTS_ONLY;
 	ListCell   *lc;
@@ -3938,7 +3938,7 @@ set_subquery_size_estimates(PlannerInfo *root, RelOptInfo *rel)
  */
 void
 set_function_size_estimates(PlannerInfo *root, RelOptInfo *rel)
-{
+{	StackTrace("set_function_size_estimates");
 	RangeTblEntry *rte;
 	ListCell   *lc;
 
@@ -3976,7 +3976,7 @@ set_function_size_estimates(PlannerInfo *root, RelOptInfo *rel)
  */
 void
 set_values_size_estimates(PlannerInfo *root, RelOptInfo *rel)
-{
+{	StackTrace("set_values_size_estimates");
 	RangeTblEntry *rte;
 
 	/* Should only be applied to base relations that are values lists */
@@ -4008,7 +4008,7 @@ set_values_size_estimates(PlannerInfo *root, RelOptInfo *rel)
  */
 void
 set_cte_size_estimates(PlannerInfo *root, RelOptInfo *rel, Plan *cteplan)
-{
+{	StackTrace("set_cte_size_estimates");
 	RangeTblEntry *rte;
 
 	/* Should only be applied to base relations that are CTE references */
@@ -4051,7 +4051,7 @@ set_cte_size_estimates(PlannerInfo *root, RelOptInfo *rel, Plan *cteplan)
  */
 void
 set_foreign_size_estimates(PlannerInfo *root, RelOptInfo *rel)
-{
+{	StackTrace("set_foreign_size_estimates");
 	/* Should only be applied to base relations */
 	Assert(rel->relid > 0);
 
@@ -4084,7 +4084,7 @@ set_foreign_size_estimates(PlannerInfo *root, RelOptInfo *rel)
  */
 static void
 set_rel_width(PlannerInfo *root, RelOptInfo *rel)
-{
+{	StackTrace("set_rel_width");
 	Oid			reloid = planner_rt_fetch(rel->relid, root)->relid;
 	int32		tuple_width = 0;
 	bool		have_wholerow_var = false;
@@ -4218,7 +4218,7 @@ set_rel_width(PlannerInfo *root, RelOptInfo *rel)
  */
 static double
 relation_byte_size(double tuples, int width)
-{
+{	StackTrace("relation_byte_size");
 	return tuples * (MAXALIGN(width) + MAXALIGN(SizeofHeapTupleHeader));
 }
 
@@ -4229,6 +4229,6 @@ relation_byte_size(double tuples, int width)
  */
 static double
 page_size(double tuples, int width)
-{
+{	StackTrace("page_size");
 	return ceil(relation_byte_size(tuples, width) / BLCKSZ);
 }

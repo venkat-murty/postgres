@@ -29,7 +29,7 @@ static TupleTableSlot *CteScanNext(CteScanState *node);
  */
 static TupleTableSlot *
 CteScanNext(CteScanState *node)
-{
+{	StackTrace("CteScanNext");
 	EState	   *estate;
 	ScanDirection dir;
 	bool		forward;
@@ -136,7 +136,7 @@ CteScanNext(CteScanState *node)
  */
 static bool
 CteScanRecheck(CteScanState *node, TupleTableSlot *slot)
-{
+{	StackTrace("CteScanRecheck");
 	/* nothing to check */
 	return true;
 }
@@ -151,7 +151,7 @@ CteScanRecheck(CteScanState *node, TupleTableSlot *slot)
  */
 TupleTableSlot *
 ExecCteScan(CteScanState *node)
-{
+{	StackTrace("ExecCteScan");
 	return ExecScan(&node->ss,
 					(ExecScanAccessMtd) CteScanNext,
 					(ExecScanRecheckMtd) CteScanRecheck);
@@ -164,7 +164,7 @@ ExecCteScan(CteScanState *node)
  */
 CteScanState *
 ExecInitCteScan(CteScan *node, EState *estate, int eflags)
-{
+{	StackTrace("ExecInitCteScan");
 	CteScanState *scanstate;
 	ParamExecData *prmdata;
 
@@ -278,7 +278,7 @@ ExecInitCteScan(CteScan *node, EState *estate, int eflags)
  */
 void
 ExecEndCteScan(CteScanState *node)
-{
+{	StackTrace("ExecEndCteScan");
 	/*
 	 * Free exprcontext
 	 */
@@ -308,7 +308,7 @@ ExecEndCteScan(CteScanState *node)
  */
 void
 ExecReScanCteScan(CteScanState *node)
-{
+{	StackTrace("ExecReScanCteScan");
 	Tuplestorestate *tuplestorestate = node->leader->cte_table;
 
 	ExecClearTuple(node->ss.ps.ps_ResultTupleSlot);

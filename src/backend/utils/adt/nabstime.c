@@ -86,7 +86,7 @@ static void parsetinterval(char *i_string,
  */
 AbsoluteTime
 GetCurrentAbsoluteTime(void)
-{
+{	StackTrace("GetCurrentAbsoluteTime");
 	time_t		now;
 
 	now = time(NULL);
@@ -96,7 +96,7 @@ GetCurrentAbsoluteTime(void)
 
 void
 abstime2tm(AbsoluteTime _time, int *tzp, struct pg_tm * tm, char **tzn)
-{
+{	StackTrace("abstime2tm");
 	pg_time_t	time = (pg_time_t) _time;
 	struct pg_tm *tx;
 
@@ -148,7 +148,7 @@ abstime2tm(AbsoluteTime _time, int *tzp, struct pg_tm * tm, char **tzn)
  */
 static AbsoluteTime
 tm2abstime(struct pg_tm * tm, int tz)
-{
+{	StackTrace("tm2abstime");
 	int			day;
 	AbsoluteTime sec;
 
@@ -193,7 +193,7 @@ tm2abstime(struct pg_tm * tm, int tz)
  */
 Datum
 abstimein(PG_FUNCTION_ARGS)
-{
+{	StackTrace("abstimein");
 	char	   *str = PG_GETARG_CSTRING(0);
 	AbsoluteTime result;
 	fsec_t		fsec;
@@ -257,7 +257,7 @@ abstimein(PG_FUNCTION_ARGS)
  */
 Datum
 abstimeout(PG_FUNCTION_ARGS)
-{
+{	StackTrace("abstimeout");
 	AbsoluteTime time = PG_GETARG_ABSOLUTETIME(0);
 	char	   *result;
 	int			tz;
@@ -298,7 +298,7 @@ abstimeout(PG_FUNCTION_ARGS)
  */
 Datum
 abstimerecv(PG_FUNCTION_ARGS)
-{
+{	StackTrace("abstimerecv");
 	StringInfo	buf = (StringInfo) PG_GETARG_POINTER(0);
 
 	PG_RETURN_ABSOLUTETIME((AbsoluteTime) pq_getmsgint(buf, sizeof(AbsoluteTime)));
@@ -309,7 +309,7 @@ abstimerecv(PG_FUNCTION_ARGS)
  */
 Datum
 abstimesend(PG_FUNCTION_ARGS)
-{
+{	StackTrace("abstimesend");
 	AbsoluteTime time = PG_GETARG_ABSOLUTETIME(0);
 	StringInfoData buf;
 
@@ -323,7 +323,7 @@ abstimesend(PG_FUNCTION_ARGS)
  */
 Datum
 abstime_finite(PG_FUNCTION_ARGS)
-{
+{	StackTrace("abstime_finite");
 	AbsoluteTime abstime = PG_GETARG_ABSOLUTETIME(0);
 
 	PG_RETURN_BOOL(abstime != INVALID_ABSTIME &&
@@ -337,7 +337,7 @@ abstime_finite(PG_FUNCTION_ARGS)
  */
 static int
 abstime_cmp_internal(AbsoluteTime a, AbsoluteTime b)
-{
+{	StackTrace("abstime_cmp_internal");
 	/*
 	 * We consider all INVALIDs to be equal and larger than any non-INVALID.
 	 * This is somewhat arbitrary; the important thing is to have a consistent
@@ -364,7 +364,7 @@ abstime_cmp_internal(AbsoluteTime a, AbsoluteTime b)
 
 Datum
 abstimeeq(PG_FUNCTION_ARGS)
-{
+{	StackTrace("abstimeeq");
 	AbsoluteTime t1 = PG_GETARG_ABSOLUTETIME(0);
 	AbsoluteTime t2 = PG_GETARG_ABSOLUTETIME(1);
 
@@ -373,7 +373,7 @@ abstimeeq(PG_FUNCTION_ARGS)
 
 Datum
 abstimene(PG_FUNCTION_ARGS)
-{
+{	StackTrace("abstimene");
 	AbsoluteTime t1 = PG_GETARG_ABSOLUTETIME(0);
 	AbsoluteTime t2 = PG_GETARG_ABSOLUTETIME(1);
 
@@ -382,7 +382,7 @@ abstimene(PG_FUNCTION_ARGS)
 
 Datum
 abstimelt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("abstimelt");
 	AbsoluteTime t1 = PG_GETARG_ABSOLUTETIME(0);
 	AbsoluteTime t2 = PG_GETARG_ABSOLUTETIME(1);
 
@@ -391,7 +391,7 @@ abstimelt(PG_FUNCTION_ARGS)
 
 Datum
 abstimegt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("abstimegt");
 	AbsoluteTime t1 = PG_GETARG_ABSOLUTETIME(0);
 	AbsoluteTime t2 = PG_GETARG_ABSOLUTETIME(1);
 
@@ -400,7 +400,7 @@ abstimegt(PG_FUNCTION_ARGS)
 
 Datum
 abstimele(PG_FUNCTION_ARGS)
-{
+{	StackTrace("abstimele");
 	AbsoluteTime t1 = PG_GETARG_ABSOLUTETIME(0);
 	AbsoluteTime t2 = PG_GETARG_ABSOLUTETIME(1);
 
@@ -409,7 +409,7 @@ abstimele(PG_FUNCTION_ARGS)
 
 Datum
 abstimege(PG_FUNCTION_ARGS)
-{
+{	StackTrace("abstimege");
 	AbsoluteTime t1 = PG_GETARG_ABSOLUTETIME(0);
 	AbsoluteTime t2 = PG_GETARG_ABSOLUTETIME(1);
 
@@ -418,7 +418,7 @@ abstimege(PG_FUNCTION_ARGS)
 
 Datum
 btabstimecmp(PG_FUNCTION_ARGS)
-{
+{	StackTrace("btabstimecmp");
 	AbsoluteTime t1 = PG_GETARG_ABSOLUTETIME(0);
 	AbsoluteTime t2 = PG_GETARG_ABSOLUTETIME(1);
 
@@ -431,7 +431,7 @@ btabstimecmp(PG_FUNCTION_ARGS)
  */
 Datum
 timestamp_abstime(PG_FUNCTION_ARGS)
-{
+{	StackTrace("timestamp_abstime");
 	Timestamp	timestamp = PG_GETARG_TIMESTAMP(0);
 	AbsoluteTime result;
 	fsec_t		fsec;
@@ -464,7 +464,7 @@ timestamp_abstime(PG_FUNCTION_ARGS)
  */
 Datum
 abstime_timestamp(PG_FUNCTION_ARGS)
-{
+{	StackTrace("abstime_timestamp");
 	AbsoluteTime abstime = PG_GETARG_ABSOLUTETIME(0);
 	Timestamp	result;
 	struct pg_tm tt,
@@ -508,7 +508,7 @@ abstime_timestamp(PG_FUNCTION_ARGS)
  */
 Datum
 timestamptz_abstime(PG_FUNCTION_ARGS)
-{
+{	StackTrace("timestamptz_abstime");
 	TimestampTz timestamp = PG_GETARG_TIMESTAMP(0);
 	AbsoluteTime result;
 	fsec_t		fsec;
@@ -537,7 +537,7 @@ timestamptz_abstime(PG_FUNCTION_ARGS)
  */
 Datum
 abstime_timestamptz(PG_FUNCTION_ARGS)
-{
+{	StackTrace("abstime_timestamptz");
 	AbsoluteTime abstime = PG_GETARG_ABSOLUTETIME(0);
 	TimestampTz result;
 	struct pg_tm tt,
@@ -585,7 +585,7 @@ abstime_timestamptz(PG_FUNCTION_ARGS)
  */
 Datum
 reltimein(PG_FUNCTION_ARGS)
-{
+{	StackTrace("reltimein");
 	char	   *str = PG_GETARG_CSTRING(0);
 	RelativeTime result;
 	struct pg_tm tt,
@@ -638,7 +638,7 @@ reltimein(PG_FUNCTION_ARGS)
  */
 Datum
 reltimeout(PG_FUNCTION_ARGS)
-{
+{	StackTrace("reltimeout");
 	RelativeTime time = PG_GETARG_RELATIVETIME(0);
 	char	   *result;
 	struct pg_tm tt,
@@ -657,7 +657,7 @@ reltimeout(PG_FUNCTION_ARGS)
  */
 Datum
 reltimerecv(PG_FUNCTION_ARGS)
-{
+{	StackTrace("reltimerecv");
 	StringInfo	buf = (StringInfo) PG_GETARG_POINTER(0);
 
 	PG_RETURN_RELATIVETIME((RelativeTime) pq_getmsgint(buf, sizeof(RelativeTime)));
@@ -668,7 +668,7 @@ reltimerecv(PG_FUNCTION_ARGS)
  */
 Datum
 reltimesend(PG_FUNCTION_ARGS)
-{
+{	StackTrace("reltimesend");
 	RelativeTime time = PG_GETARG_RELATIVETIME(0);
 	StringInfoData buf;
 
@@ -680,7 +680,7 @@ reltimesend(PG_FUNCTION_ARGS)
 
 static void
 reltime2tm(RelativeTime time, struct pg_tm * tm)
-{
+{	StackTrace("reltime2tm");
 	double		dtime = time;
 
 	FMODULO(dtime, tm->tm_year, 31557600);
@@ -697,7 +697,7 @@ reltime2tm(RelativeTime time, struct pg_tm * tm)
  */
 Datum
 tintervalin(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tintervalin");
 	char	   *tintervalstr = PG_GETARG_CSTRING(0);
 	TimeInterval tinterval;
 	AbsoluteTime i_start,
@@ -728,7 +728,7 @@ tintervalin(PG_FUNCTION_ARGS)
  */
 Datum
 tintervalout(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tintervalout");
 	TimeInterval tinterval = PG_GETARG_TIMEINTERVAL(0);
 	char	   *i_str,
 			   *p;
@@ -758,7 +758,7 @@ tintervalout(PG_FUNCTION_ARGS)
  */
 Datum
 tintervalrecv(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tintervalrecv");
 	StringInfo	buf = (StringInfo) PG_GETARG_POINTER(0);
 	TimeInterval tinterval;
 	int32		status;
@@ -788,7 +788,7 @@ tintervalrecv(PG_FUNCTION_ARGS)
  */
 Datum
 tintervalsend(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tintervalsend");
 	TimeInterval tinterval = PG_GETARG_TIMEINTERVAL(0);
 	StringInfoData buf;
 
@@ -806,7 +806,7 @@ tintervalsend(PG_FUNCTION_ARGS)
 
 Datum
 interval_reltime(PG_FUNCTION_ARGS)
-{
+{	StackTrace("interval_reltime");
 	Interval   *interval = PG_GETARG_INTERVAL_P(0);
 	RelativeTime time;
 	int			year,
@@ -838,7 +838,7 @@ interval_reltime(PG_FUNCTION_ARGS)
 
 Datum
 reltime_interval(PG_FUNCTION_ARGS)
-{
+{	StackTrace("reltime_interval");
 	RelativeTime reltime = PG_GETARG_RELATIVETIME(0);
 	Interval   *result;
 	int			year,
@@ -889,7 +889,7 @@ reltime_interval(PG_FUNCTION_ARGS)
  */
 Datum
 mktinterval(PG_FUNCTION_ARGS)
-{
+{	StackTrace("mktinterval");
 	AbsoluteTime t1 = PG_GETARG_ABSOLUTETIME(0);
 	AbsoluteTime t2 = PG_GETARG_ABSOLUTETIME(1);
 	AbsoluteTime tstart = ABSTIMEMIN(t1, t2);
@@ -923,7 +923,7 @@ mktinterval(PG_FUNCTION_ARGS)
  */
 Datum
 timepl(PG_FUNCTION_ARGS)
-{
+{	StackTrace("timepl");
 	AbsoluteTime t1 = PG_GETARG_ABSOLUTETIME(0);
 	RelativeTime t2 = PG_GETARG_RELATIVETIME(1);
 
@@ -942,7 +942,7 @@ timepl(PG_FUNCTION_ARGS)
  */
 Datum
 timemi(PG_FUNCTION_ARGS)
-{
+{	StackTrace("timemi");
 	AbsoluteTime t1 = PG_GETARG_ABSOLUTETIME(0);
 	RelativeTime t2 = PG_GETARG_RELATIVETIME(1);
 
@@ -961,7 +961,7 @@ timemi(PG_FUNCTION_ARGS)
  */
 Datum
 intinterval(PG_FUNCTION_ARGS)
-{
+{	StackTrace("intinterval");
 	AbsoluteTime t = PG_GETARG_ABSOLUTETIME(0);
 	TimeInterval tinterval = PG_GETARG_TIMEINTERVAL(1);
 
@@ -983,7 +983,7 @@ intinterval(PG_FUNCTION_ARGS)
  */
 Datum
 tintervalrel(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tintervalrel");
 	TimeInterval tinterval = PG_GETARG_TIMEINTERVAL(0);
 	AbsoluteTime t1 = tinterval->data[0];
 	AbsoluteTime t2 = tinterval->data[1];
@@ -1006,7 +1006,7 @@ tintervalrel(PG_FUNCTION_ARGS)
  */
 Datum
 timenow(PG_FUNCTION_ARGS)
-{
+{	StackTrace("timenow");
 	PG_RETURN_ABSOLUTETIME(GetCurrentAbsoluteTime());
 }
 
@@ -1015,7 +1015,7 @@ timenow(PG_FUNCTION_ARGS)
  */
 static int
 reltime_cmp_internal(RelativeTime a, RelativeTime b)
-{
+{	StackTrace("reltime_cmp_internal");
 	/*
 	 * We consider all INVALIDs to be equal and larger than any non-INVALID.
 	 * This is somewhat arbitrary; the important thing is to have a consistent
@@ -1042,7 +1042,7 @@ reltime_cmp_internal(RelativeTime a, RelativeTime b)
 
 Datum
 reltimeeq(PG_FUNCTION_ARGS)
-{
+{	StackTrace("reltimeeq");
 	RelativeTime t1 = PG_GETARG_RELATIVETIME(0);
 	RelativeTime t2 = PG_GETARG_RELATIVETIME(1);
 
@@ -1051,7 +1051,7 @@ reltimeeq(PG_FUNCTION_ARGS)
 
 Datum
 reltimene(PG_FUNCTION_ARGS)
-{
+{	StackTrace("reltimene");
 	RelativeTime t1 = PG_GETARG_RELATIVETIME(0);
 	RelativeTime t2 = PG_GETARG_RELATIVETIME(1);
 
@@ -1060,7 +1060,7 @@ reltimene(PG_FUNCTION_ARGS)
 
 Datum
 reltimelt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("reltimelt");
 	RelativeTime t1 = PG_GETARG_RELATIVETIME(0);
 	RelativeTime t2 = PG_GETARG_RELATIVETIME(1);
 
@@ -1069,7 +1069,7 @@ reltimelt(PG_FUNCTION_ARGS)
 
 Datum
 reltimegt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("reltimegt");
 	RelativeTime t1 = PG_GETARG_RELATIVETIME(0);
 	RelativeTime t2 = PG_GETARG_RELATIVETIME(1);
 
@@ -1078,7 +1078,7 @@ reltimegt(PG_FUNCTION_ARGS)
 
 Datum
 reltimele(PG_FUNCTION_ARGS)
-{
+{	StackTrace("reltimele");
 	RelativeTime t1 = PG_GETARG_RELATIVETIME(0);
 	RelativeTime t2 = PG_GETARG_RELATIVETIME(1);
 
@@ -1087,7 +1087,7 @@ reltimele(PG_FUNCTION_ARGS)
 
 Datum
 reltimege(PG_FUNCTION_ARGS)
-{
+{	StackTrace("reltimege");
 	RelativeTime t1 = PG_GETARG_RELATIVETIME(0);
 	RelativeTime t2 = PG_GETARG_RELATIVETIME(1);
 
@@ -1096,7 +1096,7 @@ reltimege(PG_FUNCTION_ARGS)
 
 Datum
 btreltimecmp(PG_FUNCTION_ARGS)
-{
+{	StackTrace("btreltimecmp");
 	RelativeTime t1 = PG_GETARG_RELATIVETIME(0);
 	RelativeTime t2 = PG_GETARG_RELATIVETIME(1);
 
@@ -1110,7 +1110,7 @@ btreltimecmp(PG_FUNCTION_ARGS)
  */
 Datum
 tintervalsame(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tintervalsame");
 	TimeInterval i1 = PG_GETARG_TIMEINTERVAL(0);
 	TimeInterval i2 = PG_GETARG_TIMEINTERVAL(1);
 
@@ -1149,7 +1149,7 @@ tintervalsame(PG_FUNCTION_ARGS)
  */
 static int
 tinterval_cmp_internal(TimeInterval a, TimeInterval b)
-{
+{	StackTrace("tinterval_cmp_internal");
 	bool		a_invalid;
 	bool		b_invalid;
 	AbsoluteTime a_len;
@@ -1191,7 +1191,7 @@ tinterval_cmp_internal(TimeInterval a, TimeInterval b)
 
 Datum
 tintervaleq(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tintervaleq");
 	TimeInterval i1 = PG_GETARG_TIMEINTERVAL(0);
 	TimeInterval i2 = PG_GETARG_TIMEINTERVAL(1);
 
@@ -1200,7 +1200,7 @@ tintervaleq(PG_FUNCTION_ARGS)
 
 Datum
 tintervalne(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tintervalne");
 	TimeInterval i1 = PG_GETARG_TIMEINTERVAL(0);
 	TimeInterval i2 = PG_GETARG_TIMEINTERVAL(1);
 
@@ -1209,7 +1209,7 @@ tintervalne(PG_FUNCTION_ARGS)
 
 Datum
 tintervallt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tintervallt");
 	TimeInterval i1 = PG_GETARG_TIMEINTERVAL(0);
 	TimeInterval i2 = PG_GETARG_TIMEINTERVAL(1);
 
@@ -1218,7 +1218,7 @@ tintervallt(PG_FUNCTION_ARGS)
 
 Datum
 tintervalle(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tintervalle");
 	TimeInterval i1 = PG_GETARG_TIMEINTERVAL(0);
 	TimeInterval i2 = PG_GETARG_TIMEINTERVAL(1);
 
@@ -1227,7 +1227,7 @@ tintervalle(PG_FUNCTION_ARGS)
 
 Datum
 tintervalgt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tintervalgt");
 	TimeInterval i1 = PG_GETARG_TIMEINTERVAL(0);
 	TimeInterval i2 = PG_GETARG_TIMEINTERVAL(1);
 
@@ -1236,7 +1236,7 @@ tintervalgt(PG_FUNCTION_ARGS)
 
 Datum
 tintervalge(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tintervalge");
 	TimeInterval i1 = PG_GETARG_TIMEINTERVAL(0);
 	TimeInterval i2 = PG_GETARG_TIMEINTERVAL(1);
 
@@ -1245,7 +1245,7 @@ tintervalge(PG_FUNCTION_ARGS)
 
 Datum
 bttintervalcmp(PG_FUNCTION_ARGS)
-{
+{	StackTrace("bttintervalcmp");
 	TimeInterval i1 = PG_GETARG_TIMEINTERVAL(0);
 	TimeInterval i2 = PG_GETARG_TIMEINTERVAL(1);
 
@@ -1269,7 +1269,7 @@ bttintervalcmp(PG_FUNCTION_ARGS)
  */
 Datum
 tintervalleneq(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tintervalleneq");
 	TimeInterval i = PG_GETARG_TIMEINTERVAL(0);
 	RelativeTime t = PG_GETARG_RELATIVETIME(1);
 	RelativeTime rt;
@@ -1283,7 +1283,7 @@ tintervalleneq(PG_FUNCTION_ARGS)
 
 Datum
 tintervallenne(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tintervallenne");
 	TimeInterval i = PG_GETARG_TIMEINTERVAL(0);
 	RelativeTime t = PG_GETARG_RELATIVETIME(1);
 	RelativeTime rt;
@@ -1297,7 +1297,7 @@ tintervallenne(PG_FUNCTION_ARGS)
 
 Datum
 tintervallenlt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tintervallenlt");
 	TimeInterval i = PG_GETARG_TIMEINTERVAL(0);
 	RelativeTime t = PG_GETARG_RELATIVETIME(1);
 	RelativeTime rt;
@@ -1311,7 +1311,7 @@ tintervallenlt(PG_FUNCTION_ARGS)
 
 Datum
 tintervallengt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tintervallengt");
 	TimeInterval i = PG_GETARG_TIMEINTERVAL(0);
 	RelativeTime t = PG_GETARG_RELATIVETIME(1);
 	RelativeTime rt;
@@ -1325,7 +1325,7 @@ tintervallengt(PG_FUNCTION_ARGS)
 
 Datum
 tintervallenle(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tintervallenle");
 	TimeInterval i = PG_GETARG_TIMEINTERVAL(0);
 	RelativeTime t = PG_GETARG_RELATIVETIME(1);
 	RelativeTime rt;
@@ -1339,7 +1339,7 @@ tintervallenle(PG_FUNCTION_ARGS)
 
 Datum
 tintervallenge(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tintervallenge");
 	TimeInterval i = PG_GETARG_TIMEINTERVAL(0);
 	RelativeTime t = PG_GETARG_RELATIVETIME(1);
 	RelativeTime rt;
@@ -1356,7 +1356,7 @@ tintervallenge(PG_FUNCTION_ARGS)
  */
 Datum
 tintervalct(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tintervalct");
 	TimeInterval i1 = PG_GETARG_TIMEINTERVAL(0);
 	TimeInterval i2 = PG_GETARG_TIMEINTERVAL(1);
 
@@ -1377,7 +1377,7 @@ tintervalct(PG_FUNCTION_ARGS)
  */
 Datum
 tintervalov(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tintervalov");
 	TimeInterval i1 = PG_GETARG_TIMEINTERVAL(0);
 	TimeInterval i2 = PG_GETARG_TIMEINTERVAL(1);
 
@@ -1398,7 +1398,7 @@ tintervalov(PG_FUNCTION_ARGS)
  */
 Datum
 tintervalstart(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tintervalstart");
 	TimeInterval i = PG_GETARG_TIMEINTERVAL(0);
 
 	if (i->status == T_INTERVAL_INVAL)
@@ -1411,7 +1411,7 @@ tintervalstart(PG_FUNCTION_ARGS)
  */
 Datum
 tintervalend(PG_FUNCTION_ARGS)
-{
+{	StackTrace("tintervalend");
 	TimeInterval i = PG_GETARG_TIMEINTERVAL(0);
 
 	if (i->status == T_INTERVAL_INVAL)
@@ -1443,7 +1443,7 @@ static void
 parsetinterval(char *i_string,
 			   AbsoluteTime *i_start,
 			   AbsoluteTime *i_end)
-{
+{	StackTrace("parsetinterval");
 	char	   *p,
 			   *p1;
 	char		c;
@@ -1566,7 +1566,7 @@ bogus:
  */
 Datum
 timeofday(PG_FUNCTION_ARGS)
-{
+{	StackTrace("timeofday");
 	struct timeval tp;
 	char		templ[128];
 	char		buf[128];

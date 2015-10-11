@@ -32,7 +32,7 @@ typedef struct
 
 static void
 tt_setup_firstcall(FuncCallContext *funcctx, Oid prsid)
-{
+{	StackTrace("tt_setup_firstcall");
 	TupleDesc	tupdesc;
 	MemoryContext oldcontext;
 	TSTokenTypeStorage *st;
@@ -65,7 +65,7 @@ tt_setup_firstcall(FuncCallContext *funcctx, Oid prsid)
 
 static Datum
 tt_process_call(FuncCallContext *funcctx)
-{
+{	StackTrace("tt_process_call");
 	TSTokenTypeStorage *st;
 
 	st = (TSTokenTypeStorage *) funcctx->user_fctx;
@@ -97,7 +97,7 @@ tt_process_call(FuncCallContext *funcctx)
 
 Datum
 ts_token_type_byid(PG_FUNCTION_ARGS)
-{
+{	StackTrace("ts_token_type_byid");
 	FuncCallContext *funcctx;
 	Datum		result;
 
@@ -116,7 +116,7 @@ ts_token_type_byid(PG_FUNCTION_ARGS)
 
 Datum
 ts_token_type_byname(PG_FUNCTION_ARGS)
-{
+{	StackTrace("ts_token_type_byname");
 	FuncCallContext *funcctx;
 	Datum		result;
 
@@ -153,7 +153,7 @@ typedef struct
 
 static void
 prs_setup_firstcall(FuncCallContext *funcctx, Oid prsid, text *txt)
-{
+{	StackTrace("prs_setup_firstcall");
 	TupleDesc	tupdesc;
 	MemoryContext oldcontext;
 	PrsStorage *st;
@@ -209,7 +209,7 @@ prs_setup_firstcall(FuncCallContext *funcctx, Oid prsid, text *txt)
 
 static Datum
 prs_process_call(FuncCallContext *funcctx)
-{
+{	StackTrace("prs_process_call");
 	PrsStorage *st;
 
 	st = (PrsStorage *) funcctx->user_fctx;
@@ -241,7 +241,7 @@ prs_process_call(FuncCallContext *funcctx)
 
 Datum
 ts_parse_byid(PG_FUNCTION_ARGS)
-{
+{	StackTrace("ts_parse_byid");
 	FuncCallContext *funcctx;
 	Datum		result;
 
@@ -263,7 +263,7 @@ ts_parse_byid(PG_FUNCTION_ARGS)
 
 Datum
 ts_parse_byname(PG_FUNCTION_ARGS)
-{
+{	StackTrace("ts_parse_byname");
 	FuncCallContext *funcctx;
 	Datum		result;
 
@@ -287,7 +287,7 @@ ts_parse_byname(PG_FUNCTION_ARGS)
 
 Datum
 ts_headline_byid_opt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("ts_headline_byid_opt");
 	text	   *in = PG_GETARG_TEXT_P(1);
 	TSQuery		query = PG_GETARG_TSQUERY(2);
 	text	   *opt = (PG_NARGS() > 3 && PG_GETARG_POINTER(3)) ? PG_GETARG_TEXT_P(3) : NULL;
@@ -336,7 +336,7 @@ ts_headline_byid_opt(PG_FUNCTION_ARGS)
 
 Datum
 ts_headline_byid(PG_FUNCTION_ARGS)
-{
+{	StackTrace("ts_headline_byid");
 	PG_RETURN_DATUM(DirectFunctionCall3(ts_headline_byid_opt,
 										PG_GETARG_DATUM(0),
 										PG_GETARG_DATUM(1),
@@ -345,7 +345,7 @@ ts_headline_byid(PG_FUNCTION_ARGS)
 
 Datum
 ts_headline(PG_FUNCTION_ARGS)
-{
+{	StackTrace("ts_headline");
 	PG_RETURN_DATUM(DirectFunctionCall3(ts_headline_byid_opt,
 								  ObjectIdGetDatum(getTSCurrentConfig(true)),
 										PG_GETARG_DATUM(0),
@@ -354,7 +354,7 @@ ts_headline(PG_FUNCTION_ARGS)
 
 Datum
 ts_headline_opt(PG_FUNCTION_ARGS)
-{
+{	StackTrace("ts_headline_opt");
 	PG_RETURN_DATUM(DirectFunctionCall4(ts_headline_byid_opt,
 								  ObjectIdGetDatum(getTSCurrentConfig(true)),
 										PG_GETARG_DATUM(0),

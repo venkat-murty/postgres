@@ -34,7 +34,7 @@ static int	leftmostLoc(int loc1, int loc2);
  */
 Oid
 exprType(const Node *expr)
-{
+{	StackTrace("exprType");
 	Oid			type;
 
 	if (!expr)
@@ -263,7 +263,7 @@ exprType(const Node *expr)
  */
 int32
 exprTypmod(const Node *expr)
-{
+{	StackTrace("exprTypmod");
 	if (!expr)
 		return -1;
 
@@ -500,7 +500,7 @@ exprTypmod(const Node *expr)
  */
 bool
 exprIsLengthCoercion(const Node *expr, int32 *coercedTypmod)
-{
+{	StackTrace("exprIsLengthCoercion");
 	if (coercedTypmod != NULL)
 		*coercedTypmod = -1;	/* default result on failure */
 
@@ -575,7 +575,7 @@ exprIsLengthCoercion(const Node *expr, int32 *coercedTypmod)
  */
 Node *
 relabel_to_typmod(Node *expr, int32 typmod)
-{
+{	StackTrace("relabel_to_typmod");
 	Oid			type = exprType(expr);
 	Oid			coll = exprCollation(expr);
 
@@ -599,7 +599,7 @@ relabel_to_typmod(Node *expr, int32 typmod)
  */
 Node *
 strip_implicit_coercions(Node *node)
-{
+{	StackTrace("strip_implicit_coercions");
 	if (node == NULL)
 		return NULL;
 	if (IsA(node, FuncExpr))
@@ -657,13 +657,13 @@ strip_implicit_coercions(Node *node)
  */
 bool
 expression_returns_set(Node *clause)
-{
+{	StackTrace("expression_returns_set");
 	return expression_returns_set_walker(clause, NULL);
 }
 
 static bool
 expression_returns_set_walker(Node *node, void *context)
-{
+{	StackTrace("expression_returns_set_walker");
 	if (node == NULL)
 		return false;
 	if (IsA(node, FuncExpr))
@@ -733,7 +733,7 @@ expression_returns_set_walker(Node *node, void *context)
  */
 Oid
 exprCollation(const Node *expr)
-{
+{	StackTrace("exprCollation");
 	Oid			coll;
 
 	if (!expr)
@@ -929,7 +929,7 @@ exprCollation(const Node *expr)
  */
 Oid
 exprInputCollation(const Node *expr)
-{
+{	StackTrace("exprInputCollation");
 	Oid			coll;
 
 	if (!expr)
@@ -977,7 +977,7 @@ exprInputCollation(const Node *expr)
  */
 void
 exprSetCollation(Node *expr, Oid collation)
-{
+{	StackTrace("exprSetCollation");
 	switch (nodeTag(expr))
 	{
 		case T_Var:
@@ -1124,7 +1124,7 @@ exprSetCollation(Node *expr, Oid collation)
  */
 void
 exprSetInputCollation(Node *expr, Oid inputcollation)
-{
+{	StackTrace("exprSetInputCollation");
 	switch (nodeTag(expr))
 	{
 		case T_Aggref:
@@ -1188,7 +1188,7 @@ exprSetInputCollation(Node *expr, Oid inputcollation)
  */
 int
 exprLocation(const Node *expr)
-{
+{	StackTrace("exprLocation");
 	int			loc;
 
 	if (expr == NULL)
@@ -1541,7 +1541,7 @@ exprLocation(const Node *expr)
  */
 static int
 leftmostLoc(int loc1, int loc2)
-{
+{	StackTrace("leftmostLoc");
 	if (loc1 < 0)
 		return loc2;
 	else if (loc2 < 0)
@@ -1647,7 +1647,7 @@ bool
 expression_tree_walker(Node *node,
 					   bool (*walker) (),
 					   void *context)
-{
+{	StackTrace("(*walker)");
 	ListCell   *temp;
 
 	/*
@@ -2023,7 +2023,7 @@ query_tree_walker(Query *query,
 				  bool (*walker) (),
 				  void *context,
 				  int flags)
-{
+{	StackTrace("(*walker)");
 	Assert(query != NULL && IsA(query, Query));
 
 	if (walker((Node *) query->targetList, context))
@@ -2067,7 +2067,7 @@ range_table_walker(List *rtable,
 				   bool (*walker) (),
 				   void *context,
 				   int flags)
-{
+{	StackTrace("(*walker)");
 	ListCell   *rt;
 
 	foreach(rt, rtable)
@@ -2186,7 +2186,7 @@ Node *
 expression_tree_mutator(Node *node,
 						Node *(*mutator) (),
 						void *context)
-{
+{	StackTrace("*(*mutator)");
 	/*
 	 * The mutator has already decided not to modify the current node, but we
 	 * must call the mutator for any sub-nodes.
@@ -2816,7 +2816,7 @@ query_tree_mutator(Query *query,
 				   Node *(*mutator) (),
 				   void *context,
 				   int flags)
-{
+{	StackTrace("*(*mutator)");
 	Assert(query != NULL && IsA(query, Query));
 
 	if (!(flags & QTW_DONT_COPY_QUERY))
@@ -2855,7 +2855,7 @@ range_table_mutator(List *rtable,
 					Node *(*mutator) (),
 					void *context,
 					int flags)
-{
+{	StackTrace("*(*mutator)");
 	List	   *newrt = NIL;
 	ListCell   *rt;
 
@@ -2930,7 +2930,7 @@ query_or_expression_tree_walker(Node *node,
 								bool (*walker) (),
 								void *context,
 								int flags)
-{
+{	StackTrace("(*walker)");
 	if (node && IsA(node, Query))
 		return query_tree_walker((Query *) node,
 								 walker,
@@ -2953,7 +2953,7 @@ query_or_expression_tree_mutator(Node *node,
 								 Node *(*mutator) (),
 								 void *context,
 								 int flags)
-{
+{	StackTrace("*(*mutator)");
 	if (node && IsA(node, Query))
 		return (Node *) query_tree_mutator((Query *) node,
 										   mutator,
@@ -2981,7 +2981,7 @@ bool
 raw_expression_tree_walker(Node *node,
 						   bool (*walker) (),
 						   void *context)
-{
+{	StackTrace("(*walker)");
 	ListCell   *temp;
 
 	/*

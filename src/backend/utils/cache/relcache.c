@@ -293,7 +293,7 @@ static void unlink_initfile(const char *initfilename);
  */
 static HeapTuple
 ScanPgRelation(Oid targetRelId, bool indexOK, bool force_non_historic)
-{
+{	StackTrace("ScanPgRelation");
 	HeapTuple	pg_class_tuple;
 	Relation	pg_class_desc;
 	SysScanDesc pg_class_scan;
@@ -363,7 +363,7 @@ ScanPgRelation(Oid targetRelId, bool indexOK, bool force_non_historic)
  */
 static Relation
 AllocateRelationDesc(Form_pg_class relp)
-{
+{	StackTrace("AllocateRelationDesc");
 	Relation	relation;
 	MemoryContext oldcxt;
 	Form_pg_class relationForm;
@@ -419,7 +419,7 @@ AllocateRelationDesc(Form_pg_class relp)
  */
 static void
 RelationParseRelOptions(Relation relation, HeapTuple tuple)
-{
+{	StackTrace("RelationParseRelOptions");
 	bytea	   *options;
 
 	relation->rd_options = NULL;
@@ -470,7 +470,7 @@ RelationParseRelOptions(Relation relation, HeapTuple tuple)
  */
 static void
 RelationBuildTupleDesc(Relation relation)
-{
+{	StackTrace("RelationBuildTupleDesc");
 	HeapTuple	pg_attribute_tuple;
 	Relation	pg_attribute_desc;
 	SysScanDesc pg_attribute_scan;
@@ -642,7 +642,7 @@ RelationBuildTupleDesc(Relation relation)
  */
 static void
 RelationBuildRuleLock(Relation relation)
-{
+{	StackTrace("RelationBuildRuleLock");
 	MemoryContext rulescxt;
 	MemoryContext oldcxt;
 	HeapTuple	rewrite_tuple;
@@ -804,7 +804,7 @@ RelationBuildRuleLock(Relation relation)
  */
 static bool
 equalRuleLocks(RuleLock *rlock1, RuleLock *rlock2)
-{
+{	StackTrace("equalRuleLocks");
 	int			i;
 
 	/*
@@ -849,7 +849,7 @@ equalRuleLocks(RuleLock *rlock1, RuleLock *rlock2)
  */
 static bool
 equalPolicy(RowSecurityPolicy *policy1, RowSecurityPolicy *policy2)
-{
+{	StackTrace("equalPolicy");
 	int			i;
 	Oid		   *r1,
 			   *r2;
@@ -897,7 +897,7 @@ equalPolicy(RowSecurityPolicy *policy1, RowSecurityPolicy *policy2)
  */
 static bool
 equalRSDesc(RowSecurityDesc *rsdesc1, RowSecurityDesc *rsdesc2)
-{
+{	StackTrace("equalRSDesc");
 	ListCell   *lc,
 			   *rc;
 
@@ -938,7 +938,7 @@ equalRSDesc(RowSecurityDesc *rsdesc1, RowSecurityDesc *rsdesc2)
  */
 static Relation
 RelationBuildDesc(Oid targetRelId, bool insertIt)
-{
+{	StackTrace("RelationBuildDesc");
 	Relation	relation;
 	Oid			relid;
 	HeapTuple	pg_class_tuple;
@@ -1105,7 +1105,7 @@ RelationBuildDesc(Oid targetRelId, bool insertIt)
  */
 static void
 RelationInitPhysicalAddr(Relation relation)
-{
+{	StackTrace("RelationInitPhysicalAddr");
 	if (relation->rd_rel->reltablespace)
 		relation->rd_node.spcNode = relation->rd_rel->reltablespace;
 	else
@@ -1166,7 +1166,7 @@ RelationInitPhysicalAddr(Relation relation)
  */
 void
 RelationInitIndexAccessInfo(Relation relation)
-{
+{	StackTrace("RelationInitIndexAccessInfo");
 	HeapTuple	tuple;
 	Form_pg_am	aform;
 	Datum		indcollDatum;
@@ -1338,7 +1338,7 @@ IndexSupportInitialize(oidvector *indclass,
 					   Oid *opcInType,
 					   StrategyNumber maxSupportNumber,
 					   AttrNumber maxAttributeNumber)
-{
+{	StackTrace("IndexSupportInitialize");
 	int			attIndex;
 
 	for (attIndex = 0; attIndex < maxAttributeNumber; attIndex++)
@@ -1385,7 +1385,7 @@ IndexSupportInitialize(oidvector *indclass,
 static OpClassCacheEnt *
 LookupOpclassInfo(Oid operatorClassOid,
 				  StrategyNumber numSupport)
-{
+{	StackTrace("LookupOpclassInfo");
 	OpClassCacheEnt *opcentry;
 	bool		found;
 	Relation	rel;
@@ -1554,7 +1554,7 @@ static void
 formrdesc(const char *relationName, Oid relationReltype,
 		  bool isshared, bool hasoids,
 		  int natts, const FormData_pg_attribute *attrs)
-{
+{	StackTrace("formrdesc");
 	Relation	relation;
 	int			i;
 	bool		has_not_null;
@@ -1732,7 +1732,7 @@ formrdesc(const char *relationName, Oid relationReltype,
  */
 Relation
 RelationIdGetRelation(Oid relationId)
-{
+{	StackTrace("RelationIdGetRelation");
 	Relation	rd;
 
 	/* Make sure we're in an xact, even if this ends up being a cache hit */
@@ -1788,7 +1788,7 @@ RelationIdGetRelation(Oid relationId)
  */
 void
 RelationIncrementReferenceCount(Relation rel)
-{
+{	StackTrace("RelationIncrementReferenceCount");
 	ResourceOwnerEnlargeRelationRefs(CurrentResourceOwner);
 	rel->rd_refcnt += 1;
 	if (!IsBootstrapProcessingMode())
@@ -1801,7 +1801,7 @@ RelationIncrementReferenceCount(Relation rel)
  */
 void
 RelationDecrementReferenceCount(Relation rel)
-{
+{	StackTrace("RelationDecrementReferenceCount");
 	Assert(rel->rd_refcnt > 0);
 	rel->rd_refcnt -= 1;
 	if (!IsBootstrapProcessingMode())
@@ -1821,7 +1821,7 @@ RelationDecrementReferenceCount(Relation rel)
  */
 void
 RelationClose(Relation relation)
-{
+{	StackTrace("RelationClose");
 	/* Note: no locking manipulations needed */
 	RelationDecrementReferenceCount(relation);
 
@@ -1862,7 +1862,7 @@ RelationClose(Relation relation)
  */
 static void
 RelationReloadIndexInfo(Relation relation)
-{
+{	StackTrace("RelationReloadIndexInfo");
 	bool		indexOK;
 	HeapTuple	pg_class_tuple;
 	Form_pg_class relp;
@@ -1969,7 +1969,7 @@ RelationReloadIndexInfo(Relation relation)
  */
 static void
 RelationDestroyRelation(Relation relation, bool remember_tupdesc)
-{
+{	StackTrace("RelationDestroyRelation");
 	Assert(RelationHasReferenceCountZero(relation));
 
 	/*
@@ -2045,7 +2045,7 @@ RelationDestroyRelation(Relation relation, bool remember_tupdesc)
  */
 static void
 RelationClearRelation(Relation relation, bool rebuild)
-{
+{	StackTrace("RelationClearRelation");
 	/*
 	 * As per notes above, a rel to be rebuilt MUST have refcnt > 0; while of
 	 * course it would be a bad idea to blow away one with nonzero refcnt.
@@ -2280,7 +2280,7 @@ RelationClearRelation(Relation relation, bool rebuild)
  */
 static void
 RelationFlushRelation(Relation relation)
-{
+{	StackTrace("RelationFlushRelation");
 	if (relation->rd_createSubid != InvalidSubTransactionId ||
 		relation->rd_newRelfilenodeSubid != InvalidSubTransactionId)
 	{
@@ -2316,7 +2316,7 @@ RelationFlushRelation(Relation relation)
  */
 void
 RelationForgetRelation(Oid rid)
-{
+{	StackTrace("RelationForgetRelation");
 	Relation	relation;
 
 	RelationIdCacheLookup(rid, relation);
@@ -2348,7 +2348,7 @@ RelationForgetRelation(Oid rid)
  */
 void
 RelationCacheInvalidateEntry(Oid relationId)
-{
+{	StackTrace("RelationCacheInvalidateEntry");
 	Relation	relation;
 
 	RelationIdCacheLookup(relationId, relation);
@@ -2392,7 +2392,7 @@ RelationCacheInvalidateEntry(Oid relationId)
  */
 void
 RelationCacheInvalidate(void)
-{
+{	StackTrace("RelationCacheInvalidate");
 	HASH_SEQ_STATUS status;
 	RelIdCacheEnt *idhentry;
 	Relation	relation;
@@ -2495,7 +2495,7 @@ RelationCacheInvalidate(void)
  */
 void
 RelationCloseSmgrByOid(Oid relationId)
-{
+{	StackTrace("RelationCloseSmgrByOid");
 	Relation	relation;
 
 	RelationIdCacheLookup(relationId, relation);
@@ -2508,7 +2508,7 @@ RelationCloseSmgrByOid(Oid relationId)
 
 static void
 RememberToFreeTupleDescAtEOX(TupleDesc td)
-{
+{	StackTrace("RememberToFreeTupleDescAtEOX");
 	if (EOXactTupleDescArray == NULL)
 	{
 		MemoryContext oldcxt;
@@ -2552,7 +2552,7 @@ RememberToFreeTupleDescAtEOX(TupleDesc td)
  */
 void
 AtEOXact_RelationCache(bool isCommit)
-{
+{	StackTrace("AtEOXact_RelationCache");
 	HASH_SEQ_STATUS status;
 	RelIdCacheEnt *idhentry;
 	int			i;
@@ -2615,7 +2615,7 @@ AtEOXact_RelationCache(bool isCommit)
  */
 static void
 AtEOXact_cleanup(Relation relation, bool isCommit)
-{
+{	StackTrace("AtEOXact_cleanup");
 	/*
 	 * The relcache entry's ref count should be back to its normal
 	 * not-in-a-transaction state: 0 unless it's nailed in cache.
@@ -2689,7 +2689,7 @@ AtEOXact_cleanup(Relation relation, bool isCommit)
 void
 AtEOSubXact_RelationCache(bool isCommit, SubTransactionId mySubid,
 						  SubTransactionId parentSubid)
-{
+{	StackTrace("AtEOSubXact_RelationCache");
 	HASH_SEQ_STATUS status;
 	RelIdCacheEnt *idhentry;
 	int			i;
@@ -2736,7 +2736,7 @@ AtEOSubXact_RelationCache(bool isCommit, SubTransactionId mySubid,
 static void
 AtEOSubXact_cleanup(Relation relation, bool isCommit,
 					SubTransactionId mySubid, SubTransactionId parentSubid)
-{
+{	StackTrace("AtEOSubXact_cleanup");
 	/*
 	 * Is it a relation created in the current subtransaction?
 	 *
@@ -2795,7 +2795,7 @@ RelationBuildLocalRelation(const char *relname,
 						   bool mapped_relation,
 						   char relpersistence,
 						   char relkind)
-{
+{	StackTrace("RelationBuildLocalRelation");
 	Relation	rel;
 	MemoryContext oldcxt;
 	int			natts = tupDesc->natts;
@@ -3021,7 +3021,7 @@ RelationBuildLocalRelation(const char *relname,
 void
 RelationSetNewRelfilenode(Relation relation, char persistence,
 						  TransactionId freezeXid, MultiXactId minmulti)
-{
+{	StackTrace("RelationSetNewRelfilenode");
 	Oid			newrelfilenode;
 	RelFileNodeBackend newrnode;
 	Relation	pg_class;
@@ -3133,7 +3133,7 @@ RelationSetNewRelfilenode(Relation relation, char persistence,
 
 void
 RelationCacheInitialize(void)
-{
+{	StackTrace("RelationCacheInitialize");
 	HASHCTL		ctl;
 
 	/*
@@ -3170,7 +3170,7 @@ RelationCacheInitialize(void)
  */
 void
 RelationCacheInitializePhase2(void)
-{
+{	StackTrace("RelationCacheInitializePhase2");
 	MemoryContext oldcxt;
 
 	/*
@@ -3225,7 +3225,7 @@ RelationCacheInitializePhase2(void)
  */
 void
 RelationCacheInitializePhase3(void)
-{
+{	StackTrace("RelationCacheInitializePhase3");
 	HASH_SEQ_STATUS status;
 	RelIdCacheEnt *idhentry;
 	MemoryContext oldcxt;
@@ -3495,7 +3495,7 @@ RelationCacheInitializePhase3(void)
  */
 static void
 load_critical_index(Oid indexoid, Oid heapoid)
-{
+{	StackTrace("load_critical_index");
 	Relation	ird;
 
 	/*
@@ -3530,7 +3530,7 @@ load_critical_index(Oid indexoid, Oid heapoid)
 static TupleDesc
 BuildHardcodedDescriptor(int natts, const FormData_pg_attribute *attrs,
 						 bool hasoids)
-{
+{	StackTrace("BuildHardcodedDescriptor");
 	TupleDesc	result;
 	MemoryContext oldcxt;
 	int			i;
@@ -3560,7 +3560,7 @@ BuildHardcodedDescriptor(int natts, const FormData_pg_attribute *attrs,
 
 static TupleDesc
 GetPgClassDescriptor(void)
-{
+{	StackTrace("GetPgClassDescriptor");
 	static TupleDesc pgclassdesc = NULL;
 
 	/* Already done? */
@@ -3574,7 +3574,7 @@ GetPgClassDescriptor(void)
 
 static TupleDesc
 GetPgIndexDescriptor(void)
-{
+{	StackTrace("GetPgIndexDescriptor");
 	static TupleDesc pgindexdesc = NULL;
 
 	/* Already done? */
@@ -3591,7 +3591,7 @@ GetPgIndexDescriptor(void)
  */
 static void
 AttrDefaultFetch(Relation relation)
-{
+{	StackTrace("AttrDefaultFetch");
 	AttrDefault *attrdef = relation->rd_att->constr->defval;
 	int			ndef = relation->rd_att->constr->num_defval;
 	Relation	adrel;
@@ -3664,7 +3664,7 @@ AttrDefaultFetch(Relation relation)
  */
 static void
 CheckConstraintFetch(Relation relation)
-{
+{	StackTrace("CheckConstraintFetch");
 	ConstrCheck *check = relation->rd_att->constr->check;
 	int			ncheck = relation->rd_att->constr->num_check;
 	Relation	conrel;
@@ -3735,7 +3735,7 @@ CheckConstraintFetch(Relation relation)
  */
 static int
 CheckConstraintCmp(const void *a, const void *b)
-{
+{	StackTrace("CheckConstraintCmp");
 	const ConstrCheck *ca = (const ConstrCheck *) a;
 	const ConstrCheck *cb = (const ConstrCheck *) b;
 
@@ -3779,7 +3779,7 @@ CheckConstraintCmp(const void *a, const void *b)
  */
 List *
 RelationGetIndexList(Relation relation)
-{
+{	StackTrace("RelationGetIndexList");
 	Relation	indrel;
 	SysScanDesc indscan;
 	ScanKeyData skey;
@@ -3906,7 +3906,7 @@ RelationGetIndexList(Relation relation)
  */
 static List *
 insert_ordered_oid(List *list, Oid datum)
-{
+{	StackTrace("insert_ordered_oid");
 	ListCell   *prev;
 
 	/* Does the datum belong at the front? */
@@ -3951,7 +3951,7 @@ insert_ordered_oid(List *list, Oid datum)
  */
 void
 RelationSetIndexList(Relation relation, List *indexIds, Oid oidIndex)
-{
+{	StackTrace("RelationSetIndexList");
 	MemoryContext oldcxt;
 
 	Assert(relation->rd_isnailed);
@@ -3977,7 +3977,7 @@ RelationSetIndexList(Relation relation, List *indexIds, Oid oidIndex)
  */
 Oid
 RelationGetOidIndex(Relation relation)
-{
+{	StackTrace("RelationGetOidIndex");
 	List	   *ilist;
 
 	/*
@@ -4005,7 +4005,7 @@ RelationGetOidIndex(Relation relation)
  */
 Oid
 RelationGetReplicaIndex(Relation relation)
-{
+{	StackTrace("RelationGetReplicaIndex");
 	List	   *ilist;
 
 	if (relation->rd_indexvalid == 0)
@@ -4030,7 +4030,7 @@ RelationGetReplicaIndex(Relation relation)
  */
 List *
 RelationGetIndexExpressions(Relation relation)
-{
+{	StackTrace("RelationGetIndexExpressions");
 	List	   *result;
 	Datum		exprsDatum;
 	bool		isnull;
@@ -4091,7 +4091,7 @@ RelationGetIndexExpressions(Relation relation)
  */
 List *
 RelationGetIndexPredicate(Relation relation)
-{
+{	StackTrace("RelationGetIndexPredicate");
 	List	   *result;
 	Datum		predDatum;
 	bool		isnull;
@@ -4172,7 +4172,7 @@ RelationGetIndexPredicate(Relation relation)
  */
 Bitmapset *
 RelationGetIndexAttrBitmap(Relation relation, IndexAttrBitmapKind attrKind)
-{
+{	StackTrace("RelationGetIndexAttrBitmap");
 	Bitmapset  *indexattrs;		/* indexed columns */
 	Bitmapset  *uindexattrs;	/* columns in unique indexes */
 	Bitmapset  *idindexattrs;	/* columns in the replica identity */
@@ -4335,7 +4335,7 @@ RelationGetExclusionInfo(Relation indexRelation,
 						 Oid **operators,
 						 Oid **procs,
 						 uint16 **strategies)
-{
+{	StackTrace("RelationGetExclusionInfo");
 	int			ncols = indexRelation->rd_rel->relnatts;
 	Oid		   *ops;
 	Oid		   *funcs;
@@ -4460,7 +4460,7 @@ RelationGetExclusionInfo(Relation indexRelation,
  */
 int
 errtable(Relation rel)
-{
+{	StackTrace("errtable");
 	err_generic_string(PG_DIAG_SCHEMA_NAME,
 					   get_namespace_name(RelationGetNamespace(rel)));
 	err_generic_string(PG_DIAG_TABLE_NAME, RelationGetRelationName(rel));
@@ -4477,7 +4477,7 @@ errtable(Relation rel)
  */
 int
 errtablecol(Relation rel, int attnum)
-{
+{	StackTrace("errtablecol");
 	TupleDesc	reldesc = RelationGetDescr(rel);
 	const char *colname;
 
@@ -4501,7 +4501,7 @@ errtablecol(Relation rel, int attnum)
  */
 int
 errtablecolname(Relation rel, const char *colname)
-{
+{	StackTrace("errtablecolname");
 	errtable(rel);
 	err_generic_string(PG_DIAG_COLUMN_NAME, colname);
 
@@ -4514,7 +4514,7 @@ errtablecolname(Relation rel, const char *colname)
  */
 int
 errtableconstraint(Relation rel, const char *conname)
-{
+{	StackTrace("errtableconstraint");
 	errtable(rel);
 	err_generic_string(PG_DIAG_CONSTRAINT_NAME, conname);
 
@@ -4578,7 +4578,7 @@ errtableconstraint(Relation rel, const char *conname)
  */
 static bool
 load_relcache_init_file(bool shared)
-{
+{	StackTrace("load_relcache_init_file");
 	FILE	   *fp;
 	char		initfilename[MAXPGPATH];
 	Relation   *rels;
@@ -4944,7 +4944,7 @@ read_failed:
  */
 static void
 write_relcache_init_file(bool shared)
-{
+{	StackTrace("write_relcache_init_file");
 	FILE	   *fp;
 	char		tempfilename[MAXPGPATH];
 	char		finalfilename[MAXPGPATH];
@@ -5143,7 +5143,7 @@ write_relcache_init_file(bool shared)
 /* write a chunk of data preceded by its length */
 static void
 write_item(const void *data, Size len, FILE *fp)
-{
+{	StackTrace("write_item");
 	if (fwrite(&len, 1, sizeof(len), fp) != sizeof(len))
 		elog(FATAL, "could not write init file");
 	if (fwrite(data, 1, len, fp) != len)
@@ -5166,7 +5166,7 @@ write_item(const void *data, Size len, FILE *fp)
  */
 bool
 RelationIdIsInInitFile(Oid relationId)
-{
+{	StackTrace("RelationIdIsInInitFile");
 	if (relationId == TriggerRelidNameIndexId)
 	{
 		/* If this Assert fails, we don't need this special case anymore. */
@@ -5207,7 +5207,7 @@ RelationIdIsInInitFile(Oid relationId)
  */
 void
 RelationCacheInitFilePreInvalidate(void)
-{
+{	StackTrace("RelationCacheInitFilePreInvalidate");
 	char		initfilename[MAXPGPATH];
 
 	snprintf(initfilename, sizeof(initfilename), "%s/%s",
@@ -5233,7 +5233,7 @@ RelationCacheInitFilePreInvalidate(void)
 
 void
 RelationCacheInitFilePostInvalidate(void)
-{
+{	StackTrace("RelationCacheInitFilePostInvalidate");
 	LWLockRelease(RelCacheInitLock);
 }
 
@@ -5248,7 +5248,7 @@ RelationCacheInitFilePostInvalidate(void)
  */
 void
 RelationCacheInitFileRemove(void)
-{
+{	StackTrace("RelationCacheInitFileRemove");
 	const char *tblspcdir = "pg_tblspc";
 	DIR		   *dir;
 	struct dirent *de;
@@ -5291,7 +5291,7 @@ RelationCacheInitFileRemove(void)
 /* Process one per-tablespace directory for RelationCacheInitFileRemove */
 static void
 RelationCacheInitFileRemoveInDir(const char *tblspcpath)
-{
+{	StackTrace("RelationCacheInitFileRemoveInDir");
 	DIR		   *dir;
 	struct dirent *de;
 	char		initfilename[MAXPGPATH];
@@ -5321,7 +5321,7 @@ RelationCacheInitFileRemoveInDir(const char *tblspcpath)
 
 static void
 unlink_initfile(const char *initfilename)
-{
+{	StackTrace("unlink_initfile");
 	if (unlink(initfilename) < 0)
 	{
 		/* It might not be there, but log any error other than ENOENT */

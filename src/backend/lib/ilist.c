@@ -32,7 +32,7 @@
  */
 void
 slist_delete(slist_head *head, slist_node *node)
-{
+{	StackTrace("slist_delete");
 	slist_node *last = &head->head;
 	slist_node *cur;
 	bool found	PG_USED_FOR_ASSERTS_ONLY = false;
@@ -60,7 +60,7 @@ slist_delete(slist_head *head, slist_node *node)
  */
 void
 dlist_check(dlist_head *head)
-{
+{	StackTrace("dlist_check");
 	dlist_node *cur;
 
 	if (head == NULL)
@@ -97,7 +97,7 @@ dlist_check(dlist_head *head)
  */
 void
 slist_check(slist_head *head)
-{
+{	StackTrace("slist_check");
 	slist_node *cur;
 
 	if (head == NULL)

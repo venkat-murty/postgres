@@ -32,25 +32,25 @@
 /* Note: this is used for both "char" and boolean datatypes */
 Datum
 hashchar(PG_FUNCTION_ARGS)
-{
+{	StackTrace("hashchar");
 	return hash_uint32((int32) PG_GETARG_CHAR(0));
 }
 
 Datum
 hashint2(PG_FUNCTION_ARGS)
-{
+{	StackTrace("hashint2");
 	return hash_uint32((int32) PG_GETARG_INT16(0));
 }
 
 Datum
 hashint4(PG_FUNCTION_ARGS)
-{
+{	StackTrace("hashint4");
 	return hash_uint32(PG_GETARG_INT32(0));
 }
 
 Datum
 hashint8(PG_FUNCTION_ARGS)
-{
+{	StackTrace("hashint8");
 	/*
 	 * The idea here is to produce a hash value compatible with the values
 	 * produced by hashint4 and hashint2 for logically equal inputs; this is
@@ -70,19 +70,19 @@ hashint8(PG_FUNCTION_ARGS)
 
 Datum
 hashoid(PG_FUNCTION_ARGS)
-{
+{	StackTrace("hashoid");
 	return hash_uint32((uint32) PG_GETARG_OID(0));
 }
 
 Datum
 hashenum(PG_FUNCTION_ARGS)
-{
+{	StackTrace("hashenum");
 	return hash_uint32((uint32) PG_GETARG_OID(0));
 }
 
 Datum
 hashfloat4(PG_FUNCTION_ARGS)
-{
+{	StackTrace("hashfloat4");
 	float4		key = PG_GETARG_FLOAT4(0);
 	float8		key8;
 
@@ -108,7 +108,7 @@ hashfloat4(PG_FUNCTION_ARGS)
 
 Datum
 hashfloat8(PG_FUNCTION_ARGS)
-{
+{	StackTrace("hashfloat8");
 	float8		key = PG_GETARG_FLOAT8(0);
 
 	/*
@@ -124,7 +124,7 @@ hashfloat8(PG_FUNCTION_ARGS)
 
 Datum
 hashoidvector(PG_FUNCTION_ARGS)
-{
+{	StackTrace("hashoidvector");
 	oidvector  *key = (oidvector *) PG_GETARG_POINTER(0);
 
 	return hash_any((unsigned char *) key->values, key->dim1 * sizeof(Oid));
@@ -132,7 +132,7 @@ hashoidvector(PG_FUNCTION_ARGS)
 
 Datum
 hashint2vector(PG_FUNCTION_ARGS)
-{
+{	StackTrace("hashint2vector");
 	int2vector *key = (int2vector *) PG_GETARG_POINTER(0);
 
 	return hash_any((unsigned char *) key->values, key->dim1 * sizeof(int16));
@@ -140,7 +140,7 @@ hashint2vector(PG_FUNCTION_ARGS)
 
 Datum
 hashname(PG_FUNCTION_ARGS)
-{
+{	StackTrace("hashname");
 	char	   *key = NameStr(*PG_GETARG_NAME(0));
 	int			keylen = strlen(key);
 
@@ -151,7 +151,7 @@ hashname(PG_FUNCTION_ARGS)
 
 Datum
 hashtext(PG_FUNCTION_ARGS)
-{
+{	StackTrace("hashtext");
 	text	   *key = PG_GETARG_TEXT_PP(0);
 	Datum		result;
 
@@ -175,7 +175,7 @@ hashtext(PG_FUNCTION_ARGS)
  */
 Datum
 hashvarlena(PG_FUNCTION_ARGS)
-{
+{	StackTrace("hashvarlena");
 	struct varlena *key = PG_GETARG_VARLENA_PP(0);
 	Datum		result;
 
@@ -303,7 +303,7 @@ hashvarlena(PG_FUNCTION_ARGS)
  */
 Datum
 hash_any(register const unsigned char *k, register int keylen)
-{
+{	StackTrace("hash_any");
 	register uint32 a,
 				b,
 				c,
@@ -508,7 +508,7 @@ hash_any(register const unsigned char *k, register int keylen)
  */
 Datum
 hash_uint32(uint32 k)
-{
+{	StackTrace("hash_uint32");
 	register uint32 a,
 				b,
 				c;

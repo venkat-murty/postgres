@@ -39,7 +39,7 @@
  */
 Oid
 NamespaceCreate(const char *nspName, Oid ownerId, bool isTemp)
-{
+{	StackTrace("NamespaceCreate");
 	Relation	nspdesc;
 	HeapTuple	tup;
 	Oid			nspoid;
